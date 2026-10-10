@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { carrierLookupKey, SharedLookups } from './sharedLookups';
+import { carrierLookupKey, SharedLookups, universalLookupKey } from './sharedLookups';
 import type { JsonObject } from './types';
 
 const routing = (extra: JsonObject = {}) => ({ version: 1, configured_carrier: 'unknown', failures: {}, probe_cursor: 0, discovery_cursor: 0, ...extra });
@@ -75,6 +75,10 @@ describe('SharedLookups', () => {
     expect([first.shared, second.shared]).toEqual([0, 1]);
     await first.once(carrierLookupKey('ups', 'TEST1234', null, '0000'), fetch);
     expect(fetch).toHaveBeenCalledTimes(2);
+    // A provider asked about another carrier is another lookup.
+    await first.once(universalLookupKey('17TRACK', 'TEST1234', null, null, 'dpd'), fetch);
+    await second.once(universalLookupKey('17TRACK', 'TEST1234', null, null, null), fetch);
+    expect(fetch).toHaveBeenCalledTimes(4);
     const failure = new Error('down');
     const failing = vi.fn().mockRejectedValue(failure);
     await expect(first.once(['universal', 'Ship24'], failing)).rejects.toBe(failure);

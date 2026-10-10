@@ -91,7 +91,7 @@ describe('persistent tracking routing', () => {
   it('sends universal providers neither the country hint nor a destination', async () => {
     const { router, universal } = setup();
     await router.fetch(parcel({ carrier_data: { lookup_country_hint: 'FR', destination_country: 'CH' } }), false);
-    expect(universal).toHaveBeenCalledExactlyOnceWith('ParcelsApp', 'TEST1234', expect.any(Number), null, null);
+    expect(universal).toHaveBeenCalledExactlyOnceWith('ParcelsApp', 'TEST1234', expect.any(Number), null, null, null);
   });
 
   it('retains actionable input failures through a deferred lookup', async () => {
@@ -134,7 +134,7 @@ describe('persistent tracking routing', () => {
     universal.mockResolvedValue({ ...history(), discovered_carrier: 'royal-mail' });
     const result = await router.fetch(parcel({ carrier: 'royal-mail' }), false);
     expect(direct).toHaveBeenCalledExactlyOnceWith(expect.any(Object), 'royal-mail');
-    expect(universal).toHaveBeenCalledExactlyOnceWith('ParcelsApp', 'TEST1234', expect.any(Number), null, null);
+    expect(universal).toHaveBeenCalledExactlyOnceWith('ParcelsApp', 'TEST1234', expect.any(Number), null, null, 'royal-mail');
     expect(result.result.routing).toMatchObject({ preferred_provider: 'ParcelsApp', failures: { 'royal-mail': { kind: 'transport' } } });
     expect(result.result.tracking_provider).toBe('ParcelsApp');
   });
@@ -799,7 +799,7 @@ describe('persistent tracking routing', () => {
     const router = new TrackingRouter({ direct, universal, health, recognize, recognizeBrowser, reusedUniversal, now: () => time });
     const result = await router.fetch(parcel(), false);
     expect(result.result).toMatchObject({ tracking_provider: 'ParcelsApp', routing: { preferred_provider: 'ParcelsApp' } });
-    expect(reusedUniversal).toHaveBeenCalledExactlyOnceWith('ParcelsApp', 'TEST1234', null, null);
+    expect(reusedUniversal).toHaveBeenCalledExactlyOnceWith('ParcelsApp', 'TEST1234', null, null, null);
     expect(universal).not.toHaveBeenCalled();
     expect(health.acquireTrackingProvider).not.toHaveBeenCalled();
     expect(health.finishTrackingProvider).not.toHaveBeenCalled();
@@ -971,17 +971,26 @@ describe('persistent tracking routing', () => {
     const { router, direct, universal } = setup(); direct.mockRejectedValue(new Error('delivery unavailable'));
     await router.fetch(parcel({ carrier: 'dhl', carrier_data: { original_carrier: 'dhl', active_tracking_carrier: 'swiss-post',
       active_tracking_number: 'LOCAL1234' } }), false);
-    expect(universal).toHaveBeenCalledWith('ParcelsApp', 'LOCAL1234', expect.any(Number), null, 'Europe/Zurich');
+    expect(universal).toHaveBeenCalledWith('ParcelsApp', 'LOCAL1234', expect.any(Number), null, 'Europe/Zurich', 'swiss-post');
   });
   it('forwards the stored delivery postcode to universal providers', async () => {
     const { router, universal } = setup();
     await router.fetch(parcel({ dpd_postcode: '8000' }), false);
-    expect(universal).toHaveBeenCalledWith('ParcelsApp', 'TEST1234', expect.any(Number), '8000', null);
+    expect(universal).toHaveBeenCalledWith('ParcelsApp', 'TEST1234', expect.any(Number), '8000', null, null);
   });
   it('gives universal providers the parcel carrier\'s zone for scans without a trustworthy one', async () => {
     const { router, direct, universal } = setup(); direct.mockRejectedValue(new Error('carrier down'));
     await router.fetch(parcel({ carrier: 'dpd' }), false);
-    expect(universal).toHaveBeenCalledWith('ParcelsApp', 'TEST1234', expect.any(Number), null, 'Europe/Zurich');
+    expect(universal).toHaveBeenCalledWith('ParcelsApp', 'TEST1234', expect.any(Number), null, 'Europe/Zurich', 'dpd');
+  });
+  it('asks universal providers about no carrier for an unknown parcel, not even one a provider named', async () => {
+    const { router, direct, universal } = setup(); direct.mockRejectedValue(new Error('carrier down'));
+    await router.fetch(parcel({ carrier_data: { routing: state({ discovered_carrier: 'dpd' }) } }), false);
+    expect(universal).toHaveBeenCalledOnce();
+    expect(universal.mock.calls[0][5]).toBeNull();
+    // A carrier that confirmed the number itself is asked about.
+    await router.fetch(parcel({ carrier_data: { routing: state({ confirmed_carrier: 'dpd', confirmed_number: 'TEST1234' }) } }), false);
+    expect(universal.mock.lastCall?.[5]).toBe('dpd');
   });
   it.each(['ParcelsApp', 'Ship24'] as const)('gives %s the confirmed carrier\'s zone when the parcel carrier keeps UTC', async (provider) => {
     vi.spyOn(scraper, 'universalPlan').mockReturnValue({
@@ -989,14 +998,15 @@ describe('persistent tracking routing', () => {
     });
     const { router, direct, universal } = setup(); direct.mockRejectedValue(new Error('carrier down'));
     const confirmed = (number: string) => ({ routing: state({ configured_carrier: 'asendia', confirmed_carrier: 'dpd', confirmed_number: number }) });
+    // The provider is asked about the confirmed carrier too.
     await router.fetch(parcel({ carrier: 'asendia', carrier_data: confirmed('TEST1234') }), false);
-    expect(universal).toHaveBeenLastCalledWith(provider, 'TEST1234', expect.any(Number), null, 'Europe/Zurich');
+    expect(universal).toHaveBeenLastCalledWith(provider, 'TEST1234', expect.any(Number), null, 'Europe/Zurich', 'dpd');
     // A route confirmed for another number says nothing about this one.
     await router.fetch(parcel({ carrier: 'asendia', carrier_data: confirmed('OTHER123') }), false);
-    expect(universal).toHaveBeenLastCalledWith(provider, 'TEST1234', expect.any(Number), null, null);
-    // The parcel carrier's own zone still comes first.
+    expect(universal).toHaveBeenLastCalledWith(provider, 'TEST1234', expect.any(Number), null, null, 'asendia');
+    // The parcel carrier's own zone still comes first; the carrier asked about is still the confirmed one.
     await router.fetch(parcel({ carrier: 'dhl', carrier_data: { routing: state({ configured_carrier: 'dhl', confirmed_carrier: 'dpd-fr', confirmed_number: 'TEST1234' }) } }), false);
-    expect(universal).toHaveBeenLastCalledWith(provider, 'TEST1234', expect.any(Number), null, 'Europe/Berlin');
+    expect(universal).toHaveBeenLastCalledWith(provider, 'TEST1234', expect.any(Number), null, 'Europe/Berlin', 'dpd-fr');
   });
   it.each([
     // Quickpac reports Swiss wall time without an offset; the stored events read it in Zurich.
@@ -1014,7 +1024,7 @@ describe('persistent tracking routing', () => {
   it('sends no postcode to universal providers when the parcel stores none', async () => {
     const { router, universal } = setup();
     await router.fetch(parcel(), false);
-    expect(universal).toHaveBeenCalledWith('ParcelsApp', 'TEST1234', expect.any(Number), null, null);
+    expect(universal).toHaveBeenCalledWith('ParcelsApp', 'TEST1234', expect.any(Number), null, null, null);
   });
   it('fails closed when shared coordination is unavailable, with a persisted retry', async () => {
     const { router, health, universal } = setup(); health.acquireTrackingProvider.mockRejectedValue(new Error('db down'));
@@ -1296,11 +1306,11 @@ describe('universal preflight and recipient input', () => {
       universal_input: { number: '1234567891', postcode: '8000' },
       routing: { version: 1, provider_input_needed: { provider: 'ParcelsApp', field: 'dpdPostcode' } },
     } }), false);
-    expect(matching.universal).toHaveBeenCalledWith('Ship24', '1234567891', expect.any(Number), '8000', null);
+    expect(matching.universal).toHaveBeenCalledWith('Ship24', '1234567891', expect.any(Number), '8000', null, null);
     expect(result.result.routing).not.toHaveProperty('provider_input_needed');
     const foreign = setup();
     await foreign.router.fetch(parcel({ tracking_number: '1234567891', carrier_data: { universal_input: { number: '1234567880', postcode: '8000' } } }), false);
-    expect(foreign.universal).toHaveBeenCalledWith('Ship24', '1234567891', expect.any(Number), null, null);
+    expect(foreign.universal).toHaveBeenCalledWith('Ship24', '1234567891', expect.any(Number), null, null, null);
   });
   it('counts a postcode request once per prompt and what each lookup with the owner\'s postcode found', async () => {
     const recorded = vi.spyOn(metrics, 'recordProviderInput').mockImplementation(() => undefined);
@@ -1340,7 +1350,7 @@ describe('universal preflight and recipient input', () => {
     expect(asked(byHand)).toContain('ParcelsApp');
     const given = setup(later);
     await given.router.fetch(parcel({ tracking_number: '1234567891', dpd_postcode: '8000', carrier_data: { routing } }), true);
-    expect(given.universal).toHaveBeenCalledWith('ParcelsApp', '1234567891', expect.any(Number), '8000', null);
+    expect(given.universal).toHaveBeenCalledWith('ParcelsApp', '1234567891', expect.any(Number), '8000', null, null);
   });
   it('takes a postcode request for a number no carrier issues in that shape as no history', async () => {
     const value = setup();

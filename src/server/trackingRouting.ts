@@ -226,7 +226,11 @@ export class TrackingRouter {
     // one; ParcelsApp submits it with its direct lookup.
     // timezone is the parcel carrier's catalog zone; when that is UTC, the zone
     // of the carrier confirmed for the same number, else null.
-    universal: (source: UniversalSource, number: string, timeoutMs: number, postcode: string | null, timezone: string | null) => Promise<CarrierResult>;
+    // carrier is the catalog carrier a direct lookup confirmed for the number,
+    // else the one it is filed under (a delivery leg's own for its number),
+    // null when unknown: 17TRACK asks about it when its own detection misses.
+    // A hint, never proof of the carrier.
+    universal: (source: UniversalSource, number: string, timeoutMs: number, postcode: string | null, timezone: string | null, carrier: string | null) => Promise<CarrierResult>;
     health: ProviderHealth;
     preflightInputNeeded?: (number: string) => { provider: string; field: 'dpdPostcode' } | undefined;
     takePrefetchedUniversal?: (source: UniversalSource, number: string, postcode: string | null) => CarrierResult | undefined;
@@ -234,7 +238,7 @@ export class TrackingRouter {
      * The answer another check of the same run already got, or awaits, for
      * exactly this lookup. Reusing it contacts nobody, so it takes no lease.
      */
-    reusedUniversal?: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null) => Promise<CarrierResult> | undefined;
+    reusedUniversal?: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null, carrier: string | null) => Promise<CarrierResult> | undefined;
     /** A carrier's cheap check of whether it knows a number; without it, no recognition runs. */
     recognize?: (carrier: string, number: string, context?: TrackingContext) => Promise<Recognition>;
     recognizeBrowser?: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) => Promise<Recognition>;
@@ -598,6 +602,11 @@ export class TrackingRouter {
     // direct lookup confirmed for this same number.
     const zone = carrierZone(universalCarrier)
       ?? (state.confirmed_carrier && state.confirmed_number === universalNumber ? carrierZone(state.confirmed_carrier) : null);
+    // The carrier that confirmed this same number (DPD for a parcel filed under
+    // Asendia, which hands it on), else the filed one. Never one a provider
+    // named: a hint must not echo a provider's answer.
+    const askedCarrier = (state.confirmed_carrier && state.confirmed_number === universalNumber ? state.confirmed_carrier : null)
+      ?? (universalCarrier === 'unknown' ? null : universalCarrier);
     const attemptedUniversal = new Set<UniversalSource>();
     // Providers that answered without history for this number in this check.
     const answeredEmpty: UniversalSource[] = [];
@@ -616,7 +625,7 @@ export class TrackingRouter {
           return { result: { ...result, tracking_provider: source }, sourceCarrierId: 'unknown', swissPostReady: null, handoffFallbackErrorType: null };
         }
       }
-      const reused = this.options.reusedUniversal?.(source, universalNumber, providerPostcode, zone);
+      const reused = this.options.reusedUniversal?.(source, universalNumber, providerPostcode, zone, askedCarrier);
       const acquire = async () => {
         try { return await this.options.health.acquireTrackingProvider(source); }
         catch {
@@ -651,7 +660,7 @@ export class TrackingRouter {
       let retryAfterMs = 0;
       try {
         const result = normalizeCarrierResult(await (reused ?? this.options.universal(source, universalNumber,
-          Math.max(1, Math.min(universalSourceBudget(source), Math.floor(universalDeadline - performance.now()) - 5_000)), providerPostcode, zone)));
+          Math.max(1, Math.min(universalSourceBudget(source), Math.floor(universalDeadline - performance.now()) - 5_000)), providerPostcode, zone, askedCarrier)));
         if (!usable(result)) throw new TypeError('No usable universal progress');
         if (foreignHistory(result, universalCarrier, parcel.created_at)) {
           report('foreign_history_rejected', source);

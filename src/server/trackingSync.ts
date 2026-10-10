@@ -262,7 +262,7 @@ export function isOpenedParcelSyncDue(parcel: JsonObject, now: Date): boolean {
 }
 
 export interface TrackingAdapter {
-  fetchUniversal?(source: UniversalSource, trackingNumber: string, timeoutMs: number, dpdPostcode?: string | null, timezone?: string | null): Promise<CarrierResult>;
+  fetchUniversal?(source: UniversalSource, trackingNumber: string, timeoutMs: number, dpdPostcode?: string | null, timezone?: string | null, carrier?: string | null): Promise<CarrierResult>;
   /** A carrier's cheap check of whether it knows a number (carrier.json `tracking.recognition`). */
   recognize?(carrierId: string, trackingNumber: string, context?: TrackingContext): Promise<Recognition>;
   recognizeBrowser?(carrierId: string, trackingNumber: string, context?: TrackingContext, previousError?: unknown): Promise<Recognition>;
@@ -281,8 +281,9 @@ export class CarrierTrackingAdapter implements TrackingAdapter {
     readonly recorder: StepRecorder = hostStepRecorder(),
   ) {}
 
-  async fetchUniversal(source: UniversalSource, trackingNumber: string, timeoutMs: number, dpdPostcode?: string | null, timezone?: string | null): Promise<CarrierResult> {
-    return this.universal.fetchSource(source, trackingNumber, timeoutMs, dpdPostcode ?? null, timezone ?? null);
+  async fetchUniversal(source: UniversalSource, trackingNumber: string, timeoutMs: number, dpdPostcode?: string | null, timezone?: string | null, carrier?: string | null): Promise<CarrierResult> {
+    // No signal or country hint: the timeout bounds the call, and providers are sent no country.
+    return this.universal.fetchSource(source, trackingNumber, timeoutMs, dpdPostcode ?? null, timezone ?? null, undefined, null, carrier ?? null);
   }
 
   async recognize(carrierId: string, trackingNumber: string, context?: TrackingContext): Promise<Recognition> {
@@ -1101,10 +1102,10 @@ export class TrackingSyncService {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
           ? await new TrackingRouter({
             direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks),
-            universal: (source, number, timeout, postcode, timezone) => once(universalLookupKey(source, number, postcode, timezone),
-              () => this.adapter.fetchUniversal!(source, number, timeout, postcode, timezone)),
-            ...(checks ? { reusedUniversal: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null) =>
-              checks.reuse<CarrierResult>(universalLookupKey(source, number, postcode, timezone)) } : {}),
+            universal: (source, number, timeout, postcode, timezone, carrier) => once(universalLookupKey(source, number, postcode, timezone, carrier),
+              () => this.adapter.fetchUniversal!(source, number, timeout, postcode, timezone, carrier)),
+            ...(checks ? { reusedUniversal: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null, carrier: string | null) =>
+              checks.reuse<CarrierResult>(universalLookupKey(source, number, postcode, timezone, carrier)) } : {}),
             health: this.client, now: this.now,
             takePrefetchedUniversal: takePreflightHistory, preflightInputNeeded,
             ...(this.adapter.recognize ? { recognize: (carrier: string, number: string, context?: TrackingContext) =>

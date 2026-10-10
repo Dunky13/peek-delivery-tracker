@@ -83,11 +83,11 @@ it('keeps conflicting provider identities unresolved', async () => {
   expect(answer.carrier).toBeUndefined();
 });
 
-it('sends providers no country hint', async () => {
+it('sends providers no country hint and no carrier', async () => {
   const lookup = vi.spyOn(UniversalTracker.prototype, 'fetchSource').mockResolvedValue(history);
   await preflightTracking('1234500301', health());
   for (const provider of ['Ship24', 'ParcelsApp']) {
-    expect(lookup).toHaveBeenCalledWith(provider, '1234500301', expect.any(Number), null, null, expect.any(AbortSignal));
+    expect(lookup).toHaveBeenCalledWith(provider, '1234500301', expect.any(Number), null, null, expect.any(AbortSignal), null, null);
   }
 });
 

@@ -43,7 +43,8 @@ it.each(['direct', 'universal'])('reaches a real fallback after a slow %s failur
   });
   const router = new TrackingRouter({
     direct: async () => { elapsed = 46_366.731; throw new UpstreamHttpError('DHL eCommerce', 428); },
-    universal: (source, trackingNumber, timeoutMs) => tracker.fetchSource(source, trackingNumber, timeoutMs),
+    universal: (source, trackingNumber, timeoutMs, postcode, timezone, carrier) =>
+      tracker.fetchSource(source, trackingNumber, timeoutMs, postcode, timezone, undefined, null, carrier),
     health: {
       acquireTrackingProvider: async () => ({ token: 'test-lease', retry_at: stamp }),
       finishTrackingProvider: async () => {},

@@ -771,7 +771,7 @@ describe('TrackingSyncService', () => {
     let now = new Date('2026-09-10T12:00:00Z');
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
     await service.syncPackage(parcel);
-    expect(adapter.fetchUniversal).toHaveBeenCalledExactlyOnceWith(provider, 'TEST1234', expect.any(Number), null, 'Europe/Berlin');
+    expect(adapter.fetchUniversal).toHaveBeenCalledExactlyOnceWith(provider, 'TEST1234', expect.any(Number), null, 'Europe/Berlin', 'dhl');
     const saved = client.updatePackage.mock.calls.at(-1)![1];
     expect(saved.carrier_data.lookup_country_hint).toBe('FR');
     expect(saved.carrier_data.destination_country).toBeUndefined();
@@ -2929,7 +2929,7 @@ describe('TrackingSyncService', () => {
     expect(universal).not.toHaveBeenCalled();
   });
 
-  it('forwards the stored delivery postcode to universal providers', async () => {
+  it('forwards the stored delivery postcode and the filed carrier to universal providers', async () => {
     const universal = { fetchSource: vi.fn().mockResolvedValue({ status: 'in_transit' }), fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) };
     const recorder: StepRecorder = { step: () => undefined, lookup: () => undefined };
     const registry = new AdapterRegistry({ factories: {}, carriers: { unknown: 'universal' } },
@@ -2939,9 +2939,29 @@ describe('TrackingSyncService', () => {
     // Then the country hint, which the app leaves out, and the carrier the lookup is for.
     expect(universal.fetch).toHaveBeenCalledWith('TEST1234', '8000', expect.any(Object), undefined, 'unknown');
     await adapter.fetchUniversal('Ship24', 'TEST1234', 1000, '8000');
-    expect(universal.fetchSource).toHaveBeenCalledWith('Ship24', 'TEST1234', 1000, '8000', null);
-    await adapter.fetchUniversal('Ship24', 'TEST1234', 1000, null, 'Europe/Zurich');
-    expect(universal.fetchSource).toHaveBeenLastCalledWith('Ship24', 'TEST1234', 1000, null, 'Europe/Zurich');
+    expect(universal.fetchSource).toHaveBeenCalledWith('Ship24', 'TEST1234', 1000, '8000', null, undefined, null, null);
+    await adapter.fetchUniversal('17TRACK', 'TEST1234', 1000, null, 'Europe/Zurich', 'swiss-post');
+    expect(universal.fetchSource).toHaveBeenLastCalledWith('17TRACK', 'TEST1234', 1000, null, 'Europe/Zurich', undefined, null, 'swiss-post');
+  });
+
+  it('asks universal providers about the carrier the parcel is filed under', async () => {
+    vi.spyOn(scraper, 'universalPlan').mockReturnValue({
+      sources: ['17TRACK'], carrier: null, tier: () => 'unknown', rank: () => 0,
+    });
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const universal = { fetch: vi.fn(), fetchSource: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit',
+      last_update: '2026-09-10T11:00:00Z', events: [{ time: '2026-09-10T11:00:00Z', description: 'In transit', stage: 'in_transit' }] }) };
+    const registry = new AdapterRegistry({ factories: {}, carriers: {} },
+      { trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} } satisfies AdapterEnvironment);
+    const adapter = new CarrierTrackingAdapter(universal as unknown as UniversalTracker, registry, NOOP_RECORDER);
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    // ZTO has no adapter of its own, and a parcel this old asks no carrier whether it knows the number.
+    await service.syncPackage({ id: 'filed', carrier: 'zto', tracking_number: 'TEST1234', current_stage: 'in_transit', created_at: '2026-07-01T00:00:00Z' });
+    expect(universal.fetchSource).toHaveBeenCalledExactlyOnceWith('17TRACK', 'TEST1234', expect.any(Number), null, 'Asia/Shanghai', undefined, null, 'zto');
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ carrier_data: { tracking_provider: '17TRACK' } });
   });
 
   it('keeps expired Shipping history out of the timeline and Sentry', async () => {
