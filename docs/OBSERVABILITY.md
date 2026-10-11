@@ -194,8 +194,9 @@ limit 30;
 ```
 
 By 11 October 2026 DPD had accepted a session for nearly twenty-seven hours, and refused
-another from twenty-seven hours old, between midnight and 1:00 UTC. If `accepted_for` stays well above eight hours, sessions can be kept longer before
-opening the next; if it falls below, lookups meet refused sessions and wait for a new one.
+another from twenty-seven hours old, between midnight and 1:00 UTC. If `accepted_for`
+stays well above eight hours, sessions can be kept longer before opening the next; if it
+falls below, lookups meet refused sessions and wait for a new one.
 Each process also logs the session it takes up at start and how each opening ended
 (`dpd_app_session` in [Logs](#logs)); `dpd_app_session_total` counts them.
 
