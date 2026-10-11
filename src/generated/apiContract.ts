@@ -7082,7 +7082,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Dublin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-ie",
+      "recognitionRank": 62
     },
     "trackingUrlTemplate": "https://www.dpd.ie/tracking/?consignmentNumber={trackingNumber}",
     "linkRules": [
@@ -7975,7 +7976,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Vilnius",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "venipak",
+      "recognitionRank": 63
     },
     "trackingUrlTemplate": "https://venipak.com/lt/en/tracking/track/{trackingNumber}",
     "linkRules": [
