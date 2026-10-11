@@ -12,7 +12,7 @@ Vinted Go is Vinted's own parcel service: it carries parcels sold on Vinted from
 
 In your order's conversation on Vinted, you can follow the link to the carrier's tracking page or copy the tracking number. Tracking can take up to 48 hours to show on Vinted after the seller ships.
 
-Vinted Go doesn't publish a format for its numbers. The ones Peek's carrier list knows are 16 digits starting with 17 or 18, the last being a check digit:
+Vinted Go publishes no format for its numbers. Those Peek's carrier list knows are 16 digits starting 17 or 18, the last a check digit:
 
 | Number (invented) | What it is |
 | --- | --- |
@@ -22,13 +22,13 @@ Vinted Go doesn't publish a format for its numbers. The ones Peek's carrier list
 Two things are easy to mix up:
 
 - **The tracking link.** The tracking button leads to a page such as `vintedgo.com/en/tracking/1700000000000001`. That link is the surest sign the parcel is Vinted Go's.
-- **The pick-up code.** It is not the tracking number. It arrives when the parcel is ready, by email to the address on your Vinted account and possibly by SMS, and it always begins with a capital letter.
+- **The pick-up code.** It isn't the tracking number: it arrives by email (and possibly SMS) when the parcel is ready, and always begins with a capital letter.
 
 Can't find the number at all? See [how to find your tracking number](guide:find-tracking-number).
 
 ## Vinted Go tracking statuses explained
 
-Vinted Go's tracking site comes in seven languages; the English page shows these words. The latest stage is the headline, with its time, above a timeline of every stage; "Show details" opens the scans under each one, some naming the sorting centre's city. In the order a parcel meets them:
+Vinted Go's English tracking page shows the latest stage as the headline, with its time, above a timeline of every stage; "Show details" opens the scans under each one. In the order a parcel meets them:
 
 | Vinted Go says | What it means for you |
 | --- | --- |
@@ -43,7 +43,7 @@ Vinted Go's tracking site comes in seven languages; the English page shows these
 | `Missing from locker` | The parcel isn't in its compartment. Report it on Vinted. |
 | `Returning to sender` | It's going back to the seller, for example because nobody picked it up within 7 days. |
 
-`Shipped` doesn't mean the parcel is near you: it only means the seller has handed it over. `Delivered` comes after pick-up, not when the parcel reaches the locker, so if your code fails, Vinted Go's FAQ suggests checking the tracking to see whether it has already been marked as delivered.
+`Shipped` only means the seller has handed the parcel over. `Delivered` comes after pick-up, not when the parcel reaches the locker: if your code fails, Vinted Go's FAQ suggests checking whether the tracking already says delivered.
 
 Vinted Go's page also holds labels such as `Out for delivery`, `Couldn’t be delivered` and `Parcel lost`, which show only if a parcel reaches that stage.
 
@@ -67,29 +67,29 @@ You deal with Vinted, not Vinted Go: Vinted's customer service handles lost and 
 
 **No update for days.** Vinted Go says it's normal for the timeline to go a few days without an update while the parcel is in transit. More in [why tracking stops updating](guide:tracking-not-updating).
 
-**Not arrived.** Vinted Go asks you to allow 25 business days. If it still hasn't come by then, or the order conversation says it's probably lost, log in to Vinted and report a problem from the conversation.
+**Not arrived.** Vinted Go asks you to allow 25 business days. If it still hasn't come, or the order conversation says it's probably lost, report a problem from that conversation.
 
 **Damaged, wrong item or empty compartment.** You have 2 days from pick-up to report it on Vinted; Vinted's help gives 14 days for orders from Pro sellers. If the parcel is damaged at a locker, take it out and photograph it straight away: the locker won't reopen.
 
-**Marked delivered but not received.** Report it on Vinted within 2 days of the parcel being marked delivered. See also [delivered but not received](guide:delivered-not-received).
+**Marked delivered but not received.** Report it on Vinted within 2 days of it being marked delivered. See also [delivered but not received](guide:delivered-not-received).
 
 ## Vinted Go contact number and customer service
 
 As read on 11 October 2026, neither vintedgo.com nor Vinted's help pages give a Vinted Go phone number, email or form for buyers.
 
-- **Order problems** (late, lost, damaged, wrong item): Vinted's support team, by logging in to your Vinted account and reporting it from the order.
-- **Trouble at a locker** in France, Belgium or Spain: press the "?" button on the locker's home screen to see Vinted Go's support phone number. The support hours show on the same screen.
+- **Order problems** (late, lost, damaged, wrong item): Vinted's support, from the order in your Vinted account.
+- **Trouble at a locker** in France, Belgium or Spain: press the "?" button on the locker's home screen to see Vinted Go's support number and hours.
 - **Trouble at a locker in Portugal:** press "Obter ajuda" on the locker and scan the QR code with your phone. It opens a live chat with Vinted Go's support, every day from 7:00 to 22:00 local time.
 
 Vinted warns that phishing also arrives by SMS; its French help asks you to forward phishing emails to phishing@vinted.com.
 
 ## Tracking a Vinted Go parcel with Peek
 
-[Peek](/) has no direct line to Vinted Go. It follows these parcels only through universal tracking services, and nothing shows that any of them knows Vinted Go parcels, so a parcel may show nothing at all. What does appear is what those services give.
+[Peek](/) reads Vinted Go's own tracking, with no account or postcode: each scan with its time in Vinted Go's words, such as `Ready to collect at the locker`, the town of each sorting centre and a headline of its own ("Ready for pickup", "Delivered"). It names the locker or parcel shop the parcel waits at, then when and where you picked it up, but not neighbourhood points. The address, opening hours and pick-up deadline stay on Vinted Go's page, and there's no expected delivery day. A parcel heading back to the seller shows "Returned to sender".
 
-If you type the 16-digit number alone, Peek doesn't name Vinted Go: the shape is shared, and it asks TNT and DHL eCommerce instead. Press "Change" and pick "Vinted Go". Pasting the vintedgo.com tracking link, with or without a language in it, names Vinted Go straight away. No postcode is needed.
+Type the 16-digit number alone and Peek asks Vinted Go, TNT and DHL eCommerce whether they know it, naming Vinted Go when it does. Otherwise press "Change" and pick "Vinted Go", or paste the vintedgo.com tracking link, which names Vinted Go at once.
 
-Peek checks every 10 minutes, delivery day included, and can notify you when the status changes. If a tracking service names another carrier that Peek reads directly, Peek can ask that carrier. It can't contact Vinted or Vinted Go, or report a problem for you.
+Peek checks every 10 minutes, also while the parcel waits, and can notify you of changes. If Vinted Go hands the parcel to another network under a new tracking code, Peek can follow it there if it reads that network directly. It can't contact Vinted or Vinted Go, or report a problem for you.
 
 ## Questions about Vinted Go tracking
 
@@ -107,7 +107,7 @@ Only on its lockers: in France, Belgium and Spain, the "?" button on the locker 
 
 ### Why is my Vinted Go tracking not working?
 
-Tracking can take up to 48 hours to appear after the seller ships, and a mistyped number gets "We can't find a parcel with this information". Older parcels also disappear from Vinted Go's tracking.
+Tracking can take up to 48 hours to appear after the seller ships, and a mistyped number gets "We can't find a parcel with this information". Vinted Go also stops giving a parcel's tracking six months after its label is made.
 
 :::sources
 - [Vinted Go: Frequently Asked Questions](https://vintedgo.com/en/faq?country=fr&region=europe) – pick-up code, 7 days, other point nearby, 25 business days, 2-day report, timeline gaps, locker phone
@@ -122,5 +122,5 @@ Tracking can take up to 48 hours to appear after the seller ships, and a mistype
 - [Vinted: Envio Vinted Go](https://www.vinted.pt/help/1110) – locker live chat in Portugal, 7:00 to 22:00
 - [Vinted: Le colis n'est pas arrivé](https://www.vinted.fr/help/657) – parcel not at the point, Vinted asks the carrier
 - [Vinted: Comment repérer et signaler les tentatives d'hameçonnage et d'escroquerie ?](https://www.vinted.fr/help/628) – phishing by SMS, phishing@vinted.com
-- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – what Peek reads
+- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – what Peek reads from Vinted Go, six-month limit
 :::

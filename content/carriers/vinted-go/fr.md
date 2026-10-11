@@ -89,11 +89,11 @@ Vinted prévient que l'hameçonnage passe aussi par SMS. Transfère les e-mails 
 
 ## Suivre un colis Vinted Go avec Peek
 
-[Peek](/) n'a pas d'accès direct au suivi de Vinted Go. Il suit ces colis uniquement par des services de suivi universels, et rien n'indique que l'un d'eux connaisse les colis Vinted Go : un colis peut donc ne rien afficher. Ce qui apparaît, c'est ce que ces services donnent.
+[Peek](/) lit directement le suivi de Vinted Go, sans compte ni code postal. Il affiche chaque scan avec son heure et la ville de chaque centre de tri, sous un titre à lui (« Prêt à être retiré », « Livré »). Vinted Go est interrogé en anglais : l'historique garde donc ses libellés anglais, comme `Ready to collect at the locker`, et pas ceux de la page française. Tant que le colis t'attend, Peek nomme la consigne ou le point relais ; une fois le colis retiré, il indique où et à quelle heure. Les voisins relais ne sont pas nommés, et l'adresse du point, ses horaires et la date limite de retrait restent sur la page de Vinted Go. Pas de date de livraison prévue non plus. Dès que le colis repart vers le vendeur, le titre passe à « Retourné à l’expéditeur ».
 
-Si tu saisis seulement le numéro à 16 chiffres, Peek ne propose pas Vinted Go : la forme est partagée, et il interroge TNT et DHL eCommerce à la place. Appuie sur « Changer » et choisis « Vinted Go ». Si tu colles le lien de suivi vintedgo.com, avec ou sans la langue dedans, Vinted Go est reconnu tout de suite. Aucun code postal n'est demandé.
+Si tu saisis seulement le numéro à 16 chiffres, Peek demande à Vinted Go, à TNT et à DHL eCommerce s'ils le connaissent, et retient Vinted Go si c'est lui qui le connaît. Sinon, appuie sur « Changer » et choisis « Vinted Go », ou colle le lien de suivi vintedgo.com, avec ou sans la langue dedans : Vinted Go est reconnu tout de suite.
 
-Le suivi est vérifié toutes les 10 minutes, jour de livraison compris, et tu peux recevoir des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ». Si un service de suivi nomme un autre transporteur que Peek lit directement, ce transporteur peut être interrogé. Peek ne peut pas contacter Vinted ou Vinted Go, ni signaler un problème à ta place.
+Le suivi est vérifié toutes les 10 minutes, y compris quand le colis attend au point, et tu peux recevoir des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ». Si Vinted Go confie le colis à un autre réseau avec un nouveau numéro de suivi, Peek peut le suivre chez ce transporteur, s'il le lit directement. Peek ne peut pas contacter Vinted ou Vinted Go, ni signaler un problème à ta place.
 
 ## Questions sur le suivi Vinted Go
 
@@ -115,7 +115,7 @@ Repasse pendant ses heures d'ouverture, que tu trouves sur la carte de Vinted Go
 
 ### Pourquoi mon suivi Vinted Go ne fonctionne pas ?
 
-Le suivi peut mettre jusqu'à 48 h à apparaître après l'envoi, et un numéro mal saisi affiche un message d'erreur. Les colis plus anciens disparaissent aussi du suivi de Vinted Go.
+Le suivi peut mettre jusqu'à 48 h à apparaître après l'envoi, et un numéro mal saisi affiche un message d'erreur. Et Vinted Go ne donne plus le suivi d'un colis six mois après la création de son bordereau.
 
 :::sources
 - [Vinted Go : Foire aux questions](https://vintedgo.com/fr/faq?country=fr&region=europe) – code de retrait, 7 jours, autre point proche, 25 jours ouvrés, 2 jours pour signaler, suivi sans mise à jour, téléphone de la consigne
@@ -132,5 +132,5 @@ Le suivi peut mettre jusqu'à 48 h à apparaître après l'envoi, et un numéro 
 - [Vinted Portugal : Envio Vinted Go](https://www.vinted.pt/help/1110) – chat de la consigne au Portugal, de 7 h à 22 h
 - [Vinted : Le colis n'est pas arrivé](https://www.vinted.fr/help/657) – colis absent du point, Vinted interroge le transporteur
 - [Vinted : Comment repérer et signaler les tentatives d'hameçonnage et d'escroquerie ?](https://www.vinted.fr/help/628) – hameçonnage par SMS, phishing@vinted.com
-- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – ce que Peek lit
+- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – ce que Peek lit chez Vinted Go, limite de six mois
 :::

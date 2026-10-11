@@ -83,11 +83,11 @@ A Vinted avisa que as tentativas de phishing também chegam por mensagens de tex
 
 ## Acompanhar encomenda Vinted Go com o Peek
 
-O [Peek](/) não tem ligação direta à Vinted Go. Só segue estas encomendas através de serviços de seguimento universais, e nada mostra que algum deles conheça as encomendas da Vinted Go, por isso uma encomenda pode não mostrar nada. O que aparecer é o que esses serviços dão.
+O [Peek](/) consulta diretamente o acompanhamento da Vinted Go, sem conta nem código postal. Mostra cada leitura com a hora e a cidade de cada centro de triagem, por baixo de um título com as suas próprias palavras («Pronta para levantamento», «Entregue»). A consulta é feita em inglês, por isso o histórico aparece com os textos ingleses da Vinted Go, como `Ready to collect at the locker`, e não com os da página em português. Enquanto a encomenda está à tua espera, vês o nome do cacifo ou da loja de encomendas; depois de a levantares, onde e a que horas. Os pontos em cada zona não são indicados, e a morada do ponto, o horário e o prazo de levantamento ficam na página da Vinted Go. Também não há data prevista de entrega. Assim que a encomenda começa a voltar para o vendedor, o título passa a «Devolvida ao remetente».
 
-Se escreveres só o código de 16 algarismos, o Peek não diz que é da Vinted Go: outras transportadoras usam a mesma forma, e o Peek pergunta à TNT e à DHL eCommerce. Carrega em «Alterar transportadora» e escolhe «Vinted Go». Se colares o link de acompanhamento do vintedgo.com, com ou sem a língua, a Vinted Go é reconhecida logo. Não é preciso código postal.
+Se escreveres só o código de 16 algarismos, o Peek pergunta à Vinted Go, à TNT e à DHL eCommerce se o conhecem, e fica com a Vinted Go quando é ela que o conhece. Se não, carrega em «Alterar transportadora» e escolhe «Vinted Go», ou cola o link de acompanhamento do vintedgo.com, com ou sem a língua: a Vinted Go é reconhecida logo. A Vinted Go deixa de dar o acompanhamento de uma encomenda seis meses depois de a etiqueta ser criada.
 
-O Peek verifica de 10 em 10 minutos, mesmo quando a encomenda sai para entrega, e pode enviar-te notificações quando o estado muda. Se um serviço de seguimento indicar outra transportadora que o Peek lê diretamente, pode perguntar-lhe a ela. Não contacta a Vinted nem a Vinted Go, nem reporta problemas por ti.
+O Peek verifica de 10 em 10 minutos, também enquanto a encomenda espera no ponto, e pode enviar-te notificações quando o estado muda. Se a Vinted Go passar a encomenda a outra rede com um novo código de acompanhamento, o Peek pode segui-la nessa transportadora, se a ler diretamente. Não contacta a Vinted nem a Vinted Go, nem reporta problemas por ti.
 
 ## Perguntas sobre encomendas Vinted Go
 
@@ -119,5 +119,5 @@ A Vinted Go não publica telefone nem e-mail para quem recebe. Em Portugal, o ap
 - [Vinted: Ayuda en las taquillas de Vinted Go](https://www.vinted.es/help/1109) – telefone no ecrã do cacifo em Espanha
 - [Vinted: Comment utiliser les consignes Vinted Go ?](https://www.vinted.fr/help/1109) – telefone no cacifo, 2 e 14 dias
 - [Vinted: Envoi avec Vinted Go](https://www.vinted.fr/help/1110) – disponibilidade só com cacifo perto
-- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – o que o Peek lê
+- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – o que o Peek lê da Vinted Go, limite de seis meses
 :::

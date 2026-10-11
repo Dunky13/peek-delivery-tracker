@@ -84,11 +84,11 @@ Vinted avisa de que el phishing también llega por mensajes de texto a tu teléf
 
 ## Seguir un paquete Vinted Go con Peek
 
-[Peek](/) no consulta directamente a Vinted Go. Solo sigue estos paquetes a través de servicios de seguimiento universales, y nada indica que alguno de ellos conozca los paquetes de Vinted Go, así que puede que el paquete no muestre nada. Lo que aparezca es lo que den esos servicios.
+[Peek](/) consulta directamente el seguimiento de Vinted Go, sin cuenta ni código postal. Muestra cada escaneo con su hora y la ciudad de cada centro de clasificación, bajo un titular con sus propias palabras («Listo para recoger», «Entregado»). La consulta se hace en inglés, así que el historial sale con los textos ingleses de Vinted Go, como `Ready to collect at the locker`, y no con los de la página en español. Mientras el paquete te espera, verás el nombre de la taquilla o la tienda de paquetería; cuando lo recojas, dónde y a qué hora. Las viviendas particulares no se nombran, y la dirección del punto, su horario y el plazo para recoger se quedan en la página de Vinted Go. Tampoco hay fecha prevista de entrega. En cuanto el paquete emprende la vuelta al vendedor, el titular pasa a «Devuelto al remitente».
 
-Si escribes solo el número de 16 cifras, no sale Vinted Go: esa forma la comparten otros transportistas, así que se pregunta a TNT y a DHL eCommerce. Pulsa «Cambiar» y elige «Vinted Go». Si pegas el enlace de seguimiento de vintedgo.com, con o sin el idioma, Vinted Go queda reconocido al momento. No hace falta código postal.
+Si escribes solo el número de 16 cifras, Peek pregunta a Vinted Go, a TNT y a DHL eCommerce si lo conocen, y se queda con Vinted Go cuando es este quien lo conoce. Si no, pulsa «Cambiar» y elige «Vinted Go», o pega el enlace de seguimiento de vintedgo.com, con o sin el idioma: Vinted Go queda reconocido al momento. Vinted Go deja de dar el seguimiento de un paquete seis meses después de crearse su etiqueta.
 
-Se consulta cada 10 minutos, también el día de la entrega, y puedes recibir notificaciones cuando cambia el estado. Si un servicio de seguimiento nombra a otro transportista que Peek lee directamente, también se le pregunta a ese transportista. Peek no puede contactar con Vinted ni con Vinted Go, ni abrir una reclamación por ti.
+Se consulta cada 10 minutos, también mientras el paquete espera en el punto, y puedes recibir notificaciones cuando cambia el estado. Si Vinted Go pasa el paquete a otra red con un número de seguimiento nuevo, Peek puede seguirlo con ese transportista cuando lo lee directamente. Peek no puede contactar con Vinted ni con Vinted Go, ni abrir una reclamación por ti.
 
 ## Preguntas sobre el seguimiento de Vinted Go
 
@@ -120,5 +120,5 @@ Como mucho 38 × 30 × 18 cm y 15 kg. Vinted distingue tres tamaños de paquete,
 - [Vinted Go: Frequently Asked Questions](https://vintedgo.com/en/faq?country=fr&region=europe) – medidas máximas, teléfono en la pantalla de la taquilla
 - [Vinted Go: Shipping service, trusted by millions of Vinted users](https://vintedgo.com/en?country=fr&region=europe) – inicio en 2022
 - [Vinted: Comment utiliser les consignes Vinted Go ?](https://www.vinted.fr/help/1109) – pantalla de la taquilla que no funciona
-- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – lo que lee y muestra Peek
+- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – lo que Peek lee y muestra de Vinted Go, límite de seis meses
 :::
