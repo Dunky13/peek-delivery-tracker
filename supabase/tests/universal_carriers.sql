@@ -14,7 +14,7 @@ begin
     'box-now', 'cdek', 'ceska-posta', 'chit-chats', 'correos-de-mexico',
     'cyprus-post', 'day-ross', 'dsv', 'dx', 'dynalogic', 'envialia',
     'epost-global', 'estes', 'fan-courier', 'gebrueder-weiss',
-    'geniki-taxydromiki', 'gls-es', 'gls-it', 'jitsu', 'kuehne-nagel',
+    'geniki-taxydromiki', 'gls-it', 'jitsu', 'kuehne-nagel',
     'latvijas-pasts', 'loomis-express', 'lso', 'magyar-posta', 'meest',
     'mng-kargo', 'nationex', 'post-luxembourg', 'posta-slovenije',
     'posta-srbije', 'ptt', 'redpack', 'rl-carriers', 'russian-post', 'saia',
@@ -29,7 +29,7 @@ begin
     if (select carrier from public.packages where id = parcel.id) <> carrier_id then
       raise exception 'Carrier change to % failed', carrier_id;
     end if;
-    -- None of them asks for a postcode.
+    -- None of them asks for a postcode. GLS Spain, added with them, asks for one since.
     begin
       perform public.create_owned_package('UP' || lpad(serial::text, 10, '0'), 'With a postcode', carrier_id, null, '75001');
       raise exception 'A % postcode was accepted', carrier_id;
