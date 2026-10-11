@@ -17,7 +17,7 @@ The 14-digit number is in the shop's and DPD's messages and under the QR code on
 | `00001234567890` | The 14-digit parcel number DPD's tracking takes. |
 | `00001234567890W` | The same plus the check character DPD prints after it on labels and cards. |
 
-Not found? DPD names three reasons: a wrong number, one over 180 days old (archived) or a parcel not yet handed over. Fourteen digits also fit [DPD Switzerland](carrier:dpd-ch), DPD France, DPD UK, SEUR and BRT, so check which carrier the shop's email names.
+Not found? DPD names three reasons: a wrong number, one over 180 days old (archived) or a parcel not yet handed over. Fourteen digits also fit [DPD Switzerland](carrier:dpd-ch), [DPD France](carrier:dpd-fr), DPD UK, SEUR and BRT, so check which carrier the shop's email names.
 
 ## What DPD's tracking statuses mean
 

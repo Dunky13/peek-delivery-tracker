@@ -71,7 +71,7 @@ Los números postales son la excepción. La Unión Postal Universal solo permite
 
 ### ¿De qué empresa es mi número?
 
-Además de Cainiao, verás [YunExpress](carrier:yunexpress), [4PX](carrier:4px) y Yanwen (que incluso vende líneas con el nombre de Temu y de AliExpress):
+Además de Cainiao, verás [YunExpress](carrier:yunexpress), [4PX](carrier:4px) y [Yanwen](carrier:yanwen) (que incluso vende líneas con el nombre de Temu y de AliExpress):
 
 | El número es así | Suele ser |
 | --- | --- |

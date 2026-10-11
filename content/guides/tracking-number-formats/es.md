@@ -27,7 +27,7 @@ Si prefieres ahorrarte el trabajo de detective, pega el número, un enlace del t
 
 ## El formato del número de seguimiento en cada empresa
 
-Cada empresa lo llama a su manera: «código de envío» en Correos, «número de envío» en [MRW](carrier:mrw) y TIPSA, «número de expedición» en InPost, «número de seguimiento» en GLS, Correos Express y Paack. Todos hablan de lo mismo: el número con el que se sigue tu paquete.
+Cada empresa lo llama a su manera: «código de envío» en Correos, «número de envío» en [MRW](carrier:mrw) y [TIPSA](carrier:tipsa), «número de expedición» en InPost, «número de seguimiento» en GLS, Correos Express y Paack. Todos hablan de lo mismo: el número con el que se sigue tu paquete.
 
 Esto es lo que dicen las empresas y la norma postal sobre los números que más vas a ver en España. Cuando la empresa no publica el formato, la tabla da el que reconocen los datos de transportistas que usa Peek: sirve de pista, no de prueba.
 
@@ -39,8 +39,8 @@ Esto es lo que dicen las empresas y la norma postal sobre los números que más 
 | GLS | su página de seguimiento no da longitud y pide también el código postal de destino |
 | MRW | «número de envío», en el justificante si enviaste desde una oficina MRW. En la etiqueta de ejemplo de MRW sale con 12 cifras bajo el código de barras y, junto a «N.º Etiqueta», partido en 5 cifras, una barra y 7 cifras: quita la barra antes de buscarlo. En paquetes de MRW se ha visto también la forma de 5 cifras, una letra y 6 cifras, que las páginas de MRW no muestran |
 | [NACEX](carrier:nacex) | el localizador pide la expedición en dos casillas, «Agencia» y «Albarán»; su portada pone de ejemplo `0000/00000000` y esos datos reconocen 4 cifras, una barra y 8 cifras, aunque NACEX no publica una longitud fija |
-| TIPSA | «número de envío compuesto por 22 dígitos», junto con el código postal de destino |
-| CTT Express | según esos datos, 22 cifras que empiezan por `00` |
+| TIPSA | «número de envío compuesto por 22 dígitos», junto con el código postal de destino. Son dos códigos de agencia y el albarán de 10 cifras; el albarán suelto no sirve |
+| [CTT Express](carrier:ctt-express) | «código de envío»; según esos datos, 22 cifras: `00`, cuatro cifras, `00` y 14 cifras más, o 25 cifras con un contador de bultos al final. Si empieza por `00001000`, puede ser también de TIPSA |
 | [Mondial Relay](carrier:mondial-relay) | «n° d'expédition» (número de envío): 8 cifras, que su seguimiento pide junto con el código postal del destinatario; su web belga acepta también 10 cifras (un código de marca y ese número) y 12 (más el número de bulto). El código de barras de 26 cifras de la etiqueta solo es de Mondial Relay |
 | InPost (Punto Pack, Locker) | «número de expedición»; el ejemplo de su localizador tiene 8 caracteres. La web de Mondial Relay en España ya lleva a la de InPost |
 | Ecoscooting | según esos datos, `CNESP` y 20 cifras |
@@ -48,6 +48,7 @@ Esto es lo que dicen las empresas y la norma postal sobre los números que más 
 | UPS | `1Z` y 16 letras o cifras, 18 caracteres en total, como `1Z999AA10123456784`, un ejemplo con un dígito de control de UPS válido |
 | DHL Express | 10 cifras, nunca letras, según DHL Express en los Países Bajos |
 | [4PX](carrier:4px) | `4PX`, 13 cifras y `CN`; 4PX no publica ningún número de ejemplo, y su web acepta de 5 a 50 letras y cifras. `LP`, 13 cifras y `CN` es probablemente de 4PX |
+| [Yanwen](carrier:yanwen) | Yanwen no publica ningún número de ejemplo; sus paquetes llevan `BYS` y 9 cifras, o dos letras, 9 cifras y `YP` (suele empezar por `UL` o `UK`). `YW`, tres letras y 12 cifras es su reparto propio en Estados Unidos |
 | AliExpress, [Cainiao](carrier:cainiao) | Cainiao no describe sus números; según esos datos, `DOFR` o `CNFR`, 13 cifras y `HD` es de Cainiao, y `LP` y `CNG` se explican justo abajo |
 | [YunExpress](carrier:yunexpress) | Yuntrack pide el número que empieza por `YT`, sin decir cuántas cifras lleva; según esos datos, `YT` y 16 cifras. `YT` y 13 cifras es YTO Express; `YT`, 9 cifras y `GB` es un envío postal de Royal Mail |
 | China Post, EMS | el formato postal acabado en `CN`; los números EMS internacionales empiezan por `E` |
@@ -70,7 +71,7 @@ No hay una longitud única. Estas son las que dan las propias empresas en sus p�
 | 12 cifras | MRW, en su etiqueta de ejemplo; Mondial Relay |
 | 13 caracteres | el formato postal (`…ES`, `…CN`, `…PT`) |
 | 18 caracteres | UPS (`1Z` y 16 letras o cifras) |
-| 22 cifras | TIPSA; CTT en Portugal, que también usa 25 |
+| 22 cifras | TIPSA; CTT Express y CTT en Portugal, que también usan 25 |
 
 Correos, Correos Express y GLS no dan ninguna longitud en sus páginas de ayuda sobre el seguimiento, y MRW solo la enseña en su etiqueta de ejemplo. Para los números que solo llevan cifras, los datos de transportistas ofrecen candidatas, no certezas: 12 cifras encajan con MRW y Mondial Relay, entre otras; 14, con SEUR y varias redes de DPD; 16 o 23, con Correos Express.
 
@@ -168,8 +169,10 @@ Un número que no devuelve nada no siempre está mal escrito. Correos Express av
 - [DHL: Sendungsverfolgung, Probleme und Lösungen](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/sendungsverfolgung/probleme-loesungen.html) – el número de seguimiento no es un número de pedido
 - [YunExpress: YunTrack](https://www.yuntrack.com/) – página de seguimiento de YunExpress
 - [4PX: Plataforma de seguimiento global](https://track.4px.com/) – de 5 a 50 letras y cifras
+- [Yanwen: YW Tracking (en inglés)](https://track.yw56.com.cn/en/index) – web de seguimiento de Yanwen, sin número de ejemplo
+- [CTT Express: Localizador de envíos](https://www.cttexpress.com/localizador-de-envios/) – el código de envío
 - [Cainiao: centro de ayuda](https://global.cainiao.com/helpDoc.htm) – sin seguimiento tras la entrega al transportista local en el envío económico
 - [bpost: Puis-je suivre mon colis en ligne ?](https://www.bpost.be/fr/faq/puis-je-suivre-mon-colis-en-ligne) – los códigos que empiezan por U no se pueden seguir
 - [CTT: Encontrar o código de envio](https://www.ctt.pt/ajuda/particulares/seguir-ou-alterar-entrega/seguir/encontrar-o-codigo-de-envio) – 22 o 25 cifras, códigos PT de envíos salidos de España, códigos que no devuelven nada
-- [Universal Parcel Scraper: catálogo de transportistas](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – las formas de Correos, Correos Express, SEUR, MRW, NACEX, CTT Express, Ecoscooting, Amazon, AliExpress, 4PX, YunExpress, YTO Express y Royal Mail en los datos de Peek
+- [Universal Parcel Scraper: catálogo de transportistas](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – las formas de Correos, Correos Express, SEUR, MRW, NACEX, CTT Express, Ecoscooting, Amazon, AliExpress, 4PX, Yanwen, YunExpress, YTO Express y Royal Mail en los datos de Peek
 :::

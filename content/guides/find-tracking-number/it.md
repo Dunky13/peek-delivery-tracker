@@ -73,7 +73,7 @@ Alcuni corrieri ti mostrano i pacchi diretti a te, una volta che ti sei registra
 | Italia | [InPost](carrier:inpost), app gratuita | Una volta attivato l'account, l'app mostra «tutte le spedizioni collegate al tuo numero di telefono o indirizzo email», senza inserire codici |
 | Italia e Svizzera | UPS My Choice, iscrizione gratuita | «Non serve nessun numero di ricerca»: vedi i pacchi UPS degli ultimi quattro mesi e quelli in arrivo. In Svizzera la pagina c'è in tedesco e in francese, non in italiano |
 
-Per BRT e GLS non abbiamo trovato una pagina che spieghi se e come i pacchi in arrivo compaiano da soli nelle loro app: con loro conviene avere il codice.
+Per BRT e [GLS](carrier:gls-it) non abbiamo trovato una pagina che spieghi se e come i pacchi in arrivo compaiano da soli nelle loro app: con loro conviene avere il codice.
 
 ### Cerca con il riferimento del mittente
 

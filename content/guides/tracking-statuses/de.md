@@ -31,7 +31,7 @@ Dieselben Schritte, andere Worte:
 | Schritt | DHL (Deutschland) | Österreichische Post | Schweizerische Post |
 | --- | --- | --- | --- |
 | Angekündigt | `Die Sendung wurde elektronisch angekündigt.` | `Elektronische Auftragsdaten wurden vom Versender übermittelt` | `Anmeldung der Sendung durch Versender (Dateneinlieferung)` |
-| Übernommen | `Die Sendung wurde von DHL bearbeitet und wird für den Weitertransport …` | `Sendungsannahme durchgeführt` | `Zeitpunkt der Aufgabe Ihrer Sendung` |
+| Übernommen | `Die Sendung wurde von DHL bearbeitet und wird für den Weitertransport …` | `Zum Transport erhalten` | `Zeitpunkt der Aufgabe Ihrer Sendung` |
 | Unterwegs | `Die Sendung ist in der Region des Empfängers angekommen …` | `Sendung in Verteilung` | `Sendung wurde sortiert und weitergeleitet` |
 | In Zustellung | `Die Sendung wurde in das Zustellfahrzeug geladen.` | `Sendung in Zustellung` | `Verlad in Zustellfahrzeug` |
 | Abholbereit | `Die Sendung wird zur Abholung in die Filiale … gebracht.` | `Sendung abholbereit` | `Ankunft an der Abhol-/Zustellstelle` |
@@ -43,7 +43,7 @@ Bei [Hermes](carrier:hermes-de) heißen die Schritte `Die Sendung wurde angekün
 
 Nein. Der Absender hat einen Versandaufkleber gedruckt und die Daten an den Paketdienst geschickt, mehr nicht. Bei DHL ist `Die Sendung wurde elektronisch angekündigt.` meist der allererste Status. Hermes hat bei `Die Sendung wurde angekündigt` „physisch noch kein Paket“ erhalten. Bei UPS und FedEx heißt dieser Schritt `Etikett erstellt`; UPS ändert den Status erst, wenn es die Sendung tatsächlich hat. Noch früher zeigt DHL manchmal `Wir erwarten Ihre Sendungsdaten in Kürze.`: Bis der Absender die Daten schickt oder das Paket übergibt, können bis zu 24 Stunden vergehen.
 
-Bei der Österreichischen Post steht die Ankündigung in der Regel nur wenige Werktage da. Ändert sie sich nicht, frag den Absender, nicht den Paketdienst: Das rät die Post selbst. Und hat Hermes das Paket übernommen, siehst du den neuen Status spätestens nach 5 Stunden.
+Bei der [Österreichischen Post](carrier:austrian-post) steht die Ankündigung in der Regel nur wenige Werktage da. Ändert sie sich nicht, frag den Absender, nicht den Paketdienst: Das rät die Post selbst. Und hat Hermes das Paket übernommen, siehst du den neuen Status spätestens nach 5 Stunden.
 
 ## Was heißt „in transit“ bei einem Paket?
 
@@ -97,7 +97,7 @@ Hier bist du gefragt: Niemand konnte das Paket annehmen, auch kein Nachbar. Ande
 | DHL (DE) | Das Paket kommt in eine Postfiliale, einen Paketshop oder eine Packstation | 7 Werktage (Montag bis Samstag ohne Feiertage), ab dem Werktag nach dem Zustellversuch |
 | Hermes (DE) | Drei Versuche an aufeinanderfolgenden Werktagen, dazu eine Benachrichtigungskarte oder E-Mail | 7 Werktage ab Einlieferung im PaketShop oder in der Packstation, keine Verlängerung |
 | DPD (DE) | Ohne Abstell-Okay prüfst du mit der Paketinfokarte den Lieferort und leitest das Paket um, etwa zum Nachbarn oder in den Paketshop | 7 Kalendertage im Paketshop, 3 an der Paketstation |
-| Österreichische Post | `Empfänger nicht angetroffen – benachrichtigt`, mit gelbem Zettel im Briefkasten | Ab dem Folgetag bis zum dritten darauffolgenden Montag; manche Versandhändler setzen 5 Werktage |
+| Österreichische Post | `Empfänger nicht angetroffen - brieflich benachrichtigt`, mit gelbem Zettel im Briefkasten | Ab dem Folgetag bis zum dritten darauffolgenden Montag; manche Versandhändler setzen 5 Werktage |
 | Schweizerische Post | `Zur Abholung gemeldet (Abholungseinladung)` | In der Regel 7 Tage, 15 bei Sendungen aus dem Ausland; verlängern geht kostenlos und ohne Konto |
 
 Ob der Code auf der Karte auch als Sendungsnummer taugt, steht unter [Sendungsnummer finden](guide:find-tracking-number).

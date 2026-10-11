@@ -19,7 +19,7 @@ Nessun corriere italiano ha ancora messo online il calendario di Natale 2026, qu
 | Poste Italiane | Pacchi in Italia, servizi con consegna in 1 giorno lavorativo | Non ancora annunciata (2025: venerdì 19 dicembre) |
 | Poste Italiane | Lettere e biglietti di auguri in Italia | Nessuna data di Natale, neanche nel 2025 |
 | SDA | Corriere espresso in Italia, ora gestito da Poste | Non ancora annunciata (2025: come Poste, giovedì 18 o venerdì 19 dicembre) |
-| GLS Italy | Spedizioni nazionali e internazionali, ultimo giorno con partenze | Non ancora annunciata (2025: lunedì 22 dicembre) |
+| [GLS Italy](carrier:gls-it) | Spedizioni nazionali e internazionali, ultimo giorno con partenze | Non ancora annunciata (2025: lunedì 22 dicembre) |
 | GLS Italy | Logistics Groupage | Non ancora annunciata (2025: lunedì 15 dicembre) |
 | [BRT](carrier:brt) | Tutti i servizi | Nessuna data pubblicata, neanche nel 2025 |
 

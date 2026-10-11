@@ -19,7 +19,7 @@ A maioria dos códigos dos CTT tem duas letras (o produto), nove algarismos e du
 | `0012340012345678901234` | 22 algarismos: segundo o Seguir objeto, um envio que começou em Espanha. |
 | `0012340012345678901234001` | 25 algarismos. |
 
-Os números de 22 e 25 algarismos também são a forma da CTT Express, a rede que liga Espanha e Portugal e tem o seu próprio seguimento em cttexpress.com.
+Os números de 22 e 25 algarismos também são a forma da [CTT Express](carrier:ctt-express), a rede que liga Espanha e Portugal e tem o seu próprio seguimento em cttexpress.com.
 
 O Seguir objeto aceita até 25 códigos separados por vírgulas. Escreve o código sem espaços: na ajuda em inglês dos CTT, `Item not found` quer dizer que o objeto não foi identificado na rede. Alguns países partilham o seguimento internacional tarde ou nunca, e alguns envios não têm código nenhum. Os CTT dizem-no assim: se não te enviaram um SMS ou email com um código, o mais provável é que a entrega não tenha um, e não a podes seguir nem alterar.
 

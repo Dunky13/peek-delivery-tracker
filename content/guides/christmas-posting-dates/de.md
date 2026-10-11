@@ -35,7 +35,7 @@ Was hinter den Daten steckt:
 
 ## Österreich: Österreichische Post
 
-Die Österreichische Post hat ihre Weihnachts-Versandfristen für 2026 noch nicht veröffentlicht. 2024 und 2025 kamen sie jeweils Anfang Dezember. Hier die Termine vom Vorjahr für Sendungen innerhalb Österreichs:
+Die [Österreichische Post](carrier:austrian-post) hat ihre Weihnachts-Versandfristen für 2026 noch nicht veröffentlicht. 2024 und 2025 kamen sie jeweils Anfang Dezember. Hier die Termine vom Vorjahr für Sendungen innerhalb Österreichs:
 
 | Paketdienst | Service | Abgabe bis |
 | --- | --- | --- |

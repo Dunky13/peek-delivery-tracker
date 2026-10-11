@@ -55,7 +55,7 @@ Między skanami cisza jest normalna:
 
 - FedEx uważa ponad 24 godziny bez skanu za nic niezwykłego.
 - UPS na długich trasach może nie zeskanować paczki aż do sortowni docelowej.
-- Poczta Polska przy listach poleconych pokazuje tylko dzień nadania i dzień doręczenia, bez drogi przesyłki.
+- [Poczta Polska](carrier:poczta-polska) przy listach poleconych pokazuje tylko dzień nadania i dzień doręczenia, bez drogi przesyłki.
 
 ### Ile paczka jest w drodze?
 

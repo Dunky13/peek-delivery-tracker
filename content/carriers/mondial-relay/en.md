@@ -16,7 +16,7 @@ Mondial Relay calls it the "n° d'expédition": 8 digits, at the top of the labe
 | --- | --- |
 | `12345678` | The shipment number. Also fits Colisweb and Heppner. |
 | `0012345678` | 10 digits: a brand code, then the shipment number. Also fits DHL, Relais Colis and others. |
-| `001234567802` | 12 digits: the same plus the parcel's sequence. Also fits DPD France, [Colis Privé](carrier:colis-prive), [BRT](carrier:brt) and others. |
+| `001234567802` | 12 digits: the same plus the parcel's sequence. Also fits [DPD France](carrier:dpd-fr), [Colis Privé](carrier:colis-prive), [BRT](carrier:brt) and others. |
 | `00123456780101700000000000` | 26 digits: the label's barcode, Mondial Relay's alone, with the shipment number in digits 3 to 10. |
 
 If the shop's email names another carrier, [the number may be theirs](guide:tracking-number-formats).

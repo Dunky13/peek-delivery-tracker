@@ -71,7 +71,7 @@ Les numéros postaux font exception. L'Union postale universelle ne permet qu'un
 
 ### À quelle société appartient mon numéro ?
 
-À côté de Cainiao, tu croiseras [YunExpress](carrier:yunexpress), [4PX](carrier:4px) et Yanwen (qui vend même des lignes au nom de Temu et d'AliExpress) :
+À côté de Cainiao, tu croiseras [YunExpress](carrier:yunexpress), [4PX](carrier:4px) et [Yanwen](carrier:yanwen) (qui vend même des lignes au nom de Temu et d'AliExpress) :
 
 | Le numéro ressemble à | En général |
 | --- | --- |

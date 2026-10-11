@@ -11,7 +11,7 @@ La Poste n'a pas encore publié ses dates de Noël 2026 : en 2025, Colissimo dem
 
 ## France : La Poste, Colissimo, Chronopost, Mondial Relay et DPD
 
-Aucun transporteur français n'a encore publié ses dates 2026. Celles de Colissimo viennent de sa page pour les entreprises, parue le 13 novembre en 2025. Pour un dépôt au bureau de poste, on n'a trouvé aucune date de 2025 sur les pages de La Poste pour les particuliers : le tableau donne celle de 2024, tirée, comme celles de [Chronopost](carrier:chronopost) et de DPD France, du dossier de presse du groupe La Poste.
+Aucun transporteur français n'a encore publié ses dates 2026. Celles de Colissimo viennent de sa page pour les entreprises, parue le 13 novembre en 2025. Pour un dépôt au bureau de poste, on n'a trouvé aucune date de 2025 sur les pages de La Poste pour les particuliers : le tableau donne celle de 2024, tirée, comme celles de [Chronopost](carrier:chronopost) et de [DPD France](carrier:dpd-fr), du dossier de presse du groupe La Poste.
 
 | Transporteur | Service | Envoyer au plus tard |
 | --- | --- | --- |

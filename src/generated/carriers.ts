@@ -224,6 +224,86 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Swiss Post tracking: statuses, collection notes and contact",
       "name": "Swiss Post",
       "color": "#ffcc00"
+    },
+    {
+      "id": "ctt-express",
+      "catalog": "ctt-express",
+      "slug": "ctt-express-tracking",
+      "title": "CTT Express tracking: statuses in English and contact",
+      "name": "CTT Express",
+      "color": "#df0024"
+    },
+    {
+      "id": "dpd-fr",
+      "catalog": "dpd-fr",
+      "slug": "dpd-france-tracking",
+      "title": "DPD France tracking: numbers, statuses and Pickup relays",
+      "name": "DPD France",
+      "color": "#dc0032"
+    },
+    {
+      "id": "gls-fr",
+      "catalog": "gls-fr",
+      "slug": "gls-france-tracking",
+      "title": "GLS France tracking: statuses, Relais GLS and contact",
+      "name": "GLS France",
+      "color": "#ffdd00"
+    },
+    {
+      "id": "gls-it",
+      "catalog": "gls-it",
+      "slug": "gls-italy-tracking",
+      "title": "GLS Italy tracking: numbers, statuses and missed deliveries",
+      "name": "GLS Italy",
+      "color": "#ffdd00"
+    },
+    {
+      "id": "poczta-polska",
+      "catalog": "poczta-polska",
+      "slug": "poczta-polska-tracking",
+      "title": "Poczta Polska tracking: numbers, statuses and pickups",
+      "name": "Poczta Polska",
+      "color": "#c43c2b"
+    },
+    {
+      "id": "orlen-paczka",
+      "catalog": "orlen-paczka",
+      "slug": "orlen-paczka-tracking",
+      "title": "ORLEN Paczka tracking: numbers, statuses and pickups",
+      "name": "ORLEN Paczka",
+      "color": "#db3830"
+    },
+    {
+      "id": "austrian-post",
+      "catalog": "austrian-post",
+      "slug": "austrian-post-tracking",
+      "title": "Austrian Post tracking: numbers, statuses and pickup",
+      "name": "Austrian Post",
+      "color": "#ffdc00"
+    },
+    {
+      "id": "tipsa",
+      "catalog": "tipsa",
+      "slug": "tipsa-tracking",
+      "title": "TIPSA tracking: numbers, statuses and missed deliveries",
+      "name": "TIPSA",
+      "color": "#001e62"
+    },
+    {
+      "id": "yanwen",
+      "catalog": "yanwen",
+      "slug": "yanwen-tracking",
+      "title": "Yanwen tracking: numbers, statuses and who to contact",
+      "name": "Yanwen",
+      "color": "#8cbe1e"
+    },
+    {
+      "id": "an-post",
+      "catalog": "an-post",
+      "slug": "an-post-tracking",
+      "title": "An Post tracking: statuses, missed deliveries and contact",
+      "name": "An Post",
+      "color": "#00a76a"
     }
   ],
   "de": [
@@ -314,6 +394,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Swiss Post Sendungsverfolgung: Status, Abholung, Kontakt",
       "name": "Swiss Post",
       "color": "#ffcc00"
+    },
+    {
+      "id": "austrian-post",
+      "catalog": "austrian-post",
+      "slug": "austrian-post-sendungsverfolgung",
+      "title": "Austrian Post Sendungsverfolgung: Status, Abholung, Hilfe",
+      "name": "Austrian Post",
+      "color": "#ffdc00"
+    },
+    {
+      "id": "yanwen",
+      "catalog": "yanwen",
+      "slug": "yanwen-sendungsverfolgung",
+      "title": "Yanwen Sendungsverfolgung: Nummern, Status und Kontakt",
+      "name": "Yanwen",
+      "color": "#8cbe1e"
     }
   ],
   "fr": [
@@ -420,6 +516,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Swiss Post\u00a0: suivi colis La Poste suisse et statuts",
       "name": "Swiss Post",
       "color": "#ffcc00"
+    },
+    {
+      "id": "dpd-fr",
+      "catalog": "dpd-fr",
+      "slug": "dpd-france-suivi-colis",
+      "title": "DPD France suivi colis\u00a0: numéro, statuts et relais Pickup",
+      "name": "DPD France",
+      "color": "#dc0032"
+    },
+    {
+      "id": "gls-fr",
+      "catalog": "gls-fr",
+      "slug": "gls-france-suivi-colis",
+      "title": "GLS France suivi colis\u00a0: statuts, relais et contact",
+      "name": "GLS France",
+      "color": "#ffdd00"
+    },
+    {
+      "id": "yanwen",
+      "catalog": "yanwen",
+      "slug": "yanwen-suivi",
+      "title": "Yanwen suivi\u00a0: numéros, statuts et qui contacter",
+      "name": "Yanwen",
+      "color": "#8cbe1e"
     }
   ],
   "it": [
@@ -510,6 +630,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Swiss Post tracking: Posta Svizzera, stati e ritiro",
       "name": "Swiss Post",
       "color": "#ffcc00"
+    },
+    {
+      "id": "gls-it",
+      "catalog": "gls-it",
+      "slug": "gls-italy-tracking",
+      "title": "GLS Italy tracking: pacco, stati, giacenza e contatti",
+      "name": "GLS Italy",
+      "color": "#ffdd00"
+    },
+    {
+      "id": "yanwen",
+      "catalog": "yanwen",
+      "slug": "yanwen-tracking",
+      "title": "Yanwen tracking: numero, stati e chi consegna in Italia",
+      "name": "Yanwen",
+      "color": "#8cbe1e"
     }
   ],
   "es": [
@@ -584,6 +720,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "4PX seguimiento: estados, quién entrega y contacto",
       "name": "4PX",
       "color": "#005add"
+    },
+    {
+      "id": "ctt-express",
+      "catalog": "ctt-express",
+      "slug": "ctt-express-seguimiento",
+      "title": "CTT Express seguimiento: número, estados y teléfono",
+      "name": "CTT Express",
+      "color": "#df0024"
+    },
+    {
+      "id": "tipsa",
+      "catalog": "tipsa",
+      "slug": "tipsa-seguimiento",
+      "title": "TIPSA seguimiento: número, estados y teléfono",
+      "name": "TIPSA",
+      "color": "#001e62"
+    },
+    {
+      "id": "yanwen",
+      "catalog": "yanwen",
+      "slug": "yanwen-seguimiento",
+      "title": "Yanwen seguimiento: estados, quién entrega y contacto",
+      "name": "Yanwen",
+      "color": "#8cbe1e"
     }
   ],
   "pt": [
@@ -674,6 +834,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "4PX rastreio: números, estados e contacto em Portugal",
       "name": "4PX",
       "color": "#005add"
+    },
+    {
+      "id": "ctt-express",
+      "catalog": "ctt-express",
+      "slug": "ctt-expresso-rastreio",
+      "title": "CTT Express (Expresso) rastreio: estados e contactos",
+      "name": "CTT Express",
+      "color": "#df0024"
+    },
+    {
+      "id": "yanwen",
+      "catalog": "yanwen",
+      "slug": "rastrear-encomenda-yanwen",
+      "title": "Yanwen tracking: rastrear encomenda, estados e contactos",
+      "name": "Yanwen",
+      "color": "#8cbe1e"
     }
   ],
   "pl": [
@@ -724,6 +900,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "4PX śledzenie przesyłki: numery, statusy i kontakt",
       "name": "4PX",
       "color": "#005add"
+    },
+    {
+      "id": "poczta-polska",
+      "catalog": "poczta-polska",
+      "slug": "poczta-polska-sledzenie",
+      "title": "Poczta Polska śledzenie: numer, statusy, awizo i kontakt",
+      "name": "Poczta Polska",
+      "color": "#c43c2b"
+    },
+    {
+      "id": "orlen-paczka",
+      "catalog": "orlen-paczka",
+      "slug": "orlen-paczka-sledzenie",
+      "title": "ORLEN Paczka śledzenie: numer, statusy i odbiór paczki",
+      "name": "ORLEN Paczka",
+      "color": "#db3830"
+    },
+    {
+      "id": "yanwen",
+      "catalog": "yanwen",
+      "slug": "yanwen-sledzenie",
+      "title": "Yanwen śledzenie przesyłki: statusy, kurier, kontakt",
+      "name": "Yanwen",
+      "color": "#8cbe1e"
     }
   ]
 };

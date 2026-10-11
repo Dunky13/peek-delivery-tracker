@@ -4,7 +4,7 @@ description: Da «etichetta creata» a «consegnato»: cosa vuol dire ogni stato
 slug: stati-spedizione-cosa-significano
 picture: Un percorso tortuoso con tappe spuntate (etichetta, deposito, aereo), un furgone alla tappa attuale, una casa ancora davanti e Pip che corre.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-11
 ---
 
 Uno stato della spedizione è l'ultima scansione del corriere riassunta in poche parole, e quasi sempre non ti chiede niente. «Etichetta creata» vuol dire che il corriere il pacco non ce l'ha ancora, «in transito» che è da qualche parte tra due scansioni, «in consegna» che è sul furgone di oggi. Solo pochi stati ti chiedono di fare qualcosa: una mancata consegna, un pacco in giacenza da ritirare, qualcosa da pagare in dogana e un «consegnato» quando alla porta non c'è niente.
@@ -93,7 +93,7 @@ Questo stato invece ti chiede di muoverti: non c'era nessuno a ricevere il pacco
 | Poste Delivery Standard | Due tentativi a domicilio, poi l'avviso di giacenza | 10 giorni lavorativi, sabato compreso; poi torna al mittente, salvo che abbia chiesto l'abbandono |
 | Poste Delivery Express | Avviso di mancata consegna | 10 giorni lavorativi, sabato compreso; torna al mittente solo se l'ha chiesto, altrimenti è abbandonato |
 | BRT | Avviso via e-mail, SMS o carta; secondo tentativo, poi la filiale ti telefona | In giacenza in filiale: torna indietro se il mittente non dà istruzioni scritte entro 10 giorni |
-| GLS | «Avviso di passaggio»; primo e secondo tentativo | In giacenza alla sede GLS: la sua pagina non dice per quanto |
+| [GLS](carrier:gls-it) | «Avviso di passaggio»; primo e secondo tentativo | In giacenza alla sede GLS: 10 giorni lavorativi (8 per i pacchi dall'estero) secondo la Carta dei Servizi, poi senza istruzioni torna al mittente |
 | UPS | Avviso UPS InfoNotice; fino a tre tentativi, o una sede UPS Access Point | 7 giorni all'Access Point, poi torna al mittente |
 | Mondial Relay (Italia) | Il pacco è già indirizzato a un Point Relais o a un locker | 7 giorni, senza proroga; poi torna al mittente |
 | La Posta (Svizzera) | Invito di ritiro | 7 giorni, 15 per i pacchi dall'estero; proroga gratuita, anche senza account |
@@ -149,6 +149,7 @@ A quel punto decide il venditore: chiedigli di rispedirtelo o di rimborsarti.
 - [BRT: Ho la spedizione in giacenza, cosa significa?](https://www.brt.it/it/faq/ho-la-spedizione-in-giacenza-cosa-significa/) – motivi della giacenza
 - [BRT: Carta dei Servizi](https://www.brt.it/wp-content/uploads/sites/275/2026/03/Carta-dei-Servizi_marzo_2026.pdf) – avviso, secondo tentativo, telefonata, consegna al vicino, 10 giorni, 96%
 - [GLS: La consegna e le possibili opzioni](https://gls-group.com/IT/it/spedire-ricevere/opzioni-consegna/) – avviso di passaggio, due tentativi, giacenza in sede
+- [GLS Italia: Carta dei Servizi Postali](https://gls-group.com/IT/media/downloads/CARTA_DEI_SERVIZI_POSTALI_AGGIORNATAallegati_09.06.26_def.pdf) – 10 giorni lavorativi di giacenza, 8 per i pacchi dall'estero
 - [UPS: Informazioni sullo stato del tracking](https://www.ups.com/it/it/support/tracking-support/where-is-my-package/understanding-tracking-status) – stati, orari, luogo sicuro, foto, eccezione
 - [UPS: InfoNotice UPS](https://www.ups.com/it/it/support/tracking-support/where-is-my-package/how-to-use-infonotice) – tre tentativi, Access Point, 7 giorni, documento
 - [FedEx: Cosa indica lo stato della spedizione?](https://www.fedex.com/it-it/customer-support/faq/receiving/tracking-questions/fedex-tracking-status-meaning.html) – etichetta creata, in transito, in consegna, eccezione, in ritardo

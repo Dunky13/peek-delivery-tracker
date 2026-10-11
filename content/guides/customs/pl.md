@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-„Paczka zatrzymana przez urząd celny” zwykle oznacza, że Twoja przesyłka spoza Unii Europejskiej przechodzi rutynową odprawę celną, a nie że ktoś ją skonfiskował. Jeśli utknęła na dłużej, Poczta Polska albo kurier może czekać na Twoją zapłatę, pełnomocnictwo lub dokumenty. Sprawdź to na stronie albo w aplikacji przewoźnika, nigdy przez link z SMS-a.
+„Paczka zatrzymana przez urząd celny” zwykle oznacza, że Twoja przesyłka spoza Unii Europejskiej przechodzi rutynową odprawę celną, a nie że ktoś ją skonfiskował. Jeśli utknęła na dłużej, [Poczta Polska](carrier:poczta-polska) albo kurier może czekać na Twoją zapłatę, pełnomocnictwo lub dokumenty. Sprawdź to na stronie albo w aplikacji przewoźnika, nigdy przez link z SMS-a.
 
 ## Co znaczy „paczka zatrzymana przez urząd celny”?
 

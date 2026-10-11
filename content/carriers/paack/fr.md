@@ -21,7 +21,7 @@ Un numéro de commande peut donc ressembler à celui d'un autre transporteur (ex
 | `123456789AB` | À aucun transporteur en particulier. |
 | `1234567890AB` | 12 lettres et chiffres : à un numéro [Colis Privé](carrier:colis-prive). |
 | `12345678` | 8 chiffres : à un numéro [Mondial Relay](carrier:mondial-relay), Colisweb ou Heppner. |
-| `123456789012` | 12 chiffres : à un numéro FedEx, DPD France, Colis Privé et d'autres. |
+| `123456789012` | 12 chiffres : à un numéro FedEx, [DPD France](carrier:dpd-fr), Colis Privé et d'autres. |
 
 Si le numéro vient d'un e-mail de Paack, c'est un numéro Paack, quelle que soit sa forme. Paack et Colis Privé sont deux transporteurs différents.
 

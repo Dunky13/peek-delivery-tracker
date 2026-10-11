@@ -19,7 +19,7 @@ Most CTT codes are two letters for the product, nine digits and two letters for 
 | `0012340012345678901234` | 22 digits: on ctt.pt, a shipment that started in Spain. |
 | `0012340012345678901234001` | 25 digits. |
 
-The 22- and 25-digit shapes are also CTT Express's, the Spanish-run courier between Spain and Portugal, with its own tracking on cttexpress.com.
+The 22- and 25-digit shapes are also [CTT Express](carrier:ctt-express)'s, the Spanish-run courier between Spain and Portugal, with its own tracking on cttexpress.com.
 
 Type the code without spaces: CTT's English help says `Item not found` means the item wasn't identified on its network. No SMS or email with a code from CTT? The delivery probably has none and can't be followed. More in [how to find a tracking number](guide:find-tracking-number).
 

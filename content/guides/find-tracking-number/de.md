@@ -42,7 +42,7 @@ Bei AliExpress oder einem anderen Shop in China bestellt? Lies, wie du ein [Pake
 Was dir die Karte bringt, hängt vom Paketdienst ab:
 
 - **Schweizerische Post**, Abholungseinladung: Der Abholcode passt ins Feld „Sendungsnummer oder Abholcode“ der Sendungsverfolgung. Pakete kannst du in der Regel 7 Tage lang abholen, internationale Sendungen 15 Tage, und die Frist lässt sich verlängern.
-- **Österreichische Post**, Gelber Zettel: Hat der Versender deine E-Mail-Adresse übermittelt oder passen Name und Adresse zu deinem Post Account, kommt er zusätzlich als kostenlose e-Benachrichtigung per Mail und in der Post App unter „Meine Sendungen“. Mit ihr und einem amtlichen Lichtbildausweis holst du das Paket ab, genau wie mit dem Zettel.
+- **[Österreichische Post](carrier:austrian-post)**, Gelber Zettel: Hat der Versender deine E-Mail-Adresse übermittelt oder passen Name und Adresse zu deinem Post Account, kommt er zusätzlich als kostenlose e-Benachrichtigung per Mail und in der Post App unter „Meine Sendungen“. Mit ihr und einem amtlichen Lichtbildausweis holst du das Paket ab, genau wie mit dem Zettel.
 - **FedEx**: Die Nummer der Benachrichtigungskarte nimmt die FedEx-Sendungsverfolgung direkt an.
 - **DHL Express**: Auf der Karte steht eine Sendungs-Referenznummer. Mit ihr buchst du kostenlos eine zweite Zustellung.
 - **DHL**: Fehlt die Karte, schickt DHL sie dir in den nächsten Tagen per Post. Liegt das Paket in einer Filiale, brauchst du sie zum Abholen gar nicht: Dein Personalausweis reicht.

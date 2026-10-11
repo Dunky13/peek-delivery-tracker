@@ -28,7 +28,7 @@ Zacznij od darmowych aplikacji, które same przypisują Ci paczki, także gdy [n
 | --- | --- | --- |
 | InPost Mobile | Twoje paczki [InPost](carrier:inpost) bez wpisywania numerów: „Nie musisz rejestrować paczek samodzielnie”. Paczki bliskich i znajomych dodasz po numerze przesyłki | Komunikat na telefonie przy każdej zmianie statusu |
 | DPD Mobile | Paczki w sieci [DPD Polska](carrier:dpd-pl) przypisane do numeru telefonu lub adresu e-mail z Twojego konta w aplikacji. Te dane muszą się zgadzać z listem przewozowym | W aplikacji i e-mailem, na bieżąco o statusie doręczenia |
-| Pocztex Mobile (Poczta Polska) | Wszystkie przesyłki rejestrowane, „do których został przypisany Twój numer telefonu” | O zmianach statusu przesyłek |
+| Pocztex Mobile ([Poczta Polska](carrier:poczta-polska)) | Wszystkie przesyłki rejestrowane, „do których został przypisany Twój numer telefonu” | O zmianach statusu przesyłek |
 | Allegro | Zakładka „Moje przesyłki”: paczki z Twoich zakupów, od oczekiwania na nadanie aż do odbioru. Nic nie zobaczysz, jeśli sprzedający nie dodał numeru listu przewozowego | W aplikacji i e-mailem, gdy przesyłka się opóźnia |
 
 Inne możliwości i ich ograniczenia:
@@ -52,7 +52,7 @@ Nie ma jednej najlepszej dla wszystkich: to zależy od firm kurierskich, z któr
 | Jak długo przechowuje dane | Polityka prywatności | Deliveries trzyma przesłane e-maile do dziesięciu dni. Przy ParcelsApp na Androida Google Play podaje: „Nie można usunąć danych” |
 | Język | Pole „Języki” w App Store | Polski podają Parcel, Packages i Shop, a AfterShip i Deliveries nie. 17TRACK podaje tam tylko angielski, ale w opisie obiecuje ponad 30 języków, a jego strona ma wersję polską |
 | Dostawca | Sekcja „Dostawca” w polskim App Store | Czy twórca deklaruje, że jest przedsiębiorcą. AfterShip tego nie robi, więc App Store uprzedza, że do umów z nim nie mają zastosowania prawa konsumenta obowiązujące w EOG |
-| Twoi przewoźnicy | Lista przewoźników | Liczby podają same firmy: 17TRACK pisze o ponad 2500 w App Store i o ponad 2800 na swojej stronie o USPS. Sprawdź raczej, czy na liście są InPost, Poczta Polska, DPD i ORLEN Paczka |
+| Twoi przewoźnicy | Lista przewoźników | Liczby podają same firmy: 17TRACK pisze o ponad 2500 w App Store i o ponad 2800 na swojej stronie o USPS. Sprawdź raczej, czy na liście są InPost, Poczta Polska, DPD i [ORLEN Paczka](carrier:orlen-paczka) |
 
 ## Darmowe czy płatne: porównanie trackerów
 

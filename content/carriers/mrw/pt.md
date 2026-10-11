@@ -85,7 +85,7 @@ O [Peek](/) reconhece logo como MRW a forma de cinco algarismos, uma letra e sei
 
 No Peek, os estados lidos na MRW aparecem em espanhol, e os desconhecidos aparecem como «Actualización de seguimiento». O Peek mostra o estado, o histórico e cada loja MRW (código postal e localidade, «(Plataforma)» para um centro) num mapa, e pode enviar-te notificações de todas as atualizações, só das importantes ou só no dia da entrega. Deixa de fora a morada do ponto de recolha e não dá data prevista de entrega.
 
-As horas da MRW não trazem fuso horário, por isso o Peek não mostra as leituras da própria MRW. O histórico com datas vem de serviços de seguimento universais, e a MRW volta a ser consultada de 6 em 6 horas; se nenhum serviço responder, vês só o estado atual da MRW. A consulta é feita ao seguimento espanhol da MRW, e ainda não foi testado se encontra encomendas da MRW Portugal.
+As horas da MRW não trazem fuso horário, por isso o Peek não mostra as leituras da própria MRW. O histórico com datas vem de serviços de seguimento universais, e a MRW volta a ser consultada de 6 em 6 horas; se nenhum serviço responder, vês só o estado atual da MRW. A consulta é feita ao seguimento espanhol da MRW, que também responde pelas encomendas da MRW Portugal.
 
 ## Perguntas sobre o rastreio MRW
 

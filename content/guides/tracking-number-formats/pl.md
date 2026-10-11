@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-Litery i długość numeru przesyłki często zdradzają, który przewoźnik ma Twoją paczkę. `1Z` i 16 liter lub cyfr to UPS, `PX` i 10 cyfr to Poczta Polska, numer [InPost](carrier:inpost) ma 24 cyfry, a 13 znaków w układzie `RR123456785CH` (dwie litery, dziewięć cyfr, dwie litery) to zwykle numer pocztowy, w którym dwie ostatnie litery wskazują kraj poczty, która go nadała. Najtrudniej jest z samymi cyframi: 10 albo 14 cyfr pasuje do kilku firm, więc rozstrzyga e-mail o wysyłce albo narzędzie, które sprawdzi numer u wszystkich pasujących przewoźników.
+Litery i długość numeru przesyłki często zdradzają, który przewoźnik ma Twoją paczkę. `1Z` i 16 liter lub cyfr to UPS, `PX` i 10 cyfr to [Poczta Polska](carrier:poczta-polska), numer [InPost](carrier:inpost) ma 24 cyfry, a 13 znaków w układzie `RR123456785CH` (dwie litery, dziewięć cyfr, dwie litery) to zwykle numer pocztowy, w którym dwie ostatnie litery wskazują kraj poczty, która go nadała. Najtrudniej jest z samymi cyframi: 10 albo 14 cyfr pasuje do kilku firm, więc rozstrzyga e-mail o wysyłce albo narzędzie, które sprawdzi numer u wszystkich pasujących przewoźników.
 
 :::checker
 :::
@@ -32,17 +32,18 @@ Oto, co przewoźnicy i standard pocztowy mówią o numerach, które w Polsce spo
 | Przewoźnik | Jak wygląda numer |
 | --- | --- |
 | InPost | 24 cyfry |
-| Poczta Polska | kilka wariantów, według przykładów z jej wyszukiwarki: same cyfry (19 w `0015900773312345678`), `PX` i 10 cyfr (`PX0000000013`) albo format pocztowy z `PL` na końcu, zaczynający się np. od `RR`, `CP`, `VV` lub `EE`. W tej samej wyszukiwarce śledzisz też Pocztex |
+| Poczta Polska | kilka wariantów: `PX` i 10 cyfr (`PX1234567890`), 19 cyfr (`0015900773123456789`), 20 cyfr z `5900773` po trzech pierwszych albo format pocztowy z `PL` na końcu, zaczynający się np. od `RR`, `CP`, `VV` lub `EE`. W tej samej wyszukiwarce śledzisz też Pocztex |
 | [DPD](carrier:dpd-pl) | 14 znaków: w DPD Polska 13 cyfr i litera (`1234567890123A`) albo 14 cyfr zaczynających się od 13 (`13000000000000`). Wyszukiwarka DPD Polska przyjmuje też 9-znakowy kod nadania |
 | DHL eCommerce Polska (paczki krajowe) | 11 cyfr, bez liter, według serwisu Mój DHL |
 | DHL Express | 10 cyfr, bez liter, według DHL Express w Holandii |
 | GLS | numer paczki od nadawcy albo Track-ID z awiza; długości GLS nie podaje |
 | [Packeta](carrier:packeta) | litera `Z` i 10 cyfr, np. `Z1234567890`: „Numer śledzenia musi zaczynać się od litery 'Z' i składać się z 10 cyfr” |
-| ORLEN Paczka | wyszukiwarka prosi o „numer paczki lub kod nadania”; długości nie podaje |
+| [ORLEN Paczka](carrier:orlen-paczka) | numer paczki to 13 cyfr spod kodu kreskowego na etykiecie, zaczynających się od `21`, `23` albo `26` (`2101234567890`); wyszukiwarka przyjmuje też 10-cyfrowy kod nadania |
 | UPS | `1Z` i 16 liter lub cyfr, razem 18 znaków, np. `1Z999AA10123456784`, przykładowy numer z poprawną cyfrą kontrolną UPS |
 | Amazon | Amazon nie publikuje formatu, więcej niżej |
 | [YunExpress](carrier:yunexpress) | `YT` i 16 cyfr; `YT` i 13 cyfr to YTO Express |
 | [Cainiao](carrier:cainiao) (AliExpress) | Cainiao nie publikuje jednego formatu. W danych przewoźników, z których korzysta Peek, `DOFR` albo `CNFR`, 13 cyfr i `HD` to Cainiao; `LP` albo `CNG` i 14 cyfr to prawdopodobnie Cainiao, ale nie na pewno |
+| [Yanwen](carrier:yanwen) | `BYS` i 9 cyfr albo dwie litery, 9 cyfr i `YP` (często od `UL` albo `UK`); Yanwen nie publikuje przykładowego numeru. `YW`, trzy litery i 12 cyfr to własna usługa doręczeń Yanwen w USA |
 | [4PX](carrier:4px) | `4PX`, 13 cyfr i `CN`; 4PX nie publikuje przykładowego numeru, a jego strona przyjmuje od 5 do 50 liter i cyfr. `LP`, 13 cyfr i `CN` to prawdopodobnie też 4PX |
 | China Post, EMS | format pocztowy z `CN` na końcu; międzynarodowe numery EMS zaczynają się od `E` |
 
@@ -50,7 +51,7 @@ InPost od razu mówi, gdy długość się nie zgadza. Wyszukiwarka na stronie g�
 
 ### Numer zaczyna się od PX, AD albo LP: jaki to kurier?
 
-- **`PX` i 10 cyfr** to Poczta Polska. Tak wygląda jeden z przykładów w jej wyszukiwarce: `PX0000000013`.
+- **`PX` i 10 cyfr** to Poczta Polska, np. `PX1234567890`.
 - **`AD`** spotkasz przy przesyłkach Allegro Delivery. ORLEN Paczka pisze, że swoje paczki z Allegro Delivery da się śledzić wyłącznie w aplikacji i na stronie Allegro, numerem zaczynającym się od `AD`. Na stronie ORLEN Paczki ich nie znajdziesz.
 - **`LP` i 14 cyfr** może oznaczać AliExpress i Cainiao. Tak wynika z danych przewoźników, z których korzysta Peek, choć sam Cainiao tego formatu na swoich stronach nie opisuje.
 
@@ -65,9 +66,10 @@ Nie ma jednej długości. Poniżej te, które przewoźnicy podają na własnych 
 | 11 cyfr | DHL eCommerce Polska, paczki krajowe |
 | 11 znaków | Packeta: `Z` i 10 cyfr |
 | 12 znaków | Poczta Polska: `PX` i 10 cyfr |
-| 13 znaków | każda poczta w formacie pocztowym, np. `RR123456785CH` |
+| 13 znaków | każda poczta w formacie pocztowym, np. `RR123456785CH`; ORLEN Paczka: 13 cyfr |
 | 14 znaków | DPD: w DPD Polska 13 cyfr i litera albo 14 cyfr od 13 |
-| 19 cyfr | Poczta Polska, jak w jej przykładzie `0015900773312345678` |
+| 19 cyfr | Poczta Polska |
+| 20 cyfr | Poczta Polska, z `5900773` po trzech pierwszych cyfrach |
 | 24 cyfry | InPost |
 | 14 do 20 znaków | Hermes w Niemczech, litery i cyfry |
 | 10 do 39 znaków | DHL w Niemczech, zależnie od usługi |
@@ -140,7 +142,7 @@ Numer, który nic nie pokazuje, nie zawsze jest źle wpisany. Mój DHL wśród p
 
 :::sources
 - [UPU: S10 standard, Identification of postal items](https://www.upu.int/UPU/media/upu/files/postalSolutions/programmesAndServices/standards/S10-12.pdf) – format pocztowy, jego litery, cyfra kontrolna, kod kraju, dodatkowy kod poczty docelowej
-- [Poczta Polska: Śledzenie przesyłek](https://emonitoring.poczta-polska.pl/) – przykłady numerów, wpisywanie bez spacji i nawiasów, przesyłki Pocztex
+- [Poczta Polska: Śledzenie przesyłek](https://emonitoring.poczta-polska.pl/) – kształty numerów, wpisywanie bez spacji i nawiasów, przesyłki Pocztex
 - [InPost: Śledź paczkę, wyszukiwarka na stronie głównej](https://inpost.pl/) – numer z 24 cyfr i komunikat przy innej długości
 - [InPost: Kontakt i pomoc](https://inpost.pl/kontakt) – kod odbioru w Paczkomacie, 10-cyfrowy kod zwrotu
 - [DPD Polska: Najczęściej zadawane pytania](https://www.dpd.com/pl/pl/najczesciej-zadawane-pytania-faq/) – 14-znakowy numer przesyłki, 9-znakowy kod nadania
@@ -153,12 +155,14 @@ Numer, który nic nie pokazuje, nie zawsze jest źle wpisany. Mój DHL wśród p
 - [Hermes: Sendungsverfolgung](https://www.myhermes.de/empfangen/sendungsverfolgung/) – od 14 do 20 znaków
 - [GLS Polska: FAQ](https://gls-group.com/PL/pl/faq/) – numer paczki od nadawcy, Track-ID na awizie
 - [ORLEN Paczka: Śledź paczkę](https://www.orlenpaczka.pl/sledz-paczke/) – numer paczki lub kod nadania, numery od AD w Allegro Delivery
+- [ORLEN Paczka: Reklamacje](https://www.orlenpaczka.pl/reklamacje/) – „Numer paczki (EAN)”
+- [Yanwen: YW Tracking (po angielsku)](https://track.yw56.com.cn/en/index) – strona śledzenia Yanwen, bez przykładowego numeru
 - [Allegro: Program dostaw Allegro Delivery – informacje dla kupujących](https://allegro.pl/pomoc/dla-kupujacych/metody-dostawy/program-dostaw-allegro-delivery-informacje-dla-kupujacych-Bvw1bwrMmIz) – partnerzy i metody dostawy programu
 - [Allegro: Gdzie sprawdzisz numer i status swojej przesyłki](https://allegro.pl/pomoc/dla-kupujacych/metody-dostawy/gdzie-sprawdzisz-numer-i-status-swojej-przesylki-LvP7agrzOhw) – numer oferty i numer przesyłki w szczegółach zakupu
 - [Amazon.pl: Śledzenie paczki](https://www.amazon.pl/gp/help/customer/display.html?nodeId=GENAFPTNLHV7ZACW) – Moje zamówienia i Śledź przesyłkę, paczki z centrów logistycznych za granicą
 - [Amazon: Amazon Logistics](https://www.amazon.com/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – usługa dostaw samego Amazona
 - [UPS: sample package label](https://www.pld-certify.ups.com/CerttoolHelp/PLD0200/WebHelp_pld0200/LeadPackage.htm) – numer 1Z
-- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – PX, LP, TBA oraz PL i 10 cyfr, numery Cainiao (`DOFR`, `CNFR`, `CNG`), a także YunExpress (`YT` i 16 cyfr) i YTO Express (`YT` i 13 cyfr), numery DPD Polska (13 cyfr i litera albo 14 cyfr od 13) oraz 4PX (`4PX` i `LP`, 13 cyfr i `CN`) w danych przewoźników, z których korzysta Peek
+- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – PX, LP, TBA oraz PL i 10 cyfr, numery Cainiao (`DOFR`, `CNFR`, `CNG`), a także YunExpress (`YT` i 16 cyfr) i YTO Express (`YT` i 13 cyfr), numery DPD Polska (13 cyfr i litera albo 14 cyfr od 13) 4PX (`4PX` i `LP`, 13 cyfr i `CN`), Yanwen (`BYS`, `YP` i `YW`), Poczty Polskiej (19 i 20 cyfr) oraz ORLEN Paczki (13 cyfr od `21`, `23` i `26`) w danych przewoźników, z których korzysta Peek
 - [YunExpress: YunTrack](https://www.yuntrack.com/) – numery od YT
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – przy taniej wysyłce brak śledzenia po przekazaniu lokalnemu przewoźnikowi
 - [Cainiao: Guidance](https://global.cainiao.com/helpDoc.htm?slug=ofzig4) – numery Cainiao bez opisu formatu, tylko litery i cyfry

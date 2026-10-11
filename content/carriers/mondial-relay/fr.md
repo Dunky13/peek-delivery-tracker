@@ -16,7 +16,7 @@ Mondial Relay l'appelle « n° d'expédition » : 8 chiffres, en haut de l'étiq
 | --- | --- |
 | `12345678` | Le numéro d'expédition. Même longueur chez Colisweb et Heppner. |
 | `0012345678` | 10 chiffres : un code d'enseigne, puis le numéro d'expédition. Même longueur chez DHL, Relais Colis et d'autres. |
-| `001234567802` | 12 chiffres : la même chose, plus le rang du colis. Même longueur chez DPD France, [Colis Privé](carrier:colis-prive), BRT et d'autres. |
+| `001234567802` | 12 chiffres : la même chose, plus le rang du colis. Même longueur chez [DPD France](carrier:dpd-fr), [Colis Privé](carrier:colis-prive), BRT et d'autres. |
 | `00123456780101700000000000` | 26 chiffres : le code-barres de l'étiquette, propre à Mondial Relay, avec le numéro d'expédition du 3e au 10e chiffre. |
 
 Si l'e-mail de la boutique nomme un autre transporteur, le numéro est sans doute le sien : lis [à quel transporteur appartient un numéro de suivi](guide:tracking-number-formats). En Espagne et au Portugal, InPost a repris Mondial Relay en 2021 : mondialrelay.es et mondialrelay.pt mènent désormais aux sites d'InPost.

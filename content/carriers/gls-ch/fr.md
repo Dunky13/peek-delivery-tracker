@@ -14,8 +14,8 @@ Le suivi de GLS accepte des numéros de colis et des Track ID. GLS imprime le Tr
 
 | Numéro (inventé) | Ce que c'est |
 | --- | --- |
-| `12345678901` | 11 chiffres. Même forme chez GLS Germany, GLS France, PostLogistics et DHL eCommerce Poland. |
-| `000000000009` | 12 chiffres, dont le dernier est une clé de contrôle. Même forme chez BRT, Colis Privé, Mondial Relay, DPD France et d'autres. |
+| `12345678901` | 11 chiffres. Même forme chez GLS Germany, [GLS France](carrier:gls-fr), PostLogistics et DHL eCommerce Poland. |
+| `000000000009` | 12 chiffres, dont le dernier est une clé de contrôle. Même forme chez BRT, Colis Privé, Mondial Relay, [DPD France](carrier:dpd-fr) et d'autres. |
 | `ABCD1234` | 8 lettres et chiffres. Même forme chez GLS Germany et GLS France. |
 | Six lettres | Comme `ABCDEF`. Même forme chez GLS Germany. |
 

@@ -89,7 +89,7 @@ To prawdziwy przewoźnik: marka grupy, której czeska nazwa to Zásilkovna, w Po
 
 ### Czy ORLEN Paczka i Packeta to ta sama firma?
 
-Nie. ORLEN Paczka jest partnerem Packety: odbiera paczki od sprzedawców z Allegro w Polsce i zawozi je do magazynu Packety, a ostatni odcinek do odbiorcy należy do Packety.
+Nie. [ORLEN Paczka](carrier:orlen-paczka) jest partnerem Packety: odbiera paczki od sprzedawców z Allegro w Polsce i zawozi je do magazynu Packety, a ostatni odcinek do odbiorcy należy do Packety.
 
 ### Czy w Polsce są automaty Z-BOX?
 

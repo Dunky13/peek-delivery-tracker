@@ -24,7 +24,7 @@ Where it turns up:
 - **From a shop:** in the shipping email or on the order page.
 - **By SMS:** genuine MRW texts come from the sender "MRW-es". Links like www.mrw.pt/track/… open MRW's page for arranging delivery, not the tracking.
 
-Twelve digits alone also fit FedEx, DPD France, [Mondial Relay](carrier:mondial-relay), Colis Privé, [BRT](carrier:brt), SF Express and others. If MRW doesn't know it, check the shipping email for the carrier's name.
+Twelve digits alone also fit FedEx, [DPD France](carrier:dpd-fr), [Mondial Relay](carrier:mondial-relay), Colis Privé, [BRT](carrier:brt), SF Express and others. If MRW doesn't know it, check the shipping email for the carrier's name.
 
 When MRW answers "Envío no encontrado" (shipment not found), check the digits. If they're right, MRW's message says the parcel simply hasn't reached MRW yet.
 
@@ -84,7 +84,7 @@ MRW lists no chat or recipient email, and says to take its numbers from mrw.es o
 
 Statuses appear in Spanish; unknown ones show as "Actualización de seguimiento". Peek shows the status, the history and each office (postcode and town, "(Plataforma)" for a hub) on a map, and can notify you of every scan, important steps or delivery day only. It drops the pickup point's address and gives no expected delivery date.
 
-MRW's times carry no time zone, so Peek doesn't show MRW's own scans. The dated history comes from universal tracking services, and Peek asks MRW again every 6 hours; if no service answers, you see only MRW's current status. Whether it finds MRW Portugal parcels hasn't been tested.
+MRW's times carry no time zone, so Peek doesn't show MRW's own scans. The dated history comes from universal tracking services, and Peek asks MRW again every 6 hours; if no service answers, you see only MRW's current status. MRW's Spanish tracking also answers for MRW Portugal parcels.
 
 ## Questions about MRW tracking
 

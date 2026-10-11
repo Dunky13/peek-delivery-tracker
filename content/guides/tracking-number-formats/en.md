@@ -39,16 +39,17 @@ Here's what the carriers and the postal standard say about the numbers you're mo
 | [Evri](carrier:evri) | 16 characters (Evri's page says both "16 digit" and "16 character") |
 | DPD | 14 characters, says [DPD Germany](carrier:dpd-de); 14 digits, say DPD Austria and Belgium. DPD UK's help page gives no length and asks for your postcode too |
 | [InPost](carrier:inpost) | in the UK, `JD` or `JJD` + 16 digits, or `8YDR` + 9 digits (InPost UK says its numbers usually start with `JD`, `JJD` or `8`); `JD` or `JJD` + 18 digits is DHL |
-| An Post | two letters, nine digits, two letters ending `IE` |
+| [An Post](carrier:an-post) | two letters, nine digits, two letters ending `IE`, such as `RR123456785IE` |
 | Canada Post | 16 digits (online labels) or 13 characters ending `CA`; 12 digits for Priority Worldwide |
 | Australia Post | its help page gives no format and calls it a "tracking number, or article ID"; numbers in the postal format end `AU` |
 | [YunExpress](carrier:yunexpress) | `YT` + 16 digits (`YT` + 13 digits is YTO Express) |
+| [Yanwen](carrier:yanwen) | `BYS` + 9 digits, or two letters, nine digits and `YP` (often starting `UL` or `UK`); Yanwen publishes no example number. `YW`, three letters and 12 digits is Yanwen's own US delivery service |
 | [4PX](carrier:4px) | `4PX` + 13 digits + `CN`; 4PX publishes no example number, and its site takes 5 to 50 letters and digits. `LP` + 13 digits + `CN` is likely 4PX too |
 | [Cainiao](carrier:cainiao), for AliExpress | no published format; its site takes letters and digits only, and its own example is a postal number ending `HK`. `LP` + 14 digits is likely Cainiao, though not certain, and so is `CNG` + 14 digits |
 | China Post, EMS | the postal format ending `CN`; international EMS numbers start with `E` |
 | Amazon | Amazon publishes no format; `TBA` numbers are covered below |
 
-Elsewhere in Europe, the pages on [Chronopost](carrier:chronopost) and [Relais Colis](carrier:relais-colis) (France), [Colis Privé](carrier:colis-prive) (France, Belgium and Luxembourg), [Mondial Relay](carrier:mondial-relay) (France and Belgium), [BRT](carrier:brt) and [Poste Italiane](carrier:poste-italiane) (Italy) explain their numbers. For Germany, see [GLS Germany](carrier:gls-de) and [Hermes Germany](carrier:hermes-de). For Spain and Portugal, see [Correos Express](carrier:correos-express), [NACEX](carrier:nacex), [SEUR](carrier:seur), [MRW](carrier:mrw), [CTT](carrier:ctt) and [Paack](carrier:paack), which also delivers in France and Italy. For Poland, see [DPD Poland](carrier:dpd-pl) and [Packeta](carrier:packeta). For Switzerland, see [Swiss Post](carrier:swiss-post), [Quickpac](carrier:quickpac), [Planzer](carrier:planzer), [DPD Switzerland](carrier:dpd-ch) and [GLS Switzerland](carrier:gls-ch).
+Elsewhere in Europe, the pages on [Chronopost](carrier:chronopost), [DPD France](carrier:dpd-fr), [GLS France](carrier:gls-fr) and [Relais Colis](carrier:relais-colis) (France), [Colis Privé](carrier:colis-prive) (France, Belgium and Luxembourg), [Mondial Relay](carrier:mondial-relay) (France and Belgium), [BRT](carrier:brt), [GLS Italy](carrier:gls-it) and [Poste Italiane](carrier:poste-italiane) (Italy) explain their numbers. For Germany, see [GLS Germany](carrier:gls-de) and [Hermes Germany](carrier:hermes-de); for Austria, [Austrian Post](carrier:austrian-post). For Spain and Portugal, see [Correos Express](carrier:correos-express), [NACEX](carrier:nacex), [SEUR](carrier:seur), [MRW](carrier:mrw), [TIPSA](carrier:tipsa), [CTT](carrier:ctt), [CTT Express](carrier:ctt-express) and [Paack](carrier:paack), which also delivers in France and Italy. For Poland, see [Poczta Polska](carrier:poczta-polska), [ORLEN Paczka](carrier:orlen-paczka), [DPD Poland](carrier:dpd-pl) and [Packeta](carrier:packeta). For Switzerland, see [Swiss Post](carrier:swiss-post), [Quickpac](carrier:quickpac), [Planzer](carrier:planzer), [DPD Switzerland](carrier:dpd-ch) and [GLS Switzerland](carrier:gls-ch).
 
 ### Whose tracking number starts with 9 or 420?
 
@@ -65,7 +66,7 @@ There's no single length. These are the lengths carriers give on their own pages
 | 14 digits | DPD in Austria and Belgium (DPD Germany says 14 characters); La Poste in France |
 | 15 digits | FedEx Ground numbers: FedEx told Ground Economy shippers receiving them that the length would change from 31 May 2022; Canada Post's Delivery Notice Card |
 | 16 digits | Canada Post online labels; Evri (16 characters) |
-| 22 digits | USPS; Portugal's CTT |
+| 22 digits | USPS; Portugal's CTT; Austrian Post; TIPSA |
 | 26 digits | USPS, on some labels |
 | 9 to 27 characters | Royal Mail and Parcelforce |
 | 10 to 39 characters | DHL in Germany |
@@ -160,8 +161,11 @@ A number that returns nothing isn't always mistyped. Portugal's CTT gives two re
 - [Canada Post: Find your tracking number](https://www.canadapost-postescanada.ca/cpc/en/support/kb/tracking/find-your-tracking-number.page) – lengths by product
 - [Australia Post: Help with tracking](https://auspost.com.au/help/parcel-tracking/tracking-support/help-with-tracking) – tracking number or article ID
 - [An Post: Track a parcel](https://www.anpost.com/Post-Parcels/Track/Search) – the format and the Trans Ref ID
+- [Austrian Post: FAQ](https://www.post.at/en/p/c/faq) – 22 digits starting 10
+- [TIPSA: Delivery locator](https://www.tip-sa.com/en/delivery-locator) – 22 digits
 - [YunExpress: YunTrack](https://www.yuntrack.com/) – YunExpress's own tracking site
 - [4PX: Global Order Tracking](https://track.4px.com/) – 5 to 50 letters and digits
+- [Yanwen: YW Tracking](https://track.yw56.com.cn/en/index) – Yanwen's own tracking site, no example number
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – no tracking after the handover with economy shipping
 - [Cainiao: Global Express Tracking](https://global.cainiao.com/) – example number
 - [Cainiao: Guidance](https://global.cainiao.com/helpDoc.htm?slug=ofzig4) – letters and digits
@@ -170,5 +174,5 @@ A number that returns nothing isn't always mistyped. Portugal's CTT gives two re
 - [Mondial Relay Belgium: Suivi de colis](https://www.mondialrelay.be/fr-be/suivi-de-colis/) – 8, 10 or 12 digits
 - [La Poste: Comment suivre mon colis ou ma lettre](https://aide.laposte.fr/professionnel/contenu/comment-suivre-mon-colis-ou-ma-lettre) – 14 digits
 - [Amazon: Amazon Logistics](https://www.amazon.com/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – shipped with Amazon, tracked in Your Orders
-- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – the TBA, YT, LP and CNG shapes in Peek's carrier data, InPost's JD, JJD and 8YDR shapes, and 4PX's 4PX and LP shapes
+- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – the TBA, YT, LP and CNG shapes in Peek's carrier data, InPost's JD, JJD and 8YDR shapes, 4PX's 4PX and LP shapes, and Yanwen's BYS, YP and YW shapes
 :::

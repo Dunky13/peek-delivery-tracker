@@ -33,7 +33,7 @@ Ecco cosa dicono i corrieri, e lo standard postale, sui codici che incontri più
 | --- | --- |
 | Poste Italiane | Poste lo chiama «codice spedizione», da scrivere senza spazi e senza trattino. Ha forme diverse: `RA` e 11 cifre, `1UW` o `3UW` e 10 lettere o cifre, `2IMA` e 10 cifre, `5P` e 11 lettere o cifre, cifre con una lettera in mezzo (codici in stile SDA), o il formato postale internazionale che finisce con `IT`. Con Poste Delivery Web è un codice di 13 caratteri, stampato in alto a destra sulla lettera di vettura |
 | [BRT (ex Bartolini)](carrier:brt) | «BRTcode» di 14 o 19 cifre, oppure «numero di spedizione» di 12 o 14 cifre |
-| GLS Italia | spedizione nazionale: due lettere, o una lettera e una cifra, seguite da al massimo 9 cifre (esempio di GLS: `Y1 550012467`); spedizione internazionale: 11 cifre |
+| [GLS Italia](carrier:gls-it) | spedizione nazionale: due lettere, o una lettera e una cifra, seguite da al massimo 9 cifre, come `AB123456789` o `A1 123456789`; spedizione internazionale: 11 cifre, una per collo. Il modulo di GLS prende anche l'ID Collo, senza gli zeri iniziali e senza «GLS» finale |
 | [InPost](carrier:inpost) | il modulo «Trova il tuo pacco» accetta 8, 10, 11, 13, 15, 22, 24 o 26 cifre, oppure due formati con lettere: `LM` + 9 cifre + `IT`, o 4 lettere + 15 cifre |
 | DHL | DHL Express: 10 cifre, mai lettere. DHL in Germania: da 10 a 39 caratteri |
 | UPS | `1Z` + 16 lettere e cifre, 18 caratteri in tutto, come `1Z999AA10123456784`, un esempio con una cifra di controllo UPS valida |
@@ -45,6 +45,7 @@ Ecco cosa dicono i corrieri, e lo standard postale, sui codici che incontri più
 | Amazon | Amazon non pubblica un formato; i codici `IT…` sono spiegati più sotto |
 | [YunExpress](carrier:yunexpress) | `YT` + 16 cifre |
 | [4PX](carrier:4px) | `4PX` + 13 cifre + `CN`; 4PX non pubblica numeri di esempio, e il suo sito accetta da 5 a 50 lettere e cifre. Anche `LP` + 13 cifre + `CN` è probabilmente 4PX |
+| [Yanwen](carrier:yanwen) | Yanwen non pubblica numeri di esempio; i suoi pacchi hanno `BYS` + 9 cifre, oppure due lettere, 9 cifre e `YP` (spesso inizia con `UL` o `UK`). `YW`, tre lettere e 12 cifre è il suo servizio di consegna negli Stati Uniti |
 | [Cainiao](carrier:cainiao) (AliExpress) | Cainiao non descrive i suoi formati e come esempio mostra un numero postale che finisce con `HK`. Nei dati dei corrieri che usa Peek, `LP` o `CNG` + 14 cifre sono probabilmente Cainiao; `DOFR` o `CNFR` + 13 cifre + `HD` sono Cainiao |
 | China Post, EMS | il formato postale che finisce con `CN`; i numeri EMS internazionali iniziano con `E` |
 
@@ -122,7 +123,7 @@ Se ha 13 caratteri e finisce con due lettere, per esempio `CN`, è un codice pos
 Con un pacco viaggiano anche altri numeri:
 
 - **Non sono codici di tracking:** il numero d'ordine, che è del negozio (DHL ricorda che il numero di spedizione non è un numero d'ordine), e il codice prenotazione ritiro di Poste, come `CP123456789`, che segue il ritiro a domicilio, non la spedizione.
-- **Funziona, ma accorciato:** l'ID collo GLS. GLS chiede di togliere gli zeri iniziali e la sigla finale: per `0000 35638867 GLS` scrivi solo `35638867`.
+- **Funziona, ma accorciato:** l'ID collo GLS. GLS chiede di togliere gli zeri iniziali e la sigla finale «GLS»: resta un numero di cifre come `12345678`.
 
 Gli avvisi lasciati dal corriere, il riferimento del mittente e cosa fare se hai solo il numero d'ordine: [dove trovare il codice di tracking](guide:find-tracking-number).
 
@@ -169,10 +170,11 @@ Un codice che non dà risultati non è per forza sbagliato. Le poste portoghesi 
 - [UPS: sample package label](https://www.pld-certify.ups.com/CerttoolHelp/PLD0200/WebHelp_pld0200/LeadPackage.htm) – il numero 1Z
 - [YunExpress: YunTrack](https://www.yuntrack.com/) – numeri che iniziano con YT
 - [4PX: Global Order Tracking](https://track.4px.com/) – da 5 a 50 lettere e cifre
+- [Yanwen: YW Tracking (in inglese)](https://track.yw56.com.cn/en/index) – il tracking di Yanwen, senza numeri di esempio
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – niente tracking dopo la consegna al corriere locale con le spedizioni economiche, chiedere al venditore
 - [Cainiao: Tracciamento espresso globale](https://global.cainiao.com/) – il numero postale di esempio
 - [Amazon.it: Consegne effettuate tramite Amazon Logistics](https://www.amazon.it/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – partner di consegna locali e regionali, tracking in I miei ordini
-- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – i formati IT, TBA, LP, 5P e YT, e quelli di Poste Italiane (RA, 1UW, 3UW, 2IMA, 5P e i codici in stile SDA), 4PX, la Posta svizzera (98 e 99), Cainiao, Quickpac, Planzer, GLS Svizzera e DPD Svizzera, nei dati dei corrieri di Peek
+- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – i formati IT, TBA, LP, 5P e YT, e quelli di Poste Italiane (RA, 1UW, 3UW, 2IMA, 5P e i codici in stile SDA), 4PX, Yanwen (BYS, YP e YW), la Posta svizzera (98 e 99), Cainiao, Quickpac, Planzer, GLS Svizzera e DPD Svizzera, nei dati dei corrieri di Peek
 - [bpost: Puis-je suivre mon colis en ligne ?](https://www.bpost.be/fr/faq/puis-je-suivre-mon-colis-en-ligne) – i codici che iniziano con U non si possono seguire
 - [CTT: Encontrar o código de envio](https://www.ctt.pt/ajuda/particulares/seguir-ou-alterar-entrega/seguir/encontrar-o-codigo-de-envio) – codici PT per invii dall'estero, codici che non danno risultati, contattare il mittente
 :::

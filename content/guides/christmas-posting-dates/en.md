@@ -56,7 +56,7 @@ USPS notes that Hanukkah, from Friday 4 to Saturday 12 December, is earlier this
 
 ## Ireland: An Post
 
-An Post's page still shows 2025's dates, which it says "may be subject to change".
+[An Post](carrier:an-post)'s page still shows 2025's dates, which it says "may be subject to change".
 
 | Carrier | Service | Send by |
 | --- | --- | --- |

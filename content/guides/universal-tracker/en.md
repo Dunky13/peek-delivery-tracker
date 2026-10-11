@@ -28,7 +28,7 @@ Start with the carriers' own free options:
 | --- | --- | --- |
 | US | USPS Informed Delivery | After an identity and address check, a Daily Digest email previews incoming mail and parcels |
 | UK | DPD app | Lists DPD and DPD Local parcels matched to your phone or email and your address. Royal Mail's app only follows a tracking ID you enter or scan |
-| Ireland | None found | The An Post app saves tracking numbers you enter and lets you pay customs charges, but lists nothing on its own |
+| Ireland | None found | The [An Post](carrier:an-post) app saves tracking numbers you enter and lets you pay customs charges, but lists nothing on its own |
 | Canada | Canada Post automatic tracking | A personal account, verified with the name and address on your photo ID; business and PO box addresses aren't eligible |
 | Australia | Australia Post app | Shows parcels automatically when the sender's data matches your MyPost details |
 

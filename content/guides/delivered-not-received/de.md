@@ -23,7 +23,7 @@ Wo die Paketdienste es außerdem abgeben dürfen:
 | --- | --- |
 | DHL (DE) | Bei Angehörigen oder anderen Personen in deiner Wohnung, bei Hausbewohnern oder unmittelbaren Nachbarn (DHL muss dich per Karte oder E-Mail informieren), im Briefkasten, und an einem Ablageort oder in einer Packstation, wenn du das so vereinbart hast |
 | [DPD](carrier:dpd-de) (DE) | Beim Nachbarn, an Haustür, Garage, Briefkasten, hinter den Mülltonnen, an der Hintertür oder im Paketshop |
-| Österreichische Post | Im Briefkasten, an deinem Abstellort oder bei direkten Nachbarn |
+| [Österreichische Post](carrier:austrian-post) | Im Briefkasten, an deinem Abstellort oder bei direkten Nachbarn |
 | [Schweizerische Post](carrier:swiss-post) | Im Briefkasten oder beim Nachbarn. Passt das Paket nicht ins Ablagefach, darf die Post es laut ihren AGB an einem „witterungsgeschützten und sicheren Ort“ ablegen, außer du lehnst das für diese Sendung in der Post-App oder online ab („keine Deponierung“) |
 
 Stand in der Sendungsverfolgung nie „zugestellt“? Lies, warum sich [die Sendungsverfolgung nicht aktualisiert](guide:tracking-not-updating) oder [was die Sendungsstatus bedeuten](guide:tracking-statuses).

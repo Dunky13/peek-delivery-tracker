@@ -40,7 +40,7 @@ Zamawiasz z AliExpress albo innego chińskiego sklepu? Zajrzyj do poradnika o [�
 
 ### Na awizie, także w SMS-ie lub e-mailu
 
-- **Poczta Polska**: oprócz papierowego awiza dostaniesz SMS albo e-maila z terminem odbioru i adresem placówki, jeśli nadawca podał Twój telefon lub e-mail. Wtedy przy odbiorze wystarczy podać „numer przesyłki wskazany w SMS-ie czy w mailu”.
+- **[Poczta Polska](carrier:poczta-polska)**: oprócz papierowego awiza dostaniesz SMS albo e-maila z terminem odbioru i adresem placówki, jeśli nadawca podał Twój telefon lub e-mail. Wtedy przy odbiorze wystarczy podać „numer przesyłki wskazany w SMS-ie czy w mailu”.
 - **Poczta Polska, eINFO:awizo**: tę bezpłatną usługę zamówisz przez profil zaufany albo w placówce, która doręcza Ci przesyłki. Od następnego dnia powiadomienie o awizowanej przesyłce przyjdzie SMS-em albo e-mailem, z jej numerem, terminem odbioru i adresem placówki. Wyjątek: zawiadomienia o pismach w postępowaniach karnych, cywilnych, administracyjnych czy podatkowych nadal przychodzą na papierze.
 - **GLS**: numer Track-ID z awiza działa w śledzeniu GLS.
 - **FedEx**: wyszukiwarka przyjmuje „numery etykiet awizo”.
@@ -124,7 +124,7 @@ Jeśli czekasz dłużej, sprawdź sam numer:
 - **Czy to numer przesyłki?** Numer zamówienia i numer oferty z Allegro należą do sklepu, więc u przewoźnika nie zadziałają.
 - **Czy to nie kod?** Kod odbioru, który wpisujesz w Paczkomacie razem z numerem telefonu, i 10-cyfrowy kod zwrotu InPost to nie numer przesyłki. Numer InPost ma 24 cyfry.
 - **Czy to nie referencja nadawcy?** Numer faktury czy inny numer referencyjny nadawcy zadziała tylko w wyszukiwaniu po referencji u UPS, FedEx i DHL Express.
-- **Czy to ten przewoźnik?** Numer od `AD` (Allegro Delivery) nic nie pokaże na stronie ORLEN Paczki: taką paczkę śledzisz tylko w Allegro. Nazwę przewoźnika zwykle znajdziesz w e-mailu o wysyłce albo w szczegółach zakupu.
+- **Czy to ten przewoźnik?** Numer od `AD` (Allegro Delivery) nic nie pokaże na stronie [ORLEN Paczki](carrier:orlen-paczka): taką paczkę śledzisz tylko w Allegro. Nazwę przewoźnika zwykle znajdziesz w e-mailu o wysyłce albo w szczegółach zakupu.
 - **Czy to jeden numer?** Wklej jeden numer naraz, bez spacji i nawiasów, jak prosi Poczta Polska. Wyszukiwarka na stronie głównej inpost.pl przy ciągu innej długości prosi: `Podaj jeden numer przesyłki zawierający 24 cyfry`.
 
 Nadal nic? Zapytaj nadawcę albo sklep. Co znaczy każdy status, wyjaśnia [poradnik o statusach przesyłki](guide:tracking-statuses).

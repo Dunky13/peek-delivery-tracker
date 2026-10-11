@@ -25,5 +25,15 @@
   { "id": "packeta", "catalog": "packeta", "name": "Packeta", "languages": ["en", "pl"] },
   { "id": "dpd-pl", "catalog": "dpd-pl", "name": "DPD Poland", "languages": ["en", "pl"] },
   { "id": "4px", "catalog": "four-px", "name": "4PX", "languages": ["en", "de", "fr", "it", "es", "pt", "pl"] },
-  { "id": "swiss-post", "catalog": "swiss-post", "name": "Swiss Post", "languages": ["en", "de", "fr", "it"] }
+  { "id": "swiss-post", "catalog": "swiss-post", "name": "Swiss Post", "languages": ["en", "de", "fr", "it"] },
+  { "id": "ctt-express", "catalog": "ctt-express", "name": "CTT Express", "languages": ["en", "es", "pt"] },
+  { "id": "dpd-fr", "catalog": "dpd-fr", "name": "DPD France", "languages": ["en", "fr"] },
+  { "id": "gls-fr", "catalog": "gls-fr", "name": "GLS France", "languages": ["en", "fr"] },
+  { "id": "gls-it", "catalog": "gls-it", "name": "GLS Italy", "languages": ["en", "it"] },
+  { "id": "poczta-polska", "catalog": "poczta-polska", "name": "Poczta Polska", "languages": ["en", "pl"] },
+  { "id": "orlen-paczka", "catalog": "orlen-paczka", "name": "ORLEN Paczka", "languages": ["en", "pl"] },
+  { "id": "austrian-post", "catalog": "austrian-post", "name": "Austrian Post", "languages": ["en", "de"] },
+  { "id": "tipsa", "catalog": "tipsa", "name": "TIPSA", "languages": ["en", "es"] },
+  { "id": "yanwen", "catalog": "yanwen", "name": "Yanwen", "languages": ["en", "de", "fr", "it", "es", "pt", "pl"] },
+  { "id": "an-post", "catalog": "an-post", "name": "An Post", "languages": ["en"] }
 ]

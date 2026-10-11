@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Żaden przewoźnik w Polsce nie podał jeszcze terminów na święta 2026. W 2025 roku Poczta Polska radziła nadać paczkę najpóźniej w niedzielę 21 grudnia, a [InPost](carrier:inpost) gwarantował dostawę do Paczkomatu do wtorku 23 grudnia dla paczek nadanych do poniedziałku 22 grudnia. Tabele poniżej podają termin każdego przewoźnika z jego własnej strony, sprawdzony w piątek 9 października 2026 r., a tam, gdzie tegorocznego jeszcze nie ma, zeszłoroczny.
+Żaden przewoźnik w Polsce nie podał jeszcze terminów na święta 2026. W 2025 roku [Poczta Polska](carrier:poczta-polska) radziła nadać paczkę najpóźniej w niedzielę 21 grudnia, a [InPost](carrier:inpost) gwarantował dostawę do Paczkomatu do wtorku 23 grudnia dla paczek nadanych do poniedziałku 22 grudnia. Tabele poniżej podają termin każdego przewoźnika z jego własnej strony, sprawdzony w piątek 9 października 2026 r., a tam, gdzie tegorocznego jeszcze nie ma, zeszłoroczny.
 
 ## Polska: InPost, Poczta Polska, ORLEN Paczka, DPD, DHL i GLS
 
@@ -20,7 +20,7 @@ Na 9 października żaden przewoźnik nie ma jeszcze strony o świętach 2026. [
 | Poczta Polska | Paczka w kraju, z pewnością dostawy do 23 grudnia | Nie ogłoszono jeszcze (2025: niedziela, 21 grudnia) |
 | Poczta Polska | Paczka w kraju, ostatnia szansa: do 15:00 w placówce, automacie lub punkcie partnerskim, do 17:00 u kuriera | Nie ogłoszono jeszcze (2025: poniedziałek, 22 grudnia) |
 | Poczta Polska | Listy i kartki w kraju | Nie ogłoszono jeszcze (2025: terminy podano tylko dla paczek) |
-| ORLEN Paczka | Paczka nadana w automacie, na stacji ORLEN lub w punkcie partnerskim przed godziną graniczną albo odebrana przez kuriera | Nie ogłoszono jeszcze (2025: brak komunikatu; 2024: piątek, 20 grudnia) |
+| [ORLEN Paczka](carrier:orlen-paczka) | Paczka nadana w automacie, na stacji ORLEN lub w punkcie partnerskim przed godziną graniczną albo odebrana przez kuriera | Nie ogłoszono jeszcze (2025: brak komunikatu; 2024: piątek, 20 grudnia) |
 | DPD Polska | Paczki krajowe: kurier, punkty i automaty DPD Pickup | Nie ogłoszono jeszcze (2025: brak terminu) |
 | DHL eCommerce | Paczki krajowe, punkty DHL POP i automaty DHL BOX 24/7 | Nie ogłoszono jeszcze (2025: brak terminu) |
 | GLS | Paczki krajowe | Nie ogłoszono jeszcze (2025: brak terminu) |

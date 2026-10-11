@@ -6,7 +6,7 @@ published: 2026-10-11
 updated: 2026-10-11
 ---
 
-Relais Colis is a French network delivering parcels to local shops that act as pickup points, now part of GLS France. Track a parcel on [Relais Colis's tracking page](https://www.relaiscolis.com/colis/suivre) with its parcel number, or paste the number in the box above. The number comes from the shop that sent it, or from Relais Colis's confirmation email for a parcel sent between people.
+Relais Colis is a French network delivering parcels to local shops that act as pickup points, now part of [GLS France](carrier:gls-fr). Track a parcel on [Relais Colis's tracking page](https://www.relaiscolis.com/colis/suivre) with its parcel number, or paste the number in the box above. The number comes from the shop that sent it, or from Relais Colis's confirmation email for a parcel sent between people.
 
 ## Relais Colis tracking number (numéro de colis)
 
@@ -15,7 +15,7 @@ Relais Colis's tracking form asks for a "numéro de colis" of 12 to 16 character
 | Shape (invented) | What to know |
 | --- | --- |
 | `CC1234567890` to `CC12345678901234` | `CC` and 10 to 14 digits: the form Relais Colis's own example takes. |
-| `1234567890` | 10 digits. Also fits DHL, [Mondial Relay](carrier:mondial-relay), TIPSA and others. |
+| `1234567890` | 10 digits. Also fits DHL, [Mondial Relay](carrier:mondial-relay), [TIPSA](carrier:tipsa) and others. |
 | `12345678901234` | 14 digits. Also fits DPD, SEUR, BRT, Ciblex and others. |
 | `VD1234567890` | `VD` and 10 digits. Also fits [Colis Privé](carrier:colis-prive). |
 

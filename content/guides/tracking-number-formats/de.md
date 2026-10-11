@@ -41,13 +41,14 @@ Das schreiben die Paketdienste selbst und der internationale Poststandard über 
 | [GLS Deutschland](carrier:gls-de) | In Peeks Paketdienst-Daten 11 Ziffern, 12 Ziffern mit einer Prüfziffer am Ende oder 8 Zeichen aus Buchstaben und Ziffern, dazu die sechsstellige Track-ID von der Karte, wenn sie nur aus Buchstaben besteht |
 | [GLS Schweiz](carrier:gls-ch) | kein Format veröffentlicht, auch nicht von der Schweizerischen Post, die GLS-Pakete dort zustellt. In Peeks Paketdienst-Daten dieselben Formen wie bei GLS Deutschland |
 | UPS | `1Z` plus 16 Buchstaben und Ziffern, 18 Zeichen insgesamt, etwa `1Z999AA10123456784`, ein Beispiel mit gültiger UPS-Prüfziffer |
-| Österreichische Post | 22 Ziffern oder das Postformat aus zwei Buchstaben, neun Ziffern und zwei Buchstaben |
+| [Österreichische Post](carrier:austrian-post) | 22 Ziffern ab `10` oder das Postformat aus zwei Buchstaben, neun Ziffern und `AT` |
 | Schweizerische Post | 18 Ziffern ab `98` oder `99`, mit oder ohne Punkte und Leerzeichen: die Barcode-Nummer für Sendungen innerhalb der Schweiz, auf Paketen von Geschäftskunden gedruckt wie `99.34.123456.12345678`; oder das Postformat mit `CH` am Ende |
 | [Quickpac](carrier:quickpac) | 18 Ziffern, sagt Quickpac, aber nicht, wie sie beginnen. In Peeks Paketdienst-Daten: ab `44` |
 | [Planzer](carrier:planzer) | kein Format veröffentlicht. In Peeks Paketdienst-Daten 20 Ziffern ab `91346097`, eine geteilte Planzer-Sendung 13 Ziffern ab `99990` |
 | Amazon | kein Format veröffentlicht, mehr dazu weiter unten |
 | [YunExpress](carrier:yunexpress) | `YT` + 16 Ziffern; `YT` + 13 Ziffern ist YTO Express |
 | [4PX](carrier:4px) | `4PX` + 13 Ziffern + `CN`. Ein Beispiel veröffentlicht 4PX nicht, seine Tracking-Seite nimmt 5 bis 50 Buchstaben und Ziffern an. `LP` + 13 Ziffern + `CN` ist wahrscheinlich auch 4PX |
+| [Yanwen](carrier:yanwen) | `BYS` + 9 Ziffern, oder zwei Buchstaben, 9 Ziffern und `YP`, oft ab `UL` oder `UK`. Ein Beispiel veröffentlicht Yanwen nicht. `YW`, drei Buchstaben und 12 Ziffern ist Yanwens eigener Zustelldienst in den USA |
 | [Cainiao](carrier:cainiao) (AliExpress) | `DOFR` oder `CNFR` plus 13 Ziffern und `HD`; `LP` oder `CNG` plus 14 Ziffern sind wahrscheinlich Cainiao, aber nicht sicher. So steht es in Peeks Paketdienst-Daten, Cainiao selbst beschreibt diese Formen nicht |
 | China Post, EMS | das Postformat mit `CN` am Ende. Internationale EMS-Nummern beginnen mit `E` |
 
@@ -68,7 +69,7 @@ Eine feste Länge gibt es nicht. Hier die Längen, die die Paketdienste selbst n
 | 14 Stellen | DPD; auch bei Hermes möglich |
 | 18 Ziffern | Schweizerische Post, ab `98` oder `99`; Quickpac |
 | 20 Ziffern | DHL, etwa seine Testnummern ab `00340434` |
-| 22 Ziffern | Österreichische Post; USPS bei Paketen aus den USA |
+| 22 Ziffern | Österreichische Post, ab `10`; USPS bei Paketen aus den USA |
 | 14 bis 20 Zeichen | Hermes |
 | 10 bis 39 Stellen | DHL |
 
@@ -148,14 +149,15 @@ Findet die Sendungsverfolgung nichts, ist die Nummer nicht unbedingt falsch abge
 - [DPD Schweiz: Haftung für Versender](https://www.dpd.com/ch/de/supportcenter/alles-ueber-haftung/haftung-versender/) – Paketnummer mit 060
 - [GLS Österreich: Sendungsverfolgung](https://gls-group.com/AT/de/paket-verfolgen/) – Paketnummer und Track-ID auf der Benachrichtigungskarte
 - [UPS: sample package label](https://www.pld-certify.ups.com/CerttoolHelp/PLD0200/WebHelp_pld0200/LeadPackage.htm) – die 1Z-Nummer
-- [Österreichische Post: Startseite, Häufig gestellte Fragen](https://www.post.at/) – 22 Ziffern oder Postformat
+- [Österreichische Post: FAQ Privatkund\*innen](https://www.post.at/p/c/faq-privat) – 22 Ziffern ab 10 oder Postformat mit AT
 - [Schweizerische Post: Anleitung Barcode für Geschäftskunden](https://www.post.ch/-/media/post/gk/dokumente/1864-anleitung-barcodes-gk.pdf?sc_lang=de) – 18 Ziffern ab 99, die Punkte im Klartext
 - [Quickpac: FAQ (auf Englisch)](https://quickpac.ch/en/faq) – jedes Paket hat eine 18-stellige Nummer
 - [USPS: Publication 199, Intelligent Mail package barcode](https://postalpro.usps.com/pub199) – 22 Ziffern
 - [Amazon.de: Lieferungen von Amazon Logistics](https://www.amazon.de/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – Sendungsverfolgung unter Meine Bestellungen
-- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – JJD, JD, 0034043, H, TBA und Ländercode plus 10 Ziffern in Peeks Paketdienst-Daten, dazu YT + 16 Ziffern (YunExpress), YT + 13 Ziffern (YTO Express), 44 (Quickpac), 91346097 und 99990 (Planzer), DOFR, CNFR, LP und CNG (Cainiao), 4PX und LP + 13 Ziffern + CN (4PX), 98 und 99 (Schweizerische Post), die Formen von GLS Deutschland und GLS Schweiz sowie das Prüfzeichen hinter DPD-Nummern
+- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – JJD, JD, 0034043, H, TBA und Ländercode plus 10 Ziffern in Peeks Paketdienst-Daten, dazu YT + 16 Ziffern (YunExpress), YT + 13 Ziffern (YTO Express), 44 (Quickpac), 91346097 und 99990 (Planzer), DOFR, CNFR, LP und CNG (Cainiao), 4PX und LP + 13 Ziffern + CN (4PX), 98 und 99 (Schweizerische Post), BYS, YP und YW (Yanwen), die Formen von GLS Deutschland und GLS Schweiz sowie das Prüfzeichen hinter DPD-Nummern
 - [YunExpress: YunTrack](https://www.yuntrack.com/) – Nummern ab YT
 - [4PX: Global Order Tracking](https://track.4px.com/) – 5 bis 50 Buchstaben und Ziffern
+- [Yanwen: YW Tracking (auf Englisch)](https://track.yw56.com.cn/en/index) – Yanwens Tracking-Seite, kein Beispiel veröffentlicht
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – beim Economy-Versand keine Sendungsverfolgung nach der Übergabe
 - [bpost: Kann ich mein Paket online verfolgen?](https://www.bpost.be/de/faq/kann-ich-mein-paket-online-verfolgen) – Strichcodes mit U lassen sich nicht verfolgen
 :::

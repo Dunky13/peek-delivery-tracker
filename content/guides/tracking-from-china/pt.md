@@ -72,7 +72,7 @@ Os números postais são a exceção. A União Postal Universal só permite um i
 
 ### De que empresa é o meu número?
 
-Além da Cainiao, é comum aparecerem a [YunExpress](carrier:yunexpress), a [4PX](carrier:4px) e a Yanwen (que até vende linhas com o nome da Temu e do AliExpress):
+Além da Cainiao, é comum aparecerem a [YunExpress](carrier:yunexpress), a [4PX](carrier:4px) e a [Yanwen](carrier:yanwen) (que até vende linhas com o nome da Temu e do AliExpress):
 
 | Formato do número | Normalmente é |
 | --- | --- |

@@ -73,7 +73,7 @@ Several carriers list parcels heading your way once you prove the address, email
 | Canada | Canada Post automatic tracking, free | Personal accounts only, no business or PO box addresses, ID checked. No guarantee every parcel is added |
 | Australia | MyPost account, free | Australia Post adds parcels "if we have the information required" |
 
-We found nothing like this for Royal Mail, Evri or An Post: with them, you need the number. To follow parcels from every carrier in one list, see [universal parcel tracking](guide:universal-tracker).
+We found nothing like this for Royal Mail, Evri or [An Post](carrier:an-post): with them, you need the number. To follow parcels from every carrier in one list, see [universal parcel tracking](guide:universal-tracker).
 
 ### Track by the sender's reference
 

@@ -6,7 +6,7 @@ published: 2026-10-11
 updated: 2026-10-11
 ---
 
-Relais Colis livre des colis dans des commerces de proximité qui servent de points relais, partout en France ; le réseau appartient désormais à GLS France. Pour suivre ton colis, saisis son numéro sur [la page « Suivre mon colis » de Relais Colis](https://www.relaiscolis.com/colis/suivre), ou colle-le dans le champ ci-dessus. Ce numéro vient de la boutique qui t'a envoyé le colis, ou de l'e-mail de confirmation de Relais Colis pour un colis envoyé entre particuliers.
+Relais Colis livre des colis dans des commerces de proximité qui servent de points relais, partout en France ; le réseau appartient désormais à [GLS France](carrier:gls-fr). Pour suivre ton colis, saisis son numéro sur [la page « Suivre mon colis » de Relais Colis](https://www.relaiscolis.com/colis/suivre), ou colle-le dans le champ ci-dessus. Ce numéro vient de la boutique qui t'a envoyé le colis, ou de l'e-mail de confirmation de Relais Colis pour un colis envoyé entre particuliers.
 
 ## Numéro de suivi Relais Colis : où le trouver
 

@@ -19,7 +19,7 @@ Der Zoll prüft die Angaben zu Inhalt und Wert, kann das Paket ansehen, berechne
 | --- | --- |
 | `Der Zollabfertigungsprozess für den Import ins Zielland/Zielgebiet wurde begonnen.` (DHL) | Die Verzollung läuft. Je nach Unterlagen kann das einige Werktage dauern |
 | `Die Sendung wurde dem Zoll übergeben. Ein Schreiben mit Ihren Zollinformationen ist auf dem Weg zu Ihnen.` (DHL) | Das Paket geht an das für dich zuständige Zollamt, ein Brief mit den Infos zur Abholung ist unterwegs |
-| `Zollhindernis` (Österreichische Post) | Für die Verzollung fehlen Unterlagen, die du nachreichen sollst |
+| `Zollhindernis` ([Österreichische Post](carrier:austrian-post)) | Für die Verzollung fehlen Unterlagen, die du nachreichen sollst |
 | `Die Sendung wurde an den Zoll übergeben` ([Schweizerische Post](carrier:swiss-post)) | Der Zoll kontrolliert das Paket an der Grenze. Zugestellt wird nach der Freigabe |
 | `Im Postverzollungsprozess` (Schweizerische Post) | Das Paket ist in der Postverzollung |
 

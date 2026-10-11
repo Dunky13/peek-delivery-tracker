@@ -73,7 +73,7 @@ Con i codici delle poste è diverso. L'Unione postale universale prevede un solo
 
 ### Di quale corriere è il mio codice?
 
-Oltre a Cainiao vedrai [YunExpress](carrier:yunexpress), [4PX](carrier:4px), Yanwen (che vende perfino linee con il nome di Temu e di AliExpress) e CNE, che tra i suoi clienti indica Temu:
+Oltre a Cainiao vedrai [YunExpress](carrier:yunexpress), [4PX](carrier:4px), [Yanwen](carrier:yanwen) (che vende perfino linee con il nome di Temu e di AliExpress) e CNE, che tra i suoi clienti indica Temu:
 
 | Il codice è fatto così | Di solito |
 | --- | --- |
