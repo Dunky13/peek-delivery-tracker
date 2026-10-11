@@ -234,9 +234,12 @@ test('fits a 320 px phone in German and in the dark, in every state of the field
   await expect(page.locator('.door-line')).toContainText('Paketdienst');
   const before = await page.locator('.door-pip').boundingBox();
   await page.getByRole('button', { name: 'Ändern', exact: true }).click();
-  await page.getByRole('dialog').getByRole('combobox').fill('Planzer');
+  // The sheet rises from below the screen: its search is typed into once it is there to be touched.
+  const search = page.getByRole('dialog').getByRole('combobox');
+  await expect(search).toBeInViewport({ ratio: 1 });
+  await search.fill('Planzer');
   await expect(page.getByRole('dialog').getByRole('option').first()).toContainText('Planzer');
-  await page.getByRole('dialog').getByRole('combobox').press('Enter');
+  await search.press('Enter');
   await expect(page.locator('.door-line')).toContainText('Planzer');
   const after = await page.locator('.door-pip').boundingBox();
   expect(after!.y).toBe(before!.y);

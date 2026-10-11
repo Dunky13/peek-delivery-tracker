@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type FormEvent, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { CarrierSwatch } from '../carriers/CarrierIndex';
 import { carrierPath } from '../carriers/paths';
 import { CARRIER_LINKS } from '../generated/carriers';
@@ -38,10 +38,17 @@ const loadReader = () => (reader ??= import('./numberReading'));
  * reads it. Tracking it hands it to the landing the way a carrier's page does: never through an address.
  */
 export function NumberChecker({ locale, words }: { locale: Locale; words: CheckerWords }) {
+  const field = useRef<HTMLTextAreaElement>(null);
   const [text, setText] = useState('');
   const [check, setCheck] = useState<NumberCheck | null>(null);
   const landing = carrierHandoffLanding(locale);
   const shown = text.trim() ? check : null;
+
+  // The field is the browser's own until the page is live: what was typed meanwhile is read once.
+  useEffect(() => {
+    const typed = field.current?.value;
+    if (typed) setText(typed);
+  }, []);
 
   useEffect(() => {
     if (!text.trim()) return;
@@ -70,7 +77,7 @@ export function NumberChecker({ locale, words }: { locale: Locale; words: Checke
   return <form className="carrier-tracker number-checker" action={landing} method="get" noValidate onSubmit={track}>
     <label className="field__label" htmlFor="number-checker">{words.label}</label>
     <div className="carrier-tracker__row">
-      <textarea id="number-checker" className="field__input" rows={1} placeholder={words.placeholder} value={text}
+      <textarea ref={field} id="number-checker" className="field__input" rows={1} placeholder={words.placeholder} value={text}
         autoComplete="off" autoCapitalize="characters" autoCorrect="off" spellCheck={false} enterKeyHint="go"
         aria-describedby="number-checker-result" onChange={(event) => setText(event.target.value)} onFocus={() => void loadReader().catch(() => undefined)}
         onKeyDown={onKeyDown} />
