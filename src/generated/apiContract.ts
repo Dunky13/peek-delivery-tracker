@@ -6487,7 +6487,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ptt",
+      "recognitionRank": 68
     },
     "trackingUrlTemplate": "https://www.ptt.gov.tr/",
     "linkRules": [],
@@ -6495,6 +6496,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^KP\\d{11}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}TR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://www.ptt.gov.tr/"
@@ -7603,7 +7610,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Helsinki",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "matkahuolto",
+      "recognitionRank": 69
     },
     "trackingUrlTemplate": "https://www.matkahuolto.fi/seuranta?parcelNumber={trackingNumber}",
     "linkRules": [
@@ -7621,6 +7629,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^MA\\d{19}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^MH\\d{9}FI$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://www.matkahuolto.fi/seuranta"
