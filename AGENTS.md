@@ -1,7 +1,7 @@
 # Project instructions
 
 - This is an open-source project. Repository files, code comments, commit messages, and pull request descriptions are publicly readable. Keep secrets, private tracking numbers, postcodes, and internal database-testing details out of them; use synthetic fixtures and supply private live-test inputs outside the repository.
-- After completing a requested change in this repository, stage the files for that change, commit them, and push the commit directly to `main` without asking for separate permission.
+- After completing a requested change in this repository, stage the files for that change, commit them, and push the commit directly to `main` without asking for separate permission. Once the checks pass, push; don't stop to show the result or wait for a review first, even for large content changes, and report what went out afterwards. Hold back only when the user asks to see the change before it goes live.
 - Do not create a feature branch or pull request unless the user explicitly asks for one.
 - When a change needs a database migration, apply it to production yourself without asking for separate permission: dry-run it in a transaction that is rolled back, apply it in one transaction, and push the code that depends on it only once it is applied.
 - Before pushing, run validation appropriate to the changed areas and confirm that no secrets or unrelated generated artifacts are included.
