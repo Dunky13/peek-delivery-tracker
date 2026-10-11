@@ -5935,7 +5935,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fan-courier",
+      "recognitionRank": 51
     },
     "trackingUrlTemplate": "https://www.fancourier.ro/awb-tracking/?tracking={trackingNumber}",
     "linkRules": [
@@ -6599,7 +6600,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sameday",
+      "recognitionRank": 53
     },
     "linkRules": [],
     "detectionRules": [
@@ -6607,7 +6609,8 @@ export const CARRIER_CAPABILITIES = {
         "pattern": "^1[A-Z]{3,5}\\d{9,11}$",
         "confidence": "low"
       }
-    ]
+    ],
+    "trackingSearchUrl": "https://sameday.ro/"
   },
   "speedy": {
     "displayName": "Speedy",
@@ -7264,7 +7267,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Budapest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "foxpost",
+      "recognitionRank": 52
     },
     "trackingUrlTemplate": "https://foxpost.hu/csomagkovetes/?code={trackingNumber}",
     "linkRules": [
