@@ -161,6 +161,20 @@ final class ParcelRouteTests: XCTestCase {
         for point in [CGPoint(x: 203.1, y: 196.7), CGPoint(x: 207.3, y: 338.2), CGPoint(x: 61.9, y: 211.4)] {
             XCTAssertFalse(hidden.contains(point, eoFill: true), "\(point)")
         }
+        // Dusk across the middle of the view also passes just behind the globe: each of its bands
+        // fills the night side, not wedges across the day.
+        let indianOcean = GlobeCamera(center: GeoPoint(longitude: 70, latitude: 0), scale: 150, offset: CGPoint(x: 200, y: 200))
+        let dusk = GlobeProjection(indianOcean)
+        let midnight = GeoPoint(longitude: 160, latitude: 0).vector
+        for degrees in [88.4, 89.6, 89.9, 90.1, 90.8, 92] {
+            let band = MapGeometry.cap(around: midnight, radius: degrees * .pi / 180, dusk, disk: disk(indianOcean))
+            for place in [GeoPoint(longitude: 130, latitude: 40), GeoPoint(longitude: 130, latitude: -40)] {
+                XCTAssertTrue(band.contains(dusk.project(place), eoFill: true), "\(degrees)°")
+            }
+            for place in [GeoPoint(longitude: 10, latitude: 40), GeoPoint(longitude: 10, latitude: -40)] {
+                XCTAssertFalse(band.contains(dusk.project(place), eoFill: true), "\(degrees)°")
+            }
+        }
     }
 
     @MainActor

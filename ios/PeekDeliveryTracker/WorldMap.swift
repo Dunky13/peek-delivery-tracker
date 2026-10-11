@@ -282,16 +282,6 @@ struct GlobeProjection {
 
     func project(_ point: GeoPoint) -> CGPoint { screen(point.vector) }
 
-    /// A point behind the globe moves onto its rim, so an outline crossing the horizon follows it.
-    func screenOnFront(_ vector: SIMD3<Double>) -> CGPoint {
-        guard facing(vector) < 0 else { return screen(vector) }
-        let x = simd_dot(vector, east)
-        let y = simd_dot(vector, north)
-        let length = (x * x + y * y).squareRoot()
-        guard length > 1e-9 else { return screen(vector) }
-        return CGPoint(x: camera.offset.x + camera.scale * x / length, y: camera.offset.y - camera.scale * y / length)
-    }
-
     /// On the near side, with a little margin before the rim.
     func sees(_ point: GeoPoint) -> Bool { facing(point.vector) > sin(0.02) }
 
@@ -308,23 +298,65 @@ struct GlobeProjection {
 // MARK: - Geometry
 
 enum MapGeometry {
-    /// A closed outline for an even-odd fill. Points behind the globe follow its rim, which
-    /// outlines the visible part of any shape clear of the point straight behind the globe.
-    /// A shape around that point would fill its hidden side instead, so it also takes in the
-    /// whole `disk`: `around` says whether the shape contains that point.
+    /// A closed outline for an even-odd fill. Where the ring passes behind the globe, the outline
+    /// follows the rim, turning as the ring turns seen from behind. That outlines the visible part
+    /// of any shape clear of the point straight behind the globe. A shape around that point would
+    /// fill its hidden side instead, so it also takes in the whole `disk`: `around` says whether
+    /// the shape contains that point.
     static func addRing(_ path: inout Path, _ ring: [SIMD3<Double>], _ projection: GlobeProjection, around: Bool = false,
                         disk: Path) {
-        guard let first = ring.first else { return }
-        path.move(to: projection.screenOnFront(first))
-        for vector in ring.dropFirst() { path.addLine(to: projection.screenOnFront(vector)) }
+        defer { if around { path.addPath(disk) } }
+        let facing = ring.map(projection.facing)
+        // Where a point lies seen from behind, around the point straight behind the globe.
+        let behind = { (vector: SIMD3<Double>) in SIMD2(simd_dot(vector, projection.east), simd_dot(vector, projection.north)) }
+        let turn = { (a: SIMD2<Double>, b: SIMD2<Double>) in atan2(a.x * b.y - a.y * b.x, simd_dot(a, b)) }
+        // Start in front, so every stretch behind has both its ends on the rim.
+        guard let start = facing.firstIndex(where: { $0 >= 0 }) else {
+            // All of it behind: the rim all the way round if it winds around that point, else nothing.
+            guard let last = ring.last else { return }
+            var turned = 0.0
+            var previous = behind(last)
+            for vector in ring {
+                turned += turn(previous, behind(vector))
+                previous = behind(vector)
+            }
+            if abs(turned) > .pi { path.addPath(disk) }
+            return
+        }
+        path.move(to: projection.screen(ring[start]))
+        // Where the ring went behind the globe, how far round it has turned since, and the last point it passed there.
+        var hidden: (from: Double, turned: Double, last: SIMD2<Double>)?
+        for step in 1...ring.count {
+            let a = (start + step - 1) % ring.count
+            let b = (start + step) % ring.count
+            if facing[b] >= 0 {
+                if let stretch = hidden {
+                    let edge = behind(horizon(ring[a], facing[a], ring[b], facing[b]))
+                    // Angles on the rim run the other way on screen, whose y points down.
+                    path.addRelativeArc(center: projection.camera.offset, radius: projection.camera.scale,
+                                        startAngle: .radians(-stretch.from), delta: .radians(-(stretch.turned + turn(stretch.last, edge))))
+                    hidden = nil
+                }
+                path.addLine(to: projection.screen(ring[b]))
+            } else if let stretch = hidden {
+                hidden = (stretch.from, stretch.turned + turn(stretch.last, behind(ring[b])), behind(ring[b]))
+            } else {
+                let edge = horizon(ring[a], facing[a], ring[b], facing[b])
+                path.addLine(to: projection.screen(edge))
+                let point = behind(edge)
+                hidden = (atan2(point.y, point.x), turn(point, behind(ring[b])), behind(ring[b]))
+            }
+        }
         path.closeSubpath()
-        if around { path.addPath(disk) }
     }
 
-    /// The visible part of a cap `radius` radians around `center`, for an even-odd fill.
+    /// The visible part of a cap `radius` radians around `center`, for an even-odd fill. Its circle
+    /// has a corner nearest the point behind the globe, so the outline and `around` always agree
+    /// on which side of the circle that point lies.
     static func cap(around center: SIMD3<Double>, radius: Double, _ projection: GlobeProjection, disk: Path) -> Path {
         var path = Path()
-        addRing(&path, circle(around: center, radius: radius), projection, around: projection.facing(center) < -cos(radius), disk: disk)
+        addRing(&path, circle(around: center, radius: radius, from: -projection.forward), projection,
+                around: projection.facing(center) < -cos(radius), disk: disk)
         return path
     }
 
@@ -392,10 +424,11 @@ enum MapGeometry {
         return (0...steps).map { a.interpolated(to: b, Double($0) / Double(steps)).vector }
     }
 
-    /// A circle on the sphere, `radius` radians around `center`.
-    static func circle(around center: SIMD3<Double>, radius: Double, steps: Int = 60) -> [SIMD3<Double>] {
+    /// A circle on the sphere, `radius` radians around `center`, starting on the side facing `from`.
+    static func circle(around center: SIMD3<Double>, radius: Double, steps: Int = 60, from: SIMD3<Double>? = nil) -> [SIMD3<Double>] {
         let helper: SIMD3<Double> = abs(center.z) < 0.9 ? SIMD3(0, 0, 1) : SIMD3(1, 0, 0)
-        let u = simd_normalize(simd_cross(center, helper))
+        let aim = from.map { $0 - center * simd_dot($0, center) }
+        let u = aim.flatMap { simd_length($0) > 1e-9 ? simd_normalize($0) : nil } ?? simd_normalize(simd_cross(center, helper))
         let w = simd_cross(center, u)
         return (0..<steps).map { step in
             let theta = Double(step) / Double(steps) * 2 * .pi
