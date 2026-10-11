@@ -7437,7 +7437,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Oslo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "helthjem",
+      "recognitionRank": 71
     },
     "trackingUrlTemplate": "https://helthjem.no/sporing/{trackingNumber}",
     "linkRules": [
@@ -7457,7 +7458,20 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^37072476\\d{10}$",
+        "confidence": "low",
+        "checksum": "gs1",
+        "preferred": true
+      },
+      {
+        "pattern": "^0037072476\\d{10}$",
+        "confidence": "low",
+        "checksum": "sscc",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://helthjem.no/sporing"
   },
   "hrvatska-posta": {
