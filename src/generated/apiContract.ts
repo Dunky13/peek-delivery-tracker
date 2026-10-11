@@ -5480,22 +5480,32 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "acs-courier",
+      "recognitionRank": 57
     },
-    "trackingUrlTemplate": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?trackingNumber={trackingNumber}",
+    "trackingUrlTemplate": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/?trackingNumber={trackingNumber}",
     "linkRules": [
       {
         "domains": [
           "acscourier.net"
         ],
-        "pathPattern": "^/(?:el|en)/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?$",
+        "pathPattern": "^/(?:(?:el|en)/)?grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      },
+      {
+        "domains": [
+          "acscourier.net"
+        ],
+        "pathPattern": "^/en/quick-access/non-registered-users/track-and-trace/?$",
         "params": [
           "trackingNumber"
         ]
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://www.acscourier.net/el/grigori-prosvasi/mi-eggegrammenoi-xristes/anazitisi-apostolwn/"
+    "trackingSearchUrl": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/"
   },
   "allegro-one": {
     "displayName": "Allegro One",
@@ -7142,7 +7152,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "econt",
+      "recognitionRank": 56
     },
     "trackingUrlTemplate": "https://www.econt.com/services/track-shipment/{trackingNumber}",
     "linkRules": [
