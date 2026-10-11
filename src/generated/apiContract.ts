@@ -7629,7 +7629,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Tallinn",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "omniva",
+      "recognitionRank": 64
     },
     "trackingUrlTemplate": "https://minu.omniva.ee/track/{trackingNumber}",
     "linkRules": [
@@ -7663,6 +7664,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^JJEE[A-Z]{3}\\d{11}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}EE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://minu.omniva.ee/track"
