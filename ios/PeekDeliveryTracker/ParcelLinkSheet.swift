@@ -513,13 +513,15 @@ private struct SharedParcelCard: View {
             CarrierFleetMark(identity: identity)
                 .overlay(alignment: .topLeading) {
                     if let delivery {
-                        // Under the first mark, which stays where every card has it: an unseen copy of it holds its room.
+                        // Under the first mark, which stays where every card has it: an unseen copy of it, as wide and on
+                        // as many lines, holds its room.
                         VStack(alignment: .leading, spacing: 7) {
                             CarrierFleetMark(identity: identity).hidden()
                             CarrierFleetMark(identity: delivery)
+                                .fixedSize()
                                 .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.cardSpace)) } action: { deliveryMark = $0 }
                         }
-                        .fixedSize()
+                        .fixedSize(horizontal: false, vertical: true)
                     }
                 }
         }

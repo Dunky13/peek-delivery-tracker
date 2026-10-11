@@ -251,17 +251,20 @@ struct ParcelDetailView: View {
 
         return VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 16) {
-                HStack {
+                // The buttons sit a tap apart, as on the web, which leaves a long carrier name its line.
+                HStack(spacing: 0) {
                     let marks = CarrierFleetMark(identity: branding)
                         .overlay(alignment: .topLeading) {
                             if let delivery {
-                                // Under the first mark, which stays where every card has it: an unseen copy of it holds its room.
+                                // Under the first mark, which stays where every card has it: an unseen copy of it, as wide
+                                // and on as many lines, holds its room.
                                 VStack(alignment: .leading, spacing: 7) {
                                     CarrierFleetMark(identity: branding).hidden()
                                     CarrierFleetMark(identity: delivery)
+                                        .fixedSize()
                                         .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.cardSpace)) } action: { deliveryMark = $0 }
                                 }
-                                .fixedSize()
+                                .fixedSize(horizontal: false, vertical: true)
                             }
                         }
                     if sample == nil {
