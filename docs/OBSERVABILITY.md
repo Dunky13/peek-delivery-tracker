@@ -621,8 +621,9 @@ Useful questions:
   `_cap` means a daily allowance is too small for the traffic, and those emails are lost.
 
 [ops/grafana/carrier-scrapers.json](../ops/grafana/carrier-scrapers.json) is an importable
-Grafana dashboard with these panels. Its "silent carriers" stat flags carriers with lookups
-last week but none in two days: silence isn't success.
+Grafana dashboard with these panels; choose its Prometheus data source at the top. Its
+"Silent carriers" table lists carriers with lookups last week but none in two days: silence
+isn't success. The "Deploys" toggle marks app restarts, where the counters start again.
 
 ## Incident checklist
 
