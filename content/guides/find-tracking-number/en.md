@@ -44,7 +44,7 @@ Ordered from AliExpress or another shop in China? See [tracking a parcel from Ch
 - **UPS** Delivery Notice, left on the first delivery attempt in select countries: its 12-digit reference number works in UPS tracking.
 - **FedEx** door tag: its number goes straight into FedEx tracking.
 - **Canada Post** Delivery Notice Card: 15 digits that serve "the same purpose as a tracking number".
-- **Evri** calling card: its 8-digit number works on Evri's tracking page.
+- **[Evri](carrier:evri)** calling card: its 8-digit number works on Evri's tracking page.
 
 ## How to track a package without a tracking number
 

@@ -4,7 +4,7 @@ description: Cómo saber de qué empresa es un número de seguimiento por sus le
 slug: que-empresa-es-numero-de-seguimiento
 picture: Tres etiquetas con números de seguimiento divididos en colores, una lupa sobre el código de país CH y Pip, curioso.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-11
 ---
 
 Las letras y la longitud de un número de seguimiento suelen decirte qué empresa tiene tu paquete. `1Z` seguido de 16 letras y cifras es UPS, y un código de 13 caracteres como `RR123456785CH` (dos letras, nueve cifras, dos letras) suele ser de Correos o de otro operador postal: las dos últimas letras dicen qué país lo emitió, y `ES` es España. Los números que solo llevan cifras son el caso difícil: 12, 14 o 22 cifras encajan con varias empresas, así que la última palabra la tiene el correo de envío de la tienda, o una web de seguimiento que pruebe con todas las candidatas.
@@ -41,8 +41,10 @@ Esto es lo que dicen las empresas y la norma postal sobre los números que más 
 | [NACEX](carrier:nacex) | el localizador pide la expedición en dos casillas, «Agencia» y «Albarán»; su portada pone de ejemplo `0000/00000000` y esos datos reconocen 4 cifras, una barra y 8 cifras, aunque NACEX no publica una longitud fija |
 | TIPSA | «número de envío compuesto por 22 dígitos», junto con el código postal de destino |
 | CTT Express | según esos datos, 22 cifras que empiezan por `00` |
-| InPost (Punto Pack, Locker) | «número de expedición»; su localizador pone de ejemplo `89972378` (8 caracteres). La web de Mondial Relay en España ya lleva a la de InPost |
+| [Mondial Relay](carrier:mondial-relay) | «n° d'expédition» (número de envío): 8 cifras, que su seguimiento pide junto con el código postal del destinatario; su web belga acepta también 10 cifras (un código de marca y ese número) y 12 (más el número de bulto). El código de barras de 26 cifras de la etiqueta solo es de Mondial Relay |
+| InPost (Punto Pack, Locker) | «número de expedición»; el ejemplo de su localizador tiene 8 caracteres. La web de Mondial Relay en España ya lleva a la de InPost |
 | Ecoscooting | según esos datos, `CNESP` y 20 cifras |
+| [Paack](carrier:paack) | su seguimiento pide el «Número de pedido» (sus preguntas frecuentes lo llaman número de seguimiento) junto con el código postal de entrega. Paack no publica ningún formato y su propio ejemplo mezcla cifras, guiones y minúsculas, así que puede parecerse al número de otra empresa: cópialo tal cual, sin espacios y respetando mayúsculas y minúsculas |
 | UPS | `1Z` y 16 letras o cifras, 18 caracteres en total, como `1Z999AA10123456784`, un ejemplo con un dígito de control de UPS válido |
 | DHL Express | 10 cifras, nunca letras, según DHL Express en los Países Bajos |
 | AliExpress, [Cainiao](carrier:cainiao) | Cainiao no describe sus números; según esos datos, `DOFR` o `CNFR`, 13 cifras y `HD` es de Cainiao, y `LP` y `CNG` se explican justo abajo |
@@ -133,7 +135,7 @@ Un paquete que cruza una frontera suele cambiar de manos, y cada empresa puede i
 
 - **Los envíos postales** son el caso fácil: la UPU solo permite un número S10 por envío, así que el mismo número suele funcionar en la web del correo de origen y en la de Correos.
 - **Amazon:** Amazon Logistics trabaja con socios de transporte locales y regionales, y en «Mis pedidos» verás la información de esos socios.
-- **Paack:** se presenta como empresa de paquetería para empresas y tiendas online, con entregas en España y Portugal. Cuando tu pedido entra en sus instalaciones, te manda su propio enlace de seguimiento, y su formulario pide el número de seguimiento y el código postal de entrega.
+- **Paack:** se presenta como empresa de paquetería para empresas y tiendas online, presente en España, Portugal, Francia e Italia. Cuando tu pedido entra en sus instalaciones, te manda su propio enlace de seguimiento, y su formulario pide el número de seguimiento y el código postal de entrega.
 - **AliExpress con envío económico:** Cainiao dice que el seguimiento termina al entregar el paquete al transportista local, y que el vendedor puede decirte cómo contactar con ese transportista. Más en [seguir un paquete que viene de China](guide:tracking-from-china).
 
 Un número que no devuelve nada no siempre está mal escrito. Correos Express avisa de que un envío recién registrado puede tardar unas horas en mostrar información, y te pide comprobar que el número «corresponde a Correos Express». CTT, en Portugal, da otros dos motivos: el código solo existe para la [aduana](guide:customs), u otra empresa entrega el envío. Si un número válido simplemente no se mueve todavía, lee [por qué el seguimiento no se actualiza](guide:tracking-not-updating).
@@ -149,9 +151,14 @@ Un número que no devuelve nada no siempre está mal escrito. Correos Express av
 - [TIPSA: Localización de envíos](https://www.tip-sa.com/es/localizacion-envios) – 22 dígitos, código postal de destino, referencia e identificador
 - [InPost: Seguimiento del envío](https://www.inpost.es/seguimiento-del-envio/) – número de expedición, ejemplo de 8 caracteres
 - [Mondial Relay España](https://www.mondialrelay.es/) – la dirección lleva a la web de InPost
+- [Mondial Relay: Suivi de colis](https://www.mondialrelay.fr/suivi-de-colis/) – número de envío y código postal
+- [Mondial Relay: Étiquette](https://storage.mondialrelay.fr/etiquette-mondial-relay-v-24.pdf) – código de barras de 26 cifras
 - [Mondial Relay Bélgica: Suivi de colis](https://www.mondialrelay.be/fr-be/suivi-de-colis/) – 8, 10 o 12 cifras
 - [Paack: Seguimiento de mi pedido](https://paack.co/es/seguimiento-mi-pedido/) – enlace de seguimiento propio, número y código postal de entrega
-- [Paack: Empresa de paquetería para empresas](https://paack.co/es/) – envíos para tiendas online en España y Portugal
+- [Paack: Empresa de paquetería para empresas](https://paack.co/es/) – envíos para empresas y tiendas online
+- [Paack: ¿Dónde estamos?](https://paack.co/es/donde-estamos/) – presente en España, Francia, Italia y Portugal
+- [Paack: Track your order](https://paack.co/shipments/tracking) – número de pedido y código postal
+- [Paack Support: Otras preguntas](https://help.paack.co/es/support/solutions/folders/44001208240) – número de seguimiento y código postal
 - [Amazon.es: Entregas de Amazon Logistics](https://www.amazon.es/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – socios de transporte, seguimiento en Mis pedidos
 - [UPS: ejemplo de etiqueta](https://www.pld-certify.ups.com/CerttoolHelp/PLD0200/WebHelp_pld0200/LeadPackage.htm) – el número 1Z
 - [DHL Express Países Bajos: DHL Express or DHL eCommerce number](https://www.dhlexpress.nl/en/consumer/faq/express-account-zendingsnummer/my-shipment-number-dhl-express-or-dhl-ecommerce) – 10 cifras

@@ -92,9 +92,9 @@ Colle l'un ou l'autre numéro dans [Peek](/) : il retrouve le transporteur parmi
 
 | Pays | Qui tu peux voir sur la dernière étape |
 | --- | --- |
-| France | La Poste (Colissimo) achemine les colis Temu depuis l'arrivée de Temu en France en 2023, un accord prolongé de trois ans en octobre 2025 ; 20 % des volumes Colissimo viennent des plateformes chinoises. Yanwen vend aussi des lignes Colissimo et Colis Privé, Shein propose les points relais Mondial Relay, Cainiao a ses propres consignes, et des logisticiens chinois livrent désormais à domicile, note La Poste. |
+| France | La Poste (Colissimo) achemine les colis Temu depuis l'arrivée de Temu en France en 2023, un accord prolongé de trois ans en octobre 2025 ; 20 % des volumes Colissimo viennent des plateformes chinoises. Yanwen vend aussi des lignes Colissimo et Colis Privé, Shein propose les points relais [Mondial Relay](carrier:mondial-relay), Cainiao a ses propres consignes, et des logisticiens chinois livrent désormais à domicile, note La Poste. |
 | Belgique | bpost : Temu et bpostgroup ont signé en novembre 2025 un protocole d'entente pour renforcer leur collaboration en Belgique. My bpost et Track & Trace t'indiquent les frais éventuels avant la livraison. |
-| Suisse | La Poste suisse, qui dédouane les lettres, colis et envois EMS arrivés par la poste ou par le réseau GLS, puis te facture les taxes. |
+| Suisse | La Poste suisse, qui dédouane les lettres, colis et envois EMS arrivés par la poste ou par le réseau [GLS](carrier:gls-ch), puis te facture les taxes. |
 
 ## Combien de temps met un colis venant de Chine ?
 

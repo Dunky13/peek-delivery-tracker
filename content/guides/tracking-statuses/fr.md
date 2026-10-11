@@ -26,7 +26,7 @@ Tous les colis passent par les mêmes étapes, et un colis venu de l'étranger e
 
 ## Que veulent dire les statuts de Colissimo, Mondial Relay et La Poste suisse ?
 
-Mêmes étapes, autres mots. Pour La Poste, ce sont les libellés de la frise de laposte.fr et de ses codes de suivi ; pour Mondial Relay, ceux relevés dans de vrais suivis, car son aide n'en donne pas la liste.
+Mêmes étapes, autres mots. Pour La Poste, ce sont les libellés de la frise de laposte.fr et de ses codes de suivi ; pour [Mondial Relay](carrier:mondial-relay), ceux relevés dans de vrais suivis, car son aide n'en donne pas la liste.
 
 | Étape | La Poste (Colissimo) | Mondial Relay | La Poste suisse |
 | --- | --- | --- | --- |

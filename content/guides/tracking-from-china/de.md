@@ -101,9 +101,9 @@ Das hängt von der Versandlinie ab, die der Verkäufer bucht. Den Namen des Pake
 
 | Land | Wer dir das Paket bringt |
 | --- | --- |
-| Deutschland | Postsendungen von China Post (zwei Buchstaben, neun Ziffern, `CN`) verzollt die Deutsche Post für dich und stellt sie zu. Sonst oft DHL: Laut DHL Group (2025) übernehmen ihre Sparten für Temu schon Luftfracht und Zustellung, und Yanwen verkauft eine eigene DHL-Linie nach Deutschland. Auch Hermes stellt solche Pakete zu: Ende 2024 sagte eine Hermes-Sprecherin gegenüber BuzzFeed News Deutschland, internationale Pakete von Temu, Shein und AliExpress bekämen ein eigenes Etikett mit vier Barcodes. |
+| Deutschland | Postsendungen von China Post (zwei Buchstaben, neun Ziffern, `CN`) verzollt die Deutsche Post für dich und stellt sie zu. Sonst oft DHL: Laut DHL Group (2025) übernehmen ihre Sparten für Temu schon Luftfracht und Zustellung, und Yanwen verkauft eine eigene DHL-Linie nach Deutschland. Auch [Hermes](carrier:hermes-de) stellt solche Pakete zu: Ende 2024 sagte eine Hermes-Sprecherin gegenüber BuzzFeed News Deutschland, internationale Pakete von Temu, Shein und AliExpress bekämen ein eigenes Etikett mit vier Barcodes. |
 | Österreich | Postsendungen aus Nicht-EU-Ländern verzollt die Österreichische Post für dich und stellt sie zu. Laut einer Temu-Pressemitteilung von 2025 arbeiten Temu und die Post seit 2023 eng zusammen. |
-| Schweiz | Die Schweizerische Post verzollt alles, was per Post oder über das Netz von GLS in die Schweiz kommt. Shein-Pakete mit Economy-Versand haben derzeit keine Sendungsverfolgung. |
+| Schweiz | Die Schweizerische Post verzollt alles, was per Post oder über das Netz von [GLS](carrier:gls-ch) in die Schweiz kommt. Shein-Pakete mit Economy-Versand haben derzeit keine Sendungsverfolgung. |
 
 Nicht jedes Temu-Paket kommt übrigens aus China: Ein Teil der Ware wird laut Temu aus lokalen Lagern verschickt.
 

@@ -18,7 +18,7 @@ Os CTT, que lhe chamam «código de envio», explicam que, quando o código é g
 - A tua conta na loja | A um clique do número da encomenda (vê a tabela abaixo).
 - O aviso na caixa do correio | Muitos trazem um número que também funciona no seguimento da transportadora.
 - A app da transportadora | Algumas mostram as encomendas que tens a caminho.
-- O remetente | «Se não tiveres o número de expedição, podes contactar o remetente para que to comunique», diz a InPost.
+- O remetente | «Se não tiveres o número de expedição, podes contactar o remetente para que to comunique», diz a [InPost](carrier:inpost).
 :::
 
 Encontraste o e-mail, mas não sabes qual dos números é o certo? Cola-o inteiro no [Peek](/), que encontra o número de seguimento e a transportadora.

@@ -24,7 +24,7 @@ Onde cada transportadora a pode deixar:
 | CTT, correio | Na caixa do correio, incluindo o correio registado simples. Se não couber, em mão a quem estiver na morada, desde que não seja menor |
 | CTT, Encomenda Postal com entrega ao domicílio e Encomenda Expresso | Em mão a quem estiver na morada, exceto menores |
 | GLS | Um vizinho, que assina por ti, se não estiveres em casa |
-| InPost | O Locker ou o Ponto Pack que escolheste; a InPost avisa por e-mail ou SMS quando a encomenda lá chega |
+| [InPost](carrier:inpost) | O Locker ou o Ponto Pack que escolheste; a InPost avisa por e-mail ou SMS quando a encomenda lá chega |
 | Amazon | Alguém de casa, um vizinho, a receção do prédio ou o teu lugar seguro |
 
 O seguimento nunca chegou a dizer «entregue»? Vê [porque é que o tracking não atualiza](guide:tracking-not-updating) ou [o que querem dizer os estados do seguimento](guide:tracking-statuses).

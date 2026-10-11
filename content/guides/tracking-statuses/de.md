@@ -37,7 +37,7 @@ Dieselben Schritte, andere Worte:
 | Abholbereit | `Die Sendung wird zur Abholung in die Filiale … gebracht.` | `Sendung abholbereit` | `Ankunft an der Abhol-/Zustellstelle` |
 | Zugestellt | `Die Sendung wurde erfolgreich zugestellt.` | `Sendung zugestellt` | `Zugestellt durch` |
 
-Bei Hermes heißen die Schritte `Die Sendung wurde angekündigt`, `Die Sendung wurde von Hermes übernommen`, `Die Sendung wurde im Hermes Logistikzentrum sortiert`, `Die Sendung ist in der Zielregion angekommen` und `Die Sendung befindet sich in der Zustellung`.
+Bei [Hermes](carrier:hermes-de) heißen die Schritte `Die Sendung wurde angekündigt`, `Die Sendung wurde von Hermes übernommen`, `Die Sendung wurde im Hermes Logistikzentrum sortiert`, `Die Sendung ist in der Zielregion angekommen` und `Die Sendung befindet sich in der Zustellung`.
 
 ## „Elektronisch angekündigt“: Hat der Paketdienst mein Paket schon?
 
@@ -58,7 +58,7 @@ Zwischen zwei Scans ist Funkstille normal:
 
 ### Wie lange ist ein Paket unterwegs?
 
-DPD braucht innerhalb Deutschlands in der Regel 1 bis 2 Werktage ab der Übergabe; bei Hermes kann es ab Versand bis zu 3 Werktage dauern. Der DPD-Status `Das Paket ist unterwegs` heißt, dass das Paket abgeholt oder im Paketshop abgegeben wurde und im Lkw zum ersten Depot fährt. Bleibt es länger still, als der Paketdienst angibt? Dann lies, [warum sich die Sendungsverfolgung nicht aktualisiert](guide:tracking-not-updating).
+[DPD](carrier:dpd-de) braucht innerhalb Deutschlands in der Regel 1 bis 2 Werktage ab der Übergabe; bei Hermes kann es ab Versand bis zu 3 Werktage dauern. Der DPD-Status `Das Paket ist unterwegs` heißt, dass das Paket abgeholt oder im Paketshop abgegeben wurde und im Lkw zum ersten Depot fährt. Bleibt es länger still, als der Paketdienst angibt? Dann lies, [warum sich die Sendungsverfolgung nicht aktualisiert](guide:tracking-not-updating).
 
 ## Pakete aus dem Ausland: Flug, Zoll und Paketdienst vor Ort
 

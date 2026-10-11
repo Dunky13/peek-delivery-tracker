@@ -95,7 +95,7 @@ Dipende dalla linea di spedizione:
 | Dove | Chi puoi trovare nell'ultimo tratto |
 | --- | --- |
 | Italia | Poste Italiane per gli invii postali, quelli con il codice che finisce in `CN`: li sdogana Poste e li segui su Cerca spedizioni. Secondo la stampa di settore, Poste e Temu hanno firmato un protocollo d'intesa che prevede, tra l'altro, più capacità di smistamento. Altrimenti un corriere privato, con un codice suo; su Shein puoi scegliere anche un locker o un punto di ritiro. |
-| Ticino | La Posta, che sdogana lettere, pacchi e invii EMS arrivati per posta o attraverso la rete di GLS. |
+| Ticino | La Posta, che sdogana lettere, pacchi e invii EMS arrivati per posta o attraverso la rete di [GLS](carrier:gls-ch). |
 
 ## Quanto ci mette un pacco dalla Cina ad arrivare in Italia?
 

@@ -41,7 +41,7 @@ Same stages, different words:
 
 No: the seller has printed a label and sent the details, nothing more. USPS says the parcel "has not yet been given to USPS", and UPS's `Label Created` changes once UPS has it. An Post words it `Sender/retailer has shared details of your item to An Post`. Some US parcels show `Picked Up by Shipping Partner, USPS Awaiting Item`: a partner company has it and will hand it to USPS.
 
-Australia Post's `Pending` (nothing scanned yet) should update within 24 to 48 hours. If nothing moves, ask the seller, not the carrier: USPS, An Post and Evri say so.
+Australia Post's `Pending` (nothing scanned yet) should update within 24 to 48 hours. If nothing moves, ask the seller, not the carrier: USPS, An Post and [Evri](carrier:evri) say so.
 
 ## What does "in transit" mean?
 

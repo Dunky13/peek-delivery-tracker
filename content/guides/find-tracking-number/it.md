@@ -70,7 +70,7 @@ Alcuni corrieri ti mostrano i pacchi diretti a te, una volta che ti sei registra
 | --- | --- | --- |
 | Svizzera | La Posta, «I miei invii», gratis | Ricevi in automatico le informazioni su tutti gli invii in arrivo all'indirizzo registrato nel Login clienti Posta: di norma quando il mittente registra il pacco, allo smistamento e dopo il recapito. Con un account verificato su «La mia Posta» vedi l'elenco degli invii più recenti |
 | Italia | Poste Italiane, PostePlus, gratis | Per chi risiede in Italia. Ricevi una notifica ogni volta che Poste prende in carico una spedizione indirizzata a te, ma solo se il mittente ha abilitato il pacco o la raccomandata al servizio |
-| Italia | InPost, app gratuita | Una volta attivato l'account, l'app mostra «tutte le spedizioni collegate al tuo numero di telefono o indirizzo email», senza inserire codici |
+| Italia | [InPost](carrier:inpost), app gratuita | Una volta attivato l'account, l'app mostra «tutte le spedizioni collegate al tuo numero di telefono o indirizzo email», senza inserire codici |
 | Italia e Svizzera | UPS My Choice, iscrizione gratuita | «Non serve nessun numero di ricerca»: vedi i pacchi UPS degli ultimi quattro mesi e quelli in arrivo. In Svizzera la pagina c'è in tedesco e in francese, non in italiano |
 
 Per BRT e GLS non abbiamo trovato una pagina che spieghi se e come i pacchi in arrivo compaiano da soli nelle loro app: con loro conviene avere il codice.

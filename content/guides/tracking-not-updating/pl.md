@@ -13,7 +13,7 @@ Jeśli status przesyłki się nie zmienia, zwykle znaczy to tylko tyle, że nikt
 
 Śledzenie pokazuje skany, a nie ruch paczki. A paczkę skanuje się tylko w niektórych miejscach:
 
-- **Między sortowniami nikt nie skanuje.** InPost opisuje drogę paczki tak: kurier zabiera ją do oddziału, stamtąd jedzie do sortowni, a potem w trasę do miasta docelowego. Paczki, które jadą daleko, trafiają jeszcze do Sortowni Głównej, czyli wielkiego centrum logistycznego. Gdy paczka już jedzie, następny skan pojawi się dopiero w kolejnym z tych miejsc.
+- **Między sortowniami nikt nie skanuje.** [InPost](carrier:inpost) opisuje drogę paczki tak: kurier zabiera ją do oddziału, stamtąd jedzie do sortowni, a potem w trasę do miasta docelowego. Paczki, które jadą daleko, trafiają jeszcze do Sortowni Głównej, czyli wielkiego centrum logistycznego. Gdy paczka już jedzie, następny skan pojawi się dopiero w kolejnym z tych miejsc.
 - **Weekendy i święta.** Kurierzy DPD doręczają w soboty tylko paczki z usługą dodatkową Sobota. Poczta Polska, odliczając 14 dni do reklamacji, pomija dni ustawowo wolne od pracy, a Vinted liczy dni robocze bez weekendów i świąt. Przerwy świąteczne przewoźników znajdziesz w poradniku [do kiedy wysłać paczkę przed świętami](guide:christmas-posting-dates).
 - **Pogoda i korki.** Amazon pisze, że pogoda i ruch drogowy mogą opóźnić dostawę.
 - **Spóźniona aktualizacja.** Wśród powodów, dla których brakuje informacji o śledzeniu, Amazon wymienia opóźnienie w aktualizacji bazy danych. Vinted uprzedza, że status u niego bywa inny niż na stronie przewoźnika.

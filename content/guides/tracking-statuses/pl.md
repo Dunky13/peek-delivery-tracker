@@ -26,7 +26,7 @@ Każda paczka mija te same przystanki, a paczka z zagranicy jeszcze trzy.
 
 ## Co oznaczają statusy InPost i FedEx?
 
-Te same etapy, inne słowa. InPost inaczej opisuje paczkę do automatu Paczkomat, a inaczej paczkę kurierską:
+Te same etapy, inne słowa. [InPost](carrier:inpost) inaczej opisuje paczkę do automatu Paczkomat, a inaczej paczkę kurierską:
 
 | Etap | InPost, paczka do automatu Paczkomat | InPost, paczka kurierska | FedEx |
 | --- | --- | --- | --- |

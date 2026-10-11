@@ -52,7 +52,7 @@ Nenhuma é a melhor para toda a gente: depende das tuas transportadoras e do que
 | O teu e-mail | Ligar o Gmail ou o Outlook, ou só reencaminhar um e-mail | Se ligares a conta, a Shop procura nos e-mails dos últimos 30 dias e continua a verificar |
 | Os teus dados | A «Privacidade da app» na App Store, a «Segurança dos dados» no Google Play, a política de privacidade | Na App Store, essa informação «não foi confirmada pela Apple». Todos os serviços têm de passar o teu número à transportadora |
 | Quanto tempo guarda os dados | A política de privacidade | A Deliveries guarda os e-mails reencaminhados até dez dias; no Google Play, a ficha da ParcelsApp diz «Não é possível eliminar os dados» |
-| As tuas transportadoras | A lista de transportadoras | Procura CTT, DPD, GLS, InPost ou Paack em vez de olhares para o total: o 17TRACK diz 2500+ na App Store e 2800+ na sua página sobre a USPS |
+| As tuas transportadoras | A lista de transportadoras | Procura CTT, DPD, GLS, [InPost](carrier:inpost) ou [Paack](carrier:paack) em vez de olhares para o total: o 17TRACK diz 2500+ na App Store e 2800+ na sua página sobre a USPS |
 
 ## Grátis ou pagas: as principais apps comparadas
 

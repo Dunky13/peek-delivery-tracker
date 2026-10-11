@@ -7,11 +7,11 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-DHL und die Deutsche Post haben ihre Weihnachtstermine für 2026 noch nicht veröffentlicht: 2025 war der letzte Tag für Pakete, Päckchen und Briefe innerhalb Deutschlands Samstag, 20. Dezember. GLS nennt für 2026 schon Montag, 21. Dezember, 12 Uhr, und die Schweizerische Post Mittwoch, 23. Dezember, für A-Post und PostPac Priority. Die Tabellen zeigen die Frist jedes Paketdiensts, wie sie am Freitag, 9. Oktober 2026 auf seinen eigenen Seiten stand, und das Datum vom Vorjahr, wo das neue noch fehlt.
+DHL und die Deutsche Post haben ihre Weihnachtstermine für 2026 noch nicht veröffentlicht: 2025 war der letzte Tag für Pakete, Päckchen und Briefe innerhalb Deutschlands Samstag, 20. Dezember. [GLS](carrier:gls-de) nennt für 2026 schon Montag, 21. Dezember, 12 Uhr, und die Schweizerische Post Mittwoch, 23. Dezember, für A-Post und PostPac Priority. Die Tabellen zeigen die Frist jedes Paketdiensts, wie sie am Freitag, 9. Oktober 2026 auf seinen eigenen Seiten stand, und das Datum vom Vorjahr, wo das neue noch fehlt.
 
 ## Deutschland: DHL, Deutsche Post, Hermes, DPD und GLS
 
-Bisher hat nur GLS seine Fristen für 2026 veröffentlicht. DHL schreibt auf seiner Seite für Geschäftskunden, die Termine kämen „in Kürze“, und Hermes zeigt noch seine Zusage für 2025. Heiligabend ist 2026 ein Donnerstag (2025: Mittwoch), die Daten vom Vorjahr sind also nur ein Anhaltspunkt. Alle Termine gelten für Sendungen innerhalb Deutschlands.
+Bisher hat nur GLS seine Fristen für 2026 veröffentlicht. DHL schreibt auf seiner Seite für Geschäftskunden, die Termine kämen „in Kürze“, und [Hermes](carrier:hermes-de) zeigt noch seine Zusage für 2025. Heiligabend ist 2026 ein Donnerstag (2025: Mittwoch), die Daten vom Vorjahr sind also nur ein Anhaltspunkt. Alle Termine gelten für Sendungen innerhalb Deutschlands.
 
 | Paketdienst | Service | Abgabe bis |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ Bisher hat nur GLS seine Fristen für 2026 veröffentlicht. DHL schreibt auf sei
 | DHL Paket | Geschäftskunden, Regelabholung bis 12 Uhr | Noch nicht veröffentlicht (2025: Montag, 22. Dezember) |
 | Hermes | Abgabe im PaketShop bis 12 Uhr | Noch nicht veröffentlicht (2025: Freitag, 19. Dezember) |
 | Hermes | Paket- oder Gepäckabholung an der Haustür | Noch nicht veröffentlicht (2025: Freitag, 19. Dezember) |
-| DPD | Standard-Pakete | Noch nicht veröffentlicht (2025: Freitag, 19. Dezember) |
+| [DPD](carrier:dpd-de) | Standard-Pakete | Noch nicht veröffentlicht (2025: Freitag, 19. Dezember) |
 | DPD | Express und Priority | Noch nicht veröffentlicht (2025: Dienstag, 23. Dezember) |
 | GLS | Pakete, Abgabe bis 12 Uhr | Montag, 21. Dezember |
 

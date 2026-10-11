@@ -11,7 +11,7 @@ Jeśli śledzenie pokazuje „doręczona”, a paczki nie ma, nie zakładaj od r
 
 ## Dlaczego paczka ma status „doręczona”, skoro jej nie ma?
 
-Bo ten status mówi tylko, że kurier gdzieś zostawił paczkę, a nie, że trafiła do Ciebie. Każda firma nazywa go trochę inaczej: InPost pisze `Dostarczona`, Vinted „Doręczono”, a Amazon oznacza paczkę jako „dostarczoną”. Są trzy możliwe wyjaśnienia:
+Bo ten status mówi tylko, że kurier gdzieś zostawił paczkę, a nie, że trafiła do Ciebie. Każda firma nazywa go trochę inaczej: [InPost](carrier:inpost) pisze `Dostarczona`, Vinted „Doręczono”, a Amazon oznacza paczkę jako „dostarczoną”. Są trzy możliwe wyjaśnienia:
 
 - **Skan pojawił się za wcześnie.** Paczka naprawdę może dostać status „doręczona”, zanim dotrze. Amazon pisze, że status dostawy bywa aktualizowany z wyprzedzeniem, a w rzadkich przypadkach paczki są oznaczane jako dostarczone „do 48 godzin przed doręczeniem”. Dodaje, że niektórzy przewoźnicy dowożą paczki nawet do 22.00.
 - **Leży tam, gdzie nikt jeszcze nie zajrzał.** Gdy paczka ma status odebranej, a jej nie masz, Allegro radzi sprawdzić, czy nie odebrał jej ktoś inny: domownik, sąsiad, a przy zamówieniu do firmy recepcja albo ochrona budynku.

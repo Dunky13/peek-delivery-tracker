@@ -39,7 +39,7 @@ Hours to days. If yours is stuck on `Label Created`, the carrier may not have th
 - **USPS:** `Shipping Label Created, USPS Awaiting Item` means the parcel "has not yet been given to USPS".
 - **UPS:** `Label Created` changes once UPS has the parcel.
 - **Royal Mail:** a number it doesn't recognise may be for an item not handed in yet. Try again later.
-- **Evri:** after the sender's dispatch notice, it can take a few days for Evri to receive the parcel.
+- **[Evri](carrier:evri):** after the sender's dispatch notice, it can take a few days for Evri to receive the parcel.
 - **Australia Post:** a number it doesn't recognise may not be scanned yet: try again in 24 hours. After more than a week on `Pending`, ask the sender whether it was really sent.
 - **Vinted:** tracking can take up to 48 hours to first appear.
 

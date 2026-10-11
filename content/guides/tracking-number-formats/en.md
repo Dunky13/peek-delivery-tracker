@@ -4,7 +4,7 @@ description: Tracking number formats for USPS, UPS, FedEx, DHL, Royal Mail, Evri
 slug: tracking-number-formats-by-carrier
 picture: Three tracking-number labels split into coloured parts, a magnifying glass on the country code CH, and a curious Pip.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-11
 ---
 
 A tracking number's letters and length often tell you which carrier has your parcel or package. `1Z` followed by 16 letters and digits is UPS, 22 digits starting `92` to `95` is USPS, and 13 characters shaped like `RR123456785CH` (two letters, nine digits, two letters) usually belong to a national post, with the issuing country in the last two letters. Plain digits are the hard case: 10, 12 or 14 digits each fit several carriers, so the shipping email, or a tracker that checks the candidates, has the final word.
@@ -36,8 +36,9 @@ Here's what the carriers and the postal standard say about the numbers you're mo
 | FedEx | 12 digits on FedEx Ground Economy labels since 2022, where some shippers used to get 15-digit Ground numbers |
 | DHL | DHL Express: 10 digits, never letters. DHL in Germany: 10 to 39 characters |
 | Royal Mail, Parcelforce | 9 to 27 characters, says the Post Office; the postal format ends `GB` |
-| Evri | 16 characters (Evri's page says both "16 digit" and "16 character") |
-| DPD | 14 characters, says DPD Germany; 14 digits, say DPD Austria and Belgium. DPD UK's help page gives no length and asks for your postcode too |
+| [Evri](carrier:evri) | 16 characters (Evri's page says both "16 digit" and "16 character") |
+| DPD | 14 characters, says [DPD Germany](carrier:dpd-de); 14 digits, say DPD Austria and Belgium. DPD UK's help page gives no length and asks for your postcode too |
+| [InPost](carrier:inpost) | in the UK, `JD` or `JJD` + 16 digits, or `8YDR` + 9 digits (InPost UK says its numbers usually start with `JD`, `JJD` or `8`); `JD` or `JJD` + 18 digits is DHL |
 | An Post | two letters, nine digits, two letters ending `IE` |
 | Canada Post | 16 digits (online labels) or 13 characters ending `CA`; 12 digits for Priority Worldwide |
 | Australia Post | its help page gives no format and calls it a "tracking number, or article ID"; numbers in the postal format end `AU` |
@@ -46,7 +47,7 @@ Here's what the carriers and the postal standard say about the numbers you're mo
 | China Post, EMS | the postal format ending `CN`; international EMS numbers start with `E` |
 | Amazon | Amazon publishes no format; `TBA` numbers are covered below |
 
-Elsewhere in Europe, the pages on [Colis Privé](carrier:colis-prive) (France, Belgium and Luxembourg) and [BRT](carrier:brt) (Italy) explain their numbers. For Spain and Portugal, see [Correos Express](carrier:correos-express) and [NACEX](carrier:nacex). For Switzerland, see [Quickpac](carrier:quickpac) and [Planzer](carrier:planzer).
+Elsewhere in Europe, the pages on [Colis Privé](carrier:colis-prive) (France, Belgium and Luxembourg), [Mondial Relay](carrier:mondial-relay) (France and Belgium) and [BRT](carrier:brt) (Italy) explain their numbers. For Germany, see [GLS Germany](carrier:gls-de) and [Hermes Germany](carrier:hermes-de). For Spain and Portugal, see [Correos Express](carrier:correos-express), [NACEX](carrier:nacex) and [Paack](carrier:paack), which also delivers in France and Italy. For Switzerland, see [Quickpac](carrier:quickpac), [Planzer](carrier:planzer), [DPD Switzerland](carrier:dpd-ch) and [GLS Switzerland](carrier:gls-ch).
 
 ### Whose tracking number starts with 9 or 420?
 
@@ -149,6 +150,7 @@ A number that returns nothing isn't always mistyped. Portugal's CTT gives two re
 - [DHL: Sendungsverfolgung, Probleme und Lösungen](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/sendungsverfolgung/probleme-loesungen.html) – 10 to 39 characters, not an order number
 - [Post Office: Track and trace](https://www.postoffice.co.uk/track-trace) – Royal Mail and Parcelforce references
 - [Evri: Track a parcel](https://www.evri.com/track-a-parcel) – 16 characters and the calling card
+- [InPost UK: Yodel by InPost help](https://inpost.co.uk/yodel-help) – numbers starting JD, JJD or 8
 - [DPD UK: How can we help](https://www.dpd.co.uk/content/how-can-we-help/index.jsp) – reference number and postcode
 - [DPD Germany: Wo finde ich meine Paketnummer?](https://www.dpd.com/de/de/faq/wo-finde-ich-meine-paketnummer/) – 14 characters
 - [DPD Austria: Wo finde ich die Paketnummer?](https://www.dpd.com/at/de/faq/wo-finde-ich-die-paketnummer-2/) – 14 digits
@@ -166,5 +168,5 @@ A number that returns nothing isn't always mistyped. Portugal's CTT gives two re
 - [Mondial Relay Belgium: Suivi de colis](https://www.mondialrelay.be/fr-be/suivi-de-colis/) – 8, 10 or 12 digits
 - [La Poste: Comment suivre mon colis ou ma lettre](https://aide.laposte.fr/professionnel/contenu/comment-suivre-mon-colis-ou-ma-lettre) – 14 digits
 - [Amazon: Amazon Logistics](https://www.amazon.com/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – shipped with Amazon, tracked in Your Orders
-- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – the TBA, YT, LP and CNG shapes in Peek's carrier data
+- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – the TBA, YT, LP and CNG shapes in Peek's carrier data, and InPost's JD, JJD and 8YDR shapes
 :::

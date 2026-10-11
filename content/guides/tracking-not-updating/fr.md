@@ -66,7 +66,7 @@ Il n'y a pas de délai unique. La plupart des transporteurs disent à partir de 
 | Transporteur | Quand demander | Qui demande |
 | --- | --- | --- |
 | Chronopost (FR) | Statut inchangé depuis plus de 48 h, week-ends et jours fériés non compris (colis de et vers la France métropolitaine) | Toi, au service client, pour l'enquête. Pour une réclamation, l'expéditeur (le site marchand) |
-| Mondial Relay (FR) | Colis « bloqué sur le même point depuis 5 jours » : formulaire de contact | La page ne le précise pas |
+| [Mondial Relay](carrier:mondial-relay) (FR) | Colis « bloqué sur le même point depuis 5 jours » : formulaire de contact | La page ne le précise pas |
 | Colis Privé (FR) | Dès que le suivi affiche le bouton « Déposer une réclamation » (colis en retard, endommagé ou non livré) ; analyse sous 2 à 7 jours ouvrés | Toi, avec ton numéro de colis et ton code postal, sauf si le vendeur l'a déjà fait |
 | Colissimo, La Poste (FR) | Aucun délai minimum dans l'aide en ligne de La Poste ; réclamation jusqu'à 1 an après la prise en charge (6 mois pour l'international) | Toute personne peut réclamer, selon les CGV de La Poste, mais seul l'expéditeur est indemnisé : passe par lui |
 | bpost (BE) | Aucun délai publié pour un colis en Belgique. Vers l'étranger, statut inchangé depuis au moins 5 jours ouvrables (pays voisin) ou 10 (Royaume-Uni et autres pays) | L'expéditeur : « seul l'expéditeur » peut introduire une plainte |

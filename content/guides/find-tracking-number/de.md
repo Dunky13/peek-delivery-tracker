@@ -46,7 +46,7 @@ Was dir die Karte bringt, hängt vom Paketdienst ab:
 - **FedEx**: Die Nummer der Benachrichtigungskarte nimmt die FedEx-Sendungsverfolgung direkt an.
 - **DHL Express**: Auf der Karte steht eine Sendungs-Referenznummer. Mit ihr buchst du kostenlos eine zweite Zustellung.
 - **DHL**: Fehlt die Karte, schickt DHL sie dir in den nächsten Tagen per Post. Liegt das Paket in einer Filiale, brauchst du sie zum Abholen gar nicht: Dein Personalausweis reicht.
-- **Hermes**: Statt einer Karte schickt Hermes manchmal eine E-Mail.
+- **[Hermes](carrier:hermes-de)**: Statt einer Karte schickt Hermes manchmal eine E-Mail.
 - **Quickpac**, Karte „Abholinformation“: Darauf steht die Sendungsnummer, wie die Seite zum [Quickpac Tracking](carrier:quickpac) erklärt.
 - **Planzer Paket**, Zustellkarte: Der Zustellschlüssel darauf öffnet das Empfängerportal, ist aber keine Sendungsnummer. Welche Codes es bei Planzer gibt, steht unter [Planzer Sendungsverfolgung](carrier:planzer).
 
@@ -131,7 +131,7 @@ Danach lohnt ein Blick auf die Nummer selbst:
 - **Ist es ein anderer Code des Paketdienstes?** Die Postnummer, die du für Packstation und Filiale in die Lieferadresse schreibst, ist laut DHL deine persönliche Kundennummer und gehört zu dir, nicht zu einem Paket.
 - **Ist es die Referenz des Absenders?** Eine Auftrags- oder Rechnungsnummer findet nur die Referenzsuche von DHL Express, UPS oder FedEx (siehe oben), nicht die normale Sendungsverfolgung.
 - **Bist du beim richtigen Paketdienst?** Ist eine Nummer bei DHL ungültig, kann sie laut DHL zu einer Express- oder Briefsendung mit eigener Sendungsverfolgung gehören oder zu einem ganz anderen Paketdienst.
-- **Steht nur diese eine Nummer im Feld?** Kopierst du aus einer Mail, rutschen leicht die Bestellnummer, ein Wort oder eine zweite Sendungsnummer mit hinein. Prüf außerdem jedes Zeichen: DHL nennt Zahlendreher, DPD verwechselte Zeichen wie 0 und O.
+- **Steht nur diese eine Nummer im Feld?** Kopierst du aus einer Mail, rutschen leicht die Bestellnummer, ein Wort oder eine zweite Sendungsnummer mit hinein. Prüf außerdem jedes Zeichen: DHL nennt Zahlendreher, [DPD](carrier:dpd-de) verwechselte Zeichen wie 0 und O.
 
 Immer noch nichts? Dann frag den Absender, meist also den Online-Shop: Von ihm kommt die Nummer. Was die einzelnen Meldungen bedeuten, steht unter [Sendungsstatus erklärt](guide:tracking-statuses).
 

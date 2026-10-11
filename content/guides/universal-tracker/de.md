@@ -30,7 +30,7 @@ Fang mit dem kostenlosen Angebot deiner Post an:
 | Österreich | Post App, „Meine Sendungen“ im Post Account | Die App sammelt alle Lieferungen in einer Übersicht und meldet Statusänderungen per Push. Die e-Benachrichtigung kommt, wenn der Absender Versanddaten übermittelt hat, die zu deinem Post Account passen. Wurde das Paket von einer Privatperson, in einer Postfiliale oder bei einem Post Partner aufgegeben, fehlen diese Daten meist, außer bei einer Paketmarke |
 | Schweiz | „Meine Sendungen“ im Kundenportal „Meine Post“ | Kostenlose Infos zu allen Sendungen an die Adresse in deinem Kundenkonto, per E-Mail und Push in der Post-App, auf Wunsch per SMS. In immer mehr Gebieten meist mit einem Zeitfenster von 40 bis 90 Minuten |
 
-Ähnliche Dienste von DPD, Hermes und UPS stellt [Sendungsnummer finden](guide:find-tracking-number) vor.
+Ähnliche Dienste von [DPD](carrier:dpd-de), [Hermes](carrier:hermes-de) und UPS stellt [Sendungsnummer finden](guide:find-tracking-number) vor.
 
 Andere Möglichkeiten, mit ihren Grenzen:
 
@@ -97,7 +97,7 @@ Wie du eine Nummer selbst entschlüsselst, erklärt der Ratgeber [Sendungsnummer
 
 - **Die Schnittstelle (API) des Paketdienstes**, zu dessen Bedingungen: DHL verbietet, die Sendungsdaten aus seiner API mit Werbung zu vermischen, und verlangt, sie 30 Tage nach der Zustellung zu löschen, sofern nichts anderes vereinbart ist.
 - **Die Website des Paketdienstes**, automatisch ausgelesen. Die Android-App von ParcelsApp „zeigt Informationen von offiziellen Websites der nationalen Postdienste an“.
-- **Bezahlte Echtzeit-Meldungen.** Manche Paketdienste melden neue Scans direkt an Parcel, laut Parcel meist innerhalb von 10 Minuten. Die meisten davon lassen sich aber jede verfolgte Lieferung von Parcel bezahlen. GLS Deutschland verlangt dafür derzeit nichts, deshalb bekommen bei GLS alle Parcel-Nutzer diese Meldungen ohne Begrenzung.
+- **Bezahlte Echtzeit-Meldungen.** Manche Paketdienste melden neue Scans direkt an Parcel, laut Parcel meist innerhalb von 10 Minuten. Die meisten davon lassen sich aber jede verfolgte Lieferung von Parcel bezahlen. [GLS Deutschland](carrier:gls-de) verlangt dafür derzeit nichts, deshalb bekommen bei GLS alle Parcel-Nutzer diese Meldungen ohne Begrenzung.
 - **Ein anderer Tracker.** Bei PayPal werden die Tracking-Updates „von Aftership unterstützt“. Peeks Datenschutzhinweis nennt ParcelsApp, Ship24, 17TRACK und den Weltpostverein unter den Diensten, die bei Bedarf abgefragt werden.
 - **Der Händler.** In Apple Wallet werden „die vom Händler bereitgestellten Informationen angezeigt“.
 

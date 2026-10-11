@@ -51,7 +51,7 @@ Aucune n'est la meilleure pour tout le monde : tout dépend de tes transporteurs
 | Ta boîte mail | « Connecter Gmail ou Outlook » ou « transférer un e-mail » | Shop parcourt tes e-mails des 30 derniers jours, puis continue de vérifier les nouveaux |
 | Tes données | « Confidentialité de l'app » sur l'App Store, « Sécurité des données » sur Google Play, la politique de confidentialité | Sur l'App Store, ces informations « n'ont pas été vérifiées par Apple ». Tout service de suivi transmet ton numéro à d'autres |
 | Durée de conservation | La politique de confidentialité | Deliveries garde les e-mails transférés jusqu'à dix jours ; Parcels affiche sur Google Play « Impossible de supprimer les données » |
-| Tes transporteurs | Sa liste de transporteurs | Cherche Colissimo, Mondial Relay, [Colis Privé](carrier:colis-prive), bpost ou La Poste suisse plutôt que le total : 17TRACK annonce plus de 2 500 transporteurs sur l'App Store, plus de 2 800 sur sa page USPS |
+| Tes transporteurs | Sa liste de transporteurs | Cherche Colissimo, [Mondial Relay](carrier:mondial-relay), [Colis Privé](carrier:colis-prive), bpost ou La Poste suisse plutôt que le total : 17TRACK annonce plus de 2 500 transporteurs sur l'App Store, plus de 2 800 sur sa page USPS |
 | Langue | Les « Langues » de la fiche, puis l'app | La fiche de Route n'indique que l'anglais. Celle de 17TRACK aussi, mais sa description promet une « interface multilingue » et son site existe en français |
 
 ## Gratuit ou payant : les principaux services comparés

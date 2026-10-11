@@ -106,7 +106,7 @@ Parfois, mais l'indemnisation va en général à l'expéditeur : passer par le v
 | Colissimo, La Poste (FR) | Tout le monde peut réclamer, au 3631 ou sur laposte.fr. Seul l'expéditeur est indemnisé : jusqu'à 23 € par kilo en France métropolitaine | 1 an après le dépôt (6 mois pour l'international) ; réponse sous 21 jours en France métropolitaine |
 | Chronopost (FR) | Dis « contester livraison » au chatbot Léonard. Colis remis avec Pickup Pass : contacte l'expéditeur | Non indiqué |
 | Colis Privé (FR) | « Déposer une réclamation » sur son site, avec ton numéro de colis et ton code postal | Réponse sous 48 heures ouvrées |
-| Mondial Relay (FR) | Fais chercher le colis au point relais à ton nom, puis remplis le formulaire de contact. Colis perdu : contacte l'expéditeur | Non indiqué |
+| [Mondial Relay](carrier:mondial-relay) (FR) | Fais chercher le colis au point relais à ton nom, puis remplis le formulaire de contact. Colis perdu : contacte l'expéditeur | Non indiqué |
 | bpost (BE) | Rien en ton nom : seul l'expéditeur peut demander une enquête | Non indiqué |
 | La Poste suisse | Envoi national : lance toi-même une recherche, comme l'expéditeur. Responsabilité jusqu'à CHF 500.– pour un colis sans prestation complémentaire | 1 an après le dépôt |
 

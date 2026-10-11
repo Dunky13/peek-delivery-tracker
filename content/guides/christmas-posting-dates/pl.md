@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Żaden przewoźnik w Polsce nie podał jeszcze terminów na święta 2026. W 2025 roku Poczta Polska radziła nadać paczkę najpóźniej w niedzielę 21 grudnia, a InPost gwarantował dostawę do Paczkomatu do wtorku 23 grudnia dla paczek nadanych do poniedziałku 22 grudnia. Tabele poniżej podają termin każdego przewoźnika z jego własnej strony, sprawdzony w piątek 9 października 2026 r., a tam, gdzie tegorocznego jeszcze nie ma, zeszłoroczny.
+Żaden przewoźnik w Polsce nie podał jeszcze terminów na święta 2026. W 2025 roku Poczta Polska radziła nadać paczkę najpóźniej w niedzielę 21 grudnia, a [InPost](carrier:inpost) gwarantował dostawę do Paczkomatu do wtorku 23 grudnia dla paczek nadanych do poniedziałku 22 grudnia. Tabele poniżej podają termin każdego przewoźnika z jego własnej strony, sprawdzony w piątek 9 października 2026 r., a tam, gdzie tegorocznego jeszcze nie ma, zeszłoroczny.
 
 ## Polska: InPost, Poczta Polska, ORLEN Paczka, DPD, DHL i GLS
 

@@ -4,7 +4,7 @@ description: An Anfang, Länge und Endung der Sendungsnummer erkennst du oft den
 slug: sendungsnummer-welcher-paketdienst
 picture: Drei Etiketten mit Sendungsnummern, in farbige Teile zerlegt, eine Lupe auf dem Ländercode CH, und Pip schaut neugierig zu.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-11
 ---
 
 Buchstaben und Länge einer Sendungsnummer verraten oft, welcher Paketdienst dein Paket hat. Beginnt sie mit `1Z` und hat 18 Zeichen, ist es UPS. 18 Ziffern ab `99`, gedruckt wie `99.34.123456.12345678`, kommen von der Schweizerischen Post, und 13 Zeichen wie `RR123456785CH` (zwei Buchstaben, neun Ziffern, zwei Buchstaben) stammen meist von einer nationalen Post, deren Land in den letzten zwei Buchstaben steht. Schwierig wird es bei reinen Ziffern: 10, 14 oder 22 Stellen passen jeweils zu mehreren Paketdiensten. Dann entscheidet die Versandmail oder ein Tracker, der die infrage kommenden Paketdienste durchprobiert.
@@ -34,9 +34,12 @@ Das schreiben die Paketdienste selbst und der internationale Poststandard über 
 | DHL Paket | 10 bis 39 Stellen, Ziffern und Buchstaben, je nach Produkt. DHL Päckchen haben keine Sendungsverfolgung, außer DHL Päckchen International mit dem Service „Versicherung“ |
 | DHL Express | 10 Ziffern, nie Buchstaben, sagt DHL Express in den Niederlanden |
 | Deutsche Post (Briefe) | kein Format veröffentlicht. Verfolgen lassen sich Einschreiben, Nachnahme, PRIO und Wert National, dazu als Basis-Sendungsverfolgung Briefe mit Matrixcode-Briefmarke, die du vorher in der Post & DHL App scannst |
-| Hermes (Deutschland) | 14 bis 20 Zeichen, Buchstaben und Ziffern |
-| DPD | 14 Zeichen, sagt DPD Deutschland; 14 Stellen, sagt DPD Österreich |
+| [Hermes](carrier:hermes-de) (Deutschland) | 14 bis 20 Zeichen, Buchstaben und Ziffern |
+| DPD | 14 Zeichen, sagt [DPD Deutschland](carrier:dpd-de); 14 Stellen, sagt DPD Österreich |
+| [DPD Schweiz](carrier:dpd-ch) | 14 Ziffern; auf DPDs Formularen für Versender steht „bitte mit 060 beginnen“. Peek nimmt die Nummer wie bei DPD Deutschland auch mit einem Prüfzeichen dahinter an, myDPD will nur die 14 Ziffern |
 | GLS | Paketnummer oder Track-ID von der Benachrichtigungskarte. Eine Länge nennt GLS nicht |
+| [GLS Deutschland](carrier:gls-de) | In Peeks Paketdienst-Daten 11 Ziffern, 12 Ziffern mit einer Prüfziffer am Ende oder 8 Zeichen aus Buchstaben und Ziffern, dazu die sechsstellige Track-ID von der Karte, wenn sie nur aus Buchstaben besteht |
+| [GLS Schweiz](carrier:gls-ch) | kein Format veröffentlicht, auch nicht von der Schweizerischen Post, die GLS-Pakete dort zustellt. In Peeks Paketdienst-Daten dieselben Formen wie bei GLS Deutschland |
 | UPS | `1Z` plus 16 Buchstaben und Ziffern, 18 Zeichen insgesamt, etwa `1Z999AA10123456784`, ein Beispiel mit gültiger UPS-Prüfziffer |
 | Österreichische Post | 22 Ziffern oder das Postformat aus zwei Buchstaben, neun Ziffern und zwei Buchstaben |
 | Schweizerische Post | 18 Ziffern ab `99` auf Paketen von Geschäftskunden, gedruckt wie `99.34.123456.12345678`, oder das Postformat mit `CH` am Ende |
@@ -141,6 +144,7 @@ Findet die Sendungsverfolgung nichts, ist die Nummer nicht unbedingt falsch abge
 - [Hermes: Sendungsverfolgung](https://www.myhermes.de/empfangen/sendungsverfolgung/) – 14 bis 20 Zeichen
 - [DPD Deutschland: Wo finde ich meine Paketnummer?](https://www.dpd.com/de/de/faq/wo-finde-ich-meine-paketnummer/) – 14 Zeichen
 - [DPD Österreich: Wo finde ich die Paketnummer?](https://www.dpd.com/at/de/faq/wo-finde-ich-die-paketnummer-2/) – 14 Stellen
+- [DPD Schweiz: Haftung für Versender](https://www.dpd.com/ch/de/supportcenter/alles-ueber-haftung/haftung-versender/) – Paketnummer mit 060
 - [GLS Österreich: Sendungsverfolgung](https://gls-group.com/AT/de/paket-verfolgen/) – Paketnummer und Track-ID auf der Benachrichtigungskarte
 - [UPS: sample package label](https://www.pld-certify.ups.com/CerttoolHelp/PLD0200/WebHelp_pld0200/LeadPackage.htm) – die 1Z-Nummer
 - [Österreichische Post: Startseite, Häufig gestellte Fragen](https://www.post.at/) – 22 Ziffern oder Postformat
@@ -148,7 +152,7 @@ Findet die Sendungsverfolgung nichts, ist die Nummer nicht unbedingt falsch abge
 - [Quickpac: FAQ (auf Englisch)](https://quickpac.ch/en/faq) – jedes Paket hat eine 18-stellige Nummer
 - [USPS: Publication 199, Intelligent Mail package barcode](https://postalpro.usps.com/pub199) – 22 Ziffern
 - [Amazon.de: Lieferungen von Amazon Logistics](https://www.amazon.de/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – Sendungsverfolgung unter Meine Bestellungen
-- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – JJD, JD, 0034043, H, TBA und Ländercode plus 10 Ziffern in Peeks Paketdienst-Daten, dazu YT + 16 Ziffern (YunExpress), YT + 13 Ziffern (YTO Express), 44 (Quickpac), 91346097 und 99990 (Planzer) sowie DOFR, CNFR, LP und CNG (Cainiao)
+- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – JJD, JD, 0034043, H, TBA und Ländercode plus 10 Ziffern in Peeks Paketdienst-Daten, dazu YT + 16 Ziffern (YunExpress), YT + 13 Ziffern (YTO Express), 44 (Quickpac), 91346097 und 99990 (Planzer), DOFR, CNFR, LP und CNG (Cainiao), die Formen von GLS Deutschland und GLS Schweiz sowie das Prüfzeichen hinter DPD-Nummern
 - [YunExpress: YunTrack](https://www.yuntrack.com/) – Nummern ab YT
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – beim Economy-Versand keine Sendungsverfolgung nach der Übergabe
 - [bpost: Kann ich mein Paket online verfolgen?](https://www.bpost.be/de/faq/kann-ich-mein-paket-online-verfolgen) – Strichcodes mit U lassen sich nicht verfolgen

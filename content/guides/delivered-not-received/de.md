@@ -22,7 +22,7 @@ Wo die Paketdienste es außerdem abgeben dürfen:
 | Paketdienst | Gilt auch als zugestellt |
 | --- | --- |
 | DHL (DE) | Bei Angehörigen oder anderen Personen in deiner Wohnung, bei Hausbewohnern oder unmittelbaren Nachbarn (DHL muss dich per Karte oder E-Mail informieren), im Briefkasten, und an einem Ablageort oder in einer Packstation, wenn du das so vereinbart hast |
-| DPD (DE) | Beim Nachbarn, an Haustür, Garage, Briefkasten, hinter den Mülltonnen, an der Hintertür oder im Paketshop |
+| [DPD](carrier:dpd-de) (DE) | Beim Nachbarn, an Haustür, Garage, Briefkasten, hinter den Mülltonnen, an der Hintertür oder im Paketshop |
 | Österreichische Post | Im Briefkasten, an deinem Abstellort oder bei direkten Nachbarn |
 | Schweizerische Post | Im Briefkasten oder beim Nachbarn. Passt das Paket nicht ins Ablagefach, darf die Post es laut ihren AGB an einem „witterungsgeschützten und sicheren Ort“ ablegen, außer du lehnst das für diese Sendung in der Post-App oder online ab („keine Deponierung“) |
 
@@ -98,7 +98,7 @@ Manchmal, aber entschädigt wird meist der Absender, deshalb geht es über den H
 | Paketdienst | Was du tun kannst | Frist |
 | --- | --- | --- |
 | DHL (DE) | Kennst du den genannten Nachbarn nicht und meldet er sich nicht, kontaktierst du den Kundenservice. Eine Nachforschung ist möglich, DHL rät Empfängern aber, zuerst mit dem Absender zu sprechen | Nach zwei Tagen (unbekannter Nachbar). Fehlender Inhalt: innerhalb von 7 Tagen nach der Zustellung |
-| Hermes (DE) | Sendungsrecherche über das Kontaktformular. Eine „ungeklärte Zustellung“ klärt sich laut Hermes meist in wenigen Werktagen. Für die Verlustmeldung braucht Hermes die Abgabequittung des Absenders und einen Wertnachweis | Recherche frühestens nach 5 Werktagen. Bleibt sie 20 Tage erfolglos (national), folgt die Verlustmeldung |
+| [Hermes](carrier:hermes-de) (DE) | Sendungsrecherche über das Kontaktformular. Eine „ungeklärte Zustellung“ klärt sich laut Hermes meist in wenigen Werktagen. Für die Verlustmeldung braucht Hermes die Abgabequittung des Absenders und einen Wertnachweis | Recherche frühestens nach 5 Werktagen. Bleibt sie 20 Tage erfolglos (national), folgt die Verlustmeldung |
 | DPD (DE) | Nichts Eigenes: Der Versender kann eine offizielle Nachforschung einleiten | Nicht angegeben |
 | Österreichische Post | Nur der Versender beantragt eine Nachforschung, auch wenn „zugestellt“ angezeigt wird. Sie ist derzeit kostenlos | Pakete im Inland 3 Monate, international 6 Monate |
 | Schweizerische Post | Im Inland erfasst du die Nachforschung auch als Empfänger, online oder in der Filiale, wenn du bestätigst, dass du nichts erhalten hast. International startet sie der Absender | Inland bis 1 Jahr nach der Aufgabe, international bis 6 Monate |

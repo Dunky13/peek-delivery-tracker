@@ -125,7 +125,7 @@ Prawdziwe powiadomienia też przychodzą e-mailem czy SMS-em, ale zasady przewo�
 | Kto | Jak wyglądają prawdziwe wiadomości i płatności |
 | --- | --- |
 | Poczta Polska, Pocztex | O pełnomocnictwie lub zgłoszeniu powiadamia drogą elektroniczną albo przesyłką rejestrowaną, a należności pobiera przy doręczeniu lub w placówce. Pocztex nie wysyła linków do płatności i nie prosi SMS-em o dane karty |
-| InPost | Nigdy nie wysyła SMS-ów z informacją o dopłatach, a tym bardziej z linkami zewnętrznymi. Rozliczenia widać tylko w Managerze Paczek albo na fakturze |
+| [InPost](carrier:inpost) | Nigdy nie wysyła SMS-ów z informacją o dopłatach, a tym bardziej z linkami zewnętrznymi. Rozliczenia widać tylko w Managerze Paczek albo na fakturze |
 | KAS | Przy paczkach zgłoszonych przez Pocztę Polską należności celne pobierają pracownicy Poczty podczas doręczenia |
 
 Na co jeszcze uważać:

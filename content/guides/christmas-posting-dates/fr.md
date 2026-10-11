@@ -24,7 +24,7 @@ Aucun transporteur français n'a encore publié ses dates 2026. Celles de Coliss
 | Colissimo | Outre-mer : La Réunion, Mayotte, Guadeloupe, Martinique, Saint-Martin, Saint-Barthélemy, Guyane | Pas encore annoncée (2025 : jeudi 11 décembre) |
 | Chronopost | Tous services | Pas encore annoncée (2024 : collecte le samedi 21 décembre, livraison le mardi 24) |
 | DPD France | Predict, Classic | Pas encore annoncée (2024 : ramassage le vendredi 20 décembre, livraison pour le réveillon) |
-| Mondial Relay | Point Relais, Locker | Pas de date : envoie une semaine à l'avance, conseille Mondial Relay |
+| [Mondial Relay](carrier:mondial-relay) | Point Relais, Locker | Pas de date : envoie une semaine à l'avance, conseille Mondial Relay |
 | [Colis Privé](carrier:colis-prive) | Tous services | Pas encore annoncée (2025 : aucune date trouvée) |
 
 En temps normal, La Poste compte 48 heures (2 jours ouvrables) pour un Colissimo en métropole, et Mondial Relay 3 à 5 jours ouvrés. Vers l'outre-mer, La Poste compte en moyenne 5 à 10 jours pour les Antilles, La Réunion et la Guyane, au moins 10 pour la Polynésie et la Nouvelle-Calédonie, et prévient que la fin d'année peut allonger ces durées. Pour les lettres et les cartes, on n'a trouvé aucune date de Noël chez La Poste : la Lettre verte met 3 jours, à titre indicatif.

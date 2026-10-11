@@ -34,7 +34,7 @@ As mesmas etapas, com outras palavras:
 | Aceite | `Aceite` | `Recolhido pela InPost` | `Enviado/A Caminho` |
 | Em trânsito | `Em trânsito` | `Em trânsito` | `Enviado/A Caminho` |
 | Perto do destino | `Em trânsito` (repete-se) | `Chegada ao centro local de distribuição` | `Enviado/A Caminho`, até sair para entrega |
-| Em entrega | `Em entrega` | Não vem na lista da InPost | `Saiu para Entrega` |
+| Em entrega | `Em entrega` | Não vem na lista da [InPost](carrier:inpost) | `Saiu para Entrega` |
 | Para levantar | `No ponto de entrega` (o aviso diz onde e até quando) | `Colocada no Locker ou Ponto Pack` | `Entregue a um local UPS Access Point` |
 | Entregue | `Entregue` | `Entregue` | `Entregue` |
 
