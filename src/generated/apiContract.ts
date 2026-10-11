@@ -7817,7 +7817,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ppl"
     },
     "trackingUrlTemplate": "https://www.ppl.cz/vyhledat-zasilku?shipmentId={trackingNumber}",
     "linkRules": [
