@@ -150,16 +150,22 @@ struct FirstOpenView: View {
     private var running: Bool {
         !reduceMotion && scenePhase == .active && !covered && atlas != nil && links.route == nil && !showingSample
     }
+    /// A page zoomed open under a hidden bar is laid out without it and drops once the bar shows, so the screen keeps
+    /// its empty bar where that bar draws nothing and lets taps through to the header under it.
+    private static var keepsBar: Bool {
+        if #available(iOS 26.0, *) { true } else { false }
+    }
     private var identity: CarrierVisualIdentity { CarrierVisualIdentity.of(.dhl, catalog: catalog, language: localizer.language) }
 
     var body: some View {
-        // The picture opens on the parcel's own page, which goes back to it as any parcel's does.
-        NavigationStack {
-            GeometryReader { proxy in
-                let top = proxy.safeAreaInsets.top
-                let screen = proxy.size.height + top + proxy.safeAreaInsets.bottom
-                // The map takes what the question and its field leave, within reason.
-                let heroHeight = min(446, max(300, screen - 404))
+        // The screen is measured from the window, so the bar the parcel's page needs does not move it.
+        GeometryReader { window in
+            let top = window.safeAreaInsets.top
+            let screen = window.size.height + top + window.safeAreaInsets.bottom
+            // The map takes what the question and its field leave, within reason.
+            let heroHeight = min(446, max(300, screen - 404))
+            // The picture opens on the parcel's own page, which goes back to it as any parcel's does.
+            NavigationStack {
                 VStack(spacing: 0) {
                     hero(height: heroHeight, top: top)
                         .offset(y: appeared ? 0 : -18)
@@ -168,12 +174,13 @@ struct FirstOpenView: View {
                         .offset(y: appeared ? 0 : 14)
                         .opacity(appeared ? 1 : 0)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .ignoresSafeArea(edges: .top)
-            }
-            .background(Brand.background.ignoresSafeArea())
-            .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(isPresented: $showingSample) {
-                ParcelDetailView(parcelID: FirstOpenJourney.parcelID, transition: transition, sample: sample)
+                .background(Brand.background.ignoresSafeArea())
+                .toolbar(Self.keepsBar ? .visible : .hidden, for: .navigationBar)
+                .navigationDestination(isPresented: $showingSample) {
+                    ParcelDetailView(parcelID: FirstOpenJourney.parcelID, transition: transition, sample: sample)
+                }
             }
         }
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
