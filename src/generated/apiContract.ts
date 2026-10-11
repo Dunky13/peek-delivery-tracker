@@ -2617,7 +2617,8 @@ export const CARRIER_CAPABILITIES = {
         ],
         "params": [
           "tLabels"
-        ]
+        ],
+        "path": "^/tracking/(\\d{20}|\\d{22}|\\d{26}|[A-Z]{2}\\d{9}[A-Z]{2})/?$"
       }
     ],
     "detectionRules": [
@@ -2663,14 +2664,14 @@ export const CARRIER_CAPABILITIES = {
         "preferred": true
       }
     ],
-    "trackingUrlTemplate": "https://tools.usps.com/go/TrackConfirmAction?tLabels={trackingNumber}",
+    "trackingUrlTemplate": "https://tools.usps.com/tracking/{trackingNumber}",
     "aliases": [
       "United States Postal Service"
     ],
     "countries": [
       "US"
     ],
-    "trackingSearchUrl": "https://tools.usps.com/go/TrackConfirmAction"
+    "trackingSearchUrl": "https://tools.usps.com/tracking/"
   },
   "canada-post": {
     "displayName": "Canada Post",
