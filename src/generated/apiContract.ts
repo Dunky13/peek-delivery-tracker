@@ -6845,7 +6845,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "yurtici-kargo",
+      "recognitionRank": 66
     },
     "trackingUrlTemplate": "https://www.yurticikargo.com/tr/online-servisler/gonderi-sorgula?code={trackingNumber}",
     "linkRules": [
