@@ -5586,7 +5586,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "box-now",
+      "recognitionRank": 48
     },
     "linkRules": [],
     "detectionRules": [],
@@ -7652,7 +7653,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "orlen-paczka",
+      "recognitionRank": 49
     },
     "trackingUrlTemplate": "https://www.orlenpaczka.pl/sledz-paczke/?numer={trackingNumber}",
     "linkRules": [
