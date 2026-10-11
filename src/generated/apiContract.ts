@@ -50,7 +50,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "swiss-post-cargo",
-      "recognitionRank": 11
+      "recognitionRank": 110
     },
     "trackingUrlTemplate": "https://apv.swisspost-cargo.com/public/trackandtrace/{trackingNumber}",
     "linkRules": [
@@ -187,7 +187,7 @@ export const CARRIER_CAPABILITIES = {
       "mode": "automatic",
       "adapter": "aliexpress",
       "upstreamName": "AliExpress",
-      "recognitionRank": 14
+      "recognitionRank": 140
     },
     "trackingUrlTemplate": "https://global.cainiao.com/detail.htm?mailNoList={trackingNumber}",
     "linkRules": [
@@ -419,7 +419,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "postlogistics",
-      "recognitionRank": 26
+      "recognitionRank": 260
     },
     "linkRules": [
       {
@@ -575,8 +575,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce",
-      "recognitionRank": 23,
-      "browserRecognitionRank": 90
+      "recognitionRank": 230,
+      "browserRecognitionRank": 900
     },
     "trackingUrlTemplate": "https://www.dhl.com/ch-en/home/tracking.html?tracking-id={trackingNumber}&submit=1",
     "linkRules": [
@@ -807,7 +807,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "fedex",
-      "browserRecognitionRank": 100
+      "browserRecognitionRank": 1000
     },
     "trackingUrlTemplate": "https://www.fedex.com/fedextrack/?trknbr={trackingNumber}",
     "linkRules": [
@@ -876,7 +876,7 @@ export const CARRIER_CAPABILITIES = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 50
+      "recognitionRank": 500
     },
     "trackingUrlTemplate": "https://gls-group.eu/GROUP/en/parcel-tracking?match={trackingNumber}",
     "linkRules": [
@@ -943,7 +943,7 @@ export const CARRIER_CAPABILITIES = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 70
+      "recognitionRank": 700
     },
     "trackingUrlTemplate": "https://www.dpdgroup.com/ch/mydpd/my-parcels/incoming?parcelNumber={trackingNumber}",
     "linkRules": [
@@ -1095,7 +1095,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "relais-colis",
-      "recognitionRank": 25
+      "recognitionRank": 250
     },
     "linkRules": [
       {
@@ -1141,7 +1141,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "la-poste",
-      "recognitionRank": 80
+      "recognitionRank": 800
     },
     "trackingUrlTemplate": "https://www.laposte.fr/outils/suivre-vos-envois?code={trackingNumber}",
     "linkRules": [
@@ -1205,7 +1205,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "chronopost",
-      "recognitionRank": 45
+      "recognitionRank": 450
     },
     "trackingUrlTemplate": "https://www.chronopost.fr/tracking-no-cms/suivi-page?langue=fr&listeNumerosLT={trackingNumber}",
     "linkRules": [
@@ -1258,7 +1258,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gls-fr",
-      "recognitionRank": 61
+      "recognitionRank": 610
     },
     "trackingUrlTemplate": "https://moncolis.gls-france.com/fr/{trackingNumber}",
     "linkRules": [
@@ -1332,7 +1332,7 @@ export const CARRIER_CAPABILITIES = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 30
+      "recognitionRank": 300
     },
     "trackingUrlTemplate": "https://colisprive.com/moncolis/pages/DetailColis.aspx?numColis={trackingNumber}&lang=fr",
     "linkRules": [
@@ -1511,7 +1511,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ciblex",
-      "recognitionRank": 20
+      "recognitionRank": 200
     },
     "trackingUrlTemplate": "https://secure.extranet.ciblex.fr/extranet/client/corps.php?module=colis&colis={trackingNumber}",
     "linkRules": [
@@ -1701,7 +1701,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "hermes-de",
-      "recognitionRank": 40
+      "recognitionRank": 400
     },
     "trackingUrlTemplate": "https://www.myhermes.de/empfangen/sendungsverfolgung/sendungsinformation#{trackingNumber}",
     "linkRules": [
@@ -1762,7 +1762,7 @@ export const CARRIER_CAPABILITIES = {
           "autoComplete": "postal-code"
         }
       ],
-      "recognitionRank": 60
+      "recognitionRank": 600
     },
     "trackingUrlTemplate": "https://gls-group.eu/EU/en/parcel-tracking?match={trackingNumber}",
     "linkRules": [
@@ -1925,7 +1925,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "royal-mail",
-      "browserRecognitionRank": 90
+      "browserRecognitionRank": 900
     },
     "linkRules": [
       {
@@ -2029,7 +2029,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "inpost",
-      "recognitionRank": 38
+      "recognitionRank": 380
     },
     "linkRules": [],
     "detectionRules": [
@@ -2106,7 +2106,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "bpost",
-      "recognitionRank": 37
+      "recognitionRank": 370
     },
     "linkRules": [],
     "detectionRules": [
@@ -2147,7 +2147,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "austrian-post",
-      "recognitionRank": 39
+      "recognitionRank": 390
     },
     "linkRules": [],
     "detectionRules": [
@@ -2175,7 +2175,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "postnord",
-      "recognitionRank": 7
+      "recognitionRank": 70
     },
     "linkRules": [
       {
@@ -2227,7 +2227,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "posti",
-      "recognitionRank": 27
+      "recognitionRank": 270
     },
     "linkRules": [
       {
@@ -2269,7 +2269,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "correos-express",
-      "recognitionRank": 36
+      "recognitionRank": 360
     },
     "linkRules": [],
     "detectionRules": [
@@ -2299,7 +2299,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "seur",
-      "recognitionRank": 43
+      "recognitionRank": 430
     },
     "linkRules": [
       {
@@ -2369,7 +2369,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "nacex",
-      "recognitionRank": 41
+      "recognitionRank": 410
     },
     "linkRules": [
       {
@@ -2441,7 +2441,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ctt-express",
-      "recognitionRank": 35
+      "recognitionRank": 350
     },
     "linkRules": [
       {
@@ -2482,7 +2482,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "poste-italiane",
-      "recognitionRank": 46
+      "recognitionRank": 460
     },
     "linkRules": [
       {
@@ -2529,7 +2529,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "brt",
-      "recognitionRank": 42
+      "recognitionRank": 420
     },
     "linkRules": [
       {
@@ -2604,7 +2604,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tipsa",
-      "recognitionRank": 24
+      "recognitionRank": 240
     },
     "linkRules": [
       {
@@ -2644,7 +2644,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ukrposhta",
-      "recognitionRank": 5
+      "recognitionRank": 50
     },
     "linkRules": [
       {
@@ -2683,7 +2683,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "usps",
-      "browserRecognitionRank": 65
+      "browserRecognitionRank": 650
     },
     "linkRules": [
       {
@@ -2757,7 +2757,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "canada-post",
-      "recognitionRank": 15
+      "recognitionRank": 150
     },
     "linkRules": [
       {
@@ -2796,7 +2796,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "purolator",
-      "recognitionRank": 12
+      "recognitionRank": 120
     },
     "linkRules": [
       {
@@ -2840,7 +2840,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "canpar",
-      "recognitionRank": 34
+      "recognitionRank": 340
     },
     "linkRules": [
       {
@@ -2873,7 +2873,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ontrac",
-      "recognitionRank": 21
+      "recognitionRank": 210
     },
     "linkRules": [
       {
@@ -2956,7 +2956,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "uniuni",
-      "recognitionRank": 33
+      "recognitionRank": 330
     },
     "linkRules": [
       {
@@ -3302,7 +3302,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "four-px",
-      "recognitionRank": 13
+      "recognitionRank": 130
     },
     "linkRules": [
       {
@@ -3369,7 +3369,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "delhivery",
-      "recognitionRank": 16
+      "recognitionRank": 160
     },
     "linkRules": [],
     "detectionRules": [
@@ -3392,7 +3392,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "nz-post",
-      "recognitionRank": 32
+      "recognitionRank": 320
     },
     "linkRules": [
       {
@@ -3561,7 +3561,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sto",
-      "recognitionRank": 10
+      "recognitionRank": 100
     },
     "linkRules": [],
     "detectionRules": [
@@ -3875,7 +3875,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "australia-post",
-      "recognitionRank": 6
+      "recognitionRank": 60
     },
     "linkRules": [
       {
@@ -3999,7 +3999,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ninja-van",
-      "recognitionRank": 28
+      "recognitionRank": 280
     },
     "linkRules": [
       {
@@ -4119,7 +4119,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "poczta-polska",
-      "recognitionRank": 31
+      "recognitionRank": 310
     },
     "linkRules": [
       {
@@ -4279,7 +4279,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tnt",
-      "recognitionRank": 44
+      "recognitionRank": 440
     },
     "linkRules": [],
     "detectionRules": [
@@ -4397,7 +4397,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "the-courier-guy",
-      "recognitionRank": 29
+      "recognitionRank": 290
     },
     "linkRules": [
       {
@@ -4435,7 +4435,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "j-and-t",
-      "recognitionRank": 9
+      "recognitionRank": 90
     },
     "linkRules": [
       {
@@ -4526,7 +4526,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "omgo",
-      "recognitionRank": 1
+      "recognitionRank": 10
     },
     "trackingUrlTemplate": "https://omgoexpress.cn/track-package/",
     "linkRules": [],
@@ -4550,8 +4550,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-express",
-      "recognitionRank": 75,
-      "browserRecognitionRank": 75
+      "recognitionRank": 750,
+      "browserRecognitionRank": 750
     },
     "trackingUrlTemplate": "https://mydhl.express.dhl/gb/en/tracking.html#/results?id={trackingNumber}",
     "linkRules": [
@@ -4644,7 +4644,7 @@ export const CARRIER_CAPABILITIES = {
           "validator": "germanyPostcode"
         }
       ],
-      "recognitionRank": 65
+      "recognitionRank": 650
     },
     "trackingUrlTemplate": "https://tracking.dpd.de/status/en_US/parcel/{trackingNumber}",
     "linkRules": [
@@ -5110,7 +5110,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "j-and-t-cargo",
-      "recognitionRank": 47
+      "recognitionRank": 470
     },
     "trackingUrlTemplate": "https://www.jtcargo.id/networkQuery?waybillNo={trackingNumber}&type=0",
     "linkRules": [
@@ -5153,7 +5153,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-es",
-      "recognitionRank": 19
+      "recognitionRank": 190
     },
     "trackingUrlTemplate": "https://clientesparcel.dhl.es/LiveTracking/ModificarEnvio/{trackingNumber}",
     "linkRules": [
@@ -5193,7 +5193,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-nl",
-      "recognitionRank": 22
+      "recognitionRank": 220
     },
     "trackingUrlTemplate": "https://my.dhlecommerce.nl/home/tracktrace/{trackingNumber}",
     "linkRules": [
@@ -5239,7 +5239,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-pl",
-      "recognitionRank": 18
+      "recognitionRank": 180
     },
     "trackingUrlTemplate": "https://mojdhl.pl/tracking?paczki={trackingNumber}",
     "linkRules": [
@@ -5284,7 +5284,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-uk",
-      "recognitionRank": 17
+      "recognitionRank": 170
     },
     "trackingUrlTemplate": "https://track.dhlecommerce.co.uk/?con={trackingNumber}",
     "linkRules": [
@@ -5326,7 +5326,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-pl",
-      "recognitionRank": 8
+      "recognitionRank": 80
     },
     "trackingUrlTemplate": "https://tracktrace.dpd.com.pl/EN/parcelDetails?typ=1&p1={trackingNumber}",
     "linkRules": [
@@ -5374,7 +5374,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "emile",
-      "recognitionRank": 4
+      "recognitionRank": 40
     },
     "trackingUrlTemplate": "https://www.emileps.com/tracking?tracking={trackingNumber}",
     "linkRules": [
@@ -5410,7 +5410,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-fr",
-      "recognitionRank": 3
+      "recognitionRank": 30
     },
     "trackingUrlTemplate": "https://www.gofo.com/fr/tracking-results/?id={trackingNumber}",
     "linkRules": [
@@ -5459,7 +5459,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gofo-it",
-      "recognitionRank": 2
+      "recognitionRank": 20
     },
     "trackingUrlTemplate": "https://www.gofo.com/it/tracking-results/?id={trackingNumber}",
     "linkRules": [
@@ -5529,7 +5529,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "acs-courier",
-      "recognitionRank": 57
+      "recognitionRank": 570
     },
     "trackingUrlTemplate": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/?trackingNumber={trackingNumber}",
     "linkRules": [
@@ -5621,7 +5621,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "aras-kargo",
-      "recognitionRank": 67
+      "recognitionRank": 670
     },
     "trackingUrlTemplate": "https://kargotakip.araskargo.com.tr/mainpage.aspx?code={trackingNumber}",
     "linkRules": [
@@ -5656,7 +5656,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "box-now",
-      "recognitionRank": 48
+      "recognitionRank": 480
     },
     "linkRules": [],
     "detectionRules": [],
@@ -6005,7 +6005,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "fan-courier",
-      "recognitionRank": 51
+      "recognitionRank": 510
     },
     "trackingUrlTemplate": "https://www.fancourier.ro/awb-tracking/?tracking={trackingNumber}",
     "linkRules": [
@@ -6068,7 +6068,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "geniki-taxydromiki",
-      "recognitionRank": 58
+      "recognitionRank": 580
     },
     "trackingUrlTemplate": "https://taxydromiki.com/track/{trackingNumber}",
     "linkRules": [
@@ -6162,7 +6162,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "gls-it",
-      "recognitionRank": 59
+      "recognitionRank": 590
     },
     "trackingUrlTemplate": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/?match={trackingNumber}&type=NAT",
     "linkRules": [
@@ -6431,7 +6431,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mng-kargo",
+      "recognitionRank": 740
     },
     "trackingUrlTemplate": "https://www.dhlecommerce.com.tr/gonderitakip",
     "linkRules": [],
@@ -6555,7 +6556,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "ptt",
-      "recognitionRank": 68
+      "recognitionRank": 680
     },
     "trackingUrlTemplate": "https://www.ptt.gov.tr/",
     "linkRules": [],
@@ -6698,7 +6699,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sameday",
-      "recognitionRank": 53
+      "recognitionRank": 530
     },
     "linkRules": [],
     "detectionRules": [
@@ -6725,7 +6726,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "speedy",
-      "recognitionRank": 54
+      "recognitionRank": 540
     },
     "linkRules": [],
     "detectionRules": [],
@@ -6931,7 +6932,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "yurtici-kargo",
-      "recognitionRank": 66
+      "recognitionRank": 660
     },
     "trackingUrlTemplate": "https://www.yurticikargo.com/tr/online-servisler/gonderi-sorgula?code={trackingNumber}",
     "linkRules": [
@@ -7034,7 +7035,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cargus",
+      "recognitionRank": 730
     },
     "trackingUrlTemplate": "https://www.cargus.ro/personal/urmareste-coletul/?tracking_number={trackingNumber}",
     "linkRules": [
@@ -7169,7 +7171,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-ie",
-      "recognitionRank": 62
+      "recognitionRank": 620
     },
     "trackingUrlTemplate": "https://www.dpd.ie/tracking/?consignmentNumber={trackingNumber}",
     "linkRules": [
@@ -7241,7 +7243,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "econt",
-      "recognitionRank": 56
+      "recognitionRank": 560
     },
     "trackingUrlTemplate": "https://www.econt.com/services/track-shipment/{trackingNumber}",
     "linkRules": [
@@ -7289,7 +7291,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "elta",
-      "recognitionRank": 55
+      "recognitionRank": 550
     },
     "trackingUrlTemplate": "https://www.elta.gr/track?code={trackingNumber}",
     "linkRules": [
@@ -7378,7 +7380,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "foxpost",
-      "recognitionRank": 52
+      "recognitionRank": 520
     },
     "trackingUrlTemplate": "https://foxpost.hu/csomagkovetes/?code={trackingNumber}",
     "linkRules": [
@@ -7504,7 +7506,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "helthjem",
-      "recognitionRank": 71
+      "recognitionRank": 710
     },
     "trackingUrlTemplate": "https://helthjem.no/sporing/{trackingNumber}",
     "linkRules": [
@@ -7691,7 +7693,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "matkahuolto",
-      "recognitionRank": 69
+      "recognitionRank": 690
     },
     "trackingUrlTemplate": "https://www.matkahuolto.fi/seuranta?parcelNumber={trackingNumber}",
     "linkRules": [
@@ -7736,7 +7738,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "omniva",
-      "recognitionRank": 64
+      "recognitionRank": 640
     },
     "trackingUrlTemplate": "https://minu.omniva.ee/track/{trackingNumber}",
     "linkRules": [
@@ -7796,7 +7798,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "orlen-paczka",
-      "recognitionRank": 49
+      "recognitionRank": 490
     },
     "trackingUrlTemplate": "https://www.orlenpaczka.pl/sledz-paczke/?numer={trackingNumber}",
     "linkRules": [
@@ -8090,7 +8092,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "venipak",
-      "recognitionRank": 63
+      "recognitionRank": 630
     },
     "trackingUrlTemplate": "https://venipak.com/lt/en/tracking/track/{trackingNumber}",
     "linkRules": [
@@ -8134,7 +8136,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "vinted-go",
-      "recognitionRank": 72
+      "recognitionRank": 720
     },
     "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}",
     "linkRules": [
