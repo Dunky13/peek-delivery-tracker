@@ -15,6 +15,14 @@
 - Keep one topic in one place: routing in `docs/ROUTING.md`, logs/audit/Sentry/metrics in `docs/OBSERVABILITY.md`, provider results in `https://github.com/plhery/universal-parcel-scraper/blob/main/providers/COVERAGE.md`. Link to files rather than section anchors.
 - Update the docs in the same commit as the behaviour they describe. When a migration needs a rollout order, put it in the commit message, not the docs.
 
+## Guides
+
+The guides and carrier pages (`content/guides/`, `content/carriers/`) are proofread when the user asks, every few weeks; don't raise these points between proofreads. Besides the text, check the facts that change with time against their sources, in every language:
+
+- Christmas posting dates (`christmas-posting-dates`): replace last year's dates with this year's as each carrier publishes them, and say so in the opening paragraph.
+- The EU handling fee of €2 per item on online orders from outside the EU, due from 1 November 2026 (`customs`): once that day has passed, check that it applies, put it in the present tense and say how each post or carrier passes it on to the recipient.
+- Any other "not announced yet", "from <date>" or "until <date>" whose date has passed.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know
