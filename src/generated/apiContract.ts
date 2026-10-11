@@ -5572,10 +5572,21 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "aras-kargo",
+      "recognitionRank": 67
     },
-    "trackingUrlTemplate": "https://www.araskargo.com.tr/",
-    "linkRules": [],
+    "trackingUrlTemplate": "https://kargotakip.araskargo.com.tr/mainpage.aspx?code={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "kargotakip.araskargo.com.tr"
+        ],
+        "pathPattern": "^/mainpage\\.aspx$",
+        "params": [
+          "code"
+        ]
+      }
+    ],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.araskargo.com.tr/"
   },
