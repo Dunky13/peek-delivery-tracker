@@ -181,7 +181,10 @@ describe('carrier detection', () => {
     // Sources: https://www.test-achats.be/plainte/plaintes-publiques/site-de-plainte-et-suivi-colis/CPTBE01224677-52
     // and https://www.test-achats.be/plainte/plaintes-publiques/colis-perdu-%28voire-vol-C3-A9-en-int/925248238424196550
     expect(detectCarrier('CE500137339BE')).toBe('bpost');
-    expect(detectCarrier('UI539489067BE')).toBe('bpost');
+    // bpost's U barcodes only take a shipment through customs and cannot be
+    // tracked, so scraper 0.84.1 stops naming bpost for them. Either answer
+    // holds until the app runs that release.
+    expect(['bpost', 'unknown']).toContain(detectCarrier('UI539489067BE'));
     // REPORTED REAL 18/24-digit forms (leading zeros and full precision preserved).
     // Sources: https://www.test-achats.be/plainte/plaintes-publiques/absence-de-possibilit-C3-A9-de-gara/b9311a48ffb765e0aa
     // and https://www.test-achats.be/plainte/plaintes-publiques/facteur-qui-a-renvoyer-un-coli/d5dc57a15ab2b157c6
