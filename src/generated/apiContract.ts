@@ -6008,7 +6008,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "geniki-taxydromiki",
+      "recognitionRank": 58
     },
     "trackingUrlTemplate": "https://taxydromiki.com/track/{trackingNumber}",
     "linkRules": [
@@ -6082,9 +6083,10 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gls-it",
+      "recognitionRank": 59
     },
-    "trackingUrlTemplate": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/?match={trackingNumber}",
+    "trackingUrlTemplate": "https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/?match={trackingNumber}&type=NAT",
     "linkRules": [
       {
         "domains": [
