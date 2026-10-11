@@ -42,13 +42,21 @@ export function circleOf(size: Size, insets: Insets) {
  * The camera that frames a route in the room the insets leave. `covered` is a box the card writes over the map, such as
  * a second carrier's mark in its corner, and `shown` tells how much of the journey a camera shows (see `shownOf`), around
  * the box when it is given one. A route that would pass under the box, or that loses a name or Pip's spot to it, is
- * framed below it or beside it: where it shows most, then where it is drawn larger. Every other route keeps its usual
- * frame.
+ * framed below it or beside it: where it shows most, then where it is drawn larger. `pip` says Pip looks for a spot
+ * beside the parcel's dot, which a route that ends at the frame's edge can leave him none of: it is framed again with
+ * room for him there. Every other route keeps its usual frame.
  */
 export function targetCamera(route: Route, mode: MapMode, size: Size, insets: Insets, shape: Shape, covered?: Rect,
-  shown?: (camera: Camera, covered?: Rect) => number): Camera {
+  shown?: (camera: Camera, covered?: Rect) => number, pip = false): Camera {
   const usual = framedCamera(route, mode, size, insets, shape);
-  if (!covered || shape === 'circle') return usual;
+  if (shape === 'circle') return usual;
+  const clear = covered ? clearOf(route, mode, size, insets, shape, usual, covered, shown) : usual;
+  return clear === usual && pip && shown ? roomForPip(route, mode, size, insets, shape, usual, (camera) => shown(camera, covered)) : clear;
+}
+
+/** The frame of a route the card writes over, below the box or beside it when the usual one loses something to it. */
+function clearOf(route: Route, mode: MapMode, size: Size, insets: Insets, shape: Shape, usual: Camera, covered: Rect,
+  shown?: (camera: Camera, covered?: Rect) => number): Camera {
   const under = passesUnder(route, usual, covered);
   const names = (camera: Camera) => shown?.(camera, covered) ?? 0;
   const kept = names(usual);
@@ -67,6 +75,34 @@ export function targetCamera(route: Route, mode: MapMode, size: Size, insets: In
     .sort((a, b) => b.names - a.names || b.scale - a.scale || a.index - b.index);
   // Nothing under the box and nothing to win back: the route stays where every card shows it.
   return under || best.names > kept ? best.camera : usual;
+}
+
+/**
+ * Pip stands beside the parcel's dot, and a route that ends at the frame's edge can leave him no room there. It is
+ * framed again with more room on the dot's side, across and along, a step at a time, and takes the largest frame where
+ * he stands and every place keeps its name. A route he already stands beside keeps its frame.
+ */
+function roomForPip(route: Route, mode: MapMode, size: Size, insets: Insets, shape: Shape, usual: Camera,
+  shown: (camera: Camera) => number): Camera {
+  const kept = shown(usual);
+  const current = route.current?.place.coordinate;
+  // A name counts a whole point and Pip half of one: he has a spot already.
+  if (kept % 1 || !current) return usual;
+  const dot = projection(usual)(current);
+  if (!dot) return usual;
+  const across: keyof Insets = dot[0] < (insets.left + size.width - insets.right) / 2 ? 'left' : 'right';
+  const along: keyof Insets = dot[1] < (insets.top + size.height - insets.bottom) / 2 ? 'top' : 'bottom';
+  const frames: Camera[] = [];
+  for (let further = FURTHER; further <= FURTHER * 6; further += FURTHER) {
+    for (const sides of [[across], [along], [across, along]]) {
+      const room = { ...insets };
+      for (const side of sides) room[side] += further;
+      frames.push(framedCamera(route, mode, size, room, shape));
+    }
+  }
+  // The largest frame first, and of two as large, the one with less room added.
+  return frames.map((camera, index) => ({ camera, index })).sort((a, b) => b.camera.scale - a.camera.scale || a.index - b.index)
+    .find(({ camera }) => shown(camera) > kept)?.camera ?? usual;
 }
 
 /** How much of the journey a map shows: a point for each place it names, and half of one for Pip when he has a spot. */

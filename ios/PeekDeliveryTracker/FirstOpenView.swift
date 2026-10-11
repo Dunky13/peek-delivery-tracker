@@ -16,10 +16,10 @@ enum FirstOpenJourney {
     static let steps = 5
     /// What someone who asked for less motion sees: the parcel a day away, its route drawn.
     static let stillStep = 3
-    static let linkID = "SampLeParceL"
     /// The number says what the parcel is, where a note would have had to.
     static let trackingNumber = "123EXAMPLE"
-    private static let parcelID = UUID(uuidString: "5A3B1E00-0000-4000-8000-000000000000")!
+    /// The same parcel all along, from the first screen's picture to the page it opens.
+    static let parcelID = UUID(uuidString: "5A3B1E00-0000-4000-8000-000000000000")!
     private static let kiosk = "Kiosk im Hauptbahnhof"
 
     private struct Stop {
@@ -105,12 +105,6 @@ enum FirstOpenJourney {
         )
     }
 
-    /// Opens the parcel, whatever the journey on the first screen has come to.
-    @MainActor static func open(in links: ParcelLinkStore, localizer: Localizer) {
-        let parcel = delivered(localizer: localizer)
-        links.openSample(page(of: parcel), name: parcel.label)
-    }
-
     /// How long a scan stays before the next one comes in: the last mile and the arrival get a longer look.
     static func hold(_ step: Int) -> Double {
         switch step {
@@ -127,22 +121,6 @@ enum FirstOpenJourney {
         case 5: "\(localizer.text("stage.delivered")) · \(kiosk), 18:05"
         default: nil
         }
-    }
-
-    /// The parcel as a link shows it, for the page that opens when the picture is tapped.
-    static func page(of parcel: Parcel) -> PublicParcelResponse {
-        let data = parcel.carrierData
-        return PublicParcelResponse(
-            link: ParcelLink(id: linkID, role: .viewer, kind: .lookup, createdAt: parcel.createdAt,
-                             numberShown: true, canKeep: false, gift: false, shared: true),
-            package: PublicPackage(
-                id: parcel.id, trackingNumber: parcel.trackingNumber, label: "", carrier: parcel.carrier, createdAt: parcel.createdAt,
-                expectedDelivery: parcel.expectedDelivery, lastSyncedAt: parcel.lastSyncedAt, syncStatus: parcel.syncStatus,
-                carrierData: PublicPackageCarrierData(senderName: data?.senderName, pickupPoint: data?.pickupPoint,
-                                                      weightKg: data?.weightKg, destinationCountry: data?.destinationCountry),
-                notificationsMuted: false, trackingEvents: parcel.trackingEvents
-            )
-        )
     }
 }
 
@@ -163,28 +141,41 @@ struct FirstOpenView: View {
     @State private var step = FirstOpenJourney.stillStep
     @State private var appeared = false
     @State private var atlas: WorldAtlas?
+    /// The parcel the picture opens on, picked up, as its page shows it.
+    @State private var sample: Parcel?
+    @State private var showingSample = false
+    @Namespace private var transition
     @ObservedObject private var catalog = CarrierCatalog.shared
 
-    private var running: Bool { !reduceMotion && scenePhase == .active && !covered && atlas != nil && links.route == nil }
+    private var running: Bool {
+        !reduceMotion && scenePhase == .active && !covered && atlas != nil && links.route == nil && !showingSample
+    }
     private var identity: CarrierVisualIdentity { CarrierVisualIdentity.of(.dhl, catalog: catalog, language: localizer.language) }
 
     var body: some View {
-        GeometryReader { proxy in
-            let top = proxy.safeAreaInsets.top
-            let screen = proxy.size.height + top + proxy.safeAreaInsets.bottom
-            // The map takes what the question and its field leave, within reason.
-            let heroHeight = min(446, max(300, screen - 404))
-            VStack(spacing: 0) {
-                hero(height: heroHeight, top: top)
-                    .offset(y: appeared ? 0 : -18)
-                    .opacity(appeared ? 1 : 0)
-                ask(roomy: screen >= 800)
-                    .offset(y: appeared ? 0 : 14)
-                    .opacity(appeared ? 1 : 0)
+        // The picture opens on the parcel's own page, which goes back to it as any parcel's does.
+        NavigationStack {
+            GeometryReader { proxy in
+                let top = proxy.safeAreaInsets.top
+                let screen = proxy.size.height + top + proxy.safeAreaInsets.bottom
+                // The map takes what the question and its field leave, within reason.
+                let heroHeight = min(446, max(300, screen - 404))
+                VStack(spacing: 0) {
+                    hero(height: heroHeight, top: top)
+                        .offset(y: appeared ? 0 : -18)
+                        .opacity(appeared ? 1 : 0)
+                    ask(roomy: screen >= 800)
+                        .offset(y: appeared ? 0 : 14)
+                        .opacity(appeared ? 1 : 0)
+                }
+                .ignoresSafeArea(edges: .top)
             }
-            .ignoresSafeArea(edges: .top)
+            .background(Brand.background.ignoresSafeArea())
+            .toolbar(.hidden, for: .navigationBar)
+            .navigationDestination(isPresented: $showingSample) {
+                ParcelDetailView(parcelID: FirstOpenJourney.parcelID, transition: transition, sample: sample)
+            }
         }
-        .background(Brand.background.ignoresSafeArea())
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .task {
             let loaded = await WorldAtlas.bundled.value
@@ -207,7 +198,10 @@ struct FirstOpenView: View {
 
     private func hero(height: CGFloat, top: CGFloat) -> some View {
         let parcel = FirstOpenJourney.parcel(step: step, name: FirstOpenJourney.name(localizer))
-        return Button { FirstOpenJourney.open(in: links, localizer: localizer) } label: {
+        return Button {
+            sample = FirstOpenJourney.delivered(localizer: localizer)
+            showingSample = true
+        } label: {
             ZStack(alignment: .bottom) {
                 identity.surface
                 if let atlas {
@@ -238,6 +232,7 @@ struct FirstOpenView: View {
             .frame(height: height)
             .clipShape(UnevenRoundedRectangle(bottomLeadingRadius: 38, bottomTrailingRadius: 38, style: .continuous))
             .contentShape(Rectangle())
+            .matchedTransitionSource(id: FirstOpenJourney.parcelID, in: transition)
         }
         .buttonStyle(FirstOpenHeroStyle())
         .accessibilityLabel(localizer.text("landing.pip.open"))
@@ -454,14 +449,16 @@ struct CarrierFleet: View {
 
 // MARK: - Nothing followed yet
 
-/// The deliveries with nothing in them: Pip waits by the question, and the ways to answer it.
+/// The deliveries with nothing in them: Pip waits by the question, and the ways to answer it. Tapped, he opens the
+/// sample parcel's page, which grows out of him.
 struct DeliveriesEmptyState: View {
+    let transition: Namespace.ID
     let onAdd: (FirstParcelRequest) -> Void
+    let onSample: () -> Void
 
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var store: ParcelStore
     @EnvironmentObject private var localizer: Localizer
-    @EnvironmentObject private var links: ParcelLinkStore
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var pressed = false
 
@@ -469,10 +466,11 @@ struct DeliveriesEmptyState: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Button { FirstOpenJourney.open(in: links, localizer: localizer) } label: {
+            Button(action: onSample) {
                 UnwrappingParcel(open: 0, pressed: pressed)
                     .frame(width: 204, height: 204 * 31 / 30)
                     .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.64), value: pressed)
+                    .matchedTransitionSource(id: FirstOpenJourney.parcelID, in: transition)
             }
             .buttonStyle(PipPressStyle { pressed = $0 })
             .accessibilityLabel(localizer.text("landing.pip.open"))

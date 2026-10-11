@@ -4,6 +4,9 @@ import UIKit
 struct ParcelDetailView: View {
     let parcelID: UUID
     let transition: Namespace.ID
+    /// A made-up parcel, shown as a followed one would be. Nobody follows it, so nothing on it can be changed, shared or
+    /// checked, and it asks nothing.
+    var sample: Parcel?
 
     @EnvironmentObject private var store: ParcelStore
     @EnvironmentObject private var localizer: Localizer
@@ -80,7 +83,7 @@ struct ParcelDetailView: View {
         .navigationTransition(.zoom(sourceID: parcelID, in: transition))
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
-            if let parcel {
+            if let parcel, sample == nil {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button(localizer.text("detail.editTitle"), systemImage: "pencil") {
@@ -188,7 +191,7 @@ struct ParcelDetailView: View {
         }
     }
 
-    private var parcel: Parcel? { store.parcels.first { $0.id == parcelID || $0.carrierData?.originalPackageID == parcelID } }
+    private var parcel: Parcel? { sample ?? store.parcels.first { $0.id == parcelID || $0.carrierData?.originalPackageID == parcelID } }
 
     /// The page shows what the carrier answered: a carrier is being asked, or one has answered.
     private func showsHistory(_ parcel: Parcel) -> Bool {
@@ -197,8 +200,8 @@ struct ParcelDetailView: View {
 
     /// What the question at the end of the page is asked about, or nil while it asks nothing.
     private func feedbackPage(_ parcel: Parcel) -> ParcelFeedbackModel.Page? {
-        // The demo's stories are made up: nothing is asked of them.
-        var madeUp = store.isDemo
+        // The demo's stories and the sample are made up: nothing is asked of them.
+        var madeUp = store.isDemo || sample != nil
         #if DEBUG
         if ParcelFeedbackPreview.variant != nil { madeUp = false }
         #endif
@@ -235,7 +238,8 @@ struct ParcelDetailView: View {
         let deliveryLine = delivering.map {
             localizer.text("parcel.deliveryCarrier", ["carrier": catalog.info(for: $0, language: localizer.language).displayName])
         }
-        let trackingLinks = catalog.trackingLinks(for: parcel, language: localizer.language)
+        // A made-up number has no page at its carrier.
+        let trackingLinks = sample == nil ? catalog.trackingLinks(for: parcel, language: localizer.language) : []
         let placed = parcel.trackingEvents.contains { $0.place != nil }
         let route = placed ? atlas.map { ParcelRoute(parcel: parcel, atlas: $0, language: localizer.language) } : nil
         let email = store.deliveryEmail
@@ -245,27 +249,30 @@ struct ParcelDetailView: View {
         return VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    Button { carrierEditor = CarrierEditorRequest() } label: {
-                        CarrierFleetMark(identity: branding)
-                            .overlay(alignment: .topLeading) {
-                                if let delivery {
-                                    // Under the first mark, which stays where every card has it: an unseen copy of it holds its room.
-                                    VStack(alignment: .leading, spacing: 7) {
-                                        CarrierFleetMark(identity: branding).hidden()
-                                        CarrierFleetMark(identity: delivery)
-                                            .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.cardSpace)) } action: { deliveryMark = $0 }
-                                    }
-                                    .fixedSize()
+                    let marks = CarrierFleetMark(identity: branding)
+                        .overlay(alignment: .topLeading) {
+                            if let delivery {
+                                // Under the first mark, which stays where every card has it: an unseen copy of it holds its room.
+                                VStack(alignment: .leading, spacing: 7) {
+                                    CarrierFleetMark(identity: branding).hidden()
+                                    CarrierFleetMark(identity: delivery)
+                                        .onGeometryChange(for: CGRect.self) { $0.frame(in: .named(Self.cardSpace)) } action: { deliveryMark = $0 }
                                 }
+                                .fixedSize()
                             }
+                        }
+                    if sample == nil {
+                        Button { carrierEditor = CarrierEditorRequest() } label: { marks }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel([
+                                localizer.text("detail.changeCarrierFrom", [
+                                    "carrier": catalog.info(for: parcel.displayedCarrier, language: localizer.language).displayName,
+                                ]),
+                                deliveryLine,
+                            ].compactMap { $0 }.joined(separator: ". "))
+                    } else {
+                        marks
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel([
-                        localizer.text("detail.changeCarrierFrom", [
-                            "carrier": catalog.info(for: parcel.displayedCarrier, language: localizer.language).displayName,
-                        ]),
-                        deliveryLine,
-                    ].compactMap { $0 }.joined(separator: ". "))
                     Spacer(minLength: 8)
                     if placed {
                         Button(action: openMap) {
@@ -279,17 +286,19 @@ struct ParcelDetailView: View {
                         .disabled(route == nil)
                         .accessibilityLabel(localizer.text("map.open"))
                     }
-                    Button { showingShare = true } label: {
-                        Image(systemName: "square.and.arrow.up")
-                            .font(.system(size: 16))
-                            .frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
+                    if sample == nil {
+                        Button { showingShare = true } label: {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: 16))
+                                .frame(width: 44, height: 44)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(branding.ink.opacity(0.75))
+                        .accessibilityLabel(localizer.text("link.shareAria"))
                     }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(branding.ink.opacity(0.75))
-                    .accessibilityLabel(localizer.text("link.shareAria"))
                     // Alerts need an account: a parcel followed without one has no bell.
-                    if !store.isGuest {
+                    if !store.isGuest, sample == nil {
                     Button {
                         if opensAlerts {
                             showingAlerts = true
@@ -384,7 +393,7 @@ struct ParcelDetailView: View {
             .background(branding.surface, in: RoundedRectangle(cornerRadius: 18))
 
             // Offered once, on a delivered parcel. Accepted, it stays as one line until the parcel is closed.
-            if let email, emailOffer == .accepted || email.isOffered(on: parcel) {
+            if sample == nil, let email, emailOffer == .accepted || email.isOffered(on: parcel) {
                 DeliveryEmailOffer(address: email.address, phase: emailOffer,
                                    turnOn: { answerEmailOffer(true) }, notNow: { answerEmailOffer(false) })
                     .transition(DeliveryEmailOffer.leaving)
@@ -604,7 +613,7 @@ struct ParcelDetailView: View {
                 }
             }
 
-            if !parcel.isArchived && catalog.tracksAutomatically(parcel.activeTrackingCarrier) {
+            if sample == nil && !parcel.isArchived && catalog.tracksAutomatically(parcel.activeTrackingCarrier) {
                 Button {
                     run { try await store.refresh(parcel) }
                 } label: {

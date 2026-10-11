@@ -631,6 +631,36 @@ final class ParcelRouteTests: XCTestCase {
         }
     }
 
+    func testAJourneyThatEndsAtTheEdgeMakesRoomForPip() throws {
+        let url = try XCTUnwrap(Bundle.main.url(forResource: "World", withExtension: "json"))
+        let atlas = try WorldAtlas(data: Data(contentsOf: url))
+        // The parcel's page, and a parcel picked up in Zürich, at the frame's edge, just past Basel.
+        let size = CGSize(width: 358, height: 176)
+        let card = EdgeInsets(top: 40, leading: 16, bottom: 44, trailing: 16)
+        let request = PipRequest(mood: .joy, ceiling: 52, floor: 160)
+        func overlay(_ route: ParcelRoute, _ camera: GlobeCamera) -> MapOverlay {
+            MapOverlay(route: route, camera: camera, size: size, insets: card, labels: .ends, mode: .journey, context: false, atlas: atlas,
+                       locale: Locale(identifier: "en"), countryName: { $0 }, pip: request)
+        }
+        func framing(_ route: ParcelRoute, pip: Bool) -> GlobeCamera {
+            .framing(route, mode: .journey, in: size, insets: card, shown: { camera, _ in overlay(route, camera).shown }, pip: pip)
+        }
+        let picked = ParcelRoute(places: [city("Shenzhen", "CN", 114.06, 22.54), leipzig, basel, city("Zürich", "CH", 8.55, 47.37)])
+        let usual = framing(picked, pip: false)
+        XCTAssertNil(overlay(picked, usual).pip)
+        let roomy = framing(picked, pip: true)
+        let drawn = overlay(picked, roomy)
+        XCTAssertEqual(try XCTUnwrap(drawn.pip).mood, .joy)
+        XCTAssertLessThan(roomy.scale, usual.scale)
+        XCTAssertEqual(drawn.labels.map(\.text), ["Zürich", "Shenzhen"])
+        XCTAssertTrue(drawn.dots.allSatisfy { $0.point.x > 16 && $0.point.x < size.width - 16 && $0.point.y > 40 && $0.point.y < size.height - 44 })
+        // A journey he already stands beside keeps its frame.
+        let beside = ParcelRoute(places: [city("Berlin", "DE", 13.405, 52.52), city("Neuenstein", "DE", 9.58, 49.2), basel,
+                                          city("Härkingen", "CH", 7.821, 47.305)])
+        XCTAssertNotNil(overlay(beside, framing(beside, pip: false)).pip)
+        XCTAssertEqual(framing(beside, pip: true), framing(beside, pip: false))
+    }
+
     func testDemoParcelsCarryPlaces() {
         let parcels = DemoRepository.seed()
         let matcha = parcels.first { $0.label.hasPrefix("Matcha") }

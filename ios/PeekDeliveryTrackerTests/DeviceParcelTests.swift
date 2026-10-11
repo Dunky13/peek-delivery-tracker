@@ -466,24 +466,21 @@ final class DeviceParcelTests: XCTestCase {
     func testTheSampleOpensOnItsWholeStory() {
         let localizer = Localizer()
         let delivered = FirstOpenJourney.delivered(localizer: localizer, now: Date(timeIntervalSince1970: 1_800_000_000))
+        // The page a tap opens shows the same parcel the picture follows, picked up.
         XCTAssertEqual(delivered.id, FirstOpenJourney.parcel(step: 1, name: "", now: Date()).id)
-        // The page a tap opens shows the same parcel, picked up, and offers nothing to keep.
-        let page = FirstOpenJourney.page(of: delivered)
-        XCTAssertTrue(ParcelLinkRoute.validID(page.link.id))
-        XCTAssertFalse(page.link.canKeep)
-        let shown = Parcel(shared: page.package)
-        XCTAssertEqual(shown.currentStage, .delivered)
-        XCTAssertEqual(shown.trackingNumber, "123EXAMPLE")
-        XCTAssertEqual(PickupPoint(shown.carrierData?.pickupPoint)?.name, "Kiosk im Hauptbahnhof")
-        XCTAssertNotNil(shown.carrierData?.senderName)
-        XCTAssertEqual(shown.stampOrigin, "CN")
+        XCTAssertEqual(delivered.id, FirstOpenJourney.parcelID)
+        XCTAssertEqual(delivered.currentStage, .delivered)
+        XCTAssertEqual(delivered.trackingNumber, "123EXAMPLE")
+        XCTAssertEqual(PickupPoint(delivered.carrierData?.pickupPoint)?.name, "Kiosk im Hauptbahnhof")
+        XCTAssertNotNil(delivered.carrierData?.senderName)
+        XCTAssertEqual(delivered.stampOrigin, "CN")
         // Every scan has its own words, and every placed one a country the history flags.
-        for event in shown.trackingEvents {
+        for event in delivered.trackingEvents {
             XCTAssertFalse(event.description.isEmpty)
             XCTAssertFalse(event.description.hasPrefix("sample."), event.description)
             if let location = event.location { XCTAssertNotNil(TrackingLocation.place(location).country, location) }
         }
-        XCTAssertEqual(Set(shown.trackingEvents.compactMap(\.location).compactMap { TrackingLocation.place($0).country }), ["CN", "DE", "CH"])
+        XCTAssertEqual(Set(delivered.trackingEvents.compactMap(\.location).compactMap { TrackingLocation.place($0).country }), ["CN", "DE", "CH"])
     }
 }
 

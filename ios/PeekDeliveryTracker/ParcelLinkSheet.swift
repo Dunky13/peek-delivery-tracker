@@ -52,10 +52,10 @@ struct ParcelLinkSheet: View {
         }
     }
 
-    /// What the question under the history is asked about. A gift as its recipient sees it, the
-    /// sample and a link that shows no parcel ask nothing.
+    /// What the question under the history is asked about. A gift as its recipient sees it and a
+    /// link that shows no parcel ask nothing.
     private var feedbackPage: ParcelFeedbackModel.Page? {
-        guard case .shown(let response) = links.phase, !links.isSample, let link = links.route,
+        guard case .shown(let response) = links.phase, let link = links.route,
               response.gift != .wrapped, response.gift != .opened else { return nil }
         let parcel = Parcel(shared: response.package)
         // A build without a server reads no link: what it shows is made up.
@@ -77,7 +77,7 @@ struct ParcelLinkSheet: View {
     /// A gift keeps the sheet to itself; so does a link that shows nothing.
     private var title: String {
         switch links.phase {
-        case .shown(let response): links.isSample || response.gift == .wrapped || response.gift == .opened ? "" : localizer.text("link.shared")
+        case .shown(let response): response.gift == .wrapped || response.gift == .opened ? "" : localizer.text("link.shared")
         case .stopped: ""
         case .loading, .unavailable, .failed: localizer.text("link.shared")
         }
@@ -119,8 +119,7 @@ struct ParcelLinkSheet: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // The number and the carrier's own page would tell where a gift comes from.
                     if !wrapped {
-                        SharedParcelNumber(parcel: parcel, hint: response.package.numberHint, tint: tint,
-                                           carrierPages: !links.isSample) { feedback.visited($0.name) }
+                        SharedParcelNumber(parcel: parcel, hint: response.package.numberHint, tint: tint) { feedback.visited($0.name) }
                     }
                     if Self.showsHistory(parcel) {
                         ParcelJournal(parcel: parcel, tint: tint)
@@ -765,8 +764,6 @@ private struct SharedParcelNumber: View {
     let parcel: Parcel
     let hint: ParcelNumberHint?
     let tint: Color
-    /// A made-up number has no page at its carrier.
-    var carrierPages = true
     /// The reader leaves for a carrier's own page.
     let onVisit: (ParcelTrackingLink) -> Void
 
@@ -800,9 +797,9 @@ private struct SharedParcelNumber: View {
                         .accessibilityLabel(localizer.text(copiedNumber == entry.number ? "detail.copied" : "detail.copyTracking")
                             + (numbers.count > 1 ? " — " + catalog.info(for: entry.carrier, language: localizer.language).displayName : ""))
                     }
-                    if carrierPages { carrierLinks(pages.own[index], own: true) }
+                    carrierLinks(pages.own[index], own: true)
                 }
-                if carrierPages { carrierLinks(pages.loose, own: false) }
+                carrierLinks(pages.loose, own: false)
             }
         }
     }

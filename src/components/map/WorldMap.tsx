@@ -120,11 +120,11 @@ export function WorldMap({
     if (!ready || !size) return null;
     const room = { top, right, bottom, left };
     // What the card writes over the map also moves it when a place of the journey would lose its name to it, or Pip
-    // his spot beside the parcel.
+    // his spot beside the parcel; and a route that leaves him no spot at its end is framed with room for him there.
     const standing = pipMood ? { mood: pipMood, ceiling: pipCeiling, floor: pipFloor, inset: pipInset } : null;
     const shown = (camera: Camera, box?: Rect) =>
       shownOf(layout(framed, camera, size, room, shape, labels, sites, mode, false, languageTag, standing, textWidth, undefined, box));
-    return targetCamera(framed, mode, size, room, shape, written, written && shown);
+    return targetCamera(framed, mode, size, room, shape, written, written || standing ? shown : undefined, !!standing);
   }, [ready, framed, mode, size, top, right, bottom, left, shape, written, labels, sites, languageTag, pipMood, pipCeiling, pipFloor, pipInset]);
 
   // Only a change of view, or recentering, brings a moved map back; a new frame or scan leaves it where it was put.

@@ -58,7 +58,7 @@ export async function journeyMap(parcel: ParcelWithEvents, languageTag: string, 
   const width = (text: string) => textWidth(text, LABEL_SIZE, GEIST);
   const drawn = (camera: Camera, box?: Rect) =>
     layout(route, camera, size, insets, 'rect', 'ends', false, mode, false, languageTag, pip, width, undefined, box);
-  const camera = targetCamera(route, mode, size, insets, 'rect', covered, covered && ((view, box) => shownOf(drawn(view, box))));
+  const camera = targetCamera(route, mode, size, insets, 'rect', covered, (view, box) => shownOf(drawn(view, box)), true);
   const overlay = drawn(camera, covered);
 
   const { detail, inView, globe, visited } = mapView(camera, size);

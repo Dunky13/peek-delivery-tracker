@@ -216,7 +216,7 @@ describe('layout of a map its card writes over', () => {
   const ROOM = { top: 40, right: 16, bottom: 44, left: 16 };
   const MARK: Rect = { x: 18, y: 56, width: 100, height: 18 };
   const width = (text: string) => text.length * 7;
-  const journey = (places: Place[], last: 'in_transit' | 'out_for_delivery' = 'in_transit') => buildRoute(places.map((place, index) => (
+  const journey = (places: Place[], last: 'in_transit' | 'out_for_delivery' | 'delivered' = 'in_transit') => buildRoute(places.map((place, index) => (
     { at: `2026-09-2${index}T10:00:00Z`, description: 'Scan', stage: index === places.length - 1 ? last : 'in_transit' as const, place })));
   const basel = city('Basel', 'CH', 7.59, 47.56);
   const harkingen = city('Härkingen', 'CH', 7.821, 47.305);
@@ -323,6 +323,31 @@ describe('layout of a map its card writes over', () => {
     expect(touches({ x: pip.x + 52 * unit, y: pip.y + 92 * unit, width: 196 * unit, height: 196 * unit }, mark)).toBe(false);
     expect(names(overlay).map(name => name.text)).toEqual(['Zürich', 'Shenzhen']);
     expect(names(overlay).some(name => touches(name, mark))).toBe(false);
+  });
+
+  it('frames a journey that ends at the edge with room for Pip there', async () => {
+    await loadWorld();
+    const route = journey([city('Shenzhen', 'CN', 114.06, 22.54), city('Leipzig', 'DE', 12.37, 51.34), basel, city('Zürich', 'CH', 8.55, 47.37)],
+      'delivered');
+    const standing = { mood: 'joy', ceiling: 52, floor: 160 } as const;
+    const draw = (view: Camera) => layout(route, view, CARD, ROOM, 'rect', 'ends', false, 'journey', false, 'en', standing, width);
+    const shown = (view: Camera) => shownOf(draw(view));
+    // Zürich, where the parcel was picked up, is at the frame's edge, and Pip has nowhere to stand beside it.
+    const usual = targetCamera(route, 'journey', CARD, ROOM, 'rect');
+    expect(draw(usual).pip).toBeNull();
+    const view = targetCamera(route, 'journey', CARD, ROOM, 'rect', undefined, shown, true);
+    const overlay = draw(view);
+    expect(overlay.pip).toMatchObject({ mood: 'joy' });
+    expect(view.scale).toBeLessThan(usual.scale);
+    expect(names(overlay).map(name => name.text)).toEqual(['Zürich', 'Shenzhen']);
+    expect(overlay.dots.every(dot => dot.x > ROOM.left && dot.x < CARD.width - ROOM.right && dot.y > ROOM.top && dot.y < CARD.height - ROOM.bottom))
+      .toBe(true);
+    // A journey he already stands beside keeps its frame.
+    const beside = journey([city('Berlin', 'DE', 13.405, 52.52), city('Neuenstein', 'DE', 9.58, 49.2), basel, harkingen], 'delivered');
+    const besideShown = (view: Camera) => shownOf(layout(beside, view, CARD, ROOM, 'rect', 'ends', false, 'journey', false, 'en', standing, width));
+    const framed = targetCamera(beside, 'journey', CARD, ROOM, 'rect');
+    expect(besideShown(framed) % 1).toBe(.5);
+    expect(targetCamera(beside, 'journey', CARD, ROOM, 'rect', undefined, besideShown, true)).toEqual(framed);
   });
 
   it('moves the chip of a far end beside the writing, off the parcel\'s dot', async () => {

@@ -163,6 +163,8 @@ private struct DeliveryListView: View {
 
     @Namespace private var parcelTransition
     @State private var path: [UUID] = []
+    /// The sample parcel, while its page is open from the empty deliveries.
+    @State private var sample: Parcel?
     @State private var query = ""
     @State private var statusFilter: ParcelStatusFilter = .all
     @State private var carrierFilter: CarrierID?
@@ -267,7 +269,8 @@ private struct DeliveryListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .navigationDestination(for: UUID.self) { parcelID in
-                ParcelDetailView(parcelID: parcelID, transition: parcelTransition)
+                ParcelDetailView(parcelID: parcelID, transition: parcelTransition,
+                                 sample: parcelID == FirstOpenJourney.parcelID ? sample : nil)
                     .safeAreaInset(edge: .top, spacing: 0) { DemoModeBar() }
             }
             .safeAreaInset(edge: .bottom, spacing: 8) { bottomControls }
@@ -559,7 +562,10 @@ private struct DeliveryListView: View {
     @ViewBuilder private func listEmptyState(_ layout: DeliveryListLayout) -> some View {
         if !store.loading {
             if store.parcels.isEmpty {
-                DeliveriesEmptyState(onAdd: add)
+                DeliveriesEmptyState(transition: parcelTransition, onAdd: add) {
+                    sample = FirstOpenJourney.delivered(localizer: localizer)
+                    path.append(FirstOpenJourney.parcelID)
+                }
             } else if layout.visible.isEmpty {
                 ContentUnavailableView {
                     Label(localizer.text("view.noResultsTitle"), systemImage: "magnifyingglass")

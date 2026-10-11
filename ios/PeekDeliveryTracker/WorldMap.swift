@@ -1112,11 +1112,20 @@ extension GlobeCamera {
     /// `covered` is a box the card writes over the map, such as a second carrier's mark in its corner, and `shown` tells
     /// how much of the journey a camera shows (see `MapOverlay.shown`), around the box when it is given one. A route that
     /// would pass under the box, or that loses a name or Pip's spot to it, is framed below it or beside it: where it shows
-    /// most, then where it is drawn larger. Every other route keeps its usual frame.
+    /// most, then where it is drawn larger. `pip` says Pip looks for a spot beside the parcel's dot, which a route that ends
+    /// at the frame's edge can leave him none of: it is framed again with room for him there. Every other route keeps its
+    /// usual frame.
     static func framing(_ route: ParcelRoute, mode: ParcelRoute.Mode, in size: CGSize, insets: EdgeInsets,
-                        covered: CGRect? = nil, shown: ((GlobeCamera, CGRect?) -> Double)? = nil) -> GlobeCamera {
+                        covered: CGRect? = nil, shown: ((GlobeCamera, CGRect?) -> Double)? = nil, pip: Bool = false) -> GlobeCamera {
         let usual = framed(route, mode: mode, in: size, insets: insets)
-        guard let covered else { return usual }
+        let clear = covered.map { clearOf(route, mode: mode, in: size, insets: insets, usual: usual, covered: $0, shown: shown) } ?? usual
+        guard clear == usual, pip, let shown else { return clear }
+        return roomForPip(route, mode: mode, in: size, insets: insets, usual: usual) { shown($0, covered) }
+    }
+
+    /// The frame of a route the card writes over, below the box or beside it when the usual one loses something to it.
+    private static func clearOf(_ route: ParcelRoute, mode: ParcelRoute.Mode, in size: CGSize, insets: EdgeInsets, usual: GlobeCamera,
+                                covered: CGRect, shown: ((GlobeCamera, CGRect?) -> Double)?) -> GlobeCamera {
         let under = passesUnder(route, usual, covered)
         let names = { (camera: GlobeCamera) in shown?(camera, covered) ?? 0 }
         let kept = names(usual)
@@ -1142,6 +1151,34 @@ extension GlobeCamera {
         // Nothing under the box and nothing to win back: the route stays where every card shows it.
         guard let best, under || best.order.names > kept else { return usual }
         return best.camera
+    }
+
+    /// Pip stands beside the parcel's dot, and a route that ends at the frame's edge can leave him no room there. It is
+    /// framed again with more room on the dot's side, across and along, a step at a time, and takes the largest frame where
+    /// he stands and every place keeps its name. A route he already stands beside keeps its frame.
+    private static func roomForPip(_ route: ParcelRoute, mode: ParcelRoute.Mode, in size: CGSize, insets: EdgeInsets, usual: GlobeCamera,
+                                   shown: (GlobeCamera) -> Double) -> GlobeCamera {
+        let kept = shown(usual)
+        let projection = GlobeProjection(usual)
+        // A name counts a whole point and Pip half of one: he has a spot already.
+        guard kept.rounded(.down) == kept, let current = route.current?.place.point, projection.sees(current) else { return usual }
+        let dot = projection.project(current)
+        let leading = dot.x < (insets.leading + size.width - insets.trailing) / 2
+        let top = dot.y < (insets.top + size.height - insets.bottom) / 2
+        var frames: [GlobeCamera] = []
+        for step in 1...6 {
+            let further = CGFloat(step) * 16
+            var across = insets
+            if leading { across.leading += further } else { across.trailing += further }
+            var along = insets
+            if top { along.top += further } else { along.bottom += further }
+            var both = across
+            if top { both.top += further } else { both.bottom += further }
+            frames += [across, along, both].map { framed(route, mode: mode, in: size, insets: $0) }
+        }
+        // The largest frame first, and of two as large, the one with less room added.
+        return frames.enumerated().sorted { ($0.element.scale, -$0.offset) > ($1.element.scale, -$1.offset) }
+            .first { shown($0.element) > kept }?.element ?? usual
     }
 
     /// Whether a place of the route, or one of its legs, would be drawn under a box of the frame.
@@ -1304,14 +1341,16 @@ struct WorldMapView: View {
     }
 
     private func targetCamera(in size: CGSize) -> GlobeCamera {
-        guard let covered else { return .framing(route, mode: mode, in: size, insets: insets) }
+        let standing = palette.card == nil ? nil : pip
+        guard covered != nil || standing != nil else { return .framing(route, mode: mode, in: size, insets: insets) }
         // What the card writes over the map also moves it when a place of the journey would lose its name to it, or Pip
-        // his spot beside the parcel, which is looked for afresh in each frame.
+        // his spot beside the parcel, which is looked for afresh in each frame; and a route that leaves him no spot at its
+        // end is framed with room for him there.
         let shown = { (camera: GlobeCamera, box: CGRect?) in
             MapOverlay(route: route, camera: camera, size: size, insets: insets, labels: labels, sites: sites, mode: mode, context: false,
-                       atlas: atlas, locale: language.locale, countryName: { $0 }, pip: palette.card == nil ? nil : pip, covered: box).shown
+                       atlas: atlas, locale: language.locale, countryName: { $0 }, pip: standing, covered: box).shown
         }
-        return .framing(route, mode: mode, in: size, insets: insets, covered: covered, shown: shown)
+        return .framing(route, mode: mode, in: size, insets: insets, covered: covered, shown: shown, pip: standing != nil)
     }
 
     /// The tiles a camera shows, whether every one of them has come, and their towns; nothing on a map without close-ups.
