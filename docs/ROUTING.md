@@ -249,10 +249,12 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   scraper's [architecture](https://github.com/plhery/universal-parcel-scraper/blob/main/ARCHITECTURE.md).
 - **Settling.** Only an answer for a recent parcel counts; an old parcel can share a reused
   number. Only valid scan instants with explicit offsets establish activity age;
-  unresolved local clocks cannot rank a match. One answer wins; with several, the one
-  number evidence backs, else the most common network of a single brand
-  (GLS Switzerland and GLS Germany answer from one
-  overview). Unrelated carriers that all know the number are a choice for the user.
+  unresolved local clocks cannot rank a match. One answer wins. With several, AliExpress
+  wins when it is among them: it follows some parcels under their delivery carrier's
+  number, so the other answers are the delivery leg of the same parcel (see
+  [Handoffs](#handoffs-two-carriers)). Else the one number evidence backs, else the most
+  common network of a single brand (GLS Switzerland and GLS Germany answer from one
+  overview). Other unrelated carriers that all know the number are a choice for the user.
 - **In the Add sheet.** The detect route asks once the number is settled (the field loses
   focus, which includes opening the carrier picker, a paste, a shared number), within
   three seconds for HTTP, then up to twenty seconds for browser confirmation. At most two
@@ -301,6 +303,10 @@ A parcel often changes carrier at the border. The origin history is always kept.
 - With no named partner, a checksum-valid S10 number and a reported destination country can
   propose **one** national-post lookup ([catalog hints](https://github.com/plhery/universal-parcel-scraper/blob/main/core/catalog/hints.ts)).
   The issuer suffix and transit scans never pick the operator.
+- AliExpress follows some parcels under the delivery carrier's own number, such as an SDA
+  waybill in Italy, and names no partner for it. The proposal is then the one carrier at
+  home in the destination country whose number rule fits beside AliExpress's, asked with
+  the same number.
 - The partner is only adopted once its own adapter (no required inputs) returns dated,
   fresh progress. A partner whose only input is optional (DPD's postcode) is asked without
   it, and only with a reference of its own number shape, never the origin's postal number. Failed confirmations wait 55 min unless the origin history or the partner
