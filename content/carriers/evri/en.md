@@ -88,7 +88,7 @@ Yes: Evri is the former Hermes UK, renamed in March 2022. Hermes in Germany is a
 
 ### Is Evri part of Royal Mail?
 
-No. Evri is owned by funds managed by Apollo, and in 2025 the UK competition authority cleared its takeover of DHL eCommerce UK.
+No. Evri is owned by funds managed by Apollo, and in 2025 the UK competition authority cleared its takeover of [DHL eCommerce UK](carrier:dhl-ecommerce-uk).
 
 ### How long does Evri take to deliver?
 

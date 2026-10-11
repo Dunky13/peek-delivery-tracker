@@ -35,9 +35,9 @@ Here's what the carriers and the postal standard say about the numbers you're mo
 | USPS | 22 digits starting `92`, `93`, `94` or `95`, printed in groups of four, such as `9212 3912 3456 7812 3456 70`; 26 digits on some labels; international items can carry the postal format ending `US` |
 | FedEx | 12 digits on FedEx Ground Economy labels since 2022, where some shippers used to get 15-digit Ground numbers |
 | DHL | DHL Express: 10 digits, never letters. DHL in Germany: 10 to 39 characters |
-| Royal Mail, Parcelforce | 9 to 27 characters, says the Post Office; the postal format ends `GB` |
+| Royal Mail, [Parcelforce](carrier:parcelforce) | 9 to 27 characters, says the Post Office; the postal format ends `GB` |
 | [Evri](carrier:evri) | 16 characters (Evri's page says both "16 digit" and "16 character") |
-| DPD | 14 characters, says [DPD Germany](carrier:dpd-de); 14 digits, say DPD Austria and Belgium. DPD UK's help page gives no length and asks for your postcode too |
+| DPD | 14 characters, says [DPD Germany](carrier:dpd-de); 14 digits, say DPD Austria and Belgium. [DPD UK](carrier:dpd-uk)'s help page gives no length and asks for your postcode too |
 | [InPost](carrier:inpost) | in the UK, `JD` or `JJD` + 16 digits, or `8YDR` + 9 digits (InPost UK says its numbers usually start with `JD`, `JJD` or `8`); `JD` or `JJD` + 18 digits is DHL |
 | [An Post](carrier:an-post) | two letters, nine digits, two letters ending `IE`, such as `RR123456785IE` |
 | Canada Post | 16 digits (online labels) or 13 characters ending `CA`; 12 digits for Priority Worldwide |
@@ -49,7 +49,7 @@ Here's what the carriers and the postal standard say about the numbers you're mo
 | China Post, EMS | the postal format ending `CN`; international EMS numbers start with `E` |
 | Amazon | Amazon publishes no format; `TBA` numbers are covered below |
 
-Elsewhere in Europe, the pages on [Chronopost](carrier:chronopost), [DPD France](carrier:dpd-fr), [GLS France](carrier:gls-fr) and [Relais Colis](carrier:relais-colis) (France), [Colis Privé](carrier:colis-prive) (France, Belgium and Luxembourg), [Mondial Relay](carrier:mondial-relay) (France and Belgium), [BRT](carrier:brt), [GLS Italy](carrier:gls-it) and [Poste Italiane](carrier:poste-italiane) (Italy) explain their numbers. For Germany, see [GLS Germany](carrier:gls-de) and [Hermes Germany](carrier:hermes-de); for Austria, [Austrian Post](carrier:austrian-post). For Spain and Portugal, see [Correos Express](carrier:correos-express), [NACEX](carrier:nacex), [SEUR](carrier:seur), [MRW](carrier:mrw), [TIPSA](carrier:tipsa), [CTT](carrier:ctt), [CTT Express](carrier:ctt-express) and [Paack](carrier:paack), which also delivers in France and Italy. For Poland, see [Poczta Polska](carrier:poczta-polska), [ORLEN Paczka](carrier:orlen-paczka), [DPD Poland](carrier:dpd-pl) and [Packeta](carrier:packeta). For Switzerland, see [Swiss Post](carrier:swiss-post), [Quickpac](carrier:quickpac), [Planzer](carrier:planzer), [DPD Switzerland](carrier:dpd-ch) and [GLS Switzerland](carrier:gls-ch).
+Elsewhere in Europe, the pages on [Chronopost](carrier:chronopost), [DPD France](carrier:dpd-fr), [GLS France](carrier:gls-fr) and [Relais Colis](carrier:relais-colis) (France), [Colis Privé](carrier:colis-prive) (France, Belgium and Luxembourg), [Mondial Relay](carrier:mondial-relay) (France and Belgium), [bpost](carrier:bpost) (Belgium), [Vinted Go](carrier:vinted-go) (parcels sold on Vinted), [BRT](carrier:brt), [GLS Italy](carrier:gls-it) and [Poste Italiane](carrier:poste-italiane) (Italy) explain their numbers. For Germany, see [GLS Germany](carrier:gls-de) and [Hermes Germany](carrier:hermes-de); for Austria, [Austrian Post](carrier:austrian-post). For Spain and Portugal, see [Correos Express](carrier:correos-express), [NACEX](carrier:nacex), [SEUR](carrier:seur), [MRW](carrier:mrw), [TIPSA](carrier:tipsa), [GLS Spain](carrier:gls-es), [DHL eCommerce Iberia](carrier:dhl-ecommerce-es), [CTT](carrier:ctt), [CTT Express](carrier:ctt-express) and [Paack](carrier:paack), which also delivers in France and Italy. For Poland, see [Poczta Polska](carrier:poczta-polska), [ORLEN Paczka](carrier:orlen-paczka), [DPD Poland](carrier:dpd-pl), [DHL eCommerce Poland](carrier:dhl-ecommerce-pl) and [Packeta](carrier:packeta). For Switzerland, see [Swiss Post](carrier:swiss-post), [Quickpac](carrier:quickpac), [Planzer](carrier:planzer), [DPD Switzerland](carrier:dpd-ch) and [GLS Switzerland](carrier:gls-ch). For the UK and Ireland, see also [DHL eCommerce UK](carrier:dhl-ecommerce-uk) and [DPD Ireland](carrier:dpd-ie).
 
 ### Whose tracking number starts with 9 or 420?
 
@@ -73,7 +73,7 @@ There's no single length. These are the lengths carriers give on their own pages
 
 ## Whose tracking number starts with TBA?
 
-Amazon. In the carrier data Peek uses, `TBA`, `TBC` or `TBM` followed by 12 digits means Amazon Logistics, Amazon's own delivery service, though Amazon's help pages don't describe the number itself. Those orders show as "shipped with Amazon", and Amazon tells you to track them in Your Orders.
+Amazon. In the carrier data Peek uses, `TBA`, `TBC` or `TBM` followed by 12 digits means [Amazon Logistics](carrier:amazon-logistics), Amazon's own delivery service, though Amazon's help pages don't describe the number itself. Those orders show as "shipped with Amazon", and Amazon tells you to track them in Your Orders.
 
 ## The postal format: two letters, nine digits, two letters
 

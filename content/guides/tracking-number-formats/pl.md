@@ -34,7 +34,7 @@ Oto, co przewoźnicy i standard pocztowy mówią o numerach, które w Polsce spo
 | InPost | 24 cyfry |
 | Poczta Polska | kilka wariantów: `PX` i 10 cyfr (`PX1234567890`), 19 cyfr (`0015900773123456789`), 20 cyfr z `5900773` po trzech pierwszych albo format pocztowy z `PL` na końcu, zaczynający się np. od `RR`, `CP`, `VV` lub `EE`. W tej samej wyszukiwarce śledzisz też Pocztex |
 | [DPD](carrier:dpd-pl) | 14 znaków: w DPD Polska 13 cyfr i litera (`1234567890123A`) albo 14 cyfr zaczynających się od 13 (`13000000000000`). Wyszukiwarka DPD Polska przyjmuje też 9-znakowy kod nadania |
-| DHL eCommerce Polska (paczki krajowe) | 11 cyfr, bez liter, według serwisu Mój DHL |
+| [DHL eCommerce Polska](carrier:dhl-ecommerce-pl) (paczki krajowe) | 11 cyfr, bez liter, według serwisu Mój DHL |
 | DHL Express | 10 cyfr, bez liter, według DHL Express w Holandii |
 | GLS | numer paczki od nadawcy albo Track-ID z awiza; długości GLS nie podaje |
 | [Packeta](carrier:packeta) | litera `Z` i 10 cyfr, np. `Z1234567890`: „Numer śledzenia musi zaczynać się od litery 'Z' i składać się z 10 cyfr” |
@@ -78,7 +78,7 @@ Dwa ostatnie wiersze przydadzą się przy zakupach z Niemiec: 14 cyfr może wted
 
 ## Numer zaczyna się od TBA albo PL: czy to Amazon?
 
-Jeśli zgadza się długość, najpewniej tak. W danych przewoźników, z których korzysta Peek, `TBA`, `TBC` lub `TBM` i 12 cyfr to Amazon Logistics, czyli dostawy samego Amazona. To samo oznacza kod kraju, np. `PL` albo `DE`, z 10 cyframi. Nie myl tego z numerem Poczty Polskiej, który na `PL` się kończy, a nie zaczyna. Sam Amazon nie opisuje swoich numerów na stronach pomocy. Na Amazon.pl przesyłkę śledzisz w sekcji „Moje zamówienia”: wybierasz zamówienie i klikasz „Śledź przesyłkę”. Paczkę wysłaną z centrum logistycznego za granicą zobaczysz w śledzeniu dopiero wtedy, gdy dotrze do centrum dystrybucyjnego przewoźnika w Polsce.
+Jeśli zgadza się długość, najpewniej tak. W danych przewoźników, z których korzysta Peek, `TBA`, `TBC` lub `TBM` i 12 cyfr to [Amazon Logistics](carrier:amazon-logistics), czyli dostawy samego Amazona. To samo oznacza kod kraju, np. `PL` albo `DE`, z 10 cyframi. Nie myl tego z numerem Poczty Polskiej, który na `PL` się kończy, a nie zaczyna. Sam Amazon nie opisuje swoich numerów na stronach pomocy. Na Amazon.pl przesyłkę śledzisz w sekcji „Moje zamówienia”: wybierasz zamówienie i klikasz „Śledź przesyłkę”. Paczkę wysłaną z centrum logistycznego za granicą zobaczysz w śledzeniu dopiero wtedy, gdy dotrze do centrum dystrybucyjnego przewoźnika w Polsce.
 
 ## Format pocztowy: dwie litery, dziewięć cyfr, dwie litery
 

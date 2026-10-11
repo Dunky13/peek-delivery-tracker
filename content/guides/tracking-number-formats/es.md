@@ -27,7 +27,7 @@ Si prefieres ahorrarte el trabajo de detective, pega el número, un enlace del t
 
 ## El formato del número de seguimiento en cada empresa
 
-Cada empresa lo llama a su manera: «código de envío» en Correos, «número de envío» en [MRW](carrier:mrw) y [TIPSA](carrier:tipsa), «número de expedición» en InPost, «número de seguimiento» en GLS, Correos Express y Paack. Todos hablan de lo mismo: el número con el que se sigue tu paquete.
+Cada empresa lo llama a su manera: «código de envío» en Correos, «número de envío» en [MRW](carrier:mrw) y [TIPSA](carrier:tipsa), «número de expedición» en InPost, «número de seguimiento» en [GLS](carrier:gls-es), Correos Express y Paack. Todos hablan de lo mismo: el número con el que se sigue tu paquete.
 
 Esto es lo que dicen las empresas y la norma postal sobre los números que más vas a ver en España. Cuando la empresa no publica el formato, la tabla da el que reconocen los datos de transportistas que usa Peek: sirve de pista, no de prueba.
 
@@ -67,7 +67,7 @@ No hay una longitud única. Estas son las que dan las propias empresas en sus p�
 | Longitud | Quién la usa |
 | --- | --- |
 | 8 caracteres | InPost, en el ejemplo de su localizador; Mondial Relay (8, 10 o 12 cifras, según su web belga) |
-| 10 cifras | DHL Express; Mondial Relay |
+| 10 cifras | DHL Express; [DHL eCommerce Iberia](carrier:dhl-ecommerce-es); Mondial Relay |
 | 12 cifras | MRW, en su etiqueta de ejemplo; Mondial Relay |
 | 13 caracteres | el formato postal (`…ES`, `…CN`, `…PT`) |
 | 18 caracteres | UPS (`1Z` y 16 letras o cifras) |
@@ -79,7 +79,7 @@ A veces el número no basta. GLS, TIPSA y Paack piden también el código postal
 
 ## Número de seguimiento que empieza por ES o TBA: Amazon
 
-En los datos de transportistas que usa Peek, `ES` seguido de 10 cifras es Amazon Logistics, el servicio de reparto de Amazon. Lo mismo vale con el código de otro país europeo delante, como `FR` o `PT`, y con `TBA`, `TBC` o `TBM` seguidos de 12 cifras. Las páginas de ayuda de Amazon no describen estos números; Amazon.es te dice que sigas el pedido en «Mis pedidos».
+En los datos de transportistas que usa Peek, `ES` seguido de 10 cifras es [Amazon Logistics](carrier:amazon-logistics), el servicio de reparto de Amazon. Lo mismo vale con el código de otro país europeo delante, como `FR` o `PT`, y con `TBA`, `TBC` o `TBM` seguidos de 12 cifras. Las páginas de ayuda de Amazon no describen estos números; Amazon.es te dice que sigas el pedido en «Mis pedidos».
 
 Cuenta los caracteres para no confundirlo con un número postal: `ES` y 10 cifras suman 12, y un número postal tiene 13, con dos letras al principio y dos al final. Puede acabar en `ES`, si es de Correos, y hasta empezar por `ES`, porque la serie `E` es la de los envíos EMS.
 

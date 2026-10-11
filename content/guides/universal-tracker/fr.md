@@ -27,7 +27,7 @@ Commence par l'option gratuite de ta poste :
 | Pays | Option | Ce qu'elle fait |
 | --- | --- | --- |
 | France | App La Poste | Suit aussi les colis de « 1 036 transporteurs référencés » (FedEx, UPS, DHL, TNT, GLS…) : tu saisis ou scannes le numéro, l'app trouve le transporteur |
-| Belgique | App My bpost | Le « suivi automatique » retrouve tes colis bpost et tes recommandés grâce aux adresses e-mail de ton profil. Les autres s'ajoutent avec leur code-barres, le livreur et ton code postal |
+| Belgique | App My bpost | Le « suivi automatique » retrouve tes colis [bpost](carrier:bpost) et tes recommandés grâce aux adresses e-mail de ton profil. Les autres s'ajoutent avec leur code-barres, le livreur et ton code postal |
 | Suisse | « Mes envois », La Poste suisse | Avec un compte, des infos gratuites sur les envois adressés à ton adresse enregistrée, par e-mail et push dans la Post-App, SMS en option |
 
 Les autres options, avec leurs limites :

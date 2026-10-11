@@ -41,7 +41,7 @@ Correos agrupa sus estados en cuatro fases: `Pre-admisión`, `En Camino`, `En en
 
 ## «Pre-admisión» o «etiqueta creada»: ¿lo tiene ya el transportista?
 
-No: la tienda ha impreso una etiqueta y ha mandado los datos, nada más. Correos explica que `Pre-admisión` se genera cuando se prerregistra el envío: ya existe el número, pero el paquete está «pendiente de ser entregado a Correos». En el seguimiento también puede salir como `Prerregistrado`. GLS dice lo mismo de `Etiqueta creada`: tiene el prerregistro, pero el paquete todavía no está en su red ni en ninguna de sus instalaciones.
+No: la tienda ha impreso una etiqueta y ha mandado los datos, nada más. Correos explica que `Pre-admisión` se genera cuando se prerregistra el envío: ya existe el número, pero el paquete está «pendiente de ser entregado a Correos». En el seguimiento también puede salir como `Prerregistrado`. [GLS](carrier:gls-es) dice lo mismo de `Etiqueta creada`: tiene el prerregistro, pero el paquete todavía no está en su red ni en ninguna de sus instalaciones.
 
 En SEUR pueden pasar hasta 48 horas desde que recibe el paquete hasta que ves su estado en la web. Y también ocurre al revés: si a Correos le llega un paquete sin prerregistro, lo deja «estacionado» y lo entrega cuando la empresa que lo envía le pasa los datos.
 

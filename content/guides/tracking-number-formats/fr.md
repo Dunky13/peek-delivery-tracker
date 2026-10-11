@@ -44,7 +44,7 @@ Voici ce que disent les transporteurs et la norme postale sur les numéros que t
 | [GLS en Suisse](carrier:gls-ch) | ni GLS ni La Poste, qui livre ses colis, ne publient de format ; dans les données de transporteurs de Peek, 11 chiffres, 12 chiffres dont le dernier est une clé de contrôle, 8 lettres et chiffres mêlés, ou 6 lettres, à saisir avec ton code postal |
 | UPS | `1Z` puis 16 lettres ou chiffres, 18 caractères en tout, comme `1Z999AA10123456784`, un exemple dont le chiffre de contrôle UPS est valide |
 | DHL Express | 10 chiffres, jamais de lettres, d'après DHL Express aux Pays-Bas |
-| bpost | « code-barres » de 24 chiffres qui commence par `3299` ou `3232`, de 18 chiffres qui commence par `3232`, de 27 caractères qui commence par `JJBEA`, ou de 13 caractères au format postal (`CE`, `EE`, `CD` ou `CZ` au début) |
+| [bpost](carrier:bpost) | « code-barres » de 24 chiffres qui commence par `3299` ou `3232`, de 18 chiffres qui commence par `3232`, de 27 caractères qui commence par `JJBEA`, ou de 13 caractères au format postal (`CE`, `EE`, `CD` ou `CZ` au début) |
 | La Poste suisse | « numéro d'envoi » de 18 chiffres qui commence par `98` ou `99`, avec ou sans points ni espaces (le code-barres national de La Poste), ou format postal qui finit par `CH` |
 | [Quickpac](carrier:quickpac) | 18 chiffres qui commencent par `44`, que son cadre de suivi écrit avec des points |
 | [Planzer](carrier:planzer) | Planzer ne publie aucun format ; dans les données de transporteurs de Peek, 20 chiffres qui commencent par `91346097` ou, pour un envoi partagé, 13 chiffres qui commencent par `99990`, avec ou sans points |
@@ -85,7 +85,7 @@ Le numéro seul ne suffit pas toujours. Mondial Relay et Colis Privé demandent 
 
 ## À qui appartient un numéro qui commence par FR ou TBA ?
 
-En général à Amazon. Dans les données de transporteurs qu'utilise Peek, `FR` suivi de 10 chiffres désigne Amazon Logistics, le service de livraison d'Amazon. Même chose avec un autre code pays européen devant 10 chiffres, comme `BE` ou `CH`, et avec `TBA`, `TBC` ou `TBM` suivi de 12 chiffres. Les pages d'aide d'Amazon, elles, ne décrivent pas ces numéros. Amazon.fr explique qu'Amazon Logistics travaille avec des partenaires de livraison locaux et régionaux, et que tu suis ta commande dans « Vos commandes », qui affiche les informations de ces partenaires.
+En général à Amazon. Dans les données de transporteurs qu'utilise Peek, `FR` suivi de 10 chiffres désigne [Amazon Logistics](carrier:amazon-logistics), le service de livraison d'Amazon. Même chose avec un autre code pays européen devant 10 chiffres, comme `BE` ou `CH`, et avec `TBA`, `TBC` ou `TBM` suivi de 12 chiffres. Les pages d'aide d'Amazon, elles, ne décrivent pas ces numéros. Amazon.fr explique qu'Amazon Logistics travaille avec des partenaires de livraison locaux et régionaux, et que tu suis ta commande dans « Vos commandes », qui affiche les informations de ces partenaires.
 
 Attention aux sosies. Avec ses 12 caractères, un numéro en `FR` a aussi la forme d'un numéro Colis Privé (lettres et chiffres). Et un numéro La Poste qui finit par `FR` en a 13, avec deux lettres au début et deux à la fin. Dans le doute, l'e-mail d'expédition tranche.
 

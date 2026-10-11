@@ -52,7 +52,7 @@ Są trzy sposoby i żaden nie opiera się na nazwisku ani adresie.
 
 ### Zapytaj nadawcę
 
-Przewoźnicy, którzy piszą o braku numeru, odsyłają do nadawcy. GLS: „poproś go o ten numer”. DHL eCommerce Polska radzi „skontaktować się z nadawcą”. Zapytaj o:
+Przewoźnicy, którzy piszą o braku numeru, odsyłają do nadawcy. GLS: „poproś go o ten numer”. [DHL eCommerce Polska](carrier:dhl-ecommerce-pl) radzi „skontaktować się z nadawcą”. Zapytaj o:
 
 - **Przewoźnika.** Na stronie niewłaściwej firmy numer nic nie pokaże.
 - **Numer dokładnie tak, jak jest wydrukowany.** Poczta Polska prosi, żeby wpisywać go „bez spacji oraz nawiasów”.

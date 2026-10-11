@@ -24,7 +24,7 @@ Where each carrier may leave it:
 | USPS | A parcel locker (key in your mailbox), building management, a porch, garage or back entrance, under a mat |
 | Royal Mail | A neighbour, your chosen Safeplace, or the post room at work |
 | [Evri](carrier:evri) | A neighbour, or a Safe Place, which must not be "an exposed doorstep or otherwise in public view" |
-| DPD UK | A neighbour, automatically if you're out, or a safe place you asked for |
+| [DPD UK](carrier:dpd-uk) | A neighbour, automatically if you're out, or a safe place you asked for |
 | Canada Post | A parcel locker (key in your mailbox), a concierge or a mailroom |
 | Australia Post | Someone who accepted it for you, or a safe place "under or behind something" |
 

@@ -70,7 +70,7 @@ There's no single day. Most carriers say when they'll start looking, counted fro
 | FedEx (US) | No day count; lost parcels up to 9 months after shipping | The seller, or you |
 | Royal Mail (UK) | 10 working days after the due date (1st and 2nd Class), 7 (Tracked 24 and 48), 5 (Special Delivery Guaranteed) | The sender. For 1st, 2nd Class and Special Delivery you can too, but the sender's claim comes first |
 | Evri (UK) | More than 7 days with Evri | The sender, once you tell them |
-| DPD (UK) | No waiting time given; the sender must report a loss within 14 days of despatch | The sender |
+| [DPD](carrier:dpd-uk) (UK) | No waiting time given; the sender must report a loss within 14 days of despatch | The sender |
 | [An Post](carrier:an-post) (Ireland) | Standard post: 5 working days after posting; international post: 15 days | You, online or at the post office |
 | Canada Post | Once the expected delivery date has passed | You or the sender; only the sender can claim |
 | Australia Post | Domestic: 10 business days after the expected delivery date | You or the sender, with a free MyPost account |

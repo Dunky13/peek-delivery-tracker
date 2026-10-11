@@ -56,7 +56,7 @@ Don't leave it too long:
 
 | Country | How long it waits |
 | --- | --- |
-| UK | Royal Mail, Parcelforce or the courier "normally" hold it about 3 weeks, then return it |
+| UK | Royal Mail, [Parcelforce](carrier:parcelforce) or the courier "normally" hold it about 3 weeks, then return it |
 | Ireland | [An Post](carrier:an-post) asks you to pay within 10 working days |
 | Australia | Over AUD 1,000: with no action 30 days after Australia Post's First Notice, it may go back |
 | US | A mail parcel without the required entry or bond stays with U.S. Customs and Border Protection (CBP) until they are filed |

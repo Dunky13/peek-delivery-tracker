@@ -68,7 +68,7 @@ Não há um comprimento único. Estes são os comprimentos que as transportadora
 | Comprimento | Quem o usa |
 | --- | --- |
 | 8 caracteres | InPost, no exemplo da sua página de seguimento; Mondial Relay (8, 10 ou 12 algarismos) |
-| 10 algarismos | DHL Express; Mondial Relay |
+| 10 algarismos | DHL Express; [DHL eCommerce Iberia](carrier:dhl-ecommerce-es); Mondial Relay |
 | 12 algarismos | MRW, na sua etiqueta de exemplo; Mondial Relay; FedEx Ground Economy, nos EUA |
 | 13 caracteres | o formato postal dos CTT e dos outros operadores postais |
 | 14 algarismos | DPD; SEUR; La Poste, em França |
@@ -77,7 +77,7 @@ Não há um comprimento único. Estes são os comprimentos que as transportadora
 
 ## Número que começa por TBA ou PT: é da Amazon?
 
-Se tiver o comprimento certo, sim. Nos dados de transportadoras que o Peek usa, `TBA`, `TBC` ou `TBM` seguido de 12 algarismos é Amazon Logistics, o serviço de entregas da própria Amazon, e o mesmo vale para um código de país como `PT` ou `ES` seguido de 10 algarismos. As páginas de ajuda da Amazon não descrevem o número. A Amazon.es explica que a Amazon Logistics trabalha com parceiros de transporte locais e regionais, e que segues a encomenda em *Os meus pedidos*, onde aparece a informação desses parceiros.
+Se tiver o comprimento certo, sim. Nos dados de transportadoras que o Peek usa, `TBA`, `TBC` ou `TBM` seguido de 12 algarismos é [Amazon Logistics](carrier:amazon-logistics), o serviço de entregas da própria Amazon, e o mesmo vale para um código de país como `PT` ou `ES` seguido de 10 algarismos. As páginas de ajuda da Amazon não descrevem o número. A Amazon.es explica que a Amazon Logistics trabalha com parceiros de transporte locais e regionais, e que segues a encomenda em *Os meus pedidos*, onde aparece a informação desses parceiros.
 
 Não confundas com um código de envio dos CTT que *termina* em `PT`: esse tem 13 caracteres, duas letras no início e duas no fim.
 

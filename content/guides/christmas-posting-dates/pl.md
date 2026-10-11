@@ -22,7 +22,7 @@ Na 9 października żaden przewoźnik nie ma jeszcze strony o świętach 2026. [
 | Poczta Polska | Listy i kartki w kraju | Nie ogłoszono jeszcze (2025: terminy podano tylko dla paczek) |
 | [ORLEN Paczka](carrier:orlen-paczka) | Paczka nadana w automacie, na stacji ORLEN lub w punkcie partnerskim przed godziną graniczną albo odebrana przez kuriera | Nie ogłoszono jeszcze (2025: brak komunikatu; 2024: piątek, 20 grudnia) |
 | DPD Polska | Paczki krajowe: kurier, punkty i automaty DPD Pickup | Nie ogłoszono jeszcze (2025: brak terminu) |
-| DHL eCommerce | Paczki krajowe, punkty DHL POP i automaty DHL BOX 24/7 | Nie ogłoszono jeszcze (2025: brak terminu) |
+| [DHL eCommerce](carrier:dhl-ecommerce-pl) | Paczki krajowe, punkty DHL POP i automaty DHL BOX 24/7 | Nie ogłoszono jeszcze (2025: brak terminu) |
 | GLS | Paczki krajowe | Nie ogłoszono jeszcze (2025: brak terminu) |
 
 Co kryje się za tymi datami:

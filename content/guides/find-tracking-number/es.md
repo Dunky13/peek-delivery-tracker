@@ -17,7 +17,7 @@ El número de seguimiento se crea para el remitente, y si te llega es gracias a 
 - Tu correo y tus SMS | Busca «enviado», «envío», «seguimiento» o el nombre de la tienda, y mira también en la carpeta de spam.
 - La página del pedido | A un clic del número de pedido (mira la tabla de abajo).
 - El aviso de llegada | El de Correos lleva el número de envío en «Datos del envío».
-- Tu cuenta del transportista | miSEUR y la app de GLS te muestran automáticamente los envíos asociados a tu móvil.
+- Tu cuenta del transportista | miSEUR y la app de [GLS](carrier:gls-es) te muestran automáticamente los envíos asociados a tu móvil.
 - El remitente | Si no tienes el número, «debes ponerte en contacto con el remitente para que te lo proporcione», dice SEUR.
 :::
 

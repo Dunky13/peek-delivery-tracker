@@ -14,7 +14,7 @@ GLS's tracking takes parcel numbers or Track IDs. GLS prints the Track ID on its
 
 | Number (invented) | What it is |
 | --- | --- |
-| `11111111111` | 11 digits. Also fits [GLS Germany](carrier:gls-de), [GLS France](carrier:gls-fr), PostLogistics and DHL eCommerce Poland. |
+| `11111111111` | 11 digits. Also fits [GLS Germany](carrier:gls-de), [GLS France](carrier:gls-fr), PostLogistics and [DHL eCommerce Poland](carrier:dhl-ecommerce-pl). |
 | `000000000009` | 12 digits, the last a check digit. Also fits BRT, Mondial Relay, Colis Privé and others. |
 | `ABCD1234` | 8 letters and digits. Also fits GLS Germany and GLS France. |
 | Six letters | Such as `ABCDEF`. Also fits GLS Germany. |

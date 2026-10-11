@@ -21,7 +21,7 @@ Look in the seller's purchase confirmation email first. If the sender booked GLS
 
 After a missed delivery, GLS leaves a notice (avis de passage) or sends it by SMS or email, with a reference GLS France calls the Track-ID. It works in GLS's tracking to follow or reschedule the parcel. GLS Germany uses "Track ID" for the 8-character code instead.
 
-Eight characters also fit [GLS Germany](carrier:gls-de) and [GLS Switzerland](carrier:gls-ch); 11 digits fit them too, plus PostLogistics and DHL eCommerce Poland; 12 digits fit [Colis Privé](carrier:colis-prive), [Mondial Relay](carrier:mondial-relay), BRT, DPD France and others. If the shop's email names another carrier, go with that. More in [tracking number formats](guide:tracking-number-formats).
+Eight characters also fit [GLS Germany](carrier:gls-de) and [GLS Switzerland](carrier:gls-ch); 11 digits fit them too, plus PostLogistics and [DHL eCommerce Poland](carrier:dhl-ecommerce-pl); 12 digits fit [Colis Privé](carrier:colis-prive), [Mondial Relay](carrier:mondial-relay), BRT, DPD France and others. If the shop's email names another carrier, go with that. More in [tracking number formats](guide:tracking-number-formats).
 
 ## What GLS France tracking statuses mean
 

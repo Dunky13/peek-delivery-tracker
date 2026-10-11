@@ -38,7 +38,7 @@ Od kilku godzin do kilku dni. Jeśli śledzenie pokazuje tylko utworzenie etykie
 
 - **InPost:** `Przygotowana przez Nadawcę` znaczy, że paczka „wkrótce zostanie przekazana” do InPost, więc jeszcze jej tam nie ma.
 - **Poczta Polska:** komunikat `Podany numer przesyłki jest błędny` pojawia się przy złym numerze, ale też wtedy, gdy system nie ma informacji o przesyłce.
-- **DHL eCommerce Polska:** `Brak informacji o przesyłce` może znaczyć, że nadawca nie przekazał jeszcze danych paczki albo że paczka z zagranicy nie dotarła jeszcze do Polski. DHL radzi skontaktować się z nadawcą albo sprawdzić później.
+- **[DHL eCommerce Polska](carrier:dhl-ecommerce-pl):** `Brak informacji o przesyłce` może znaczyć, że nadawca nie przekazał jeszcze danych paczki albo że paczka z zagranicy nie dotarła jeszcze do Polski. DHL radzi skontaktować się z nadawcą albo sprawdzić później.
 - **DHL w Niemczech:** może minąć do 24 godzin, zanim paczka w ogóle pojawi się w śledzeniu.
 - **Allegro:** `Oczekuje na nadanie` znaczy, że sprzedający jeszcze nie nadał paczki u przewoźnika. W zakładce „Moje przesyłki” śledzisz paczkę, gdy Allegro ma już jej numer przewozowy. Jeśli nie widzisz tam zamówienia, sprawdź w „Moich zakupach” dane dostawy i to, czy sprzedający dostał wpłatę, a potem poproś go o numer do śledzenia albo potwierdzenie nadania.
 - **Vinted:** może minąć do 48 godzin, zanim zobaczysz tam pierwsze informacje o statusie.

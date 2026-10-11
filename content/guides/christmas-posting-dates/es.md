@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Ninguna empresa de transporte en España ha publicado aún sus fechas límite para la Navidad de 2026, y en la web de Correos no hay tabla de Navidad, ni de este año ni del pasado: con Correos, haz la cuenta con sus plazos de entrega. La única fecha oficial de 2025 es la de GLS: enviar como tarde el lunes 22 de diciembre para entregar en la Península el miércoles 24. Las tablas de abajo dan la fecha límite de cada empresa tal como estaba el viernes 9 de octubre de 2026, con la del año pasado cuando la de este año aún no ha salido.
+Ninguna empresa de transporte en España ha publicado aún sus fechas límite para la Navidad de 2026, y en la web de Correos no hay tabla de Navidad, ni de este año ni del pasado: con Correos, haz la cuenta con sus plazos de entrega. La única fecha oficial de 2025 es la de [GLS](carrier:gls-es): enviar como tarde el lunes 22 de diciembre para entregar en la Península el miércoles 24. Las tablas de abajo dan la fecha límite de cada empresa tal como estaba el viernes 9 de octubre de 2026, con la del año pasado cuando la de este año aún no ha salido.
 
 ## España: Correos, GLS, SEUR, MRW, NACEX y Correos Express
 

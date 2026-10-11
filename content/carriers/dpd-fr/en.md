@@ -21,7 +21,7 @@ DPD France says its parcel numbers start with 250, 1 or 0 and have 12 to 15 digi
 
 DPD's tracking also takes the number on a delivery notice (avis de passage) or a Predict SMS code, and asks for no postcode. A genuine DPD France SMS comes from the sender name "DPD France".
 
-Fourteen digits followed by a letter (`00000000000000U`) belongs to other DPD networks or [Chronopost](carrier:chronopost), not DPD France. Parcels from DPD UK, DPD Germany and other DPD subsidiaries are sometimes handed to Chronopost on arrival in France: DPD France then shows `Numéro de colis inconnu` (parcel number unknown) and points you to Chronopost's tracking.
+Fourteen digits followed by a letter (`00000000000000U`) belongs to other DPD networks or [Chronopost](carrier:chronopost), not DPD France. Parcels from [DPD UK](carrier:dpd-uk), DPD Germany and other DPD subsidiaries are sometimes handed to Chronopost on arrival in France: DPD France then shows `Numéro de colis inconnu` (parcel number unknown) and points you to Chronopost's tracking.
 
 ## What DPD France's tracking statuses mean
 

@@ -31,7 +31,7 @@ En temps normal, La Poste compte 48 heures (2 jours ouvrables) pour un Colissimo
 
 ## Belgique : bpost et DPD
 
-bpost ne publie pas de date limite de Noël : on n'en a trouvé aucune, ni pour 2025 ni pour 2026. DPD Belgium a déjà publié son calendrier 2026, pour les enlèvements chez ses clients professionnels.
+[bpost](carrier:bpost) ne publie pas de date limite de Noël : on n'en a trouvé aucune, ni pour 2025 ni pour 2026. DPD Belgium a déjà publié son calendrier 2026, pour les enlèvements chez ses clients professionnels.
 
 | Transporteur | Service | Envoyer au plus tard |
 | --- | --- | --- |

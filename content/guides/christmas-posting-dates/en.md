@@ -21,13 +21,13 @@ UK carriers haven't put their 2026 dates on their own pages yet (Royal Mail: "La
 | Royal Mail | Tracked 24 | Not announced yet (2025: Sunday 21 December) |
 | Royal Mail | Special Delivery Guaranteed | Not announced yet (2025: Tuesday 23 December) |
 | Royal Mail | Letters to Santa, for a reply | Wednesday 9 December |
-| Parcelforce | express48 | Not announced yet (2025: Friday 19 December) |
+| [Parcelforce](carrier:parcelforce) | express48 | Not announced yet (2025: Friday 19 December) |
 | Parcelforce | express10, expressAM, express24 | Not announced yet (2025: Monday 22 December) |
 | [Evri](carrier:evri) | Standard, UK mainland | Not announced yet (2025: Friday 19 December) |
 | Evri | Next Day, UK mainland, drop-off by 11am | Not announced yet (2025: Saturday 20 December) |
 | [InPost](carrier:inpost) | Drop-off at a locker or shop | Not announced yet (2025: Saturday 20 December) |
 
-Royal Mail and Parcelforce say their dates can change. Parcelforce's own page names "expressPM" where Royal Mail's 2025 leaflet names "expressAM", with the same date. DPD UK's pages show no Christmas cut-off for UK deliveries.
+Royal Mail and Parcelforce say their dates can change. Parcelforce's own page names "expressPM" where Royal Mail's 2025 leaflet names "expressAM", with the same date. [DPD UK](carrier:dpd-uk)'s pages show no Christmas cut-off for UK deliveries.
 
 ## United States: USPS, UPS and FedEx
 

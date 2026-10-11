@@ -41,7 +41,7 @@ Mêmes étapes, autres mots. Pour La Poste, ce sont les libellés de la frise de
 
 Non : le vendeur a créé une étiquette et transmis les données, rien de plus. Chez UPS et FedEx, `Étiquette créée` ne change qu'une fois le colis remis au transporteur. À [La Poste suisse](carrier:swiss-post), `Transmission des données par l'expéditeur` veut dire que l'envoi ne lui a normalement pas encore été remis ; chez [Colis Privé](carrier:colis-prive), `Colis attendu par Colis Privé`, qu'il n'a pas encore reçu le colis.
 
-Chez bpost, `en préparation` a deux sens : soit l'expéditeur prépare encore le colis, soit bpost l'a déjà mais doit encore le trier. Selon bpost, la plupart des colis sont traités dans les 5 jours après que l'expéditeur l'a choisi.
+Chez [bpost](carrier:bpost), `en préparation` a deux sens : soit l'expéditeur prépare encore le colis, soit bpost l'a déjà mais doit encore le trier. Selon bpost, la plupart des colis sont traités dans les 5 jours après que l'expéditeur l'a choisi.
 
 Si rien ne bouge, demande au vendeur, pas au transporteur : Colis Privé te renvoie vers le site du vendeur, et chez bpost, seul l'expéditeur peut faire ouvrir un dossier.
 

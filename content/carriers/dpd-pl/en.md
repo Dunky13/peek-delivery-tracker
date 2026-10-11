@@ -18,7 +18,7 @@ DPD says its parcel numbers have 14 characters: in practice 13 digits and a lett
 | `13000000000000` | 14 digits starting 13: also DPD Poland's. |
 | `123456789` | A 9-character sending code, used by senders: not a tracking number. |
 
-Fourteen digits also fit [DPD Germany](carrier:dpd-de), [DPD Switzerland](carrier:dpd-ch), DPD UK, SEUR, BRT and others, so check which carrier the shop's email names. If DPD replies `There is no trace for this parcel`, the number is wrong or not in DPD's system yet: DPD asks you to try again the morning after posting.
+Fourteen digits also fit [DPD Germany](carrier:dpd-de), [DPD Switzerland](carrier:dpd-ch), [DPD UK](carrier:dpd-uk), SEUR, BRT and others, so check which carrier the shop's email names. If DPD replies `There is no trace for this parcel`, the number is wrong or not in DPD's system yet: DPD asks you to try again the morning after posting.
 
 ## What DPD Poland's tracking statuses mean
 

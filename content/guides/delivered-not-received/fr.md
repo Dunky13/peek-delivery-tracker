@@ -24,7 +24,7 @@ Où chaque transporteur peut le laisser :
 | Colissimo (FR) | Dans ta boîte aux lettres, ou remis à « toute personne présente » à ton adresse, gardien ou concierge compris. Au-delà de 5 kg, contre signature ou contre un code reçu par SMS ou e-mail |
 | [Chronopost](carrier:chronopost) (FR) | En lieu sûr : boîte aux lettres, pas-de-porte, voisin ou gardien. Chronopost conseille aussi de regarder « sous le porche, sur la terrasse » |
 | [Colis Privé](carrier:colis-prive) (FR) | Dans ta boîte aux lettres, ou remis à un gardien, un voisin ou « un tiers de confiance » |
-| bpost (BE) | Dans ta boîte aux lettres, sans sonner, pour un petit colis. Ou selon tes préférences : Point d'enlèvement, lieu sûr, voisin |
+| [bpost](carrier:bpost) (BE) | Dans ta boîte aux lettres, sans sonner, pour un petit colis. Ou selon tes préférences : Point d'enlèvement, lieu sûr, voisin |
 | La Poste suisse | Remis à toute personne présente à ton domicile, ou à un voisin si personne n'est là. Trop grand pour la boîte, déposé dans « un lieu sûr et protégé des intempéries », sauf si tu as choisi « Pas de dépôt » |
 
 Colis [Planzer](carrier:planzer) ou [Quickpac](carrier:quickpac) ? Leurs pages disent quoi vérifier, dont la « Confirmation de livraison » du portail de Planzer.

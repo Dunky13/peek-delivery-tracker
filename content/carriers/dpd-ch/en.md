@@ -17,7 +17,7 @@ You usually get the parcel number by email, often from the shop. After a missed 
 | `06090000000000` | The 14-digit parcel number. DPD's claim forms say Swiss ones start with 060. |
 | `06090000000000U` | The same with a check character after it, which DPD's Swiss pages don't mention. |
 
-The card's notification number, starting P00, isn't the parcel number: it books a new delivery. If myDPD finds nothing, the parcel may not have reached DPD yet, the number may be over 31 days old and archived or it may be wrong (DPD's have 14 digits). Fourteen digits also fit [DPD Germany](carrier:dpd-de), [DPD France](carrier:dpd-fr), DPD UK, SEUR, BRT and others, so check which carrier the shop's email names.
+The card's notification number, starting P00, isn't the parcel number: it books a new delivery. If myDPD finds nothing, the parcel may not have reached DPD yet, the number may be over 31 days old and archived or it may be wrong (DPD's have 14 digits). Fourteen digits also fit [DPD Germany](carrier:dpd-de), [DPD France](carrier:dpd-fr), [DPD UK](carrier:dpd-uk), SEUR, BRT and others, so check which carrier the shop's email names.
 
 ## What DPD Switzerland's tracking statuses mean
 

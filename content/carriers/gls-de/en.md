@@ -16,7 +16,7 @@ GLS Germany publishes no length for its numbers; Peek knows these shapes:
 
 | Number (invented) | What it is |
 | --- | --- |
-| `11111111111` | 11 digits. Also fits [GLS Switzerland](carrier:gls-ch), [GLS France](carrier:gls-fr), PostLogistics and DHL eCommerce Poland. |
+| `11111111111` | 11 digits. Also fits [GLS Switzerland](carrier:gls-ch), [GLS France](carrier:gls-fr), PostLogistics and [DHL eCommerce Poland](carrier:dhl-ecommerce-pl). |
 | `001234567801` | 12 digits, the last a check digit. Also fits [BRT](carrier:brt), [Mondial Relay](carrier:mondial-relay), Colis Privé and others. |
 | `ABCD1234` | 8 letters and digits. Also fits GLS Switzerland and GLS France. |
 | Track-ID | Six characters, on the notification card. Peek reads only all-letter ones (`ABCDEF`); otherwise use the parcel number. |

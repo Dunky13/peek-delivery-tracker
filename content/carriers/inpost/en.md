@@ -17,7 +17,7 @@ InPost Italy says the number is in the shop's order emails and InPost's pickup e
 | `JD0000000000000000` | JD and 16 digits: UK. |
 | `JJD0000000000000000` | JJD and 16 digits: UK. |
 | `8YDR000000000` | 8YDR and 9 digits: UK. |
-| `012345678901234567890123` | 24 digits: Poland and Italy. bpost and Ciblex use it too. |
+| `012345678901234567890123` | 24 digits: Poland and Italy. [bpost](carrier:bpost) and Ciblex use it too. |
 | `12345678` | 8 digits: inpost.pl and inpost.pt accept it. Also fits [Mondial Relay](carrier:mondial-relay). |
 
 InPost UK says its numbers usually start with JD, JJD or 8. JJD or JD followed by 18 digits is a DHL number. The collection code, PIN, QR code and Poland's "kod nadania" (a sender's code for posting without a label) won't track. If the shop's email names another carrier, [the number may be theirs](guide:tracking-number-formats).

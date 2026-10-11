@@ -11,7 +11,7 @@ El seguimiento universal de paquetes reúne todos tus envíos en una sola web o 
 
 ## ¿Hay una app para seguir todos tus paquetes en un solo sitio?
 
-Sí, y puede que ya la tengas: además de los localizadores universales, PayPal y Shop reúnen paquetes, y Correos, GLS o [SEUR](carrier:seur) juntan los suyos en tu cuenta. Lo que ve cada servicio depende de cómo entra el paquete en la lista:
+Sí, y puede que ya la tengas: además de los localizadores universales, PayPal y Shop reúnen paquetes, y Correos, [GLS](carrier:gls-es) o [SEUR](carrier:seur) juntan los suyos en tu cuenta. Lo que ve cada servicio depende de cómo entra el paquete en la lista:
 
 | Cómo entra el paquete | Qué ve el servicio | Ejemplos |
 | --- | --- | --- |

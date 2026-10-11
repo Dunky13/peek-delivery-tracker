@@ -304,6 +304,86 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "An Post tracking: statuses, missed deliveries and contact",
       "name": "An Post",
       "color": "#00a76a"
+    },
+    {
+      "id": "vinted-go",
+      "catalog": "vinted-go",
+      "slug": "vinted-go-tracking",
+      "title": "Vinted Go tracking: statuses, lockers and who to contact",
+      "name": "Vinted Go",
+      "color": "#004654"
+    },
+    {
+      "id": "amazon-logistics",
+      "catalog": "amazon-logistics",
+      "slug": "amazon-logistics-tracking",
+      "title": "Amazon Logistics tracking: where to look and what to do",
+      "name": "Amazon Logistics",
+      "color": "#ff9900"
+    },
+    {
+      "id": "dpd-uk",
+      "catalog": "dpd-uk",
+      "slug": "dpd-uk-tracking",
+      "title": "DPD UK tracking: statuses, Pickup shops and contact",
+      "name": "DPD UK",
+      "color": "#dc0032"
+    },
+    {
+      "id": "parcelforce",
+      "catalog": "parcelforce",
+      "slug": "parcelforce-worldwide-tracking",
+      "title": "Parcelforce Worldwide tracking: statuses and redelivery",
+      "name": "Parcelforce Worldwide",
+      "color": "#9d0f11"
+    },
+    {
+      "id": "bpost",
+      "catalog": "bpost",
+      "slug": "bpost-tracking",
+      "title": "bpost tracking: statuses, Pick-up points and contact",
+      "name": "bpost",
+      "color": "#ef2637"
+    },
+    {
+      "id": "dpd-ie",
+      "catalog": "dpd-ie",
+      "slug": "dpd-ireland-tracking",
+      "title": "DPD Ireland tracking: statuses, Pickup points and contact",
+      "name": "DPD Ireland",
+      "color": "#dc0032"
+    },
+    {
+      "id": "gls-es",
+      "catalog": "gls-es",
+      "slug": "gls-spain-tracking",
+      "title": "GLS Spain tracking: statuses, Parcel Shops and contact",
+      "name": "GLS Spain",
+      "color": "#ffdd00"
+    },
+    {
+      "id": "dhl-ecommerce-es",
+      "catalog": "dhl-ecommerce-es",
+      "slug": "dhl-ecommerce-iberia-tracking",
+      "title": "DHL eCommerce Iberia tracking: statuses and ServicePoints",
+      "name": "DHL eCommerce Iberia",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "dhl-ecommerce-pl",
+      "catalog": "dhl-ecommerce-pl",
+      "slug": "dhl-ecommerce-poland-tracking",
+      "title": "DHL eCommerce Poland tracking: statuses, pickup and help",
+      "name": "DHL eCommerce Poland",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "dhl-ecommerce-uk",
+      "catalog": "dhl-ecommerce-uk",
+      "slug": "dhl-ecommerce-uk-tracking",
+      "title": "DHL eCommerce UK tracking: statuses, ServicePoints, contact",
+      "name": "DHL eCommerce UK",
+      "color": "#ffcc00"
     }
   ],
   "de": [
@@ -410,6 +490,14 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Yanwen Sendungsverfolgung: Nummern, Status und Kontakt",
       "name": "Yanwen",
       "color": "#8cbe1e"
+    },
+    {
+      "id": "amazon-logistics",
+      "catalog": "amazon-logistics",
+      "slug": "amazon-logistics-tracking",
+      "title": "Amazon Logistics Tracking: Paket verfolgen und Hilfe",
+      "name": "Amazon Logistics",
+      "color": "#ff9900"
     }
   ],
   "fr": [
@@ -540,6 +628,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Yanwen suivi\u00a0: numéros, statuts et qui contacter",
       "name": "Yanwen",
       "color": "#8cbe1e"
+    },
+    {
+      "id": "vinted-go",
+      "catalog": "vinted-go",
+      "slug": "vinted-go-suivi",
+      "title": "Vinted Go suivi\u00a0: statuts, consigne, point relais et contact",
+      "name": "Vinted Go",
+      "color": "#004654"
+    },
+    {
+      "id": "amazon-logistics",
+      "catalog": "amazon-logistics",
+      "slug": "amazon-logistics-suivi",
+      "title": "Amazon Logistics suivi\u00a0: où suivre ton colis et que faire",
+      "name": "Amazon Logistics",
+      "color": "#ff9900"
+    },
+    {
+      "id": "bpost",
+      "catalog": "bpost",
+      "slug": "bpost-suivi",
+      "title": "bpost suivi\u00a0: code-barres, statuts et point relais",
+      "name": "bpost",
+      "color": "#ef2637"
     }
   ],
   "it": [
@@ -646,6 +758,14 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Yanwen tracking: numero, stati e chi consegna in Italia",
       "name": "Yanwen",
       "color": "#8cbe1e"
+    },
+    {
+      "id": "amazon-logistics",
+      "catalog": "amazon-logistics",
+      "slug": "amazon-logistics-tracking",
+      "title": "Amazon Logistics tracking: dove seguire il pacco e contatti",
+      "name": "Amazon Logistics",
+      "color": "#ff9900"
     }
   ],
   "es": [
@@ -744,6 +864,38 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Yanwen seguimiento: estados, quién entrega y contacto",
       "name": "Yanwen",
       "color": "#8cbe1e"
+    },
+    {
+      "id": "vinted-go",
+      "catalog": "vinted-go",
+      "slug": "vinted-go-seguimiento",
+      "title": "Vinted Go seguimiento: estados, taquillas y contacto",
+      "name": "Vinted Go",
+      "color": "#004654"
+    },
+    {
+      "id": "amazon-logistics",
+      "catalog": "amazon-logistics",
+      "slug": "amazon-logistics-seguimiento",
+      "title": "Amazon Logistics seguimiento: dónde mirarlo y qué hacer",
+      "name": "Amazon Logistics",
+      "color": "#ff9900"
+    },
+    {
+      "id": "gls-es",
+      "catalog": "gls-es",
+      "slug": "gls-spain-seguimiento",
+      "title": "GLS Spain seguimiento: estados, Parcel Shop y teléfono",
+      "name": "GLS Spain",
+      "color": "#ffdd00"
+    },
+    {
+      "id": "dhl-ecommerce-es",
+      "catalog": "dhl-ecommerce-es",
+      "slug": "dhl-ecommerce-iberia-seguimiento",
+      "title": "DHL eCommerce Iberia seguimiento: estados y teléfono",
+      "name": "DHL eCommerce Iberia",
+      "color": "#ffcc00"
     }
   ],
   "pt": [
@@ -850,6 +1002,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Yanwen tracking: rastrear encomenda, estados e contactos",
       "name": "Yanwen",
       "color": "#8cbe1e"
+    },
+    {
+      "id": "vinted-go",
+      "catalog": "vinted-go",
+      "slug": "vinted-go-encomenda",
+      "title": "Vinted Go encomenda: rastreio, cacifos e levantamento",
+      "name": "Vinted Go",
+      "color": "#004654"
+    },
+    {
+      "id": "amazon-logistics",
+      "catalog": "amazon-logistics",
+      "slug": "amazon-logistics-rastreio",
+      "title": "Amazon Logistics rastreio: onde seguir e o que fazer",
+      "name": "Amazon Logistics",
+      "color": "#ff9900"
+    },
+    {
+      "id": "dhl-ecommerce-es",
+      "catalog": "dhl-ecommerce-es",
+      "slug": "dhl-ecommerce-iberia-rastreio",
+      "title": "DHL eCommerce Iberia rastreio: estados e ServicePoints",
+      "name": "DHL eCommerce Iberia",
+      "color": "#ffcc00"
     }
   ],
   "pl": [
@@ -924,6 +1100,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Yanwen śledzenie przesyłki: statusy, kurier, kontakt",
       "name": "Yanwen",
       "color": "#8cbe1e"
+    },
+    {
+      "id": "amazon-logistics",
+      "catalog": "amazon-logistics",
+      "slug": "amazon-logistics-sledzenie-przesylki",
+      "title": "Amazon Logistics tracking: gdzie śledzić paczkę Amazon",
+      "name": "Amazon Logistics",
+      "color": "#ff9900"
+    },
+    {
+      "id": "dhl-ecommerce-pl",
+      "catalog": "dhl-ecommerce-pl",
+      "slug": "dhl-ecommerce-poland-sledzenie-przesylki",
+      "title": "DHL eCommerce Poland śledzenie przesyłki: statusy i punkty",
+      "name": "DHL eCommerce Poland",
+      "color": "#ffcc00"
     }
   ]
 };

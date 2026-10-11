@@ -69,7 +69,7 @@ Several carriers list parcels heading your way once you prove the address, email
 | US | USPS Informed Delivery, free | USPS parcels to your address, by daily email and dashboard. Starts "within three business days", rarely up to 7. Some apartment addresses can't join; the email won't always list every parcel |
 | US, UK, Ireland, Canada, Australia | UPS My Choice, free to join | UPS parcels to and from you, coming up or from the past four months. In the US and Canada, a code may come by post in about 7 to 14 days |
 | US | FedEx Delivery Manager, free | Deliveries to your home, address checked by a texted code. FedEx doesn't say parcels without a number will appear |
-| UK | DPD app | DPD and DPD Local parcels, matched to "your mobile phone number or email address and your delivery address" |
+| UK | DPD app | [DPD](carrier:dpd-uk) and DPD Local parcels, matched to "your mobile phone number or email address and your delivery address" |
 | Canada | Canada Post automatic tracking, free | Personal accounts only, no business or PO box addresses, ID checked. No guarantee every parcel is added |
 | Australia | MyPost account, free | Australia Post adds parcels "if we have the information required" |
 
