@@ -73,7 +73,7 @@ Aucune page de Colis Privé ne donne de moyen de joindre le livreur.
 
 ## Suivre un colis Colis Privé avec Peek
 
-[Peek](/) a besoin du numéro suivi du code postal de livraison : `AB1234567890 75001` (France), `AB1234567890 B1000` (Belgique) ou `AB1234567890 L1234` (Luxembourg), tous inventés. Espaces et tirets passent, mais garde le B ou le L : un numéro seul ne peut pas être cherché. Tu peux aussi coller un lien de colisprive.com ou de colisprive.fr. Un numéro tout en chiffres ressemble à ceux d'autres transporteurs : Peek interroge alors tour à tour les plus probables.
+[Peek](/) a besoin du numéro de 12 caractères et du code postal de livraison. Saisis le numéro et choisis Colis Privé comme transporteur : un champ apparaît pour le code postal, cinq chiffres en France, quatre en Belgique, ou L et quatre chiffres au Luxembourg. Ou saisis le numéro suivi de son code postal : `AB1234567890 75001` (France), `AB1234567890 B1000` (Belgique) ou `AB1234567890 L1234` (Luxembourg), tous inventés. Espaces et tirets passent, mais garde le B ou le L : Peek trouve alors Colis Privé tout seul. Tu peux aussi coller un lien de colisprive.com ou de colisprive.fr.
 
 Il vérifie le suivi toutes les 10 minutes, toutes les 2 minutes une fois le colis en livraison, et peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ». Il affiche le statut, l'historique en français jour par jour, et un jour de livraison prévu quand une ligne en annonce un, mais ne peut ni réclamer ni contacter Colis Privé à ta place. Le suivi de Colis Privé ne donne pas le lieu des scans, donc pas de carte, et le nom et l'adresse du destinataire sont laissés de côté.
 
