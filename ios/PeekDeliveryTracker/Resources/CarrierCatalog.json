@@ -2773,7 +2773,7 @@
           "checksum": "luhn"
         },
         {
-          "pattern": "^(?!(?:BYS|LTN))[A-Z]{3}\\d{9}$",
+          "pattern": "^(?!(?:BYS|LTN|RWM))[A-Z]{3}\\d{9}$",
           "confidence": "high"
         }
       ],
@@ -5539,7 +5539,13 @@
         "adapter": "universal"
       },
       "linkRules": [],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^20[12]\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{14}$",
+          "confidence": "low",
+          "preferred": true
+        }
+      ],
       "trackingSearchUrl": "https://apc.co.uk/"
     },
     "aras-kargo": {
@@ -5666,7 +5672,12 @@
           "path": "^/tracking/([0-9A-Za-z]{10})/?$"
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^[A-Z][1-9](?=(?:\\d*[A-Z]){2})[0-9A-Z]{8}$",
+          "confidence": "low"
+        }
+      ],
       "trackingSearchUrl": "https://chitchats.com/tracking"
     },
     "correos-de-mexico": {
@@ -5731,7 +5742,7 @@
       "linkRules": [],
       "detectionRules": [
         {
-          "pattern": "^(?:SML|MTN)\\d{7}$",
+          "pattern": "^(?:MRO|MTN|SMI|SML|XTO)\\d{7}$",
           "confidence": "low"
         }
       ]
@@ -6152,6 +6163,10 @@
         {
           "pattern": "^\\d{2}A\\d{9}$",
           "confidence": "low"
+        },
+        {
+          "pattern": "^RWM\\d{9}$",
+          "confidence": "high"
         }
       ],
       "trackingSearchUrl": "https://www.kuehne-nagel.com/"
@@ -6506,7 +6521,13 @@
           ]
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^(?:[A-Z]{2}\\d{7}|\\d{9})$",
+          "confidence": "low",
+          "rawPattern": "^(?:[A-Z]{2}\\d{6}|\\d{8})-\\d$"
+        }
+      ],
       "trackingSearchUrl": "https://www.rlcarriers.com/freight/shipping/shipment-tracing"
     },
     "russian-post": {
@@ -6579,7 +6600,12 @@
         "adapter": "universal"
       },
       "linkRules": [],
-      "detectionRules": []
+      "detectionRules": [
+        {
+          "pattern": "^1[A-Z]{3,5}\\d{9,11}$",
+          "confidence": "low"
+        }
+      ]
     },
     "speedy": {
       "displayName": "Speedy",
@@ -6662,7 +6688,12 @@
         "adapter": "universal"
       },
       "linkRules": [],
-      "detectionRules": []
+      "detectionRules": [
+        {
+          "pattern": "^WNB[A-Z]{2}\\d{10}YQ$",
+          "confidence": "high"
+        }
+      ]
     },
     "whistl": {
       "displayName": "Whistl",
@@ -6771,7 +6802,13 @@
           ]
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^\\d{9}$",
+          "confidence": "low",
+          "checksum": "mod7"
+        }
+      ],
       "trackingSearchUrl": "https://www.xpo.com/"
     },
     "yurtici-kargo": {
@@ -7886,6 +7923,11 @@
         {
           "pattern": "^2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])(?=\\d{0,3}[A-Z])[0-9A-Z]{4}$",
           "confidence": "low"
+        },
+        {
+          "pattern": "^SE2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])(?=\\d{0,3}[A-Z])[0-9A-Z]{4}$",
+          "confidence": "low",
+          "preferred": true
         }
       ],
       "trackingSearchUrl": "https://stallion.ca/track/"
