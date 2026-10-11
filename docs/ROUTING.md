@@ -309,6 +309,11 @@ A parcel often changes carrier at the border. The origin history is always kept.
 - Until then the parcel is followed on the origin. The cards, parcel links and the delivered email
   already name the partner the origin names (`delivery_carrier`) as who delivers, and the cards and
   links show its number (`delivery_tracking_number`) after the followed one.
+- The reverse holds too. A carrier that confirms the number and would hand the parcel to the
+  carrier it is filed under, with the same number, is an earlier leg, such as a customs agent
+  before the local courier. Its history is shown while the filed carrier has none, but it
+  neither replaces the filed carrier nor raises `carrier_mismatch_confirmed`. The filed
+  carrier is asked first on every check.
 - Once adopted (`handed_over_at`), the partner answers for the parcel. The origin publishes
   some scans late, so for a day it is still asked alongside the partner, at most every 55 min
   (`earlier_checked_at`). Its scans join the history; its failures and its clock do not touch

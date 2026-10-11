@@ -393,6 +393,29 @@ describe('persistent tracking routing', () => {
     expect(result.correction).toBeUndefined();
     expect(result.result.tracking_provider).toBe('ParcelsApp');
   });
+  it.each(['saved', 'discovered'])('shows a %s earlier leg handing the parcel to its carrier without swapping', async (hint) => {
+    const number = 'CNPRT90000000000000000017';
+    const { router, direct, universal } = setup();
+    // A customs agent that names no partner hands the parcel on under the same number.
+    direct.mockImplementation(async (_parcel, carrier) => {
+      if (carrier === 'ecoscooting') throw new NotFoundError('Ecoscooting');
+      return { ...directValue(carrier), result: { ...history(), delivery_tracking_number: number } };
+    });
+    universal.mockResolvedValue({ ...history('2026-09-10T10:00:00Z'), discovered_carrier: 'ups' });
+    const result = await router.fetch(parcel({ carrier: 'ecoscooting', tracking_number: number, carrier_data: {
+      routing: state({ configured_carrier: 'ecoscooting', confirmed_carrier: 'ecoscooting', confirmed_number: number,
+        ...(hint === 'saved' ? { discovered_carrier: 'ups' } : {}) }),
+    } }), false);
+    expect(result.sourceCarrierId).toBe('ups');
+    expect(result.correction).toBeUndefined();
+    expect(result.result).not.toHaveProperty('auto_changed_to');
+    expect(result.result.routing).toMatchObject({ configured_carrier: 'ecoscooting', confirmed_carrier: 'ecoscooting' });
+    expect(vi.mocked(monitoring.reportRoutingEvent).mock.calls.map(([code]) => code)).not.toContain('carrier_mismatch_confirmed');
+    // Once its not-found cooldown is over, the filed carrier is asked first again.
+    const next = setup(new Date('2026-09-10T14:00:00Z'));
+    await next.router.fetch(parcel({ carrier: 'ecoscooting', tracking_number: number, carrier_data: result.result }), false);
+    expect(next.direct.mock.calls[0]?.[1]).toBe('ecoscooting');
+  });
   it('does not relabel an established cross-border journey', async () => {
     const { router, direct, universal } = setup();
     direct.mockRejectedValue(new Error('down'));

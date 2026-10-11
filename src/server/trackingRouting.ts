@@ -13,7 +13,7 @@ import { isCarrierFeedName, isKnownCarrierName } from 'universal-parcel-scraper/
 import { brandCarrierIds, carrierBrand, carrierIdFromName } from 'universal-parcel-scraper/app';
 import { errorType, reportRoutingEvent } from './observability';
 import { recordChecksumRejection, recordProviderInput } from './metrics';
-import { CarrierError, carrierErrorKind, CARRIER_DEFINITIONS, IndeterminateError, NoHistoryError, retryAfterMsOf } from 'universal-parcel-scraper';
+import { CarrierError, carrierErrorKind, CARRIER_DEFINITIONS, deliveryHandoff, IndeterminateError, NoHistoryError, retryAfterMsOf } from 'universal-parcel-scraper';
 import { captureDirectLocalHistory, directHistoryNumber, directLocalHistory, hasUnresolvedDirectCurrent, hasUnresolvedDirectHistory } from './directLocalHistory';
 import { latestResultTime } from 'universal-parcel-scraper/app';
 import type { Recognition, TrackingContext } from 'universal-parcel-scraper/node';
@@ -326,6 +326,14 @@ export class TrackingRouter {
       report(kind === 'input_required' ? 'carrier_input_required' : 'provider_failed', provider, kind, error);
       return failure;
     };
+    // A carrier that hands the parcel to the filed one under this same number,
+    // such as a customs agent before the local courier, is an earlier leg of
+    // the parcel, not a correction. A handoff the lookup already made counts too.
+    const earlierLeg = (carrier: string, value: RoutedResult) => {
+      if (carrier === declared) return false;
+      const partner = deliveryHandoff(carrier, number, value.result);
+      return value.sourceCarrierId === declared || (partner?.carrier === declared && partner.number === number);
+    };
     const persistResult = (value: RoutedResult, provider: string, withoutProgress = false): RoutedResult => {
       if (state.failures[provider]) report('provider_recovered', provider);
       delete state.failures[provider];
@@ -347,7 +355,7 @@ export class TrackingRouter {
       // A correction changes the selected carrier, not merely its display source.
       // Delivery-leg handoffs remain separate from correcting an incorrect label.
       const swap = provider !== declared && directCarrier(provider) && value.sourceCarrierId === provider
-        && state.confirmed_number === number && !metadata.original_carrier;
+        && state.confirmed_number === number && !metadata.original_carrier && !earlierLeg(provider, value);
       if (swap) {
         state.configured_carrier = provider;
         value.correction = { carrier: provider, trackingUrl: state.confirmed_tracking_url ?? null,
@@ -428,6 +436,9 @@ export class TrackingRouter {
         if (terminalStage && ['delivered', 'returned'].includes(terminalStage)
           && value.result.current_stage !== terminalStage) return null;
         if (capturedHistory) localHistory = capturedHistory;
+        // It shows the parcel until the filed carrier has it, and is neither
+        // confirmed in its place nor reported as a detection gap.
+        if (earlierLeg(carrier, value)) return value;
         // A probe finding the carrier its number points to is the expected
         // outcome, not a detection gap: log it without raising an alert. The
         // same holds when detection already names the confirming carrier.
