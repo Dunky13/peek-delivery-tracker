@@ -108,7 +108,6 @@ struct ParcelLinkSheet: View {
                 if let failure = links.refreshFailure {
                     note(localizer.text(failure.messageKey))
                 }
-                if links.isSample { note(localizer.text("sample.note")) }
                 if wrapped {
                     GiftSurprise()
                 } else if gift == .opened {
@@ -120,7 +119,8 @@ struct ParcelLinkSheet: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // The number and the carrier's own page would tell where a gift comes from.
                     if !wrapped {
-                        SharedParcelNumber(parcel: parcel, hint: response.package.numberHint, tint: tint) { feedback.visited($0.name) }
+                        SharedParcelNumber(parcel: parcel, hint: response.package.numberHint, tint: tint,
+                                           carrierPages: !links.isSample) { feedback.visited($0.name) }
                     }
                     if Self.showsHistory(parcel) {
                         ParcelJournal(parcel: parcel, tint: tint)
@@ -439,9 +439,11 @@ private struct SharedParcelCard: View {
                             .foregroundStyle(identity.ink)
                     }
                     let sender = parcel.carrierData?.senderName?.nonEmpty
-                    if sender != nil || deliveryLine != nil {
+                    let pickedUpAt = parcel.currentStage == .delivered ? PickupPoint(parcel.carrierData?.pickupPoint)?.name : nil
+                    if sender != nil || pickedUpAt != nil || deliveryLine != nil {
                         VStack(alignment: arrived ? .center : .leading, spacing: 2) {
                             if let sender { Text(localizer.text("parcel.sender", ["sender": sender])) }
+                            if let pickedUpAt { Text(localizer.text("parcel.pickedUpAt", ["place": pickedUpAt])) }
                             if let deliveryLine { Text(deliveryLine) }
                         }
                         .font(.caption).foregroundStyle(.secondary)
@@ -763,6 +765,8 @@ private struct SharedParcelNumber: View {
     let parcel: Parcel
     let hint: ParcelNumberHint?
     let tint: Color
+    /// A made-up number has no page at its carrier.
+    var carrierPages = true
     /// The reader leaves for a carrier's own page.
     let onVisit: (ParcelTrackingLink) -> Void
 
@@ -796,9 +800,9 @@ private struct SharedParcelNumber: View {
                         .accessibilityLabel(localizer.text(copiedNumber == entry.number ? "detail.copied" : "detail.copyTracking")
                             + (numbers.count > 1 ? " — " + catalog.info(for: entry.carrier, language: localizer.language).displayName : ""))
                     }
-                    carrierLinks(pages.own[index], own: true)
+                    if carrierPages { carrierLinks(pages.own[index], own: true) }
                 }
-                carrierLinks(pages.loose, own: false)
+                if carrierPages { carrierLinks(pages.loose, own: false) }
             }
         }
     }

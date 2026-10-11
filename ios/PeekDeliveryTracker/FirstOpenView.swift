@@ -10,22 +10,56 @@ enum FirstParcelRequest: Equatable {
     case scan
 }
 
-/// The made-up parcel the first screen follows: a pair of trainers, from Shenzhen to a letterbox in Zürich.
+/// The made-up parcel the first screen follows: a pair of trainers, from Shenzhen to a kiosk in Zürich.
 enum FirstOpenJourney {
     /// Its scans; the journey is told one more scan at a time.
     static let steps = 5
     /// What someone who asked for less motion sees: the parcel a day away, its route drawn.
     static let stillStep = 3
     static let linkID = "SampLeParceL"
+    /// The number says what the parcel is, where a note would have had to.
+    static let trackingNumber = "123EXAMPLE"
     private static let parcelID = UUID(uuidString: "5A3B1E00-0000-4000-8000-000000000000")!
+    private static let kiosk = "Kiosk im Hauptbahnhof"
 
-    private static let scans: [(stage: TrackingStage, hoursAgo: Double, name: String, country: String, latitude: Double, longitude: Double)] = [
-        (.accepted, 80, "Shenzhen", "CN", 22.543, 114.058),
-        (.inTransit, 26, "Leipzig", "DE", 51.340, 12.375),
-        (.inTransit, 6, "Basel", "CH", 47.558, 7.573),
-        (.outForDelivery, 3, "Zürich", "CH", 47.367, 8.55),
-        (.delivered, 0, "Zürich", "CH", 47.367, 8.55),
+    private struct Stop {
+        let name: String
+        /// Written out, so the history shows its flag and its name in the reader's language.
+        let country: String
+        let code: String
+        let latitude: Double
+        let longitude: Double
+
+        var location: String { "\(name), \(country)" }
+        var place: EventPlace { EventPlace(latitude: latitude, longitude: longitude, precision: .city, country: code, name: name) }
+    }
+
+    private static let shenzhen = Stop(name: "Shenzhen", country: "China", code: "CN", latitude: 22.543, longitude: 114.058)
+    private static let leipzig = Stop(name: "Leipzig", country: "Germany", code: "DE", latitude: 51.340, longitude: 12.375)
+    private static let basel = Stop(name: "Basel", country: "Switzerland", code: "CH", latitude: 47.558, longitude: 7.573)
+    private static let zurich = Stop(name: "Zürich", country: "Switzerland", code: "CH", latitude: 47.367, longitude: 8.55)
+
+    private static let scans: [(stage: TrackingStage, hoursAgo: Double, stop: Stop)] = [
+        (.accepted, 80, shenzhen),
+        (.inTransit, 26, leipzig),
+        (.inTransit, 6, basel),
+        (.outForDelivery, 3, zurich),
+        (.delivered, 0, zurich),
     ]
+
+    /// The whole story, as the parcel opens on it: a missed doorbell, and the kiosk it was picked up from.
+    private static let story: [(stage: TrackingStage, hoursAgo: Double, line: String, stop: Stop?)] = [
+        (.registered, 84, "sample.journey.packed", nil),
+        (.accepted, 80, "sample.journey.collected", shenzhen),
+        (.inTransit, 30, "sample.journey.flight", leipzig),
+        (.customs, 9, "sample.journey.customs", basel),
+        (.outForDelivery, 6, "sample.journey.courier", zurich),
+        (.failedAttempt, 4.5, "sample.journey.missed", zurich),
+        (.readyForPickup, 3.5, "sample.journey.waiting", zurich),
+        (.delivered, 0.4, "sample.journey.pickedUp", zurich),
+    ]
+
+    @MainActor static func name(_ localizer: Localizer) -> String { "\(localizer.text("landing.parcel.sneakers")) 👟" }
 
     /// The parcel once `step` of its scans are in.
     static func parcel(step: Int, name: String, now: Date = Date()) -> Parcel {
@@ -33,21 +67,48 @@ enum FirstOpenJourney {
         let events = scans.prefix(step).enumerated().map { index, scan in
             TrackingEvent(
                 id: UUID(uuidString: "5A3B1E00-0000-4000-8000-00000000000\(index + 1)")!, packageID: parcelID,
-                stage: scan.stage, description: "", location: scan.name,
+                stage: scan.stage, description: "", location: scan.stop.name,
                 occurredAt: DateParser.isoString(now.addingTimeInterval(-scan.hoursAgo * 3600)),
-                place: EventPlace(latitude: scan.latitude, longitude: scan.longitude, precision: .city, country: scan.country, name: scan.name)
+                place: scan.stop.place
             )
         }
         // It arrives in three days, then two, then tomorrow, then today.
         let daysLeft = Double(max(0, 4 - step))
         return Parcel(
-            id: parcelID, trackingNumber: "1234567899", label: name, carrier: .dhl,
+            id: parcelID, trackingNumber: trackingNumber, label: name, carrier: .dhl,
             createdAt: DateParser.isoString(now.addingTimeInterval(-96 * 3600)),
             expectedDelivery: ParcelOrganizer.dayKey(now.addingTimeInterval(daysLeft * 86_400)),
             lastSyncedAt: DateParser.isoString(now), syncStatus: .ok,
             carrierData: CarrierData(destinationCountry: "CH"),
             notificationsMuted: false, trackingEvents: Array(events)
         )
+    }
+
+    /// The parcel as it opens: picked up, every scan of its story told in the app's language.
+    @MainActor static func delivered(localizer: Localizer, now: Date = Date()) -> Parcel {
+        let events = story.enumerated().map { index, scan in
+            TrackingEvent(
+                id: UUID(uuidString: String(format: "5A3B1E00-0000-4000-8000-%012X", 0x100 + index))!, packageID: parcelID,
+                stage: scan.stage, description: localizer.text(scan.line), location: scan.stop?.location,
+                occurredAt: DateParser.isoString(now.addingTimeInterval(-scan.hoursAgo * 3600)),
+                place: scan.stop?.place
+            )
+        }
+        return Parcel(
+            id: parcelID, trackingNumber: trackingNumber, label: name(localizer), carrier: .dhl,
+            createdAt: DateParser.isoString(now.addingTimeInterval(-96 * 3600)),
+            expectedDelivery: ParcelOrganizer.dayKey(now),
+            lastSyncedAt: DateParser.isoString(now), syncStatus: .ok,
+            carrierData: CarrierData(senderName: "Sole Studio", pickupPoint: "\(kiosk)\nBahnhofplatz 15, 8001 Zürich",
+                                     weightKg: 0.9, destinationCountry: "CH"),
+            notificationsMuted: false, trackingEvents: events
+        )
+    }
+
+    /// Opens the parcel, whatever the journey on the first screen has come to.
+    @MainActor static func open(in links: ParcelLinkStore, localizer: Localizer) {
+        let parcel = delivered(localizer: localizer)
+        links.openSample(page(of: parcel), name: parcel.label)
     }
 
     /// How long a scan stays before the next one comes in: the last mile and the arrival get a longer look.
@@ -63,20 +124,22 @@ enum FirstOpenJourney {
     @MainActor static func ping(step: Int, localizer: Localizer) -> String? {
         switch step {
         case 4: "\(localizer.text("stage.out_for_delivery")) · \(localizer.text("time.today")), 13:00–17:00"
-        case 5: "\(localizer.text("stage.delivered")) · \(localizer.text("landing.ping.mailbox")), 14:12"
+        case 5: "\(localizer.text("stage.delivered")) · \(kiosk), 18:05"
         default: nil
         }
     }
 
     /// The parcel as a link shows it, for the page that opens when the picture is tapped.
     static func page(of parcel: Parcel) -> PublicParcelResponse {
-        PublicParcelResponse(
+        let data = parcel.carrierData
+        return PublicParcelResponse(
             link: ParcelLink(id: linkID, role: .viewer, kind: .lookup, createdAt: parcel.createdAt,
                              numberShown: true, canKeep: false, gift: false, shared: true),
             package: PublicPackage(
                 id: parcel.id, trackingNumber: parcel.trackingNumber, label: "", carrier: parcel.carrier, createdAt: parcel.createdAt,
                 expectedDelivery: parcel.expectedDelivery, lastSyncedAt: parcel.lastSyncedAt, syncStatus: parcel.syncStatus,
-                carrierData: PublicPackageCarrierData(destinationCountry: parcel.carrierData?.destinationCountry),
+                carrierData: PublicPackageCarrierData(senderName: data?.senderName, pickupPoint: data?.pickupPoint,
+                                                      weightKg: data?.weightKg, destinationCountry: data?.destinationCountry),
                 notificationsMuted: false, trackingEvents: parcel.trackingEvents
             )
         )
@@ -143,8 +206,8 @@ struct FirstOpenView: View {
     // MARK: - The sample parcel on its map
 
     private func hero(height: CGFloat, top: CGFloat) -> some View {
-        let parcel = FirstOpenJourney.parcel(step: step, name: localizer.text("landing.parcel.sneakers"))
-        return Button { open(parcel) } label: {
+        let parcel = FirstOpenJourney.parcel(step: step, name: FirstOpenJourney.name(localizer))
+        return Button { FirstOpenJourney.open(in: links, localizer: localizer) } label: {
             ZStack(alignment: .bottom) {
                 identity.surface
                 if let atlas {
@@ -282,10 +345,6 @@ struct FirstOpenView: View {
         DeliveryAnalytics.shared.action("parcel-paste")
         onAdd(.paste(UIPasteboard.general.string ?? ""))
     }
-
-    private func open(_ parcel: Parcel) {
-        links.openSample(FirstOpenJourney.page(of: parcel), name: parcel.label)
-    }
 }
 
 /// The picture presses in a little, as a card does.
@@ -410,7 +469,7 @@ struct DeliveriesEmptyState: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Button { openSample() } label: {
+            Button { FirstOpenJourney.open(in: links, localizer: localizer) } label: {
                 UnwrappingParcel(open: 0, pressed: pressed)
                     .frame(width: 204, height: 204 * 31 / 30)
                     .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.64), value: pressed)
@@ -475,11 +534,6 @@ struct DeliveriesEmptyState: View {
         .frame(minHeight: 48)
         .background(Brand.paper, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .overlay { RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Brand.separator.opacity(0.3), lineWidth: 0.75) }
-    }
-
-    private func openSample() {
-        let parcel = FirstOpenJourney.parcel(step: FirstOpenJourney.stillStep, name: localizer.text("landing.parcel.sneakers"))
-        links.openSample(FirstOpenJourney.page(of: parcel), name: parcel.label)
     }
 }
 
