@@ -70,8 +70,15 @@ Auth caches the template and keeps the last good copy if a later fetch fails. Th
 
 **Use your own SMTP before opening sign-ups.** Supabase's default sender only reaches team
 addresses and is heavily rate-limited. Any SMTP service works. Use a dedicated sender
-address, publish SPF, DKIM and DMARC, turn off link tracking, and enable CAPTCHA and Auth
-email rate limits. Otherwise the OTP endpoint can be abused.
+address, publish SPF, DKIM and DMARC, and turn off link tracking.
+
+Set `GOTRUE_RATE_LIMIT_HEADER` to a header that carries the visitor's address and that
+visitors can't set themselves: `CF-Connecting-IP` when Cloudflare is the only way in. Auth
+then limits code requests and code checks per address. Without it, Auth only waits a
+minute between emails to the same inbox and caps all emails at
+`GOTRUE_RATE_LIMIT_EMAIL_SENT` an hour (30 by default), so one sender can spend the hour's
+emails and lock everyone else out. The clients send no CAPTCHA token, so leave Auth's
+CAPTCHA off.
 
 ## Google
 
