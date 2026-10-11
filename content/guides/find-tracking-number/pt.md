@@ -11,7 +11,7 @@ O número de seguimento costuma vir no e-mail ou no SMS que a loja te manda quan
 
 ## Onde encontro o número de seguimento?
 
-Os CTT, que lhe chamam «código de envio», explicam que, quando o código é gerado no momento do envio, é o remetente quem fica a sabê-lo. Os próprios CTT só to mandam (por SMS, e-mail ou aviso na caixa do correio) em alguns casos: se o serviço que o remetente contratou inclui avisos ao destinatário, se o envio está em desalfandegamento, se não estava ninguém em casa ou se o envio está à tua espera numa Loja ou Ponto CTT. No desalfandegamento, esse código é o número do objeto de que precisas para dar início ao processo (vê [encomenda retida na alfândega](guide:customs)). Por isso, procura por esta ordem:
+Os [CTT](carrier:ctt), que lhe chamam «código de envio», explicam que, quando o código é gerado no momento do envio, é o remetente quem fica a sabê-lo. Os próprios CTT só to mandam (por SMS, e-mail ou aviso na caixa do correio) em alguns casos: se o serviço que o remetente contratou inclui avisos ao destinatário, se o envio está em desalfandegamento, se não estava ninguém em casa ou se o envio está à tua espera numa Loja ou Ponto CTT. No desalfandegamento, esse código é o número do objeto de que precisas para dar início ao processo (vê [encomenda retida na alfândega](guide:customs)). Por isso, procura por esta ordem:
 
 :::steps
 - O teu e-mail e os SMS | Pesquisa «enviada», «expedida», «seguimento», «tracking» ou o nome da loja, sem esquecer a pasta de spam.

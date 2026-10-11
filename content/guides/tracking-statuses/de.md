@@ -4,7 +4,7 @@ description: Von „elektronisch angekündigt“ bis „zugestellt“: was die S
 slug: sendungsstatus-bedeutung-aller-meldungen
 picture: Eine kurvige Route mit abgehakten Stationen (Strichcode-Etikett, Depot, Flugzeug), ein Lieferwagen an der aktuellen Station, weiter vorn ein Haus und Pip, der eilig mitläuft.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-11
 ---
 
 Ein Sendungsstatus fasst den letzten Scan des Paketdienstes in ein paar Worten zusammen, und meistens musst du nichts tun. „Elektronisch angekündigt“ heißt, dass der Paketdienst dein Paket noch gar nicht hat, „in transit“ oder „unterwegs“, dass es irgendwo zwischen zwei Scans steckt, und „in Zustellung“, dass es heute im Zustellfahrzeug liegt. Gefragt bist du nur in wenigen Fällen: nach einem verpassten Zustellversuch, wenn ein Paket zur Abholung bereitliegt, wenn der Zoll etwas verlangt und wenn „zugestellt“ dasteht, aber nichts da ist.
@@ -33,7 +33,7 @@ Dieselben Schritte, andere Worte:
 | Angekündigt | `Die Sendung wurde elektronisch angekündigt.` | `Elektronische Auftragsdaten wurden vom Versender übermittelt` | `Anmeldung der Sendung durch Versender (Dateneinlieferung)` |
 | Übernommen | `Die Sendung wurde von DHL bearbeitet und wird für den Weitertransport …` | `Sendungsannahme durchgeführt` | `Zeitpunkt der Aufgabe Ihrer Sendung` |
 | Unterwegs | `Die Sendung ist in der Region des Empfängers angekommen …` | `Sendung in Verteilung` | `Sendung wurde sortiert und weitergeleitet` |
-| In Zustellung | `Die Sendung wurde in das Zustellfahrzeug geladen.` | `Sendung in Zustellung` | Kein eigener Status im Glossar der Post |
+| In Zustellung | `Die Sendung wurde in das Zustellfahrzeug geladen.` | `Sendung in Zustellung` | `Verlad in Zustellfahrzeug` |
 | Abholbereit | `Die Sendung wird zur Abholung in die Filiale … gebracht.` | `Sendung abholbereit` | `Ankunft an der Abhol-/Zustellstelle` |
 | Zugestellt | `Die Sendung wurde erfolgreich zugestellt.` | `Sendung zugestellt` | `Zugestellt durch` |
 
@@ -63,7 +63,7 @@ Zwischen zwei Scans ist Funkstille normal:
 ## Pakete aus dem Ausland: Flug, Zoll und Paketdienst vor Ort
 
 - **Ursprungsland verlassen.** DHL bucht den Container mit deinem Paket auf ein Flugzeug, ein Schiff oder einen Zug und nennt dann den Transport, etwa `LH 400` für einen Lufthansa-Flug. Bei Paketen nach Deutschland heißt `Die Sendung befindet sich im Weitertransport zu DHL`, dass DHL das Paket noch nicht hat; bis zum nächsten Status können mehrere Tage vergehen. Die Prüfung bei `Die Sendung wird im Ursprungsland zusätzlich geprüft.` dauert mindestens 2 Werktage. Die Schweizerische Post meldet `Zustelldatum unbekannt`, wenn die Sendung aus dem Ausland kommt, ins Ausland geht oder nicht wie angekündigt eintraf. Und bei der Österreichischen Post heißt `Sendung in Verteilung` auf einem Paket aus dem Ausland: Es ist schon in Österreich.
-- **Zoll.** Bei DHL beginnt die Verzollung mit `Der Zollabfertigungsprozess für den Import ins Zielland/Zielgebiet wurde begonnen.` und kann je nach Unterlagen einige Werktage dauern. DHL bittet, beim deutschen Zoll nicht nach dem Status zu fragen: Das Paket ist meist gar nicht dort. Bei der Schweizerischen Post folgt auf `Im Postverzollungsprozess` der Status `Vom Schweizer Zoll freigegeben`, dann geht das Paket in die Inlandzustellung. Die Schweizerische Post nennt „drei bis vier Arbeitstage“, wenn alle Angaben vollständig und korrekt sind. Eine allgemeine Höchstdauer nennen die Paketdienste nicht. Handeln musst du nur auf Aufforderung, zum Beispiel bei `Die Sendung wurde dem Zoll übergeben. Ein Schreiben mit Ihren Zollinformationen ist auf dem Weg zu Ihnen.` Dann kommt ein Brief mit allem, was du brauchst, um das Paket beim Zollamt abzuholen. Ist er am dritten Werktag noch nicht da, melde dich bei DHL. Mehr dazu: [Paket beim Zoll](guide:customs).
+- **Zoll.** Bei DHL beginnt die Verzollung mit `Der Zollabfertigungsprozess für den Import ins Zielland/Zielgebiet wurde begonnen.` und kann je nach Unterlagen einige Werktage dauern. DHL bittet, beim deutschen Zoll nicht nach dem Status zu fragen: Das Paket ist meist gar nicht dort. Bei der [Schweizerischen Post](carrier:swiss-post) folgt auf `Im Postverzollungsprozess` der Status `Vom Schweizer Zoll freigegeben`, dann geht das Paket in die Inlandzustellung. Die Schweizerische Post nennt „drei bis vier Arbeitstage“, wenn alle Angaben vollständig und korrekt sind. Eine allgemeine Höchstdauer nennen die Paketdienste nicht. Handeln musst du nur auf Aufforderung, zum Beispiel bei `Die Sendung wurde dem Zoll übergeben. Ein Schreiben mit Ihren Zollinformationen ist auf dem Weg zu Ihnen.` Dann kommt ein Brief mit allem, was du brauchst, um das Paket beim Zollamt abzuholen. Ist er am dritten Werktag noch nicht da, melde dich bei DHL. Mehr dazu: [Paket beim Zoll](guide:customs).
 - **Paketdienst vor Ort.** `Die Weiterleitung des Transportbehälters mit der Sendung ins Zielland/Zielgebiet ist erfolgt.` heißt bei DHL: Der Paketdienst im Zielland hat übernommen, und weitere Scans findest du auch in seiner Sendungsverfolgung. Bei Paketen nach Österreich meldet sich die Post nach `Sendung ins Zielland weitergeleitet` erst wieder, wenn eines ihrer Logistikzentren das Paket erfasst hat. Bei AliExpress, Temu oder Shein bestellt? Lies, wie du ein [Paket aus China verfolgst](guide:tracking-from-china). Was Cainiao und YunExpress mit ihren englischen Meldungen meinen, steht unter [Cainiao Sendungsverfolgung](carrier:cainiao) und [YunExpress Sendungsverfolgung](carrier:yunexpress).
 
 ## Heißt „in Zustellung“, dass das Paket heute kommt?
@@ -75,7 +75,7 @@ Meistens, ja:
 - **DPD:** Mit Predict siehst du am Zustelltag die genaue Lieferzeit.
 - **UPS:** Bei `Zustellung läuft` kommt das Paket an Wohnadressen in der Regel zwischen 9 und 19 Uhr, gelegentlich auch später.
 - **Österreichische Post:** Bei `Sendung in Zustellung` kommt die Sendung voraussichtlich heute.
-- **Schweizerische Post:** Ein eigener Status dafür fehlt in ihrem Glossar. Mit „Meine Sendungen“ bekommst du in immer mehr Gebieten der Schweiz am Liefertag Nachrichten und meist ein Zeitfenster von 40 bis 90 Minuten.
+- **Schweizerische Post:** Bei `Verlad in Zustellfahrzeug` ist das Paket in Zustellung. Mit „Meine Sendungen“ bekommst du in immer mehr Gebieten der Schweiz am Liefertag Nachrichten und meist ein Zeitfenster von 40 bis 90 Minuten.
 
 Zwei Stolperfallen: `Sendung in Verteilung` heißt bei der Österreichischen Post noch nicht heute, sondern im Laufe der nächsten Werktage. Und taucht bei DHL der Status mit dem Zustellfahrzeug mehrmals auf, konnte der Zusteller seine Tour nicht beenden, etwa wegen einer Straßensperrung oder eines Unfalls: Dann kann es 1 bis 2 Tage länger dauern.
 
@@ -153,6 +153,7 @@ Rechne nicht damit, sie aufzuhalten. Bei internationalen Sendungen schreibt DHL:
 - [FedEx: Was bedeutet mein Sendungsverfolgungsstatus?](https://www.fedex.com/de-de/customer-support/faq/receiving/tracking-questions/fedex-tracking-status-meaning.html) – Etikett erstellt, Auf dem Weg, Zustellausnahme, Verspätet
 - [Österreichische Post: Sendungsstatus](https://www.post.at/p/c/hilfe-sendungsstatus) – Status, Abholfrist, Poststation, Empfangsbox, Rücksendung
 - [Schweizerische Post: Ereignisse „Sendungen verfolgen“](https://www.post.ch/de/empfangen/sendung-verfolgen/ereignisse-sendungen-verfolgen) – Status, Zoll, Fehlleitung, Rücksendegründe
+- [Schweizerische Post: Statustexte der Sendungsverfolgung](https://service.post.ch/ekp-web/core/rest/translations/de/shipment-text-messages) – Verlad in Zustellfahrzeug
 - [Schweizerische Post: Abholungseinladung](https://www.post.ch/de/empfangen/abholungseinladung) – 7 und 15 Tage, Verlängerung, Preise
 - [Schweizerische Post: Sendung verfolgen](https://www.post.ch/de/empfangen/sendung-verfolgen) – Meine Sendungen, Zeitfenster von 40 bis 90 Minuten
 - [Schweizerische Post: FAQ Import, Zoll und MWST](https://www.post.ch/de/geschaeftsloesungen/export-import-und-verzollung/import/faq-import-zoll-und-mwst) – drei bis vier Arbeitstage bei vollständigen Angaben

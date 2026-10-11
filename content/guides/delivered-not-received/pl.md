@@ -22,7 +22,7 @@ Gdzie przewoźnik może ją zostawić:
 | Przewoźnik | To też może oznaczać „doręczona” |
 | --- | --- |
 | Poczta Polska | Pełnoletni domownik, chyba że złożysz w placówce pocztowej zastrzeżenie. Miejsce uzgodnione z Pocztą przez Ciebie albo nadawcę. Przesyłka nierejestrowana może trafić do Twojej skrzynki na listy |
-| DPD Polska | Dorosły domownik, chyba że nadawca zaznaczył doręczenie do rąk własnych. Sąsiad albo safeplace, jeśli wybierzesz je w aplikacji DPD Mobile lub na mojapaczka.dpd.com.pl. W automacie lub punkcie DPD Pickup paczkę odbierze każdy, kto ma kod odbioru |
+| [DPD Polska](carrier:dpd-pl) | Dorosły domownik, chyba że nadawca zaznaczył doręczenie do rąk własnych. Sąsiad albo safeplace, jeśli wybierzesz je w aplikacji DPD Mobile lub na mojapaczka.dpd.com.pl. W automacie lub punkcie DPD Pickup paczkę odbierze każdy, kto ma kod odbioru |
 | GLS | Ktoś z rodziny albo inny domownik. Sąsiad, ale tylko za Twoją zgodą. Wskazane przez Ciebie miejsce bez podpisu, jeśli wybierzesz tę opcję w usłudze FlexDeliveryService |
 | InPost | Paczka wyjęta z automatu Paczkomat. Gdy do niego trafia, ma status `Umieszczona w automacie Paczkomat (odbiorczym)`, a kod odbioru przychodzi e-mailem oraz w aplikacji InPost Mobile albo SMS-em. `Dostarczona` oznacza, że podróż paczki się zakończyła |
 

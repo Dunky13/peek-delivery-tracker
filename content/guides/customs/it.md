@@ -11,7 +11,7 @@ updated: 2026-10-10
 
 ## Cosa vuol dire «pacco fermo in dogana»?
 
-Ogni pacco che attraversa un confine doganale passa dalla dogana. In Italia tocca a tutte le spedizioni con merci da Paesi extra-UE, che «devono essere dichiarate alla dogana», scrive Poste Italiane; per i pacchi postali la dichiarazione la fa Poste stessa, autorizzata dall'Agenzia delle Dogane e dei Monopoli. In Ticino il confine è quello svizzero, quindi anche un pacco da un negozio italiano arriva dall'estero: la dichiarazione la fa chi lo trasporta, cioè la Posta, DHL o UPS, spiega l'Ufficio federale della dogana e della sicurezza dei confini (UDSC).
+Ogni pacco che attraversa un confine doganale passa dalla dogana. In Italia tocca a tutte le spedizioni con merci da Paesi extra-UE, che «devono essere dichiarate alla dogana», scrive [Poste Italiane](carrier:poste-italiane); per i pacchi postali la dichiarazione la fa Poste stessa, autorizzata dall'Agenzia delle Dogane e dei Monopoli. In Ticino il confine è quello svizzero, quindi anche un pacco da un negozio italiano arriva dall'estero: la dichiarazione la fa chi lo trasporta, cioè [la Posta](carrier:swiss-post), DHL o UPS, spiega l'Ufficio federale della dogana e della sicurezza dei confini (UDSC).
 
 La dogana controlla i dati dichiarati dal mittente (contenuto, valore), può chiedere altri documenti o aprire il pacco, calcola dazio e IVA e poi lo rilascia al corriere. Nel tracking questa tappa si legge così:
 

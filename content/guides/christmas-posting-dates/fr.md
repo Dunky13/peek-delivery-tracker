@@ -7,11 +7,11 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-La Poste n'a pas encore publié ses dates de Noël 2026 : en 2025, Colissimo demandait de déposer un colis au plus tard le samedi 20 décembre pour une livraison en J+2 en France métropolitaine, et le mardi 23 décembre pour une livraison en J. La Poste suisse, elle, a déjà fixé le mercredi 23 décembre 2026 pour le Courrier A et le PostPac Priority. Les tableaux donnent la date limite de chaque transporteur, vérifiée le vendredi 9 octobre 2026, avec celle de l'an dernier quand celle de cette année n'est pas encore sortie.
+La Poste n'a pas encore publié ses dates de Noël 2026 : en 2025, Colissimo demandait de déposer un colis au plus tard le samedi 20 décembre pour une livraison en J+2 en France métropolitaine, et le mardi 23 décembre pour une livraison en J. [La Poste suisse](carrier:swiss-post), elle, a déjà fixé le mercredi 23 décembre 2026 pour le Courrier A et le PostPac Priority. Les tableaux donnent la date limite de chaque transporteur, vérifiée le vendredi 9 octobre 2026, avec celle de l'an dernier quand celle de cette année n'est pas encore sortie.
 
 ## France : La Poste, Colissimo, Chronopost, Mondial Relay et DPD
 
-Aucun transporteur français n'a encore publié ses dates 2026. Celles de Colissimo viennent de sa page pour les entreprises, parue le 13 novembre en 2025. Pour un dépôt au bureau de poste, on n'a trouvé aucune date de 2025 sur les pages de La Poste pour les particuliers : le tableau donne celle de 2024, tirée, comme celles de Chronopost et de DPD France, du dossier de presse du groupe La Poste.
+Aucun transporteur français n'a encore publié ses dates 2026. Celles de Colissimo viennent de sa page pour les entreprises, parue le 13 novembre en 2025. Pour un dépôt au bureau de poste, on n'a trouvé aucune date de 2025 sur les pages de La Poste pour les particuliers : le tableau donne celle de 2024, tirée, comme celles de [Chronopost](carrier:chronopost) et de DPD France, du dossier de presse du groupe La Poste.
 
 | Transporteur | Service | Envoyer au plus tard |
 | --- | --- | --- |

@@ -41,9 +41,9 @@ In Svizzera, nel tracking inglese di [Planzer](carrier:planzer) e [Quickpac](car
 
 ## «Etichetta creata»: il corriere ha già il pacco?
 
-No: il venditore ha stampato un'etichetta e mandato i dati al corriere, niente di più. FedEx lo dice chiaro: con `Etichetta creata` il mittente sta ancora preparando il collo, e lo stato si aggiorna quando il collo arriva a FedEx. UPS cambia il suo `Etichetta creata` solo quando ha il pacco e lo ha messo in viaggio nella sua rete. Per la Posta svizzera, con `Notifica dell'invio da parte dello speditore (inoltro dei dati)` il mittente ha generato il numero d'invio, ma di norma il pacco non è ancora alla Posta. Diciture come «spedizione generata, in attesa di ritiro» vogliono dire la stessa cosa.
+No: il venditore ha stampato un'etichetta e mandato i dati al corriere, niente di più. FedEx lo dice chiaro: con `Etichetta creata` il mittente sta ancora preparando il collo, e lo stato si aggiorna quando il collo arriva a FedEx. UPS cambia il suo `Etichetta creata` solo quando ha il pacco e lo ha messo in viaggio nella sua rete. Per la [Posta svizzera](carrier:swiss-post), con `Notifica dell'invio da parte dello speditore (inoltro dei dati)` il mittente ha generato il numero d'invio, ma di norma il pacco non è ancora alla Posta. Diciture come «spedizione generata, in attesa di ritiro» vogliono dire la stessa cosa.
 
-Su Poste un codice appena creato dà `Tracciatura non disponibile`: Poste consiglia di riprovare dopo qualche ora. Se l'etichetta resta l'unica riga per giorni, scrivi al venditore, non al corriere: il pacco ce l'ha ancora lui.
+Su [Poste](carrier:poste-italiane) un codice appena creato dà `Tracciatura non disponibile`: Poste consiglia di riprovare dopo qualche ora. Se l'etichetta resta l'unica riga per giorni, scrivi al venditore, non al corriere: il pacco ce l'ha ancora lui.
 
 ## Cosa significa «in transito»?
 

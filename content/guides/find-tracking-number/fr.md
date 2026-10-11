@@ -11,7 +11,7 @@ Ton numéro de suivi se trouve en général dans l'e-mail ou le SMS d'expéditio
 
 ## Où trouver mon numéro de suivi ?
 
-La Poste le dit simplement : le numéro est « communiqué par votre expéditeur », ou arrive dans un e-mail de La Poste. C'est donc en général l'expéditeur qui te le transmet. Selon le transporteur, il s'appelle aussi numéro d'envoi (La Poste, La Poste suisse, [Planzer](carrier:planzer)), numéro du colis ([Quickpac](carrier:quickpac)), n° d'expédition ([Mondial Relay](carrier:mondial-relay)) ou code-barres (bpost). Cherche dans cet ordre :
+La Poste le dit simplement : le numéro est « communiqué par votre expéditeur », ou arrive dans un e-mail de La Poste. C'est donc en général l'expéditeur qui te le transmet. Selon le transporteur, il s'appelle aussi numéro d'envoi (La Poste, [La Poste suisse](carrier:swiss-post), [Planzer](carrier:planzer)), numéro du colis ([Quickpac](carrier:quickpac)), n° d'expédition ([Mondial Relay](carrier:mondial-relay)) ou code-barres (bpost). Cherche dans cet ordre :
 
 :::steps
 - Tes e-mails et SMS | Cherche « expédié », « expédition », « suivi » ou le nom de la boutique, sans oublier les spams.

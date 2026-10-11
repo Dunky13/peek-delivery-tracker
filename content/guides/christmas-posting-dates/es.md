@@ -11,7 +11,7 @@ Ninguna empresa de transporte en España ha publicado aún sus fechas límite pa
 
 ## España: Correos, GLS, SEUR, MRW, NACEX y Correos Express
 
-A 9 de octubre, la página de Navidad de GLS sigue titulada «Navidad 2025: Plazos de entrega», y la de SEUR aún dice «¡Feliz Navidad y feliz 2026\!». Así que las fechas de aquí son de 2025, para envíos dentro de España.
+A 9 de octubre, la página de Navidad de GLS sigue titulada «Navidad 2025: Plazos de entrega», y la de [SEUR](carrier:seur) aún dice «¡Feliz Navidad y feliz 2026\!». Así que las fechas de aquí son de 2025, para envíos dentro de España.
 
 | Empresa | Servicio | Envía como tarde |
 | --- | --- | --- |
@@ -19,7 +19,7 @@ A 9 de octubre, la página de Navidad de GLS sigue titulada «Navidad 2025: Plaz
 | GLS | BusinessParcel, Península, entrega después de Navidad | Sin anunciar todavía (2025: martes 23 de diciembre, entrega estimada el viernes 26) |
 | GLS | EconomyParcel, y envíos a Baleares, Canarias, Ceuta y Melilla | Sin anunciar todavía (2025: no estaban en su tabla) |
 | Correos | Paq Estándar, Paq Premium y cartas | Sin anunciar todavía (2025: no encontramos ninguna) |
-| [Correos Express](carrier:correos-express), SEUR, MRW y [NACEX](carrier:nacex) | Todos los servicios | Sin anunciar todavía (2025: no encontramos ninguna) |
+| [Correos Express](carrier:correos-express), SEUR, [MRW](carrier:mrw) y [NACEX](carrier:nacex) | Todos los servicios | Sin anunciar todavía (2025: no encontramos ninguna) |
 
 ### Cuánto tarda cada una en la Península
 

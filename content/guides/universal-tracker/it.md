@@ -11,7 +11,7 @@ Un tracking universale, o multi corriere, è un sito o un'app che accetta il cod
 
 ## Esiste un'app per tracciare tutti i pacchi?
 
-Sì, e forse ce l'hai già: oltre ai tracker universali, mettono insieme i tuoi pacchi anche PostePlus di Poste Italiane, l'app [InPost](carrier:inpost), «I miei invii» della Posta svizzera, PayPal, Apple Wallet e Shop. Cosa vede il servizio dipende da come ci entra il pacco:
+Sì, e forse ce l'hai già: oltre ai tracker universali, mettono insieme i tuoi pacchi anche PostePlus di [Poste Italiane](carrier:poste-italiane), l'app [InPost](carrier:inpost), «I miei invii» della [Posta svizzera](carrier:swiss-post), PayPal, Apple Wallet e Shop. Cosa vede il servizio dipende da come ci entra il pacco:
 
 | Come entra il pacco | Cosa vede il servizio | Esempi |
 | --- | --- | --- |

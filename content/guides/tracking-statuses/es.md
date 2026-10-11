@@ -37,7 +37,7 @@ Las mismas fases, con otras palabras:
 | Para recoger | `A disposición del destinatario` | `Depositado en Parcel Shop` |
 | Entregado | `Entregado` | `Entregado` |
 
-Correos agrupa sus estados en cuatro fases: `Pre-admisión`, `En Camino`, `En entrega` y `Entregado`. SEUR escribe frases enteras en mayúsculas: `EL ENVÍO HA SIDO REGISTRADO.` cuando solo tiene los datos, `EL ENVÍO ESTÁ EN REPARTO.` el día de la entrega y `EL ENVÍO ESTÁ DISPONIBLE PARA RECOGER EN EL PUNTO SEUR PICKUP.` cuando te espera en una tienda.
+Correos agrupa sus estados en cuatro fases: `Pre-admisión`, `En Camino`, `En entrega` y `Entregado`. [SEUR](carrier:seur) escribe frases enteras en mayúsculas: `EL ENVÍO HA SIDO REGISTRADO.` cuando solo tiene los datos, `EL ENVÍO ESTÁ EN REPARTO.` el día de la entrega y `EL ENVÍO ESTÁ DISPONIBLE PARA RECOGER EN EL PUNTO SEUR PICKUP.` cuando te espera en una tienda.
 
 ## «Pre-admisión» o «etiqueta creada»: ¿lo tiene ya el transportista?
 

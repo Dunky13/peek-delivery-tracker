@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Un suivi qui ne bouge plus veut en général dire que personne n'a scanné ton colis ces derniers temps, pas qu'il s'est arrêté. Les transporteurs scannent dans les centres de tri et aux frontières, pas sur la route : un long trajet, un vol, la douane ou un week-end peuvent laisser plusieurs jours sans nouvelle ligne. Ne t'inquiète qu'une fois passé le délai du transporteur lui-même (chez Chronopost, plus de 48 heures sans changement ; chez bpost, au moins 5 jours ouvrables pour un envoi vers un pays voisin ; chez La Poste suisse, plus de deux jours de retard sur le délai habituel), et même là, contacte d'abord le vendeur : c'est lui, le client du transporteur.
+Un suivi qui ne bouge plus veut en général dire que personne n'a scanné ton colis ces derniers temps, pas qu'il s'est arrêté. Les transporteurs scannent dans les centres de tri et aux frontières, pas sur la route : un long trajet, un vol, la douane ou un week-end peuvent laisser plusieurs jours sans nouvelle ligne. Ne t'inquiète qu'une fois passé le délai du transporteur lui-même (chez [Chronopost](carrier:chronopost), plus de 48 heures sans changement ; chez bpost, au moins 5 jours ouvrables pour un envoi vers un pays voisin ; chez [La Poste suisse](carrier:swiss-post), plus de deux jours de retard sur le délai habituel), et même là, contacte d'abord le vendeur : c'est lui, le client du transporteur.
 
 ## Pourquoi le suivi de mon colis ne bouge plus ?
 

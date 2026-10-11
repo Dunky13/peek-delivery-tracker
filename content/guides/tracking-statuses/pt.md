@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Um estado de seguimento é a última leitura da transportadora resumida em poucas palavras, e a maioria não te pede nada. `Aguarda entrada nos CTT` quer dizer que os CTT ainda não têm a tua encomenda, `Em trânsito` que está algures entre duas leituras, e `Em entrega` que já vai no percurso de hoje. Só alguns precisam de ti: uma entrega não conseguida, uma encomenda à espera de ser levantada, taxas da alfândega para pagar e um «Entregue» sem nada à porta.
+Um estado de seguimento é a última leitura da transportadora resumida em poucas palavras, e a maioria não te pede nada. `Aguarda entrada nos CTT` quer dizer que os [CTT](carrier:ctt) ainda não têm a tua encomenda, `Em trânsito` que está algures entre duas leituras, e `Em entrega` que já vai no percurso de hoje. Só alguns precisam de ti: uma entrega não conseguida, uma encomenda à espera de ser levantada, taxas da alfândega para pagar e um «Entregue» sem nada à porta.
 
 ## Quais são os estados de uma encomenda?
 

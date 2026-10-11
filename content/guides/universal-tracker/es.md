@@ -11,7 +11,7 @@ El seguimiento universal de paquetes reúne todos tus envíos en una sola web o 
 
 ## ¿Hay una app para seguir todos tus paquetes en un solo sitio?
 
-Sí, y puede que ya la tengas: además de los localizadores universales, PayPal y Shop reúnen paquetes, y Correos, GLS o SEUR juntan los suyos en tu cuenta. Lo que ve cada servicio depende de cómo entra el paquete en la lista:
+Sí, y puede que ya la tengas: además de los localizadores universales, PayPal y Shop reúnen paquetes, y Correos, GLS o [SEUR](carrier:seur) juntan los suyos en tu cuenta. Lo que ve cada servicio depende de cómo entra el paquete en la lista:
 
 | Cómo entra el paquete | Qué ve el servicio | Ejemplos |
 | --- | --- | --- |
@@ -51,7 +51,7 @@ Ninguna es la mejor para todo el mundo: depende de tus transportistas y de lo qu
 | Tu correo | «Conectar Gmail u Outlook» frente a «reenviar un correo» | Shop revisa los correos de los últimos 30 días y sigue mirando |
 | Tus datos | En el App Store, «Datos usados para rastrearte» y «Datos vinculados contigo»; en Google Play, «Seguridad de los datos»; y la política de privacidad | Apple avisa de que esa información «no ha sido verificada por Apple». Todos los localizadores tienen que pasar tu número a otros |
 | Cuánto tiempo guarda tus datos | La política de privacidad | Deliveries guarda los correos reenviados hasta diez días; en Google Play, Parcels dice que «los datos no se pueden eliminar» |
-| Tus transportistas | Su lista de transportistas | Busca Correos, SEUR, GLS, MRW o InPost en vez de fiarte del total: 17TRACK habla de más de 2500 en el App Store y de más de 2800 en su página de USPS |
+| Tus transportistas | Su lista de transportistas | Busca Correos, SEUR, GLS, [MRW](carrier:mrw) o InPost en vez de fiarte del total: 17TRACK habla de más de 2500 en el App Store y de más de 2800 en su página de USPS |
 | Idioma | Los idiomas de la ficha, y luego la propia app | Deliveries no está en español. La ficha de 17TRACK solo indica inglés, aunque su descripción promete una «interfaz con múltiples idiomas» |
 
 ## Gratis o de pago: los principales localizadores, comparados

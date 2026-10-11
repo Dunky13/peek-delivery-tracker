@@ -22,7 +22,7 @@ Dónde puede estar, según quién lo lleve:
 | Transportista | Dónde puede estar |
 | --- | --- |
 | Correos | En tu buzón: el Paq Ligero se entrega «en el buzón, sin necesidad de firma» |
-| SEUR | En un punto SEUR Pickup: en los envíos a particulares hace un solo intento en casa y luego lo lleva al Pickup más cercano |
+| [SEUR](carrier:seur) | En un punto SEUR Pickup: en los envíos a particulares hace un solo intento en casa y luego lo lleva al Pickup más cercano |
 | GLS | En el Parcel Shop que elegiste: GLS te dice que vayas a recogerlo cuando el seguimiento ponga «Entregado». Con EconomyParcel, tras un solo intento, en el Parcel Shop más cercano |
 | InPost | En el Locker o el Punto Pack que elegiste al pedir, donde te espera 5 días naturales. Las taquillas solo se abren con el código que recibe el destinatario |
 | Amazon | En un lugar seguro, con alguien de casa, un vecino o el conserje. Amazon.es también te pide buscar un aviso de entrega fallida en el buzón o en la puerta |

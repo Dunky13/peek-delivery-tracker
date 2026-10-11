@@ -15,5 +15,15 @@
   { "id": "dpd-ch", "catalog": "dpd", "name": "DPD Switzerland", "languages": ["en", "de", "fr", "it"] },
   { "id": "inpost", "catalog": "inpost", "name": "InPost", "languages": ["en", "pl", "it", "pt"] },
   { "id": "paack", "catalog": "paack", "name": "Paack", "languages": ["en", "es", "pt", "fr"] },
-  { "id": "evri", "catalog": "evri-uk", "name": "Evri", "languages": ["en"] }
+  { "id": "evri", "catalog": "evri-uk", "name": "Evri", "languages": ["en"] },
+  { "id": "chronopost", "catalog": "chronopost", "name": "Chronopost", "languages": ["en", "fr"] },
+  { "id": "relais-colis", "catalog": "relais-colis", "name": "Relais Colis", "languages": ["en", "fr"] },
+  { "id": "poste-italiane", "catalog": "poste-italiane", "name": "Poste Italiane", "languages": ["en", "it"] },
+  { "id": "seur", "catalog": "seur", "name": "SEUR", "languages": ["en", "es", "pt"] },
+  { "id": "mrw", "catalog": "mrw", "name": "MRW", "languages": ["en", "es", "pt"] },
+  { "id": "ctt", "catalog": "ctt", "name": "CTT", "languages": ["en", "pt"] },
+  { "id": "packeta", "catalog": "packeta", "name": "Packeta", "languages": ["en", "pl"] },
+  { "id": "dpd-pl", "catalog": "dpd-pl", "name": "DPD Poland", "languages": ["en", "pl"] },
+  { "id": "4px", "catalog": "four-px", "name": "4PX", "languages": ["en", "de", "fr", "it", "es", "pt", "pl"] },
+  { "id": "swiss-post", "catalog": "swiss-post", "name": "Swiss Post", "languages": ["en", "de", "fr", "it"] }
 ]

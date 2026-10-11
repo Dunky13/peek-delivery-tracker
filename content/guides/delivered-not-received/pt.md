@@ -21,7 +21,7 @@ Onde cada transportadora a pode deixar:
 
 | Transportadora | Também conta como entrega |
 | --- | --- |
-| CTT, correio | Na caixa do correio, incluindo o correio registado simples. Se não couber, em mão a quem estiver na morada, desde que não seja menor |
+| [CTT](carrier:ctt), correio | Na caixa do correio, incluindo o correio registado simples. Se não couber, em mão a quem estiver na morada, desde que não seja menor |
 | CTT, Encomenda Postal com entrega ao domicílio e Encomenda Expresso | Em mão a quem estiver na morada, exceto menores |
 | GLS | Um vizinho, que assina por ti, se não estiveres em casa |
 | [InPost](carrier:inpost) | O Locker ou o Ponto Pack que escolheste; a InPost avisa por e-mail ou SMS quando a encomenda lá chega |

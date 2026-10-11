@@ -11,7 +11,7 @@ updated: 2026-10-10
 
 ## Que veut dire « colis bloqué en douane » ?
 
-Tout colis venu d'un pays hors Union européenne, Royaume-Uni compris, passe par des formalités d'importation. C'est le transporteur qui s'en charge : La Poste, Chronopost ou FedEx en France, bpost en Belgique. La Suisse n'étant pas dans l'UE, tout envoi de marchandises venu de l'étranger doit en principe y être déclaré, même s'il part de France ou d'Allemagne.
+Tout colis venu d'un pays hors Union européenne, Royaume-Uni compris, passe par des formalités d'importation. C'est le transporteur qui s'en charge : La Poste, [Chronopost](carrier:chronopost) ou FedEx en France, bpost en Belgique. La Suisse n'étant pas dans l'UE, tout envoi de marchandises venu de l'étranger doit en principe y être déclaré, même s'il part de France ou d'Allemagne.
 
 La douane vérifie la déclaration de l'expéditeur (contenu, valeur), peut ouvrir le colis, calcule les taxes éventuelles, puis le rend au transporteur. Le suivi peut l'afficher de plusieurs façons :
 
@@ -41,7 +41,7 @@ En général, non : commence par le transporteur (étape 4). La [douane françai
 
 ## Combien de temps un colis peut-il rester en douane ?
 
-Personne ne garantit de délai. La Poste suisse compte trois à quatre jours ouvrés de dédouanement si les informations sont complètes et sans erreur. En Belgique, la douane peut approuver l'importation dès le lendemain de l'arrivée, selon bpost ; en cas de contrôle, compte 3 à 7 jours de plus.
+Personne ne garantit de délai. [La Poste suisse](carrier:swiss-post) compte trois à quatre jours ouvrés de dédouanement si les informations sont complètes et sans erreur. En Belgique, la douane peut approuver l'importation dès le lendemain de l'arrivée, selon bpost ; en cas de contrôle, compte 3 à 7 jours de plus.
 
 Un colis reste plus longtemps quand :
 

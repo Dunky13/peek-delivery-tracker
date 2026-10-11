@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Se il tracking dice consegnato ma il pacco non ce l'hai, non darlo per perso: «consegnato» è una scansione sul palmare del corriere, non la prova che il pacco è arrivato a te. Cerca nel tracking una foto o un nome, guarda nei soliti posti e aspetta un giorno. Se non salta fuori, scrivi al venditore, non al corriere: in Italia, se hai comprato da un'azienda, il pacco resta a rischio del venditore finché non lo hai materialmente in mano. In Ticino questa tutela non c'è, ma per un pacco spedito in Svizzera con la Posta puoi aprire tu una ricerca.
+Se il tracking dice consegnato ma il pacco non ce l'hai, non darlo per perso: «consegnato» è una scansione sul palmare del corriere, non la prova che il pacco è arrivato a te. Cerca nel tracking una foto o un nome, guarda nei soliti posti e aspetta un giorno. Se non salta fuori, scrivi al venditore, non al corriere: in Italia, se hai comprato da un'azienda, il pacco resta a rischio del venditore finché non lo hai materialmente in mano. In Ticino questa tutela non c'è, ma per un pacco spedito in Svizzera con [la Posta](carrier:swiss-post) puoi aprire tu una ricerca.
 
 ## Perché risulta consegnato se il pacco non c'è?
 
@@ -21,7 +21,7 @@ Dove lo può lasciare il corriere:
 
 | Corriere | Conta come consegnato anche |
 | --- | --- |
-| Poste Italiane | Un familiare, un convivente, un collaboratore familiare o il portiere, se c'è (servizio postale universale). Con Poste Delivery Business, un vicino o un Punto Poste, se il negozio li ha scelti |
+| [Poste Italiane](carrier:poste-italiane) | Un familiare, un convivente, un collaboratore familiare o il portiere, se c'è (servizio postale universale). Con Poste Delivery Business, un vicino o un Punto Poste, se il negozio li ha scelti |
 | [BRT (ex Bartolini)](carrier:brt) | Un vicino che hai indicato tu, purché abiti allo stesso indirizzo, o un BRT-fermopoint |
 | Amazon | Il luogo sicuro delle tue istruzioni di consegna, una porta, il portico o il garage, dietro piante o mobili, un familiare, un vicino, la portineria |
 | La Posta (Svizzera) | La cassetta delle lettere, se il pacco ci sta. Un vicino dello stesso edificio o di quello accanto, o un luogo sicuro e al riparo dalle intemperie, se li hai indicati tu |

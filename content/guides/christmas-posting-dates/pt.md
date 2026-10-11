@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Os CTT, a DPD e a GLS ainda não publicaram datas limite para o Natal de 2026, e em 2025 também não publicaram nenhuma. Os CTT dão prazos indicativos: cerca de 1 dia útil com Correio Azul no continente, 3 com Correio Normal ou Encomenda Postal, e 7 a 15 com Encomenda Postal para os Açores, por isso conta para trás a partir de quinta-feira, 24 de dezembro, e envia com folga. As tabelas dão o prazo de cada transportadora tal como o verificámos na sexta-feira, 9 de outubro de 2026, e dizem se houve data no ano passado.
+Os [CTT](carrier:ctt), a DPD e a GLS ainda não publicaram datas limite para o Natal de 2026, e em 2025 também não publicaram nenhuma. Os CTT dão prazos indicativos: cerca de 1 dia útil com Correio Azul no continente, 3 com Correio Normal ou Encomenda Postal, e 7 a 15 com Encomenda Postal para os Açores, por isso conta para trás a partir de quinta-feira, 24 de dezembro, e envia com folga. As tabelas dão o prazo de cada transportadora tal como o verificámos na sexta-feira, 9 de outubro de 2026, e dizem se houve data no ano passado.
 
 ## Portugal continental: CTT, DPD e GLS
 

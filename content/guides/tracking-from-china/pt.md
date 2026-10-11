@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Uma encomenda do AliExpress, da Temu ou da Shein muda de mãos pelo caminho: uma empresa de logística chinesa leva-a de avião, a alfândega verifica-a à chegada e os CTT ou outra transportadora entregam-na, muitas vezes com um número novo. Cada empresa só regista leituras no seu troço do percurso. Por isso, conta com até 11 dias sem nenhuma leitura no início, silêncio durante o voo e uma espera depois de «arrived at destination country». Segue primeiro o tracking da loja e depois o da transportadora local. No envio mais barato, o seguimento pode acabar de vez nessa troca.
+Uma encomenda do AliExpress, da Temu ou da Shein muda de mãos pelo caminho: uma empresa de logística chinesa leva-a de avião, a alfândega verifica-a à chegada e os [CTT](carrier:ctt) ou outra transportadora entregam-na, muitas vezes com um número novo. Cada empresa só regista leituras no seu troço do percurso. Por isso, conta com até 11 dias sem nenhuma leitura no início, silêncio durante o voo e uma espera depois de «arrived at destination country». Segue primeiro o tracking da loja e depois o da transportadora local. No envio mais barato, o seguimento pode acabar de vez nessa troca.
 
 ## O tracking do AliExpress é fiável?
 
@@ -72,7 +72,7 @@ Os números postais são a exceção. A União Postal Universal só permite um i
 
 ### De que empresa é o meu número?
 
-Além da Cainiao, é comum aparecerem a [YunExpress](carrier:yunexpress), a 4PX e a Yanwen (que até vende linhas com o nome da Temu e do AliExpress):
+Além da Cainiao, é comum aparecerem a [YunExpress](carrier:yunexpress), a [4PX](carrier:4px) e a Yanwen (que até vende linhas com o nome da Temu e do AliExpress):
 
 | Formato do número | Normalmente é |
 | --- | --- |

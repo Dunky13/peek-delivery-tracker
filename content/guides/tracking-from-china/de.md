@@ -49,7 +49,7 @@ Hat dein Paket schon eine Nummer von DHL oder der Post, spricht deren Sendungsve
 | DHL | `Der Zollabfertigungsprozess für den Import ins Zielland/Zielgebiet wurde begonnen.` | Beim Zollstandort von Deutsche Post DHL angekommen. Je nach Unterlagen kann das einige Werktage dauern |
 | Österreichische Post | `Sendung ins Zielland weitergeleitet` | Der nächste Status kommt, sobald ein Logistikzentrum der Post das Paket erfasst |
 | Österreichische Post | `Sendung in Verteilung` | Schon in Österreich, Zustellung in den nächsten Werktagen |
-| Schweizerische Post | `Ankunft an Grenzstelle im Bestimmungsland` | An der Grenze. Vielleicht muss es noch zum Zoll |
+| [Schweizerische Post](carrier:swiss-post) | `Ankunft an Grenzstelle im Bestimmungsland` | An der Grenze. Vielleicht muss es noch zum Zoll |
 | Schweizerische Post | `Vom Schweizer Zoll freigegeben` | Verzollt, jetzt übernimmt die Zustellung im Inland |
 
 ### Was die anderen englischen Status bedeuten
@@ -80,7 +80,7 @@ Nummern der Post sind die Ausnahme. Der Weltpostverein erlaubt nur eine S10-Numm
 
 ### YunExpress, Cainiao, 4PX: Wer steckt hinter meiner Nummer?
 
-Neben Cainiao begegnen dir YunExpress, 4PX und Yanwen (Yanwen verkauft sogar Versandlinien, die nach Temu und AliExpress benannt sind):
+Neben Cainiao begegnen dir YunExpress, [4PX](carrier:4px) und Yanwen (Yanwen verkauft sogar Versandlinien, die nach Temu und AliExpress benannt sind):
 
 | Die Nummer sieht so aus | Meist |
 | --- | --- |

@@ -39,7 +39,7 @@ Mêmes étapes, autres mots. Pour La Poste, ce sont les libellés de la frise de
 
 ## « En préparation chez l'expéditeur » ou « étiquette créée » : le colis est-il parti ?
 
-Non : le vendeur a créé une étiquette et transmis les données, rien de plus. Chez UPS et FedEx, `Étiquette créée` ne change qu'une fois le colis remis au transporteur. À La Poste suisse, `Transmission des données par l'expéditeur` veut dire que l'envoi ne lui a normalement pas encore été remis ; chez [Colis Privé](carrier:colis-prive), `Colis attendu par Colis Privé`, qu'il n'a pas encore reçu le colis.
+Non : le vendeur a créé une étiquette et transmis les données, rien de plus. Chez UPS et FedEx, `Étiquette créée` ne change qu'une fois le colis remis au transporteur. À [La Poste suisse](carrier:swiss-post), `Transmission des données par l'expéditeur` veut dire que l'envoi ne lui a normalement pas encore été remis ; chez [Colis Privé](carrier:colis-prive), `Colis attendu par Colis Privé`, qu'il n'a pas encore reçu le colis.
 
 Chez bpost, `en préparation` a deux sens : soit l'expéditeur prépare encore le colis, soit bpost l'a déjà mais doit encore le trier. Selon bpost, la plupart des colis sont traités dans les 5 jours après que l'expéditeur l'a choisi.
 
@@ -52,7 +52,7 @@ Le transporteur a ton colis, quelque part dans son réseau. Ça ne veut pas dire
 Entre deux centres, le silence est normal :
 
 - UPS prévient qu'un colis `Expédié/en chemin` sur une longue distance peut ne plus être scanné avant son centre de destination.
-- Chronopost ne t'invite à contacter son service client qu'après plus de 48 heures sans changement (hors week-ends et jours fériés), pour un colis envoyé et livré en France métropolitaine.
+- [Chronopost](carrier:chronopost) ne t'invite à contacter son service client qu'après plus de 48 heures sans changement (hors week-ends et jours fériés), pour un colis envoyé et livré en France métropolitaine.
 - Mondial Relay prévient qu'un léger retard peut arriver, et ne te renvoie vers son formulaire de contact que si le colis est bloqué au même endroit depuis 5 jours.
 
 ### Combien de temps un colis reste-t-il en transit ?

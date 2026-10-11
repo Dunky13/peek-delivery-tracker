@@ -4,7 +4,7 @@ description: Jak rozpoznać kuriera po numerze przesyłki: jak wyglądają i ile
 slug: jaki-kurier-po-numerze-przesylki
 picture: Trzy etykiety z numerami przesyłek podzielonymi na kolorowe części, lupa na kodzie kraju CH i zaciekawiony Pip.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-11
 ---
 
 Litery i długość numeru przesyłki często zdradzają, który przewoźnik ma Twoją paczkę. `1Z` i 16 liter lub cyfr to UPS, `PX` i 10 cyfr to Poczta Polska, numer [InPost](carrier:inpost) ma 24 cyfry, a 13 znaków w układzie `RR123456785CH` (dwie litery, dziewięć cyfr, dwie litery) to zwykle numer pocztowy, w którym dwie ostatnie litery wskazują kraj poczty, która go nadała. Najtrudniej jest z samymi cyframi: 10 albo 14 cyfr pasuje do kilku firm, więc rozstrzyga e-mail o wysyłce albo narzędzie, które sprawdzi numer u wszystkich pasujących przewoźników.
@@ -33,15 +33,17 @@ Oto, co przewoźnicy i standard pocztowy mówią o numerach, które w Polsce spo
 | --- | --- |
 | InPost | 24 cyfry |
 | Poczta Polska | kilka wariantów, według przykładów z jej wyszukiwarki: same cyfry (19 w `0015900773312345678`), `PX` i 10 cyfr (`PX0000000013`) albo format pocztowy z `PL` na końcu, zaczynający się np. od `RR`, `CP`, `VV` lub `EE`. W tej samej wyszukiwarce śledzisz też Pocztex |
-| DPD | 14 znaków. Wyszukiwarka DPD Polska przyjmuje też 9-znakowy kod nadania |
+| [DPD](carrier:dpd-pl) | 14 znaków: w DPD Polska 13 cyfr i litera (`1234567890123A`) albo 14 cyfr zaczynających się od 13 (`13000000000000`). Wyszukiwarka DPD Polska przyjmuje też 9-znakowy kod nadania |
 | DHL eCommerce Polska (paczki krajowe) | 11 cyfr, bez liter, według serwisu Mój DHL |
 | DHL Express | 10 cyfr, bez liter, według DHL Express w Holandii |
 | GLS | numer paczki od nadawcy albo Track-ID z awiza; długości GLS nie podaje |
+| [Packeta](carrier:packeta) | litera `Z` i 10 cyfr, np. `Z1234567890`: „Numer śledzenia musi zaczynać się od litery 'Z' i składać się z 10 cyfr” |
 | ORLEN Paczka | wyszukiwarka prosi o „numer paczki lub kod nadania”; długości nie podaje |
 | UPS | `1Z` i 16 liter lub cyfr, razem 18 znaków, np. `1Z999AA10123456784`, przykładowy numer z poprawną cyfrą kontrolną UPS |
 | Amazon | Amazon nie publikuje formatu, więcej niżej |
 | [YunExpress](carrier:yunexpress) | `YT` i 16 cyfr; `YT` i 13 cyfr to YTO Express |
 | [Cainiao](carrier:cainiao) (AliExpress) | Cainiao nie publikuje jednego formatu. W danych przewoźników, z których korzysta Peek, `DOFR` albo `CNFR`, 13 cyfr i `HD` to Cainiao; `LP` albo `CNG` i 14 cyfr to prawdopodobnie Cainiao, ale nie na pewno |
+| [4PX](carrier:4px) | `4PX`, 13 cyfr i `CN`; 4PX nie publikuje przykładowego numeru, a jego strona przyjmuje od 5 do 50 liter i cyfr. `LP`, 13 cyfr i `CN` to prawdopodobnie też 4PX |
 | China Post, EMS | format pocztowy z `CN` na końcu; międzynarodowe numery EMS zaczynają się od `E` |
 
 InPost od razu mówi, gdy długość się nie zgadza. Wyszukiwarka na stronie głównej inpost.pl nie przyjmie innego numeru i wyświetla wtedy komunikat `Podaj jeden numer przesyłki zawierający 24 cyfry`.
@@ -61,9 +63,10 @@ Nie ma jednej długości. Poniżej te, które przewoźnicy podają na własnych 
 | 9 znaków | kod nadania DPD, który wyszukiwarka DPD Polska przyjmuje zamiast numeru przesyłki |
 | 10 cyfr | DHL Express; w InPost tyle cyfr ma kod zwrotu, a nie numer przesyłki |
 | 11 cyfr | DHL eCommerce Polska, paczki krajowe |
+| 11 znaków | Packeta: `Z` i 10 cyfr |
 | 12 znaków | Poczta Polska: `PX` i 10 cyfr |
 | 13 znaków | każda poczta w formacie pocztowym, np. `RR123456785CH` |
-| 14 znaków | DPD |
+| 14 znaków | DPD: w DPD Polska 13 cyfr i litera albo 14 cyfr od 13 |
 | 19 cyfr | Poczta Polska, jak w jej przykładzie `0015900773312345678` |
 | 24 cyfry | InPost |
 | 14 do 20 znaków | Hermes w Niemczech, litery i cyfry |
@@ -141,6 +144,9 @@ Numer, który nic nie pokazuje, nie zawsze jest źle wpisany. Mój DHL wśród p
 - [InPost: Śledź paczkę, wyszukiwarka na stronie głównej](https://inpost.pl/) – numer z 24 cyfr i komunikat przy innej długości
 - [InPost: Kontakt i pomoc](https://inpost.pl/kontakt) – kod odbioru w Paczkomacie, 10-cyfrowy kod zwrotu
 - [DPD Polska: Najczęściej zadawane pytania](https://www.dpd.com/pl/pl/najczesciej-zadawane-pytania-faq/) – 14-znakowy numer przesyłki, 9-znakowy kod nadania
+- [DPD Polska: Track & Trace](https://tracktrace.dpd.com.pl/findParcel) – numer przesyłki, numer referencyjny, kod nadania i numer zlecenia
+- [Packeta: Śledzenie przesyłki](https://tracking.packeta.com/pl/) – litera Z i 10 cyfr
+- [4PX: Global Order Tracking](https://track.4px.com/) – od 5 do 50 liter i cyfr
 - [Mój DHL: Śledzenie przesyłek](https://mojdhl.pl/tracking) – 11 cyfr dla przesyłek krajowych DHL eCommerce Polska, powody braku informacji
 - [DHL Express Netherlands: DHL Express or DHL eCommerce number](https://www.dhlexpress.nl/en/consumer/faq/express-account-zendingsnummer/my-shipment-number-dhl-express-or-dhl-ecommerce) – 10 cyfr
 - [DHL: Sendungsverfolgung, Probleme und Lösungen](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/sendungsverfolgung/probleme-loesungen.html) – od 10 do 39 znaków w Niemczech
@@ -152,7 +158,7 @@ Numer, który nic nie pokazuje, nie zawsze jest źle wpisany. Mój DHL wśród p
 - [Amazon.pl: Śledzenie paczki](https://www.amazon.pl/gp/help/customer/display.html?nodeId=GENAFPTNLHV7ZACW) – Moje zamówienia i Śledź przesyłkę, paczki z centrów logistycznych za granicą
 - [Amazon: Amazon Logistics](https://www.amazon.com/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – usługa dostaw samego Amazona
 - [UPS: sample package label](https://www.pld-certify.ups.com/CerttoolHelp/PLD0200/WebHelp_pld0200/LeadPackage.htm) – numer 1Z
-- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – PX, LP, TBA oraz PL i 10 cyfr, numery Cainiao (`DOFR`, `CNFR`, `CNG`), a także YunExpress (`YT` i 16 cyfr) i YTO Express (`YT` i 13 cyfr) w danych przewoźników, z których korzysta Peek
+- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – PX, LP, TBA oraz PL i 10 cyfr, numery Cainiao (`DOFR`, `CNFR`, `CNG`), a także YunExpress (`YT` i 16 cyfr) i YTO Express (`YT` i 13 cyfr), numery DPD Polska (13 cyfr i litera albo 14 cyfr od 13) oraz 4PX (`4PX` i `LP`, 13 cyfr i `CN`) w danych przewoźników, z których korzysta Peek
 - [YunExpress: YunTrack](https://www.yuntrack.com/) – numery od YT
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – przy taniej wysyłce brak śledzenia po przekazaniu lokalnemu przewoźnikowi
 - [Cainiao: Guidance](https://global.cainiao.com/helpDoc.htm?slug=ofzig4) – numery Cainiao bez opisu formatu, tylko litery i cyfry

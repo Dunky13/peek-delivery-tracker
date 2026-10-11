@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-Spesso bastano le lettere e la lunghezza del numero di tracking per capire quale corriere ha il tuo pacco. `1Z` seguito da 16 lettere e cifre è UPS, 18 cifre che iniziano con `99` sono la Posta svizzera, e un codice di 13 caratteri come `RR123456785CH` (due lettere, nove cifre, due lettere) di solito è di una posta nazionale, con il Paese che l'ha emesso nelle ultime due lettere. Il caso difficile sono i codici di sole cifre: 14 cifre, per esempio, possono essere di BRT come di DPD. In quei casi l'ultima parola spetta all'e-mail di spedizione, o a un tracker che prova tutti i corrieri possibili.
+Spesso bastano le lettere e la lunghezza del numero di tracking per capire quale corriere ha il tuo pacco. `1Z` seguito da 16 lettere e cifre è UPS, 18 cifre che iniziano con `99` sono la [Posta svizzera](carrier:swiss-post), e un codice di 13 caratteri come `RR123456785CH` (due lettere, nove cifre, due lettere) di solito è di una posta nazionale, con il Paese che l'ha emesso nelle ultime due lettere. Il caso difficile sono i codici di sole cifre: 14 cifre, per esempio, possono essere di BRT come di DPD. In quei casi l'ultima parola spetta all'e-mail di spedizione, o a un tracker che prova tutti i corrieri possibili.
 
 :::checker
 :::
@@ -18,7 +18,7 @@ Quattro controlli, in quest'ordine:
 
 :::steps
 - Guarda le lettere | Sono l'indizio più forte. `1Z` all'inizio è UPS; due lettere alla fine di solito indicano una posta nazionale.
-- Conta i caratteri | La lunghezza da sola decide di rado, ma esclude qualche corriere. Non contare gli spazi: servono solo a rendere il codice più leggibile. Poste Italiane, per esempio, chiede di scriverlo «senza interruzioni e senza trattino».
+- Conta i caratteri | La lunghezza da sola decide di rado, ma esclude qualche corriere. Non contare gli spazi: servono solo a rendere il codice più leggibile. [Poste Italiane](carrier:poste-italiane), per esempio, chiede di scriverlo «senza interruzioni e senza trattino».
 - Controlla l'e-mail | L'e-mail o l'SMS di spedizione del negozio di solito indica il corriere o porta alla sua pagina di tracking. Vale più di qualsiasi ipotesi.
 - Prova sui siti dei corrieri | Inserisci il codice sul sito di ogni corriere possibile. Quello che mostra delle scansioni ha il tuo pacco.
 :::
@@ -31,19 +31,20 @@ Ecco cosa dicono i corrieri, e lo standard postale, sui codici che incontri più
 
 | Corriere | Com'è fatto il codice |
 | --- | --- |
-| Poste Italiane | Poste lo chiama «codice spedizione». Con Poste Delivery Web è un codice di 13 caratteri, stampato in alto a destra sulla lettera di vettura, come negli esempi di Poste `JG00000104876` ed `EG00000102369`; nel formato postale internazionale finisce con `IT` |
+| Poste Italiane | Poste lo chiama «codice spedizione», da scrivere senza spazi e senza trattino. Ha forme diverse: `RA` e 11 cifre, `1UW` o `3UW` e 10 lettere o cifre, `2IMA` e 10 cifre, `5P` e 11 lettere o cifre, cifre con una lettera in mezzo (codici in stile SDA), o il formato postale internazionale che finisce con `IT`. Con Poste Delivery Web è un codice di 13 caratteri, stampato in alto a destra sulla lettera di vettura |
 | [BRT (ex Bartolini)](carrier:brt) | «BRTcode» di 14 o 19 cifre, oppure «numero di spedizione» di 12 o 14 cifre |
 | GLS Italia | spedizione nazionale: due lettere, o una lettera e una cifra, seguite da al massimo 9 cifre (esempio di GLS: `Y1 550012467`); spedizione internazionale: 11 cifre |
 | [InPost](carrier:inpost) | il modulo «Trova il tuo pacco» accetta 8, 10, 11, 13, 15, 22, 24 o 26 cifre, oppure due formati con lettere: `LM` + 9 cifre + `IT`, o 4 lettere + 15 cifre |
 | DHL | DHL Express: 10 cifre, mai lettere. DHL in Germania: da 10 a 39 caratteri |
 | UPS | `1Z` + 16 lettere e cifre, 18 caratteri in tutto, come `1Z999AA10123456784`, un esempio con una cifra di controllo UPS valida |
-| La Posta (Svizzera) | la Posta lo chiama «numero d'invio». Sui pacchi spediti dalle aziende ha 18 cifre che iniziano con `99`, stampate con i punti come `99.34.123456.12345678` (il 99, il numero di licenza di affrancatura del mittente e un numero progressivo); altrimenti è il formato postale che finisce con `CH` |
+| La Posta (Svizzera) | la Posta lo chiama «numero d'invio». Per gli invii nazionali è un codice a barre di 18 cifre che iniziano con `98` o `99`, con o senza punti o spazi; sui pacchi spediti dalle aziende è stampato con i punti come `99.34.123456.12345678` (il 99, il numero di licenza di affrancatura del mittente e un numero progressivo). Altrimenti è il formato postale che finisce con `CH` |
 | [Quickpac](carrier:quickpac) | 18 cifre, dice Quickpac; nei dati dei corrieri che usa Peek iniziano con `44`. Il riquadro di tracking di Quickpac le mostra con i punti, come `44.12.345678.90123456` |
 | [Planzer](carrier:planzer) | Planzer lo chiama numero di spedizione e non ne pubblica il formato. Nei dati dei corrieri che usa Peek: 20 cifre che iniziano con `91346097`, o 13 cifre che iniziano con `99990` per le spedizioni condivise |
 | [GLS Svizzera](carrier:gls-ch) | numero del pacco o Track ID; né GLS né la Posta svizzera, suo partner, ne pubblicano il formato. Nei dati dei corrieri che usa Peek: 11 cifre, 12 cifre con l'ultima di controllo, 8 lettere e cifre mescolate, o sei lettere |
 | [DPD Svizzera](carrier:dpd-ch) | «numero di pacco» di 14 cifre; i moduli di DPD per i mittenti chiedono che quelli svizzeri inizino con `060`. Nei dati dei corrieri che usa Peek, le 14 cifre possono essere seguite da un carattere di controllo, che le pagine svizzere di DPD non citano |
 | Amazon | Amazon non pubblica un formato; i codici `IT…` sono spiegati più sotto |
 | [YunExpress](carrier:yunexpress) | `YT` + 16 cifre |
+| [4PX](carrier:4px) | `4PX` + 13 cifre + `CN`; 4PX non pubblica numeri di esempio, e il suo sito accetta da 5 a 50 lettere e cifre. Anche `LP` + 13 cifre + `CN` è probabilmente 4PX |
 | [Cainiao](carrier:cainiao) (AliExpress) | Cainiao non descrive i suoi formati e come esempio mostra un numero postale che finisce con `HK`. Nei dati dei corrieri che usa Peek, `LP` o `CNG` + 14 cifre sono probabilmente Cainiao; `DOFR` o `CNFR` + 13 cifre + `HD` sono Cainiao |
 | China Post, EMS | il formato postale che finisce con `CN`; i numeri EMS internazionali iniziano con `E` |
 
@@ -67,7 +68,7 @@ Non c'è una lunghezza unica. Queste sono le lunghezze che i corrieri indicano s
 | 12 cifre | BRT, numero di spedizione |
 | 13 caratteri | Poste Delivery Web; il formato postale internazionale; InPost, con sole cifre |
 | 14 cifre | BRT, BRTcode o numero di spedizione; DPD, secondo le sue pagine per Austria e Belgio (quella tedesca parla di 14 caratteri) |
-| 18 cifre | La Posta svizzera, quando il codice inizia con `99` |
+| 18 cifre | La Posta svizzera, quando il codice inizia con `98` o `99` |
 | 19 cifre | BRT, BRTcode |
 | 8, 15, 22, 24 o 26 cifre | InPost |
 | da 10 a 39 caratteri | DHL in Germania |
@@ -146,7 +147,7 @@ Un codice che non dà risultati non è per forza sbagliato. Le poste portoghesi 
 :::sources
 - [UPU: standard S10, Identification of postal items](https://www.upu.int/UPU/media/upu/files/postalSolutions/programmesAndServices/standards/S10-12.pdf) – il formato postale, le lettere, la cifra di controllo, il codice paese, il numero aggiunto a destinazione
 - [Poste Italiane: Cerca spedizioni, modulo di ricerca](https://www.poste.it/cerca/partials/forms-ricerche.html) – «senza interruzioni e senza trattino», l'esempio ZA123456789IT
-- [Poste Italiane: FAQ Poste Delivery Web](https://www.poste.it/assistenza/faq-poste-delivery-web) – il codice spedizione di 13 caratteri e i suoi esempi, il codice prenotazione ritiro
+- [Poste Italiane: FAQ Poste Delivery Web](https://www.poste.it/assistenza/faq-poste-delivery-web) – il codice spedizione di 13 caratteri, il codice prenotazione ritiro
 - [BRT: Tracking](https://services.brt.it/it/tracking) – BRTcode di 14 o 19 cifre, numero di spedizione di 12 o 14, i messaggi d'errore
 - [GLS Italia: Ricerca spedizione](https://gls-group.com/IT/it/servizi-online/ricerca-spedizioni/) – riferimento nazionale e internazionale, ID collo
 - [InPost: Trova il tuo pacco](https://inpost.it/) – i formati accettati dal modulo di ricerca
@@ -167,10 +168,11 @@ Un codice che non dà risultati non è per forza sbagliato. Le poste portoghesi 
 - [DPD Belgium: Where do I find the parcel number?](https://www.dpd.com/be/en/faq/where-do-i-find-the-parcel-number-2/) – 14 cifre
 - [UPS: sample package label](https://www.pld-certify.ups.com/CerttoolHelp/PLD0200/WebHelp_pld0200/LeadPackage.htm) – il numero 1Z
 - [YunExpress: YunTrack](https://www.yuntrack.com/) – numeri che iniziano con YT
+- [4PX: Global Order Tracking](https://track.4px.com/) – da 5 a 50 lettere e cifre
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – niente tracking dopo la consegna al corriere locale con le spedizioni economiche, chiedere al venditore
 - [Cainiao: Tracciamento espresso globale](https://global.cainiao.com/) – il numero postale di esempio
 - [Amazon.it: Consegne effettuate tramite Amazon Logistics](https://www.amazon.it/gp/help/customer/display.html?nodeId=GEW3XT9JEMBLTKRV) – partner di consegna locali e regionali, tracking in I miei ordini
-- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – i formati IT, TBA, LP, 5P e YT, e quelli di Cainiao, Quickpac, Planzer, GLS Svizzera e DPD Svizzera, nei dati dei corrieri di Peek
+- [Universal Parcel Scraper: carrier catalog](https://github.com/plhery/universal-parcel-scraper/blob/main/data/catalog.json) – i formati IT, TBA, LP, 5P e YT, e quelli di Poste Italiane (RA, 1UW, 3UW, 2IMA, 5P e i codici in stile SDA), 4PX, la Posta svizzera (98 e 99), Cainiao, Quickpac, Planzer, GLS Svizzera e DPD Svizzera, nei dati dei corrieri di Peek
 - [bpost: Puis-je suivre mon colis en ligne ?](https://www.bpost.be/fr/faq/puis-je-suivre-mon-colis-en-ligne) – i codici che iniziano con U non si possono seguire
 - [CTT: Encontrar o código de envio](https://www.ctt.pt/ajuda/particulares/seguir-ou-alterar-entrega/seguir/encontrar-o-codigo-de-envio) – codici PT per invii dall'estero, codici che non danno risultati, contattare il mittente
 :::

@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-DHL und die Deutsche Post haben ihre Weihnachtstermine für 2026 noch nicht veröffentlicht: 2025 war der letzte Tag für Pakete, Päckchen und Briefe innerhalb Deutschlands Samstag, 20. Dezember. [GLS](carrier:gls-de) nennt für 2026 schon Montag, 21. Dezember, 12 Uhr, und die Schweizerische Post Mittwoch, 23. Dezember, für A-Post und PostPac Priority. Die Tabellen zeigen die Frist jedes Paketdiensts, wie sie am Freitag, 9. Oktober 2026 auf seinen eigenen Seiten stand, und das Datum vom Vorjahr, wo das neue noch fehlt.
+DHL und die Deutsche Post haben ihre Weihnachtstermine für 2026 noch nicht veröffentlicht: 2025 war der letzte Tag für Pakete, Päckchen und Briefe innerhalb Deutschlands Samstag, 20. Dezember. [GLS](carrier:gls-de) nennt für 2026 schon Montag, 21. Dezember, 12 Uhr, und die [Schweizerische Post](carrier:swiss-post) Mittwoch, 23. Dezember, für A-Post und PostPac Priority. Die Tabellen zeigen die Frist jedes Paketdiensts, wie sie am Freitag, 9. Oktober 2026 auf seinen eigenen Seiten stand, und das Datum vom Vorjahr, wo das neue noch fehlt.
 
 ## Deutschland: DHL, Deutsche Post, Hermes, DPD und GLS
 

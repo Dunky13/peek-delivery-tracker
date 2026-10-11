@@ -11,7 +11,7 @@ Um serviço universal de seguimento (ou de rastreio) de encomendas é um site ou
 
 ## Há alguma app para seguir todas as encomendas num só lugar?
 
-Há, e talvez já a tenhas no telemóvel: além dos serviços universais, a App CTT segue objetos dos CTT e de outros operadores, e a app Carteira do iPhone e a app Shop também juntam encomendas. A forma como a encomenda entra na lista decide o que o serviço fica a ver:
+Há, e talvez já a tenhas no telemóvel: além dos serviços universais, a App CTT segue objetos dos [CTT](carrier:ctt) e de outros operadores, e a app Carteira do iPhone e a app Shop também juntam encomendas. A forma como a encomenda entra na lista decide o que o serviço fica a ver:
 
 | Como a encomenda entra | O que o serviço vê | Exemplos |
 | --- | --- | --- |
@@ -68,7 +68,7 @@ Quase todas começam grátis, mas com anúncios, com um limite ou sem notificaç
 | [Peek](/) | Não precisas dela para seguir; inicia sessão para manter as encomendas juntas | Nenhum: não mostra publicidade | Pesquisas diárias limitadas, para evitar o uso em massa | Nada: é um projeto pessoal, não comercial |
 | Seguir Encomenda | A ficha não diz | Sim | A ficha não diz | Premium: 4,99 €, por ano segundo o programador |
 
-A Seguir Encomenda é uma app portuguesa, de um programador de Ponta Delgada, só em português. A ficha lista transportadoras que trabalham cá, como CTT, DPD, GLS, InPost, Paack, VASP Expresso e Delnext. A AfterShip também nomeia os CTT, a Chronopost Portugal e a SEUR Portugal na sua ficha portuguesa.
+A Seguir Encomenda é uma app portuguesa, de um programador de Ponta Delgada, só em português. A ficha lista transportadoras que trabalham cá, como CTT, DPD, GLS, InPost, Paack, VASP Expresso e Delnext. A AfterShip também nomeia os CTT, a Chronopost Portugal e a [SEUR](carrier:seur) Portugal na sua ficha portuguesa.
 
 Os preços mudam: vê «Compras integradas» na App Store portuguesa antes de assinares.
 

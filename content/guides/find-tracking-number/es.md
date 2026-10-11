@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Lo normal es que el número de seguimiento esté en el correo o el SMS que te manda la tienda cuando envía el pedido, o en el propio pedido, en su web o su app, a un clic del número de pedido. Si el paquete lo has enviado tú, está en el recibo o el justificante que te dieron al dejarlo. Ni Correos ni SEUR ni GLS buscan envíos por nombre o DNI, pero aún puedes seguir el paquete con el aviso de llegada, con la cuenta de algunos transportistas o pidiéndole el número al remitente.
+Lo normal es que el número de seguimiento esté en el correo o el SMS que te manda la tienda cuando envía el pedido, o en el propio pedido, en su web o su app, a un clic del número de pedido. Si el paquete lo has enviado tú, está en el recibo o el justificante que te dieron al dejarlo. Ni Correos ni [SEUR](carrier:seur) ni GLS buscan envíos por nombre o DNI, pero aún puedes seguir el paquete con el aviso de llegada, con la cuenta de algunos transportistas o pidiéndole el número al remitente.
 
 ## ¿Dónde encuentro mi número de seguimiento?
 
@@ -21,7 +21,7 @@ El número de seguimiento se crea para el remitente, y si te llega es gracias a 
 - El remitente | Si no tienes el número, «debes ponerte en contacto con el remitente para que te lo proporcione», dice SEUR.
 :::
 
-No siempre se llama igual: Correos habla de «código de envío» o «número de envío», MRW de «número de envío», InPost de «número de expedición» y casi todas las tiendas de «número de seguimiento»; [NACEX](carrier:nacex) lo pide en dos partes, «Agencia» y «Albarán». ¿Tienes el correo pero no sabes cuál de todos los números es el bueno? Pega el correo entero en [Peek](/) y él se encarga de encontrar el número de seguimiento y el transportista.
+No siempre se llama igual: Correos habla de «código de envío» o «número de envío», [MRW](carrier:mrw) de «número de envío», InPost de «número de expedición» y casi todas las tiendas de «número de seguimiento»; [NACEX](carrier:nacex) lo pide en dos partes, «Agencia» y «Albarán». ¿Tienes el correo pero no sabes cuál de todos los números es el bueno? Pega el correo entero en [Peek](/) y él se encarga de encontrar el número de seguimiento y el transportista.
 
 ### En tu pedido de Amazon, Temu, Shein y otras tiendas
 

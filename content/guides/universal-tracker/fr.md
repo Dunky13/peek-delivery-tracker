@@ -11,7 +11,7 @@ Un suivi de colis universel (ou « tracker de colis ») est un site ou une app q
 
 ## Peut-on suivre tous ses colis dans une seule app ?
 
-Oui, et tu en as peut-être déjà une : l'app La Poste, My bpost, la Post-App de La Poste suisse, PayPal ou Shop savent aussi regrouper des colis. Ce que le service voit dépend de la façon dont le colis entre dans ta liste :
+Oui, et tu en as peut-être déjà une : l'app La Poste, My bpost, la Post-App de [La Poste suisse](carrier:swiss-post), PayPal ou Shop savent aussi regrouper des colis. Ce que le service voit dépend de la façon dont le colis entre dans ta liste :
 
 | Comment le colis s'ajoute | Ce que le service voit | Exemples |
 | --- | --- | --- |
@@ -84,7 +84,7 @@ La plupart procèdent en cinq étapes :
 :::steps
 - Tu colles | Un numéro de suivi, le lien du transporteur ou l'e-mail d'expédition. Le lien est le plus sûr : il nomme le transporteur.
 - Il examine le format | Lettres, longueur et chiffre de contrôle réduisent les possibilités. `1Z999AA10123456784` commence par le `1Z` d'UPS ; `RR123456785CH` a le format à 13 caractères commun aux postes nationales.
-- Il départage les candidats | Certains formats conviennent à plusieurs transporteurs : un numéro de 14 chiffres peut venir de DPD, Relais Colis, Ciblex ou SEUR, entre autres. Il en interroge plusieurs, ou te laisse choisir.
+- Il départage les candidats | Certains formats conviennent à plusieurs transporteurs : un numéro de 14 chiffres peut venir de DPD, [Relais Colis](carrier:relais-colis), Ciblex ou SEUR, entre autres. Il en interroge plusieurs, ou te laisse choisir.
 - Il récupère les scans | Auprès du transporteur ou d'un autre service de suivi, dans un seul historique.
 - Il revérifie | À intervalles réguliers, et te prévient quand il y a du nouveau.
 :::

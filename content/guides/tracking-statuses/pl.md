@@ -59,7 +59,7 @@ Między skanami cisza jest normalna:
 
 ### Ile paczka jest w drodze?
 
-DPD podaje, że krajową paczkę standardowo doręcza następnego dnia roboczego, a gwarantuje 3 dni robocze; wiele zależy od usługi wybranej przez nadawcę. Poczta Polska, operator wyznaczony do 2035 roku, ma w rozporządzeniu cele dla zwykłych paczek pocztowych: 93% paczek najszybszej kategorii ma dotrzeć w terminie D+3, a 98% pozostałych w terminie D+5, gdzie D to dzień nadania.
+[DPD](carrier:dpd-pl) podaje, że krajową paczkę standardowo doręcza następnego dnia roboczego, a gwarantuje 3 dni robocze; wiele zależy od usługi wybranej przez nadawcę. Poczta Polska, operator wyznaczony do 2035 roku, ma w rozporządzeniu cele dla zwykłych paczek pocztowych: 93% paczek najszybszej kategorii ma dotrzeć w terminie D+3, a 98% pozostałych w terminie D+5, gdzie D to dzień nadania.
 
 Status `Przyjęta w Oddziale Docelowym.` to dobry znak: według InPost paczka „wkrótce trafi do rąk doręczyciela”. Cisza dłuższa niż czas podany przez przewoźnika? Zobacz, [dlaczego status przesyłki się nie zmienia](guide:tracking-not-updating).
 

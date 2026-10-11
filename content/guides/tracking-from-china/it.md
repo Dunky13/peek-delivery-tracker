@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Un pacco AliExpress, Temu o Shein passa di mano più volte: un'azienda logistica cinese lo manda in aereo verso l'Europa, la dogana lo controlla e alla fine te lo consegnano Poste Italiane, un corriere o, in Ticino, la Posta, spesso con un codice nuovo. Ognuno scansiona solo il suo tratto, quindi metti in conto fino a 11 giorni prima del primo aggiornamento, nessuna notizia durante il volo e un'attesa dopo «arrivato nel paese di destinazione». Segui il tracking del negozio, poi quello del corriere locale: con le spedizioni più economiche il tracking può fermarsi lì per sempre.
+Un pacco AliExpress, Temu o Shein passa di mano più volte: un'azienda logistica cinese lo manda in aereo verso l'Europa, la dogana lo controlla e alla fine te lo consegnano [Poste Italiane](carrier:poste-italiane), un corriere o, in Ticino, [la Posta](carrier:swiss-post), spesso con un codice nuovo. Ognuno scansiona solo il suo tratto, quindi metti in conto fino a 11 giorni prima del primo aggiornamento, nessuna notizia durante il volo e un'attesa dopo «arrivato nel paese di destinazione». Segui il tracking del negozio, poi quello del corriere locale: con le spedizioni più economiche il tracking può fermarsi lì per sempre.
 
 ## Come si traccia un pacco AliExpress, Temu o Shein?
 
@@ -73,7 +73,7 @@ Con i codici delle poste è diverso. L'Unione postale universale prevede un solo
 
 ### Di quale corriere è il mio codice?
 
-Oltre a Cainiao vedrai [YunExpress](carrier:yunexpress), 4PX, Yanwen (che vende perfino linee con il nome di Temu e di AliExpress) e CNE, che tra i suoi clienti indica Temu:
+Oltre a Cainiao vedrai [YunExpress](carrier:yunexpress), [4PX](carrier:4px), Yanwen (che vende perfino linee con il nome di Temu e di AliExpress) e CNE, che tra i suoi clienti indica Temu:
 
 | Il codice è fatto così | Di solito |
 | --- | --- |

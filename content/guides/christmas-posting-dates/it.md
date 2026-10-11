@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Poste Italiane non ha ancora pubblicato le date di Natale 2026: nel 2025 garantiva la consegna entro Natale in Italia per i pacchi affidati entro giovedì 18 dicembre con i servizi a 2 giorni lavorativi, ed entro venerdì 19 dicembre con quelli a 1 giorno. In Ticino la Posta ha già le date 2026: mercoledì 23 dicembre per Posta A e PostPac Priority, martedì 22 per PostPac Economy. Le tabelle danno la scadenza di ogni corriere come l'abbiamo verificata venerdì 9 ottobre 2026, con la data dell'anno scorso dove quella di quest'anno non è ancora uscita.
+[Poste Italiane](carrier:poste-italiane) non ha ancora pubblicato le date di Natale 2026: nel 2025 garantiva la consegna entro Natale in Italia per i pacchi affidati entro giovedì 18 dicembre con i servizi a 2 giorni lavorativi, ed entro venerdì 19 dicembre con quelli a 1 giorno. In Ticino [la Posta](carrier:swiss-post) ha già le date 2026: mercoledì 23 dicembre per Posta A e PostPac Priority, martedì 22 per PostPac Economy. Le tabelle danno la scadenza di ogni corriere come l'abbiamo verificata venerdì 9 ottobre 2026, con la data dell'anno scorso dove quella di quest'anno non è ancora uscita.
 
 ## Italia: Poste Italiane, SDA, GLS e BRT
 

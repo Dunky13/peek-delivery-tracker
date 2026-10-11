@@ -11,7 +11,7 @@ Si le suivi indique « livré » mais que tu n'as rien reçu, ne considère pas 
 
 ## Pourquoi mon colis est indiqué livré alors que je n'ai rien reçu ?
 
-Parce que « livré » enregistre l'endroit où le livreur a laissé le colis, pas le fait que tu l'aies récupéré. Chez La Poste suisse, l'envoi est « distribué » (`Distribué par` dans le suivi), et ça veut dire la même chose. Trois explications possibles :
+Parce que « livré » enregistre l'endroit où le livreur a laissé le colis, pas le fait que tu l'aies récupéré. Chez [La Poste suisse](carrier:swiss-post), l'envoi est « distribué » (`Distribué par` dans le suivi), et ça veut dire la même chose. Trois explications possibles :
 
 - **Il a été scanné trop tôt.** Oui, un colis peut être indiqué livré avant d'arriver. Amazon prévient que des colis sont parfois scannés comme livrés « jusqu'à 48 heures avant la livraison effective », et que certains transporteurs livrent jusqu'à 22 h.
 - **Il est là où tu n'as pas encore regardé.** Chez un voisin, chez le gardien, dans un lieu sûr ou au point relais : tout cela compte comme livré.
@@ -22,7 +22,7 @@ Où chaque transporteur peut le laisser :
 | Transporteur | Compte aussi comme livré |
 | --- | --- |
 | Colissimo (FR) | Dans ta boîte aux lettres, ou remis à « toute personne présente » à ton adresse, gardien ou concierge compris. Au-delà de 5 kg, contre signature ou contre un code reçu par SMS ou e-mail |
-| Chronopost (FR) | En lieu sûr : boîte aux lettres, pas-de-porte, voisin ou gardien. Chronopost conseille aussi de regarder « sous le porche, sur la terrasse » |
+| [Chronopost](carrier:chronopost) (FR) | En lieu sûr : boîte aux lettres, pas-de-porte, voisin ou gardien. Chronopost conseille aussi de regarder « sous le porche, sur la terrasse » |
 | [Colis Privé](carrier:colis-prive) (FR) | Dans ta boîte aux lettres, ou remis à un gardien, un voisin ou « un tiers de confiance » |
 | bpost (BE) | Dans ta boîte aux lettres, sans sonner, pour un petit colis. Ou selon tes préférences : Point d'enlèvement, lieu sûr, voisin |
 | La Poste suisse | Remis à toute personne présente à ton domicile, ou à un voisin si personne n'est là. Trop grand pour la boîte, déposé dans « un lieu sûr et protégé des intempéries », sauf si tu as choisi « Pas de dépôt » |

@@ -16,7 +16,7 @@ DHL sagt es klar: „Als Empfänger erhalten Sie die Sendungsnummer von dem Abse
 :::steps
 - Mails und SMS | Such nach „versandt“, „Sendungsnummer“, „Sendungsverfolgung“ oder dem Namen des Shops, auch im Spam-Ordner.
 - Deine Bestellung im Shop | Meist einen Klick von der Bestellnummer entfernt (Tabelle unten).
-- Die Benachrichtigungskarte | Bei der Schweizerischen Post und bei FedEx funktioniert der Code darauf wie eine Sendungsnummer.
+- Die Benachrichtigungskarte | Bei der [Schweizerischen Post](carrier:swiss-post) und bei FedEx funktioniert der Code darauf wie eine Sendungsnummer.
 - Dein Konto beim Paketdienst | Manche Paketdienste zeigen dir Pakete an deine Adresse von selbst an.
 - Der Absender | Er hat die Nummer, auch wenn sie nie bei dir angekommen ist.
 :::

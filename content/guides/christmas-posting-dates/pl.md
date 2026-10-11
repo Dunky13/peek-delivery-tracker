@@ -11,7 +11,7 @@ updated: 2026-10-10
 
 ## Polska: InPost, Poczta Polska, ORLEN Paczka, DPD, DHL i GLS
 
-Na 9 października żaden przewoźnik nie ma jeszcze strony o świętach 2026. DPD pisze tylko „Tryb pracy na grudzień i styczeń - wkrótce”. Daty poniżej są więc zeszłoroczne, dla paczek wysyłanych w Polsce.
+Na 9 października żaden przewoźnik nie ma jeszcze strony o świętach 2026. [DPD](carrier:dpd-pl) pisze tylko „Tryb pracy na grudzień i styczeń - wkrótce”. Daty poniżej są więc zeszłoroczne, dla paczek wysyłanych w Polsce.
 
 | Przewoźnik | Usługa | Nadaj do |
 | --- | --- | --- |

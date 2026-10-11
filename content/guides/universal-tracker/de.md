@@ -18,7 +18,7 @@ Ja, und vielleicht hast du schon eine: Neben den Trackern sammeln auch die Apps 
 | Du fügst eine Nummer oder einen Link ein | Diese Nummer | Jeder Tracker |
 | Du leitest eine E-Mail weiter | Diese E-Mail | ParcelsApp, Parcello, ParcelTrack, Shop, Lieferungen (Deliveries) |
 | Du verbindest dein Postfach | Dein Postfach, gefiltert nach den Regeln des Dienstes | Shop, AfterShip, PayPal, Klarna |
-| Der Paketdienst oder der Shop ordnet dir das Paket zu | Deinen Namen, deine Adresse, E-Mail-Adresse oder Telefonnummer | DHL, Österreichische Post, Schweizerische Post; Shopify-Bestellungen in Shop |
+| Der Paketdienst oder der Shop ordnet dir das Paket zu | Deinen Namen, deine Adresse, E-Mail-Adresse oder Telefonnummer | DHL, Österreichische Post, [Schweizerische Post](carrier:swiss-post); Shopify-Bestellungen in Shop |
 
 ## Wie sehe ich alle Pakete, die zu mir unterwegs sind?
 

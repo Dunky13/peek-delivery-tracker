@@ -17,7 +17,7 @@ GLS mówi to wprost: paczkę śledzisz po numerze, „który przekazał Ci Nadaw
 - Skrzynka mailowa i SMS-y | Wyszukaj w e-mailach „przesyłka”, „wysłane”, „numer przesyłki” albo nazwę sklepu. Zajrzyj też do spamu.
 - Zamówienie w sklepie | O jedno kliknięcie dalej niż numer zamówienia (tabela niżej).
 - Awizo | Na wielu awizach jest numer, który przyjmie wyszukiwarka przewoźnika.
-- Aplikacja przewoźnika | [InPost](carrier:inpost), DPD i Pocztex same pokazują paczki wysłane na Twój numer telefonu (DPD także na e-mail).
+- Aplikacja przewoźnika | [InPost](carrier:inpost), [DPD](carrier:dpd-pl) i Pocztex same pokazują paczki wysłane na Twój numer telefonu (DPD także na e-mail).
 - Nadawca | Allegro radzi poprosić sprzedającego o numer przesyłki „lub potwierdzenie nadania”.
 :::
 
@@ -79,7 +79,7 @@ Jeśli nadawca poda Ci swój numer referencyjny, na przykład numer faktury, w n
 
 ## Czy można śledzić paczkę po nazwisku, adresie albo numerze telefonu?
 
-Po nazwisku i adresie się nie da. Wyszukiwarki Poczty Polskiej, InPost i DPD przyjmują tylko numer przesyłki (DPD także kod nadania). Niemiecki DHL pisze wprost, że śledzenie jest możliwe tylko z ważnym numerem przesyłki, a bez niego statusu nie sprawdzi nawet obsługa klienta.
+Po nazwisku i adresie się nie da. Wyszukiwarki Poczty Polskiej, InPost i DPD przyjmują tylko numer przesyłki (DPD także kod nadania, numer referencyjny i numer zlecenia). Niemiecki DHL pisze wprost, że śledzenie jest możliwe tylko z ważnym numerem przesyłki, a bez niego statusu nie sprawdzi nawet obsługa klienta.
 
 Po numerze telefonu: tylko w aplikacji przewoźnika i tylko paczki wysłane na numer, na który masz w niej konto (tabela wyżej). [Trackery paczek](guide:universal-tracker) też nie szukają po nazwisku, Peek również: żeby zapytać przewoźnika o paczkę, potrzebuje jej numeru.
 

@@ -27,7 +27,7 @@ Zacznij od darmowych aplikacji, które same przypisują Ci paczki, także gdy [n
 | Aplikacja | Co pokazuje | Powiadomienia |
 | --- | --- | --- |
 | InPost Mobile | Twoje paczki [InPost](carrier:inpost) bez wpisywania numerów: „Nie musisz rejestrować paczek samodzielnie”. Paczki bliskich i znajomych dodasz po numerze przesyłki | Komunikat na telefonie przy każdej zmianie statusu |
-| DPD Mobile | Paczki w sieci DPD Polska przypisane do numeru telefonu lub adresu e-mail z Twojego konta w aplikacji. Te dane muszą się zgadzać z listem przewozowym | W aplikacji i e-mailem, na bieżąco o statusie doręczenia |
+| DPD Mobile | Paczki w sieci [DPD Polska](carrier:dpd-pl) przypisane do numeru telefonu lub adresu e-mail z Twojego konta w aplikacji. Te dane muszą się zgadzać z listem przewozowym | W aplikacji i e-mailem, na bieżąco o statusie doręczenia |
 | Pocztex Mobile (Poczta Polska) | Wszystkie przesyłki rejestrowane, „do których został przypisany Twój numer telefonu” | O zmianach statusu przesyłek |
 | Allegro | Zakładka „Moje przesyłki”: paczki z Twoich zakupów, od oczekiwania na nadanie aż do odbioru. Nic nie zobaczysz, jeśli sprzedający nie dodał numeru listu przewozowego | W aplikacji i e-mailem, gdy przesyłka się opóźnia |
 

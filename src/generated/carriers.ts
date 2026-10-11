@@ -144,6 +144,86 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Evri tracking: statuses, ParcelShops and missed deliveries",
       "name": "Evri",
       "color": "#00014d"
+    },
+    {
+      "id": "chronopost",
+      "catalog": "chronopost",
+      "slug": "chronopost-tracking",
+      "title": "Chronopost tracking: numbers, statuses and pickup points",
+      "name": "Chronopost",
+      "color": "#0056a7"
+    },
+    {
+      "id": "relais-colis",
+      "catalog": "relais-colis",
+      "slug": "relais-colis-tracking",
+      "title": "Relais Colis tracking: statuses, pickup and contact",
+      "name": "Relais Colis",
+      "color": "#7bb928"
+    },
+    {
+      "id": "poste-italiane",
+      "catalog": "poste-italiane",
+      "slug": "poste-italiane-tracking",
+      "title": "Poste Italiane tracking: numbers, statuses and pickup",
+      "name": "Poste Italiane",
+      "color": "#eedc00"
+    },
+    {
+      "id": "seur",
+      "catalog": "seur",
+      "slug": "seur-tracking",
+      "title": "SEUR tracking: numbers, statuses and pickup points",
+      "name": "SEUR",
+      "color": "#0063b3"
+    },
+    {
+      "id": "mrw",
+      "catalog": "mrw",
+      "slug": "mrw-tracking",
+      "title": "MRW tracking: number, statuses in English and contact",
+      "name": "MRW",
+      "color": "#19133b"
+    },
+    {
+      "id": "ctt",
+      "catalog": "ctt",
+      "slug": "ctt-tracking",
+      "title": "CTT tracking: numbers, statuses and pickup in Portugal",
+      "name": "CTT",
+      "color": "#df0024"
+    },
+    {
+      "id": "packeta",
+      "catalog": "packeta",
+      "slug": "packeta-tracking",
+      "title": "Packeta tracking: Z numbers, statuses and pickup points",
+      "name": "Packeta",
+      "color": "#ba1b02"
+    },
+    {
+      "id": "dpd-pl",
+      "catalog": "dpd-pl",
+      "slug": "dpd-poland-tracking",
+      "title": "DPD Poland tracking: statuses, pickup points and contact",
+      "name": "DPD Poland",
+      "color": "#dc0032"
+    },
+    {
+      "id": "4px",
+      "catalog": "four-px",
+      "slug": "4px-tracking",
+      "title": "4PX tracking: numbers, statuses and who to contact",
+      "name": "4PX",
+      "color": "#005add"
+    },
+    {
+      "id": "swiss-post",
+      "catalog": "swiss-post",
+      "slug": "swiss-post-tracking",
+      "title": "Swiss Post tracking: statuses, collection notes and contact",
+      "name": "Swiss Post",
+      "color": "#ffcc00"
     }
   ],
   "de": [
@@ -218,6 +298,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DPD Schweiz Tracking: Status, Zustellung und Kontakt",
       "name": "DPD Switzerland",
       "color": "#dc0032"
+    },
+    {
+      "id": "4px",
+      "catalog": "four-px",
+      "slug": "4px-sendungsverfolgung",
+      "title": "4PX Sendungsverfolgung: Nummer, Status und Kontakt",
+      "name": "4PX",
+      "color": "#005add"
+    },
+    {
+      "id": "swiss-post",
+      "catalog": "swiss-post",
+      "slug": "swiss-post-sendungsverfolgung",
+      "title": "Swiss Post Sendungsverfolgung: Status, Abholung, Kontakt",
+      "name": "Swiss Post",
+      "color": "#ffcc00"
     }
   ],
   "fr": [
@@ -292,6 +388,38 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Paack suivi colis\u00a0: numéro, code postal et statuts",
       "name": "Paack",
       "color": "#5b2dee"
+    },
+    {
+      "id": "chronopost",
+      "catalog": "chronopost",
+      "slug": "chronopost-suivi",
+      "title": "Chronopost suivi\u00a0: numéro, statuts et point relais",
+      "name": "Chronopost",
+      "color": "#0056a7"
+    },
+    {
+      "id": "relais-colis",
+      "catalog": "relais-colis",
+      "slug": "relais-colis-suivi",
+      "title": "Relais Colis suivi\u00a0: statuts, retrait en relais et contact",
+      "name": "Relais Colis",
+      "color": "#7bb928"
+    },
+    {
+      "id": "4px",
+      "catalog": "four-px",
+      "slug": "4px-suivi",
+      "title": "4PX suivi\u00a0: numéro, statuts et qui contacter",
+      "name": "4PX",
+      "color": "#005add"
+    },
+    {
+      "id": "swiss-post",
+      "catalog": "swiss-post",
+      "slug": "swiss-post-suivi-colis",
+      "title": "Swiss Post\u00a0: suivi colis La Poste suisse et statuts",
+      "name": "Swiss Post",
+      "color": "#ffcc00"
     }
   ],
   "it": [
@@ -358,6 +486,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "InPost tracking: codice, stati e ritiro al locker",
       "name": "InPost",
       "color": "#ffcc05"
+    },
+    {
+      "id": "poste-italiane",
+      "catalog": "poste-italiane",
+      "slug": "poste-italiane-tracking",
+      "title": "Poste Italiane tracking: codice, stati, giacenza e ritiro",
+      "name": "Poste Italiane",
+      "color": "#eedc00"
+    },
+    {
+      "id": "4px",
+      "catalog": "four-px",
+      "slug": "4px-traccia-pacco",
+      "title": "4PX traccia pacco: numero, stati e chi consegna",
+      "name": "4PX",
+      "color": "#005add"
+    },
+    {
+      "id": "swiss-post",
+      "catalog": "swiss-post",
+      "slug": "swiss-post-tracking-posta-svizzera",
+      "title": "Swiss Post tracking: Posta Svizzera, stati e ritiro",
+      "name": "Swiss Post",
+      "color": "#ffcc00"
     }
   ],
   "es": [
@@ -408,6 +560,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Paack seguimiento: estados, entrega fallida y teléfono",
       "name": "Paack",
       "color": "#5b2dee"
+    },
+    {
+      "id": "seur",
+      "catalog": "seur",
+      "slug": "seur-seguimiento",
+      "title": "SEUR seguimiento: número, estados y puntos Pickup",
+      "name": "SEUR",
+      "color": "#0063b3"
+    },
+    {
+      "id": "mrw",
+      "catalog": "mrw",
+      "slug": "mrw-seguimiento",
+      "title": "MRW seguimiento: número de envío, estados y teléfono",
+      "name": "MRW",
+      "color": "#19133b"
+    },
+    {
+      "id": "4px",
+      "catalog": "four-px",
+      "slug": "4px-seguimiento",
+      "title": "4PX seguimiento: estados, quién entrega y contacto",
+      "name": "4PX",
+      "color": "#005add"
     }
   ],
   "pt": [
@@ -466,6 +642,38 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Paack rastreio: número, código postal e janela horária",
       "name": "Paack",
       "color": "#5b2dee"
+    },
+    {
+      "id": "seur",
+      "catalog": "seur",
+      "slug": "seur-encomenda",
+      "title": "SEUR encomenda: rastreio, estados e contactos em Portugal",
+      "name": "SEUR",
+      "color": "#0063b3"
+    },
+    {
+      "id": "mrw",
+      "catalog": "mrw",
+      "slug": "mrw-rastreio",
+      "title": "MRW rastreio: número, estados e contactos em Portugal",
+      "name": "MRW",
+      "color": "#19133b"
+    },
+    {
+      "id": "ctt",
+      "catalog": "ctt",
+      "slug": "ctt-rastreio",
+      "title": "CTT rastreio: números, estados, levantamento e contactos",
+      "name": "CTT",
+      "color": "#df0024"
+    },
+    {
+      "id": "4px",
+      "catalog": "four-px",
+      "slug": "4px-rastreio",
+      "title": "4PX rastreio: números, estados e contacto em Portugal",
+      "name": "4PX",
+      "color": "#005add"
     }
   ],
   "pl": [
@@ -492,6 +700,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "InPost śledzenie przesyłki: numer, statusy i Paczkomat",
       "name": "InPost",
       "color": "#ffcc05"
+    },
+    {
+      "id": "packeta",
+      "catalog": "packeta",
+      "slug": "packeta-sledzenie",
+      "title": "Packeta śledzenie: numer Z, statusy i punkty odbioru",
+      "name": "Packeta",
+      "color": "#ba1b02"
+    },
+    {
+      "id": "dpd-pl",
+      "catalog": "dpd-pl",
+      "slug": "dpd-poland-sledzenie-paczki",
+      "title": "DPD Poland śledzenie paczki: statusy, Pickup i kontakt",
+      "name": "DPD Poland",
+      "color": "#dc0032"
+    },
+    {
+      "id": "4px",
+      "catalog": "four-px",
+      "slug": "4px-sledzenie-przesylki",
+      "title": "4PX śledzenie przesyłki: numery, statusy i kontakt",
+      "name": "4PX",
+      "color": "#005add"
     }
   ]
 };

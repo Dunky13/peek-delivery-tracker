@@ -4,7 +4,7 @@ description: Dove si trova il codice tracking tra e-mail, ordine, SMS e ricevuta
 slug: dove-si-trova-il-codice-tracking
 picture: Un'e-mail di spedizione con il codice RR123456785CH evidenziato in giallo, un'etichetta con il codice a barre accanto e Pip che sorride.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-11
 ---
 
 Di solito il codice tracking è nell'e-mail o nell'SMS di spedizione, oppure nel tuo ordine sul sito o nell'app del negozio, un clic dopo il numero d'ordine. Se il pacco l'hai spedito tu, è sulla ricevuta dello sportello o nell'e-mail di conferma. Nessun corriere cerca un pacco per nome e cognome, ma puoi seguirlo lo stesso con l'avviso lasciato dal corriere, con l'account gratuito che alcuni corrieri offrono per i pacchi in arrivo o chiedendo il codice al mittente.
@@ -16,7 +16,7 @@ Il codice lo riceve il mittente, e a te arriva quasi sempre tramite lui. DHL lo 
 :::steps
 - E-mail e SMS | Cerca «spedito», «spedizione», «tracking» o il nome del negozio, e guarda anche nello spam.
 - La pagina dell'ordine | Un clic dopo il numero d'ordine (tabella qui sotto).
-- L'avviso del corriere | Il tagliando di BRT o l'invito di ritiro della Posta hanno un codice che il tracking accetta.
+- L'avviso del corriere | Il tagliando di BRT o l'invito di ritiro della [Posta](carrier:swiss-post) hanno un codice che il tracking accetta.
 - L'account del corriere | Alcuni corrieri elencano i pacchi in arrivo al tuo indirizzo.
 - Il mittente | «Se non hai il numero di spedizione, ti consigliamo di contattare il mittente», scrive DHL.
 :::
@@ -43,7 +43,7 @@ Hai ordinato su AliExpress o in un altro negozio cinese? Leggi [come tracciare u
 
 - **[BRT](carrier:brt)** (ex Bartolini): il BRTcode, oltre che negli SMS e nelle e-mail, è anche «sul tagliando lasciato dal corriere dopo un tentativo di consegna». Lo cerchi sul sito di BRT come sempre.
 - **FedEx**: la ricerca accetta anche i numeri degli «avvisi di tentata consegna».
-- **Poste Italiane**: il portalettere lascia un avviso di giacenza per il ritiro in Ufficio Postale. Se lo perdi, puoi averne un duplicato telefonando al Servizio Clienti.
+- **[Poste Italiane](carrier:poste-italiane)**: il portalettere lascia un avviso di giacenza per il ritiro in Ufficio Postale. Se lo perdi, puoi averne un duplicato telefonando al Servizio Clienti.
 - **La Posta**, in Ticino: l'«Invito di ritiro» ha un codice di ritiro che funziona nella ricerca, dove il campo chiede il «Numero d'invio o codice di ritiro». Di norma hai sette giorni per ritirare un pacco (15 per gli invii internazionali), e il termine si può prolungare.
 - **[Planzer](carrier:planzer)**, in Svizzera: il codice di consegna sull'avviso apre il portale destinatari, ma per seguire il pacco serve il numero di spedizione, che trovi nel messaggio «A breve riceverà una spedizione».
 - **[Quickpac](carrier:quickpac)**, in Svizzera: il numero di 18 cifre è anche sulla scheda per il ritiro lasciata nella bucalettere.
@@ -95,7 +95,7 @@ L'hai spedito tu? Il codice è sulla ricevuta che ti hanno dato allo sportello, 
 
 | Servizio | Dove guardare |
 | --- | --- |
-| Poste Italiane, allo sportello | Per raccomandate, assicurate, atti giudiziari e pacchi: il codice sotto il codice a barre della ricevuta, per esempio `050000201242` |
+| Poste Italiane, allo sportello | Per raccomandate, assicurate, atti giudiziari e pacchi: il codice sotto il codice a barre della ricevuta |
 | Posta1 e Postapriority internazionale | Il codice dell'invio sull'etichetta adesiva con il codice bidimensionale (2DComm). Per la Postapriority, il tracking si ferma all'arrivo al Centro di Scambio Internazionale di Poste |
 | Poste Delivery Web | Il codice spedizione sulla Lettera di Vettura, sempre allegata all'e-mail di conferma dell'acquisto, oppure nell'Archivio delle spedizioni effettuate |
 | La Posta | Gli invii spediti con il tuo account (per esempio con pick@home) compaiono da soli in «I miei invii», se l'indirizzo del mittente è quello del Login clienti Posta. Gli altri li aggiungi a mano, ma ti serve il numero d'invio |
