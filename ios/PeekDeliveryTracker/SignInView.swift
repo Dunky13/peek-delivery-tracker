@@ -454,7 +454,7 @@ struct SignInView: View {
                         .tracking(-0.6)
                 }
                 Text(invitation == nil ? copy.signInSubtitle : localizer.text("friends.signInToAccept"))
-                    .font(.subheadline)
+                    .font(.footnote)
                     .foregroundStyle(.secondary)
             }
             .multilineTextAlignment(.center)
@@ -619,17 +619,15 @@ struct SignInView: View {
     private var emailForm: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(localizer.text(invitation == nil ? "auth.emailIntroShort" : "auth.emailIntro"))
-                .font(.subheadline)
+                .font(.footnote)
                 .foregroundStyle(.secondary)
-            TextField(localizer.text("auth.email"), text: $email)
-                .textContentType(.emailAddress)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .padding(.horizontal, 15)
-                .frame(height: 52)
-                .background(.background, in: RoundedRectangle(cornerRadius: 15, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: 15).stroke(.separator.opacity(0.7)))
+            SignInField(label: localizer.text("auth.email")) {
+                TextField(localizer.text("auth.email"), text: $email, prompt: Text(verbatim: "you@example.com"))
+                    .textContentType(.emailAddress)
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+            }
             errorView
             Button {
                 run {
@@ -637,54 +635,37 @@ struct SignInView: View {
                     step = .code
                 }
             } label: {
-                HStack {
-                    if working { ProgressView().tint(Brand.ink) }
-                    Text(working ? localizer.text("auth.sending") : localizer.text("auth.send"))
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 52)
+                SignInPrimaryLabel(title: working ? localizer.text("auth.sending") : localizer.text("auth.send"), working: working)
             }
-            .buttonStyle(.borderedProminent)
-            .buttonBorderShape(.roundedRectangle(radius: 16))
-            .tint(Brand.accent)
-            .foregroundStyle(Brand.onAccent)
+            .buttonStyle(TactileButtonStyle())
             .disabled(working || !email.cleanedEmail.contains("@"))
         }
         .modifier(SignInFormSurface(embedded: invitation == nil, padding: 18))
     }
 
     private var codeForm: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 12) {
             Text(localizer.text("auth.codeIntro", ["email": email.cleanedEmail]))
-                .font(.subheadline)
+                .font(.footnote)
                 .foregroundStyle(.secondary)
-            TextField(localizer.text("auth.code"), text: $code)
-                .textContentType(.oneTimeCode)
-                .keyboardType(.numberPad)
-                .font(.title2.weight(.semibold).monospacedDigit())
-                .multilineTextAlignment(.center)
-                .onChange(of: code) { _, value in
-                    code = String(value.filter(\.isNumber).prefix(6))
-                }
-                .padding(.horizontal, 15)
-                .frame(height: 58)
-                .background(.background, in: RoundedRectangle(cornerRadius: 15, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: 15).stroke(.separator.opacity(0.7)))
+            SignInField(label: localizer.text("auth.code")) {
+                TextField(localizer.text("auth.code"), text: $code, prompt: Text(verbatim: ""))
+                    .textContentType(.oneTimeCode)
+                    .keyboardType(.numberPad)
+                    .font(.system(.title2, design: .monospaced, weight: .medium))
+                    .tracking(10)
+                    .multilineTextAlignment(.center)
+                    .onChange(of: code) { _, value in
+                        code = String(value.filter(\.isNumber).prefix(6))
+                    }
+            }
             errorView
             Button {
                 run { try await session.verifyCode(email: email.cleanedEmail, code: code) }
             } label: {
-                HStack {
-                    if working { ProgressView().tint(Brand.ink) }
-                    Text(working ? localizer.text("auth.signingIn") : localizer.text("auth.openBox"))
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 52)
+                SignInPrimaryLabel(title: working ? localizer.text("auth.signingIn") : localizer.text("auth.openBox"), working: working)
             }
-            .buttonStyle(.borderedProminent)
-            .buttonBorderShape(.roundedRectangle(radius: 16))
-            .tint(Brand.accent)
-            .foregroundStyle(Brand.onAccent)
+            .buttonStyle(TactileButtonStyle())
             .disabled(working || code.count != 6)
 
             Button(localizer.text("auth.differentEmail")) {
@@ -692,8 +673,10 @@ struct SignInView: View {
                 code = ""
                 errorMessage = nil
             }
-            .font(.subheadline.weight(.semibold))
-            .frame(maxWidth: .infinity)
+            .font(.caption)
+            .underline()
+            .foregroundStyle(Brand.ink)
+            .frame(maxWidth: .infinity, minHeight: 44)
             .disabled(working)
         }
         .modifier(SignInFormSurface(embedded: invitation == nil, padding: 20))
@@ -720,6 +703,45 @@ struct SignInView: View {
             working = false
             activeProvider = nil
         }
+    }
+}
+
+/// A field under its name, as on the web: the name says what goes in, so the field stays empty until something does.
+private struct SignInField<Field: View>: View {
+    let label: String
+    @ViewBuilder let field: Field
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label)
+                .font(.caption.weight(.semibold))
+                .accessibilityHidden(true)
+            field
+                .accessibilityLabel(Text(label))
+                .padding(.horizontal, 15)
+                .frame(minHeight: 54)
+                .background(.background, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(.separator.opacity(0.7)))
+        }
+    }
+}
+
+/// The form's one action, in the web's yellow: faded, not grey, until what it needs is typed.
+private struct SignInPrimaryLabel: View {
+    @Environment(\.isEnabled) private var isEnabled
+    let title: String
+    let working: Bool
+
+    var body: some View {
+        HStack(spacing: 9) {
+            if working { ProgressView().tint(Brand.onAccent) }
+            Text(title).font(.body.weight(.semibold))
+        }
+        .foregroundStyle(Brand.onAccent)
+        .frame(maxWidth: .infinity)
+        .frame(minHeight: 52)
+        .background(Brand.accent, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .opacity(isEnabled || working ? 1 : 0.5)
     }
 }
 
