@@ -6627,10 +6627,13 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "speedy",
+      "recognitionRank": 54
     },
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [],
+    "trackingUrlTemplate": "https://myspeedy.speedy.bg/pub/tracking/{trackingNumber}",
+    "trackingSearchUrl": "https://myspeedy.speedy.bg/pub/tracking/"
   },
   "trans-o-flex": {
     "displayName": "trans-o-flex",
@@ -7186,7 +7189,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "elta",
+      "recognitionRank": 55
     },
     "trackingUrlTemplate": "https://www.elta.gr/track?code={trackingNumber}",
     "linkRules": [
@@ -7218,7 +7222,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}GR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.elta.gr/track"
   },
   "express-one": {
