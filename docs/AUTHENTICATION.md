@@ -72,13 +72,17 @@ Auth caches the template and keeps the last good copy if a later fetch fails. Th
 addresses and is heavily rate-limited. Any SMTP service works. Use a dedicated sender
 address, publish SPF, DKIM and DMARC, and turn off link tracking.
 
-Set `GOTRUE_RATE_LIMIT_HEADER` to a header that carries the visitor's address and that
-visitors can't set themselves: `CF-Connecting-IP` when Cloudflare is the only way in. Auth
-then limits code requests and code checks per address. Without it, Auth only waits a
-minute between emails to the same inbox and caps all emails at
-`GOTRUE_RATE_LIMIT_EMAIL_SENT` an hour (30 by default), so one sender can spend the hour's
-emails and lock everyone else out. The clients send no CAPTCHA token, so leave Auth's
-CAPTCHA off.
+Limits count a visitor's network: an IPv4 address, or an IPv6 /64, since a line is given
+a whole /64. Run [ops/kong/auth-limits.lua](../ops/kong/auth-limits.lua) as a Kong
+`post-function` in the access phase of the `auth-v1` and `auth-v1-open` services. It
+reads the network from `CF-Connecting-IP`, so Cloudflare must be the only way in. It passes
+the network on in `X-Client-Network`, and caps the emails each network can ask for every
+5 minutes, hour and day. Set `GOTRUE_RATE_LIMIT_HEADER=X-Client-Network` so Auth's own
+limits, such as code checks, count networks too. Without that header Auth limits no
+network: it only waits a minute between emails to the same inbox and caps all emails at
+`GOTRUE_RATE_LIMIT_EMAIL_SENT` an hour (30 by default), which one sender can spend. Set
+`GOTRUE_MAILER_OTP_EXP=1800` so a code lasts 30 minutes. The clients send no CAPTCHA
+token, so leave Auth's CAPTCHA off.
 
 ## Google
 

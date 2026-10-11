@@ -45,7 +45,7 @@ Follow [AUTHENTICATION.md](AUTHENTICATION.md). In short:
    `/auth-emails/magic-link.html`.
 3. Configure Google (and optionally Apple). Turn off a frontend method whose provider isn't
    ready.
-4. For email: SPF, DKIM, DMARC, and Auth's limits per client address.
+4. For email: SPF, DKIM, DMARC, and the limits per client network.
 5. Leave session time-box and inactivity limits off, or set both to 30 days or more.
 
 ## 3. Build and run
@@ -307,8 +307,8 @@ See [OBSERVABILITY.md](OBSERVABILITY.md) for verification monitoring.
   on `sync_claim_failed` once it repeats for two minutes (its `failing_for_ms`). They
   contain tracking numbers, so restrict access.
 - **API limits** per account: 12 sync requests per 5 min, 240 reads per minute, 60 other
-  writes per minute. Sign-in codes go straight to Auth, which limits them per client
-  address once `GOTRUE_RATE_LIMIT_HEADER` is set ([AUTHENTICATION.md](AUTHENTICATION.md)).
+  writes per minute. Sign-in codes go straight to Auth, and the gateway in front of it
+  limits them per client network ([AUTHENTICATION.md](AUTHENTICATION.md)).
 - **Limits without an account**, per client address: 6 lookups and 20 carrier detections
   per minute, 120 link reads per minute, and the daily allowances above. The limits per
   minute are kept in memory and start again with each deploy; the daily ones are in the
