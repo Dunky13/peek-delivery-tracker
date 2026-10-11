@@ -61,6 +61,7 @@ struct ParcelDetailView: View {
                     .padding(.bottom, 36)
                 }
                 .scrollIndicators(.hidden)
+                .softTopEdge()
                 #if DEBUG
                 // The question stands where the page ends: a look at it starts there.
                 .defaultScrollAnchor(ParcelFeedbackPreview.variant == nil ? nil : .bottom)
@@ -80,6 +81,8 @@ struct ParcelDetailView: View {
         }
         .navigationTitle(localizer.text("detail.label"))
         .navigationBarTitleDisplayMode(.inline)
+        // The card says which parcel this is: no bar names the page over it.
+        .toolbar(removing: .title)
         .navigationTransition(.zoom(sourceID: parcelID, in: transition))
         .toolbar(.hidden, for: .tabBar)
         .toolbar {

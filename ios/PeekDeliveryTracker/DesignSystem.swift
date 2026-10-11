@@ -136,6 +136,16 @@ extension Color {
 }
 
 extension View {
+    /// What scrolls up under the buttons at the top fades away, rather than passing under a bar that appears for it.
+    @ViewBuilder
+    func softTopEdge() -> some View {
+        if #available(iOS 26.0, *) {
+            scrollEdgeEffectStyle(.soft, for: .top)
+        } else {
+            self
+        }
+    }
+
     @ViewBuilder
     func glassSurface<S: Shape>(in shape: S) -> some View {
         if #available(iOS 26.0, *) {
