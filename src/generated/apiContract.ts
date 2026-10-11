@@ -8067,7 +8067,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vinted-go",
+      "recognitionRank": 72
     },
     "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}",
     "linkRules": [
