@@ -77,7 +77,7 @@ As listed on gls-pakete.de on 10 October 2026, for parcels within Germany:
 
 ## Tracking a GLS Germany parcel with Peek
 
-[Peek](/) asks the likely carriers about the number shapes above. GLS answers for German and Swiss parcels alike, and Peek names GLS Germany ("GLS Germany has this parcel"), or GLS France if it knows the parcel. In Switzerland or Liechtenstein (by your iPhone's region or web connection) it names GLS Switzerland, with a 4-digit postcode field: for a parcel to Germany, press "Change" and pick GLS Germany. A pasted gls-pakete.de link, or a gls-group one with /DE/ or /EU/, also names GLS Germany.
+[Peek](/) asks the likely carriers about the number shapes above. GLS answers for German and Swiss parcels alike, and Peek names GLS Germany ("GLS Germany has this parcel"), or GLS France if it knows the parcel. In Switzerland or Liechtenstein (by your iPhone's region or web connection) it names GLS Switzerland, with a 4-digit postcode field: for a parcel to Germany, press "Change" and pick GLS Germany. A pasted gls-pakete.de link, or a gls-group one with /DE/, /EU/ or /GROUP/, also names GLS Germany.
 
 GLS needs the delivery postcode for the detailed history, so the "Delivery postcode" field is required: without it Peek only learns whether GLS knows the number, and a wrong one looks like an unknown number. Any country's format works. It goes to GLS and, when needed, to tracking services.
 

@@ -78,7 +78,7 @@ GLS non ha un numero proprio per la Svizzera. La sua pagina contatti rimanda al 
 
 ## Seguire un pacco GLS con Peek
 
-[Peek](/) accetta tutte e quattro le forme e chiede ai corrieri probabili. GLS Germany e GLS Switzerland conoscono gli stessi numeri, quindi conta il tuo paese: la regione del tuo iPhone o, sul web, il paese da cui ti colleghi. In Svizzera o nel Liechtenstein di solito vedi «GLS Switzerland ha questo pacco»; se il pacco va in Germania, premi «Cambia» e scegli GLS Germany. Altrove compare GLS Germany, che segue altrettanto bene i pacchi diretti in Svizzera, con l'NPA svizzero. Puoi incollare anche un link di tracking gls-group con /EU/: viene seguito con GLS Germany.
+[Peek](/) accetta tutte e quattro le forme e chiede ai corrieri probabili. GLS Germany e GLS Switzerland conoscono gli stessi numeri, quindi conta il tuo paese: la regione del tuo iPhone o, sul web, il paese da cui ti colleghi. In Svizzera o nel Liechtenstein di solito vedi «GLS Switzerland ha questo pacco»; se il pacco va in Germania, premi «Cambia» e scegli GLS Germany. Altrove compare GLS Germany, che segue altrettanto bene i pacchi diretti in Svizzera, con l'NPA svizzero. Puoi incollare anche un link di tracking gls-group con /EU/ o /GROUP/: viene seguito con GLS Germany.
 
 GLS mostra la cronologia delle scansioni solo con l'NPA di consegna, quindi il campo «Codice postale di consegna» è obbligatorio: quattro cifre (il campo propone 8000 come esempio), e finché è vuoto Peek non segue il pacco. L'NPA va a GLS e, se serve, a servizi di tracciamento; uno sbagliato fa sembrare il numero sconosciuto. Se l'hai già inserito su questo dispositivo, il campo te lo ripropone.
 

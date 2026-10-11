@@ -75,7 +75,7 @@ GLS has no Swiss hotline of its own. Its contact page points to "the website of 
 
 ## Tracking a GLS Switzerland parcel with Peek
 
-[Peek](/) takes all four shapes and asks the likely carriers. GLS Germany and GLS Switzerland know the same numbers, so it goes by your country (your iPhone's region, or on the web where you connect from). In Switzerland or Liechtenstein you'll usually see "GLS Switzerland has this parcel"; for a parcel going to Germany, press "Change" and pick GLS Germany. Elsewhere you'll see GLS Germany, which tracks Swiss parcels just as well with the Swiss postcode. A pasted gls-group link with /EU/ is tracked as GLS Germany.
+[Peek](/) takes all four shapes and asks the likely carriers. GLS Germany and GLS Switzerland know the same numbers, so it goes by your country (your iPhone's region, or on the web where you connect from). In Switzerland or Liechtenstein you'll usually see "GLS Switzerland has this parcel"; for a parcel going to Germany, press "Change" and pick GLS Germany. Elsewhere you'll see GLS Germany, which tracks Swiss parcels just as well with the Swiss postcode. A pasted gls-group link with /EU/ or /GROUP/ is tracked as GLS Germany.
 
 GLS shows its scan history only with the delivery postcode, so the "Delivery postcode" field is required: four digits, like 8000. It goes to GLS and, when needed, to tracking services; a wrong one looks like an unknown number.
 

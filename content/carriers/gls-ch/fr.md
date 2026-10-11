@@ -79,7 +79,7 @@ Au Liechtenstein, c'est le même partenaire, avec les mêmes contacts.
 
 ## Suivre un colis GLS Suisse avec Peek
 
-[Peek](/) reconnaît les quatre formes et interroge les transporteurs probables. GLS Germany et GLS Switzerland connaissent les mêmes numéros, alors c'est ton pays qui tranche : la région de ton iPhone ou, sur le web, le pays d'où tu te connectes. En Suisse ou au Liechtenstein, tu verras en général « GLS Switzerland a ce colis » ; pour un colis livré en Allemagne, touche « Changer » et choisis GLS Germany. Ailleurs, ce sera GLS Germany, qui suit tout aussi bien les colis pour la Suisse avec le code postal suisse. Tu peux aussi coller un lien de suivi gls-group avec /EU/ : le suivi passe alors par GLS Germany.
+[Peek](/) reconnaît les quatre formes et interroge les transporteurs probables. GLS Germany et GLS Switzerland connaissent les mêmes numéros, alors c'est ton pays qui tranche : la région de ton iPhone ou, sur le web, le pays d'où tu te connectes. En Suisse ou au Liechtenstein, tu verras en général « GLS Switzerland a ce colis » ; pour un colis livré en Allemagne, touche « Changer » et choisis GLS Germany. Ailleurs, ce sera GLS Germany, qui suit tout aussi bien les colis pour la Suisse avec le code postal suisse. Tu peux aussi coller un lien de suivi gls-group avec /EU/ ou /GROUP/ : le suivi passe alors par GLS Germany.
 
 GLS n'affiche son historique qu'avec le code postal : le champ « Code postal de livraison » est donc obligatoire (quatre chiffres, comme 8000), et le suivi attend qu'il soit rempli. Ce code est envoyé à GLS et, si besoin, à des services de suivi ; un code faux fait passer le colis pour un numéro inconnu.
 
