@@ -2936,7 +2936,8 @@ describe('TrackingSyncService', () => {
       { trawl: null, browserExecutablePath: null, recorder, env: {} } satisfies AdapterEnvironment);
     const adapter = new CarrierTrackingAdapter(universal as unknown as UniversalTracker, registry, recorder);
     await expect(adapter.fetch('unknown', 'TEST1234', null, '8000')).resolves.toMatchObject({ status: 'in_transit' });
-    expect(universal.fetch).toHaveBeenCalledWith('TEST1234', '8000', expect.any(Object));
+    // Then the country hint, which the app leaves out, and the carrier the lookup is for.
+    expect(universal.fetch).toHaveBeenCalledWith('TEST1234', '8000', expect.any(Object), undefined, 'unknown');
     await adapter.fetchUniversal('Ship24', 'TEST1234', 1000, '8000');
     expect(universal.fetchSource).toHaveBeenCalledWith('Ship24', 'TEST1234', 1000, '8000', null);
     await adapter.fetchUniversal('Ship24', 'TEST1234', 1000, null, 'Europe/Zurich');

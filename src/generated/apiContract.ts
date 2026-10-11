@@ -5479,7 +5479,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "PL"
     ],
-    "color": "#ff5a00",
+    "color": "#006d57",
     "selectable": true,
     "timezone": "Europe/Warsaw",
     "tracking": {

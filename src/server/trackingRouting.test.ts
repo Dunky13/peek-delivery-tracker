@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { freshnessWindow, RoutingDeferred, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
 import type { JsonObject } from './types';
-import type { CarrierResult } from 'universal-parcel-scraper';
+import type { CarrierResult, UniversalSource } from 'universal-parcel-scraper';
 import * as monitoring from './observability';
 import * as metrics from './metrics';
 import { universalCarrierHints } from 'universal-parcel-scraper/app';
@@ -22,6 +22,10 @@ const directValue = (carrier = 'ups'): RoutedResult => ({ result: history(), sou
 const yearlessYamato = (): RoutedResult => ({ sourceCarrierId: 'yamato', swissPostReady: null, handoffFallbackErrorType: null,
   result: { status: 'in_transit', current_stage: 'accepted', last_update: null,
     events: [{ description: '荷物受付', stage: 'accepted', provider_time_text: '09月01日 10:00' }] } });
+// Providers in a fixed order, whatever the scraper's coverage evidence for the carrier says.
+const fixedPlan = (...sources: UniversalSource[]) => vi.spyOn(scraper, 'universalPlan').mockReturnValue({
+  sources, carrier: null, tier: () => 'unknown', rank: () => 0,
+});
 const parcel = (overrides: JsonObject = {}): JsonObject => ({ id: 'parcel', carrier: 'unknown', tracking_number: 'TEST1234', ...overrides });
 const state = (extra: JsonObject = {}) => ({ version: 1, configured_carrier: 'unknown', failures: {}, probe_cursor: 0, discovery_cursor: 0, ...extra });
 function setup(now = time) {
@@ -1059,6 +1063,7 @@ describe('persistent tracking routing', () => {
   });
 
   it('marks a universal result the carrier answered too, without a time zone for its newest scan', async () => {
+    fixedPlan('Ship24', '17TRACK');
     const { router, direct } = setup();
     direct.mockResolvedValue(yearlessYamato());
     const answered = await router.fetch(parcel({ carrier: 'yamato', tracking_number: '123456789012' }), false);
@@ -1071,12 +1076,13 @@ describe('persistent tracking routing', () => {
     expect(fallback.result).not.toHaveProperty('carrier_answered');
   });
   it('ignores an older parcel of another carrier that a universal returns for a reused number', async () => {
+    fixedPlan('Ship24', '17TRACK');
     const { router, direct, universal } = setup();
     direct.mockResolvedValue(yearlessYamato());
     universal.mockResolvedValueOnce({ ...history('2026-01-09T13:19:00Z'), reported_carriers: ['FedEx', 'GLS'] });
     const result = await router.fetch(parcel({ carrier: 'yamato', tracking_number: '123456789012', created_at: '2026-09-01T00:00:00Z' }), false);
     expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ tracking_number: '123456789012' }), 'yamato');
-    // ParcelsApp is left out for Yamato: it answered a Yamato number with a FedEx parcel.
+    // The next provider is asked after the first one's foreign parcel.
     expect(universal.mock.calls.map(([source]) => source)).toEqual(['Ship24', '17TRACK']);
     expect(result.result).toMatchObject({ tracking_provider: '17TRACK', last_update: '2026-09-10T11:00:00Z' });
     expect(result.result.direct_local_history).toMatchObject({ carrier: 'yamato', number: '123456789012',
@@ -1104,6 +1110,7 @@ describe('persistent tracking routing', () => {
   });
 
   it('asks a carrier whose answer has only local clocks again in 6 h, not on every check', async () => {
+    fixedPlan('Ship24', '17TRACK');
     const { router, direct } = setup();
     direct.mockResolvedValue(yearlessYamato());
     // A rate limit's cooldown that ended an hour ago must not keep the carrier due.
@@ -1150,7 +1157,7 @@ describe('coverage-based provider order', () => {
     direct.mockRejectedValue(new Error('carrier down'));
     universal.mockRejectedValueOnce(new IndeterminateError('17TRACK', 'no history'));
     await router.fetch(parcel({ carrier: 'usps' }), false);
-    // Only 17TRACK had USPS history; the others follow, HTTP first.
+    // 17TRACK had USPS's full history and ParcelsApp part of it; Ship24, which had none, comes after them.
     expect(sources(universal)).toEqual(['17TRACK', 'ParcelsApp']);
   });
   it('orders by the carrier a provider discovered when the parcel has none', async () => {
@@ -1192,6 +1199,9 @@ describe('coverage-based provider order', () => {
     }
   });
   it('logs results that contradict the coverage evidence', async () => {
+    // Evidence that only 17TRACK has the carrier's history, whatever the scraper's says for USPS.
+    const plan = vi.spyOn(scraper, 'universalPlan').mockReturnValue({ sources: ['17TRACK', 'ParcelsApp', 'Ship24'], carrier: 'usps',
+      tier: (source) => source === '17TRACK' ? 'full' : 'empty', rank: (source) => source === '17TRACK' ? 0 : 1 });
     const { router, direct, universal } = setup();
     direct.mockRejectedValue(new Error('carrier down'));
     universal.mockRejectedValueOnce(new IndeterminateError('17TRACK', 'no history'));
@@ -1199,6 +1209,7 @@ describe('coverage-based provider order', () => {
     expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('coverage_contradicted', expect.objectContaining({ provider: 'ParcelsApp', category: 'history' }));
     expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('coverage_contradicted', expect.objectContaining({ provider: '17TRACK', category: 'no_history' }));
     vi.mocked(monitoring.reportRoutingEvent).mockClear();
+    plan.mockRestore();
     // Without evidence for the carrier, nothing contradicts it.
     const other = setup();
     other.universal.mockRejectedValueOnce(new IndeterminateError('ParcelsApp', 'no history'));

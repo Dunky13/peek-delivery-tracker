@@ -15,10 +15,12 @@ describe('universal tracking dispatch', () => {
     }
     expect(spy).toHaveBeenCalledTimes(2);
     // The third argument is the lookup's signal and budget, which the scraper passes on.
-    expect(spy).toHaveBeenCalledWith(number, null, expect.any(Object));
+    // Then the country hint, which the app leaves out, and the carrier the lookup is for.
+    expect(spy).toHaveBeenNthCalledWith(1, number, null, expect.any(Object), undefined, 'unknown');
+    expect(spy).toHaveBeenNthCalledWith(2, number, null, expect.any(Object), undefined, 'intl-post');
     // A carrier without an adapter of its own passes its postcode to the providers.
     await adapter.fetch('zto', number, null, '01234');
-    expect(spy).toHaveBeenLastCalledWith(number, '01234', expect.any(Object));
+    expect(spy).toHaveBeenLastCalledWith(number, '01234', expect.any(Object), undefined, 'zto');
   });
 
   it('dispatches the added regional carriers without falling back to a generic adapter', async () => {
