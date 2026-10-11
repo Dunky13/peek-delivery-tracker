@@ -2129,12 +2129,12 @@
           "confidence": "low"
         },
         {
-          "pattern": "^[A-Z]{2}\\d{9}BE$",
+          "pattern": "^(?!U)[A-Z]{2}\\d{9}BE$",
           "confidence": "high",
           "checksum": "s10"
         },
         {
-          "pattern": "^JJBE[A-Z]\\d{18}$",
+          "pattern": "^JJBE[A-Z]\\d{18}(?:\\d{4})?$",
           "confidence": "high"
         }
       ],
@@ -5166,7 +5166,7 @@
           "domains": [
             "clientesparcel.dhl.es"
           ],
-          "path": "^/LiveTracking/ModificarEnvio/([^/?#]+)/?$"
+          "path": "^/LiveTracking/(?:ModificarEnvio|ModificarMeuEnvio|ModifyMyShipment)/([^/?#]+)(?:/[^/?#]+)?/?$"
         }
       ],
       "detectionRules": [
@@ -6103,9 +6103,22 @@
       "timezone": "Europe/Madrid",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "gls-es",
+        "requirements": [
+          {
+            "field": "dpdPostcode",
+            "validator": "internationalPostcode",
+            "label": "Delivery postcode",
+            "type": "text",
+            "help": "GLS Spain shows a shipment only with its delivery postcode.",
+            "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+            "maxLength": 12,
+            "inputMode": "text",
+            "autoComplete": "postal-code"
+          }
+        ]
       },
-      "trackingUrlTemplate": "https://mygls.gls-spain.es/e/?codigo={trackingNumber}",
+      "trackingUrlTemplate": "https://gls-group.com/ES/es/recibir-paquetes/seguimiento-envio/",
       "linkRules": [
         {
           "domains": [
@@ -6115,6 +6128,12 @@
           "params": [
             "codigo"
           ]
+        },
+        {
+          "domains": [
+            "mygls.gls-spain.es"
+          ],
+          "path": "^/e/([A-Za-z0-9]{5,40})/[^/?#]+(?:/[a-z]{2})?/?$"
         },
         {
           "domains": [
@@ -7163,7 +7182,6 @@
           "domains": [
             "dpd.ie"
           ],
-          "pathPattern": "^/tracking/?$",
           "params": [
             "consignmentNumber"
           ]
@@ -8140,6 +8158,38 @@
         }
       ],
       "trackingSearchUrl": "https://vintedgo.com/en/tracking"
+    },
+    "cacesa": {
+      "displayName": "CACESA",
+      "aliases": [
+        "CACESA Logistics",
+        "Cacesa Postal"
+      ],
+      "countries": [
+        "ES",
+        "PT"
+      ],
+      "color": "#C9032D",
+      "selectable": true,
+      "timezone": "Europe/Madrid",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "cacesa"
+      },
+      "trackingUrlTemplate": "https://www.cacesa.com/en/tracking?busqueda={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "cacesa.com"
+          ],
+          "pathPattern": "^/(?:es/seguimiento|en/tracking)/?$",
+          "params": [
+            "busqueda"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.cacesa.com/en/tracking"
     }
   },
   "servers": [
@@ -10823,7 +10873,8 @@
           "slovenska-posta",
           "stallion-express",
           "venipak",
-          "vinted-go"
+          "vinted-go",
+          "cacesa"
         ]
       },
       "Stage": {

@@ -26400,7 +26400,27 @@
     ]
   },
   {
+    "input": "CNES00628310493",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "CNES00710379392",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "CNESP00000123400000000001",
+    "carrier": "ecoscooting",
+    "confidence": "high",
+    "candidates": [
+      "ecoscooting"
+    ]
+  },
+  {
+    "input": "CNESP28030123400048712663",
     "carrier": "ecoscooting",
     "confidence": "high",
     "candidates": [
@@ -26474,6 +26494,22 @@
   },
   {
     "input": "CNPRT19501971234009605248",
+    "carrier": "ecoscooting",
+    "confidence": "high",
+    "candidates": [
+      "ecoscooting"
+    ]
+  },
+  {
+    "input": "CNPRT19580011234003703621",
+    "carrier": "ecoscooting",
+    "confidence": "high",
+    "candidates": [
+      "ecoscooting"
+    ]
+  },
+  {
+    "input": "CNPRT26500711234003526999",
     "carrier": "ecoscooting",
     "confidence": "high",
     "candidates": [
@@ -27592,6 +27628,17 @@
     "confidence": "high",
     "candidates": [
       "speedpak"
+    ]
+  },
+  {
+    "input": "EE123456789BE",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
     ]
   },
   {
@@ -29481,6 +29528,14 @@
     "confidence": "high",
     "candidates": [
       "india-post"
+    ]
+  },
+  {
+    "input": "JJBEA2356412012365478896541",
+    "carrier": "bpost",
+    "confidence": "high",
+    "candidates": [
+      "bpost"
     ]
   },
   {
@@ -35378,10 +35433,13 @@
   },
   {
     "input": "UI539489067BE",
-    "carrier": "bpost",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "bpost"
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
     ]
   },
   {
