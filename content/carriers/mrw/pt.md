@@ -1,6 +1,6 @@
 ---
 title: MRW rastreio: número, estados e contactos em Portugal
-description: Rastreio MRW em Portugal: onde está o número de 12 algarismos, os estados em espanhol explicados, os MRW Point, as reclamações e o contacto da MRW.
+description: Rastreio MRW em Portugal: onde está o número de 12 algarismos, os estados explicados, os MRW Point, as reclamações e o contacto da MRW.
 slug: mrw-rastreio
 published: 2026-10-11
 updated: 2026-10-11
@@ -30,21 +30,21 @@ Se a MRW responder «Envio não encontrado», confirma os algarismos. Se estiver
 
 ## Estados do seguimento MRW: o que quer dizer cada um
 
-O mrw.pt está em português, mas nenhuma página da MRW mostra os estados em português: o seguimento dá-os em espanhol. Estes são os já registados, pela ordem habitual:
+No mrw.pt, o seguimento mostra os estados em português; no mrw.es, os mesmos aparecem em espanhol. Estes são os já registados, pela ordem habitual:
 
-| Estado MRW | O que quer dizer para ti |
-| --- | --- |
-| `Pendiente de recoger` | «Pendente de recolha»: a etiqueta existe, mas o remetente ainda não entregou a encomenda à MRW. |
-| `Envío recogido en origen` | «Envio recolhido na origem»: a encomenda já está nas mãos da MRW. |
-| `En tránsito` | «Em trânsito»: viaja num percurso longo, nacional ou internacional. |
-| `Entrega concertada` | «Entrega combinada»: foi combinada uma entrega contigo e a encomenda volta a andar. |
-| `Envío en reparto` | «Em distribuição»: está com o estafeta, pronta para a volta do dia. |
-| `Destinatario ausente o cerrado` | «Destinatário ausente ou fechado»: o estafeta tentou entregar, mas não estava ninguém ou o estabelecimento combinado estava fechado. |
-| `Depositado en punto MRW` | «Depositado num ponto MRW»: pronta para levantamento no MRW Point. |
-| `Depositado en PointCorner destino` | «Depositado no PointCorner de destino»: pronta para levantamento numa loja MRW PointCorner. |
-| `Envío entregado` | «Envio entregue»: a MRW entregou a encomenda ao destinatário. |
+| Estado no mrw.pt | No mrw.es | O que quer dizer para ti |
+| --- | --- | --- |
+| `Pendente de recolher` | `Pendiente de recoger` | A etiqueta existe, mas o remetente ainda não entregou a encomenda à MRW. |
+| `Envio recolhido na origem` | `Envío recogido en origen` | A encomenda já está nas mãos da MRW. |
+| `Em tránsito` | `En tránsito` | Viaja num percurso longo, nacional ou internacional. |
+| `Acordada próxima entrega` | `Entrega concertada` | Foi combinada uma entrega contigo e a encomenda volta a andar. |
+| `Envio em distribuição` | `Envío en reparto` | Está com o estafeta, pronta para a volta do dia. |
+| `Destinatário ausente ou fechado` | `Destinatario ausente o cerrado` | O estafeta tentou entregar, mas não estava ninguém ou o estabelecimento combinado estava fechado. |
+| `Depositado em MRW Point` | `Depositado en punto MRW` | Pronta para levantamento no MRW Point. |
+| `Depositado no PointCorner destino` | `Depositado en PointCorner destino` | Pronta para levantamento numa loja MRW PointCorner. |
+| `Envio entregue` | `Envío entregado` | A MRW entregou a encomenda ao destinatário. |
 
-O que mais confunde é `Pendiente de recoger`: quer dizer que a MRW ainda não recebeu a encomenda, não que ela está à tua espera. Se ficar assim muitos dias, fala com a loja que vendeu. `Entrega concertada` não é um problema: nenhuma página da MRW o define, mas é uma entrega combinada, não um fim. As etapas que todas as transportadoras partilham estão em [estados da encomenda](guide:tracking-statuses).
+O que mais confunde é `Pendente de recolher`: quer dizer que a MRW ainda não recebeu a encomenda, não que ela está à tua espera. Se ficar assim muitos dias, fala com a loja que vendeu. `Acordada próxima entrega` não é um problema: nenhuma página da MRW o define, mas é uma entrega combinada, não um fim. As etapas que todas as transportadoras partilham estão em [estados da encomenda](guide:tracking-statuses).
 
 ## Entrega MRW, pontos de recolha e ausência
 
@@ -83,7 +83,7 @@ A MRW não indica chat nem e-mail para destinatários, e pede que tires os seus 
 
 O [Peek](/) reconhece logo como MRW a forma de cinco algarismos, uma letra e seis algarismos. Um número de 12 algarismos serve para muitas transportadoras e o Peek não pode perguntar à MRW se o conhece, por isso não escolhe a MRW sozinho: escolhe-a tu em «Alterar transportadora». Escreve os 12 algarismos sem a barra. Uma ligação de seguimento do mrw.es só funciona se tiver dentro a forma com letra; as ligações dos SMS da MRW não funcionam.
 
-Os estados aparecem em espanhol, e os desconhecidos aparecem como «Actualización de seguimiento». O Peek mostra o estado, o histórico e cada loja MRW (código postal e localidade, «(Plataforma)» para um centro) num mapa, e pode enviar-te notificações de todas as atualizações, só das importantes ou só no dia da entrega. Deixa de fora a morada do ponto de recolha e não dá data prevista de entrega.
+No Peek, os estados lidos na MRW aparecem em espanhol, e os desconhecidos aparecem como «Actualización de seguimiento». O Peek mostra o estado, o histórico e cada loja MRW (código postal e localidade, «(Plataforma)» para um centro) num mapa, e pode enviar-te notificações de todas as atualizações, só das importantes ou só no dia da entrega. Deixa de fora a morada do ponto de recolha e não dá data prevista de entrega.
 
 As horas da MRW não trazem fuso horário, por isso o Peek não mostra as leituras da própria MRW. O histórico com datas vem de serviços de seguimento universais, e a MRW volta a ser consultada de 6 em 6 horas; se nenhum serviço responder, vês só o estado atual da MRW. A consulta é feita ao seguimento espanhol da MRW, e ainda não foi testado se encontra encomendas da MRW Portugal.
 
@@ -91,7 +91,7 @@ As horas da MRW não trazem fuso horário, por isso o Peek não mostra as leitur
 
 ### O que significa «em trânsito» na MRW?
 
-Que a encomenda está a fazer um percurso longo, nacional ou internacional, entre lojas e plataformas da MRW. No seguimento aparece em espanhol, `En tránsito`, e o passo seguinte costuma ser `Envío en reparto`.
+Que a encomenda está a fazer um percurso longo, nacional ou internacional, entre lojas e plataformas da MRW. No mrw.pt aparece como `Em tránsito` (no mrw.es, `En tránsito`), e o passo seguinte costuma ser `Envio em distribuição`.
 
 ### Quanto tempo demora a MRW?
 

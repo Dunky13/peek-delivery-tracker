@@ -30,7 +30,7 @@ When MRW answers "Envío no encontrado" (shipment not found), check the digits. 
 
 ## What MRW tracking statuses mean
 
-MRW's status lines are in Spanish. These are the ones Peek has recorded, in the usual order:
+MRW's status lines are in Spanish on mrw.es and in Portuguese on mrw.pt. These are the Spanish ones Peek has recorded, in the usual order:
 
 | MRW status | What it means for you |
 | --- | --- |
