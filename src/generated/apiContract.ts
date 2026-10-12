@@ -8203,7 +8203,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "passport",
+      "recognitionRank": 55
     },
     "trackingUrlTemplate": "https://track.passportglobal.com/{trackingNumber}",
     "linkRules": [
@@ -8213,11 +8214,17 @@ export const CARRIER_CAPABILITIES = {
           "track.passportshipping.com"
         ],
         "path": "^/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "passportglobal.com"
+        ],
+        "path": "^/([Pp][Gg]\\d{10,11}[A-Za-z]{2})/?$"
       }
     ],
     "detectionRules": [
       {
-        "pattern": "^PG\\d{10}[A-Z]{2}$",
+        "pattern": "^PG\\d{10,11}[A-Z]{2}$",
         "confidence": "high"
       }
     ],
