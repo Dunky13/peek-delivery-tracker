@@ -251,4 +251,6 @@ psql "$database_url" -X -v ON_ERROR_STOP=1 \
 psql "$database_url" -X -v ON_ERROR_STOP=1 \
   -f "$repo_root/supabase/tests/xdp_postcode.sql"
 psql "$database_url" -X -v ON_ERROR_STOP=1 \
+  -f "$repo_root/supabase/tests/gebrueder_weiss_postcode.sql"
+psql "$database_url" -X -v ON_ERROR_STOP=1 \
   -f "$repo_root/supabase/tests/account_package_creation.sql"
