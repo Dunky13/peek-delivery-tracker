@@ -41,9 +41,10 @@ export const POST = apiRoute(async (context) => {
   await verifyAmazonShippingAddition(values.carrier, values.trackingNumber);
   const client = requireUserClient(context);
   const service = requireService(context);
-  let parcel;
+  let packageId;
   try {
-    parcel = await client.createPackage(
+    packageId = await service.createAccountPackage(
+      requireUser(context).id,
       values.trackingNumber,
       values.label,
       values.carrier,
@@ -65,6 +66,8 @@ export const POST = apiRoute(async (context) => {
     }
     throw error;
   }
+  const parcel = await client.getPackage(packageId);
+  if (!parcel) throw new SupabaseError('The new package could not be reloaded');
 
   await rememberLookupCountry(service, parcel, context.request, body.lookupCountryHint);
   const jobIds: string[] = [];

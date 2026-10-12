@@ -291,32 +291,6 @@ export class SupabaseClient {
     })}`))[0] ?? null;
   }
 
-  async createPackage(
-    trackingNumber: string,
-    label: string,
-    carrier: string,
-    trackingUrl?: string | null,
-    dpdPostcode?: string | null,
-  ): Promise<JsonObject> {
-    const body: JsonObject = {
-      tracking_number: trackingNumber,
-      label,
-      carrier,
-    };
-    if (trackingUrl) body.tracking_url = trackingUrl;
-    if (dpdPostcode) body.dpd_postcode = dpdPostcode;
-    const created = rows(await this.request('/rest/v1/packages', {
-      method: 'POST',
-      body,
-      prefer: 'return=representation',
-    }));
-    const id = created[0]?.id;
-    if (typeof id !== 'string') throw new SupabaseError('Supabase did not return the new package');
-    const parcel = await this.getPackage(id);
-    if (!parcel) throw new SupabaseError('The new package could not be reloaded');
-    return parcel;
-  }
-
   async archivePackage(packageId: string): Promise<void> {
     await this.updatePackage(packageId, { archived_at: new Date().toISOString() });
   }
@@ -913,6 +887,37 @@ export class SupabaseClient {
 }
 
 export class SupabaseServiceClient extends SupabaseClient {
+  /**
+   * Adds a parcel to an account, with the checks create_owned_package makes
+   * for a signed-in user. Only the server can, after charging the account's
+   * daily allowance. Returns the new parcel's id.
+   */
+  async createAccountPackage(
+    userId: string,
+    trackingNumber: string,
+    label: string,
+    carrier: string,
+    trackingUrl?: string | null,
+    dpdPostcode?: string | null,
+  ): Promise<string> {
+    let result = await this.request('/rest/v1/rpc/create_account_package', {
+      method: 'POST',
+      body: {
+        p_user_id: userId,
+        p_tracking_number: trackingNumber,
+        p_label: label,
+        p_carrier: carrier,
+        p_tracking_url: trackingUrl ?? null,
+        p_dpd_postcode: dpdPostcode ?? null,
+      },
+    });
+    if (Array.isArray(result) && result.length === 1) [result] = result;
+    if (!isRecord(result) || typeof result.id !== 'string') {
+      throw new SupabaseError('Supabase did not return the new package');
+    }
+    return result.id;
+  }
+
   /**
    * The sync worker's snapshot of one package. It embeds the stored event
    * identities instead of the public event list, which the worker never reads.
@@ -1639,32 +1644,6 @@ export class SupabaseServiceClient extends SupabaseClient {
 }
 
 export class SupabaseUserClient extends SupabaseClient {
-  override async createPackage(
-    trackingNumber: string,
-    label: string,
-    carrier: string,
-    trackingUrl?: string | null,
-    dpdPostcode?: string | null,
-  ): Promise<JsonObject> {
-    let result = await this.request('/rest/v1/rpc/create_owned_package', {
-      method: 'POST',
-      body: {
-        p_tracking_number: trackingNumber,
-        p_label: label,
-        p_carrier: carrier,
-        p_tracking_url: trackingUrl ?? null,
-        p_dpd_postcode: dpdPostcode ?? null,
-      },
-    });
-    if (Array.isArray(result) && result.length === 1) [result] = result;
-    if (!isRecord(result) || typeof result.id !== 'string') {
-      throw new SupabaseError('Supabase did not return the new package');
-    }
-    const parcel = await this.getPackage(result.id);
-    if (!parcel) throw new SupabaseError('The new package could not be reloaded');
-    return parcel;
-  }
-
   /**
    * Keeps the parcel behind a link in this account. Null when the link is
    * unknown or the caller has no right to it; the database does not say which.

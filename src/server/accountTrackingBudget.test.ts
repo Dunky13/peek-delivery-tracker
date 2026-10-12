@@ -4,7 +4,7 @@ import { POST as add } from '../../app/api/packages/route';
 import { POST as detect } from '../../app/api/carriers/detect/route';
 import { claimAccountTracking } from './accountTrackingBudget';
 import { SupabaseAuthenticator } from './auth';
-import { SupabaseServiceClient, SupabaseUserClient } from './supabase';
+import { SupabaseServiceClient } from './supabase';
 import * as amazon from './amazonShippingEligibility';
 
 const userId = 'e8000000-0000-4000-8000-000000000001';
@@ -32,7 +32,7 @@ it('refuses additions and provider detection before spending provider resources'
   vi.spyOn(SupabaseServiceClient.prototype, 'claimAccountTracking').mockResolvedValue(false);
   const verify = vi.spyOn(amazon, 'verifyAmazonShippingAddition');
   const check = vi.spyOn(amazon, 'checkAmazonShipping');
-  const create = vi.spyOn(SupabaseUserClient.prototype, 'createPackage');
+  const create = vi.spyOn(SupabaseServiceClient.prototype, 'createAccountPackage');
   for (const [handler, path] of [[add, 'packages'], [detect, 'carriers/detect']] as const) {
     const result = await handler(new NextRequest(`https://peek.example/api/${path}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer synthetic-token' },

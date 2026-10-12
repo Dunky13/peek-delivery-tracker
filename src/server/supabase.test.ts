@@ -26,6 +26,15 @@ describe('guarded tracking writes', () => {
     expect(selected).toEqual(expect.arrayContaining(['sync_status', 'sync_error', 'last_synced_at', 'expected_delivery', 'carrier', 'created_at', 'carrier_data']));
   });
 
+  it('adds a parcel to an account through the function only the server can call', async () => {
+    const client = new SupabaseServiceClient('https://database.example', 'service-key');
+    const request = vi.spyOn(client, 'request').mockResolvedValue({ id: 'package-1' });
+    await expect(client.createAccountPackage('user-1', 'TEST1234', 'Books', 'dpd', null, '8000')).resolves.toBe('package-1');
+    expect(request).toHaveBeenCalledExactlyOnceWith('/rest/v1/rpc/create_account_package', { method: 'POST', body: {
+      p_user_id: 'user-1', p_tracking_number: 'TEST1234', p_label: 'Books', p_carrier: 'dpd', p_tracking_url: null, p_dpd_postcode: '8000',
+    } });
+  });
+
   it('atomically submits events, cleanup and status with the configuration generation', async () => {
     const client = new SupabaseServiceClient('https://database.example', 'service-key');
     const request = vi.spyOn(client, 'request').mockResolvedValue(true);
