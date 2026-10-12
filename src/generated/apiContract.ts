@@ -6862,7 +6862,9 @@ export const CARRIER_CAPABILITIES = {
     "displayName": "Whistl",
     "aliases": [
       "Whistl UK",
-      "TNT Post UK"
+      "TNT Post UK",
+      "Parcelhub",
+      "Whistl Despatch"
     ],
     "countries": [
       "GB"
@@ -6872,15 +6874,17 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "whistl",
+      "recognitionRank": 880
     },
     "trackingUrlTemplate": "https://web.parcelhub.net/Tracking/reference/{trackingNumber}",
     "linkRules": [
       {
         "domains": [
-          "web.parcelhub.net"
+          "web.parcelhub.net",
+          "despatch.whistl.co.uk"
         ],
-        "path": "^/Tracking/reference/([^/?#]+)/?$"
+        "path": "^/Tracking/reference/([^/?#]+)(?:/postcode/[^/?#]*)?/?$"
       },
       {
         "domains": [
