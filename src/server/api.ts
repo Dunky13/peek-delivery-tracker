@@ -401,18 +401,24 @@ export function apiRoute<Parameters extends RouteParameters = RouteParameters>(
   };
 }
 
-export async function readJsonObject(request: Request): Promise<JsonObject> {
+/**
+ * Reads the body once, at most 16 KiB of it: the bytes as sent, which App
+ * Attest signs, and the JSON object they hold. A refused body is cancelled
+ * without waiting, so a branch of a teed body cannot hold the answer back.
+ */
+export async function readJsonBody(request: Request): Promise<{ raw: Uint8Array; value: JsonObject }> {
   const declaredLength = request.headers.get('content-length');
   if (declaredLength !== null) {
     const length = Number(declaredLength);
     if (!/^\d+$/.test(declaredLength) || length <= 0 || length > MAX_JSON_BODY) {
-      await request.body?.cancel().catch(() => undefined);
+      void request.body?.cancel().catch(() => undefined);
       throw new HttpError(400, 'Invalid request size');
     }
   }
   const reader = request.body?.getReader();
   if (!reader) throw new HttpError(400, 'Invalid request size');
   const decoder = new TextDecoder('utf-8', { fatal: true });
+  const chunks: Uint8Array[] = [];
   const parts: string[] = [];
   let receivedBytes = 0;
   try {
@@ -421,15 +427,16 @@ export async function readJsonObject(request: Request): Promise<JsonObject> {
       if (done) break;
       receivedBytes += value.byteLength;
       if (receivedBytes > MAX_JSON_BODY) {
-        await reader.cancel().catch(() => undefined);
+        void reader.cancel().catch(() => undefined);
         throw new HttpError(400, 'Invalid request size');
       }
+      chunks.push(value);
       parts.push(decoder.decode(value, { stream: true }));
     }
     parts.push(decoder.decode());
   } catch (error) {
     if (error instanceof HttpError) throw error;
-    await reader.cancel().catch(() => undefined);
+    void reader.cancel().catch(() => undefined);
     throw new HttpError(400, 'Send a valid JSON object', undefined, { cause: error });
   } finally {
     reader.releaseLock();
@@ -445,7 +452,11 @@ export async function readJsonObject(request: Request): Promise<JsonObject> {
     throw new HttpError(400, 'Send a valid JSON object', undefined, { cause: error });
   }
   if (!isRecord(payload)) throw new HttpError(400, 'Send a valid JSON object');
-  return payload;
+  return { raw: Buffer.concat(chunks, receivedBytes), value: payload };
+}
+
+export async function readJsonObject(request: Request): Promise<JsonObject> {
+  return (await readJsonBody(request)).value;
 }
 
 export function requireUser(context: ApiContext): SupabaseUser {

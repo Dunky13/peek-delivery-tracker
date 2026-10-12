@@ -109,11 +109,12 @@ export async function registerNativeKey(request: Request, service: SupabaseServi
   logOperationalEvent('native_verification', { outcome: 'verified', kind: 'attestation' });
 }
 
-export function nativeRequestPayload(request: Request, challenge: string, rawBody: Buffer): string {
+export function nativeRequestPayload(request: Request, challenge: string, rawBody: Uint8Array): string {
   return `native-request-v1\n${challenge}\n${request.method}\n${new URL(request.url).pathname}\n${createHash('sha256').update(rawBody).digest('hex')}`;
 }
 
-export async function verifyNativeRequest(request: Request, service: SupabaseServiceClient) {
+/** The assertion signs `body`, the bytes the route read from the request. */
+export async function verifyNativeRequest(request: Request, service: SupabaseServiceClient, body: Uint8Array) {
   const settings = nativeAttestSettings();
   if (!settings) throw rejected();
   const keyId = request.headers.get('x-app-attest-key-id') ?? '';
@@ -124,8 +125,6 @@ export async function verifyNativeRequest(request: Request, service: SupabaseSer
     method: 'POST', body: { p_key_id: keyId },
   });
   if (!stored || stored.app_id !== settings.appId) throw rejected();
-  const raw = Buffer.from(await request.clone().arrayBuffer());
-  if (raw.length > 16_384) throw new HttpError(413, 'Request body is too large');
   let counter: number;
   try {
     const assertion = binary(request.headers.get('x-app-attest-assertion'), 4_096);
@@ -133,7 +132,7 @@ export async function verifyNativeRequest(request: Request, service: SupabaseSer
     if (decoded.length !== 1 || !Buffer.isBuffer(decoded[0]?.signature) || !Buffer.isBuffer(decoded[0]?.authenticatorData)
       || decoded[0].authenticatorData.length < 37) throw rejected();
     checkExtensions(decoded[0].authenticatorData, false, settings.development);
-    counter = verifyAssertion({ assertion, payload: nativeRequestPayload(request, challenge, raw), publicKey: stored.public_key,
+    counter = verifyAssertion({ assertion, payload: nativeRequestPayload(request, challenge, body), publicKey: stored.public_key,
       teamIdentifier: settings.teamIdentifier, bundleIdentifier: settings.bundleIdentifier, signCount: stored.sign_count }).signCount;
     if (!Number.isSafeInteger(counter) || counter <= 0) throw rejected();
   } catch {

@@ -1,4 +1,4 @@
-import { apiRoute, clientIp, HttpError, json, readJsonObject, requireService } from '../../../../src/server/api';
+import { apiRoute, clientIp, HttpError, json, readJsonBody, requireService } from '../../../../src/server/api';
 import { detectCarrier } from '../../../../src/server/carrierDetection';
 import { verifyLookupRequest } from '../../../../src/server/lookupVerification';
 import { recordPublicDetection } from '../../../../src/server/metrics';
@@ -15,10 +15,9 @@ export const runtime = 'nodejs';
  * past them the answer is a refusal, and the lookup works without it.
  */
 export const POST = apiRoute(async (context) => {
-  const verificationRequest = context.request.clone();
-  const body = await readJsonObject(context.request);
+  const { raw, value: body } = await readJsonBody(context.request);
   return json(await detectCarrier(body, async () => {
-    await verifyLookupRequest(verificationRequest, requireService(context));
+    await verifyLookupRequest(context.request, requireService(context), raw);
     const now = new Date();
     const allowance = await claimDetection(requireService(context), clientIp(context.request), now);
     if (!allowance.allowed) {

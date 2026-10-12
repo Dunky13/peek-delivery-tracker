@@ -1,6 +1,6 @@
 import { verifyAmazonShippingAddition } from '../../../../src/server/amazonShippingEligibility';
 import { verifyLookupRequest } from '../../../../src/server/lookupVerification';
-import { apiRoute, clientIp, HttpError, json, readJsonObject, requireService, type ApiContext } from '../../../../src/server/api';
+import { apiRoute, clientIp, HttpError, json, readJsonBody, requireService, type ApiContext } from '../../../../src/server/api';
 import { wakeSyncWorker } from '../../../../src/server/background';
 import { lookupCountry, rememberLookupCountry } from '../../../../src/server/lookupCountry';
 import { recordPublicLookup, type PublicLookupOutcome } from '../../../../src/server/metrics';
@@ -31,13 +31,12 @@ function recordLookup(outcome: PublicLookupOutcome, requestId?: string): void {
 
 async function lookUp(context: ApiContext, progress: { stage: LookupStage }): Promise<Response> {
   const service = requireService(context);
-  const verificationRequest = context.request.clone();
   // The name stays on the device: only the number, the carrier and its inputs are read.
-  const body = await readJsonObject(context.request);
+  const { raw, value: body } = await readJsonBody(context.request);
   const values = newPackageValues({ ...body, label: '' });
   lookupCountry(context.request, body.lookupCountryHint);
   progress.stage = 'verification';
-  await verifyLookupRequest(verificationRequest, service);
+  await verifyLookupRequest(context.request, service, raw);
 
   progress.stage = 'allowance';
   const now = new Date();

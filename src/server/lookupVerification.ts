@@ -129,11 +129,14 @@ export function requireLookupProof(request: Request): void {
   if (outcome === 'refused') throw new HttpError(403, 'Please verify your browser and try again.', { 'X-Lookup-Verification': 'required' });
 }
 
-/** Native assertions count the installation before the shared IP and global budgets. */
-export async function verifyLookupRequest(request: Request, service: SupabaseServiceClient) {
+/**
+ * Native assertions count the installation before the shared IP and global budgets.
+ * `body` is the request body as read: the request's own body is already used.
+ */
+export async function verifyLookupRequest(request: Request, service: SupabaseServiceClient, body: Uint8Array) {
   if (!turnstileSettings()) return;
   if (['x-app-attest-key-id', 'x-app-attest-challenge', 'x-app-attest-assertion'].some((header) => request.headers.has(header))) {
-    await verifyNativeRequest(request, service);
+    await verifyNativeRequest(request, service, body);
     return;
   }
   requireLookupProof(request);

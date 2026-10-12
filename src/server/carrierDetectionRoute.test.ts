@@ -294,6 +294,19 @@ it('answers the front door without a session, the same way, within a limit per c
   expect((await withoutAccount('1Z999AA10123456784', '198.51.100.31')).status).toBe(200);
 });
 
+it('refuses an oversized or malformed body at the front door at once', async () => {
+  const encoder = new TextEncoder();
+  // Next passes the body on as a stream of the chunks as they arrive.
+  const send = (chunks: Uint8Array[], headers: Record<string, string> = {}) => detectWithoutAccount(new NextRequest('https://delivery.example/api/public/detect', {
+    method: 'POST', headers: { 'content-type': 'application/json', 'x-real-ip': '198.51.100.50', ...headers }, duplex: 'half',
+    body: new ReadableStream<Uint8Array>({ pull(controller) { const chunk = chunks.shift(); if (chunk) controller.enqueue(chunk); else controller.close(); } }),
+  }), { params: Promise.resolve({}) });
+  expect((await send([encoder.encode('x'.repeat(16_385))], { 'content-length': '16385' })).status).toBe(400);
+  expect((await send([encoder.encode('x'.repeat(16_384)), encoder.encode('x')])).status).toBe(400);
+  expect((await send([Uint8Array.from([0x7b, 0xff]), encoder.encode('}')])).status).toBe(400);
+  expect(recognize).not.toHaveBeenCalled();
+});
+
 it('counts a number that carriers are asked about against the day\'s allowances without an account', async () => {
   const claim = vi.spyOn(SupabaseServiceClient.prototype, 'claimPublicAllowance').mockResolvedValue({ allowed: true, scope: null, overallUsed: 1 });
   const counted = vi.spyOn(metrics, 'recordPublicDetection');

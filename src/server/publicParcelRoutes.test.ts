@@ -236,6 +236,20 @@ describe('looking up a parcel without an account', () => {
     expect(create).not.toHaveBeenCalled();
   });
 
+  it('refuses an oversized or malformed body at once, before the allowance', async () => {
+    const claim = allow();
+    const encoder = new TextEncoder();
+    // Next passes the body on as a stream of the chunks as they arrive.
+    const send = (chunks: Uint8Array[], headers: Record<string, string> = {}) => lookUp(new NextRequest('https://delivery.example/api/public/parcels', {
+      method: 'POST', headers: { 'content-type': 'application/json', 'x-real-ip': nextIp(), ...headers }, duplex: 'half',
+      body: new ReadableStream<Uint8Array>({ pull(controller) { const chunk = chunks.shift(); if (chunk) controller.enqueue(chunk); else controller.close(); } }),
+    }), { params: Promise.resolve({}) });
+    expect((await send([encoder.encode('x'.repeat(16_385))], { 'content-length': '16385' })).status).toBe(400);
+    expect((await send([encoder.encode('x'.repeat(16_384)), encoder.encode('x')])).status).toBe(400);
+    expect((await send([Uint8Array.from([0x7b, 0xff]), encoder.encode('}')])).status).toBe(400);
+    expect(claim).not.toHaveBeenCalled();
+  });
+
   it('answers a stored parcel the same way and counts it as reused', async () => {
     allow();
     store(false);

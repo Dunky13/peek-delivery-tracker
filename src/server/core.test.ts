@@ -8,6 +8,7 @@ import {
   HttpError,
   json,
   parseUuid,
+  readJsonBody,
   readJsonObject,
 } from './api';
 import { SupabaseAuthError, SupabaseAuthenticator } from './auth';
@@ -328,6 +329,48 @@ describe('API request boundaries', () => {
       duplex: 'half',
     } as RequestInit & { duplex: 'half' }))).rejects.toThrow('valid JSON object');
     expect(cancelled).toBe(true);
+  });
+
+  it('returns the bytes it read with the object they hold', async () => {
+    const sent = new TextEncoder().encode('{"label":"café"}');
+    const chunks = [sent.subarray(0, 13), sent.subarray(13)];
+    const { raw, value } = await readJsonBody(new Request('https://delivery.example/api', {
+      method: 'POST',
+      body: new ReadableStream<Uint8Array>({
+        pull(controller) {
+          const chunk = chunks.shift();
+          if (chunk) controller.enqueue(chunk);
+          else controller.close();
+        },
+      }),
+      duplex: 'half',
+    } as RequestInit & { duplex: 'half' }));
+    expect(value).toEqual({ label: 'café' });
+    expect(Buffer.from(raw)).toEqual(Buffer.from(sent));
+  });
+
+  it('refuses a body at once while a clone of it is left unread', async () => {
+    const encoder = new TextEncoder();
+    // A teed branch only finishes cancelling once the other branch is cancelled or read to the end.
+    const refuse = (body: Uint8Array[], headers: Record<string, string> = {}) => {
+      const request = new Request('https://delivery.example/api', {
+        method: 'POST',
+        headers,
+        body: new ReadableStream<Uint8Array>({
+          pull(controller) {
+            const chunk = body.shift();
+            if (chunk) controller.enqueue(chunk);
+            else controller.close();
+          },
+        }),
+        duplex: 'half',
+      } as RequestInit & { duplex: 'half' });
+      request.clone();
+      return readJsonBody(request);
+    };
+    await expect(refuse([encoder.encode('{}')], { 'Content-Length': '16385' })).rejects.toThrow('request size');
+    await expect(refuse([encoder.encode('x'.repeat(16_384)), encoder.encode('x')])).rejects.toThrow('request size');
+    await expect(refuse([Uint8Array.from([0x7b, 0xff]), encoder.encode('}')])).rejects.toThrow('valid JSON object');
   });
 
   it('normalizes UUIDs and rejects route-shaped junk', () => {
