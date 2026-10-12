@@ -221,8 +221,15 @@ final class DeviceParcels {
     }
 
     func add(_ request: CreatePackageRequest) async throws -> Parcel {
+        try await lookUp(request, replacing: nil)
+    }
+
+    /// Looks the request up. The parcel it replaces, if any, does not count as already followed.
+    private func lookUp(_ request: CreatePackageRequest, replacing id: UUID?) async throws -> Parcel {
         guard let client else { throw DeliveryAPIError.serviceFailed(503) }
-        if let existing = entries.first(where: { $0.parcel.trackingNumber == request.trackingNumber && $0.parcel.carrier == request.carrier }) {
+        if let existing = entries.first(where: {
+            $0.parcel.id != id && $0.parcel.trackingNumber == request.trackingNumber && $0.parcel.carrier == request.carrier
+        }) {
             throw DeliveryAPIError.duplicateTracking(existing.parcel.id)
         }
         let response = try await client.lookup(PublicLookupRequest(
@@ -231,13 +238,19 @@ final class DeviceParcels {
             lookupCountryHint: request.lookupCountryHint
         ))
         guard ParcelLinkRoute.validID(response.link.id) else { throw DeliveryAPIError.invalidResponse }
+        var entry = DeviceParcel(linkID: response.link.id, label: request.label ?? "", archivedAt: nil,
+                                 parcel: Parcel(shared: response.package), checkedAt: now())
         // The service gives one parcel one link for each lookup; a second lookup of a parcel takes the first one's place.
         if let twin = entries.firstIndex(where: { $0.parcel.id == response.package.id }) {
             let old = entries.remove(at: twin)
             if let key = keys.removeValue(forKey: old.linkID) { Task { try? await client.forget(old.linkID, key) } }
+            // The parcel being replaced came back unchanged: only its link is new.
+            if old.parcel.id == id {
+                entry.label = old.label
+                entry.archivedAt = old.archivedAt
+                entry.replaced = old.replaced
+            }
         }
-        let entry = DeviceParcel(linkID: response.link.id, label: request.label ?? "", archivedAt: nil,
-                                 parcel: Parcel(shared: response.package), checkedAt: now())
         entries.append(entry)
         keys[entry.linkID] = response.key
         save()
@@ -303,14 +316,14 @@ final class DeviceParcels {
         if let trouble { throw trouble }
     }
 
-    /// Follows the same number with another carrier: a new lookup, which takes the old one's place and name.
+    /// Follows the same number with another carrier, link or postcode: a new lookup, which takes the old one's place and name.
     func changeCarrier(id: UUID, carrier: CarrierID, trackingURL: String?, dpdPostcode: String?) async throws -> Parcel {
         guard let entry = entries.first(where: { $0.parcel.id == id }) else { throw DeliveryAPIError.parcelMissing }
-        let added = try await add(CreatePackageRequest(
+        let added = try await lookUp(CreatePackageRequest(
             trackingNumber: entry.parcel.trackingNumber, label: entry.label, carrier: carrier,
             trackingURL: trackingURL, dpdPostcode: dpdPostcode,
             lookupCountryHint: ParcelLookupCountry.hint()
-        ))
+        ), replacing: id)
         if added.id != id {
             try? await forget(id: id)
             if let index = entries.firstIndex(where: { $0.parcel.id == added.id }) {
