@@ -616,6 +616,86 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Nova Poshta tracking: numbers, statuses and branches",
       "name": "Nova Poshta",
       "color": "#e30613"
+    },
+    {
+      "id": "sameday",
+      "catalog": "sameday",
+      "slug": "sameday-tracking",
+      "title": "Sameday tracking: AWB, easybox and statuses explained",
+      "name": "Sameday",
+      "color": "#e92427"
+    },
+    {
+      "id": "speedy",
+      "catalog": "speedy",
+      "slug": "speedy-tracking",
+      "title": "Speedy tracking: waybill number, statuses and lockers",
+      "name": "Speedy",
+      "color": "#dc0032"
+    },
+    {
+      "id": "cargus",
+      "catalog": "cargus",
+      "slug": "cargus-tracking",
+      "title": "Cargus tracking: AWB number, statuses and SHIP & GO",
+      "name": "Cargus",
+      "color": "#f68121"
+    },
+    {
+      "id": "fan-courier",
+      "catalog": "fan-courier",
+      "slug": "fan-courier-tracking",
+      "title": "FAN Courier tracking: AWB numbers, statuses and FANbox",
+      "name": "FAN Courier",
+      "color": "#0f2345"
+    },
+    {
+      "id": "econt",
+      "catalog": "econt",
+      "slug": "econt-tracking",
+      "title": "Econt tracking: shipment number, statuses and offices",
+      "name": "Econt",
+      "color": "#234182"
+    },
+    {
+      "id": "ceska-posta",
+      "catalog": "ceska-posta",
+      "slug": "ceska-posta-czech-post-tracking",
+      "title": "Česká pošta (Czech Post) tracking: numbers and statuses",
+      "name": "Česká pošta",
+      "color": "#002776"
+    },
+    {
+      "id": "express-one",
+      "catalog": "express-one",
+      "slug": "express-one-tracking",
+      "title": "Express One tracking: statuses, parcel points, contacts",
+      "name": "Express One",
+      "color": "#ec6500"
+    },
+    {
+      "id": "foxpost",
+      "catalog": "foxpost",
+      "slug": "foxpost-tracking",
+      "title": "Foxpost tracking: statuses, lockers and contacts",
+      "name": "Foxpost",
+      "color": "#b70100"
+    },
+    {
+      "id": "slovak-parcel-service",
+      "catalog": "slovak-parcel-service",
+      "slug": "slovak-parcel-service-tracking",
+      "title": "Slovak Parcel Service tracking: statuses and what to do",
+      "name": "Slovak Parcel Service",
+      "color": "#f58220"
+    },
+    {
+      "id": "slovenska-posta",
+      "catalog": "slovenska-posta",
+      "slug": "slovenska-posta-tracking",
+      "title": "Slovenská pošta tracking: Slovak Post numbers and statuses",
+      "name": "Slovenská pošta",
+      "color": "#f9bb00"
     }
   ],
   "de": [

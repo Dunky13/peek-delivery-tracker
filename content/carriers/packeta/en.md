@@ -96,7 +96,7 @@ Yes, it's a real carrier: the group brand behind Zásilkovna, shipping to 33 cou
 
 ### Is Packeta the same as Foxpost?
 
-Not quite: Packeta's Polish site says FOXPOST is joining Packeta, but Packeta's tracking page asks for a `Z` number.
+Not quite: Packeta's Polish site says [FOXPOST](carrier:foxpost) is joining Packeta, but Packeta's tracking page asks for a `Z` number.
 
 ### Is Packeta in Poland?
 
