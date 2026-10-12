@@ -198,12 +198,12 @@ begin
       ) then
     raise exception 'public database roles can access the private tracking audit';
   end if;
-  if not has_function_privilege(
+  if has_function_privilege(
     'authenticated',
     'public.create_owned_package(text,text,text,text,text)',
     'EXECUTE'
   ) then
-    raise exception 'authenticated cannot execute the validated package RPC';
+    raise exception 'authenticated can add a parcel without the server''s allowance';
   end if;
   if not has_function_privilege(
     'authenticated',
@@ -290,6 +290,10 @@ begin
   end if;
 end;
 $$;
+
+-- The checks below and the carrier tests after them call create_owned_package as
+-- the user it acts for, as create_account_package does on the server's behalf.
+grant execute on function public.create_owned_package(text,text,text,text,text) to authenticated;
 
 -- The first user sees only their parcel, can create another parcel with the
 -- same tracking number as another user, and cannot alter server-owned fields.
