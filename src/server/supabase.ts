@@ -1581,15 +1581,13 @@ export class SupabaseServiceClient extends SupabaseClient {
   }
 
   /**
-   * The DPD app sessions saved in the last week that DPD has not refused, newest
-   * first: the scraper takes up the newest and checks the others.
+   * The DPD app sessions DPD has not refused, newest first: the scraper takes up
+   * the newest, whatever its age, and checks the others for a week after they opened.
    */
   async dpdAppSessions(): Promise<DpdSession[]> {
-    const since = new Date(Date.now() - 7 * 24 * 3_600_000).toISOString();
     return rows(await this.request(`/rest/v1/dpd_app_sessions?${query([
       ['select', 'token,opened_at,checked_at'],
       ['refused_at', 'is.null'],
-      ['opened_at', `gt.${since}`],
       ['order', 'opened_at.desc'],
       ['limit', '50'],
     ])}`)).flatMap((row) => {

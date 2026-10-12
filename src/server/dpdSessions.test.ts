@@ -44,13 +44,13 @@ describe('DPD app session store', () => {
     const logged = vi.spyOn(observability, 'logOperationalEvent').mockImplementation(() => undefined);
     const counted = vi.spyOn(metrics, 'recordDpdAppSession').mockImplementation(() => undefined);
     logDpdSession({ outcome: 'taken_up', trigger: 'start', durationMs: 41.6, ageMs: 2 * HOUR });
-    logDpdSession({ outcome: 'opened', trigger: 'renewal', durationMs: 21_480 });
+    logDpdSession({ outcome: 'opened', trigger: 'refused', durationMs: 21_480 });
     logDpdSession({ outcome: 'failed', trigger: 'retry', durationMs: 120_000, errorKind: 'transport' });
     expect(logged.mock.calls).toEqual([
       ['dpd_app_session', { outcome: 'taken_up', trigger: 'start', duration_ms: 42, age_ms: 2 * HOUR }, 'info'],
-      ['dpd_app_session', { outcome: 'opened', trigger: 'renewal', duration_ms: 21_480 }, 'info'],
+      ['dpd_app_session', { outcome: 'opened', trigger: 'refused', duration_ms: 21_480 }, 'info'],
       ['dpd_app_session', { outcome: 'failed', trigger: 'retry', duration_ms: 120_000, error_kind: 'transport' }, 'warning'],
     ]);
-    expect(counted.mock.calls).toEqual([['taken_up', 'start'], ['opened', 'renewal'], ['failed', 'retry']]);
+    expect(counted.mock.calls).toEqual([['taken_up', 'start'], ['opened', 'refused'], ['failed', 'retry']]);
   });
 });

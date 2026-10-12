@@ -33,9 +33,10 @@ send DPD nothing.
 
 The server also gives it a store in `dpd_app_sessions`
 ([`dpdSessions.ts`](../src/server/dpdSessions.ts)), service-role only. A deploy takes up
-the newest saved session while it is under eight hours old, the age at which the scraper
-opens the next. The scraper checks each session it stopped using once an hour until DPD
-refuses it twice in a row, which tells how long DPD really accepts a session
+the newest saved session, whatever its age: the scraper keeps a session until DPD
+refuses it. It checks the current session once an hour, so that a refusal opens the next
+one before a lookup meets it, and each session it stopped using until DPD refuses it twice
+in a row, which tells how long DPD really accepts a session
 ([how to read it](OBSERVABILITY.md#dpd-app-sessions)). A token is an anonymous session of
 DPD's public app and names no account, parcel or person. Without the table, or when the
 database fails, the scraper opens a session as it did before.
