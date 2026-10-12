@@ -5967,9 +5967,10 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dynalogic",
+      "recognitionRank": 120
     },
-    "trackingUrlTemplate": "https://track.mydynalogic.eu/track/login",
+    "trackingUrlTemplate": "https://track.mydynalogic.eu/track/login?ordernumber={trackingNumber}",
     "linkRules": [],
     "detectionRules": [],
     "trackingSearchUrl": "https://track.mydynalogic.eu/track/login"
@@ -6588,7 +6589,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nationex",
+      "recognitionRank": 125
     },
     "trackingUrlTemplate": "https://nationex.com/reperage/{trackingNumber}",
     "linkRules": [
