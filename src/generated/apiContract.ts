@@ -8019,7 +8019,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bratislava",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "slovak-parcel-service",
+      "recognitionRank": 830
     },
     "trackingUrlTemplate": "https://www.sps-sro.sk/moja-zasielka/?shipment_id={trackingNumber}",
     "linkRules": [
@@ -8055,7 +8056,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bratislava",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "slovenska-posta",
+      "recognitionRank": 840
     },
     "trackingUrlTemplate": "https://www.posta.sk/sledovanie-zasielok#parcel={trackingNumber}",
     "linkRules": [
@@ -8082,7 +8084,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SK$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.posta.sk/sledovanie-zasielok"
   },
   "stallion-express": {
