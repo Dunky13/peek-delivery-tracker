@@ -7303,7 +7303,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cdl",
+      "recognitionRank": 95
     },
     "trackingUrlTemplate": "https://apps.cdldelivers.com/Tracking-Page/track?id={trackingNumber}",
     "linkRules": [
@@ -8330,7 +8331,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "stallion-express",
+      "recognitionRank": 105
     },
     "trackingUrlTemplate": "https://stallion.ca/track/?tracking={trackingNumber}",
     "linkRules": [
