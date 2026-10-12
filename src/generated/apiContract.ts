@@ -7174,7 +7174,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dao",
+      "recognitionRank": 850
     },
     "trackingUrlTemplate": "https://dao.as/find-din-pakke/#q={trackingNumber}",
     "linkRules": [
@@ -7199,7 +7200,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^000(?:5712696|5715127)\\d{10}$",
+        "confidence": "low",
+        "checksum": "sscc",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://dao.as/find-din-pakke/"
   },
   "dpd-ie": {
