@@ -5896,7 +5896,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dsv"
     },
     "trackingUrlTemplate": "https://mydsv.com/track-shipment?query={trackingNumber}",
     "linkRules": [
@@ -6297,7 +6297,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Zurich",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kuehne-nagel",
+      "recognitionRank": 435
     },
     "trackingUrlTemplate": "https://mykn.kuehne-nagel.com/public-tracking/shipments?query={trackingNumber}",
     "linkRules": [
@@ -6305,7 +6306,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "mykn.kuehne-nagel.com"
         ],
-        "pathPattern": "^/public-tracking/shipments/?$",
+        "pathPattern": "^/public-tracking/shipments(?:/\\d+)?/?$",
         "params": [
           "query"
         ]
@@ -7138,9 +7139,10 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "zeleris",
+      "recognitionRank": 230
     },
-    "trackingUrlTemplate": "https://www.zeleris.com/detalle-de-envio?tracking_number={trackingNumber}",
+    "trackingUrlTemplate": "https://www.zeleris.com/detalle-de-envio/?tracking_number={trackingNumber}",
     "linkRules": [
       {
         "domains": [
