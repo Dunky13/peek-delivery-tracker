@@ -319,7 +319,7 @@ it('counts a number that carriers are asked about against the day\'s allowances 
   recognize.mockImplementation(knows('dpd'));
   expect(await (await from('12345678901251')).json()).toMatchObject({ carrier: 'dpd' });
   expect(claim).toHaveBeenCalledExactlyOnceWith({
-    bucket: expect.stringMatching(/^detection:[0-9a-f]{64}$/), limit: 60, overall: { bucket: 'detection', limit: 10_000 },
+    bucket: expect.stringMatching(/^detection:[0-9a-f]{64}$/), limit: 60, overall: { bucket: 'detection', limit: 600 },
   });
   expect(counted).toHaveBeenCalledExactlyOnceWith('asked');
   // The answer kept from a moment ago is not counted again.

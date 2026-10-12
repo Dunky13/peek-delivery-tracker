@@ -100,16 +100,16 @@ describe('daily lookup allowances', () => {
   });
 
   it('reads the allowances from the environment, falling back to the defaults', () => {
-    expect(lookupLimits({})).toEqual({ perClient: 15, perNetwork: 150, overall: 3_000 });
+    expect(lookupLimits({})).toEqual({ perClient: 15, perNetwork: 150, overall: 300 });
     expect(lookupLimits({ PUBLIC_LOOKUPS_PER_DAY: ' 40 ', PUBLIC_LOOKUPS_GLOBAL_PER_DAY: '0' }))
       .toEqual({ perClient: 40, perNetwork: 400, overall: 0 });
     expect(lookupLimits({ PUBLIC_LOOKUPS_PER_DAY: '-1', PUBLIC_LOOKUPS_GLOBAL_PER_DAY: 'many' }))
-      .toEqual({ perClient: 15, perNetwork: 150, overall: 3_000 });
-    expect(detectionLimits({})).toEqual({ perClient: 60, overall: 10_000 });
+      .toEqual({ perClient: 15, perNetwork: 150, overall: 300 });
+    expect(detectionLimits({})).toEqual({ perClient: 60, overall: 600 });
     expect(detectionLimits({ PUBLIC_DETECTIONS_PER_DAY: '0', PUBLIC_DETECTIONS_GLOBAL_PER_DAY: ' 500 ' }))
       .toEqual({ perClient: 0, overall: 500 });
     expect(detectionLimits({ PUBLIC_DETECTIONS_PER_DAY: '1.5', PUBLIC_DETECTIONS_GLOBAL_PER_DAY: '' }))
-      .toEqual({ perClient: 60, overall: 10_000 });
+      .toEqual({ perClient: 60, overall: 600 });
   });
 
   it('retries a daily refusal at the next UTC midnight', () => {

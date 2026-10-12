@@ -197,7 +197,7 @@ describe('looking up a parcel without an account', () => {
     expect(text).not.toContain('Surprise');
     // The daily counter is keyed by a hash of the address, with the default allowances.
     expect(claim).toHaveBeenCalledExactlyOnceWith({
-      bucket: expect.stringMatching(/^[0-9a-f]{64}$/), limit: 15, overall: { bucket: 'global', limit: 3_000 }, network: null,
+      bucket: expect.stringMatching(/^[0-9a-f]{64}$/), limit: 15, overall: { bucket: 'global', limit: 300 }, network: null,
     });
     expect(enqueue).toHaveBeenCalledExactlyOnceWith({ packageId });
     expect(wake).toHaveBeenCalledOnce();
@@ -343,17 +343,17 @@ describe('looking up a parcel without an account', () => {
     const report = vi.spyOn(observability, 'captureOverallAllowance').mockReturnValue(null);
     store();
     vi.useFakeTimers({ toFake: ['Date'], now: new Date('2026-11-05T10:00:00Z') });
-    const claim = allow(2_399);
+    const claim = allow(239);
     await lookup({ trackingNumber });
     expect(report).not.toHaveBeenCalled();
-    claim.mockResolvedValue({ allowed: true, scope: null, overallUsed: 2_400 });
+    claim.mockResolvedValue({ allowed: true, scope: null, overallUsed: 240 });
     await lookup({ trackingNumber });
     await lookup({ trackingNumber });
-    expect(report.mock.calls).toEqual([['public', 'lookup', 'running_out', { used: 2_400, limit: 3_000 }]]);
-    claim.mockResolvedValue({ allowed: false, scope: 'global', overallUsed: 3_000 });
+    expect(report.mock.calls).toEqual([['public', 'lookup', 'running_out', { used: 240, limit: 300 }]]);
+    claim.mockResolvedValue({ allowed: false, scope: 'global', overallUsed: 300 });
     await lookup({ trackingNumber });
     await lookup({ trackingNumber });
-    expect(report.mock.calls.at(-1)).toEqual(['public', 'lookup', 'used_up', { used: 3_000, limit: 3_000 }]);
+    expect(report.mock.calls.at(-1)).toEqual(['public', 'lookup', 'used_up', { used: 300, limit: 300 }]);
     expect(report).toHaveBeenCalledTimes(2);
     // The next day it is said again.
     vi.setSystemTime(new Date('2026-11-06T00:00:01Z'));

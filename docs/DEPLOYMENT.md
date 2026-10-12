@@ -107,10 +107,12 @@ credentials and don't follow redirects, so keep it reachable through any edge pr
   one client allowance. With Cloudflare, keep IP geolocation enabled and overwrite
   `CF-IPCountry` too: new parcel lookups use it as a weak country hint for carrier recognition.
 - Optional: `PUBLIC_LOOKUPS_PER_DAY` (default 15) and `PUBLIC_LOOKUPS_GLOBAL_PER_DAY`
-  (default 3000) set how many parcels can be looked up without an account per UTC day, per
+  (default 300) set how many parcels can be looked up without an account per UTC day, per
   client and overall. `0` turns lookups off. An IPv6 /48 may make ten clients' lookups.
+  Scrapers rotate through residential addresses, so only the overall allowances bound
+  them: keep them a small multiple of real use.
 - Optional: `PUBLIC_DETECTIONS_PER_DAY` (default 60) and
-  `PUBLIC_DETECTIONS_GLOBAL_PER_DAY` (default 10000) set how many numbers carriers are
+  `PUBLIC_DETECTIONS_GLOBAL_PER_DAY` (default 600) set how many numbers carriers are
   asked about before a lookup, without an account, per UTC day, per client and overall.
   Past them, and with `0`, a carrier is detected from the number's shape only.
 - Set the platform's stop grace period to **30 s** (Coolify: *Stop Grace Period*).
