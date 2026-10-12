@@ -5571,15 +5571,37 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "allegro-one",
+      "recognitionRank": 770
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "allegro.pl"
+        ],
+        "pathPattern": "^/allegrodelivery/sledzenie-paczki/?$",
+        "params": [
+          "numer"
+        ]
+      },
+      {
+        "domains": [
+          "allegro.pl"
+        ],
+        "pathPattern": "^/kampania/one/kurier/sledzenie-paczki/?$",
+        "params": [
+          "numer"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^A[0D][0-9A-Z]{8}$",
         "confidence": "high"
       }
-    ]
+    ],
+    "trackingUrlTemplate": "https://allegro.pl/allegrodelivery/sledzenie-paczki?numer={trackingNumber}",
+    "trackingSearchUrl": "https://allegro.pl/allegrodelivery/sledzenie-paczki"
   },
   "apc-overnight": {
     "displayName": "APC Overnight",
@@ -5699,7 +5721,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ceska-posta",
+      "recognitionRank": 760
     },
     "trackingUrlTemplate": "https://www.postaonline.cz/trackandtrace/-/zasilka/{trackingNumber}",
     "linkRules": [
@@ -5714,6 +5737,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^[BD][A-Z]\\d{10}[A-Z]$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://www.postaonline.cz/trackandtrace"
@@ -7347,7 +7376,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Budapest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "express-one",
+      "recognitionRank": 780
     },
     "trackingUrlTemplate": "https://tracking.expressone.hu/?plc_number={trackingNumber}",
     "linkRules": [
