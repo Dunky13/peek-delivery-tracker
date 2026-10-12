@@ -387,6 +387,31 @@ describe('the share sheet of an account’s parcel', () => {
     await waitFor(() => expect(toggle('Show the full number')).not.toBeChecked());
   });
 
+  it('saves one change at a time, so an earlier answer never overtakes a later one and a switch never remakes a stopped link', async () => {
+    const client = account(link());
+    let answer = () => undefined as void;
+    client.share.mockImplementationOnce((_parcel, changes = {}) => new Promise((done) => { answer = () => done(link(changes)); }));
+    const user = userEvent.setup();
+    render(<AccountShareSheet parcel={parcel} client={client} onClose={() => undefined} />);
+    await user.click(await screen.findByRole('switch', { name: 'Show the full number' }));
+    // While the number is saved, the gift switch and stopping wait.
+    await user.click(toggle('Wrap as a gift'));
+    expect(screen.getByRole('button', { name: 'Stop sharing' })).toBeDisabled();
+    expect(client.share).toHaveBeenCalledOnce();
+    expect(toggle('Wrap as a gift')).not.toBeChecked();
+    answer();
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Stop sharing' })).toBeEnabled());
+    expect(toggle('Show the full number')).toBeChecked();
+
+    let stopped = () => undefined as void;
+    client.stop.mockImplementationOnce(() => new Promise((done) => { stopped = () => done(undefined); }));
+    await user.click(screen.getByRole('button', { name: 'Stop sharing' }));
+    expect(toggle('Wrap as a gift')).toBeDisabled();
+    stopped();
+    expect(await screen.findByText('Sharing is stopped. Sharing again makes a new link.')).toBeVisible();
+    expect(client.share).toHaveBeenCalledOnce();
+  });
+
   it('stops for good and says that sharing again makes a new link', async () => {
     const client = account(link());
     client.share.mockResolvedValueOnce(link({ id: OTHER_LINK_ID }));

@@ -76,6 +76,8 @@ function ShareSheetView({ title, parcel, linkId, settings, loading, stopped, sto
     onWords({ ...words, [field]: value });
   }
   const shown = { ...settings, ...saving };
+  // One change at a time: a later answer must not be overtaken by an earlier one, nor a switch save a link being stopped.
+  const pending = working || Object.keys(saving).length > 0;
   const carried = { name: words.name && name ? name : null, note: shown.gift ? words.note : null, from: shown.gift ? words.from : null };
   const address = linkId ? parcelShareURL(linkId, shown.gift ? {} : carried) : null;
 
@@ -86,6 +88,7 @@ function ShareSheetView({ title, parcel, linkId, settings, loading, stopped, sto
   }, [said]);
 
   async function change(field: keyof Settings, value: boolean) {
+    if (pending) return;
     setError(null);
     setSaving((current) => ({ ...current, [field]: value }));
     try {
@@ -103,7 +106,7 @@ function ShareSheetView({ title, parcel, linkId, settings, loading, stopped, sto
   }
 
   async function run(action: () => Promise<void>) {
-    if (working) return;
+    if (pending) return;
     setWorking(true);
     setError(null);
     try {
@@ -142,11 +145,11 @@ function ShareSheetView({ title, parcel, linkId, settings, loading, stopped, sto
       <SharePreview parcel={parcel} name={carried.name} showNumber={shown.showNumber} gift={shown.gift} />
       <div className="peeks-switches peeks-switches--joined">
         <SwitchRow icon={<Glyph name="receipt" />} title={t('share.number.title')}
-          checked={shown.showNumber} disabled={loading} busy={'showNumber' in saving} onChange={(value) => void change('showNumber', value)} />
+          checked={shown.showNumber} disabled={loading || working} busy={'showNumber' in saving} onChange={(value) => void change('showNumber', value)} />
         {name && <SwitchRow icon={<Glyph name="pencil" />} title={t('share.name.title')} value={name}
           checked={words.name} disabled={loading} onChange={(value) => onWords({ ...words, name: value })} />}
         <SwitchRow icon={<Icon name="gift" />} title={t('share.gift.title')}
-          checked={shown.gift} disabled={loading} busy={'gift' in saving} onChange={(value) => void change('gift', value)} />
+          checked={shown.gift} disabled={loading || working} busy={'gift' in saving} onChange={(value) => void change('gift', value)} />
       </div>
       {shown.gift && <div className="peeks-gift">
         <label htmlFor={`${fields}-note`}>{t('share.gift.note')}</label>
@@ -161,18 +164,18 @@ function ShareSheetView({ title, parcel, linkId, settings, loading, stopped, sto
         {address
           ? <span className="peeks-link__address" aria-label={t('share.address')}>{address.replace(/^https?:\/\//, '')}</span>
           : <span className="peeks-link__pending">{loading ? '…' : pendingLine}</span>}
-        <button type="button" className="peeks-link__copy" disabled={loading || working || Object.keys(saving).length > 0} onClick={() => void handOut('copy')}><Icon name="copy" /><span>{t('detail.copy')}</span></button>
+        <button type="button" className="peeks-link__copy" disabled={loading || pending} onClick={() => void handOut('copy')}><Icon name="copy" /><span>{t('detail.copy')}</span></button>
       </div>
       {error && <p className="sheet__error" role="alert">{t(error)}</p>}
       <div className="peeks__actions">
-        <button type="button" className="button button--primary" disabled={loading || working || Object.keys(saving).length > 0} onClick={() => void handOut('share')}><Icon name="share" /><span>{t('share.action')}</span></button>
+        <button type="button" className="button button--primary" disabled={loading || pending} onClick={() => void handOut('share')}><Icon name="share" /><span>{t('share.action')}</span></button>
       </div>
       {(worksUntil || linkId) && <div className="peeks__foot">
         {worksUntil && <p>
           {t('share.works.until', { date: worksUntil })}
           {onAccount && <> · <button type="button" onClick={() => { dismiss(); onAccount(); }}>{t('share.works.account')}</button></>}
         </p>}
-        {linkId && <button type="button" className="peeks__stop" disabled={working} onClick={() => void run(onStop)}>{t('share.stop')}</button>}
+        {linkId && <button type="button" className="peeks__stop" disabled={pending} onClick={() => void run(onStop)}>{t('share.stop')}</button>}
       </div>}
     </>}
     <p className="peeks__said" role="status" data-empty={!said || undefined}>{said && <><Icon name="check" />{t(said)}</>}</p>
