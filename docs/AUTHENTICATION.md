@@ -40,6 +40,16 @@ peekdeliverytracker://auth-callback
 On self-hosted Supabase, configure GoTrue through environment variables (site URL, allow
 list, SMTP, templates). The hosted dashboard doesn't configure a self-hosted Auth server.
 
+Turn off the methods the apps don't use. The self-hosted template turns on phone sign-up
+with auto-confirm, which hands out a confirmed account for any phone number and a
+password, with no text message. It also turns on anonymous sign-ins:
+
+```dotenv
+GOTRUE_EXTERNAL_PHONE_ENABLED=false
+GOTRUE_SMS_AUTOCONFIRM=false
+GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED=false
+```
+
 Web sign-in with Google or Apple returns to the origin it started on, which must be the
 Site URL or in the allow list. The return carries no path or query: a parcel the address
 asked for (`/?parcel=<id>`, as a delivery email links it) is noted for the tab before
