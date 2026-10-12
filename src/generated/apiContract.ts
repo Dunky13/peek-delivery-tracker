@@ -6052,7 +6052,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "estes",
+      "recognitionRank": 20
     },
     "trackingUrlTemplate": "https://www.estes-express.com/myestes/shipment-tracking/?type=PRO&query={trackingNumber}",
     "linkRules": [
@@ -6994,11 +6995,26 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ubi-smart-parcel",
+      "recognitionRank": 45
     },
     "trackingUrlTemplate": "https://shipper.ubismartparcel.com/#/ubi?trackingNos={trackingNumber}",
-    "linkRules": [],
-    "detectionRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "shipper.ubismartparcel.com"
+        ],
+        "pathPattern": "^/$",
+        "fragment": "^/ubi\\?(?:.*&)?trackingNos=([^&]+)"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^AU\\d{13}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://shipper.ubismartparcel.com/#/ubi"
   },
   "wanbexpress": {
