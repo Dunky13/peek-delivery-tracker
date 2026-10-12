@@ -7597,7 +7597,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Zagreb",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hrvatska-posta",
+      "recognitionRank": 810
     },
     "trackingUrlTemplate": "https://posiljka.posta.hr/hr/tracking/trackingdata?barcode={trackingNumber}",
     "linkRules": [
@@ -7611,7 +7612,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}HR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://posiljka.posta.hr/"
   },
   "instabox": {
