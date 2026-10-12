@@ -6901,8 +6901,18 @@ export const CARRIER_CAPABILITIES = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "trans-o-flex.com"
+        ],
+        "pathPattern": "^/sendungsverfolgung/tracking/?$",
+        "query": "(?:^|&)ref=(\\d{11}-?\\d{13})(?:&|$)"
+      }
+    ],
+    "detectionRules": [],
+    "trackingUrlTemplate": "https://www.trans-o-flex.com/sendungsverfolgung/tracking?ref={trackingNumber}&type=barcode",
+    "trackingSearchUrl": "https://www.trans-o-flex.com/sendungsverfolgung/tracking"
   },
   "ubi-smart-parcel": {
     "displayName": "UBI Smart Parcel",
@@ -7596,7 +7606,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "geis",
+      "recognitionRank": 970
     },
     "trackingUrlTemplate": "https://www.geis-group.cz/cs/detail-zasilky?packNumber={trackingNumber}",
     "linkRules": [
@@ -7622,9 +7633,18 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "geis-group.sk"
         ],
-        "pathPattern": "^/sk/detail-zasielky/?$",
+        "pathPattern": "^/(?:sk/detail-zasielky|en/detail-of-cargo)/?$",
         "params": [
           "packNumber"
+        ]
+      },
+      {
+        "domains": [
+          "geis-group.sk"
+        ],
+        "pathPattern": "^/sk/sledovanie-zasielok/?$",
+        "params": [
+          "p"
         ]
       }
     ],
