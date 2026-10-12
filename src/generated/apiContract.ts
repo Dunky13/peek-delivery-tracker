@@ -5987,7 +5987,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "envialia",
+      "recognitionRank": 260
     },
     "linkRules": [],
     "detectionRules": []
@@ -6105,9 +6106,30 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Vienna",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gebrueder-weiss",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Sender or recipient postcode",
+          "type": "text",
+          "help": "Gebrüder Weiss shows a shipment only with its sender's or recipient's postcode. Without it, other sources are asked.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "my.gw-world.com"
+        ],
+        "path": "^/(?:[a-z]{2}(?:[-_][A-Za-z]{2})?/)?trackntrace/-/search/[^/]+/([^/?#]+)(?:/[^/?#]*)?/?$"
+      }
+    ],
     "detectionRules": [],
     "trackingSearchUrl": "https://my.gw-world.com/trackntrace/-/search/"
   },
