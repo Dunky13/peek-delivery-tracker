@@ -1108,6 +1108,71 @@ describe('persistent tracking routing', () => {
     expect(fallback.result.tracking_provider).toBe('Ship24');
     expect(fallback.result).not.toHaveProperty('carrier_answered');
   });
+  describe('a filed carrier\'s partial answer', () => {
+    // UPS's public example number; the clocks, wording and estimate are invented.
+    const ups = (overrides: JsonObject = {}) => parcel({ carrier: 'ups', tracking_number: '1Z999AA10123456784', ...overrides });
+    const summary = (): RoutedResult => ({ sourceCarrierId: 'ups', swissPostReady: null, handoffFallbackErrorType: null,
+      result: { status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Synthetic status', last_update: '2026-09-10T11:00:00Z',
+        expected_delivery: '2026-09-12', summary_only: true, events: [] } });
+    const fuller = (): CarrierResult => ({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-09-10T11:00:00Z', events: [
+      { time: '2026-09-10T11:00:00Z', description: 'Departed facility', stage: 'in_transit' },
+      { time: '2026-09-09T18:00:00Z', description: 'Picked up', stage: 'accepted' },
+    ] });
+
+    it('takes a provider\'s fuller history with the carrier\'s facts, and asks the carrier first again', async () => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(summary());
+      universal.mockResolvedValue(fuller());
+      const result = await router.fetch(ups(), false);
+      expect(result.sourceCarrierId).toBe('unknown');
+      expect(result.result).toMatchObject({ tracking_provider: 'Ship24', carrier_answered: true, expected_delivery: '2026-09-12' });
+      expect(result.result.events).toHaveLength(2);
+      expect(result.result.routing).toMatchObject({ preferred_provider: 'Ship24', confirmed_carrier: 'ups' });
+      expect((result.result.routing as JsonObject).direct_retry_at).toBeUndefined();
+      expect(universal).toHaveBeenCalledOnce();
+      const next = setup(new Date('2026-09-10T12:15:00Z'));
+      next.direct.mockResolvedValue(summary());
+      await next.router.fetch(ups({ carrier_data: { routing: result.result.routing } }), false);
+      expect(next.direct).toHaveBeenCalledOnce();
+    });
+
+    it('stands against a history that is behind it, and asks the providers again only at their cadence', async () => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(summary());
+      universal.mockResolvedValue(history('2026-09-10T09:00:00Z'));
+      const result = await router.fetch(ups(), false);
+      expect(result).toMatchObject({ sourceCarrierId: 'ups', result: { summary_only: true, routing: { partial_checked_at: time.toISOString() } } });
+      expect(result.result).not.toHaveProperty('tracking_provider');
+      expect(universal).toHaveBeenCalledTimes(2);
+      const soon = setup(new Date('2026-09-10T12:10:00Z'));
+      soon.direct.mockResolvedValue(summary());
+      expect(await soon.router.fetch(ups({ carrier_data: { routing: result.result.routing } }), false)).toMatchObject({ sourceCarrierId: 'ups' });
+      expect(soon.universal).not.toHaveBeenCalled();
+      const later = setup(new Date('2026-09-10T12:15:00Z'));
+      later.direct.mockResolvedValue(summary());
+      later.universal.mockResolvedValue(fuller());
+      expect((await later.router.fetch(ups({ carrier_data: { routing: result.result.routing } }), false)).result)
+        .toMatchObject({ tracking_provider: 'Ship24' });
+    });
+
+    it('stands when a provider is rate limited after a recent check', async () => {
+      fixedPlan('Ship24');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(summary());
+      universal.mockRejectedValue(new UpstreamHttpError('Ship24', 429));
+      const result = await router.fetch(ups({ carrier_data: { routing: state({ configured_carrier: 'ups', last_success_at: '2026-09-10T11:50:00Z' }) } }), false);
+      expect(result).toMatchObject({ sourceCarrierId: 'ups', result: { summary_only: true } });
+    });
+
+    it('is a carrier\'s complete answer when it is not partial', async () => {
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue({ ...summary(), result: { ...fuller() } });
+      expect(await router.fetch(ups(), false)).toMatchObject({ sourceCarrierId: 'ups' });
+      expect(universal).not.toHaveBeenCalled();
+    });
+  });
   it('ignores an older parcel of another carrier that a universal returns for a reused number', async () => {
     fixedPlan('Ship24', '17TRACK');
     const { router, direct, universal } = setup();

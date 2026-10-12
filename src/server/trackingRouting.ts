@@ -5,7 +5,7 @@ import { trackingFailureCode } from './trackingFailure';
 import { DateTime } from 'luxon';
 import { appInputField, detectCarrierMatch } from '../lib/carriers';
 import { activeRequirements, AUTOMATIC_CARRIER_IDS, carrierAdapter, carrierTimezone, requiredRequirements } from './carriers';
-import { checksumRejections, inferStage, normalizeCarrierResult, resultStage, STAGES, type CarrierResult } from 'universal-parcel-scraper';
+import { checksumRejections, fillPartialAnswer, inferStage, isPartialAnswer, normalizeCarrierResult, resultStage, STAGES, type CarrierResult } from 'universal-parcel-scraper';
 import { isRecord, type JsonObject } from './types';
 import { priorityUniversalSource, universalPlan, universalSourceBudget } from 'universal-parcel-scraper';
 import type { UniversalSource } from 'universal-parcel-scraper';
@@ -64,6 +64,8 @@ export interface RoutingState extends JsonObject {
   /** A carrier that knows the number but cannot track it without the user's input. */
   input_needed?: { carrier: string; field: string };
   provider_input_needed?: { provider: string; field: 'dpdPostcode' };
+  /** When providers last held no fuller history than the filed carrier's partial answer. */
+  partial_checked_at?: string;
   probe_cursor: number;
   discovery_cursor: number;
   failures: Record<string, Failure>;
@@ -91,6 +93,10 @@ export function routingState(parcel: JsonObject): RoutingState {
 export function freshnessWindow(now: Date): number {
   const hour = DateTime.fromJSDate(now, { zone: 'Europe/Zurich' }).hour;
   return hour >= 8 && hour < 22 ? HOUR : 3 * HOUR;
+}
+/** How often a parcel asks the universal providers: every 15 min by day, hourly overnight. */
+function universalSpacing(now: Date): number {
+  return freshnessWindow(now) === HOUR ? 15 * 60_000 : HOUR;
 }
 const millis = (value: unknown): number => typeof value === 'string' && Number.isFinite(Date.parse(value)) ? Date.parse(value) : 0;
 const iso = (value: number): string => new Date(value).toISOString();
@@ -258,6 +264,8 @@ export class TrackingRouter {
     const countryHint = normalizedLookupCountry(metadata.lookup_country_hint);
     let localDirectFallback: { value: RoutedResult; carrier: string } | undefined;
     let localHistory: JsonObject | undefined;
+    // The filed carrier's status alone, or part of its history, while providers are asked for the rest.
+    let partialDirect: { value: RoutedResult; carrier: string } | undefined;
     const universalNumber = metadata.original_carrier && metadata.active_tracking_carrier
       && typeof metadata.active_tracking_number === 'string' ? metadata.active_tracking_number : number;
     // The owner's answer to a provider's postcode request, for this number only.
@@ -351,7 +359,7 @@ export class TrackingRouter {
       state.last_event_at = eventTime && !withoutProgress && value.result.direct_local_fallback !== true ? iso(eventTime) : state.last_event_at;
       // Universal checks are deliberately less frequent than direct in-transit polls.
       state.next_check_at = sources.includes(provider as UniversalSource)
-        ? iso(now().getTime() + (freshnessWindow(now()) === HOUR ? 15 * 60_000 : HOUR)) : undefined;
+        ? iso(now().getTime() + universalSpacing(now())) : undefined;
       // A correction changes the selected carrier, not merely its display source.
       // Delivery-leg handoffs remain separate from correcting an incorrect label.
       const swap = provider !== declared && directCarrier(provider) && value.sourceCarrierId === provider
@@ -490,7 +498,11 @@ export class TrackingRouter {
       ? state.confirmed_carrier : declared;
     if (!state.preferred_provider || changed || millis(state.direct_retry_at) <= now().getTime()) {
       const value = await tryDirect(primary, primary !== declared);
-      if (value) return persistResult(value, primary);
+      // Providers are asked for the rest at their own cadence, and on the next check after one held it.
+      if (value && primary === declared && universalNumber === number && isPartialAnswer(value.result)
+        && now().getTime() - millis(state.partial_checked_at) >= universalSpacing(now())) {
+        partialDirect = { value, carrier: primary };
+      } else if (value) return persistResult(value, primary);
     }
 
     // One evidence-based correction, not a fan-out to every matching number shape.
@@ -499,7 +511,7 @@ export class TrackingRouter {
       detected.confidence === 'high' ? detected.carrier : undefined,
       changed && state.confirmed_number === number ? state.confirmed_carrier : state.discovered_carrier,
     ])].filter((candidate): candidate is string => Boolean(candidate) && candidate !== primary);
-    for (const candidate of candidates) {
+    for (const candidate of partialDirect ? [] : candidates) {
       const value = await tryDirect(candidate, true);
       if (value) return persistResult(value, candidate);
     }
@@ -688,7 +700,7 @@ export class TrackingRouter {
         kind = failure.kind;
         if (kind === 'not_found' || kind === 'no_history') answeredEmpty.push(source);
         retryAfterMs = millis(failure.retry_at) - now().getTime();
-        if (kind === 'rate_limited' && recent() && !localDirectFallback) {
+        if (kind === 'rate_limited' && recent() && !localDirectFallback && !partialDirect) {
           state.next_check_at = iso(Math.min(millis(failure.retry_at), millis(state.last_success_at) + freshnessWindow(now())));
           defer(false);
         }
@@ -722,8 +734,14 @@ export class TrackingRouter {
         throw error;
       });
       if (!value) continue;
+      // The carrier's partial answer stands unless this history is fuller and not behind it.
+      if (partialDirect) {
+        const filled = fillPartialAnswer(declared, number, partialDirect.value.result, value.result);
+        if (!filled) continue;
+        value.result = filled;
+      }
       if (needsProgress && !hasRoutingProgress(value.result)) {
-        thinAnswer ??= { value, source };
+        if (!partialDirect) thinAnswer ??= { value, source };
         continue;
       }
       selected = { value, source };
@@ -743,10 +761,14 @@ export class TrackingRouter {
         const alternative = alternatives[state.probe_cursor % alternatives.length];
         state.probe_cursor++;
         state.last_probe_at = now().toISOString();
-        const probe = alternative ? await universal(alternative).catch((error: unknown) => {
+        let probe = alternative ? await universal(alternative).catch((error: unknown) => {
           if (!(error instanceof RoutingDeferred)) throw error;
           return null;
         }) : null;
+        if (probe && partialDirect) {
+          const filled = fillPartialAnswer(declared, number, partialDirect.value.result, probe.result);
+          probe = filled ? { ...probe, result: filled } : null;
+        }
         if (probe && (!hasRoutingProgress(value.result) || hasRoutingProgress(probe.result)) && latest(probe) > latest(value) && latest(probe) >= millis(state.last_event_at)
           && !['delivered', 'returned'].includes(String(value.result.current_stage))) {
           value = probe; chosen = alternative;
@@ -805,12 +827,19 @@ export class TrackingRouter {
       // The carrier's own answer had no current instant, so this provider dates the
       // timeline: ask the carrier again in 6 h. A retry time left over from an
       // earlier failure has expired and would otherwise keep it due on every check.
-      if (localDirectFallback || !state.direct_retry_at) state.direct_retry_at = iso(now().getTime() + 6 * HOUR);
+      // A carrier that answered only in part stays first on every check.
+      if (partialDirect) state.direct_retry_at = undefined;
+      else if (localDirectFallback || !state.direct_retry_at) state.direct_retry_at = iso(now().getTime() + 6 * HOUR);
+      delete state.partial_checked_at;
       state.last_probe_at ??= now().toISOString();
       state.discovery_cursor = 0;
-      // The carrier answered too: only its clock sent the result elsewhere, so links stay with it.
-      if (localDirectFallback) value.result = { ...value.result, carrier_answered: true };
+      // The carrier answered too: only its clock or a partial answer sent the result elsewhere, so links stay with it.
+      if (localDirectFallback || partialDirect) value.result = { ...value.result, carrier_answered: true };
       return persistResult(value, chosen, withoutProgress);
+    }
+    if (partialDirect) {
+      state.partial_checked_at = now().toISOString();
+      return persistResult(partialDirect.value, partialDirect.carrier);
     }
     if (localDirectFallback) {
       const { value, carrier } = localDirectFallback;

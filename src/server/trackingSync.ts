@@ -44,7 +44,7 @@ import { answeredWithoutHistory, detectionNames, directCarrier, freshnessWindow,
 import { upuHistory } from './upuHistory';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent } from './directLocalHistory';
-import { eventTimestamp, latestResultTime, resultTimezone } from 'universal-parcel-scraper/app';
+import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
 import { trackingSupportEvidence } from './trackingSupport';
 import { deployedVersion, statusMapClosings, universalMapAgrees } from './reviewQueues';
 import { carrierLookupKey, recognitionKey, SharedLookups, universalLookupKey, type ParcelLookups } from './sharedLookups';
@@ -1238,10 +1238,7 @@ export class TrackingSyncService {
       }
 
       const deleteDescriptions = sourceCarrierId === 'swiss-post' && (result.events?.length ?? 0) > 0
-        ? [
-          'TO_BE_DELIVERED', 'REPORTED', 'IN_DELIVERY', 'DELIVERED',
-          'MISSED_DELIVERY', 'NOT_DELIVERED', 'RETURNED', 'CUSTOMS', 'REGISTERED',
-        ] : [];
+        ? [...SWISS_POST_GLOBAL_STATUSES] : [];
       const hasUpdate = Boolean(
         (selectedStage && selectedStage !== 'pending')
         || events.some((event) => event.stage !== 'pending'),

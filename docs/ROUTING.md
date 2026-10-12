@@ -134,6 +134,13 @@ An adapter whose answer has only local clocks or an undated status summary keeps
 evidence while a universal provider dates the timeline. It is asked again 6 h later,
 not on every check.
 
+The filed carrier's partial answer, its status without scans or only its newest scans
+(`summary_only`, `history_truncated`), stands unless a provider holds a fuller history that is
+not behind it, as the scraper's `fillPartialAnswer` decides. That history then takes the
+carrier's facts it lacks, such as the estimate. The carrier is still asked first on every
+check. While no provider holds more, the providers are asked again every 15 min by day and
+hourly overnight.
+
 **Rate limits (429).** If the last successful retrieval is recent (under 1 h by day, 3 h
 overnight), the parcel keeps its progress and skips fallback until that window or the
 retry time runs out. Otherwise the router tries another provider. It never retries the
@@ -381,8 +388,8 @@ observations, keeping observation time distinct from a carrier scan time.
 The link shown in the app follows `tracking_provider` of the result on screen: a 17TRACK,
 ParcelsApp or Ship24 result links to that provider with the lookup number. Direct recovery
 restores the carrier link. When the carrier's own lookup answered the same check and only its
-missing clock sent the result elsewhere, the result is marked `carrier_answered` and the link
-stays with the carrier. Postal Ninja and UPU link to their public forms. No deep links are
+missing clock or partial answer sent the result elsewhere, the result is marked
+`carrier_answered` and the link stays with the carrier. Postal Ninja and UPU link to their public forms. No deep links are
 guessed.
 
 ## Shared provider protection
