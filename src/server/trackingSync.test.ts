@@ -2964,6 +2964,28 @@ describe('TrackingSyncService', () => {
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ carrier_data: { tracking_provider: '17TRACK' } });
   });
 
+  it('keeps the postcode the owner gave a provider after the provider answers', async () => {
+    vi.spyOn(scraper, 'universalPlan').mockReturnValue({
+      sources: ['17TRACK'], carrier: null, tier: () => 'unknown', rank: () => 0,
+    });
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const universal = { fetch: vi.fn(), fetchSource: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit',
+      last_update: '2026-09-10T11:00:00Z', events: [{ time: '2026-09-10T11:00:00Z', description: 'In transit', stage: 'in_transit' }] }) };
+    const registry = new AdapterRegistry({ factories: {}, carriers: {} },
+      { trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} } satisfies AdapterEnvironment);
+    const adapter = new CarrierTrackingAdapter(universal as unknown as UniversalTracker, registry, NOOP_RECORDER);
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    const parcel = { id: 'input', carrier: 'zto', tracking_number: 'TEST1234', current_stage: 'in_transit', created_at: '2026-07-01T00:00:00Z',
+      carrier_data: { universal_input: { number: 'TEST1234', postcode: '0000' } } };
+    await service.syncPackage(parcel);
+    expect(universal.fetchSource.mock.calls[0][3]).toBe('0000');
+    // Saved for the next check, which the router hands it to.
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ carrier_data: { universal_input: { number: 'TEST1234', postcode: '0000' } } });
+  });
+
   it('keeps expired Shipping history out of the timeline and Sentry', async () => {
     const client = fakeClient();
     const fetch = vi.fn().mockRejectedValue(new CarrierError('not_found', 'Amazon Shipping', 'Amazon Shipping history expired', { reason: 'history_expired' }));

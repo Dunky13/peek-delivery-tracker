@@ -31,8 +31,9 @@ confirmation; later checks retain the usual confirmation policy. Credentialed lo
 policy. These caches are transient; persisted routing remains the source of retry times.
 
 An explicit universal postcode requirement is retained separately from carrier inputs.
-The owner supplies it through the carrier editor. It is bound to the current number,
-kept private, and ignored for a different tracking number. Updating it invalidates an older
+The owner supplies it through the carrier editor. It is bound to the number providers are
+asked about (the delivery leg's after a handoff), kept across checks, kept private, and
+ignored for a different tracking number. Updating it invalidates an older
 sync and clears universal providers' missing-input backoffs. Other failure backoffs stay in place. Missing recipient input does not
 open the shared provider circuit. Another source with progress clears the prompt.
 While the parcel has no postcode to send, scheduled checks skip a provider that asked for

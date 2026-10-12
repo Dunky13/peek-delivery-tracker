@@ -72,4 +72,23 @@ begin
   end if;
 end;
 $$;
+-- After a handoff the postcode is bound to the delivery leg's number, the one providers are asked about.
+update public.packages
+set carrier_data = carrier_data || '{"original_carrier":"dhl-express","active_tracking_carrier":"dpd","active_tracking_number":"LEG0000000001"}'::jsonb
+where user_id='19000000-0000-0000-0000-000000000002';
+select set_config('request.jwt.claim.sub','19000000-0000-0000-0000-000000000002',true);
+set local role authenticated;
+select public.set_owned_package_provider_postcode(id,'8001') from public.packages
+where user_id='19000000-0000-0000-0000-000000000002';
+reset role;
+do $$
+begin
+  if not exists (select 1 from public.packages
+      where user_id='19000000-0000-0000-0000-000000000002'
+        and carrier_data#>>'{universal_input,number}'='LEG0000000001'
+        and carrier_data#>>'{universal_input,postcode}'='8001') then
+    raise exception 'Provider input was bound to the first leg after a handoff';
+  end if;
+end;
+$$;
 rollback;
