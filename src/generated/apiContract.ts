@@ -6009,13 +6009,30 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "epost-global",
+      "recognitionRank": 65
     },
-    "trackingUrlTemplate": "https://epgtrack.com/",
-    "linkRules": [],
+    "trackingUrlTemplate": "https://epgtrack.com/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "epgtrack.com"
+        ],
+        "path": "^/(EPG\\d{10,15})/?$"
+      },
+      {
+        "domains": [
+          "epgtrack.com"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
     "detectionRules": [
       {
-        "pattern": "^EPG\\d{10,13}$",
+        "pattern": "^EPG\\d{10,15}$",
         "confidence": "high"
       }
     ],
