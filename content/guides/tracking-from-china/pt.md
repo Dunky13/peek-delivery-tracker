@@ -98,6 +98,8 @@ Depende da linha de envio:
 | Ecoscooting | Aparece com números `CNPRT…` e entrega em Portugal e Espanha. |
 | Shein | A página de envios não diz que transportadora usa. Escolhes entre o envio padrão para casa e um Ponto Pickup. |
 
+Se a encomenda chegar pela [Ecoscooting](carrier:ecoscooting), a página dela explica os estados, os pontos de recolha e como a contactar.
+
 ## Quanto tempo demora uma encomenda da China para Portugal?
 
 Depende da linha que pagaste. A Cainiao conta dias seguidos; a Shein conta dias úteis:

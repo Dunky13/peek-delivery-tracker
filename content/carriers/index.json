@@ -65,5 +65,14 @@
   { "id": "omniva", "catalog": "omniva", "name": "Omniva", "languages": ["en"] },
   { "id": "ppl", "catalog": "ppl", "name": "PPL", "languages": ["en"] },
   { "id": "box-now", "catalog": "box-now", "name": "BOX NOW", "languages": ["en"] },
-  { "id": "dhl-ecommerce-nl", "catalog": "dhl-ecommerce-nl", "name": "DHL eCommerce Netherlands", "languages": ["en", "fr"] }
+  { "id": "dhl-ecommerce-nl", "catalog": "dhl-ecommerce-nl", "name": "DHL eCommerce Netherlands", "languages": ["en", "fr"] },
+  { "id": "heppner", "catalog": "heppner", "name": "Heppner", "languages": ["en", "fr"] },
+  { "id": "c-chez-vous", "catalog": "c-chez-vous", "name": "C chez vous", "languages": ["en", "fr"] },
+  { "id": "geodis", "catalog": "geodis", "name": "GEODIS", "languages": ["en", "fr"] },
+  { "id": "delivengo", "catalog": "delivengo", "name": "Delivengo", "languages": ["en", "fr"] },
+  { "id": "ecoscooting", "catalog": "ecoscooting", "name": "Ecoscooting", "languages": ["en", "es", "pt"] },
+  { "id": "swiss-post-cargo", "catalog": "swiss-post-cargo", "name": "Swiss Post Cargo", "languages": ["en", "de", "fr", "it"] },
+  { "id": "dachser", "catalog": "dachser", "name": "Dachser", "languages": ["en", "es", "pt"] },
+  { "id": "meest", "catalog": "meest", "name": "Meest", "languages": ["en", "pl"] },
+  { "id": "nova-poshta", "catalog": "nova-poshta", "name": "Nova Poshta", "languages": ["en", "pl"] }
 ]

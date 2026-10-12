@@ -87,7 +87,7 @@ As read on 11 October 2026 on Poczta Polska's English and Polish pages:
 
 ## Tracking Poczta Polska parcels with Peek
 
-[Peek](/) recognises `PX` numbers at once. It asks Poczta Polska alone about 19-digit numbers, adding the check digit as Poczta Polska's site does, and asks Poczta Polska, Swiss Post Cargo and NZ Post about 20-digit ones with a valid check digit, preferring Poczta Polska. A valid international number ending in PL shows as "Unknown postal carrier" while Peek asks Poczta Polska and Chronopost; Poczta Polska wins when it knows it. eMonitoring links with `numer=` work too; no postcode is needed.
+[Peek](/) recognises `PX` numbers at once. It asks Poczta Polska alone about 19-digit numbers, adding the check digit as Poczta Polska's site does, and asks Poczta Polska, [Swiss Post Cargo](carrier:swiss-post-cargo) and NZ Post about 20-digit ones with a valid check digit, preferring Poczta Polska. A valid international number ending in PL shows as "Unknown postal carrier" while Peek asks Poczta Polska and Chronopost; Poczta Polska wins when it knows it. eMonitoring links with `numer=` work too; no postcode is needed.
 
 Peek shows the English wordings as written, each post office on a map, the weight, the destination country, the service (Pocztex, EMS) and the office holding a parcel for pickup. Delivery time comes only from a Polish office scan, and there is no expected delivery date. It drops office addresses, opening hours, payment documents and extra services. Scans relayed from abroad carry no time zone, so some may not appear. Pallets, grouped consignments and unregistered mail can't be tracked.
 

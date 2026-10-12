@@ -83,7 +83,7 @@ Prices change: check "In-App Purchases" on your country's store.
 Most trackers work in five steps:
 
 :::steps
-- You paste | A tracking number, the carrier's link or the shipping email. A link is safest: it names the carrier.
+- You paste | A tracking number, the carrier's link or the shipping email. A link is safest: it names the carrier, and for [Dachser](carrier:dachser) it's the only thing that works.
 - It reads the shape | Letters, length and check digit narrow it down. `1Z999AA10123456784` starts with UPS's `1Z`; `RR123456785CH` has the 13-character shape national posts share.
 - It weighs the candidates | Some shapes fit several carriers: a plain 14-digit number can be DPD, [SEUR](carrier:seur), [BRT](carrier:brt) or [Hermes Germany](carrier:hermes-de), among others. It asks more than one, or lets you choose.
 - It fetches the scans | From the carrier or another tracker, into one timeline.

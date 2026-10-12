@@ -74,7 +74,7 @@ Nie ma jednej długości. Poniżej te, które przewoźnicy podają na własnych 
 | 14 do 20 znaków | Hermes w Niemczech, litery i cyfry |
 | 10 do 39 znaków | DHL w Niemczech, zależnie od usługi |
 
-Dwa ostatnie wiersze przydadzą się przy zakupach z Niemiec: 14 cyfr może wtedy należeć do DPD, Hermesa albo DHL.
+Dwa ostatnie wiersze przydadzą się przy zakupach z Niemiec: 14 cyfr może wtedy należeć do DPD, Hermesa albo DHL. Przy paczce z Ukrainy 14 cyfr, na przykład zaczynających się od 204, może być listem przewozowym [Nova Post](carrier:nova-poshta); paczki między Polską a Ukrainą wozi też [Meest](carrier:meest).
 
 ## Numer zaczyna się od TBA albo PL: czy to Amazon?
 

@@ -21,7 +21,7 @@ La web de seguimiento de Cainiao admite hasta 100 números por búsqueda («Intr
 | `RR123456785CN` | [Un número postal](guide:tracking-number-formats): la web de Cainiao sigue este formato, pero también el correo de origen, aquí China Post. |
 | `YT1234567890123456` | No es de Cainiao, sino de [YunExpress](carrier:yunexpress). |
 
-El seguimiento de Cainiao también responde a otros formatos, como AP y 14 cifras. Ninguna página de Cainiao dice [dónde aparece el número](guide:find-tracking-number) fuera de AliExpress, y no se ha encontrado con qué nombre firma Cainiao sus SMS. En España, Ecoscooting, la empresa cuyo teléfono y correo da Cainiao España, escribe a los destinatarios por correo y, si el paquete va a un punto de recogida, también por SMS. Para compras en China en general, mira [seguimiento de paquetes de China](guide:tracking-from-china).
+El seguimiento de Cainiao también responde a otros formatos, como AP y 14 cifras. Ninguna página de Cainiao dice [dónde aparece el número](guide:find-tracking-number) fuera de AliExpress, y no se ha encontrado con qué nombre firma Cainiao sus SMS. En España, [Ecoscooting](carrier:ecoscooting), la empresa cuyo teléfono y correo da Cainiao España, escribe a los destinatarios por correo y, si el paquete va a un punto de recogida, también por SMS. Para compras en China en general, mira [seguimiento de paquetes de China](guide:tracking-from-china).
 
 Si la web responde `No es un número de seguimiento válido` o no muestra nada, Cainiao pide comprobar primero que el número sea de verdad de Cainiao o de AliExpress.
 

@@ -20,7 +20,7 @@ Formatos vistos en el localizador de CACESA (cifras inventadas):
 | `CNESP00000000000000000000` | CNESP y 20 cifras, un paquete para España. |
 | `CNPRT00000000000000000000` | CNPRT y 20 cifras, un paquete para Portugal. |
 
-El catálogo de Peek no asocia ninguno a CACESA. Los números CNESP y CNPRT son también de Ecoscooting, el servicio de reparto de Cainiao en España y Portugal, y un número LP con 14 cifras es la referencia logística de AliExpress, que se sigue con [Cainiao](carrier:cainiao). Si el localizador de CACESA no conoce tu número, prueba con la empresa que nombra el correo de la tienda. Más en [¿de qué empresa es este número de seguimiento?](guide:tracking-number-formats).
+El catálogo de Peek no asocia ninguno a CACESA. Los números CNESP y CNPRT son también de [Ecoscooting](carrier:ecoscooting), el servicio de reparto de Cainiao en España y Portugal, y un número LP con 14 cifras es la referencia logística de AliExpress, que se sigue con [Cainiao](carrier:cainiao). Si el localizador de CACESA no conoce tu número, prueba con la empresa que nombra el correo de la tienda. Más en [¿de qué empresa es este número de seguimiento?](guide:tracking-number-formats).
 
 En el localizador puedes buscar varios números a la vez. ¿Sale «no encontrado»? CACESA responde: «Asegúrate que el código de seguimiento es el correcto. Debes tener en cuenta que si el pedido es reciente puede que aún no dispongamos de información.» Los paquetes antiguos también desaparecen de su localizador.
 

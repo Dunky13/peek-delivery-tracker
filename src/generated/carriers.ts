@@ -544,6 +544,78 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DHL eCommerce Netherlands tracking: statuses and contact",
       "name": "DHL eCommerce Netherlands",
       "color": "#ffcc00"
+    },
+    {
+      "id": "heppner",
+      "catalog": "heppner",
+      "slug": "heppner-tracking",
+      "title": "Heppner tracking: number, postcode and delivery slots",
+      "name": "Heppner",
+      "color": "#005baa"
+    },
+    {
+      "id": "c-chez-vous",
+      "catalog": "c-chez-vous",
+      "slug": "c-chez-vous-tracking",
+      "title": "C Chez Vous tracking: order number, statuses and contact",
+      "name": "C chez vous",
+      "color": "#e50046"
+    },
+    {
+      "id": "geodis",
+      "catalog": "geodis",
+      "slug": "geodis-tracking",
+      "title": "GEODIS tracking: 1G number, statuses and delivery options",
+      "name": "GEODIS",
+      "color": "#3100e6"
+    },
+    {
+      "id": "delivengo",
+      "catalog": "delivengo",
+      "slug": "delivengo-tracking",
+      "title": "Delivengo tracking: follow a La Poste parcel from France",
+      "name": "Delivengo",
+      "color": "#ffcf00"
+    },
+    {
+      "id": "ecoscooting",
+      "catalog": "ecoscooting",
+      "slug": "ecoscooting-tracking",
+      "title": "Ecoscooting tracking: statuses, pickup points and contact",
+      "name": "Ecoscooting",
+      "color": "#3fa7ff"
+    },
+    {
+      "id": "swiss-post-cargo",
+      "catalog": "swiss-post-cargo",
+      "slug": "swiss-post-cargo-tracking",
+      "title": "Swiss Post Cargo tracking: statuses, delivery and contact",
+      "name": "Swiss Post Cargo",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "dachser",
+      "catalog": "dachser",
+      "slug": "dachser-tracking",
+      "title": "Dachser tracking in Spain and Portugal: link and statuses",
+      "name": "Dachser",
+      "color": "#005ca9"
+    },
+    {
+      "id": "meest",
+      "catalog": "meest",
+      "slug": "meest-tracking",
+      "title": "Meest tracking: numbers, statuses and contacts",
+      "name": "Meest",
+      "color": "#0061af"
+    },
+    {
+      "id": "nova-poshta",
+      "catalog": "nova-poshta",
+      "slug": "nova-poshta-tracking",
+      "title": "Nova Poshta tracking: numbers, statuses and branches",
+      "name": "Nova Poshta",
+      "color": "#e30613"
     }
   ],
   "de": [
@@ -714,6 +786,14 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Amazon Shipping Sendungsverfolgung: Status und Hilfe",
       "name": "Amazon Shipping",
       "color": "#ff9900"
+    },
+    {
+      "id": "swiss-post-cargo",
+      "catalog": "swiss-post-cargo",
+      "slug": "swiss-post-cargo-sendungsverfolgung",
+      "title": "Swiss Post Cargo Tracking: Status, Zustellung, Kontakt",
+      "name": "Swiss Post Cargo",
+      "color": "#ffcc00"
     }
   ],
   "fr": [
@@ -940,6 +1020,46 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DHL eCommerce Netherlands suivi colis\u00a0: statuts et contact",
       "name": "DHL eCommerce Netherlands",
       "color": "#ffcc00"
+    },
+    {
+      "id": "heppner",
+      "catalog": "heppner",
+      "slug": "heppner-suivi",
+      "title": "Heppner suivi\u00a0: numéro, code postal et rendez-vous",
+      "name": "Heppner",
+      "color": "#005baa"
+    },
+    {
+      "id": "c-chez-vous",
+      "catalog": "c-chez-vous",
+      "slug": "c-chez-vous-suivi",
+      "title": "C Chez Vous suivi\u00a0: numéro de commande, étapes et contact",
+      "name": "C chez vous",
+      "color": "#e50046"
+    },
+    {
+      "id": "geodis",
+      "catalog": "geodis",
+      "slug": "geodis-suivi",
+      "title": "GEODIS suivi\u00a0: numéro 1G, étapes et livraison",
+      "name": "GEODIS",
+      "color": "#3100e6"
+    },
+    {
+      "id": "delivengo",
+      "catalog": "delivengo",
+      "slug": "delivengo-suivi",
+      "title": "Delivengo suivi\u00a0: ton colis La Poste envoyé de France",
+      "name": "Delivengo",
+      "color": "#ffcf00"
+    },
+    {
+      "id": "swiss-post-cargo",
+      "catalog": "swiss-post-cargo",
+      "slug": "swiss-post-cargo-suivi",
+      "title": "Swiss Post Cargo suivi\u00a0: statuts, livraison et contact",
+      "name": "Swiss Post Cargo",
+      "color": "#ffcc00"
     }
   ],
   "it": [
@@ -1086,6 +1206,14 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Amazon Shipping tracking: dov'è il pacco e chi contattare",
       "name": "Amazon Shipping",
       "color": "#ff9900"
+    },
+    {
+      "id": "swiss-post-cargo",
+      "catalog": "swiss-post-cargo",
+      "slug": "swiss-post-cargo-tracking",
+      "title": "Swiss Post Cargo tracking: stati, consegna e contatti",
+      "name": "Swiss Post Cargo",
+      "color": "#ffcc00"
     }
   ],
   "es": [
@@ -1248,6 +1376,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Amazon Shipping seguimiento: estados, entrega y contacto",
       "name": "Amazon Shipping",
       "color": "#ff9900"
+    },
+    {
+      "id": "ecoscooting",
+      "catalog": "ecoscooting",
+      "slug": "ecoscooting-seguimiento",
+      "title": "Ecoscooting seguimiento: estados, entregas y teléfono",
+      "name": "Ecoscooting",
+      "color": "#3fa7ff"
+    },
+    {
+      "id": "dachser",
+      "catalog": "dachser",
+      "slug": "dachser-seguimiento",
+      "title": "Dachser seguimiento: enlace, estados y entrega con cita",
+      "name": "Dachser",
+      "color": "#005ca9"
     }
   ],
   "pt": [
@@ -1394,6 +1538,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "SunYou rastreamento: número SY, estados e quem entrega",
       "name": "SunYou",
       "color": "#02a232"
+    },
+    {
+      "id": "ecoscooting",
+      "catalog": "ecoscooting",
+      "slug": "ecoscooting-rastreio",
+      "title": "Ecoscooting rastreio: estados, pontos de recolha e contacto",
+      "name": "Ecoscooting",
+      "color": "#3fa7ff"
+    },
+    {
+      "id": "dachser",
+      "catalog": "dachser",
+      "slug": "rastrear-encomenda-dachser",
+      "title": "Dachser tracking: rastrear encomenda, estados e contactos",
+      "name": "Dachser",
+      "color": "#005ca9"
     }
   ],
   "pl": [
@@ -1500,6 +1660,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "SunYou tracking: numer SY, statusy i kontakt",
       "name": "SunYou",
       "color": "#02a232"
+    },
+    {
+      "id": "meest",
+      "catalog": "meest",
+      "slug": "meest-sledzenie-przesylki",
+      "title": "Meest tracking: śledzenie przesyłki, statusy i kontakt",
+      "name": "Meest",
+      "color": "#0061af"
+    },
+    {
+      "id": "nova-poshta",
+      "catalog": "nova-poshta",
+      "slug": "nova-poshta-sledzenie",
+      "title": "Nova Poshta (Nova Post) śledzenie: numer, statusy, odbiór",
+      "name": "Nova Poshta",
+      "color": "#e30613"
     }
   ]
 };

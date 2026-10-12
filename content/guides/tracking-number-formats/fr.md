@@ -81,13 +81,13 @@ Il n'y a pas de longueur standard. Voici celles que les transporteurs indiquent 
 | 30 chiffres | bpost, pour un recommandé national |
 | 12 à 16 caractères | Relais Colis (10 à 16 pour une livraison à domicile) |
 
-Le numéro seul ne suffit pas toujours. Mondial Relay et Colis Privé demandent aussi le code postal de destination. Pour une livraison à domicile, Relais Colis veut en plus le site où tu as commandé (l'« enseigne ») et les quatre premières lettres du nom du destinataire.
+Le numéro seul ne suffit pas toujours. Mondial Relay, Colis Privé et [Heppner](carrier:heppner) demandent aussi le code postal de destination, tout comme [GEODIS](carrier:geodis) pour son numéro d'envoi à 14 chiffres. Pour une livraison à domicile, Relais Colis veut en plus le site où tu as commandé (l'« enseigne ») et les quatre premières lettres du nom du destinataire. [C Chez Vous](carrier:c-chez-vous), qui livre les meubles et le gros électroménager, se suit avec le numéro de commande reçu par e-mail ou par SMS.
 
 ## À qui appartient un numéro qui commence par FR ou TBA ?
 
 En général à Amazon. Dans les données de transporteurs qu'utilise Peek, `FR` suivi de 10 chiffres désigne [Amazon Logistics](carrier:amazon-logistics), le service de livraison d'Amazon, ou [Amazon Shipping](carrier:amazon-shipping) quand Amazon livre pour une autre boutique. Même chose avec un autre code pays européen devant 10 chiffres, comme `BE` ou `CH`, et avec `TBA`, `TBC` ou `TBM` suivi de 12 chiffres. Les pages d'aide d'Amazon, elles, ne décrivent pas ces numéros. Amazon.fr explique qu'Amazon Logistics travaille avec des partenaires de livraison locaux et régionaux, et que tu suis ta commande dans « Vos commandes », qui affiche les informations de ces partenaires.
 
-Attention aux sosies. Avec ses 12 caractères, un numéro en `FR` a aussi la forme d'un numéro Colis Privé (lettres et chiffres). Et un numéro La Poste qui finit par `FR` en a 13, avec deux lettres au début et deux à la fin. Dans le doute, l'e-mail d'expédition tranche.
+Attention aux sosies. Avec ses 12 caractères, un numéro en `FR` a aussi la forme d'un numéro Colis Privé (lettres et chiffres). Et un numéro La Poste qui finit par `FR` en a 13, avec deux lettres au début et deux à la fin : c'est aussi le cas d'un colis [Delivengo](carrier:delivengo), qu'une boutique française envoie à l'étranger par La Poste. Dans le doute, l'e-mail d'expédition tranche.
 
 ## Le format postal : deux lettres, neuf chiffres, deux lettres
 

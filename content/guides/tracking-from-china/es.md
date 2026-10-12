@@ -96,7 +96,7 @@ Depende de la línea de envío:
 | Temu | Correos. Temu anunció en marzo de 2025 un acuerdo con Correos para toda España, también Canarias, Baleares, Ceuta y Melilla, con la opción de recoger en sus oficinas. |
 | Shein | Su página de envíos no nombra a las empresas de reparto. El número de seguimiento te llega por correo electrónico cuando sale el pedido, y lo tienes en «Mi Cuenta», en «Mis Pedidos». También ofrece envío a punto de recogida. |
 
-Si en el seguimiento aparece una empresa de reparto de aquí, sigue el paquete en su web o en su app, con el número que te dé.
+Si en el seguimiento aparece una empresa de reparto de aquí, como [Ecoscooting](carrier:ecoscooting) con un número `CNESP`, sigue el paquete en su web o en su app, con el número que te dé.
 
 ## ¿Cuánto tarda un paquete de China a España?
 

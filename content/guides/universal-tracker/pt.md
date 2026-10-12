@@ -77,7 +77,7 @@ Os preços mudam: vê «Compras integradas» na App Store portuguesa antes de as
 Quase todos seguem cinco passos:
 
 :::steps
-- Colas | Um número de seguimento, a ligação da transportadora ou o e-mail de envio. A ligação é o mais seguro: diz qual é a transportadora.
+- Colas | Um número de seguimento, a ligação da transportadora ou o e-mail de envio. A ligação é o mais seguro: diz qual é a transportadora, e com a [Dachser](carrier:dachser) é a única coisa que funciona.
 - Lê o formato | As letras, o comprimento e o dígito de controlo encurtam a lista. `1Z999AA10123456784` começa pelo `1Z` da UPS; `RR123456785CH` tem o formato de 13 caracteres que os operadores postais partilham, como os CTT.
 - Desempata | Alguns formatos servem a várias transportadoras: um número só com 14 algarismos pode ser da DPD, da SEUR, da BRT ou da Hermes alemã, e um de 16, da [Correos Express](carrier:correos-express) ou da TNT, entre outras. Pergunta a mais do que uma, ou deixa-te escolher.
 - Vai buscar as leituras | À transportadora ou a outro serviço de seguimento, para um só histórico.

@@ -20,7 +20,7 @@ Formas vistas no seguimento da CACESA (algarismos inventados):
 | `CNPRT00000000000000000000` | CNPRT e 20 algarismos, uma encomenda para Portugal. |
 | `CNESP00000000000000000000` | CNESP e 20 algarismos, uma encomenda para Espanha. |
 
-Nenhuma destas formas é só da CACESA. Os números CNPRT e CNESP são também da Ecoscooting, o serviço de entregas da Cainiao em Espanha e Portugal, e um número LP com 14 algarismos é uma referência do AliExpress que pode ser da [Cainiao](carrier:cainiao). Se o seguimento da CACESA não conhecer o teu número, experimenta a transportadora que o e-mail da loja indica. Mais em [como saber qual é a transportadora pelo número](guide:tracking-number-formats).
+Nenhuma destas formas é só da CACESA. Os números CNPRT e CNESP são também da [Ecoscooting](carrier:ecoscooting), o serviço de entregas da Cainiao em Espanha e Portugal, e um número LP com 14 algarismos é uma referência do AliExpress que pode ser da [Cainiao](carrier:cainiao). Se o seguimento da CACESA não conhecer o teu número, experimenta a transportadora que o e-mail da loja indica. Mais em [como saber qual é a transportadora pelo número](guide:tracking-number-formats).
 
 No seguimento da CACESA podes escrever vários números de uma vez. Sem resultado? A CACESA pede que confirmes o número e avisa que, se a encomenda for recente, pode ainda não ter informação. As encomendas mais antigas também deixam de aparecer no seguimento.
 

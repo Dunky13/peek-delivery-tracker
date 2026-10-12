@@ -50,7 +50,7 @@ Cainiao's `Tracking notice` says economy shipping "doesn't include tracking afte
 
 Cainiao's `Undelivered` covers nobody home, an address the driver couldn't find or a delivery rescheduled or put off at your request; it advises asking the carrier for a re-delivery or picking the parcel up. `Awaiting Collection` and `First Notification to recipient` also mean it's waiting for you. Pick it up at once, Cainiao advises, "or it might be returned to the sender."
 
-In Spain, where Cainiao has its own network and gives Ecoscooting's contacts as its own, Ecoscooting's FAQ says it tries again within 3 working days of a failed attempt and holds parcels at its pickup points or lockers for 14 days, sending the PIN by email or SMS.
+In Spain, where Cainiao has its own network and gives [Ecoscooting](carrier:ecoscooting)'s contacts as its own, Ecoscooting's FAQ says it tries again within 3 working days of a failed attempt and holds parcels at its pickup points or lockers for 14 days, sending the PIN by email or SMS.
 
 ## Cainiao tracking not updating or parcel missing
 

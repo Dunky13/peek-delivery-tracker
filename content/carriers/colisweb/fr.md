@@ -19,7 +19,7 @@ Le numéro ne contient que des chiffres, au moins 8. La case de suivi accepte au
 | `12345678` | 8 chiffres, la forme la plus courte. Même longueur chez Mondial Relay et Heppner. |
 | `1234567890` | Un numéro plus long, jusqu'à 32 chiffres. Beaucoup d'autres transporteurs ont ces longueurs. |
 
-Un numéro à 8 chiffres peut donc aussi être un numéro d'expédition [Mondial Relay](carrier:mondial-relay) ou un numéro Heppner, deux suivis qui demandent un code postal. Regarde quelle entreprise signe ton SMS ou ton e-mail. Et Colisweb n'est pas [Colis Privé](carrier:colis-prive) : les noms se ressemblent, mais ce sont deux sociétés différentes.
+Un numéro à 8 chiffres peut donc aussi être un numéro d'expédition [Mondial Relay](carrier:mondial-relay) ou un numéro [Heppner](carrier:heppner), deux suivis qui demandent un code postal. Regarde quelle entreprise signe ton SMS ou ton e-mail : les meubles et le gros électroménager voyagent aussi avec [C Chez Vous](carrier:c-chez-vous), qui se suit par numéro de commande. Et Colisweb n'est pas [Colis Privé](carrier:colis-prive) : les noms se ressemblent, mais ce sont deux sociétés différentes.
 
 ## Suivi Colisweb : ce que veut dire chaque message
 

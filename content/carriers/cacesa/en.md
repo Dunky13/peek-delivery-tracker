@@ -20,7 +20,7 @@ Shapes seen on CACESA's tracker (digits invented):
 | `CNESP00000000000000000000` | `CNESP` and 20 digits, a parcel for Spain. |
 | `CNPRT00000000000000000000` | `CNPRT` and 20 digits, a parcel for Portugal. |
 
-Peek's catalog ties none of them to CACESA. `CNESP` and `CNPRT` numbers are also Ecoscooting's, Cainiao's delivery service in Spain and Portugal, and an `LP` number with 14 digits is AliExpress's logistics reference, tracked with [Cainiao](carrier:cainiao). If CACESA's tracker doesn't know your number, try the carrier the shop's email names. More in [tracking number formats](guide:tracking-number-formats).
+Peek's catalog ties none of them to CACESA. `CNESP` and `CNPRT` numbers are also [Ecoscooting](carrier:ecoscooting)'s, Cainiao's delivery service in Spain and Portugal, and an `LP` number with 14 digits is AliExpress's logistics reference, tracked with [Cainiao](carrier:cainiao). If CACESA's tracker doesn't know your number, try the carrier the shop's email names. More in [tracking number formats](guide:tracking-number-formats).
 
 You can type several numbers at once on CACESA's tracker. Not found? CACESA says to check the number and that a recent order may not be in its system yet. Older parcels also drop out of its tracker.
 

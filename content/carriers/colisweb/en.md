@@ -19,7 +19,7 @@ The number is digits only, at least 8 of them. Colisweb's tracking box also acce
 | 8 digits | `12345678` |
 | Longer, up to 32 digits | `1234567890` |
 
-Eight digits also fit a [Mondial Relay](carrier:mondial-relay) shipment number and a Heppner number, both of which ask for a postcode. Longer numbers fit many carriers. Check which company your SMS or email names. And Colisweb is not [Colis Privé](carrier:colis-prive): a different company with a similar name.
+Eight digits also fit a [Mondial Relay](carrier:mondial-relay) shipment number and a [Heppner](carrier:heppner) number, both of which ask for a postcode. Longer numbers fit many carriers. Check which company your SMS or email names: furniture and large appliances also travel with [C Chez Vous](carrier:c-chez-vous), which tracks by order number. And Colisweb is not [Colis Privé](carrier:colis-prive): a different company with a similar name.
 
 ## Colisweb statuses: what the French messages mean
 
