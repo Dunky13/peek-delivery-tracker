@@ -52,3 +52,9 @@ begin
 exception when duplicate_object then null;
 end;
 $$;
+
+-- Supabase grants what a migration creates in public to these roles, so a migration has to
+-- revoke what it does not mean to give.
+alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
+alter default privileges in schema public grant all on sequences to anon, authenticated, service_role;
+alter default privileges in schema public grant all on functions to anon, authenticated, service_role;

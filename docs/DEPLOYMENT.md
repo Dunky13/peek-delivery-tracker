@@ -31,6 +31,11 @@ version. Apply new ones **before** deploying the server that needs them. Deploy 
 server before releasing iPhone builds that call new endpoints. Each migration ends by
 recording its file name in `public.applied_migrations`, which the deployment checks.
 
+Supabase grants every table, sequence and function a migration creates in `public` to
+`anon`, `authenticated` and `service_role`. A migration revokes what it does not mean to
+give, and [`client_access.sql`](../supabase/tests/client_access.sql) lists what a client
+may call.
+
 Relaxing a carrier input (making a postcode optional, say) follows the same order:
 migration, then server, then app. Until an updated iPhone app first reaches
 `/api/carriers` it uses its bundled catalog, so an older server can still reject what the
