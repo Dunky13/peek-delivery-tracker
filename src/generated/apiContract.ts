@@ -5783,7 +5783,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Vancouver",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chit-chats",
+      "recognitionRank": 115
     },
     "trackingUrlTemplate": "https://chitchats.com/tracking/{trackingNumber}",
     "linkRules": [
