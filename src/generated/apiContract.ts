@@ -6528,7 +6528,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Ljubljana",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-slovenije",
+      "recognitionRank": 790
     },
     "trackingUrlTemplate": "https://moja.posta.si/tracking?trackingNumber={trackingNumber}",
     "linkRules": [
@@ -6542,7 +6543,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SI$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://moja.posta.si/tracking"
   },
   "posta-srbije": {
