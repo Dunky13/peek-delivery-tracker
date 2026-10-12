@@ -96,13 +96,24 @@ const ARCHIVED_FOLLOWED_MS = 30 * 24 * 60 * 60 * 1_000;
  */
 const DELIVERY_PROBE_INTERVAL_MS = 55 * 60 * 1_000;
 /**
+ * The gap while the partner's first scan is the next thing to happen, or someone
+ * waits for the answer: the partner has announced the parcel, or the check was
+ * asked for by hand.
+ */
+const DELIVERY_PROBE_SHORT_INTERVAL_MS = 5 * 60 * 1_000;
+/**
  * A carrier publishes some scans after it handed the parcel over. The earlier
  * carrier is asked again this long after the handoff, at most once per
  * DELIVERY_PROBE_INTERVAL_MS, alongside the delivery carrier.
  */
 const EARLIER_FOLLOW_UP_MS = 24 * 60 * 60 * 1_000;
 
-interface DeliveryProbe extends JsonObject { at: string; origin_update: string | null }
+interface DeliveryProbe extends JsonObject {
+  at: string;
+  origin_update: string | null;
+  /** The partner had the parcel on record, dated no earlier than the origin's news, without a scan of its own. */
+  announced?: true;
+}
 
 /** Whether this check asks a handed-over parcel's earlier carrier again: within a day of the handoff, at most hourly. */
 function asksEarlierCarrier(metadata: JsonObject, now: Date): boolean {
@@ -117,7 +128,8 @@ function previousDeliveryProbe(parcel: JsonObject, carrier: string, number: stri
   const stored = data.delivery_probe ?? (carrier === 'swiss-post' ? data.swiss_post_probe : undefined);
   if (!isRecord(stored) || typeof stored.at !== 'string' || !Number.isFinite(Date.parse(stored.at))) return null;
   if ((stored.carrier != null && stored.carrier !== carrier) || (stored.number != null && stored.number !== number)) return null;
-  return { at: stored.at, origin_update: typeof stored.origin_update === 'string' ? stored.origin_update : null };
+  return { at: stored.at, origin_update: typeof stored.origin_update === 'string' ? stored.origin_update : null,
+    ...(stored.announced === true ? { announced: true as const } : {}) };
 }
 
 /** How many answers a check took from another copy of its number in the same run, when any. */
@@ -1101,7 +1113,7 @@ export class TrackingSyncService {
       try {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
           ? await new TrackingRouter({
-            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks),
+            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks, context.trigger === 'package'),
             universal: (source, number, timeout, postcode, timezone, carrier) => once(universalLookupKey(source, number, postcode, timezone, carrier),
               () => this.adapter.fetchUniversal!(source, number, timeout, postcode, timezone, carrier)),
             ...(checks ? { reusedUniversal: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null, carrier: string | null) =>
@@ -1114,7 +1126,7 @@ export class TrackingSyncService {
               once(recognitionKey('browser', carrier, number), () => this.adapter.recognizeBrowser!(carrier, number, context, previousError)) } : {}),
             enablePostalNinja: process.env.TRACKING_ENABLE_POSTAL_NINJA === 'true',
           }).fetch(subject, context.trigger === 'scheduled', context.signal, addition)
-          : await this.fetchResult(subject, carrierId, checks));
+          : await this.fetchResult(subject, carrierId, checks, context.trigger === 'package'));
       } catch (error) {
         if (carrierId === 'amazon-shipping' && error instanceof CarrierError && error.reason === 'history_expired') {
           audit.skip('normalize', 'history_expired');
@@ -1526,6 +1538,7 @@ export class TrackingSyncService {
     parcel: JsonObject,
     carrierId: string,
     checks?: ParcelLookups,
+    byHand = false,
   ): Promise<{
     result: CarrierResult;
     sourceCarrierId: string;
@@ -1590,13 +1603,15 @@ export class TrackingSyncService {
       const previousProbe = candidate ? previousDeliveryProbe(parcel, candidate.carrier, candidate.number) : null;
       const originUpdate = typeof origin.last_update === 'string' ? origin.last_update : previousProbe?.origin_update ?? null;
       const sinceProbe = previousProbe ? this.now().getTime() - Date.parse(previousProbe.at) : Number.NaN;
+      const gap = byHand || previousProbe?.announced ? DELIVERY_PROBE_SHORT_INTERVAL_MS : DELIVERY_PROBE_INTERVAL_MS;
       const askedRecently = previousProbe !== null && originUpdate === previousProbe.origin_update
-        && sinceProbe >= 0 && sinceProbe < DELIVERY_PROBE_INTERVAL_MS;
+        && sinceProbe >= 0 && sinceProbe < gap;
       if (candidate && askedRecently) {
         // carrier_data is rebuilt from the result on every refresh: carry the marker forward.
         origin.delivery_probe = { ...previousProbe, carrier: candidate.carrier, number: candidate.number };
       } else if (candidate) {
-        origin.delivery_probe = { at: this.now().toISOString(), origin_update: originUpdate, carrier: candidate.carrier, number: candidate.number };
+        const probe: DeliveryProbe = { at: this.now().toISOString(), origin_update: originUpdate, carrier: candidate.carrier, number: candidate.number };
+        origin.delivery_probe = probe;
         try {
           const delivery = normalizeCarrierResult(await this.fetchCarrier(checks, candidate.carrier, candidate.number, null, null));
           const originTime = latestResultTime(origin, carrierId);
@@ -1611,8 +1626,8 @@ export class TrackingSyncService {
             && resultStage(delivery) === terminal && deliveryTime > 0 && originTime > 0
             && new Date(deliveryTime).toISOString().slice(0, 10) === new Date(originTime).toISOString().slice(0, 10)
             && new Date(watermark).toISOString().slice(0, 10) === new Date(originTime).toISOString().slice(0, 10);
-          if (delivery.status !== 'pending' && !['pending', 'registered'].includes(resultStage(delivery) ?? 'pending')
-            && (candidate.basis !== 'destination' || deliveryTime > 0)
+          const scanned = delivery.status !== 'pending' && !['pending', 'registered'].includes(resultStage(delivery) ?? 'pending');
+          if (scanned && (candidate.basis !== 'destination' || deliveryTime > 0)
             && resultHasUpdate(delivery) && (deliveryTime >= watermark || sameCompletion)
             && (!terminal || resultStage(delivery) === terminal)) {
             // The local delivery hides the origin failure from the router, which reports every other one.
@@ -1634,6 +1649,8 @@ export class TrackingSyncService {
               earlierResult: origin, earlierCarrierId: carrierId,
             };
           }
+          // It has the parcel on record with news of its own and no scan yet: its first scan comes next.
+          if (!scanned && deliveryTime > 0 && deliveryTime >= watermark) probe.announced = true;
         } catch (error) {
           fallbackError = errorType(error);
           // A partner that does not know the item yet, or answers inconclusively
