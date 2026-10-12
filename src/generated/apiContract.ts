@@ -6284,9 +6284,10 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jitsu",
+      "recognitionRank": 85
     },
-    "trackingUrlTemplate": "https://recipient.gojitsu.com/{trackingNumber}",
+    "trackingUrlTemplate": "https://recipient.gojitsu.com/noredirect/{trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -6295,7 +6296,7 @@ export const CARRIER_CAPABILITIES = {
           "tracking.gojitsu.com",
           "tracking.axlehire.com"
         ],
-        "path": "^/([^/?#]+)/?$"
+        "path": "^/(?:noredirect/)?([^/?#]+)/?$"
       }
     ],
     "detectionRules": [],
