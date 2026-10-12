@@ -7432,7 +7432,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Stockholm",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "early-bird",
+      "recognitionRank": 350
     },
     "trackingUrlTemplate": "https://earlybird.se/spara-och-hjalp?id={trackingNumber}",
     "linkRules": [
@@ -7440,7 +7441,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "earlybird.se"
         ],
-        "pathPattern": "^/(?:tracking|spara-och-hjalp)/?$",
+        "pathPattern": "^/(?:tracking|spara-och-hjalp|en/track-and-help)/?$",
         "params": [
           "id"
         ]
@@ -7455,7 +7456,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^00\\d73402216\\d{9}$",
+        "confidence": "low",
+        "checksum": "sscc",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://earlybird.se/spara-och-hjalp"
   },
   "econt": {
