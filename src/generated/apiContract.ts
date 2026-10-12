@@ -6307,7 +6307,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Riga",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "latvijas-pasts",
+      "recognitionRank": 820
     },
     "trackingUrlTemplate": "https://mans.pasts.lv/track?locale=lv-LV&id={trackingNumber}",
     "linkRules": [
@@ -6321,7 +6322,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LV$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.pasts.lv/izsekot-sutijumu"
   },
   "loomis-express": {
