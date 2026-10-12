@@ -33,7 +33,7 @@ beforeEach(() => {
   vi.stubEnv('SUPABASE_PUBLISHABLE_KEY', 'public-key');
   vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-service-key');
   vi.stubEnv('TRUST_PROXY_HEADERS', 'true');
-  vi.spyOn(SupabaseServiceClient.prototype, 'claimAccountTracking').mockResolvedValue(true);
+  vi.spyOn(SupabaseServiceClient.prototype, 'claimAccountTracking').mockResolvedValue({ allowed: true, scope: null, overallUsed: 0 });
   vi.spyOn(SupabaseServiceClient.prototype, 'recordTrackingSupportObservation').mockResolvedValue(undefined);
   vi.spyOn(console, 'log').mockImplementation(() => undefined);
   recognize.mockReset().mockImplementation(knows());

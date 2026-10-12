@@ -340,7 +340,7 @@ describe('looking up a parcel without an account', () => {
   });
 
   it('says once a day that the overall allowance is running out, and that it is used up', async () => {
-    const report = vi.spyOn(observability, 'capturePublicAllowance').mockReturnValue(null);
+    const report = vi.spyOn(observability, 'captureOverallAllowance').mockReturnValue(null);
     store();
     vi.useFakeTimers({ toFake: ['Date'], now: new Date('2026-11-05T10:00:00Z') });
     const claim = allow(2_399);
@@ -349,11 +349,11 @@ describe('looking up a parcel without an account', () => {
     claim.mockResolvedValue({ allowed: true, scope: null, overallUsed: 2_400 });
     await lookup({ trackingNumber });
     await lookup({ trackingNumber });
-    expect(report.mock.calls).toEqual([['lookup', 'running_out', { used: 2_400, limit: 3_000 }]]);
+    expect(report.mock.calls).toEqual([['public', 'lookup', 'running_out', { used: 2_400, limit: 3_000 }]]);
     claim.mockResolvedValue({ allowed: false, scope: 'global', overallUsed: 3_000 });
     await lookup({ trackingNumber });
     await lookup({ trackingNumber });
-    expect(report.mock.calls.at(-1)).toEqual(['lookup', 'used_up', { used: 3_000, limit: 3_000 }]);
+    expect(report.mock.calls.at(-1)).toEqual(['public', 'lookup', 'used_up', { used: 3_000, limit: 3_000 }]);
     expect(report).toHaveBeenCalledTimes(2);
     // The next day it is said again.
     vi.setSystemTime(new Date('2026-11-06T00:00:01Z'));

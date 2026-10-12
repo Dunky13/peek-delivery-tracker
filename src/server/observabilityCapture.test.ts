@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import * as Sentry from '@sentry/node';
 import type { Event } from '@sentry/node';
-import { captureOperationalError, capturePublicAllowance, captureTrackingHealth, flushObservability, initObservability, reportRoutingEvent,
+import { captureOperationalError, captureOverallAllowance, captureTrackingHealth, flushObservability, initObservability, reportRoutingEvent,
 } from './observability';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
@@ -218,8 +218,8 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
   expect(opportunity.breadcrumbs?.some((crumb) => crumb.category === 'tracking-routing' && crumb.message === 'provider_recovered')).toBe(true);
 
   // An overall allowance without an account is one issue per allowance and state.
-  const low = capturePublicAllowance('lookup', 'running_out', { used: 2_400, limit: 3_000 });
-  const gone = capturePublicAllowance('detection', 'used_up', { used: 10_000, limit: 10_000 });
+  const low = captureOverallAllowance('public', 'lookup', 'running_out', { used: 2_400, limit: 3_000 });
+  const gone = captureOverallAllowance('public', 'detection', 'used_up', { used: 10_000, limit: 10_000 });
   await flushObservability();
   const runningOut = captured.events.find((event) => event.event_id === low)!;
   expect(runningOut.message).toBe("Lookups without an account: today's allowance is running out");
@@ -234,6 +234,14 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
   expect(usedUp.level).toBe('error');
   expect(usedUp.tags).toMatchObject({ component: 'public-allowance', allowance: 'detection', allowance_state: 'used_up' });
   expect(usedUp.contexts?.public_allowance?.next_steps).toContain('PUBLIC_DETECTIONS_GLOBAL_PER_DAY');
+
+  // Every account shares an hourly allowance, reported apart from the one without an account.
+  const accounts = captureOverallAllowance('account', 'lookup', 'used_up', { used: 50, limit: 50 });
+  await flushObservability();
+  const accountsUsedUp = captured.events.find((event) => event.event_id === accounts)!;
+  expect(accountsUsedUp.message).toBe("Parcels added by accounts: this hour's allowance is used up");
+  expect(accountsUsedUp.fingerprint).toEqual(['delivery-tracker', 'account-allowance', 'lookup', 'used_up']);
+  expect(accountsUsedUp.contexts?.account_allowance?.next_steps).toContain('ACCOUNT_LOOKUPS_PER_HOUR');
 });
 
 it('names a parcel by its tracking number and cuts addresses down in reports and breadcrumbs', async () => {

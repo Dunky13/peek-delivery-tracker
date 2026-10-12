@@ -395,6 +395,7 @@ Key JSON events:
   `parcel_feedback_maintenance_failed` that it could not run.
 - `public_allowance`: an overall daily allowance without an account (`kind`: `lookup` or
   `detection`) is `running_out` at 80% or `used_up`, with `used` and `limit`.
+  `account_allowance` says the same of the hourly allowance every account shares, at 50%.
 - `delivery_email` (by `package_id`): how one delivery email ended, with its `stage`, `outcome` and
   `reason`; a refusal by the mail server adds `error_code` and `smtp_status`.
   `delivery_emails_capped` when emails were skipped for a daily allowance, and
@@ -450,6 +451,10 @@ project-side scrubbing still apply. Automatic lookups wrap each provider failure
   an overall allowance is 80% used, and reports an error when it is used up: every visitor
   without an account is then refused until midnight UTC. One issue per allowance and
   state.
+- **Allowances for accounts**: `component:account-allowance` warns once an hour when the
+  allowance every account shares is half used, and reports an error when it is used up:
+  every account is then refused until the next hour (UTC). Many new accounts at their
+  daily limit in `private.account_tracking_usage` point to accounts made for scraping.
 - **Routing searches**: see [ROUTING.md](ROUTING.md).
 
 ### Upstream HTTP diagnostics

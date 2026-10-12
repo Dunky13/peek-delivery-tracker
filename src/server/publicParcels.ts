@@ -16,15 +16,16 @@ import { EVENT_STAGE_ORDER } from '../lib/stages';
 import { clientNetwork, clientSite } from './api';
 import { emailConfigured } from './email/config';
 import { withEventPlaces } from './eventPlaces';
-import { capturePublicAllowance, logOperationalEvent } from './observability';
+import { type AllowanceHolder, captureOverallAllowance, logOperationalEvent } from './observability';
 import { pushServices } from './push';
 import type { PublicAllowance, StoredParcelLink, SupabaseServiceClient } from './supabase';
 import { isRecord } from './types';
 
 /**
  * One parcel through a link: what the link's caller may see, a gift's viewer
- * included, the owner key behind the owner role, and the daily lookup
- * allowances.
+ * included, the owner key behind the owner role, the daily lookup
+ * allowances, and the reports of an overall allowance running out, which
+ * accounts use too.
  */
 
 /** The one answer for an unknown, forgotten, expired or malformed link, and for a wrong key. */
@@ -127,23 +128,35 @@ export function detectionLimits(env: Environment = process.env): { perClient: nu
   };
 }
 
-/** What was last reported about each overall allowance, and for which day: once per day and process. */
+/** What was last reported about each overall allowance, and for which day or hour: once per period and process. */
 const reported = new Map<string, string>();
 
+/** An allowance shared by everyone without an account, or by every account. */
+export interface OverallAllowance {
+  holder: AllowanceHolder;
+  kind: 'lookup' | 'detection';
+  /** What it counts: a UTC day or a UTC hour. */
+  period: 'day' | 'hour';
+  limit: number;
+  /** The share of it past which it is running out. */
+  runningOut: number;
+}
+
 /**
- * Says when an overall allowance is running out or used up: used up, every
- * visitor without an account is refused until midnight UTC. An allowance of
- * 0 was turned off on purpose and reports nothing.
+ * Says when an overall allowance is running out or used up: used up, everyone
+ * who shares it is refused until its day or hour is over. An allowance of 0
+ * was turned off on purpose and reports nothing.
  */
-function reportOverallAllowance(kind: 'lookup' | 'detection', claimed: PublicAllowance, limit: number, now: Date): void {
-  const state = !claimed.allowed && claimed.scope === 'global' ? 'used_up'
-    : claimed.overallUsed >= limit * RUNNING_OUT ? 'running_out' : null;
+export function reportOverallAllowance(allowance: OverallAllowance, used: number, usedUp: boolean, now: Date): void {
+  const { holder, kind, limit } = allowance;
+  const state = usedUp ? 'used_up' : used >= limit * allowance.runningOut ? 'running_out' : null;
   if (state === null || limit === 0) return;
-  const day = now.toISOString().slice(0, 10);
-  if (reported.get(`${kind}:${state}`) === day) return;
-  reported.set(`${kind}:${state}`, day);
-  logOperationalEvent('public_allowance', { kind, state, used: claimed.overallUsed, limit }, state === 'used_up' ? 'error' : 'warning');
-  capturePublicAllowance(kind, state, { used: claimed.overallUsed, limit });
+  const period = now.toISOString().slice(0, allowance.period === 'day' ? 10 : 13);
+  if (reported.get(`${holder}:${kind}:${state}`) === period) return;
+  reported.set(`${holder}:${kind}:${state}`, period);
+  logOperationalEvent(holder === 'public' ? 'public_allowance' : 'account_allowance', { kind, state, used, limit },
+    state === 'used_up' ? 'error' : 'warning');
+  captureOverallAllowance(holder, kind, state, { used, limit });
 }
 
 /** Counts one lookup against today's allowances: the client's, its IPv6 /48's and everyone's. */
@@ -156,7 +169,8 @@ export async function claimLookup(service: SupabaseServiceClient, ip: string, no
     overall: { bucket: 'global', limit: limits.overall },
     network: network === null ? null : { bucket: network, limit: limits.perNetwork },
   });
-  reportOverallAllowance('lookup', claimed, limits.overall, now);
+  reportOverallAllowance({ holder: 'public', kind: 'lookup', period: 'day', limit: limits.overall, runningOut: RUNNING_OUT },
+    claimed.overallUsed, !claimed.allowed && claimed.scope === 'global', now);
   return claimed;
 }
 
@@ -168,7 +182,8 @@ export async function claimDetection(service: SupabaseServiceClient, ip: string,
     limit: limits.perClient,
     overall: { bucket: 'detection', limit: limits.overall },
   });
-  reportOverallAllowance('detection', claimed, limits.overall, now);
+  reportOverallAllowance({ holder: 'public', kind: 'detection', period: 'day', limit: limits.overall, runningOut: RUNNING_OUT },
+    claimed.overallUsed, !claimed.allowed && claimed.scope === 'global', now);
   return claimed;
 }
 

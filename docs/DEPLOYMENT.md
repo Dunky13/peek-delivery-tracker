@@ -296,9 +296,12 @@ Network and global budgets still apply. Apple outages and unsupported devices
 use Turnstile. Signed-in requests use account budgets.
 
 Accounts have separate persistent daily budgets for parcel additions and
-carrier detections. Set `ACCOUNT_LOOKUPS_PER_DAY` and
-`ACCOUNT_DETECTIONS_PER_DAY` to tune them; `0` disables that work. Cached and
-local carrier detection does not spend the detection budget.
+carrier detections: `ACCOUNT_LOOKUPS_PER_DAY` (default 15) and
+`ACCOUNT_DETECTIONS_PER_DAY` (default 60). Accounts cost nothing to make, so every
+account also shares an hourly budget for each: `ACCOUNT_LOOKUPS_PER_HOUR` (default 50)
+and `ACCOUNT_DETECTIONS_PER_HOUR` (default 200). Once it is used up, every account is
+refused until the next hour (UTC). `0` disables that work. Cached and local carrier
+detection does not spend the detection budgets.
 
 See [OBSERVABILITY.md](OBSERVABILITY.md) for verification monitoring.
 

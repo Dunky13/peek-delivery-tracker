@@ -117,6 +117,13 @@ export interface PublicAllowance {
   overallUsed: number;
 }
 
+/** A claim by an account: `overall` is every account's this hour, `account` the account's today. */
+export interface AccountAllowance {
+  allowed: boolean;
+  scope: 'overall' | 'account' | null;
+  overallUsed: number;
+}
+
 export interface PublicUsageStats { buckets: number; p50: number; p90: number; max: number }
 
 function usageStats(value: unknown): PublicUsageStats {
@@ -1409,12 +1416,26 @@ export class SupabaseServiceClient extends SupabaseClient {
     };
   }
 
-  async claimAccountTracking(userId: string, kind: 'lookup' | 'detection', limit: number): Promise<boolean> {
+  /**
+   * Counts one use by an account against this hour's allowance for every
+   * account and the account's own for today (UTC). `scope` says which ran out,
+   * and `overallUsed` how much of the hour's is used.
+   */
+  async claimAccountTracking(
+    userId: string,
+    kind: 'lookup' | 'detection',
+    limits: { perAccount: number; overall: number },
+  ): Promise<AccountAllowance> {
     const result = await this.request('/rest/v1/rpc/claim_account_tracking', {
-      method: 'POST', body: { p_user_id: userId, p_kind: kind, p_limit: limit },
+      method: 'POST',
+      body: { p_user_id: userId, p_kind: kind, p_limit: limits.perAccount, p_overall_limit: limits.overall },
     });
-    if (typeof result !== 'boolean') throw new SupabaseError('Supabase did not return the tracking allowance');
-    return result;
+    if (!isRecord(result) || typeof result.allowed !== 'boolean') throw new SupabaseError('Supabase did not return the tracking allowance');
+    return {
+      allowed: result.allowed,
+      scope: result.scope === 'overall' || result.scope === 'account' ? result.scope : null,
+      overallUsed: Number(result.overall ?? 0),
+    };
   }
 
   /**

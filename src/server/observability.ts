@@ -430,32 +430,56 @@ export function captureTrackingHealth(incident: JsonObject): string | null {
   return id;
 }
 
+/** Who shares an overall allowance: everyone without an account, per UTC day, or every account, per UTC hour. */
+export type AllowanceHolder = 'public' | 'account';
+
+const OVERALL_ALLOWANCES = {
+  public: {
+    component: 'public-allowance',
+    context: 'public_allowance',
+    subject: { lookup: 'Lookups without an account', detection: 'Carrier detection without an account' },
+    setting: { lookup: 'PUBLIC_LOOKUPS_GLOBAL_PER_DAY', detection: 'PUBLIC_DETECTIONS_GLOBAL_PER_DAY' },
+    period: "today's",
+    usedUp: 'Every visitor without an account is refused until midnight UTC. Signed-in accounts are not affected.',
+    runningOut: 'At this rate visitors without an account will be refused before midnight UTC.',
+    check: "Compare yesterday's per-client gauges with the allowance (docs/OBSERVABILITY.md): a few clients at their limit point to abuse",
+  },
+  account: {
+    component: 'account-allowance',
+    context: 'account_allowance',
+    subject: { lookup: 'Parcels added by accounts', detection: 'Carrier detection for accounts' },
+    setting: { lookup: 'ACCOUNT_LOOKUPS_PER_HOUR', detection: 'ACCOUNT_DETECTIONS_PER_HOUR' },
+    period: "this hour's",
+    usedUp: 'Every account is refused until the next hour (UTC). Visitors without an account are not affected.',
+    runningOut: 'At this rate every account will be refused before the hour (UTC) is over.',
+    check: "List today's busiest accounts in private.account_tracking_usage and when they were made (auth.users): many new accounts at their daily limit point to abuse",
+  },
+} as const;
+
 /**
- * An overall daily allowance without an account is running out or used up.
- * Used up, every visitor without an account is refused until midnight UTC.
- * One issue per allowance and state; the event title states the impact.
+ * An overall allowance is running out or used up. Used up, everyone who
+ * shares it is refused until its day or hour is over. One issue per holder,
+ * allowance and state; the event title states the impact.
  */
-export function capturePublicAllowance(
+export function captureOverallAllowance(
+  holder: AllowanceHolder,
   kind: 'lookup' | 'detection',
   state: 'running_out' | 'used_up',
   usage: { used: number; limit: number },
 ): string | null {
   if (!initObservability()) return null;
-  const subject = kind === 'lookup' ? 'Lookups without an account' : 'Carrier detection without an account';
-  const setting = kind === 'lookup' ? 'PUBLIC_LOOKUPS_GLOBAL_PER_DAY' : 'PUBLIC_DETECTIONS_GLOBAL_PER_DAY';
+  const allowance = OVERALL_ALLOWANCES[holder];
   let id: string | null = null;
   Sentry.withScope(scope => {
-    scope.setTag('component', 'public-allowance');
+    scope.setTag('component', allowance.component);
     scope.setTag('allowance', kind);
     scope.setTag('allowance_state', state);
-    scope.setContext('public_allowance', { ...usage,
-      impact: state === 'used_up'
-        ? 'Every visitor without an account is refused until midnight UTC. Signed-in accounts are not affected.'
-        : 'At this rate visitors without an account will be refused before midnight UTC.',
-      next_steps: `Compare yesterday's per-client gauges with the allowance (docs/OBSERVABILITY.md): a few clients at their limit point to abuse; if the use is ordinary, raise ${setting}.` });
-    scope.setFingerprint(['delivery-tracker', 'public-allowance', kind, state]);
+    scope.setContext(allowance.context, { ...usage,
+      impact: state === 'used_up' ? allowance.usedUp : allowance.runningOut,
+      next_steps: `${allowance.check}; if the use is ordinary, raise ${allowance.setting[kind]}.` });
+    scope.setFingerprint(['delivery-tracker', allowance.component, kind, state]);
     scope.setLevel(state === 'used_up' ? 'error' : 'warning');
-    id = Sentry.captureMessage(`${subject}: today's allowance is ${state === 'used_up' ? 'used up' : 'running out'}`);
+    id = Sentry.captureMessage(`${allowance.subject[kind]}: ${allowance.period} allowance is ${state === 'used_up' ? 'used up' : 'running out'}`);
   });
   return id;
 }
