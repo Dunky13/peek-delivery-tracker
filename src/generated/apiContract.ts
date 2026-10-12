@@ -7653,7 +7653,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "go-express",
+      "recognitionRank": 960
     },
     "trackingUrlTemplate": "https://www.general-overnight.com/deu_de/versenden/sendungsverfolgung.html?reference={trackingNumber}",
     "linkRules": [
