@@ -19,7 +19,7 @@ begin
     'mng-kargo', 'nationex', 'post-luxembourg', 'posta-slovenije',
     'posta-srbije', 'ptt', 'redpack', 'rl-carriers', 'russian-post', 'saia',
     'sameday', 'speedy', 'trans-o-flex', 'ubi-smart-parcel', 'wanbexpress',
-    'whistl', 'xdp', 'xpo-ltl', 'yurtici-kargo', 'zeleris'
+    'whistl', 'xpo-ltl', 'yurtici-kargo', 'zeleris'
   ] loop
     serial := serial + 1;
     parcel := public.create_owned_package('UC' || lpad(serial::text, 10, '0'), 'Universal fixture', carrier_id);
@@ -29,7 +29,7 @@ begin
     if (select carrier from public.packages where id = parcel.id) <> carrier_id then
       raise exception 'Carrier change to % failed', carrier_id;
     end if;
-    -- None of them asks for a postcode. GLS Spain, added with them, asks for one since.
+    -- None of them asks for a postcode. GLS Spain and XDP, added with them, take one since.
     begin
       perform public.create_owned_package('UP' || lpad(serial::text, 10, '0'), 'With a postcode', carrier_id, null, '75001');
       raise exception 'A % postcode was accepted', carrier_id;
