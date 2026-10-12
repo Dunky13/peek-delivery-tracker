@@ -6398,10 +6398,30 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "loomis-express",
+      "recognitionRank": 285
     },
-    "trackingUrlTemplate": "https://loomisexpress.com/loomship/Track",
-    "linkRules": [],
+    "trackingUrlTemplate": "https://loomisexpress.com/loomship/Track/TrackResults?t=WAYBILL&s={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "loomisexpress.com"
+        ],
+        "pathPattern": "^/loomship/(?:fr/)?Track/TrackResults/?$",
+        "params": [
+          "s"
+        ]
+      },
+      {
+        "domains": [
+          "loomisexpress.com"
+        ],
+        "pathPattern": "^/loomship/Track/TrackStatus/?$",
+        "params": [
+          "wbs"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^NET\\d{8}$",
