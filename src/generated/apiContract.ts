@@ -7675,7 +7675,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Vilnius",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lietuvos-pastas",
+      "recognitionRank": 860
     },
     "trackingUrlTemplate": "https://lpexpress.lt/track?parcel={trackingNumber}",
     "linkRules": [
@@ -7708,6 +7709,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^(?:CC|CH|HC)\\d{9}LT$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LT$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://lpexpress.lt/track"
