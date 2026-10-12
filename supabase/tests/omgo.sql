@@ -6,7 +6,7 @@ set local role authenticated;
 do $$
 declare parcel public.packages;
 begin
-  parcel := public.create_owned_package('OMGO00000001', 'OMGO fixture', 'omgo');
+  parcel := test_support.add_parcel('OMGO00000001', 'OMGO fixture', 'omgo');
   if parcel.carrier <> 'omgo' then raise exception 'OMGO carrier was lost'; end if;
   perform public.change_owned_package_carrier(parcel.id, 'unknown');
   perform public.change_owned_package_carrier(parcel.id, 'omgo');

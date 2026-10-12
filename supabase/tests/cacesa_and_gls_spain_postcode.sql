@@ -7,7 +7,7 @@ do $$
 declare
   parcel public.packages;
 begin
-  parcel := public.create_owned_package('CA000000000001', 'CACESA fixture', 'cacesa');
+  parcel := test_support.add_parcel('CA000000000001', 'CACESA fixture', 'cacesa');
   if parcel.carrier <> 'cacesa' then raise exception 'CACESA was lost on creation'; end if;
   perform public.change_owned_package_carrier(parcel.id, 'unknown');
   perform public.change_owned_package_carrier(parcel.id, 'cacesa');
@@ -16,13 +16,13 @@ begin
   end if;
   -- CACESA asks for no postcode.
   begin
-    perform public.create_owned_package('CA000000000002', 'With a postcode', 'cacesa', null, '28000');
+    perform test_support.add_parcel('CA000000000002', 'With a postcode', 'cacesa', null, '28000');
     raise exception 'A CACESA postcode was accepted';
   exception when sqlstate '22023' then null;
   end;
 
   -- GLS Spain shows a shipment only with its delivery postcode, Spanish or Portuguese.
-  parcel := public.create_owned_package('GS000000000001', 'GLS Spain fixture', 'gls-es', null, ' 08000 ');
+  parcel := test_support.add_parcel('GS000000000001', 'GLS Spain fixture', 'gls-es', null, ' 08000 ');
   if parcel.carrier <> 'gls-es' or parcel.dpd_postcode <> '08000' then
     raise exception 'GLS Spain lost its postcode on creation';
   end if;
@@ -31,12 +31,12 @@ begin
     raise exception 'Portuguese postcode was not saved for GLS Spain';
   end if;
   begin
-    perform public.create_owned_package('GS000000000002', 'Without a postcode', 'gls-es');
+    perform test_support.add_parcel('GS000000000002', 'Without a postcode', 'gls-es');
     raise exception 'GLS Spain was accepted without a postcode';
   exception when sqlstate '22023' then null;
   end;
   begin
-    perform public.create_owned_package('GS000000000003', 'Malformed postcode', 'gls-es', null, '08/00');
+    perform test_support.add_parcel('GS000000000003', 'Malformed postcode', 'gls-es', null, '08/00');
     raise exception 'A malformed GLS Spain postcode was accepted';
   exception when sqlstate '22023' then null;
   end;

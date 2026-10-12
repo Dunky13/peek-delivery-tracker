@@ -18,7 +18,7 @@ begin
     'venipak', 'vinted-go'
   ] loop
     serial := serial + 1;
-    parcel := public.create_owned_package('HC' || lpad(serial::text, 10, '0'), 'Universal fixture', carrier_id);
+    parcel := test_support.add_parcel('HC' || lpad(serial::text, 10, '0'), 'Universal fixture', carrier_id);
     if parcel.carrier <> carrier_id then raise exception '% was lost on creation', carrier_id; end if;
     perform public.change_owned_package_carrier(parcel.id, 'unknown');
     perform public.change_owned_package_carrier(parcel.id, carrier_id);
@@ -27,13 +27,13 @@ begin
     end if;
     -- None of them asks for a postcode.
     begin
-      perform public.create_owned_package('HP' || lpad(serial::text, 10, '0'), 'With a postcode', carrier_id, null, '75001');
+      perform test_support.add_parcel('HP' || lpad(serial::text, 10, '0'), 'With a postcode', carrier_id, null, '75001');
       raise exception 'A % postcode was accepted', carrier_id;
     exception when sqlstate '22023' then null;
     end;
   end loop;
   begin
-    perform public.create_owned_package('HC0000000099', 'Unknown carrier', 'pitney-bowes');
+    perform test_support.add_parcel('HC0000000099', 'Unknown carrier', 'pitney-bowes');
     raise exception 'Unknown carrier was accepted';
   exception when sqlstate '22023' then null;
   end;

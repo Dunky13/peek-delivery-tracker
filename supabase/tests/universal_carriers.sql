@@ -22,7 +22,7 @@ begin
     'whistl', 'xpo-ltl', 'yurtici-kargo', 'zeleris'
   ] loop
     serial := serial + 1;
-    parcel := public.create_owned_package('UC' || lpad(serial::text, 10, '0'), 'Universal fixture', carrier_id);
+    parcel := test_support.add_parcel('UC' || lpad(serial::text, 10, '0'), 'Universal fixture', carrier_id);
     if parcel.carrier <> carrier_id then raise exception '% was lost on creation', carrier_id; end if;
     perform public.change_owned_package_carrier(parcel.id, 'unknown');
     perform public.change_owned_package_carrier(parcel.id, carrier_id);
@@ -31,13 +31,13 @@ begin
     end if;
     -- None of them asks for a postcode. GLS Spain and XDP, added with them, take one since.
     begin
-      perform public.create_owned_package('UP' || lpad(serial::text, 10, '0'), 'With a postcode', carrier_id, null, '75001');
+      perform test_support.add_parcel('UP' || lpad(serial::text, 10, '0'), 'With a postcode', carrier_id, null, '75001');
       raise exception 'A % postcode was accepted', carrier_id;
     exception when sqlstate '22023' then null;
     end;
   end loop;
   begin
-    perform public.create_owned_package('UC0000000099', 'Unknown carrier', 'gls-us');
+    perform test_support.add_parcel('UC0000000099', 'Unknown carrier', 'gls-us');
     raise exception 'Unknown carrier was accepted';
   exception when sqlstate '22023' then null;
   end;

@@ -101,7 +101,7 @@ begin
   foreach bad in array array['00000000000000000000000000', '12123456780101106623123454', '12123456780101006623123455'] loop
     if public.is_valid_mondial_relay_barcode(bad) then raise exception 'Invalid barcode accepted'; end if;
   end loop;
-  parcel := public.create_owned_package('12123456780101006623123454', 'Public example', 'mondial-relay');
+  parcel := test_support.add_parcel('12123456780101006623123454', 'Public example', 'mondial-relay');
   if parcel.dpd_postcode is not null or parcel.tracking_number <> '12123456780101006623123454' then
     raise exception 'Barcode identity or empty postcode changed';
   end if;
@@ -113,11 +113,11 @@ begin
   end if;
   foreach bad in array array['87654321', '12123456780101006623123455'] loop
     begin
-      perform public.create_owned_package(bad, '', 'mondial-relay');
+      perform test_support.add_parcel(bad, '', 'mondial-relay');
       raise exception 'Unverified barcode or short number created without postcode';
     exception when invalid_parameter_value then null;
     end;
-    parcel := public.create_owned_package(bad, '', 'unknown');
+    parcel := test_support.add_parcel(bad, '', 'unknown');
     begin
       perform public.change_owned_package_carrier(parcel.id, 'mondial-relay');
       raise exception 'Unverified barcode or short number switched without postcode';

@@ -10,7 +10,7 @@ declare
   typed text;
   stored text;
 begin
-  select * into parcel from public.create_owned_package('06080000000011', '', 'dpd');
+  select * into parcel from test_support.add_parcel('06080000000011', '', 'dpd');
   if parcel.dpd_postcode is not null then raise exception 'DPD postcode is no longer optional'; end if;
   foreach typed in array array['8000', '75001', 'sw1a  1aa', '1012 ab', '00-001'] loop
     stored := upper(regexp_replace(typed, ' +', ' ', 'g'));
@@ -19,7 +19,7 @@ begin
       raise exception 'DPD postcode % was not stored as %', typed, stored;
     end if;
   end loop;
-  select * into parcel from public.create_owned_package('06080000000012', '', 'dpd', null, ' 75001 ');
+  select * into parcel from test_support.add_parcel('06080000000012', '', 'dpd', null, ' 75001 ');
   if parcel.dpd_postcode <> '75001' then raise exception 'French postcode was not saved for DPD'; end if;
   foreach typed in array array['12', 'ABCDE', '1234567890123', '75001/2', '75 - 001'] loop
     begin
@@ -27,17 +27,17 @@ begin
       raise exception 'Accepted the DPD postcode %', typed using errcode = 'P0002';
     exception when invalid_parameter_value then null; end;
     begin
-      perform public.create_owned_package('06080000000013', '', 'dpd', null, typed);
+      perform test_support.add_parcel('06080000000013', '', 'dpd', null, typed);
       raise exception 'Created a DPD parcel with the postcode %', typed using errcode = 'P0002';
     exception when invalid_parameter_value then null; end;
   end loop;
   -- Other carriers keep their own shape.
   begin
-    perform public.create_owned_package('12345678901236', '', 'dpd-de', null, 'SW1A 1AA');
+    perform test_support.add_parcel('12345678901236', '', 'dpd-de', null, 'SW1A 1AA');
     raise exception 'Accepted a foreign postcode for DPD Germany' using errcode = 'P0002';
   exception when invalid_parameter_value then null; end;
   begin
-    perform public.create_owned_package('993990103198', '', 'gls-ch', null, '75001');
+    perform test_support.add_parcel('993990103198', '', 'gls-ch', null, '75001');
     raise exception 'Accepted a French postcode for GLS Switzerland' using errcode = 'P0002';
   exception when invalid_parameter_value then null; end;
 end;

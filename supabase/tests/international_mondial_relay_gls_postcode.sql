@@ -16,10 +16,10 @@ begin
     number := case carrier_id when 'mondial-relay' then '76434221' else '12345678904' end;
     -- Still required for an 8-digit shipment and for GLS.
     begin
-      perform public.create_owned_package(number, '', carrier_id);
+      perform test_support.add_parcel(number, '', carrier_id);
       raise exception 'Created a % parcel without its postcode', carrier_id using errcode = 'P0002';
     exception when invalid_parameter_value then null; end;
-    select * into parcel from public.create_owned_package(number, '', carrier_id, null, ' 75001 ');
+    select * into parcel from test_support.add_parcel(number, '', carrier_id, null, ' 75001 ');
     if parcel.dpd_postcode <> '75001' then raise exception 'French postcode was not saved for %', carrier_id; end if;
     foreach typed in array array['1000', 'l-1234', '1012  ab', '1000-001', '28001', 'sw1a 1aa'] loop
       stored := upper(regexp_replace(typed, ' +', ' ', 'g'));
@@ -38,7 +38,7 @@ begin
 
   -- Mondial Relay's 10- and 12-digit forms and its label barcodes need none.
   foreach number in array array['1276434222', '127643422301', '12123456780101006623123454'] loop
-    select * into parcel from public.create_owned_package(number, '', 'mondial-relay');
+    select * into parcel from test_support.add_parcel(number, '', 'mondial-relay');
     if parcel.dpd_postcode is not null then raise exception 'Mondial Relay % kept a postcode', number; end if;
     perform public.change_owned_package_carrier(parcel.id, 'mondial-relay', null, '1000');
     if (select dpd_postcode from public.packages where id = parcel.id) <> '1000' then
@@ -48,7 +48,7 @@ begin
 
   -- Heppner keeps its Swiss or French shape.
   begin
-    perform public.create_owned_package('23456789', '', 'heppner', null, '1012 AB');
+    perform test_support.add_parcel('23456789', '', 'heppner', null, '1012 AB');
     raise exception 'Accepted a Dutch postcode for Heppner' using errcode = 'P0002';
   exception when invalid_parameter_value then null; end;
 end;

@@ -6,7 +6,7 @@ set local role authenticated;
 do $$
 declare parcel public.packages;
 begin
-  parcel := public.create_owned_package('EB000000005CN', 'EMS fixture', 'ems');
+  parcel := test_support.add_parcel('EB000000005CN', 'EMS fixture', 'ems');
   if parcel.carrier <> 'ems' then raise exception 'EMS carrier was lost'; end if;
   perform public.change_owned_package_carrier(parcel.id, 'china-post');
   perform public.change_owned_package_carrier(parcel.id, 'ems');

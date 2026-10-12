@@ -7,24 +7,24 @@ do $$
 declare parcel public.packages;
 begin
   -- Six or more letters are a tracking number; fewer letters and no digit are not.
-  parcel := public.create_owned_package('aal zjr', 'Track ID fixture', 'unknown');
+  parcel := test_support.add_parcel('aal zjr', 'Track ID fixture', 'unknown');
   if parcel.tracking_number <> 'AALZJR' then raise exception 'Letter-only number was rewritten'; end if;
   begin
-    perform public.create_owned_package('ABCDE', 'Too short', 'unknown');
+    perform test_support.add_parcel('ABCDE', 'Too short', 'unknown');
     raise exception 'Five letters were accepted';
   exception when sqlstate '22023' then null;
   end;
   begin
-    perform public.create_owned_package('ABCDE-', 'Punctuation only', 'unknown');
+    perform test_support.add_parcel('ABCDE-', 'Punctuation only', 'unknown');
     raise exception 'Five letters and a dash were accepted';
   exception when sqlstate '22023' then null;
   end;
 
   -- The format constraint agrees with the function about the NACEX composite.
-  parcel := public.create_owned_package('1234/12345678', 'NACEX fixture', 'nacex');
+  parcel := test_support.add_parcel('1234/12345678', 'NACEX fixture', 'nacex');
   if parcel.tracking_number <> '1234/12345678' then raise exception 'NACEX composite was rewritten'; end if;
 
-  parcel := public.create_owned_package('200000000001', 'J&T Cargo fixture', 'j-and-t-cargo');
+  parcel := test_support.add_parcel('200000000001', 'J&T Cargo fixture', 'j-and-t-cargo');
   if parcel.carrier <> 'j-and-t-cargo' then raise exception 'J&T Cargo carrier was lost'; end if;
   perform public.change_owned_package_carrier(parcel.id, 'unknown');
   perform public.change_owned_package_carrier(parcel.id, 'j-and-t-cargo');

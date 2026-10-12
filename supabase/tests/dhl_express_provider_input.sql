@@ -8,7 +8,7 @@ set local role authenticated;
 do $$
 declare parcel public.packages; original_generation uuid;
 begin
-  parcel := public.create_owned_package('1234567891','Express fixture','dhl-express');
+  parcel := test_support.add_parcel('1234567891','Express fixture','dhl-express');
   original_generation := parcel.tracking_generation;
   perform public.change_owned_package_carrier(parcel.id,'unknown');
   perform public.change_owned_package_carrier(parcel.id,'dhl-express');

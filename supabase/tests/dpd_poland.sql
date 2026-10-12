@@ -7,7 +7,7 @@ do $$
 declare
   parcel public.packages;
 begin
-  parcel := public.create_owned_package('1000000000001U', 'DPD Poland fixture', 'dpd-pl');
+  parcel := test_support.add_parcel('1000000000001U', 'DPD Poland fixture', 'dpd-pl');
   if parcel.carrier <> 'dpd-pl' then raise exception 'DPD Poland was lost on creation'; end if;
   perform public.change_owned_package_carrier(parcel.id, 'unknown');
   perform public.change_owned_package_carrier(parcel.id, 'dpd-pl');
@@ -16,12 +16,12 @@ begin
   end if;
   -- DPD Poland asks for no postcode.
   begin
-    perform public.create_owned_package('13000000000002', 'With a postcode', 'dpd-pl', null, '00-001');
+    perform test_support.add_parcel('13000000000002', 'With a postcode', 'dpd-pl', null, '00-001');
     raise exception 'A DPD Poland postcode was accepted';
   exception when sqlstate '22023' then null;
   end;
   begin
-    perform public.create_owned_package('13000000000003', 'Unknown network', 'dpd-cz');
+    perform test_support.add_parcel('13000000000003', 'Unknown network', 'dpd-cz');
     raise exception 'Unknown carrier was accepted';
   exception when sqlstate '22023' then null;
   end;

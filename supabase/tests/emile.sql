@@ -7,7 +7,7 @@ do $$
 declare
   parcel public.packages;
 begin
-  parcel := public.create_owned_package('EM000000000001CA', 'Emile fixture', 'emile');
+  parcel := test_support.add_parcel('EM000000000001CA', 'Emile fixture', 'emile');
   if parcel.carrier <> 'emile' then raise exception 'Emile was lost on creation'; end if;
   perform public.change_owned_package_carrier(parcel.id, 'unknown');
   perform public.change_owned_package_carrier(parcel.id, 'emile');
@@ -16,12 +16,12 @@ begin
   end if;
   -- Emile asks for no postcode.
   begin
-    perform public.create_owned_package('EM000000000002CA', 'With a postcode', 'emile', null, 'A1A1A1');
+    perform test_support.add_parcel('EM000000000002CA', 'With a postcode', 'emile', null, 'A1A1A1');
     raise exception 'An Emile postcode was accepted';
   exception when sqlstate '22023' then null;
   end;
   begin
-    perform public.create_owned_package('EM000000000003CA', 'Unknown courier', 'emile-express');
+    perform test_support.add_parcel('EM000000000003CA', 'Unknown courier', 'emile-express');
     raise exception 'Unknown carrier was accepted';
   exception when sqlstate '22023' then null;
   end;

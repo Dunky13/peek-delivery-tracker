@@ -221,7 +221,7 @@ declare
   added uuid;
 begin
   perform set_config('request.jwt.claim.sub', 'e1000000-0000-4000-8000-000000000001', true);
-  select id into added from public.create_owned_package('EMAILTEST0001', 'Joined now', 'unknown', null, null);
+  select id into added from test_support.add_parcel('EMAILTEST0001', 'Joined now', 'unknown', null, null);
   if (select owned_since from public.packages where id = added) is distinct from now() then
     raise exception 'A parcel added to an account does not say when it joined';
   end if;

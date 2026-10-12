@@ -9,7 +9,7 @@ declare
   region text;
 begin
   foreach region in array array['gofo-fr', 'gofo-it'] loop
-    parcel := public.create_owned_package(upper('GF' || right(region, 2)) || '0000000000001', 'GOFO fixture', region);
+    parcel := test_support.add_parcel(upper('GF' || right(region, 2)) || '0000000000001', 'GOFO fixture', region);
     if parcel.carrier <> region then raise exception '% was lost on creation', region; end if;
     perform public.change_owned_package_carrier(parcel.id, 'gofo');
     perform public.change_owned_package_carrier(parcel.id, region);
@@ -18,13 +18,13 @@ begin
     end if;
     -- Neither region asks for a postcode.
     begin
-      perform public.create_owned_package(upper('GF' || right(region, 2)) || '0000000000002', 'With a postcode', region, null, '75001');
+      perform test_support.add_parcel(upper('GF' || right(region, 2)) || '0000000000002', 'With a postcode', region, null, '75001');
       raise exception 'A % postcode was accepted', region;
     exception when sqlstate '22023' then null;
     end;
   end loop;
   begin
-    perform public.create_owned_package('GFES0000000000003', 'Unknown region', 'gofo-es');
+    perform test_support.add_parcel('GFES0000000000003', 'Unknown region', 'gofo-es');
     raise exception 'Unknown carrier was accepted';
   exception when sqlstate '22023' then null;
   end;

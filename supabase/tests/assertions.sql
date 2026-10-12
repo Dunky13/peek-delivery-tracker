@@ -291,9 +291,37 @@ begin
 end;
 $$;
 
--- The checks below and the carrier tests after them call create_owned_package as
--- the user it acts for, as create_account_package does on the server's behalf.
-grant execute on function public.create_owned_package(text,text,text,text,text) to authenticated;
+-- The checks below and the carrier tests after them add a parcel for the signed-in
+-- test user the way the server does, through create_account_package, then go on
+-- as that user.
+create schema test_support;
+grant usage on schema test_support to authenticated;
+
+create function test_support.add_parcel(
+  p_tracking_number text,
+  p_label text default '',
+  p_carrier text default 'unknown',
+  p_tracking_url text default null,
+  p_dpd_postcode text default null
+)
+returns public.packages
+language plpgsql
+security definer
+set search_path = pg_catalog
+as $$
+declare
+  acting text := current_setting('request.jwt.claim.sub', true);
+  created public.packages;
+begin
+  created := public.create_account_package(
+    auth.uid(), p_tracking_number, p_label, p_carrier, p_tracking_url, p_dpd_postcode
+  );
+  perform set_config('request.jwt.claim.sub', acting, true);
+  return created;
+end;
+$$;
+
+grant execute on function test_support.add_parcel(text,text,text,text,text) to authenticated;
 
 -- The first user sees only their parcel, can create another parcel with the
 -- same tracking number as another user, and cannot alter server-owned fields.
@@ -305,7 +333,7 @@ declare
   deletable_id uuid;
 begin
   select id into deletable_id
-  from public.create_owned_package('DELETEDIRECT01', 'Direct delete test', 'unknown', null, null);
+  from test_support.add_parcel('DELETEDIRECT01', 'Direct delete test', 'unknown', null, null);
 
   if not public.delete_owned_package(deletable_id) then
     raise exception 'an owner could not permanently delete an active package';
@@ -388,83 +416,83 @@ begin
 end;
 $$;
 
-select public.create_owned_package(
+select test_support.add_parcel(
   'CROSSTENANT9', 'Same number, first owner', 'planzer', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '06080000000002', 'Verified DPD parcel', 'dpd', null, '8000'
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '250123456789012', 'DPD France parcel', 'dpd-fr', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '76434219', 'Mondial Relay parcel', 'mondial-relay', null, '59650'
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   'CC200000000401', 'Relais Colis parcel', 'relais-colis', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '8G12345678901', 'French postal parcel', 'la-poste', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   'PZ123456785JF', 'Chronopost parcel', 'chronopost', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '00AB12CD', 'GLS France parcel', 'gls-fr', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '99112233445575012', 'Colis Prive parcel', 'colis-prive', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '1G1234567890', 'GEODIS parcel', 'geodis', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '1234ABC789', 'Swiss Post Cargo shipment', 'swiss-post-cargo', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '993990103198', 'GLS Switzerland parcel', 'gls-ch', null, '8000'
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '12345678', 'Colisweb delivery', 'colisweb', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   'FGRC45BKLM', 'C Chez Vous delivery', 'c-chez-vous', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '23456789', 'Heppner shipment', 'heppner', null, '75001'
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '12345678901234', 'Ciblex parcel', 'ciblex', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   'PAACK12345', 'Paack delivery', 'paack', null, '1234-567'
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   'ASE12345678', 'Asendia parcel link', 'asendia', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   'RR000000005IN', 'India Post parcel', 'india-post', null, null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '9010000001234',
   'Dachser parcel',
   'dachser',
@@ -472,7 +500,7 @@ select public.create_owned_package(
   null
 );
 
-select public.create_owned_package(
+select test_support.add_parcel(
   '9010000005678',
   'Dachser parcel with maximum key length',
   'dachser',
@@ -491,7 +519,7 @@ begin
   end if;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       'CROSSTENANT9', '', 'planzer', null, null
     );
     raise exception 'same-user duplicate tracking number was accepted';
@@ -548,7 +576,7 @@ begin
   end if;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       'PAACK12346', '', 'paack', null, '12 - 345'
     );
     raise exception 'Paack postcode with doubled separators was accepted';
@@ -604,7 +632,7 @@ begin
   end if;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       '9010000001235', '', 'dachser', null, null
     );
     raise exception 'Dachser package without a capability URL was accepted';
@@ -613,7 +641,7 @@ begin
   end;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       '9010000001235',
       '',
       'dachser',
@@ -626,7 +654,7 @@ begin
   end;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       '06080000000003', '', 'dpd', null, '80/4'
     );
     raise exception 'invalid DPD postcode was accepted';
@@ -635,7 +663,7 @@ begin
   end;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       'NOTDPD8000', '', 'dhl', null, '8000'
     );
     raise exception 'delivery postcode was accepted for a different carrier';
@@ -644,7 +672,7 @@ begin
   end;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       '76434220', '', 'mondial-relay', null, '59/65'
     );
     raise exception 'invalid Mondial Relay postcode was accepted';
@@ -653,7 +681,7 @@ begin
   end;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       '993990103199', '', 'gls-ch', null, '800'
     );
     raise exception 'invalid GLS Switzerland postcode was accepted';
@@ -662,7 +690,7 @@ begin
   end;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       '23456790', '', 'heppner', null, '750010'
     );
     raise exception 'invalid Heppner postcode was accepted';
@@ -671,7 +699,7 @@ begin
   end;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       'PAACK12346', '', 'paack', null, '12--345'
     );
     raise exception 'invalid Paack postcode was accepted';
@@ -680,7 +708,7 @@ begin
   end;
 
   begin
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       'PAACK12347', '', 'paack', null, 'ABC'
     );
     raise exception 'all-letter Paack postcode was accepted';
@@ -849,7 +877,7 @@ declare
   deletable_id uuid;
 begin
   select id into deletable_id
-  from public.create_owned_package('DELETEARCHIVE1', 'Delete test', 'unknown', null, null);
+  from test_support.add_parcel('DELETEARCHIVE1', 'Delete test', 'unknown', null, null);
 
   if public.delete_owned_archived_package(deletable_id) then
     raise exception 'an active package was permanently deleted';
@@ -1726,7 +1754,7 @@ declare
   restore_blocked boolean := false;
 begin
   for item in 1..50 loop
-    perform public.create_owned_package(
+    perform test_support.add_parcel(
       'QUOTA' || lpad(item::text, 4, '0'),
       '',
       'unknown',
@@ -1736,7 +1764,7 @@ begin
   end loop;
 
   begin
-    perform public.create_owned_package('QUOTA0051', '', 'unknown', null, null);
+    perform test_support.add_parcel('QUOTA0051', '', 'unknown', null, null);
   exception when sqlstate 'P0001' then
     quota_blocked := true;
   end;
@@ -1757,7 +1785,7 @@ begin
     (select id from public.packages where tracking_number = 'QUOTA0001'),
     true
   );
-  perform public.create_owned_package('QUOTA0051', '', 'unknown', null, null);
+  perform test_support.add_parcel('QUOTA0051', '', 'unknown', null, null);
 
   begin
     perform public.set_owned_package_archived(
@@ -2053,20 +2081,20 @@ declare
   carrier_id text;
 begin
   foreach carrier_id in array array['hermes-de', 'delivengo', 'dhl-ecommerce', 'unknown', 'intl-post'] loop
-    select * into parcel from public.create_owned_package('TEST' || replace(carrier_id, '-', '') || '123', '', carrier_id, null, null);
+    select * into parcel from test_support.add_parcel('TEST' || replace(carrier_id, '-', '') || '123', '', carrier_id, null, null);
     if parcel.carrier <> carrier_id or parcel.user_id <> auth.uid() then
       raise exception 'New provider lost its carrier or owner';
     end if;
   end loop;
-  select * into parcel from public.create_owned_package('12345678901', '', 'gls-de', null, '01067');
+  select * into parcel from test_support.add_parcel('12345678901', '', 'gls-de', null, '01067');
   if parcel.dpd_postcode <> '01067' then raise exception 'German postcode lost its leading zero'; end if;
   perform public.change_owned_package_carrier(parcel.id, 'gls-de', null, '3000');
   select * into parcel from public.packages where id = parcel.id;
   if parcel.dpd_postcode <> '3000' then raise exception 'Swiss postcode was not saved for GLS Germany'; end if;
-  select * into parcel from public.create_owned_package('12345678902', '', 'gls-de', null, '8000');
+  select * into parcel from test_support.add_parcel('12345678902', '', 'gls-de', null, '8000');
   if parcel.dpd_postcode <> '8000' then raise exception 'Swiss postcode was not accepted for GLS Germany'; end if;
   begin
-    perform public.create_owned_package('12345678903', '', 'gls-de', null, '80/0');
+    perform test_support.add_parcel('12345678903', '', 'gls-de', null, '80/0');
     raise exception 'Accepted invalid postcode for German GLS' using errcode = 'P0002';
   exception when invalid_parameter_value then null; end;
   begin
@@ -2084,7 +2112,7 @@ begin
     raise exception 'Changing to automatic unknown lookup did not clear carrier-specific fields';
   end if;
   begin
-    perform public.create_owned_package('TESTAGGREGATOR123', '', 'parcelsapp', null, null);
+    perform test_support.add_parcel('TESTAGGREGATOR123', '', 'parcelsapp', null, null);
     raise exception 'Universal tracker was accepted as a selectable carrier' using errcode = 'P0002';
   exception when invalid_parameter_value then null; end;
 end;
@@ -2106,7 +2134,7 @@ do $$
 declare
   parcel public.packages;
 begin
-  select * into parcel from public.create_owned_package('06080000000001', '', 'dpd', null, '');
+  select * into parcel from test_support.add_parcel('06080000000001', '', 'dpd', null, '');
   if parcel.carrier <> 'dpd' or parcel.dpd_postcode is not null then
     raise exception 'DPD parcel without a postcode was not stored with a null postcode';
   end if;
@@ -2132,7 +2160,7 @@ begin
     raise exception 'Accepted a change to GLS Switzerland without a postcode' using errcode = 'P0002';
   exception when invalid_parameter_value then null; end;
   begin
-    perform public.create_owned_package('993990103198', '', 'gls-ch', null, null);
+    perform test_support.add_parcel('993990103198', '', 'gls-ch', null, null);
     raise exception 'Accepted a GLS Switzerland parcel without a postcode' using errcode = 'P0002';
   exception when invalid_parameter_value then null; end;
 

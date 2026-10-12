@@ -11,7 +11,7 @@ declare
 begin
   foreach network in array array['dhl-ecommerce-es', 'dhl-ecommerce-nl', 'dhl-ecommerce-pl', 'dhl-ecommerce-uk'] loop
     serial := serial + 1;
-    parcel := public.create_owned_package('9999000000000' || serial, 'Network fixture', network);
+    parcel := test_support.add_parcel('9999000000000' || serial, 'Network fixture', network);
     if parcel.carrier <> network then raise exception '% was lost on creation', network; end if;
     perform public.change_owned_package_carrier(parcel.id, 'unknown');
     perform public.change_owned_package_carrier(parcel.id, network);
@@ -20,7 +20,7 @@ begin
     end if;
   end loop;
   begin
-    perform public.create_owned_package('99990000000009', 'Unknown network', 'dhl-ecommerce-fr');
+    perform test_support.add_parcel('99990000000009', 'Unknown network', 'dhl-ecommerce-fr');
     raise exception 'Unknown carrier was accepted';
   exception when sqlstate '22023' then null;
   end;
