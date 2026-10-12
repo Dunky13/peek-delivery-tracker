@@ -78,7 +78,7 @@ Se cerchi il «codice tracking BRT di 18 cifre», sappi che BRT non ne parla: il
 
 ## Tracking che inizia con IT: che corriere è?
 
-Se dopo `IT` ci sono 10 cifre, di solito è Amazon. Negli stessi dati dei corrieri citati sopra, `IT` seguito da 10 cifre è [Amazon Logistics](carrier:amazon-logistics), il servizio di consegna di Amazon; lo stesso schema vale con altri codici paese (`DE`, `FR`, `ES`…) e con `TBA`, `TBC` o `TBM` seguiti da 12 cifre. La pagina di aiuto di Amazon.it su Amazon Logistics però non descrive il numero. Spiega invece che Amazon Logistics lavora con partner di consegna locali e regionali, e che il tuo ordine si traccia nella sezione *I miei ordini*.
+Se dopo `IT` ci sono 10 cifre, di solito è Amazon. Negli stessi dati dei corrieri citati sopra, `IT` seguito da 10 cifre è [Amazon Logistics](carrier:amazon-logistics), il servizio di consegna di Amazon (o [Amazon Shipping](carrier:amazon-shipping), se Amazon ha consegnato per un altro negozio); lo stesso schema vale con altri codici paese (`DE`, `FR`, `ES`…) e con `TBA`, `TBC` o `TBM` seguiti da 12 cifre. La pagina di aiuto di Amazon.it su Amazon Logistics però non descrive il numero. Spiega invece che Amazon Logistics lavora con partner di consegna locali e regionali, e che il tuo ordine si traccia nella sezione *I miei ordini*.
 
 Non confonderlo con un codice che *finisce* con `IT`: due lettere, nove cifre e `IT` è il formato postale con il codice dell'Italia, come l'esempio nel modulo di ricerca di Poste (`ZA123456789IT`).
 

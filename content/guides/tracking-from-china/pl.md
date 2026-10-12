@@ -69,7 +69,7 @@ Wyjątkiem są numery pocztowe. Światowy Związek Pocztowy dopuszcza tylko jede
 
 ### Cainiao, YunExpress, 4PX: co to za firmy?
 
-Poza Cainiao zobaczysz [YunExpress](carrier:yunexpress), [4PX](carrier:4px) i [Yanwen](carrier:yanwen) (Yanwen ma nawet linie z Temu i AliExpress w nazwie). To chińskie firmy logistyczne, które wiozą paczkę do Europy, a nie polscy kurierzy:
+Poza Cainiao zobaczysz [YunExpress](carrier:yunexpress), [4PX](carrier:4px), [Sunyou](carrier:sunyou) i [Yanwen](carrier:yanwen) (Yanwen ma nawet linie z Temu i AliExpress w nazwie). To chińskie firmy logistyczne, które wiozą paczkę do Europy, a nie polscy kurierzy:
 
 | Numer wygląda tak | Zwykle |
 | --- | --- |

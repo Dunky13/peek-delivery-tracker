@@ -38,7 +38,7 @@ Mais atrasada do que parada? Se o prazo de entrega da encomenda já passou, vê 
 
 ## Chegou ao país de destino: quanto tempo falta?
 
-Depende da alfândega e da transportadora local. `Arrive at Destination` quer dizer que a encomenda aterrou, mas, segundo a Cainiao, ainda tem de esperar pelo desalfandegamento antes de ser entregue.
+Depende da alfândega e da transportadora local (antes, às vezes, um agente aduaneiro como a [CACESA](carrier:cacesa) trata do desalfandegamento). `Arrive at Destination` quer dizer que a encomenda aterrou, mas, segundo a Cainiao, ainda tem de esperar pelo desalfandegamento antes de ser entregue.
 
 Se nada mexer depois dessa leitura, a Cainiao explica que normalmente é o país de destino que ainda não atualizou e sugere perguntar aos correios locais, ou seja, aos CTT. No «Seguir objeto» dos CTT, `Em importação` quer dizer que a encomenda está em processo aduaneiro no país de destino.
 
@@ -72,7 +72,7 @@ Os números postais são a exceção. A União Postal Universal só permite um i
 
 ### De que empresa é o meu número?
 
-Além da Cainiao, é comum aparecerem a [YunExpress](carrier:yunexpress), a [4PX](carrier:4px) e a [Yanwen](carrier:yanwen) (que até vende linhas com o nome da Temu e do AliExpress):
+Além da Cainiao, é comum aparecerem a [YunExpress](carrier:yunexpress), a [4PX](carrier:4px), a [Sunyou](carrier:sunyou) e a [Yanwen](carrier:yanwen) (que até vende linhas com o nome da Temu e do AliExpress):
 
 | Formato do número | Normalmente é |
 | --- | --- |

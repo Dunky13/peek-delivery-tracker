@@ -112,7 +112,7 @@ Depende de desde dónde se envía el pedido y de lo que diga la compra:
 - **Sin nada incluido:** el transportista puede pedirte el 21 % de IVA, el arancel y su gestión antes de entregártelo.
 - **En Canarias:** sigue sin haber IGIC hasta 150 €, pero pagas el arancel.
 
-DHL lo resume así: los aranceles y tasas normalmente no están incluidos en las compras online, aunque el precio incluya el transporte. Para seguir estos pedidos, mira [cómo seguir un paquete que viene de China](guide:tracking-from-china). Las páginas de [Cainiao](carrier:cainiao) y [YunExpress](carrier:yunexpress) explican qué significan sus estados de aduana en inglés.
+DHL lo resume así: los aranceles y tasas normalmente no están incluidos en las compras online, aunque el precio incluya el transporte. Para seguir estos pedidos, mira [cómo seguir un paquete que viene de China](guide:tracking-from-china). Las páginas de [Cainiao](carrier:cainiao) y [YunExpress](carrier:yunexpress) explican qué significan sus estados de aduana en inglés. Si el despacho lo hace el agente de aduanas [CACESA](carrier:cacesa), su página explica sus estados y sus avisos.
 
 ## ¿Es una estafa el SMS de Correos que pide pagar aduanas?
 

@@ -464,6 +464,86 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Allegro One tracking: One Box, One Punkt and One Kurier",
       "name": "Allegro One",
       "color": "#006d57"
+    },
+    {
+      "id": "cacesa",
+      "catalog": "cacesa",
+      "slug": "cacesa-tracking",
+      "title": "CACESA tracking: customs, statuses and who delivers",
+      "name": "CACESA",
+      "color": "#C9032D"
+    },
+    {
+      "id": "sunyou",
+      "catalog": "sunyou",
+      "slug": "sunyou-tracking",
+      "title": "SunYou tracking: SY numbers, statuses and who delivers",
+      "name": "SunYou",
+      "color": "#02a232"
+    },
+    {
+      "id": "amazon-shipping",
+      "catalog": "amazon-shipping",
+      "slug": "amazon-shipping-tracking",
+      "title": "Amazon Shipping tracking: numbers, statuses and help",
+      "name": "Amazon Shipping",
+      "color": "#ff9900"
+    },
+    {
+      "id": "postnord",
+      "catalog": "postnord",
+      "slug": "postnord-tracking",
+      "title": "PostNord tracking: numbers, statuses and pickup times",
+      "name": "PostNord",
+      "color": "#00a0d6"
+    },
+    {
+      "id": "bring",
+      "catalog": "bring-posten",
+      "slug": "bring-tracking",
+      "title": "Bring tracking: numbers, statuses and pickup deadlines",
+      "name": "Bring",
+      "color": "#56b529"
+    },
+    {
+      "id": "posti",
+      "catalog": "posti",
+      "slug": "posti-tracking",
+      "title": "Posti tracking: item ID, statuses, lockers and contact",
+      "name": "Posti",
+      "color": "#ff8000"
+    },
+    {
+      "id": "omniva",
+      "catalog": "omniva",
+      "slug": "omniva-tracking",
+      "title": "Omniva tracking: codes, statuses and parcel machines",
+      "name": "Omniva",
+      "color": "#f86300"
+    },
+    {
+      "id": "ppl",
+      "catalog": "ppl",
+      "slug": "ppl-tracking",
+      "title": "PPL tracking: shipment numbers, statuses and Parcelshops",
+      "name": "PPL",
+      "color": "#004b93"
+    },
+    {
+      "id": "box-now",
+      "catalog": "box-now",
+      "slug": "box-now-tracking",
+      "title": "BOX NOW tracking: lockers, PIN codes and statuses",
+      "name": "BOX NOW",
+      "color": "#44d62c"
+    },
+    {
+      "id": "dhl-ecommerce-nl",
+      "catalog": "dhl-ecommerce-nl",
+      "slug": "dhl-ecommerce-netherlands-tracking",
+      "title": "DHL eCommerce Netherlands tracking: statuses and contact",
+      "name": "DHL eCommerce Netherlands",
+      "color": "#ffcc00"
     }
   ],
   "de": [
@@ -618,6 +698,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DHL eCommerce Sendungsverfolgung: GM-Nummer, Status, Kontakt",
       "name": "DHL eCommerce",
       "color": "#ffcc00"
+    },
+    {
+      "id": "sunyou",
+      "catalog": "sunyou",
+      "slug": "sunyou-sendungsverfolgung",
+      "title": "SunYou Tracking: Sendungsverfolgung, Status und Kontakt",
+      "name": "SunYou",
+      "color": "#02a232"
+    },
+    {
+      "id": "amazon-shipping",
+      "catalog": "amazon-shipping",
+      "slug": "amazon-shipping-sendungsverfolgung",
+      "title": "Amazon Shipping Sendungsverfolgung: Status und Hilfe",
+      "name": "Amazon Shipping",
+      "color": "#ff9900"
     }
   ],
   "fr": [
@@ -820,6 +916,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Landmark Global suivi\u00a0: statuts, livreur et contact",
       "name": "Landmark Global",
       "color": "#e62337"
+    },
+    {
+      "id": "sunyou",
+      "catalog": "sunyou",
+      "slug": "sunyou-suivi",
+      "title": "SunYou tracking\u00a0: suivi du colis, statuts et qui livre",
+      "name": "SunYou",
+      "color": "#02a232"
+    },
+    {
+      "id": "amazon-shipping",
+      "catalog": "amazon-shipping",
+      "slug": "amazon-shipping-suivi",
+      "title": "Amazon Shipping suivi\u00a0: numéro, statuts et colis non reçu",
+      "name": "Amazon Shipping",
+      "color": "#ff9900"
+    },
+    {
+      "id": "dhl-ecommerce-nl",
+      "catalog": "dhl-ecommerce-nl",
+      "slug": "dhl-ecommerce-netherlands-suivi-colis",
+      "title": "DHL eCommerce Netherlands suivi colis\u00a0: statuts et contact",
+      "name": "DHL eCommerce Netherlands",
+      "color": "#ffcc00"
     }
   ],
   "it": [
@@ -950,6 +1070,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "SpeedPAK tracking: pacchi eBay, stati e chi consegna",
       "name": "SpeedPAK",
       "color": "#ee7532"
+    },
+    {
+      "id": "sunyou",
+      "catalog": "sunyou",
+      "slug": "sunyou-tracking",
+      "title": "SunYou tracking: numero SY, stati e chi consegna in Italia",
+      "name": "SunYou",
+      "color": "#02a232"
+    },
+    {
+      "id": "amazon-shipping",
+      "catalog": "amazon-shipping",
+      "slug": "amazon-shipping-tracking",
+      "title": "Amazon Shipping tracking: dov'è il pacco e chi contattare",
+      "name": "Amazon Shipping",
+      "color": "#ff9900"
     }
   ],
   "es": [
@@ -1088,6 +1224,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "SpeedPAK seguimiento: paquetes de eBay, estados y contacto",
       "name": "SpeedPAK",
       "color": "#ee7532"
+    },
+    {
+      "id": "cacesa",
+      "catalog": "cacesa",
+      "slug": "cacesa-seguimiento",
+      "title": "CACESA seguimiento: aduanas, estados y quién entrega",
+      "name": "CACESA",
+      "color": "#C9032D"
+    },
+    {
+      "id": "sunyou",
+      "catalog": "sunyou",
+      "slug": "sunyou-seguimiento",
+      "title": "SunYou seguimiento: número SY, estados y quién entrega",
+      "name": "SunYou",
+      "color": "#02a232"
+    },
+    {
+      "id": "amazon-shipping",
+      "catalog": "amazon-shipping",
+      "slug": "amazon-shipping-seguimiento",
+      "title": "Amazon Shipping seguimiento: estados, entrega y contacto",
+      "name": "Amazon Shipping",
+      "color": "#ff9900"
     }
   ],
   "pt": [
@@ -1218,6 +1378,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DHL eCommerce Iberia rastreio: estados e ServicePoints",
       "name": "DHL eCommerce Iberia",
       "color": "#ffcc00"
+    },
+    {
+      "id": "cacesa",
+      "catalog": "cacesa",
+      "slug": "cacesa-rastreio",
+      "title": "CACESA rastreio: alfândega, estados e quem entrega",
+      "name": "CACESA",
+      "color": "#C9032D"
+    },
+    {
+      "id": "sunyou",
+      "catalog": "sunyou",
+      "slug": "sunyou-rastreamento",
+      "title": "SunYou rastreamento: número SY, estados e quem entrega",
+      "name": "SunYou",
+      "color": "#02a232"
     }
   ],
   "pl": [
@@ -1316,6 +1492,14 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Allegro One śledzenie przesyłki: statusy i odbiór paczki",
       "name": "Allegro One",
       "color": "#006d57"
+    },
+    {
+      "id": "sunyou",
+      "catalog": "sunyou",
+      "slug": "sunyou-sledzenie",
+      "title": "SunYou tracking: numer SY, statusy i kontakt",
+      "name": "SunYou",
+      "color": "#02a232"
     }
   ]
 };

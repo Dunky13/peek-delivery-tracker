@@ -120,7 +120,7 @@ Depende do que a loja cobrou na compra. O resumo da encomenda ou a fatura costum
 - **Só o preço da compra:** pagas no Portal de Desalfandegamento o IVA, os 3 € por tipo de produto e o Serviço CTT.
 - **Só o IVA, sem os direitos:** atenção. Os CTT não te podem cobrar os direitos à parte, não conseguem submeter o processo à AT e a encomenda é devolvida. Esclarece isto com a loja antes de comprar.
 
-Os CTT aconselham ainda a confirmar de onde sai a mercadoria antes de comprar: é isso que conta, não o país da loja. Para saberes como viajam estas encomendas, vê [como seguir uma encomenda da China](guide:tracking-from-china). Se vêm pela [Cainiao](carrier:cainiao) ou pela [YunExpress](carrier:yunexpress), as leituras da alfândega em inglês estão explicadas nas páginas delas.
+Os CTT aconselham ainda a confirmar de onde sai a mercadoria antes de comprar: é isso que conta, não o país da loja. Para saberes como viajam estas encomendas, vê [como seguir uma encomenda da China](guide:tracking-from-china). Se vêm pela [Cainiao](carrier:cainiao) ou pela [YunExpress](carrier:yunexpress), as leituras da alfândega em inglês estão explicadas nas páginas delas. Se o desalfandegamento for feito pelo agente aduaneiro [CACESA](carrier:cacesa), a página dela explica os estados e os avisos.
 
 ## Recebi um SMS a pedir taxas alfandegárias: é burla?
 

@@ -64,7 +64,7 @@ When someone must be in, for an age check, a one-time password or a scheduled de
 
 **Marketplace sellers.** Contact the seller first. With no satisfying answer within 48 hours, you can turn to the A-to-z Guarantee.
 
-**Another shop's parcel.** If Amazon carried a parcel for another retailer (Amazon Shipping, tracked at track.amazon.co.uk), Amazon Shipping's support says to contact the sender about a lost or damaged parcel.
+**Another shop's parcel.** If Amazon carried a parcel for another retailer ([Amazon Shipping](carrier:amazon-shipping), tracked at track.amazon.co.uk), Amazon Shipping's support says to contact the sender about a lost or damaged parcel.
 
 ## Amazon Logistics contact number and customer service
 

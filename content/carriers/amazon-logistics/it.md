@@ -64,7 +64,7 @@ Quando serve che qualcuno ci sia (verifica dell'età, codice monouso o consegna 
 
 **Venditori terzi.** Scrivi prima al venditore. Se non ti risponde entro 48 ore, o la risposta non ti basta, puoi chiedere la Garanzia dalla A alla Z.
 
-**Pacchi di altri negozi.** Se Amazon ha trasportato un pacco per un altro negozio (Amazon Shipping, con tracking su track.amazon.it), l'assistenza di Amazon Shipping dice di rivolgersi al mittente per un pacco perso o danneggiato.
+**Pacchi di altri negozi.** Se Amazon ha trasportato un pacco per un altro negozio ([Amazon Shipping](carrier:amazon-shipping), con tracking su track.amazon.it), l'assistenza di Amazon Shipping dice di rivolgersi al mittente per un pacco perso o danneggiato.
 
 ## Amazon Logistics contatti e servizio clienti
 

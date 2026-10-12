@@ -37,7 +37,7 @@ Cuando un pedido parece atascado «en tránsito», el paquete suele estar entre 
 
 ## Ha llegado al país de destino: ¿cuánto falta?
 
-Depende de la Aduana y de la empresa que lo reparte aquí. `Arrive at Destination` significa que el paquete ha aterrizado, pero, según Cainiao, tiene que pasar la aduana antes de que te lo entreguen.
+Depende de la Aduana y de la empresa que lo reparte aquí (antes, a veces, lo despacha un agente de aduanas como [CACESA](carrier:cacesa)). `Arrive at Destination` significa que el paquete ha aterrizado, pero, según Cainiao, tiene que pasar la aduana antes de que te lo entreguen.
 
 Si después de ese escaneo no se mueve nada, Cainiao dice que lo habitual es que el país de destino aún no haya actualizado el seguimiento, y te sugiere preguntar al operador postal de tu país: aquí, Correos. Si lo despacha Correos, en su localizador verás `Inicio de tramitación aduanera` y luego `Pendiente de tramitación aduanera` mientras el trámite no termina. Si hay algo que pagar, Correos no te lo entrega hasta que lo pagues. Cuánto puede tardar la aduana: [paquete retenido en aduanas](guide:customs).
 
@@ -71,7 +71,7 @@ Los números postales son la excepción. La Unión Postal Universal solo permite
 
 ### ¿De qué empresa es mi número?
 
-Además de Cainiao, verás [YunExpress](carrier:yunexpress), [4PX](carrier:4px) y [Yanwen](carrier:yanwen) (que incluso vende líneas con el nombre de Temu y de AliExpress):
+Además de Cainiao, verás [YunExpress](carrier:yunexpress), [4PX](carrier:4px), [Sunyou](carrier:sunyou) y [Yanwen](carrier:yanwen) (que incluso vende líneas con el nombre de Temu y de AliExpress):
 
 | El número es así | Suele ser |
 | --- | --- |

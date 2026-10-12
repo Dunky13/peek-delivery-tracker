@@ -75,7 +75,7 @@ Eine feste Länge gibt es nicht. Hier die Längen, die die Paketdienste selbst n
 
 ## Sendungsnummer beginnt mit TBA oder DE: Ist das Amazon?
 
-Wenn die Länge stimmt, ja. In Peeks Paketdienst-Daten steht `TBA`, `TBC` oder `TBM` plus 12 Ziffern für [Amazon Logistics](carrier:amazon-logistics), Amazons eigenen Lieferdienst. Dasselbe gilt für einen Ländercode wie `DE`, `AT` oder `CH` plus 10 Ziffern. Amazon selbst beschreibt diese Nummern auf seinen Hilfeseiten nicht. Laut Amazon.de verfolgst du solche Bestellungen unter „Meine Bestellungen“, wo die Informationen der Lieferpartner angezeigt werden.
+Wenn die Länge stimmt, ja. In Peeks Paketdienst-Daten steht `TBA`, `TBC` oder `TBM` plus 12 Ziffern für [Amazon Logistics](carrier:amazon-logistics), Amazons eigenen Lieferdienst, oder für [Amazon Shipping](carrier:amazon-shipping), wenn Amazon das Paket für einen anderen Shop bringt. Dasselbe gilt für einen Ländercode wie `DE`, `AT` oder `CH` plus 10 Ziffern. Amazon selbst beschreibt diese Nummern auf seinen Hilfeseiten nicht. Laut Amazon.de verfolgst du solche Bestellungen unter „Meine Bestellungen“, wo die Informationen der Lieferpartner angezeigt werden.
 
 ## Das Postformat: zwei Buchstaben, neun Ziffern, zwei Buchstaben
 

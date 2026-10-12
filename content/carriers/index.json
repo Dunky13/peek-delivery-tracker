@@ -55,5 +55,15 @@
   { "id": "hermes-einrichtungs-service", "catalog": "hermes", "name": "Hermes Einrichtungs-Service", "languages": ["en", "de"] },
   { "id": "landmark-global", "catalog": "landmark-global", "name": "Landmark Global", "languages": ["en", "de", "fr"] },
   { "id": "dhl-ecommerce", "catalog": "dhl-ecommerce", "name": "DHL eCommerce", "languages": ["en", "de"] },
-  { "id": "allegro-one", "catalog": "allegro-one", "name": "Allegro One", "languages": ["en", "pl"] }
+  { "id": "allegro-one", "catalog": "allegro-one", "name": "Allegro One", "languages": ["en", "pl"] },
+  { "id": "cacesa", "catalog": "cacesa", "name": "CACESA", "languages": ["en", "es", "pt"] },
+  { "id": "sunyou", "catalog": "sunyou", "name": "SunYou", "languages": ["en", "de", "fr", "it", "es", "pt", "pl"] },
+  { "id": "amazon-shipping", "catalog": "amazon-shipping", "name": "Amazon Shipping", "languages": ["en", "de", "fr", "it", "es"] },
+  { "id": "postnord", "catalog": "postnord", "name": "PostNord", "languages": ["en"] },
+  { "id": "bring", "catalog": "bring-posten", "name": "Bring", "languages": ["en"] },
+  { "id": "posti", "catalog": "posti", "name": "Posti", "languages": ["en"] },
+  { "id": "omniva", "catalog": "omniva", "name": "Omniva", "languages": ["en"] },
+  { "id": "ppl", "catalog": "ppl", "name": "PPL", "languages": ["en"] },
+  { "id": "box-now", "catalog": "box-now", "name": "BOX NOW", "languages": ["en"] },
+  { "id": "dhl-ecommerce-nl", "catalog": "dhl-ecommerce-nl", "name": "DHL eCommerce Netherlands", "languages": ["en", "fr"] }
 ]

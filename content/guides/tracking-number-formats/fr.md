@@ -85,7 +85,7 @@ Le numéro seul ne suffit pas toujours. Mondial Relay et Colis Privé demandent 
 
 ## À qui appartient un numéro qui commence par FR ou TBA ?
 
-En général à Amazon. Dans les données de transporteurs qu'utilise Peek, `FR` suivi de 10 chiffres désigne [Amazon Logistics](carrier:amazon-logistics), le service de livraison d'Amazon. Même chose avec un autre code pays européen devant 10 chiffres, comme `BE` ou `CH`, et avec `TBA`, `TBC` ou `TBM` suivi de 12 chiffres. Les pages d'aide d'Amazon, elles, ne décrivent pas ces numéros. Amazon.fr explique qu'Amazon Logistics travaille avec des partenaires de livraison locaux et régionaux, et que tu suis ta commande dans « Vos commandes », qui affiche les informations de ces partenaires.
+En général à Amazon. Dans les données de transporteurs qu'utilise Peek, `FR` suivi de 10 chiffres désigne [Amazon Logistics](carrier:amazon-logistics), le service de livraison d'Amazon, ou [Amazon Shipping](carrier:amazon-shipping) quand Amazon livre pour une autre boutique. Même chose avec un autre code pays européen devant 10 chiffres, comme `BE` ou `CH`, et avec `TBA`, `TBC` ou `TBM` suivi de 12 chiffres. Les pages d'aide d'Amazon, elles, ne décrivent pas ces numéros. Amazon.fr explique qu'Amazon Logistics travaille avec des partenaires de livraison locaux et régionaux, et que tu suis ta commande dans « Vos commandes », qui affiche les informations de ces partenaires.
 
 Attention aux sosies. Avec ses 12 caractères, un numéro en `FR` a aussi la forme d'un numéro Colis Privé (lettres et chiffres). Et un numéro La Poste qui finit par `FR` en a 13, avec deux lettres au début et deux à la fin. Dans le doute, l'e-mail d'expédition tranche.
 

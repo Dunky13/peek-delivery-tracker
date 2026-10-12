@@ -63,7 +63,7 @@ Quand quelqu'un doit être là, par exemple pour un mot de passe à usage unique
 
 **Vendeur Marketplace.** Contacte d'abord le vendeur. Si sa solution ne te convient pas ou s'il ne répond pas dans les 48 heures, passe par la Garantie A à Z.
 
-**Colis d'une autre boutique.** Si Amazon a transporté le colis pour un autre commerçant (Amazon Shipping, suivi sur track.amazon.fr), l'aide d'Amazon Shipping dit qu'elle ne peut t'aider que pour ces colis-là et te renvoie vers l'expéditeur pour un colis perdu ou endommagé.
+**Colis d'une autre boutique.** Si Amazon a transporté le colis pour un autre commerçant ([Amazon Shipping](carrier:amazon-shipping), suivi sur track.amazon.fr), l'aide d'Amazon Shipping dit qu'elle ne peut t'aider que pour ces colis-là et te renvoie vers l'expéditeur pour un colis perdu ou endommagé.
 
 ## Amazon Logistics contact : passer par le service client Amazon
 

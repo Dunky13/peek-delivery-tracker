@@ -71,7 +71,7 @@ Holst du es nicht ab, geht es an Amazon zurück.
 
 **Marketplace-Verkäufer.** Wende dich zuerst an den Verkäufer. Bist du mit seiner Lösung nicht zufrieden oder antwortet er nicht innerhalb von 48 Stunden, gibt es die A-bis-Z-Garantie.
 
-**Paket eines anderen Shops.** Bringt Amazon ein Paket für einen anderen Händler (Amazon Shipping, verfolgt auf track.amazon), sagt der Support von Amazon Shipping: Bei Verlust oder Schaden wende dich an den Absender.
+**Paket eines anderen Shops.** Bringt Amazon ein Paket für einen anderen Händler ([Amazon Shipping](carrier:amazon-shipping), verfolgt auf track.amazon), sagt der Support von Amazon Shipping: Bei Verlust oder Schaden wende dich an den Absender.
 
 ## Amazon Logistics Kontakt: Telefon und Kundenservice
 

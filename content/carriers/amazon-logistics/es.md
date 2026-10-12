@@ -64,7 +64,7 @@ Algunas entregas necesitan que haya alguien: las que llevan una contraseña temp
 
 **Vendedores externos.** Contacta primero con el vendedor. Si no responde o no te convence su respuesta en 48 horas, puedes recurrir a la Garantía de la A a la Z.
 
-**Paquete de otra tienda.** Si Amazon llevó un paquete por encargo de otro vendedor (Amazon Shipping, con seguimiento en track.amazon.es), el soporte de Amazon Shipping te pide que contactes con el remitente si se ha perdido o ha llegado dañado.
+**Paquete de otra tienda.** Si Amazon llevó un paquete por encargo de otro vendedor ([Amazon Shipping](carrier:amazon-shipping), con seguimiento en track.amazon.es), el soporte de Amazon Shipping te pide que contactes con el remitente si se ha perdido o ha llegado dañado.
 
 ## Amazon Logistics: contacto y atención al cliente
 
