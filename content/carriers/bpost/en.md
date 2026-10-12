@@ -25,7 +25,7 @@ The most common shapes bpost lists (examples invented):
 
 A barcode starting with U exists only for customs: the sender or buyer chose delivery without Track & Trace, and the item arrives within 5 working days of customs clearance, says bpost.
 
-A postal number ending in another country's letters belongs to that country's post. A mistyped digit in a number ending BE breaks its check digit, and Peek may then suggest [Chronopost](carrier:chronopost) instead. Some 24-digit numbers belong to [InPost](carrier:inpost) or Ciblex.
+A postal number ending in another country's letters belongs to that country's post. A mistyped digit in a number ending BE breaks its check digit, and Peek may then suggest [Chronopost](carrier:chronopost) instead. Some 24-digit numbers belong to [InPost](carrier:inpost) or [Ciblex](carrier:ciblex).
 
 ## bpost Track & Trace statuses explained
 
@@ -35,7 +35,7 @@ bpost's Track & Trace is available in English, French, Dutch and German. These a
 | --- | --- |
 | `Confirmation of preparation of the shipment received` | The sender has announced the parcel. bpost doesn't have it yet. |
 | `Item information registered manually at the counter` | The sender handed the parcel in at a counter. |
-| `Item is announced / Landmark Global (bpost) received the information` | A cross-border parcel was announced to Landmark Global, the group's brand for parcels across borders. |
+| `Item is announced / Landmark Global (bpost) received the information` | A cross-border parcel was announced to [Landmark Global](carrier:landmark-global), the group's brand for parcels across borders. |
 | `Landmark Global (bpost) has received the item` | Landmark Global has the parcel. |
 | `Arrival at facilities` | The parcel reached a bpost depot. |
 | `Your item has been sorted` | Sorted and on its way. |

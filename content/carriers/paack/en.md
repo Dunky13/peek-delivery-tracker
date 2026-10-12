@@ -19,7 +19,7 @@ So an order number can look like another carrier's (examples invented):
 | Order number | What it looks like |
 | --- | --- |
 | `123456789AB` | Letters and digits: no carrier in particular. |
-| `12345678` | 8 digits: also Mondial Relay's, Colisweb's and Heppner's shape. |
+| `12345678` | 8 digits: also Mondial Relay's, [Colisweb](carrier:colisweb)'s and Heppner's shape. |
 | `123456789012` | 12 digits: also FedEx's, MRW's, BRT's and others'. |
 
 If the email comes from Paack, the number is Paack's.

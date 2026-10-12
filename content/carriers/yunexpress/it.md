@@ -25,7 +25,7 @@ Quando passa a un corriere locale, il pacco può avere un secondo numero: yuntra
 
 ## YunExpress tracking: cosa significano gli stati
 
-Yuntrack è solo in inglese, senza scelta della lingua, e in inglese arrivano anche le righe dei corrieri locali. Ogni pacco sta sotto una di sei schede: `Processing` (in lavorazione), `Transit` (in viaggio), `Delivered` (consegnato), `Not Found` (non trovato), `Alert` (avviso) e `Returned` (reso). Sotto ci sono le scansioni. Ecco le principali, nell'ordine probabile per un pacco diretto in Italia. Dopo `Delivered to local carrier` arrivano le righe del corriere che ha il tuo pacco, per esempio Poste Italiane oppure GOFO:
+Yuntrack è solo in inglese, senza scelta della lingua, e in inglese arrivano anche le righe dei corrieri locali. Ogni pacco sta sotto una di sei schede: `Processing` (in lavorazione), `Transit` (in viaggio), `Delivered` (consegnato), `Not Found` (non trovato), `Alert` (avviso) e `Returned` (reso). Sotto ci sono le scansioni. Ecco le principali, nell'ordine probabile per un pacco diretto in Italia. Dopo `Delivered to local carrier` arrivano le righe del corriere che ha il tuo pacco, per esempio Poste Italiane oppure [GOFO](carrier:gofo-it):
 
 | YunExpress scrive | Cosa vuol dire per te |
 | --- | --- |

@@ -25,7 +25,7 @@ Les formes les plus courantes selon bpost (numéros inventés) :
 
 Un code-barres qui commence par U sert seulement au passage en douane : l'expéditeur ou l'acheteur a choisi un envoi sans Track & Trace. Selon bpost, il arrive au plus tard 5 jours ouvrables après le dédouanement.
 
-**Attention aux numéros qui se ressemblent.** Un numéro postal qui finit par FR ou CH appartient à la poste de ce pays, pas à bpost. Une erreur de frappe dans un numéro en BE casse sa clé de contrôle, et Peek peut alors proposer [Chronopost](carrier:chronopost). Certains numéros à 24 chiffres sont ceux d'InPost ou de Ciblex : en cas de doute, regarde le transporteur cité dans l'e-mail de la boutique.
+**Attention aux numéros qui se ressemblent.** Un numéro postal qui finit par FR ou CH appartient à la poste de ce pays, pas à bpost. Une erreur de frappe dans un numéro en BE casse sa clé de contrôle, et Peek peut alors proposer [Chronopost](carrier:chronopost). Certains numéros à 24 chiffres sont ceux d'InPost ou de [Ciblex](carrier:ciblex) : en cas de doute, regarde le transporteur cité dans l'e-mail de la boutique.
 
 ## bpost suivi colis : ce que veulent dire les statuts
 
@@ -35,7 +35,7 @@ Le Track & Trace de bpost existe en français, en néerlandais, en anglais et en
 | --- | --- |
 | `Envoi en cours de préparation chez l'expéditeur` | La boutique a annoncé le colis, mais bpost ne l'a pas encore. |
 | `Envoi déposé chez bpost par l'expéditeur` | L'expéditeur l'a déposé au guichet. |
-| `L'article est annoncé / Landmark Global (bpost) a reçu l'information` | Un colis international a été annoncé à Landmark Global, la marque du groupe pour les envois entre pays. |
+| `L'article est annoncé / Landmark Global (bpost) a reçu l'information` | Un colis international a été annoncé à [Landmark Global](carrier:landmark-global), la marque du groupe pour les envois entre pays. |
 | `Landmark Global (bpost) a receptionné l'article` | Landmark Global a le colis en main. |
 | `Arrivée au dépôt` | Le colis est arrivé dans un dépôt bpost. |
 | `L'envoi a été trié` | Trié, il continue sa route. |

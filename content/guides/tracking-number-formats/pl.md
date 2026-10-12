@@ -135,7 +135,7 @@ Paczka, która przekracza granicę, często zmienia przewoźnika, a każda firma
 :::
 
 - **Przesyłki pocztowe** to najprostszy przypadek: UPU pozwala na jeden numer S10 na przesyłkę, więc zwykle działa on na stronach poczt obu krajów.
-- **Allegro Delivery** to, jak pisze Allegro, program dostaw realizowany przez Allegro One razem z ORLEN Paczką i DHL, a wśród jego metod są też automaty, punkty i kurier DPD. Paczkę wiezie więc jeden z partnerów, a śledzić ją możesz w Allegro. Przesyłek ORLEN Paczki z tego programu nie znajdziesz na jej stronie, tylko w Allegro, pod numerem od `AD`.
+- **Allegro Delivery** to, jak pisze Allegro, program dostaw realizowany przez [Allegro One](carrier:allegro-one) razem z ORLEN Paczką i DHL, a wśród jego metod są też automaty, punkty i kurier DPD. Paczkę wiezie więc jeden z partnerów, a śledzić ją możesz w Allegro. Przesyłek ORLEN Paczki z tego programu nie znajdziesz na jej stronie, tylko w Allegro, pod numerem od `AD`.
 - **AliExpress, tania wysyłka:** Cainiao pisze, że śledzenie kończy się po przekazaniu paczki lokalnemu przewoźnikowi, a o kontakt do niego możesz zapytać sprzedawcę. Więcej w poradniku o [śledzeniu paczki z Chin](guide:tracking-from-china).
 
 Numer, który nic nie pokazuje, nie zawsze jest źle wpisany. Mój DHL wśród powodów braku informacji podaje też numer innej firmy i paczkę z zagranicy, która nie dotarła jeszcze do Polski. Co znaczy pusta strona u innych przewoźników, ile czekać na pierwszy skan i co robić, gdy paczka po prostu stoi w miejscu, przeczytasz w poradniku [dlaczego status przesyłki się nie zmienia](guide:tracking-not-updating).

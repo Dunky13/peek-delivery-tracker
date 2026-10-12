@@ -45,5 +45,15 @@
   { "id": "gls-es", "catalog": "gls-es", "name": "GLS Spain", "languages": ["en", "es"] },
   { "id": "dhl-ecommerce-es", "catalog": "dhl-ecommerce-es", "name": "DHL eCommerce Iberia", "languages": ["en", "es", "pt"] },
   { "id": "dhl-ecommerce-pl", "catalog": "dhl-ecommerce-pl", "name": "DHL eCommerce Poland", "languages": ["en", "pl"] },
-  { "id": "dhl-ecommerce-uk", "catalog": "dhl-ecommerce-uk", "name": "DHL eCommerce UK", "languages": ["en"] }
+  { "id": "dhl-ecommerce-uk", "catalog": "dhl-ecommerce-uk", "name": "DHL eCommerce UK", "languages": ["en"] },
+  { "id": "gofo-fr", "catalog": "gofo-fr", "name": "GOFO France", "languages": ["en", "fr"] },
+  { "id": "gofo-it", "catalog": "gofo-it", "name": "GOFO Italy", "languages": ["en", "it"] },
+  { "id": "speedpak", "catalog": "speedpak", "name": "SpeedPAK", "languages": ["en", "de", "fr", "it", "es"] },
+  { "id": "asendia", "catalog": "asendia", "name": "Asendia", "languages": ["en", "fr", "de"] },
+  { "id": "colisweb", "catalog": "colisweb", "name": "Colisweb", "languages": ["en", "fr"] },
+  { "id": "ciblex", "catalog": "ciblex", "name": "Ciblex", "languages": ["en", "fr"] },
+  { "id": "hermes-einrichtungs-service", "catalog": "hermes", "name": "Hermes Einrichtungs-Service", "languages": ["en", "de"] },
+  { "id": "landmark-global", "catalog": "landmark-global", "name": "Landmark Global", "languages": ["en", "de", "fr"] },
+  { "id": "dhl-ecommerce", "catalog": "dhl-ecommerce", "name": "DHL eCommerce", "languages": ["en", "de"] },
+  { "id": "allegro-one", "catalog": "allegro-one", "name": "Allegro One", "languages": ["en", "pl"] }
 ]

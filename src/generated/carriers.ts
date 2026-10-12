@@ -384,6 +384,86 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DHL eCommerce UK tracking: statuses, ServicePoints, contact",
       "name": "DHL eCommerce UK",
       "color": "#ffcc00"
+    },
+    {
+      "id": "gofo-fr",
+      "catalog": "gofo-fr",
+      "slug": "gofo-france-tracking",
+      "title": "\"GOFO France tracking: statuses, delivery and contact\"",
+      "name": "GOFO France",
+      "color": "#fc4c02"
+    },
+    {
+      "id": "gofo-it",
+      "catalog": "gofo-it",
+      "slug": "gofo-italy-tracking",
+      "title": "GOFO Italy tracking: statuses, delivery and contact",
+      "name": "GOFO Italy",
+      "color": "#fc4c02"
+    },
+    {
+      "id": "speedpak",
+      "catalog": "speedpak",
+      "slug": "speedpak-tracking",
+      "title": "SpeedPAK tracking: eBay parcels, statuses and who to ask",
+      "name": "SpeedPAK",
+      "color": "#ee7532"
+    },
+    {
+      "id": "asendia",
+      "catalog": "asendia",
+      "slug": "asendia-tracking",
+      "title": "Asendia tracking: statuses, delivery and who to contact",
+      "name": "Asendia",
+      "color": "#005d69"
+    },
+    {
+      "id": "colisweb",
+      "catalog": "colisweb",
+      "slug": "colisweb-tracking",
+      "title": "Colisweb tracking: French messages and delivery slots",
+      "name": "Colisweb",
+      "color": "#15cbe3"
+    },
+    {
+      "id": "ciblex",
+      "catalog": "ciblex",
+      "slug": "ciblex-tracking",
+      "title": "Ciblex tracking: numbers, French statuses and contact",
+      "name": "Ciblex",
+      "color": "#0160ab"
+    },
+    {
+      "id": "hermes-einrichtungs-service",
+      "catalog": "hermes",
+      "slug": "hermes-einrichtungs-service-tracking",
+      "title": "Hermes Einrichtungs-Service tracking: furniture deliveries",
+      "name": "Hermes Einrichtungs-Service",
+      "color": "#0091cd"
+    },
+    {
+      "id": "landmark-global",
+      "catalog": "landmark-global",
+      "slug": "landmark-global-tracking",
+      "title": "Landmark Global tracking: statuses, partners and contacts",
+      "name": "Landmark Global",
+      "color": "#e62337"
+    },
+    {
+      "id": "dhl-ecommerce",
+      "catalog": "dhl-ecommerce",
+      "slug": "dhl-ecommerce-tracking",
+      "title": "DHL eCommerce tracking: GM numbers, statuses and contacts",
+      "name": "DHL eCommerce",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "allegro-one",
+      "catalog": "allegro-one",
+      "slug": "allegro-one-tracking",
+      "title": "Allegro One tracking: One Box, One Punkt and One Kurier",
+      "name": "Allegro One",
+      "color": "#006d57"
     }
   ],
   "de": [
@@ -498,6 +578,46 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Amazon Logistics Tracking: Paket verfolgen und Hilfe",
       "name": "Amazon Logistics",
       "color": "#ff9900"
+    },
+    {
+      "id": "speedpak",
+      "catalog": "speedpak",
+      "slug": "speedpak-sendungsverfolgung",
+      "title": "SpeedPAK Sendungsverfolgung: eBay-Pakete, Status, Kontakt",
+      "name": "SpeedPAK",
+      "color": "#ee7532"
+    },
+    {
+      "id": "asendia",
+      "catalog": "asendia",
+      "slug": "asendia-sendungsverfolgung",
+      "title": "Asendia Sendungsverfolgung: Status, Zustellung, Kontakt",
+      "name": "Asendia",
+      "color": "#005d69"
+    },
+    {
+      "id": "hermes-einrichtungs-service",
+      "catalog": "hermes",
+      "slug": "hermes-einrichtungs-service-sendungsverfolgung",
+      "title": "Hermes Einrichtungs-Service Sendungsverfolgung: Liefertermin",
+      "name": "Hermes Einrichtungs-Service",
+      "color": "#0091cd"
+    },
+    {
+      "id": "landmark-global",
+      "catalog": "landmark-global",
+      "slug": "landmark-global-sendungsverfolgung",
+      "title": "Landmark Global Sendungsverfolgung: Status, Partner, Kontakt",
+      "name": "Landmark Global",
+      "color": "#e62337"
+    },
+    {
+      "id": "dhl-ecommerce",
+      "catalog": "dhl-ecommerce",
+      "slug": "dhl-ecommerce-sendungsverfolgung",
+      "title": "DHL eCommerce Sendungsverfolgung: GM-Nummer, Status, Kontakt",
+      "name": "DHL eCommerce",
+      "color": "#ffcc00"
     }
   ],
   "fr": [
@@ -652,6 +772,54 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "bpost suivi\u00a0: code-barres, statuts et point relais",
       "name": "bpost",
       "color": "#ef2637"
+    },
+    {
+      "id": "gofo-fr",
+      "catalog": "gofo-fr",
+      "slug": "gofo-france-suivi",
+      "title": "GOFO France suivi colis\u00a0: statuts, livraison et contact",
+      "name": "GOFO France",
+      "color": "#fc4c02"
+    },
+    {
+      "id": "speedpak",
+      "catalog": "speedpak",
+      "slug": "speedpak-suivi",
+      "title": "SpeedPAK suivi\u00a0: colis eBay, statuts et qui contacter",
+      "name": "SpeedPAK",
+      "color": "#ee7532"
+    },
+    {
+      "id": "asendia",
+      "catalog": "asendia",
+      "slug": "asendia-suivi",
+      "title": "Asendia suivi\u00a0: colis, statuts et qui contacter",
+      "name": "Asendia",
+      "color": "#005d69"
+    },
+    {
+      "id": "colisweb",
+      "catalog": "colisweb",
+      "slug": "suivi-colisweb",
+      "title": "Suivi Colisweb\u00a0: messages, créneau de livraison et contact",
+      "name": "Colisweb",
+      "color": "#15cbe3"
+    },
+    {
+      "id": "ciblex",
+      "catalog": "ciblex",
+      "slug": "suivi-ciblex",
+      "title": "Suivi Ciblex\u00a0: numéro, statuts du colis et contact",
+      "name": "Ciblex",
+      "color": "#0160ab"
+    },
+    {
+      "id": "landmark-global",
+      "catalog": "landmark-global",
+      "slug": "landmark-global-suivi",
+      "title": "Landmark Global suivi\u00a0: statuts, livreur et contact",
+      "name": "Landmark Global",
+      "color": "#e62337"
     }
   ],
   "it": [
@@ -766,6 +934,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Amazon Logistics tracking: dove seguire il pacco e contatti",
       "name": "Amazon Logistics",
       "color": "#ff9900"
+    },
+    {
+      "id": "gofo-it",
+      "catalog": "gofo-it",
+      "slug": "gofo-italy-tracking",
+      "title": "GOFO Italy tracking: stati, consegna e contatti",
+      "name": "GOFO Italy",
+      "color": "#fc4c02"
+    },
+    {
+      "id": "speedpak",
+      "catalog": "speedpak",
+      "slug": "speedpak-tracking",
+      "title": "SpeedPAK tracking: pacchi eBay, stati e chi consegna",
+      "name": "SpeedPAK",
+      "color": "#ee7532"
     }
   ],
   "es": [
@@ -896,6 +1080,14 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DHL eCommerce Iberia seguimiento: estados y teléfono",
       "name": "DHL eCommerce Iberia",
       "color": "#ffcc00"
+    },
+    {
+      "id": "speedpak",
+      "catalog": "speedpak",
+      "slug": "speedpak-seguimiento",
+      "title": "SpeedPAK seguimiento: paquetes de eBay, estados y contacto",
+      "name": "SpeedPAK",
+      "color": "#ee7532"
     }
   ],
   "pt": [
@@ -1116,6 +1308,14 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DHL eCommerce Poland śledzenie przesyłki: statusy i punkty",
       "name": "DHL eCommerce Poland",
       "color": "#ffcc00"
+    },
+    {
+      "id": "allegro-one",
+      "catalog": "allegro-one",
+      "slug": "allegro-one-sledzenie",
+      "title": "Allegro One śledzenie przesyłki: statusy i odbiór paczki",
+      "name": "Allegro One",
+      "color": "#006d57"
     }
   ]
 };

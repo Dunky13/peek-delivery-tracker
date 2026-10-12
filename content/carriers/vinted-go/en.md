@@ -16,7 +16,7 @@ Vinted Go publishes no format for its numbers. Those Peek's carrier list knows a
 
 | Number (invented) | What it is |
 | --- | --- |
-| `1700000000000001` | The shape of a Vinted Go number: 16 digits starting 17 or 18. DHL eCommerce, TNT and [Evri](carrier:evri) use 16-digit numbers too. |
+| `1700000000000001` | The shape of a Vinted Go number: 16 digits starting 17 or 18. [DHL eCommerce](carrier:dhl-ecommerce), TNT and [Evri](carrier:evri) use 16-digit numbers too. |
 | `1700000000000002` | 16 digits whose last digit doesn't check out, so it doesn't have Vinted Go's shape. |
 
 Two things are easy to mix up:

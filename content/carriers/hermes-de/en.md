@@ -71,7 +71,7 @@ As read on 10 October 2026:
 
 Hermes lists no customer-service phone line, hours or chat; the head-office number is marked as not customer service, and couriers can't be contacted.
 
-> Hermes Germany sends no SMS: any text in its name is a scam, except from Hermes Einrichtungs-Service. Its emails never ask for payment details or customs fees, and recipients pay nothing extra.
+> Hermes Germany sends no SMS: any text in its name is a scam, except from [Hermes Einrichtungs-Service](carrier:hermes-einrichtungs-service). Its emails never ask for payment details or customs fees, and recipients pay nothing extra.
 
 ## Tracking a Hermes parcel with Peek
 
