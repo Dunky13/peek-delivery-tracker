@@ -5,6 +5,7 @@ import {
   type CarrierId,
   type CarrierInputField as ScraperInputField,
   type CarrierInputRequirement as ScraperInputRequirement,
+  MAX_RECOGNITIONS,
   recognitionCandidates,
 } from 'universal-parcel-scraper';
 import {
@@ -35,12 +36,12 @@ export {
   displayedCarrierId,
   recognitionAskedCarriers,
 } from 'universal-parcel-scraper/app';
-export { MAX_RECOGNITIONS } from 'universal-parcel-scraper';
+export { MAX_RECOGNITIONS };
 
 /** The HTTP candidates followed by the bounded, optional browser candidates. */
 export function discoveryAskedCarriers(number: string): string[] {
   return [...new Set([
-    ...recognitionCandidates(number).slice(0, 5),
+    ...recognitionCandidates(number).slice(0, MAX_RECOGNITIONS),
     ...recognitionCandidates(number, { phase: 'browser' }).slice(0, 2),
   ].map(({ carrier }) => carrier))];
 }
