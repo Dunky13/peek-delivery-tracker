@@ -1,8 +1,12 @@
-import { describe, expect, it } from 'vitest';
-import { LINK_ID, OTHER_LINK_ID, testView } from '../../test/parcelLinks';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { LINK_ID, OTHER_LINK_ID, OWNER_KEY, pendingView, testView } from '../../test/parcelLinks';
 import type { EventPlace, ParcelWithEvents, Stage } from '../../types';
-import type { RecentParcel } from '../recents';
-import { leadParcel } from './deviceList';
+import { ParcelLinkError } from '../links';
+import { forgetAllRecents, recentFor, rememberParcel, type RecentParcel } from '../recents';
+import { forgetDeviceChecks, leadParcel, watchDeviceParcels } from './deviceList';
+
+const mocks = vi.hoisted(() => ({ read: vi.fn() }));
+vi.mock('../links', async (original) => ({ ...await original<typeof import('../links')>(), readParcelLink: mocks.read }));
 
 const THIRD_LINK_ID = 'p5Rt9wJq2LbX';
 const zurich: EventPlace = { latitude: 47.38, longitude: 8.54, precision: 'city', country: 'CH', name: 'Zürich' };
@@ -50,5 +54,106 @@ describe('leadParcel', () => {
     expect(leadParcel([arrived], now + 25 * HOUR)).toBeNull();
     const moving = recent(OTHER_LINK_ID, ['accepted', 'in_transit']);
     expect(leadParcel([arrived, moving], now)).toBe(moving);
+  });
+});
+
+describe('watchDeviceParcels', () => {
+  const MINUTE = 60_000;
+  const pass = (milliseconds: number) => vi.advanceTimersByTimeAsync(milliseconds);
+  const watch = () => watchDeviceParcels(() => [recentFor(LINK_ID)].filter((recent) => recent !== null));
+  let hidden = false;
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    hidden = false;
+    vi.spyOn(document, 'hidden', 'get').mockImplementation(() => hidden);
+    mocks.read.mockReset();
+    mocks.read.mockResolvedValue(testView({ stages: ['registered', 'in_transit', 'out_for_delivery'] }));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    forgetAllRecents();
+    forgetDeviceChecks();
+  });
+
+  it('reads a parcel on its way again once its answer is stale, while the list stays open', async () => {
+    rememberParcel({ id: LINK_ID, key: OWNER_KEY, view: testView(), now: Date.now() });
+    const stop = watch();
+    await pass(4 * MINUTE);
+    expect(mocks.read).not.toHaveBeenCalled();
+    await pass(MINUTE);
+    expect(mocks.read).toHaveBeenCalledOnce();
+    expect(mocks.read).toHaveBeenCalledWith(LINK_ID, { key: OWNER_KEY, signal: expect.any(AbortSignal) });
+    expect(recentFor(LINK_ID)?.stage).toBe('out_for_delivery');
+    stop();
+  });
+
+  it('waits while the list is out of sight, and reads at once when it is shown again', async () => {
+    rememberParcel({ id: LINK_ID, key: OWNER_KEY, view: testView(), now: Date.now() });
+    const stop = watch();
+    hidden = true;
+    await pass(10 * MINUTE);
+    expect(mocks.read).not.toHaveBeenCalled();
+    hidden = false;
+    document.dispatchEvent(new Event('visibilitychange'));
+    await pass(0);
+    expect(mocks.read).toHaveBeenCalledOnce();
+    stop();
+  });
+
+  it('keeps watching after a round that ran into trouble', async () => {
+    rememberParcel({ id: LINK_ID, key: OWNER_KEY, view: testView(), now: Date.now() - 60 * MINUTE });
+    mocks.read.mockRejectedValueOnce(new ParcelLinkError('offline'));
+    const stop = watch();
+    await pass(0);
+    expect(mocks.read).toHaveBeenCalledOnce();
+    expect(recentFor(LINK_ID)?.stage).toBe('in_transit');
+    await pass(MINUTE);
+    expect(mocks.read).toHaveBeenCalledTimes(2);
+    expect(recentFor(LINK_ID)?.stage).toBe('out_for_delivery');
+    stop();
+  });
+
+  it('keeps asking, every 10 s at most, about a lookup its carrier has not answered yet', async () => {
+    rememberParcel({ id: LINK_ID, key: OWNER_KEY, view: pendingView(), now: Date.now() });
+    mocks.read.mockResolvedValue(pendingView());
+    const stop = watch();
+    // After 2, 3, 4.5 and 6.75 s, then every 10 s.
+    await pass(16_250);
+    expect(mocks.read).toHaveBeenCalledTimes(4);
+    await pass(MINUTE);
+    expect(mocks.read).toHaveBeenCalledTimes(10);
+    mocks.read.mockResolvedValue(testView());
+    await pass(10_000);
+    expect(recentFor(LINK_ID)).toMatchObject({ stage: 'in_transit', syncStatus: 'ok' });
+    // Answered: the list is back to its pace, and the answer is fresh.
+    await pass(MINUTE);
+    expect(mocks.read).toHaveBeenCalledTimes(11);
+    stop();
+  });
+
+  it('stops reading once stopped: no timer, no listener, and a read on its way is called off', async () => {
+    rememberParcel({ id: LINK_ID, key: OWNER_KEY, view: testView(), now: Date.now() - 60 * MINUTE });
+    // Like a fetch, the read gives up once called off.
+    mocks.read.mockImplementationOnce((_id: string, { signal }: { signal: AbortSignal }) => new Promise((_resolve, reject) => {
+      signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+    }));
+    const listening = [vi.spyOn(document, 'addEventListener'), vi.spyOn(window, 'addEventListener')];
+    const unlistening = [vi.spyOn(document, 'removeEventListener'), vi.spyOn(window, 'removeEventListener')];
+    const stop = watch();
+    await pass(0);
+    expect(mocks.read).toHaveBeenCalledOnce();
+    const [, { signal }] = mocks.read.mock.calls[0] as [string, { signal: AbortSignal }];
+    stop();
+    await pass(0);
+    expect(signal.aborted).toBe(true);
+    expect(vi.getTimerCount()).toBe(0);
+    expect(unlistening.map((spy) => spy.mock.calls)).toEqual(listening.map((spy) => spy.mock.calls));
+    document.dispatchEvent(new Event('visibilitychange'));
+    window.dispatchEvent(new Event('focus'));
+    window.dispatchEvent(new Event('online'));
+    await pass(60 * MINUTE);
+    expect(mocks.read).toHaveBeenCalledOnce();
   });
 });

@@ -9,9 +9,11 @@ const FRESH_MS = 5 * 60_000;
 const SETTLED_FRESH_MS = 12 * 60 * 60_000;
 /** A lookup the carrier has not answered yet is asked about again soon. */
 const WAITING_FRESH_MS = 1_500;
-/** How soon, and how often, a list asks again about a parcel whose carrier has not answered yet. */
+/** A list asks again about a parcel whose carrier has not answered yet after 2 s, then ever more slowly up to 10 s. */
 const FIRST_CHECK_MS = 2_000;
-const FIRST_CHECK_ROUNDS = 6;
+const FIRST_CHECK_MAX_MS = 10_000;
+/** Otherwise a list in sight looks for stale parcels every minute. */
+const PASS_MS = 60_000;
 /** When the list last asked about each parcel, so coming back to the door does not ask again. */
 const checkedAt = new Map<string, number>();
 
@@ -68,23 +70,47 @@ export async function refreshDeviceParcels(recents: readonly RecentParcel[], sig
 
 /**
  * Keeps a list of the device's parcels up to date while it is shown: one round
- * now, and a few more, further and further apart, while a parcel looked up a
- * moment ago still waits for its carrier. `parcels` is read at each round.
+ * now, then one every minute while the list is in sight, and sooner while a
+ * parcel looked up a moment ago still waits for its carrier. Showing the list
+ * again, coming back to its window or back online runs a round at once. A
+ * round only reads the parcels that are stale. `parcels` is read at each round.
  * Returns the way to stop.
  */
 export function watchDeviceParcels(parcels: () => readonly RecentParcel[]): () => void {
   const controller = new AbortController();
   let timer: ReturnType<typeof setTimeout> | undefined;
-  const round = async (rounds: number) => {
-    const unanswered = await refreshDeviceParcels(parcels(), controller.signal);
-    if (unanswered && rounds < FIRST_CHECK_ROUNDS && !controller.signal.aborted) {
-      timer = setTimeout(() => void round(rounds + 1), FIRST_CHECK_MS * 1.5 ** rounds);
+  let running = false;
+  let waits = 0;
+  const schedule = (delay: number) => {
+    clearTimeout(timer);
+    // Out of sight the list waits; showing it again runs a round.
+    timer = setTimeout(() => document.hidden ? schedule(PASS_MS) : void round(), delay);
+  };
+  const round = async () => {
+    if (running || controller.signal.aborted) return;
+    clearTimeout(timer);
+    running = true;
+    let unanswered = false;
+    try {
+      unanswered = await refreshDeviceParcels(parcels(), controller.signal);
+    } finally {
+      // A round that ran into trouble leaves the next one to try again.
+      running = false;
+      if (!unanswered) waits = 0;
+      if (!controller.signal.aborted) schedule(unanswered ? Math.min(FIRST_CHECK_MAX_MS, FIRST_CHECK_MS * 1.5 ** waits++) : PASS_MS);
     }
   };
-  void round(0);
+  const catchUp = () => { if (!document.hidden) void round(); };
+  document.addEventListener('visibilitychange', catchUp);
+  window.addEventListener('focus', catchUp);
+  window.addEventListener('online', catchUp);
+  void round();
   return () => {
     clearTimeout(timer);
     controller.abort();
+    document.removeEventListener('visibilitychange', catchUp);
+    window.removeEventListener('focus', catchUp);
+    window.removeEventListener('online', catchUp);
   };
 }
 
