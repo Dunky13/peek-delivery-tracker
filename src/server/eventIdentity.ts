@@ -32,7 +32,7 @@
  *   stored while it was down (`sharedScans`).
  */
 import { DateTime } from 'luxon';
-import { sameInstantIdentityPolicy, type SameInstantIdentityPolicy, type SameInstantScan } from 'universal-parcel-scraper/app';
+import { sameInstantIdentityPolicy, trackingPlace, type SameInstantIdentityPolicy, type SameInstantScan } from 'universal-parcel-scraper/app';
 import { isRecord, type JsonObject } from './types';
 
 function providerCode(row: JsonObject): string {
@@ -252,6 +252,23 @@ function stagesAgree(left: string, right: string): boolean {
   return left === right || [left, right].some((stage) => stage === '' || stage === 'pending');
 }
 
+/**
+ * The words of a scan's place, without accents, case or countries ("Paris, FR"
+ * and "PARIS CDG" share paris), umlauts spelt out (ZUERICH is Zürich). A word
+ * with letters beyond a to z (Cyrillic, Chinese, ł) is left out.
+ */
+function placeWords(row: JsonObject): string[] {
+  return trackingPlace(String(row.location ?? '')).place.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((word) => /^[a-z0-9]+$/.test(word) && trackingPlace(word.toUpperCase()).country === null)
+    .map((word) => word.replace(/([aou])e/g, '$1'));
+}
+
+/** Two places named with no word in common. A place that names no more than a country conflicts with none. */
+function placesConflict(left: readonly string[], right: readonly string[]): boolean {
+  return left.length > 0 && right.length > 0 && !left.some((word) => right.includes(word));
+}
+
 export interface SharedScans {
   /** A carrier scan's computed identity → the universal copy it takes over in place. */
   reused: Map<string, string>;
@@ -280,8 +297,9 @@ export interface SharedScans {
  * off by a zone's offset from UTC. Times to the minute fall whole quarter
  * hours apart too often by chance, and carriers stamp some scans 15 or 30
  * minutes after another to the second (Swiss Post sorts a parcel a quarter
- * hour after customs clear it). A row that two scans match is ambiguous and
- * stays unmatched.
+ * hour after customs clear it). Across a zone's offset, two places that share
+ * no word, countries aside, are two scans. A row that two scans match is
+ * ambiguous and stays unmatched.
  *
  * A carrier's scan takes over the universal row it matches. A universal scan
  * that matches any row is left out, and so is one whose own identity is stored
@@ -331,9 +349,11 @@ export function sharedScans(
     const minuted = occupied.has(at) ? [] : eligible.filter((row) => (
       sameMinute(at, instantOf(row)) && !shown.has(instantOf(row)) && sameWording(wordingOf(row), wording)
     ));
+    const place = placeWords(event);
     const zoned = occupied.has(at) ? [] : eligible.filter((row) => {
       const shift = at - instantOf(row);
-      return shift % QUARTER_HOUR_MS === 0 && Math.abs(shift) <= MAX_ZONE_SHIFT_MS && !shown.has(instantOf(row));
+      return shift % QUARTER_HOUR_MS === 0 && Math.abs(shift) <= MAX_ZONE_SHIFT_MS && !shown.has(instantOf(row))
+        && !placesConflict(place, placeWords(row));
     });
     const shifted = zoned.filter((row) => sameWording(wordingOf(row), wording));
     const reclocked = Math.floor(at / 1_000) % 60 === 0 ? [] : zoned.filter((row) => (

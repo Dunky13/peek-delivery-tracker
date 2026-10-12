@@ -3721,6 +3721,38 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(watermark).toBe('2026-01-04T12:59:03.000Z');
     expect(store.rows.size).toBe(3);
   });
+
+  it('stores a provider scan from another place a zone after a carrier scan, and moves the watermark to it', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const down = new Error('GOFO tracking endpoint is unavailable');
+    // The same wording four hours later, in another town: the parcel moved on.
+    const paris: Scan = { time: '2026-01-04T03:00:00-05:00', location: 'Paris, France', description: 'Departed facility', stage: 'in_transit' };
+    const lyon: Scan = { time: '2026-01-04T12:00:00Z', location: 'Lyon, France', description: 'Departed facility', stage: 'in_transit' };
+    const adapter = {
+      fetch: vi.fn().mockResolvedValueOnce(result([paris])).mockRejectedValueOnce(down),
+      fetchUniversal: vi.fn().mockResolvedValue(result([lyon])),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    let watermark: unknown;
+    const sync = async (stage: string) => {
+      await service.syncPackage({ ...parcel, current_stage: stage,
+        ...(watermark ? { carrier_data: { routing: { version: 1, configured_carrier: 'gofo', last_event_at: watermark } } } : {}),
+        [STORED_EVENT_IDENTITIES]: store.identities() });
+      watermark = (((store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject).carrier_data as JsonObject).routing as JsonObject).last_event_at;
+    };
+
+    await sync('pending');
+    expect(watermark).toBe('2026-01-04T08:00:00.000Z');
+    await sync('in_transit');
+    expect(ids(store.batch())).toEqual([providerEventId('unknown', lyon.time, lyon.location!, lyon.description)]);
+    expect(store.rows.size).toBe(2);
+    expect(watermark).toBe('2026-01-04T12:00:00.000Z');
+  });
 });
 
 describe('the pickup point a parcel was collected from', () => {

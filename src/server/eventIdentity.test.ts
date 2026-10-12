@@ -472,6 +472,32 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(matched([centre], [stored(accepted), stored({ ...registered, occurred_at: centre.occurred_at, stage: 'in_transit' })])).toBe(0);
   });
 
+  // A copy and a carrier's scan, either one stored: the same wording four hours apart, then other wording two hours apart to the second.
+  const placed = <T extends object>(event: T, location: string) => ({ ...event, location });
+  const matchedIn = (scanAt: string, rowAt: string) => {
+    const shared = [
+      sharedScans([placed(scan('unknown:departed', '2026-01-04T12:00:00Z', 'Departed facility'), scanAt)],
+        [placed(row('gofo:departed', '2026-01-04T08:00:00+00:00', 'Departed facility'), rowAt)]),
+      sharedScans([placed(scan('gofo:departed', '2026-01-04T12:00:00Z', 'Departed facility'), scanAt)],
+        [placed(row('unknown:departed', '2026-01-04T08:00:00+00:00', 'Departed facility'), rowAt)]),
+      sharedScans([placed(centre, scanAt)], [placed(stored(accepted), rowAt)]),
+      sharedScans([placed(accepted, scanAt)], [placed(stored(centre), rowAt)]),
+    ];
+    return shared.map(({ skipped, reused }) => skipped.size + reused.size);
+  };
+
+  it('keeps a scan from another place a zone off, in any wording and whichever source arrives first', () => {
+    expect(matchedIn('Lyon, France', 'Paris, France')).toEqual([0, 0, 0, 0]);
+    expect(matchedIn('Lyon Saint-Exupéry', 'PARIS NORD (FR)')).toEqual([0, 0, 0, 0]);
+  });
+
+  it('still matches a zone off with no place, a country only, or the same place written otherwise', () => {
+    for (const [scanAt, rowAt] of [['', 'Paris, France'], ['Lyon', ''], ['France', 'Lyon, FR'], ['PARIS', 'Paris CDG'],
+      ['Paris, FR', 'paris (75)'], ['ZUERICH, CH', 'Zürich Mülligen'], ['Hub City, EX', 'HUB CITY EX US'], ['深圳市', 'Shenzhen']]) {
+      expect(matchedIn(scanAt!, rowAt!), `${scanAt} / ${rowAt}`).toEqual([1, 1, 1, 1]);
+    }
+  });
+
   it('never moves a row the batch shows at its own instant', () => {
     // The provider reports the carrier's scan at its real time too: the other scan is its own.
     const sameTime = scan('unknown:accepted', accepted.occurred_at, 'Accepted', 'accepted');
