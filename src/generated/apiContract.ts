@@ -8114,7 +8114,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "osm-worldwide",
+      "recognitionRank": 75
     },
     "trackingUrlTemplate": "https://www.osmworldwide.com/tracking/?trackingIds={trackingNumber}",
     "linkRules": [
@@ -8132,6 +8133,10 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^A\\d{10}[A-Z]{3}\\d{8}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^OSM[0-9A-Z]{14}$",
         "confidence": "high"
       }
     ],
