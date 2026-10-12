@@ -5713,10 +5713,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cdek",
+      "recognitionRank": 950
     },
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "my.cdek.ru"
+        ],
+        "path": "^/lkfl/order/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingUrlTemplate": "https://my.cdek.ru/lkfl/order/{trackingNumber}",
+    "trackingSearchUrl": "https://my.cdek.ru/lkfl/"
   },
   "ceska-posta": {
     "displayName": "Česká pošta",
@@ -5828,10 +5838,18 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Nicosia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cyprus-post",
+      "recognitionRank": 890
     },
     "linkRules": [],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CY$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.cypruspost.post/en/track-n-trace-results"
   },
   "day-ross": {
@@ -6457,11 +6475,40 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "meest",
+      "recognitionRank": 940
     },
-    "trackingUrlTemplate": "https://t.meest-group.com/n/",
-    "linkRules": [],
-    "detectionRules": [],
+    "trackingUrlTemplate": "https://t.meest-group.com/n/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "t.meest-group.com"
+        ],
+        "path": "^/n/([A-Za-z0-9-]{4,40})/?$"
+      },
+      {
+        "domains": [
+          "meest.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?parcel-track/?$",
+        "params": [
+          "parcel_number"
+        ]
+      },
+      {
+        "domains": [
+          "tracking-iframe.meest.com"
+        ],
+        "path": "^/t/[a-z]{2}/([A-Za-z0-9-]{4,40})/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{7}[A-Z]{2}\\d{5}G$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://t.meest-group.com/n/"
   },
   "mng-kargo": {
@@ -6527,11 +6574,40 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Luxembourg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "post-luxembourg",
+      "recognitionRank": 910
     },
-    "linkRules": [],
-    "detectionRules": [],
-    "trackingSearchUrl": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace"
+    "linkRules": [
+      {
+        "domains": [
+          "post.lu"
+        ],
+        "pathPattern": "^/(?:(?:en|fr|de|lb)/)?particuliers/colis-courrier/track-and-trace/?$",
+        "params": [
+          "numero"
+        ],
+        "fragment": "[?&]numero=([^&]+)"
+      },
+      {
+        "domains": [
+          "trackandtrace.lu"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "numero"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}LU$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
+    "trackingSearchUrl": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace",
+    "trackingUrlTemplate": "https://www.post.lu/en/particuliers/colis-courrier/track-and-trace#/search?numero={trackingNumber}"
   },
   "posta-slovenije": {
     "displayName": "Pošta Slovenije",
@@ -6589,10 +6665,28 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-srbije",
+      "recognitionRank": 930
     },
-    "linkRules": [],
-    "detectionRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "posta.rs"
+        ],
+        "pathPattern": "^/(?:cir|lat|eng)/alati/pracenje-posiljke\\.aspx$",
+        "params": [
+          "broj"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}RS$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.posta.rs/cir/alati/pracenje-posiljke.aspx"
   },
   "ptt": {
@@ -6910,9 +7004,23 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "xdp",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery or collection postcode",
+          "type": "text",
+          "help": "XDP shows a consignment only with its delivery or collection postcode. Without it, other sources are asked.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
-    "trackingUrlTemplate": "https://xdp.co.uk/track/",
+    "trackingUrlTemplate": "https://xdp.co.uk/track/{trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -7749,7 +7857,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Malta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "maltapost",
+      "recognitionRank": 920
     },
     "trackingUrlTemplate": "https://www.maltapost.com/tracking#/tracking?barcode={trackingNumber}",
     "linkRules": [
@@ -7761,7 +7870,14 @@ export const CARRIER_CAPABILITIES = {
         "fragment": "^/tracking\\?(?:[^&]*&)*barcode=([^&]+)"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MT$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.maltapost.com/tracking"
   },
   "matkahuolto": {

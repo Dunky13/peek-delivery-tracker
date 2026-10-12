@@ -5171,34 +5171,6 @@
     ]
   },
   {
-    "input": "10884000425364",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "dpd-fr",
-      "dpd",
-      "relais-colis",
-      "ciblex",
-      "seur",
-      "brt",
-      "delhivery",
-      "dhl-ecommerce-uk",
-      "dpd-de",
-      "dpd-uk",
-      "xpressbees"
-    ],
-    "preferred": [
-      "dpd-fr"
-    ],
-    "asked": [
-      "seur",
-      "brt",
-      "relais-colis",
-      "ciblex",
-      "dhl-ecommerce-uk"
-    ]
-  },
-  {
     "input": "10886531800",
     "carrier": "unknown",
     "confidence": "low",
@@ -25218,8 +25190,16 @@
   {
     "input": "BG4211888QV00010G",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "meest"
+    ],
+    "preferred": [
+      "meest"
+    ],
+    "asked": [
+      "meest"
+    ]
   },
   {
     "input": "BGSP1004431163",
@@ -26646,6 +26626,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
@@ -26657,6 +26638,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
@@ -26668,6 +26650,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
@@ -26679,6 +26662,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
@@ -26690,6 +26674,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
@@ -26701,6 +26686,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
@@ -26712,6 +26698,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
@@ -27623,6 +27610,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -27688,6 +27676,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-srbije",
       "chronopost"
     ]
   },
@@ -30452,6 +30441,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -30463,6 +30453,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -30474,6 +30465,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -30485,6 +30477,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -31530,6 +31523,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -31620,6 +31614,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-srbije",
       "chronopost"
     ]
   },
@@ -33478,6 +33473,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -34078,6 +34074,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -34089,6 +34086,7 @@
       "intl-post"
     ],
     "asked": [
+      "cyprus-post",
       "chronopost"
     ]
   },
@@ -34254,6 +34252,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
@@ -34270,6 +34269,18 @@
     ]
   },
   {
+    "input": "RR313231213RS",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "posta-srbije",
+      "chronopost"
+    ]
+  },
+  {
     "input": "RR314584512RS",
     "carrier": "intl-post",
     "confidence": "high",
@@ -34277,6 +34288,7 @@
       "intl-post"
     ],
     "asked": [
+      "posta-srbije",
       "chronopost"
     ]
   },
@@ -34818,6 +34830,7 @@
       "intl-post"
     ],
     "asked": [
+      "maltapost",
       "chronopost"
     ]
   },
@@ -34829,6 +34842,7 @@
       "intl-post"
     ],
     "asked": [
+      "maltapost",
       "chronopost"
     ]
   },
@@ -35080,6 +35094,7 @@
       "intl-post"
     ],
     "asked": [
+      "maltapost",
       "chronopost"
     ]
   },
@@ -35474,10 +35489,46 @@
     ]
   },
   {
+    "input": "UA3200617NN00030G",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "meest"
+    ],
+    "preferred": [
+      "meest"
+    ],
+    "asked": [
+      "meest"
+    ]
+  },
+  {
     "input": "UA3382591GP00110G",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "meest"
+    ],
+    "preferred": [
+      "meest"
+    ],
+    "asked": [
+      "meest"
+    ]
+  },
+  {
+    "input": "UA3930795MT00050G",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "meest"
+    ],
+    "preferred": [
+      "meest"
+    ],
+    "asked": [
+      "meest"
+    ]
   },
   {
     "input": "UA523765527VU",
@@ -37207,6 +37258,7 @@
       "intl-post"
     ],
     "asked": [
+      "post-luxembourg",
       "chronopost"
     ]
   },
