@@ -2,8 +2,8 @@
 title: Cainiao śledzenie przesyłki: numery, statusy i kontakt
 description: Paczka z AliExpress wysłana przez Cainiao: jakie numery są Cainiao, co znaczą angielskie statusy, co z doręczeniem w Polsce i gdzie pytać, gdy utknie.
 slug: cainiao-sledzenie
-published: 2026-10-10
-updated: 2026-10-10
+published: 2026-10-11
+updated: 2026-10-11
 ---
 
 Cainiao to grupa logistyczna Alibaby: wysyła za granicę paczki sprzedawców z platform takich jak AliExpress, a jej strona śledzenia, [global.cainiao.com](https://global.cainiao.com/), pokazuje tylko przesyłki Cainiao i AliExpress. Wpisz numer na global.cainiao.com albo wklej go w pole na samej górze tej strony. Na AliExpress numer jest przy zamówieniu: pomoc AliExpress, także w wersji polskiej, opisuje to po angielsku jako „My Orders”, potem zamówienie i „Tracking”.
@@ -79,7 +79,9 @@ Numery z chińskiej strony Cainiao są dla klientów w Chinach oraz dla sprzedaw
 
 ## Śledzenie paczki Cainiao w Peek
 
-[Peek](/) pokazuje te paczki jako „AliExpress / Cainiao”. Numery DOFR i CNFR rozpoznaje od razu, a przy numerach LP i CNG pyta Cainiao wśród prawdopodobnych przewoźników. Sam numer pocztowy Peek sprawdza u operatora pocztowego, nie w Cainiao: przy nim i przy numerach AP wklej link z global.cainiao.com z `mailNoList=`, który dociera do Cainiao bez względu na numer. Linków z track.cainiao.com ani z zamówień AliExpress nie rozpoznaje.
+[Peek](/) pokazuje te paczki jako „AliExpress / Cainiao”. Numery DOFR i CNFR rozpoznaje od razu, a przy numerach LP, CNG i AP oraz innych numerach Cainiao, takich jak CNUSUP, CNBR czy CNMEX, pyta Cainiao wśród prawdopodobnych przewoźników. Sam numer pocztowy Peek sprawdza u operatora pocztowego, nie w Cainiao, chyba że kończy się na TY lub MI: wtedy pyta też Cainiao. Przy pozostałych numerach pocztowych wklej link z global.cainiao.com z `mailNoList=`, który dociera do Cainiao bez względu na numer. Linków z track.cainiao.com ani z zamówień AliExpress nie rozpoznaje.
+
+Czasem AliExpress od razu podaje numer przewoźnika, który doręczy paczkę, na przykład numer SDA przy paczce do Włoch, choć paczka jest jeszcze w Cainiao. Przy niektórych takich kształtach Peek pyta Cainiao obok tego przewoźnika. Jeśli obaj znają numer, Peek zapisuje paczkę pod „AliExpress / Cainiao”, gdzie są skany sprzed granicy, i na ostatni odcinek pyta też przewoźnika doręczającego: jego skany trafiają do historii, gdy tylko zgłosi on paczkę.
 
 Sprawdza śledzenie co 10 minut, a co 2 minuty, gdy paczka jest w doręczeniu, pokazuje każdy skan na mapie i powiadomi Cię o każdym skanie, tylko o ważnych etapach albo tylko w dniu dostawy. Widzisz status i historię, miejsce skanu, gdy Cainiao je podaje, planowaną dostawę jako przedział dni, gdy Cainiao go podaje, i godzinę doręczenia. Nie skontaktuje się za Ciebie z Cainiao ani nie złoży reklamacji.
 

@@ -2,8 +2,8 @@
 title: Cainiao suivi : numéros, statuts et qui contacter
 description: Suivre un colis Cainiao venu d'AliExpress : à quoi ressemble le numéro, ce que veut dire chaque statut, où il t'attend en France et qui contacter s'il bloque.
 slug: cainiao-suivi
-published: 2026-10-10
-updated: 2026-10-10
+published: 2026-10-11
+updated: 2026-10-11
 ---
 
 Cainiao est le groupe logistique d'Alibaba : il achemine à l'étranger les colis de vendeurs de plateformes comme AliExpress et, en France, il a aussi son propre réseau de livraison. Pour suivre ton colis, saisis son numéro sur [global.cainiao.com](https://global.cainiao.com/), le site de suivi de Cainiao, qui ne suit que les colis Cainiao et AliExpress, ou colle-le dans le champ ci-dessus. Sur AliExpress, le numéro se trouve dans le suivi de ta commande : l'aide d'AliExpress indique « My Orders », puis la commande, puis « Tracking ».
@@ -77,7 +77,9 @@ Rien pour la Belgique et la Suisse : fr.cainiao.com ne couvre que la « France m
 
 ## Suivre un colis Cainiao avec Peek
 
-[Peek](/) affiche ces colis sous le nom « AliExpress / Cainiao ». Il reconnaît d'emblée les numéros DOFR et CNFR ; pour les numéros LP et CNG, il interroge Cainiao parmi les transporteurs probables. Un numéro postal saisi seul part chez la poste : pour celui-là, comme pour un numéro AP, colle le lien de global.cainiao.com qui contient `mailNoList=`, qui mène à Cainiao quel que soit le numéro. Les liens de track.cainiao.com et des commandes AliExpress ne sont pas reconnus.
+[Peek](/) affiche ces colis sous le nom « AliExpress / Cainiao ». Il reconnaît d'emblée les numéros DOFR et CNFR ; pour les numéros LP, CNG et AP, et d'autres références Cainiao comme CNUSUP, CNBR ou CNMEX, il interroge Cainiao parmi les transporteurs probables. Un numéro postal saisi seul part chez la poste, sauf s'il finit par TY ou MI : Peek interroge alors aussi Cainiao. Pour les autres numéros postaux, colle le lien de global.cainiao.com qui contient `mailNoList=`, qui mène à Cainiao quel que soit le numéro. Les liens de track.cainiao.com et des commandes AliExpress ne sont pas reconnus.
+
+AliExpress donne parfois déjà le numéro du transporteur qui livrera, par exemple un numéro SDA pour un colis vers l'Italie, alors que Cainiao a encore le colis. Pour certaines de ces formes, Peek interroge Cainiao en plus de ce transporteur. Si les deux connaissent le numéro, Peek range le colis sous « AliExpress / Cainiao », qui a les scans d'avant la frontière, et interroge aussi le transporteur qui livre pour le dernier kilomètre : ses scans rejoignent l'historique dès qu'il signale le colis.
 
 Il vérifie le suivi toutes les 10 minutes, toutes les 2 minutes une fois le colis en livraison, place chaque scan sur une carte et peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ». Il affiche le statut, l'historique en anglais, le lieu d'un scan quand Cainiao en donne un, la livraison prévue sous forme de fourchette de dates quand elle existe, l'heure de livraison et le numéro du transporteur local quand Cainiao le publie. Il ne peut ni contacter Cainiao ni réclamer à ta place.
 

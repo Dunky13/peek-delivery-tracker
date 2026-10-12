@@ -18,6 +18,7 @@ The most common shapes bpost lists (examples invented):
 | --- | --- | --- |
 | 24 digits starting 3232 or 3299 | `323200000000000000000000` | Parcel barcode |
 | 18 digits starting 3232 | `323200000000000000` | Parcel barcode |
+| 27 characters starting JJBEA | `JJBEA0000000000000000000001` | Parcel barcode |
 | Two letters, nine digits, BE | `CE123456785BE` | International postal number from Belgium |
 | R, a letter, nine digits, two letters | `RR123456785BE` | International registered mail |
 | 30 digits starting 010 | `010000000000000000000000000000` | Registered mail within Belgium |
@@ -83,7 +84,7 @@ Have the barcode ready. bpost lists no customer service email address.
 
 ## Tracking bpost parcels with Peek
 
-[Peek](/) names bpost straight away for a valid number of two letters, nine digits and BE, and for `JJBE` followed by a letter and 18 digits. An 18-digit number is asked of bpost alone; a 24-digit one of bpost, InPost and Ciblex. One starting 3232 or 3299 stays with bpost when bpost knows it; otherwise, if two carriers know it, you pick with "Change". The 30-digit registered numbers work only after picking bpost with "Change", and the 27-character JJBEA form isn't recognised. No bpost link is read, and bpost itself is asked without a postcode. A U barcode is named bpost, though bpost doesn't track it.
+[Peek](/) names bpost straight away for a valid number of two letters, nine digits and BE, and for `JJBE` followed by a letter and 18 or 22 digits. An 18-digit number is asked of bpost alone; a 24-digit one of bpost, InPost and Ciblex. One starting 3232 or 3299 stays with bpost when bpost knows it; otherwise, if two carriers know it, you pick with "Change". The 30-digit registered numbers work only after picking bpost with "Change". No bpost link is read, and bpost itself is asked without a postcode. A U barcode isn't named bpost, since bpost doesn't track it; Peek suggests only Chronopost for it.
 
 bpost's scans carry no time zone, so Peek doesn't show bpost's own scan list. It takes the dated history from universal tracking services, asks bpost again every 6 hours and, if no service answers, shows bpost's current status, dated when Peek saw it. A tracking service may need the delivery postcode, and you'll be told. Statuses keep bpost's English wording, and a parcel delivered back to the sender shows as returned. You can be notified when the status changes.
 

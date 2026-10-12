@@ -12,7 +12,7 @@ GLS Spain es la filial española del grupo GLS, la red de paquetería que compr�
 
 GLS lo dice claro: «El número de seguimiento te lo ha de proporcionar el proveedor». Búscalo en el correo de envío o en la página del pedido de la tienda, y después en los correos, SMS y mensajes de WhatsApp de GLS o en la app My GLS. Si el repartidor no te encontró, la nota de paso que deja en tu puerta también lo lleva. ¿Sigues sin él? Pídeselo a la tienda o mira [cómo localizar un paquete sin número de seguimiento](guide:find-tracking-number).
 
-GLS no publica la longitud ni el formato de sus números en España. El formulario nacional llama al campo «N° de envio / Albarán» y el internacional, «Número de seguimiento». Los paquetes de GLS Spain que ha visto Peek llevaban 10 cifras empezando por 1, como el inventado `1234567890`.
+GLS no publica la longitud ni el formato de sus números en España. El formulario nacional llama al campo «N° de envio / Albarán» y el internacional, «Número de seguimiento». Los números de envío tienen nueve o diez cifras; los que ha visto Peek llevaban 10 y empezaban por 1, como el inventado `1234567890`. El seguimiento de GLS también encuentra el paquete por el código de barras más largo de la etiqueta o por la referencia de la tienda.
 
 La página de seguimiento te pregunta primero si el envío es nacional o internacional. En los dos casos hace falta el código postal de destino; sin él, GLS no enseña nada.
 
@@ -20,20 +20,23 @@ Diez cifras encajan también con otros transportistas, entre ellos [DHL eCommerc
 
 ## Estados de GLS: qué significa cada uno
 
-El seguimiento de GLS sale en español o en inglés, según el idioma que elijas. Estos son los textos en español de las páginas de ayuda de GLS, en el orden en que suele encontrarlos un paquete:
+El seguimiento de GLS sale en español o en inglés, según el idioma que elijas. Estos son sus textos en inglés, los que verás en Peek, en el orden en que suele encontrarlos un paquete, con el nombre que les da la ayuda de GLS en español cuando lo hay:
 
-| Estado | Qué significa para ti |
+| GLS dice (en inglés) | Qué significa para ti |
 | --- | --- |
-| `Etiqueta creada` | La tienda ha registrado el envío en GLS, pero GLS aún no tiene el paquete. |
-| `Envío recogido por GLS` | El paquete ya está en la red de GLS y empieza su camino. |
-| `En tránsito` | Ha salido de origen y va hacia la agencia que lo reparte. |
-| `En reparto` | Lo lleva un repartidor en su ruta. GLS te enseña una franja horaria orientativa. |
-| `Depositado en Parcel Shop` | Te espera en el Parcel Shop elegido: ya puedes ir a recogerlo. |
-| `Entregado` | Te lo han entregado a ti o a la persona que hayas autorizado. |
+| `Label created. The shipment has not yet been delivered to GLS by the sender` | «Etiqueta creada»: la tienda ha registrado el envío, pero GLS aún no tiene el paquete. |
+| `Parcel picked up by GLS. Pending to arrive to final destination` | «Envío recogido por GLS»: el paquete ya está en la red de GLS y empieza su camino. |
+| `At delivery agency` | Está en la agencia que lo reparte. Puede aparecer más de una vez. |
+| `Out for delivery` | «En reparto»: lo lleva un repartidor en su ruta. GLS te enseña una franja horaria orientativa. |
+| `Absent` | El repartidor pasó y no había nadie. |
+| `Received in <point>` | Te espera en el Parcel Shop o el Parcel Locker que se nombra: ya puedes ir a recogerlo. |
+| `Delivered` | «Entregado»: te lo han entregado a ti o a la persona que hayas autorizado, o lo has recogido en un punto GLS. |
+| `Refused by the consignee` | Lo han rechazado en la puerta. Vuelve al remitente. |
+| `Returned to the shipper` | Ya está otra vez con el remitente, tras pasar por `Return delivery process`. |
 
-`Entregado` no siempre significa en tu puerta. Si el paquete iba a un Parcel Shop, GLS dice que vayas a la tienda cuando el seguimiento ponga `Entregado`, porque aparece al llegar allí. La franja horaria de `En reparto` es solo una estimación; el seguimiento en tiempo real empieza «cuando queden menos de 10 paradas».
+«Entregado» no siempre significa en tu puerta. Si el paquete iba a un Parcel Shop, GLS dice que vayas a la tienda cuando el seguimiento ponga «Entregado», porque puede aparecer al llegar allí. La franja horaria de «En reparto» es solo una estimación; el seguimiento en tiempo real empieza «cuando queden menos de 10 paradas».
 
-Un paquete que lleva días en `Etiqueta creada` casi nunca está perdido: la tienda ha mandado los datos a GLS pero todavía no le ha dado el paquete. GLS no puede darte una fecha de entrega hasta tenerlo, así que pregunta a la tienda.
+Un paquete que lleva días en «Etiqueta creada» casi nunca está perdido: la tienda ha mandado los datos a GLS pero todavía no le ha dado el paquete. GLS no puede darte una fecha de entrega hasta tenerlo, así que pregunta a la tienda.
 
 ## Entrega GLS: ausente, Parcel Shop y Parcel Lockers
 
@@ -72,9 +75,11 @@ GLS dice que el asistente y los mensajes por redes sociales son gratuitos. El 91
 
 ## Seguir un paquete GLS Spain con Peek
 
-[Peek](/) no consulta directamente a GLS Spain. Solo sigue estos paquetes a través de servicios de seguimiento universales, y en las pruebas de Peek uno de ellos pidió el código postal de entrega y los demás no tenían historial, así que puede que el paquete no muestre nada. Cuando un servicio necesita el código postal, Peek puede decirte «Un servicio necesita el código postal de entrega. Puedes añadirlo después de guardar.» Si aparece algo, Peek lo consulta cada 10 minutos, también en reparto, y puede enviarte notificaciones cuando cambia el estado.
+[Peek](/) consulta directamente el seguimiento de GLS Spain, sin cuenta. Como GLS, necesita el código postal de entrega: en cuanto GLS Spain es el transportista, aparece el campo obligatorio «Código postal de entrega», ya relleno si diste uno antes. Se envía a GLS y, si hace falta, a servicios de seguimiento. Con un código postal equivocado, GLS responde como si no conociera el número.
 
-Peek no reconoce GLS Spain solo por el número. Con un número de 10 cifras pregunta a otros transportistas (TIPSA, Relais Colis y DHL eCommerce Iberia, y antes DHL Express si cuadra su dígito de control), nunca a GLS Spain, así que pulsa «Cambiar» y elige «GLS Spain». Un enlace de mygls.gls-spain.es con `/e/?codigo=`, o uno de gls-group.com o gls-group.eu con `/ES/`, nombra GLS Spain directamente.
+Verás cada escaneo con su hora y el texto inglés de GLS, como `At delivery agency`, bajo un titular con las palabras de Peek («Listo para recoger», «Entregado»); solo `Delivered` y `Out for delivery` salen traducidos. GLS no dice dónde se hizo cada escaneo. También verás el día previsto de entrega, el peso y, cuando GLS lo nombra, el Parcel Shop o el Parcel Locker donde te espera el paquete. El código de recogida, el PIN y el plazo se quedan en la página de GLS, y el enlace «Abrir la web de GLS Spain» lleva a su formulario sin el número. Se consulta cada 10 minutos, cada 2 cuando el paquete está en reparto, y puedes recibir notificaciones cuando cambia el estado.
+
+Peek no reconoce GLS Spain solo por el número, y sin el código postal GLS no dice si lo conoce. Con un número de 10 cifras, pregunta a TIPSA, Relais Colis y DHL eCommerce Iberia, y también a DHL Express si cuadra su dígito de control; puede que un servicio de seguimiento te pida el código postal. Mejor pulsa «Cambiar», elige «GLS Spain» y añade el código postal. Un enlace de mygls.gls-spain.es, o uno de gls-group.com o gls-group.eu con `/ES/`, nombra GLS Spain directamente, aunque el código postal se te sigue pidiendo. Si otro transportista pasa tu paquete a GLS Spain, Peek no lo sigue allí por su cuenta, porque haría falta tu código postal.
 
 ## Preguntas sobre el seguimiento de GLS
 
@@ -108,5 +113,5 @@ GLS compró ASM: en abril de 2016 anunció la compra de ASM Transporte Urgente, 
 - [GLS Spain: Términos y condiciones generales](https://gls-group.com/ES/downloads/T%C3%A9rminos-y-condiciones-generales.pdf) – plazos de daños y pérdidas
 - [GLS Spain: GLS Spain incorpora WhatsApp para el seguimiento de envíos](https://gls-group.com/ES/es/medios/sala-de-prensa/gls-spain-incorpora-whatsapp-para-el-seguimiento-de-envios.html) – avisos y redirección por WhatsApp
 - [GLS Spain: Nuestra historia](https://gls-group.com/ES/es/sobre-nosotros/nuestra-historia/) – compra de ASM
-- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – lo que lee y muestra Peek
+- [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – lo que lee y muestra Peek, textos ingleses del seguimiento de GLS
 :::

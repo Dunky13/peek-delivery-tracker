@@ -18,6 +18,7 @@ Les formes les plus courantes selon bpost (numéros inventés) :
 | --- | --- | --- |
 | 24 chiffres commençant par 3232 ou 3299 | `323200000000000000000000` | Code-barres d'un colis |
 | 18 chiffres commençant par 3232 | `323200000000000000` | Code-barres d'un colis |
+| 27 caractères commençant par JJBEA | `JJBEA0000000000000000000001` | Code-barres d'un colis |
 | 2 lettres, 9 chiffres, BE | `CE123456785BE` | Numéro postal international venu de Belgique |
 | R, une lettre, 9 chiffres, 2 lettres | `RR123456785BE` | Recommandé international |
 | 30 chiffres commençant par 010 | `010000000000000000000000000000` | Recommandé en Belgique |
@@ -87,7 +88,7 @@ Garde le code-barres sous la main. bpost ne donne pas d'adresse e-mail pour son 
 
 ## Suivre un colis bpost avec Peek
 
-[Peek](/) reconnaît tout de suite bpost pour un numéro valide de 2 lettres, 9 chiffres et BE, et pour JJBE suivi d'une lettre et de 18 chiffres. Un numéro à 18 chiffres est demandé à bpost seul ; un numéro à 24 chiffres à bpost, InPost et Ciblex. S'il commence par 3232 ou 3299, bpost est interrogé en premier et l'emporte s'il connaît le numéro ; sinon, si deux transporteurs le connaissent, tu choisis avec « Changer ». Un recommandé belge à 30 chiffres ne se suit qu'après avoir choisi bpost avec « Changer », et la forme JJBEA à 27 caractères n'est pas reconnue. Aucun lien bpost n'est lu, et bpost est interrogé sans code postal. Un code-barres en U est attribué à bpost, mais bpost ne le suit pas.
+[Peek](/) reconnaît tout de suite bpost pour un numéro valide de 2 lettres, 9 chiffres et BE, et pour JJBE suivi d'une lettre et de 18 ou 22 chiffres. Un numéro à 18 chiffres est demandé à bpost seul ; un numéro à 24 chiffres à bpost, InPost et Ciblex. S'il commence par 3232 ou 3299, bpost est interrogé en premier et l'emporte s'il connaît le numéro ; sinon, si deux transporteurs le connaissent, tu choisis avec « Changer ». Un recommandé belge à 30 chiffres ne se suit qu'après avoir choisi bpost avec « Changer ». Aucun lien bpost n'est lu, et bpost est interrogé sans code postal. Un code-barres en U n'est pas attribué à bpost, qui ne le suit pas : seul Chronopost est alors proposé.
 
 Les scans de bpost n'ont pas de fuseau horaire : Peek n'affiche donc pas la liste de scans de bpost elle-même. Il prend l'historique daté chez des services de suivi universels, redemande à bpost toutes les 6 heures et, si aucun service ne répond, affiche le statut actuel de bpost, daté du moment où il l'a vu. Un service de suivi peut demander le code postal de livraison : Peek peut alors te le signaler, et tu pourras l'ajouter une fois le colis enregistré.
 

@@ -2,8 +2,8 @@
 title: Cainiao tracking: numbers, statuses and who to contact
 description: Track a Cainiao parcel from AliExpress: which numbers are Cainiao's, what each status means, where a missed parcel waits and who to ask when it stalls.
 slug: cainiao-tracking
-published: 2026-10-10
-updated: 2026-10-10
+published: 2026-10-11
+updated: 2026-10-11
 ---
 
 Cainiao is Alibaba's logistics group: it ships parcels abroad for sellers on platforms such as AliExpress, and its tracking site, [global.cainiao.com](https://global.cainiao.com/), follows Cainiao and AliExpress parcels only. Type the number there or in the box above. On AliExpress, the number is under My Orders: find the order and click Tracking.
@@ -77,7 +77,9 @@ In Spain, Ecoscooting's FAQ lists +34 912 15 93 69, the free line +34 800 00 03 
 
 ## Track a Cainiao parcel with Peek
 
-[Peek](/) shows these parcels as "AliExpress / Cainiao". It recognises DOFR and CNFR numbers straight away; for LP and CNG numbers it asks Cainiao among the likely carriers. Postal numbers typed alone go to the post. For those and for AP numbers, paste the global.cainiao.com link with `mailNoList=`, which reaches Cainiao whatever the number. It doesn't recognise links from track.cainiao.com or AliExpress orders.
+[Peek](/) shows these parcels as "AliExpress / Cainiao". It recognises DOFR and CNFR numbers straight away; for LP, CNG and AP numbers, and other Cainiao references such as CNUSUP, CNBR or CNMEX, it asks Cainiao among the likely carriers. Postal numbers typed alone go to the post, except those ending in TY or MI, for which it also asks Cainiao. For other postal numbers, paste the global.cainiao.com link with `mailNoList=`, which reaches Cainiao whatever the number. It doesn't recognise links from track.cainiao.com or AliExpress orders.
+
+AliExpress sometimes gives you the delivery carrier's own number, such as an SDA number for a parcel to Italy, while Cainiao still has the parcel. For some of these shapes Peek asks Cainiao beside that carrier. If both know it, the parcel stays under AliExpress / Cainiao, and the delivery carrier's scans join the history once it reports the parcel.
 
 It checks every 10 minutes, every 2 minutes once the parcel is out for delivery, puts each scan on a map and can notify you of every scan, important steps only or "Delivery day only". It shows the status, the history, the place of a scan when Cainiao gives one, the expected delivery as a window of days when given, the delivery time and the local carrier's number when Cainiao publishes it. It can't contact Cainiao or file a claim for you.
 

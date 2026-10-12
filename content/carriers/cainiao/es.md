@@ -2,8 +2,8 @@
 title: Cainiao seguimiento en España: estados, entregas y teléfono
 description: Sigue tu paquete de Cainiao o AliExpress en España: cómo es el número, qué significa cada estado, qué pasa si falla la entrega y a quién llamar.
 slug: cainiao-seguimiento
-published: 2026-10-10
-updated: 2026-10-10
+published: 2026-10-11
+updated: 2026-10-11
 ---
 
 Cainiao es el grupo logístico de Alibaba: lleva al extranjero los paquetes de vendedores de plataformas como AliExpress y en España dice tener su propia red de reparto. Para seguir tu paquete, escribe el número en [global.cainiao.com](https://global.cainiao.com/), su web de seguimiento, que solo sigue paquetes de Cainiao y AliExpress, o pégalo en la casilla de arriba. En AliExpress, el número está en tu pedido: entra en «My Orders», busca el pedido y pulsa «Tracking».
@@ -83,7 +83,9 @@ La página de contacto de Cainiao en inglés no da teléfono: solo el correo cai
 
 ## Seguir un paquete de Cainiao con Peek
 
-[Peek](/) muestra estos paquetes como «AliExpress / Cainiao». Reconoce enseguida los números DOFR y CNFR; con los LP y CNG pregunta a Cainiao entre los transportistas probables. Un número postal escrito solo va al correo que le corresponde: para esos, y para los AP, pega el enlace de global.cainiao.com con `mailNoList=`, que llega a Cainiao sea cual sea el número. No reconoce los enlaces de track.cainiao.com (el seguimiento que usa la web de Ecoscooting) ni los de los pedidos de AliExpress.
+[Peek](/) muestra estos paquetes como «AliExpress / Cainiao». Reconoce enseguida los números DOFR y CNFR; con los LP, CNG y AP, y con otras referencias de Cainiao como CNUSUP, CNBR o CNMEX, pregunta a Cainiao entre los transportistas probables. Un número postal escrito solo va al correo que le corresponde, salvo si acaba en TY o MI: entonces pregunta también a Cainiao. Para los demás números postales, pega el enlace de global.cainiao.com con `mailNoList=`, que llega a Cainiao sea cual sea el número. No reconoce los enlaces de track.cainiao.com (el seguimiento que usa la web de Ecoscooting) ni los de los pedidos de AliExpress.
+
+A veces AliExpress te da ya el número del transportista que lo entregará, por ejemplo uno de SDA para un paquete a Italia, cuando Cainiao todavía tiene el paquete. Con algunos de esos formatos, Peek pregunta a Cainiao además de a ese transportista. Si los dos conocen el número, Peek guarda el paquete como «AliExpress / Cainiao», que tiene los escaneos de antes de la frontera, y pregunta también al transportista que lo entrega para el último tramo: sus escaneos se suman al historial en cuanto da noticias del paquete.
 
 Consulta el seguimiento cada 10 minutos, y cada 2 minutos cuando el paquete está en reparto, y puede enviarte notificaciones en cada escaneo, solo en los pasos importantes o solo el día de entrega. Muestra el estado y el historial, en inglés, porque consulta Cainiao en ese idioma. Cuando Cainiao los da, muestra también el lugar de un escaneo, en un mapa; la entrega prevista, como un margen de días, y el número de la empresa local. Una vez entregado, añade la hora de entrega. No puede contactar con Cainiao ni reclamar por ti.
 

@@ -82,7 +82,7 @@ DPD Ireland's contact pages give no customer-service phone number or email.
 
 Scans from DPD networks abroad have no time zone, so they stay out of the history. While the latest scan is one of those, Peek dates the history from universal tracking services and asks DPD Ireland again every 6 hours; if none answers, it shows DPD Ireland's current status, dated when Peek saw it.
 
-Peek doesn't recognise DPD Ireland from the number alone, nor ask it whether it knows a number. Most 9-digit numbers get no carrier; some match TNT's pattern, and TNT is asked first. A 10-digit number is asked of other carriers. Either way, press "Change" and pick "DPD Ireland", or paste a dpd.ie link with `/tracking/?consignmentNumber=`, which names DPD Ireland straight away. tracking.dpd.ie links aren't read.
+Peek doesn't recognise DPD Ireland from the number alone, nor ask it whether it knows a number. Most 9-digit numbers get no carrier; some match TNT's pattern, and TNT is asked first. A 10-digit number is asked of other carriers. Either way, press "Change" and pick "DPD Ireland", or paste a DPD Ireland tracking link with `consignmentNumber=` in it, from www.dpd.ie/tracking/, the track-my-parcel page or tracking.dpd.ie, which names DPD Ireland straight away.
 
 ## Questions about DPD Ireland tracking
 

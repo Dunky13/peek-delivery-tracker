@@ -2,8 +2,8 @@
 title: Cainiao tracking: numero, stati e pacco che non arriva
 description: Tracking Cainiao per i pacchi AliExpress: quale numero usare, cosa vogliono dire gli stati in inglese e a chi scrivere se il pacco non arriva in Italia.
 slug: cainiao-tracking
-published: 2026-10-10
-updated: 2026-10-10
+published: 2026-10-11
+updated: 2026-10-11
 ---
 
 Cainiao è il gruppo logistico di Alibaba: spedisce all'estero i pacchi dei venditori di piattaforme come AliExpress. Il suo sito di tracciamento, [global.cainiao.com](https://global.cainiao.com/), segue solo i pacchi Cainiao e AliExpress: inserisci lì il numero, oppure incollalo nel box qui sopra. Su AliExpress parti da «My Orders»: trova l'ordine e clicca «Tracking».
@@ -78,7 +78,9 @@ I numeri di telefono del sito cinese di Cainiao sono per i clienti in Cina e per
 
 ## Tracciare un pacco Cainiao con Peek
 
-[Peek](/) mostra questi pacchi come «AliExpress / Cainiao». Riconosce subito i numeri DOFR e CNFR; per i numeri LP e CNG chiede a Cainiao tra i corrieri probabili. I numeri postali digitati da soli vanno alla posta: per quelli, e per i numeri AP, incolla il link di global.cainiao.com con `mailNoList=`, che arriva a Cainiao qualunque sia il numero. I link di track.cainiao.com e degli ordini AliExpress, invece, non li riconosce.
+[Peek](/) mostra questi pacchi come «AliExpress / Cainiao». Riconosce subito i numeri DOFR e CNFR; per i numeri LP, CNG e AP, e per altri riferimenti Cainiao come CNUSUP, CNBR o CNMEX, chiede a Cainiao tra i corrieri probabili. I numeri postali digitati da soli vanno alla posta, tranne quelli che finiscono con TY o MI, per cui chiede anche a Cainiao. Per gli altri numeri postali incolla il link di global.cainiao.com con `mailNoList=`, che arriva a Cainiao qualunque sia il numero. I link di track.cainiao.com e degli ordini AliExpress, invece, non li riconosce.
+
+A volte AliExpress ti dà già il numero del corriere che consegnerà, per esempio una lettera di vettura SDA di 13 caratteri come `123A12345678B`, mentre il pacco è ancora con Cainiao. In quel caso Peek chiede sia a Cainiao sia a Poste Italiane. Se lo conoscono entrambi, Peek mette il pacco sotto «AliExpress / Cainiao», che ha le scansioni di prima del confine, e per l'ultimo tratto chiede anche a Poste Italiane: le sue scansioni entrano nella cronologia appena segnala il pacco.
 
 Controlla il tracking ogni 10 minuti, ogni 2 quando il pacco è in consegna, mette ogni scansione su una mappa e può mandarti notifiche: per ogni scansione, solo per i passaggi importanti o «Solo giorno di consegna». Mostra lo stato, la cronologia, il luogo di una scansione quando Cainiao lo indica, la consegna prevista, come finestra di giorni quando Cainiao la indica, l'ora della consegna e il numero del corriere locale quando Cainiao lo pubblica. Non può contattare Cainiao né aprire una contestazione al posto tuo.
 

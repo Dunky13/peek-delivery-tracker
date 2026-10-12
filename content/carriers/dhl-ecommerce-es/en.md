@@ -82,7 +82,7 @@ As DHL's Spanish and Portuguese pages listed them on 11 October 2026 (there is n
 
 [Peek](/) asks DHL eCommerce Iberia alone about two letters, 7 digits and `0`. For 10 digits it asks Relais Colis, TIPSA and DHL eCommerce Iberia, and DHL Express first when its check digit passes; if DHL Express knows the number too, it wins. If carriers of different brands know it, or none does, you pick with "Change carrier". DHL's other numbers (12 or 22 digits, `JJD` plates, postal numbers) work only after picking "DHL eCommerce Iberia" there. No postcode is needed.
 
-Links from clientesparcel.dhl.es with `/LiveTracking/ModificarEnvio/` can be pasted; for links from the portal's Portuguese and English versions, paste the number instead.
+Links from clientesparcel.dhl.es can be pasted too, from the portal's Spanish, Portuguese or English version (`/LiveTracking/ModificarEnvio/`, `ModificarMeuEnvio` or `ModifyMyShipment`). They name DHL eCommerce Iberia straight away, whatever the number's shape. A postcode at the end of the link is left out, as none is needed.
 
 DHL's scans carry no time zone, so Peek doesn't show DHL's own scan list. It takes the dated history from universal tracking services, asks DHL again every 6 hours and, if no service answers, shows DHL's current status, dated when Peek saw it. Statuses keep DHL's English wording, except `Delivered` and `Out for delivery`, which show as Peek's own. Peek can notify you when the status changes. It shows no expected delivery date or delivery time for DHL eCommerce Iberia.
 

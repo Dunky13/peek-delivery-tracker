@@ -2,8 +2,8 @@
 title: Cainiao rastreio: números, estados e contactos em Portugal
 description: Rastreio Cainiao em Portugal: que números são da Cainiao, o que quer dizer cada estado em inglês, entregas falhadas, pontos de recolha e a quem perguntar.
 slug: cainiao-rastreio
-published: 2026-10-10
-updated: 2026-10-10
+published: 2026-10-11
+updated: 2026-10-11
 ---
 
 A Cainiao é o grupo de logística da Alibaba: envia para o estrangeiro as encomendas de vendedores de plataformas como o AliExpress, e o seu site de seguimento, [global.cainiao.com](https://global.cainiao.com/), só segue encomendas Cainiao e AliExpress. Escreve o número no site da Cainiao ou cola-o na caixa no topo desta página. No AliExpress, o número está na encomenda: a ajuda do AliExpress manda abrir «My Orders», encontrar a encomenda e carregar em «Tracking».
@@ -85,7 +85,9 @@ Os números do site chinês da Cainiao são para clientes na China e para lojas.
 
 ## Rastrear encomenda Cainiao com o Peek
 
-O [Peek](/) mostra estas encomendas como «AliExpress / Cainiao». Reconhece logo os números DOFR e CNFR; com os LP e CNG, pergunta à Cainiao entre as transportadoras prováveis. Um número postal escrito sozinho vai para o correio: para esses, e para os AP, cola a ligação do global.cainiao.com com `mailNoList=`, que chega à Cainiao seja qual for o número. Ligações do track.cainiao.com, o seguimento do site da Ecoscooting, e das encomendas do AliExpress não são reconhecidas.
+O [Peek](/) mostra estas encomendas como «AliExpress / Cainiao». Reconhece logo os números DOFR e CNFR; com os LP, CNG e AP, e com outras referências da Cainiao como CNUSUP, CNBR ou CNMEX, pergunta à Cainiao entre as transportadoras prováveis. Um número postal escrito sozinho vai para o correio, a não ser que acabe em TY ou MI: aí pergunta também à Cainiao. Para os outros números postais, cola a ligação do global.cainiao.com com `mailNoList=`, que chega à Cainiao seja qual for o número. Ligações do track.cainiao.com, o seguimento do site da Ecoscooting, e das encomendas do AliExpress não são reconhecidas.
+
+Às vezes, o AliExpress dá-te já o número da transportadora que vai entregar, por exemplo um da SDA para uma encomenda para Itália, quando a Cainiao ainda tem a encomenda. Com algumas dessas formas, o Peek pergunta à Cainiao além dessa transportadora. Se as duas conhecerem o número, o Peek arquiva a encomenda como «AliExpress / Cainiao», que tem as leituras de antes da fronteira, e pergunta também à transportadora que entrega para a última etapa: as leituras dela juntam-se ao histórico assim que der notícias da encomenda.
 
 Verifica de 10 em 10 minutos, e de 2 em 2 quando a encomenda sai para entrega, põe cada leitura num mapa e pode enviar-te notificações de todas as leituras, só dos passos importantes ou «Só no dia da entrega». Mostra o estado e o histórico em inglês, o local de uma leitura quando a Cainiao o dá, a entrega prevista como intervalo de dias quando a Cainiao o indica, a hora de entrega e o número da transportadora local quando a Cainiao o publica. Não pode contactar a Cainiao nem reclamar por ti.
 
