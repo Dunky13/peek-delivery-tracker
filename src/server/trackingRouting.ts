@@ -25,7 +25,7 @@ import { getRecognitionPriorities } from './recognitionRanking';
 
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
-// no_history: a universal provider answered for this number without any history.
+// no_history: a universal provider, or the carrier listing the parcel without scans, answered without any history.
 export type RoutingFailureKind = 'rate_limited' | 'not_found' | 'no_history' | 'input_required' | 'verification' | 'schema' | 'transport';
 export interface ProviderHealth {
   acquireTrackingProvider(provider: string): Promise<{ token: string | null; retry_at: string }>;
@@ -129,10 +129,12 @@ export function routingFailure(error: unknown): { kind: RoutingFailureKind; retr
  * Postal Ninja's empty lookup, a national post's miss) describes the number; an
  * HTTP 5xx describes the provider.
  */
-export function answeredWithoutHistory(error: unknown): boolean {
+export function answeredWithoutHistory(error: unknown, carrier = false): boolean {
   let current = error;
   for (let i = 0; i < 8 && current instanceof Error; i++, current = current.cause) {
-    if (current instanceof CarrierError) return current instanceof IndeterminateError;
+    // A carrier's other inconclusive answers (an outage page, contradictory
+    // scans) describe the carrier; only a parcel it lists without scans is an answer.
+    if (current instanceof CarrierError) return current instanceof (carrier ? NoHistoryError : IndeterminateError);
   }
   return false;
 }
@@ -314,7 +316,7 @@ export class TrackingRouter {
     });
     const fail = (provider: string, error: unknown, universalSource = false): Failure => {
       const classified = routingFailure(error);
-      const kind = universalSource && classified.kind === 'transport' && answeredWithoutHistory(error)
+      const kind = classified.kind === 'transport' && answeredWithoutHistory(error, !universalSource)
         ? 'no_history' : classified.kind;
       const { retryAfterMs } = classified;
       const count = Math.min(20, (state.failures[provider]?.count ?? 0) + 1);

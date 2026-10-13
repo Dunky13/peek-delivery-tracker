@@ -111,7 +111,7 @@ A failed source waits before it is retried for that parcel:
 
 | Failure | First wait | Backs off to |
 | --- | --- | --- |
-| Transport, and `no_history` (provider answered but has nothing) | 15 min | 6 h |
+| Transport, and `no_history` (a provider answered but has nothing, or the carrier lists the parcel without scans) | 15 min | 6 h |
 | Verification or schema; not found by a carrier's own adapter | 1 h | 6 h |
 | Not found by a universal provider | 24 h | 24 h |
 

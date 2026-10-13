@@ -38,7 +38,7 @@ import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { NOOP_RECORDER } from 'universal-parcel-scraper/node';
-import { BudgetExceededError, IndeterminateError, NotFoundError, SchemaError } from 'universal-parcel-scraper';
+import { BudgetExceededError, IndeterminateError, NoHistoryError, NotFoundError, SchemaError } from 'universal-parcel-scraper';
 import * as scraper from 'universal-parcel-scraper';
 
 // Keep the published plan configurable without changing the scraper's other exports.
@@ -2904,6 +2904,28 @@ describe('TrackingSyncService', () => {
     });
     await expect(service.syncPackage({ ...parcel, id: 'provider-down' }, { trigger: 'scheduled' }))
       .resolves.toMatchObject({ waiting: 1, errors: 0 });
+  });
+
+  it('keeps a parcel waiting while its carrier lists it without scans and no provider has history', async () => {
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch: vi.fn().mockRejectedValue(new NoHistoryError('Ecoscooting', 'Ecoscooting lists the parcel without scans')),
+      fetchUniversal: vi.fn(async (source: string) => { throw new IndeterminateError(source, `${source} has no usable shipment history`); }) };
+    // The previous check already missed, so another missed check would show an error.
+    const parcel = { id: 'announced', carrier: 'ecoscooting', tracking_number: 'TEST1234', current_stage: 'pending',
+      carrier_data: { routing: { version: 1, configured_carrier: 'ecoscooting', consecutive_failures: 1, probe_cursor: 0, discovery_cursor: 0 } } };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    await expect(service.syncPackage(parcel, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 1, errors: 0 });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'waiting', sync_error: null,
+      carrier_data: { routing: { consecutive_failures: 0, failures: { ecoscooting: { kind: 'no_history' } } } } });
+
+    // Any other inconclusive answer from the carrier describes the carrier, not the parcel.
+    adapter.fetch.mockRejectedValue(new IndeterminateError('Ecoscooting', 'Ecoscooting returned its outage page'));
+    await expect(service.syncPackage({ ...parcel, id: 'carrier-down' }, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 0, errors: 1 });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error',
+      carrier_data: { routing: { failures: { ecoscooting: { kind: 'transport' } } } } });
   });
 
   it('records no health sample for a scheduled check that contacted no provider', async () => {
