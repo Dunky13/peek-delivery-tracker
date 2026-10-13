@@ -5613,6 +5613,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^A[0D][0-9A-Z]{8}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^AD0[0-9B-DF-HJ-NP-TV-XZ]{14}$",
+        "confidence": "high"
       }
     ],
     "trackingUrlTemplate": "https://allegro.pl/allegrodelivery/sledzenie-paczki?numer={trackingNumber}",
