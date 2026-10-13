@@ -113,6 +113,8 @@ struct CarrierDefinition: Codable, Sendable {
         let requirements: [CarrierRequirement]?
         /// Present when the carrier can recognize a number; no two carriers share a rank.
         var recognitionRank: Int? = nil
+        /// The numbers that recognition can answer; the carrier's rules only suggest it for others.
+        var recognitionPattern: String? = nil
         var browserRecognitionRank: Int? = nil
     }
 
@@ -429,8 +431,9 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
 
     /// The carriers the detect route asks about an ambiguous number, best first:
     /// number evidence, then a passing check digit, then the catalog's recognition
-    /// rank. Mirrors `recognitionAskedCarriers`; the detection golden file keeps
-    /// them in step.
+    /// rank. A carrier whose recognition names the numbers it answers is asked only
+    /// about those. Mirrors `recognitionAskedCarriers`; the detection golden file
+    /// keeps them in step.
     func recognitionCandidates(for raw: String, browser: Bool = false) -> [CarrierID] {
         let match = detect(raw)
         let unknownPostalCarrier = match.carrier == .internationalPost
@@ -464,6 +467,7 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         let eligible = candidates.filter { carrier in
             guard let definition = definitions[carrier], rank(carrier) != nil,
                   definition.tracking.mode == "automatic", definition.tracking.adapter != "universal" else { return false }
+            if !browser, let pattern = definition.tracking.recognitionPattern, !Self.matches(number, pattern: pattern) { return false }
             if browser && requirements(for: carrier, trackingNumber: raw).contains(where: { $0.optional != true }) { return false }
             return Self.networkBrand(carrier).map { !shadowed.contains($0) } ?? true
         }
@@ -922,6 +926,7 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         case "identcode": isValidDhlIdentcode(number)
         case "fedex-ground-economy": isValidFedExGroundEconomyNumber(number)
         case "pos-laju": isValidPosLajuConsignment(number)
+        case "saia": isValidSaiaPro(number)
         default: nil
         }
     }
@@ -980,6 +985,14 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         guard matches(value, pattern: "^[0-9]{2,15}$"),
               let serial = Int(value.dropLast()), let check = value.last?.wholeNumberValue else { return false }
         return serial % 7 == check
+    }
+
+    /// A twelve-digit Saia PRO: ten digits, a 0, then the remainder of the ten divided by seven.
+    /// The check is inferred from public PROs; one with another eleventh digit is not checked.
+    static func isValidSaiaPro(_ value: String) -> Bool {
+        guard matches(value, pattern: "^[0-9]{10}0[0-6]$"),
+              let ten = Int(value.prefix(10)), let check = value.last?.wholeNumberValue else { return false }
+        return ten % 7 == check
     }
 
     /// GS1 mod 10: counted from the check digit, the digits before it weigh 3, 1, 3, …

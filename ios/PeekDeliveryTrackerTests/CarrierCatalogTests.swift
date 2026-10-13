@@ -1072,6 +1072,24 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertFalse(CarrierCatalog.isValidS10("EH000000006MY"))
     }
 
+    /// Made-up Saia PROs: ten digits, a 0, then the remainder of the ten divided by seven.
+    func testSaiaProsCheckTheirTwelfthDigitAgainstTheFirstTen() {
+        // 9 000 000 000 leaves 5 and 9 999 999 999 leaves 3.
+        for number in ["900000000005", "999999999903", "000000000000"] {
+            XCTAssertTrue(CarrierCatalog.isValidSaiaPro(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("saia", number), true, number)
+        }
+        for number in [
+            "900000000006", "900000000007", "999999999900",
+            // Another eleventh digit, the eleven-digit PRO and a thirteenth digit are not checked.
+            "900000000015", "90000000000", "9000000000050",
+            "900000000005\n", "9000 00000005", "\u{0669}00000000005",
+        ] {
+            XCTAssertFalse(CarrierCatalog.isValidSaiaPro(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("saia", number), false, number)
+        }
+    }
+
     func testPostlogisticsPrintedReferenceAndTrackingLink() throws {
         let printed = "12345678-001"
         let compact = "12345678001"
@@ -1171,6 +1189,19 @@ final class CarrierCatalogTests: XCTestCase {
         // A postal number recovers the rules S10 vouches for, not one behind another check.
         XCTAssertEqual(dynamic.detect("RA123456785CH").carrier, .internationalPost)
         XCTAssertEqual(dynamic.recognitionCandidates(for: "RA123456785CH"), [plain])
+    }
+
+    func testACarrierIsOnlySuggestedForANumberItsRecognitionCannotAnswer() throws {
+        let dynamic = try CarrierCatalog(data: Self.recognitionPatternCatalogData)
+        let freight = CarrierID(rawValue: "pro-freight")
+        let plain = CarrierID(rawValue: "plain-post")
+
+        // Its recognition answers eleven digits; a checked twelfth digit only suggests it.
+        let twelve = dynamic.detect("900000000005")
+        XCTAssertEqual(twelve.confidence, .low)
+        XCTAssertEqual(twelve.candidates, [plain, freight])
+        XCTAssertEqual(dynamic.recognitionCandidates(for: "900000000005"), [plain])
+        XCTAssertEqual(dynamic.recognitionCandidates(for: "90000000000"), [freight, plain])
     }
 
     @MainActor
@@ -1357,6 +1388,34 @@ final class CarrierCatalogTests: XCTestCase {
           "tracking": { "mode": "automatic", "adapter": "universal" },
           "linkRules": [],
           "detectionRules": [{ "pattern": "^[A-Z]{2}\\d{9}[A-Z]{2}$", "confidence": "high", "checksum": "s10" }]
+        },
+        "unknown": {
+          "displayName": "Carrier", "color": "#8e8e93", "selectable": false, "timezone": "UTC",
+          "tracking": { "mode": "link-only", "adapter": null },
+          "linkRules": [],
+          "detectionRules": []
+        }
+      }
+    }
+    """#.utf8)
+
+    private static let recognitionPatternCatalogData = Data(#"""
+    {
+      "x-carriers": {
+        "pro-freight": {
+          "displayName": "Pro Freight", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "pro-freight", "recognitionRank": 2, "recognitionPattern": "^\\d{11}$" },
+          "linkRules": [],
+          "detectionRules": [
+            { "pattern": "^\\d{10}0\\d$", "confidence": "low", "checksum": "saia" },
+            { "pattern": "^\\d{11}$", "confidence": "low" }
+          ]
+        },
+        "plain-post": {
+          "displayName": "Plain Post", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "plain-post", "recognitionRank": 1 },
+          "linkRules": [],
+          "detectionRules": [{ "pattern": "^\\d{11,12}$", "confidence": "low" }]
         },
         "unknown": {
           "displayName": "Carrier", "color": "#8e8e93", "selectable": false, "timezone": "UTC",
