@@ -5829,11 +5829,30 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correos-de-mexico",
+      "recognitionRank": 30
     },
-    "linkRules": [],
-    "detectionRules": [],
-    "trackingSearchUrl": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx"
+    "linkRules": [
+      {
+        "domains": [
+          "correosdemexico.gob.mx"
+        ],
+        "pathPattern": "^/SSLServicios/SeguimientoEnvio/(?:Seguimiento|seguimientoportal2)\\.aspx$",
+        "params": [
+          "guia"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MX$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
+    "trackingSearchUrl": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx",
+    "trackingUrlTemplate": "https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Seguimiento.aspx?guia={trackingNumber}"
   },
   "cyprus-post": {
     "displayName": "Cyprus Post",
@@ -6813,7 +6832,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "redpack",
+      "recognitionRank": 15
     },
     "linkRules": [],
     "detectionRules": [],
