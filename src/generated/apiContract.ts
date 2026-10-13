@@ -1596,7 +1596,21 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "asendia"
+      "adapter": "asendia",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "Optional. Asendia's European tracker shows the scans only with the delivery postcode; without it, the current status.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "trackingUrlTemplate": "https://track.asendia.com/track/{trackingNumber}",
     "linkRules": [
@@ -8570,7 +8584,7 @@ export const CARRIER_CAPABILITIES = {
       "adapter": "vinted-go",
       "recognitionRank": 410
     },
-    "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}",
+    "trackingUrlTemplate": "https://vintedgo.com/en/tracking/{trackingNumber}?region=europe",
     "linkRules": [
       {
         "domains": [
@@ -8586,7 +8600,7 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "luhn"
       }
     ],
-    "trackingSearchUrl": "https://vintedgo.com/en/tracking"
+    "trackingSearchUrl": "https://vintedgo.com/en/tracking?region=europe"
   },
   "cacesa": {
     "displayName": "CACESA",
