@@ -3004,7 +3004,10 @@ export const CARRIER_CAPABILITIES = {
       "CA",
       "US"
     ],
-    "trackingSearchUrl": "https://www.uniuni.com/tracking/"
+    "trackingSearchUrl": "https://www.uniuni.com/tracking/",
+    "aliases": [
+      "UNI Express"
+    ]
   },
   "landmark-global": {
     "displayName": "Landmark Global",
