@@ -7005,7 +7005,7 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       }
     ],
-    "trackingSearchUrl": "https://sameday.ro/"
+    "trackingSearchUrl": "https://sameday.ro/status-colet/"
   },
   "speedy": {
     "displayName": "Speedy",
