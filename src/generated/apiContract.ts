@@ -2565,7 +2565,12 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IT"
     ],
-    "trackingSearchUrl": "https://services.brt.it/en/tracking"
+    "trackingSearchUrl": "https://services.brt.it/en/tracking",
+    "aliases": [
+      "BRT Bartolini",
+      "BRT Bartolini (Parcel ID)",
+      "BRT Bartolini (DPD)"
+    ]
   },
   "ecoscooting": {
     "displayName": "Ecoscooting",
