@@ -25,7 +25,7 @@ const names = (query: string, preferred?: CarrierId[]) => search(query, preferre
 describe('carrier search', () => {
   it('finds a name by its start, then by a later word', () => {
     expect(names('dpd').slice(0, 2)).toEqual(['DPD France', 'DPD Germany']);
-    expect(names('post').slice(0, 3)).toEqual(['POST Luxembourg', 'Pošta Slovenije', 'Pošta Srbije']);
+    expect(names('post').slice(0, 3)).toEqual(['Post Haste', 'POST Luxembourg', 'Poșta Moldovei']);
     expect(names('post')).toContain('Swiss Post');
   });
 
@@ -74,7 +74,7 @@ describe('carrier sections', () => {
     const sections = alphabetSections(SELECTABLE_CARRIERS, 'en-CH');
     expect(sections.flatMap((section) => section.carriers)).toHaveLength(SELECTABLE_CARRIERS.length);
     expect(sections[0].letter).toBe('A');
-    expect(sections.at(-1)).toEqual({ letter: '#', carriers: [carrierInfo('four-px'), carrierInfo('99minutos')] });
+    expect(sections.at(-1)).toEqual({ letter: '#', carriers: [carrierInfo('four-px'), carrierInfo('5post'), carrierInfo('99minutos')] });
     expect(sections.find((section) => section.letter === 'C')?.carriers.map((carrier) => carrier.name))
       .toContain('Colis Privé');
   });

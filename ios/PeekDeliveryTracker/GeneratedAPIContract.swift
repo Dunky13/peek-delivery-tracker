@@ -247,6 +247,123 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let cacesa = CarrierID(rawValue: "cacesa")
     static let aramexAu = CarrierID(rawValue: "aramex-au")
     static let daiPost = CarrierID(rawValue: "dai-post")
+    static let fivePost = CarrierID(rawValue: "5post")
+    static let aDuiePyle = CarrierID(rawValue: "a-duie-pyle")
+    static let aaaCooper = CarrierID(rawValue: "aaa-cooper")
+    static let andreani = CarrierID(rawValue: "andreani")
+    static let anjun = CarrierID(rawValue: "anjun")
+    static let anteraja = CarrierID(rawValue: "anteraja")
+    static let apcPostalLogistics = CarrierID(rawValue: "apc-postal-logistics")
+    static let arrowXl = CarrierID(rawValue: "arrow-xl")
+    static let averitt = CarrierID(rawValue: "averitt")
+    static let azulCargo = CarrierID(rawValue: "azul-cargo")
+    static let baridAlMaghrib = CarrierID(rawValue: "barid-al-maghrib")
+    static let belpost = CarrierID(rawValue: "belpost")
+    static let bestTransport = CarrierID(rawValue: "best-transport")
+    static let betterTrucks = CarrierID(rawValue: "better-trucks")
+    static let bexExpress = CarrierID(rawValue: "bex-express")
+    static let blueExpress = CarrierID(rawValue: "blue-express")
+    static let bulgarianPosts = CarrierID(rawValue: "bulgarian-posts")
+    static let burdDelivery = CarrierID(rawValue: "burd-delivery")
+    static let castores = CarrierID(rawValue: "castores")
+    static let centralTransport = CarrierID(rawValue: "central-transport")
+    static let cevaLogistics = CarrierID(rawValue: "ceva-logistics")
+    static let chilexpress = CarrierID(rawValue: "chilexpress")
+    static let chunghwaPost = CarrierID(rawValue: "chunghwa-post")
+    static let citylinkExpress = CarrierID(rawValue: "citylink-express")
+    static let citysprint = CarrierID(rawValue: "citysprint")
+    static let cjLogistics = CarrierID(rawValue: "cj-logistics")
+    static let cjPacket = CarrierID(rawValue: "cj-packet")
+    static let coordinadora = CarrierID(rawValue: "coordinadora")
+    static let correoArgentino = CarrierID(rawValue: "correo-argentino")
+    static let courierCenter = CarrierID(rawValue: "courier-center")
+    static let couriersplease = CarrierID(rawValue: "couriersplease")
+    static let cycloon = CarrierID(rawValue: "cycloon")
+    static let dExpress = CarrierID(rawValue: "d-express")
+    static let danskeFragtmaend = CarrierID(rawValue: "danske-fragtmaend")
+    static let daytonFreight = CarrierID(rawValue: "dayton-freight")
+    static let dellin = CarrierID(rawValue: "dellin")
+    static let deppon = CarrierID(rawValue: "deppon")
+    static let dhlFreight = CarrierID(rawValue: "dhl-freight")
+    static let directFreightExpress = CarrierID(rawValue: "direct-freight-express")
+    static let egyptPost = CarrierID(rawValue: "egypt-post")
+    static let emiratesPost = CarrierID(rawValue: "emirates-post")
+    static let flashExpress = CarrierID(rawValue: "flash-express")
+    static let forwardAir = CarrierID(rawValue: "forward-air")
+    static let fukuyama = CarrierID(rawValue: "fukuyama")
+    static let gati = CarrierID(rawValue: "gati")
+    static let gdex = CarrierID(rawValue: "gdex")
+    static let ghn = CarrierID(rawValue: "ghn")
+    static let ghtk = CarrierID(rawValue: "ghtk")
+    static let hanjin = CarrierID(rawValue: "hanjin")
+    static let hepsijet = CarrierID(rawValue: "hepsijet")
+    static let hunterExpress = CarrierID(rawValue: "hunter-express")
+    static let icsCourier = CarrierID(rawValue: "ics-courier")
+    static let idsLogistik = CarrierID(rawValue: "ids-logistik")
+    static let imile = CarrierID(rawValue: "imile")
+    static let interrapidisimo = CarrierID(rawValue: "interrapidisimo")
+    static let israelPost = CarrierID(rawValue: "israel-post")
+    static let jadlog = CarrierID(rawValue: "jadlog")
+    static let jerseyPost = CarrierID(rawValue: "jersey-post")
+    static let jne = CarrierID(rawValue: "jne")
+    static let kazpost = CarrierID(rawValue: "kazpost")
+    static let kex = CarrierID(rawValue: "kex")
+    static let kolayGelsin = CarrierID(rawValue: "kolay-gelsin")
+    static let logen = CarrierID(rawValue: "logen")
+    static let loggi = CarrierID(rawValue: "loggi")
+    static let lotteGlobal = CarrierID(rawValue: "lotte-global")
+    static let mainfreight = CarrierID(rawValue: "mainfreight")
+    static let maritimeOntario = CarrierID(rawValue: "maritime-ontario")
+    static let naqel = CarrierID(rawValue: "naqel")
+    static let nipost = CarrierID(rawValue: "nipost")
+    static let nipponExpress = CarrierID(rawValue: "nippon-express")
+    static let nzCouriers = CarrierID(rawValue: "nz-couriers")
+    static let oca = CarrierID(rawValue: "oca")
+    static let olvaCourier = CarrierID(rawValue: "olva-courier")
+    static let overseasExpress = CarrierID(rawValue: "overseas-express")
+    static let palletways = CarrierID(rawValue: "palletways")
+    static let pecom = CarrierID(rawValue: "pecom")
+    static let pilotFreight = CarrierID(rawValue: "pilot-freight")
+    static let pittOhio = CarrierID(rawValue: "pitt-ohio")
+    static let posIndonesia = CarrierID(rawValue: "pos-indonesia")
+    static let postHaste = CarrierID(rawValue: "post-haste")
+    static let postaMoldovei = CarrierID(rawValue: "posta-moldovei")
+    static let postaNorthMacedonia = CarrierID(rawValue: "posta-north-macedonia")
+    static let postaRomana = CarrierID(rawValue: "posta-romana")
+    static let postaShqiptare = CarrierID(rawValue: "posta-shqiptare")
+    static let posturinn = CarrierID(rawValue: "posturinn")
+    static let professionalCouriers = CarrierID(rawValue: "professional-couriers")
+    static let raben = CarrierID(rawValue: "raben")
+    static let ramHandToHand = CarrierID(rawValue: "ram-hand-to-hand")
+    static let roadrunner = CarrierID(rawValue: "roadrunner")
+    static let saudiPost = CarrierID(rawValue: "saudi-post")
+    static let seino = CarrierID(rawValue: "seino")
+    static let seko = CarrierID(rawValue: "seko")
+    static let sendex = CarrierID(rawValue: "sendex")
+    static let sending = CarrierID(rawValue: "sending")
+    static let serpost = CarrierID(rawValue: "serpost")
+    static let servientrega = CarrierID(rawValue: "servientrega")
+    static let sfc = CarrierID(rawValue: "sfc")
+    static let shadowfax = CarrierID(rawValue: "shadowfax")
+    static let shreeMaruti = CarrierID(rawValue: "shree-maruti")
+    static let sicepat = CarrierID(rawValue: "sicepat")
+    static let skynetWorldwide = CarrierID(rawValue: "skynet-worldwide")
+    static let smsaExpress = CarrierID(rawValue: "smsa-express")
+    static let southAfricanPostOffice = CarrierID(rawValue: "south-african-post-office")
+    static let southeasternFreightLines = CarrierID(rawValue: "southeastern-freight-lines")
+    static let speedex = CarrierID(rawValue: "speedex")
+    static let starken = CarrierID(rawValue: "starken")
+    static let suratKargo = CarrierID(rawValue: "surat-kargo")
+    static let teamGlobalExpress = CarrierID(rawValue: "team-global-express")
+    static let tforceFreight = CarrierID(rawValue: "tforce-freight")
+    static let toptrans = CarrierID(rawValue: "toptrans")
+    static let totalExpress = CarrierID(rawValue: "total-express")
+    static let trackon = CarrierID(rawValue: "trackon")
+    static let trendyolExpress = CarrierID(rawValue: "trendyol-express")
+    static let vaspExpresso = CarrierID(rawValue: "vasp-expresso")
+    static let viettelPost = CarrierID(rawValue: "viettel-post")
+    static let vnpost = CarrierID(rawValue: "vnpost")
+    static let wardTrucking = CarrierID(rawValue: "ward-trucking")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -459,6 +576,123 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .cacesa,
         .aramexAu,
         .daiPost,
+        .fivePost,
+        .aDuiePyle,
+        .aaaCooper,
+        .andreani,
+        .anjun,
+        .anteraja,
+        .apcPostalLogistics,
+        .arrowXl,
+        .averitt,
+        .azulCargo,
+        .baridAlMaghrib,
+        .belpost,
+        .bestTransport,
+        .betterTrucks,
+        .bexExpress,
+        .blueExpress,
+        .bulgarianPosts,
+        .burdDelivery,
+        .castores,
+        .centralTransport,
+        .cevaLogistics,
+        .chilexpress,
+        .chunghwaPost,
+        .citylinkExpress,
+        .citysprint,
+        .cjLogistics,
+        .cjPacket,
+        .coordinadora,
+        .correoArgentino,
+        .courierCenter,
+        .couriersplease,
+        .cycloon,
+        .dExpress,
+        .danskeFragtmaend,
+        .daytonFreight,
+        .dellin,
+        .deppon,
+        .dhlFreight,
+        .directFreightExpress,
+        .egyptPost,
+        .emiratesPost,
+        .flashExpress,
+        .forwardAir,
+        .fukuyama,
+        .gati,
+        .gdex,
+        .ghn,
+        .ghtk,
+        .hanjin,
+        .hepsijet,
+        .hunterExpress,
+        .icsCourier,
+        .idsLogistik,
+        .imile,
+        .interrapidisimo,
+        .israelPost,
+        .jadlog,
+        .jerseyPost,
+        .jne,
+        .kazpost,
+        .kex,
+        .kolayGelsin,
+        .logen,
+        .loggi,
+        .lotteGlobal,
+        .mainfreight,
+        .maritimeOntario,
+        .naqel,
+        .nipost,
+        .nipponExpress,
+        .nzCouriers,
+        .oca,
+        .olvaCourier,
+        .overseasExpress,
+        .palletways,
+        .pecom,
+        .pilotFreight,
+        .pittOhio,
+        .posIndonesia,
+        .postHaste,
+        .postaMoldovei,
+        .postaNorthMacedonia,
+        .postaRomana,
+        .postaShqiptare,
+        .posturinn,
+        .professionalCouriers,
+        .raben,
+        .ramHandToHand,
+        .roadrunner,
+        .saudiPost,
+        .seino,
+        .seko,
+        .sendex,
+        .sending,
+        .serpost,
+        .servientrega,
+        .sfc,
+        .shadowfax,
+        .shreeMaruti,
+        .sicepat,
+        .skynetWorldwide,
+        .smsaExpress,
+        .southAfricanPostOffice,
+        .southeasternFreightLines,
+        .speedex,
+        .starken,
+        .suratKargo,
+        .teamGlobalExpress,
+        .tforceFreight,
+        .toptrans,
+        .totalExpress,
+        .trackon,
+        .trendyolExpress,
+        .vaspExpresso,
+        .viettelPost,
+        .vnpost,
+        .wardTrucking,
     ]
 
     init(from decoder: Decoder) throws {
