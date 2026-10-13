@@ -1348,7 +1348,7 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^(?!YW[A-Z]{3}\\d{12}$)[A-Z0-9]{12}(?:(?:0[1-9]|[1-8]\\d|9[0-5]|97|98)\\d{3}|[BL][1-9]\\d{3})$",
+        "pattern": "^(?!YW[A-Z]{3}\\d{12}$|(?:GF|CI)[A-Z]{2}\\d{13}$)[A-Z0-9]{12}(?:(?:0[1-9]|[1-8]\\d|9[0-5]|97|98)\\d{3}|[BL][1-9]\\d{3})$",
         "confidence": "low"
       },
       {
@@ -1478,7 +1478,7 @@ export const CARRIER_CAPABILITIES = {
           "label": "Delivery postcode",
           "type": "text",
           "placeholder": "75001",
-          "help": "Heppner uses the recipient postcode to verify the shipment in France or Switzerland.",
+          "help": "Heppner uses the recipient postcode to verify the shipment in France, Switzerland, Belgium or Luxembourg.",
           "pattern": "^[0-9]{4,5}$",
           "maxLength": 5,
           "inputMode": "numeric",
@@ -1499,7 +1499,9 @@ export const CARRIER_CAPABILITIES = {
     ],
     "countries": [
       "FR",
-      "CH"
+      "CH",
+      "BE",
+      "LU"
     ],
     "trackingSearchUrl": "https://www.heppner-group.com/destinataire-suivez-votre-marchandise/"
   },
@@ -4976,7 +4978,8 @@ export const CARRIER_CAPABILITIES = {
         "params": [
           "trackingNumber",
           "trackingNumbers"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -5592,7 +5595,8 @@ export const CARRIER_CAPABILITIES = {
         "pathPattern": "^/allegrodelivery/sledzenie-paczki/?$",
         "params": [
           "numer"
-        ]
+        ],
+        "ownNumbersOnly": true
       },
       {
         "domains": [
@@ -5601,7 +5605,8 @@ export const CARRIER_CAPABILITIES = {
         "pathPattern": "^/kampania/one/kurier/sledzenie-paczki/?$",
         "params": [
           "numer"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -6937,7 +6942,6 @@ export const CARRIER_CAPABILITIES = {
     ],
     "countries": [
       "RO",
-      "HU",
       "BG"
     ],
     "color": "#e92427",
