@@ -2921,6 +2921,14 @@ describe('TrackingSyncService', () => {
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'waiting', sync_error: null,
       carrier_data: { routing: { consecutive_failures: 0, failures: { ecoscooting: { kind: 'no_history' } } } } });
 
+    // So is a label its tracking does not know yet.
+    adapter.fetch.mockRejectedValue(new IndeterminateError('Ecoscooting', 'Ecoscooting could not complete the tracking query', { reason: 'portal_not_found' }));
+    await expect(service.syncPackage({ ...parcel, id: 'unannounced' }, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 1, errors: 0 });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'waiting', sync_error: null,
+      carrier_data: { routing: { consecutive_failures: 0, failures: { ecoscooting: { kind: 'no_history' } } } } });
+    expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'unannounced',
+      expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: true })]));
+
     // Any other inconclusive answer from the carrier describes the carrier, not the parcel.
     adapter.fetch.mockRejectedValue(new IndeterminateError('Ecoscooting', 'Ecoscooting returned its outage page'));
     await expect(service.syncPackage({ ...parcel, id: 'carrier-down' }, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 0, errors: 1 });

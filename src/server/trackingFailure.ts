@@ -1,5 +1,13 @@
 import { carrierErrorKind } from 'universal-parcel-scraper';
 
+/**
+ * A carrier's own tracking that does not know the item: Ukrposhta's status API
+ * or portal, myDSV's search, Ecoscooting's order query. The source answered,
+ * but may not prove absence, so the adapter raises these as inconclusive with
+ * these reasons.
+ */
+export const UNKNOWN_ITEM_REASONS: ReadonlySet<string> = new Set(['status_api_not_found', 'portal_not_found']);
+
 /** Stable public copy codes. Full diagnostics remain in the tracking audit. */
 export function trackingFailureCode(error: unknown): string | null {
   const kind = carrierErrorKind(error);

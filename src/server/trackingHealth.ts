@@ -2,6 +2,7 @@ import 'server-only';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { CarrierError, NoHistoryError, UpstreamHttpError } from 'universal-parcel-scraper';
 import type { LookupRecord, StepRecord } from 'universal-parcel-scraper/node';
+import { UNKNOWN_ITEM_REASONS } from './trackingFailure';
 import type { JsonObject } from './types';
 
 export interface HealthSample extends JsonObject {
@@ -18,12 +19,6 @@ const observations = new AsyncLocalStorage<Map<string, HealthSample>>();
  */
 const answered = new Set(['ok', 'not_found', 'input_required']);
 
-/**
- * Ukrposhta's misses: its status API, then its portal, does not know the item.
- * Each source answered, but neither may prove absence, so the adapter raises
- * them as inconclusive with these reasons.
- */
-const UNKNOWN_ITEM_REASONS = new Set(['status_api_not_found', 'portal_not_found']);
 /**
  * A provider with no history for a number yet has answered, like not-found
  * (routing treats it the same way). Counted as a failure, every parcel added

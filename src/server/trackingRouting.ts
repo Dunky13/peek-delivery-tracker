@@ -1,6 +1,6 @@
 import 'server-only';
 import { setTimeout as sleep } from 'node:timers/promises';
-import { trackingFailureCode } from './trackingFailure';
+import { trackingFailureCode, UNKNOWN_ITEM_REASONS } from './trackingFailure';
 
 import { DateTime } from 'luxon';
 import { appInputField, detectCarrierMatch } from '../lib/carriers';
@@ -133,8 +133,10 @@ export function answeredWithoutHistory(error: unknown, carrier = false): boolean
   let current = error;
   for (let i = 0; i < 8 && current instanceof Error; i++, current = current.cause) {
     // A carrier's other inconclusive answers (an outage page, contradictory
-    // scans) describe the carrier; only a parcel it lists without scans is an answer.
-    if (current instanceof CarrierError) return current instanceof (carrier ? NoHistoryError : IndeterminateError);
+    // scans) describe the carrier; only a parcel it lists without scans, or
+    // one its tracking does not know yet, is an answer.
+    if (current instanceof CarrierError) return current instanceof (carrier ? NoHistoryError : IndeterminateError)
+      || (current instanceof IndeterminateError && UNKNOWN_ITEM_REASONS.has(current.reason ?? ''));
   }
   return false;
 }
