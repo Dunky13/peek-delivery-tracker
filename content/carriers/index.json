@@ -94,5 +94,14 @@
   { "id": "dao", "catalog": "dao", "name": "DAO", "languages": ["en"] },
   { "id": "helthjem", "catalog": "helthjem", "name": "Helthjem", "languages": ["en"] },
   { "id": "matkahuolto", "catalog": "matkahuolto", "name": "Matkahuolto", "languages": ["en"] },
-  { "id": "ukrposhta", "catalog": "ukrposhta", "name": "Ukrposhta", "languages": ["en"] }
+  { "id": "ukrposhta", "catalog": "ukrposhta", "name": "Ukrposhta", "languages": ["en"] },
+  { "id": "acs-courier", "catalog": "acs-courier", "name": "ACS Courier", "languages": ["en"] },
+  { "id": "elta", "catalog": "elta", "name": "ELTA Hellenic Post", "languages": ["en"] },
+  { "id": "geniki-taxydromiki", "catalog": "geniki-taxydromiki", "name": "Geniki Taxydromiki", "languages": ["en"] },
+  { "id": "cyprus-post", "catalog": "cyprus-post", "name": "Cyprus Post", "languages": ["en"] },
+  { "id": "post-luxembourg", "catalog": "post-luxembourg", "name": "POST Luxembourg", "languages": ["en"] },
+  { "id": "maltapost", "catalog": "maltapost", "name": "MaltaPost", "languages": ["en"] },
+  { "id": "whistl", "catalog": "whistl", "name": "Whistl", "languages": ["en"] },
+  { "id": "xdp", "catalog": "xdp", "name": "XDP", "languages": ["en"] },
+  { "id": "apc-overnight", "catalog": "apc-overnight", "name": "APC Overnight", "languages": ["en"] }
 ]

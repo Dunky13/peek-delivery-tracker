@@ -776,6 +776,78 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Ukrposhta tracking: Ukraine Post numbers and statuses",
       "name": "Ukrposhta",
       "color": "#ffbe0c"
+    },
+    {
+      "id": "acs-courier",
+      "catalog": "acs-courier",
+      "slug": "acs-courier-tracking",
+      "title": "ACS Courier tracking: numbers, statuses and contacts",
+      "name": "ACS Courier",
+      "color": "#e42229"
+    },
+    {
+      "id": "elta",
+      "catalog": "elta",
+      "slug": "elta-hellenic-post-tracking",
+      "title": "ELTA Hellenic Post tracking: statuses, pickup, contacts",
+      "name": "ELTA Hellenic Post",
+      "color": "#0063a9"
+    },
+    {
+      "id": "geniki-taxydromiki",
+      "catalog": "geniki-taxydromiki",
+      "slug": "geniki-taxydromiki-tracking",
+      "title": "Geniki Taxydromiki tracking: vouchers, statuses, contacts",
+      "name": "Geniki Taxydromiki",
+      "color": "#004fa0"
+    },
+    {
+      "id": "cyprus-post",
+      "catalog": "cyprus-post",
+      "slug": "cyprus-post-tracking",
+      "title": "Cyprus Post tracking: numbers, statuses and collection",
+      "name": "Cyprus Post",
+      "color": "#e4a50e"
+    },
+    {
+      "id": "post-luxembourg",
+      "catalog": "post-luxembourg",
+      "slug": "post-luxembourg-tracking",
+      "title": "POST Luxembourg tracking: numbers, statuses and contacts",
+      "name": "POST Luxembourg",
+      "color": "#008736"
+    },
+    {
+      "id": "maltapost",
+      "catalog": "maltapost",
+      "slug": "maltapost-tracking",
+      "title": "MaltaPost tracking: numbers, statuses and collection",
+      "name": "MaltaPost",
+      "color": "#d43b2c"
+    },
+    {
+      "id": "whistl",
+      "catalog": "whistl",
+      "slug": "whistl-tracking",
+      "title": "Whistl tracking: who delivers your parcel and what to do",
+      "name": "Whistl",
+      "color": "#fd4f00"
+    },
+    {
+      "id": "xdp",
+      "catalog": "xdp",
+      "slug": "xdp-tracking",
+      "title": "XDP tracking: consignment numbers, statuses and delivery",
+      "name": "XDP",
+      "color": "#53b6ed"
+    },
+    {
+      "id": "apc-overnight",
+      "catalog": "apc-overnight",
+      "slug": "apc-overnight-tracking",
+      "title": "APC Overnight tracking: numbers, statuses, missed deliveries",
+      "name": "APC Overnight",
+      "color": "#243269"
     }
   ],
   "de": [
