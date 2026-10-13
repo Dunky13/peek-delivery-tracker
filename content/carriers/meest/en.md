@@ -77,7 +77,7 @@ As listed on Meest's sites on 12 October 2026:
 
 ## Tracking a Meest parcel with Peek
 
-[Peek](/) knows Meest's consolidation number (`AB1234567CD12345G`) and asks Meest alone, which settles it. Postal numbers and senders' references reach Meest only after you pick "Meest" with "Change", or from a Meest link: a typed postal number goes to the post that issued it, or to the destination's post (Ukrposhta for Ukraine). Peek reads links from t.meest-group.com, meest.com country sites (`parcel_number=`) and tracking-iframe.meest.com, but not from pl.meest.com's own tracker.
+[Peek](/) knows Meest's consolidation number (`AB1234567CD12345G`) and asks Meest alone, which settles it. Postal numbers and senders' references reach Meest only after you pick "Meest" with "Change", or from a Meest link: a typed postal number goes to the post that issued it, or to the destination's post ([Ukrposhta](carrier:ukrposhta) for Ukraine). Peek reads links from t.meest-group.com, meest.com country sites (`parcel_number=`) and tracking-iframe.meest.com, but not from pl.meest.com's own tracker.
 
 Meest gives no time zone on its scans, so Meest's own history isn't shown: the dated history comes from universal tracking services when they know the parcel, Meest's current status is dated when Peek saw it, and Meest is asked again every 6 hours. Peek keeps the status, the destination country and, when a partner abroad delivers, that carrier and its number: the parcel's page says "Delivery with BOX NOW", for example, and Peek follows that carrier when it can track it directly. It can notify you when the status changes.
 

@@ -21,7 +21,7 @@ Omniva calls it the "shipment tracking code" or "shipment code (tracking number)
 
 The six-digit door code in the delivery SMS opens the parcel machine and is not a tracking number; neither is the six-digit return code.
 
-A code ending `LV` belongs to Latvijas Pasts, one ending `LT` to Lietuvos paštas, and `JJFI` codes to [Posti](carrier:posti) in Finland. More shapes: [tracking number formats](guide:tracking-number-formats).
+A code ending `LV` belongs to [Latvijas Pasts](carrier:latvijas-pasts), one ending `LT` to [Lietuvos paštas](carrier:lietuvos-pastas), and `JJFI` codes to [Posti](carrier:posti) in Finland. More shapes: [tracking number formats](guide:tracking-number-formats).
 
 ## Omniva tracking statuses in English
 

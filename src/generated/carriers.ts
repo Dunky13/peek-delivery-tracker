@@ -696,6 +696,86 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Slovenská pošta tracking: Slovak Post numbers and statuses",
       "name": "Slovenská pošta",
       "color": "#f9bb00"
+    },
+    {
+      "id": "posta-slovenije",
+      "catalog": "posta-slovenije",
+      "slug": "posta-slovenije-tracking",
+      "title": "Pošta Slovenije tracking: statuses, pickup and contacts",
+      "name": "Pošta Slovenije",
+      "color": "#ffc600"
+    },
+    {
+      "id": "hrvatska-posta",
+      "catalog": "hrvatska-posta",
+      "slug": "hrvatska-posta-tracking",
+      "title": "Hrvatska pošta tracking: statuses, lockers and contacts",
+      "name": "Hrvatska pošta",
+      "color": "#ffd100"
+    },
+    {
+      "id": "posta-srbije",
+      "catalog": "posta-srbije",
+      "slug": "posta-srbije-serbian-post-tracking",
+      "title": "Pošta Srbije: Serbian Post tracking, statuses and help",
+      "name": "Pošta Srbije",
+      "color": "#fbba00"
+    },
+    {
+      "id": "venipak",
+      "catalog": "venipak",
+      "slug": "venipak-tracking",
+      "title": "Venipak tracking: statuses, lockers and missed deliveries",
+      "name": "Venipak",
+      "color": "#9339f2"
+    },
+    {
+      "id": "lietuvos-pastas",
+      "catalog": "lietuvos-pastas",
+      "slug": "lietuvos-pastas-lithuania-post-tracking",
+      "title": "Lietuvos paštas: Lithuania Post tracking, statuses, lockers",
+      "name": "Lietuvos paštas",
+      "color": "#fedd00"
+    },
+    {
+      "id": "latvijas-pasts",
+      "catalog": "latvijas-pasts",
+      "slug": "latvijas-pasts-tracking",
+      "title": "Latvijas Pasts tracking: numbers, statuses and lockers",
+      "name": "Latvijas Pasts",
+      "color": "#0c72ba"
+    },
+    {
+      "id": "dao",
+      "catalog": "dao",
+      "slug": "dao-tracking",
+      "title": "DAO tracking: statuses, daoSHOP and missed deliveries",
+      "name": "DAO",
+      "color": "#e30613"
+    },
+    {
+      "id": "helthjem",
+      "catalog": "helthjem",
+      "slug": "helthjem-tracking",
+      "title": "Helthjem tracking: statuses, pickup points and contact",
+      "name": "Helthjem",
+      "color": "#ffb202"
+    },
+    {
+      "id": "matkahuolto",
+      "catalog": "matkahuolto",
+      "slug": "matkahuolto-tracking",
+      "title": "Matkahuolto tracking: statuses, pickup points and contact",
+      "name": "Matkahuolto",
+      "color": "#001e60"
+    },
+    {
+      "id": "ukrposhta",
+      "catalog": "ukrposhta",
+      "slug": "ukrposhta-tracking",
+      "title": "Ukrposhta tracking: Ukraine Post numbers and statuses",
+      "name": "Ukrposhta",
+      "color": "#ffbe0c"
     }
   ],
   "de": [
