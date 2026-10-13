@@ -44,7 +44,7 @@ Dónde puede estar, según quién lo lleve:
 
 ## ¿Quién es responsable: el vendedor, el transportista o yo?
 
-Si compraste a una empresa, reclama a la tienda. Además, los transportistas suelen indemnizar al remitente, no a quien recibe. Correos lo dice sin rodeos: «El beneficiario de cualquier indemnización es siempre el remitente».
+Si compraste a una empresa, reclama a la tienda. Además, los transportistas suelen indemnizar al remitente, no a quien recibe. [Correos](carrier:correos-spain) lo dice sin rodeos: «El beneficiario de cualquier indemnización es siempre el remitente».
 
 :::journey
 - shop | Vendedor | Contrata y paga al transportista: el cliente es él.

@@ -73,7 +73,7 @@ Stand Oktober 2026 nennt YunExpress für Empfänger in Deutschland, Österreich 
 - **Telefon:** 400-8575-500 auf yunexpress.cn, eine Servicenummer in Festlandchina. Ob sie aus dem Ausland erreichbar ist, steht nirgends.
 - **Regionale Kontakte:** nur für Länder in Asien und für Australien.
 
-Das Feld „Feedback“ auf Yuntrack betrifft die Website, nicht dein Paket. Fang deshalb beim Shop an, der den Vertrag mit YunExpress hat. Nach der Übergabe ist der Paketdienst vor Ort dran, der im Tracking steht, etwa DHL oder DPD: Ihn erreichst du über seine eigenen Kanäle.
+Das Feld „Feedback“ auf Yuntrack betrifft die Website, nicht dein Paket. Fang deshalb beim Shop an, der den Vertrag mit YunExpress hat. Nach der Übergabe ist der Paketdienst vor Ort dran, der im Tracking steht, etwa [DHL](carrier:dhl) oder DPD: Ihn erreichst du über seine eigenen Kanäle.
 
 ## YunExpress-Paket mit Peek verfolgen
 

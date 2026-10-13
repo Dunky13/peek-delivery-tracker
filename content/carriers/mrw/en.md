@@ -24,7 +24,7 @@ Where it turns up:
 - **From a shop:** in the shipping email or on the order page.
 - **By SMS:** genuine MRW texts come from the sender "MRW-es". Links like www.mrw.pt/track/… open MRW's page for arranging delivery, not the tracking.
 
-Twelve digits alone also fit FedEx, [DPD France](carrier:dpd-fr), [Mondial Relay](carrier:mondial-relay), Colis Privé, [BRT](carrier:brt), SF Express and others. If MRW doesn't know it, check the shipping email for the carrier's name.
+Twelve digits alone also fit [FedEx](carrier:fedex), [DPD France](carrier:dpd-fr), [Mondial Relay](carrier:mondial-relay), Colis Privé, [BRT](carrier:brt), SF Express and others. If MRW doesn't know it, check the shipping email for the carrier's name.
 
 When MRW answers "Envío no encontrado" (shipment not found), check the digits. If they're right, MRW's message says the parcel simply hasn't reached MRW yet.
 

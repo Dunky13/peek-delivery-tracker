@@ -31,11 +31,11 @@ Here's what the carriers and the postal standard say about the numbers you're mo
 
 | Carrier | What the number looks like |
 | --- | --- |
-| UPS | `1Z` + 16 letters and digits, 18 characters in all, such as `1Z999AA10123456784`, an example that passes UPS's check digit |
-| USPS | 22 digits starting `92`, `93`, `94` or `95`, printed in groups of four, such as `9212 3912 3456 7812 3456 70`; 26 digits on some labels; international items can carry the postal format ending `US` |
-| FedEx | 12 digits on FedEx Ground Economy labels since 2022, where some shippers used to get 15-digit Ground numbers |
-| DHL | DHL Express: 10 digits, never letters. DHL in Germany: 10 to 39 characters |
-| Royal Mail, [Parcelforce](carrier:parcelforce) | 9 to 27 characters, says the Post Office; the postal format ends `GB` |
+| [UPS](carrier:ups) | `1Z` + 16 letters and digits, 18 characters in all, such as `1Z999AA10123456784`, an example that passes UPS's check digit |
+| [USPS](carrier:usps) | 22 digits starting `92`, `93`, `94` or `95`, printed in groups of four, such as `9212 3912 3456 7812 3456 70`; 26 digits on some labels; international items can carry the postal format ending `US` |
+| [FedEx](carrier:fedex) | 12 digits on FedEx Ground Economy labels since 2022, where some shippers used to get 15-digit Ground numbers |
+| DHL | [DHL Express](carrier:dhl-express): 10 digits, never letters. [DHL in Germany](carrier:dhl): 10 to 39 characters |
+| [Royal Mail](carrier:royal-mail), [Parcelforce](carrier:parcelforce) | 9 to 27 characters, says the Post Office; the postal format ends `GB` |
 | [Evri](carrier:evri) | 16 characters (Evri's page says both "16 digit" and "16 character") |
 | DPD | 14 characters, says [DPD Germany](carrier:dpd-de); 14 digits, say DPD Austria and Belgium. [DPD UK](carrier:dpd-uk)'s help page gives no length and asks for your postcode too |
 | [XDP](carrier:xdp) | no published format; its numbers are `ZDB`, three letters and six digits, such as `ZDBABC123456`, sometimes with a leading `0`; its tracker asks for the delivery postcode too |
@@ -65,7 +65,7 @@ There's no single length. These are the lengths carriers give on their own pages
 | --- | --- |
 | 10 digits | DHL Express; Mondial Relay (8, 10 or 12) |
 | 12 digits | FedEx Ground Economy; Canada Post Priority Worldwide; Mondial Relay |
-| 14 digits | DPD in Austria and Belgium (DPD Germany says 14 characters); La Poste in France |
+| 14 digits | DPD in Austria and Belgium (DPD Germany says 14 characters); [La Poste](carrier:la-poste) in France |
 | 15 digits | FedEx Ground numbers: FedEx told Ground Economy shippers receiving them that the length would change from 31 May 2022; Canada Post's Delivery Notice Card |
 | 16 digits | Canada Post online labels; Evri (16 characters) |
 | 22 digits | USPS; Portugal's CTT; Austrian Post; TIPSA |

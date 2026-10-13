@@ -27,7 +27,7 @@ Cyprus Post's tracker reads the barcodes of registered items, EMS items, parcels
 
 An item posted abroad keeps the number its own post gave it, ending in that country's letters (`…GB`, `…FR`, `…GR`). Cyprus Post's tracker takes it and shows the foreign post's scans too.
 
-A 12-digit number on a parcel from Germany is Deutsche Post's internal reference: Cyprus Post asks for the `CX…DE` barcode, which DHL's German tracking gives.
+A 12-digit number on a parcel from Germany is Deutsche Post's internal reference: Cyprus Post asks for the `CX…DE` barcode, which [DHL](carrier:dhl)'s German tracking gives.
 
 No result? Type the number in English letters, with no spaces, and check it with the sender. No number at all? See [where to find a tracking number](guide:find-tracking-number).
 

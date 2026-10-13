@@ -53,7 +53,7 @@ Para las paradas en aduana, fíjate en `Customs Clearance Hold` (`Retención en 
 
 ## Entrega en España, ausencias y recogida
 
-SunYou no reparte en Europa: su línea comercial entrega los paquetes a transportistas locales del país de destino, y su seguimiento nombra a esa empresa. SunYou no publica qué empresa reparte en España. Entre las empresas que muestra como socias está Correos, pero en los historiales que se consultaron no había ningún paquete con destino a España; el historial del tuyo suele nombrarla junto a `Departed Sunyou Facility`.
+SunYou no reparte en Europa: su línea comercial entrega los paquetes a transportistas locales del país de destino, y su seguimiento nombra a esa empresa. SunYou no publica qué empresa reparte en España. Entre las empresas que muestra como socias está [Correos](carrier:correos-spain), pero en los historiales que se consultaron no había ningún paquete con destino a España; el historial del tuyo suele nombrarla junto a `Departed Sunyou Facility`.
 
 SunYou no publica normas sobre intentos de entrega, avisos, puntos de recogida ni cuánto tiempo se guarda un paquete. Son las del transportista local: cuando tengas su nombre y su número, mira en su web cómo cambiar la entrega o dónde te espera el paquete.
 

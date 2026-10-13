@@ -20,7 +20,7 @@ Le numéro compte 12 lettres et chiffres :
 | Une lettre, onze chiffres | `A12345678901` |
 | Douze chiffres | `987654321098` |
 
-Le suivi demande aussi le code postal de livraison, et un numéro qu'il ne reconnaît pas te renvoie au formulaire vide. Douze chiffres seuls correspondent aussi à FedEx, à Mondial Relay et à d'autres, `CC` suivi de dix chiffres renvoie à Relais Colis, `FR` suivi de dix chiffres à Amazon Logistics, et 13 caractères comme `6A12345678901` à La Poste. Vérifie quel transporteur nomme l'e-mail, ou lis [à quel transporteur appartient un numéro](guide:tracking-number-formats). Les commandes Colis Privé Store, dont le numéro commence en général par HS ou 2R, se suivent uniquement sur colisprive-store.com.
+Le suivi demande aussi le code postal de livraison, et un numéro qu'il ne reconnaît pas te renvoie au formulaire vide. Douze chiffres seuls correspondent aussi à [FedEx](carrier:fedex), à Mondial Relay et à d'autres, `CC` suivi de dix chiffres renvoie à Relais Colis, `FR` suivi de dix chiffres à Amazon Logistics, et 13 caractères comme `6A12345678901` à [La Poste](carrier:la-poste). Vérifie quel transporteur nomme l'e-mail, ou lis [à quel transporteur appartient un numéro](guide:tracking-number-formats). Les commandes Colis Privé Store, dont le numéro commence en général par HS ou 2R, se suivent uniquement sur colisprive-store.com.
 
 ## Suivi Colis Privé : ce que veut dire chaque statut
 

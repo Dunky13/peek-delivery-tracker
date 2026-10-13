@@ -41,7 +41,7 @@ Bei [Hermes](carrier:hermes-de) heißen die Schritte `Die Sendung wurde angekün
 
 ## „Elektronisch angekündigt“: Hat der Paketdienst mein Paket schon?
 
-Nein. Der Absender hat einen Versandaufkleber gedruckt und die Daten an den Paketdienst geschickt, mehr nicht. Bei DHL ist `Die Sendung wurde elektronisch angekündigt.` meist der allererste Status. Hermes hat bei `Die Sendung wurde angekündigt` „physisch noch kein Paket“ erhalten. Bei UPS und FedEx heißt dieser Schritt `Etikett erstellt`; UPS ändert den Status erst, wenn es die Sendung tatsächlich hat. Noch früher zeigt DHL manchmal `Wir erwarten Ihre Sendungsdaten in Kürze.`: Bis der Absender die Daten schickt oder das Paket übergibt, können bis zu 24 Stunden vergehen.
+Nein. Der Absender hat einen Versandaufkleber gedruckt und die Daten an den Paketdienst geschickt, mehr nicht. Bei [DHL](carrier:dhl) ist `Die Sendung wurde elektronisch angekündigt.` meist der allererste Status. Hermes hat bei `Die Sendung wurde angekündigt` „physisch noch kein Paket“ erhalten. Bei [UPS](carrier:ups) und [FedEx](carrier:fedex) heißt dieser Schritt `Etikett erstellt`; UPS ändert den Status erst, wenn es die Sendung tatsächlich hat. Noch früher zeigt DHL manchmal `Wir erwarten Ihre Sendungsdaten in Kürze.`: Bis der Absender die Daten schickt oder das Paket übergibt, können bis zu 24 Stunden vergehen.
 
 Bei der [Österreichischen Post](carrier:austrian-post) steht die Ankündigung in der Regel nur wenige Werktage da. Ändert sie sich nicht, frag den Absender, nicht den Paketdienst: Das rät die Post selbst. Und hat Hermes das Paket übernommen, siehst du den neuen Status spätestens nach 5 Stunden.
 

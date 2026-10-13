@@ -31,7 +31,7 @@ Voici ce que disent les transporteurs et la norme postale sur les numéros que t
 
 | Transporteur | À quoi ressemble le numéro |
 | --- | --- |
-| La Poste, Colissimo | « numéro d'envoi » (ou numéro de suivi) de 13 à 15 caractères : 1 chiffre, 1 lettre et 11 chiffres (`8D00432154789`) ; 2 lettres et 11 chiffres ; le format postal qui finit par `FR` ; ou 14 chiffres |
+| [La Poste](carrier:la-poste), Colissimo | « numéro d'envoi » (ou numéro de suivi) de 13 à 15 caractères : 1 chiffre, 1 lettre et 11 chiffres (`8D00432154789`) ; 2 lettres et 11 chiffres ; le format postal qui finit par `FR` ; ou 14 chiffres |
 | [Chronopost](carrier:chronopost) | 13 caractères (2 lettres, 9 chiffres, 2 lettres), ou 15 caractères (14 chiffres et une lettre de contrôle) pour un colis venu de l'étranger, à saisir sans espace ; se suit aussi sur le site et dans l'app La Poste, comme un Colissimo |
 | Mondial Relay | « n° d'expédition » de 8 chiffres, à saisir avec le code postal du destinataire ; sa page belge accepte aussi, sans espace, 10 chiffres (un code d'enseigne, puis ce numéro) et 12 (plus le rang du colis) ; le code-barres de 26 chiffres de l'étiquette est propre à Mondial Relay |
 | [Colis Privé](carrier:colis-prive) | 12 caractères, lettres et chiffres, à saisir avec ton code postal |
@@ -42,8 +42,8 @@ Voici ce que disent les transporteurs et la norme postale sur les numéros que t
 | [DPD Suisse](carrier:dpd-ch) | « numéro de colis » de 14 chiffres, qui commence par `060` en Suisse d'après DPD, parfois suivi d'un caractère de contrôle (chiffre ou lettre majuscule) dont ses pages suisses ne parlent pas ; le numéro en `P00` de l'avis de passage n'est pas le numéro de colis |
 | [GLS France](carrier:gls-fr) | 8 caractères (lettres et chiffres), souvent en commençant par `00`, ou 11 chiffres ; sur l'étiquette, les 11 chiffres sont suivis d'une clé de contrôle (12 chiffres). La référence de 5 ou 6 caractères de l'avis de passage, le Track-ID, sert aussi dans son suivi |
 | [GLS en Suisse](carrier:gls-ch) | ni GLS ni La Poste, qui livre ses colis, ne publient de format ; dans les données de transporteurs de Peek, 11 chiffres, 12 chiffres dont le dernier est une clé de contrôle, 8 lettres et chiffres mêlés, ou 6 lettres, à saisir avec ton code postal |
-| UPS | `1Z` puis 16 lettres ou chiffres, 18 caractères en tout, comme `1Z999AA10123456784`, un exemple dont le chiffre de contrôle UPS est valide |
-| DHL Express | 10 chiffres, jamais de lettres, d'après DHL Express aux Pays-Bas |
+| [UPS](carrier:ups) | `1Z` puis 16 lettres ou chiffres, 18 caractères en tout, comme `1Z999AA10123456784`, un exemple dont le chiffre de contrôle UPS est valide |
+| [DHL Express](carrier:dhl-express) | 10 chiffres, jamais de lettres, d'après DHL Express aux Pays-Bas |
 | [bpost](carrier:bpost) | « code-barres » de 24 chiffres qui commence par `3299` ou `3232`, de 18 chiffres qui commence par `3232`, de 27 caractères qui commence par `JJBEA`, ou de 13 caractères au format postal (`CE`, `EE`, `CD` ou `CZ` au début) |
 | La Poste suisse | « numéro d'envoi » de 18 chiffres qui commence par `98` ou `99`, avec ou sans points ni espaces (le code-barres national de La Poste), ou format postal qui finit par `CH` |
 | [Quickpac](carrier:quickpac) | 18 chiffres qui commencent par `44`, que son cadre de suivi écrit avec des points |

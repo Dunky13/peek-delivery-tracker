@@ -54,7 +54,7 @@ For customs stops, `Customs Clearance Hold` and `Delivery failed, Reason: Refusa
 
 ## Who delivers SunYou parcels
 
-SunYou delivers nothing itself in Europe: its commercial line hands parcels to local carriers in the destination country, and its tracking names that carrier. In histories read on its tracking, Royal Mail delivered in the UK, DHL Paket in Germany, USPS or GOFO in the US and Canada Post in Canada.
+SunYou delivers nothing itself in Europe: its commercial line hands parcels to local carriers in the destination country, and its tracking names that carrier. In histories read on its tracking, [Royal Mail](carrier:royal-mail) delivered in the UK, [DHL Paket](carrier:dhl) in Germany, [USPS](carrier:usps) or GOFO in the US and Canada Post in Canada.
 
 SunYou publishes no rules for delivery attempts, cards, pickup points or how long a parcel is held. Those are the local carrier's rules, so once you have its name and number, check its site to rearrange a delivery or find where the parcel waits.
 

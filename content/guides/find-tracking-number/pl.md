@@ -43,8 +43,8 @@ Zamawiasz z AliExpress albo innego chińskiego sklepu? Zajrzyj do poradnika o [�
 - **[Poczta Polska](carrier:poczta-polska)**: oprócz papierowego awiza dostaniesz SMS albo e-maila z terminem odbioru i adresem placówki, jeśli nadawca podał Twój telefon lub e-mail. Wtedy przy odbiorze wystarczy podać „numer przesyłki wskazany w SMS-ie czy w mailu”.
 - **Poczta Polska, eINFO:awizo**: tę bezpłatną usługę zamówisz przez profil zaufany albo w placówce, która doręcza Ci przesyłki. Od następnego dnia powiadomienie o awizowanej przesyłce przyjdzie SMS-em albo e-mailem, z jej numerem, terminem odbioru i adresem placówki. Wyjątek: zawiadomienia o pismach w postępowaniach karnych, cywilnych, administracyjnych czy podatkowych nadal przychodzą na papierze.
 - **GLS**: numer Track-ID z awiza działa w śledzeniu GLS.
-- **FedEx**: wyszukiwarka przyjmuje „numery etykiet awizo”.
-- **UPS**: w wybranych krajach kurier zostawia przy pierwszej próbie doręczenia powiadomienie UPS InfoNotice. Są na nim, jak pisze UPS, informacje, „które pozwolą Ci zlokalizować Twoją paczkę”.
+- **[FedEx](carrier:fedex)**: wyszukiwarka przyjmuje „numery etykiet awizo”.
+- **[UPS](carrier:ups)**: w wybranych krajach kurier zostawia przy pierwszej próbie doręczenia powiadomienie UPS InfoNotice. Są na nim, jak pisze UPS, informacje, „które pozwolą Ci zlokalizować Twoją paczkę”.
 
 ## Jak śledzić paczkę bez numeru przesyłki?
 
@@ -75,7 +75,7 @@ Paczki nie ma na liście? InPost radzi najpierw sprawdzić, czy na pewno nadano 
 
 ### Śledź po numerze referencyjnym nadawcy
 
-Jeśli nadawca poda Ci swój numer referencyjny, na przykład numer faktury, w niektórych firmach kurierskich wyszukasz paczkę właśnie po nim: UPS ma **Monitoruj poprzez numer referencyjny**, FedEx **Śledzenie według informacji referencyjnych**, a DHL Express **Monitoruj według referencji**. UPS prosi też o zakres dat i uprzedza, że szczegóły śledzenia „zostaną zastąpione podstawowymi danymi”. W wyszukiwarce Poczty Polskiej takiej opcji nie ma.
+Jeśli nadawca poda Ci swój numer referencyjny, na przykład numer faktury, w niektórych firmach kurierskich wyszukasz paczkę właśnie po nim: UPS ma **Monitoruj poprzez numer referencyjny**, FedEx **Śledzenie według informacji referencyjnych**, a [DHL Express](carrier:dhl-express) **Monitoruj według referencji**. UPS prosi też o zakres dat i uprzedza, że szczegóły śledzenia „zostaną zastąpione podstawowymi danymi”. W wyszukiwarce Poczty Polskiej takiej opcji nie ma.
 
 ## Czy można śledzić paczkę po nazwisku, adresie albo numerze telefonu?
 

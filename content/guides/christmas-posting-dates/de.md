@@ -15,10 +15,10 @@ Bisher hat nur GLS seine Fristen für 2026 veröffentlicht. DHL schreibt auf sei
 
 | Paketdienst | Service | Abgabe bis |
 | --- | --- | --- |
-| DHL | Paket und Päckchen | Noch nicht veröffentlicht (2025: Samstag, 20. Dezember) |
+| [DHL](carrier:dhl) | Paket und Päckchen | Noch nicht veröffentlicht (2025: Samstag, 20. Dezember) |
 | Deutsche Post | Briefe und Postkarten, vor der Leerung | Noch nicht veröffentlicht (2025: Samstag, 20. Dezember) |
 | Deutsche Post | Einschreiben | Noch nicht veröffentlicht (2025: Montag, 22. Dezember) |
-| DHL Express | Express national, bis zur jeweiligen Versandschlusszeit | Noch nicht veröffentlicht (2025: Montag, 22. Dezember) |
+| [DHL Express](carrier:dhl-express) | Express national, bis zur jeweiligen Versandschlusszeit | Noch nicht veröffentlicht (2025: Montag, 22. Dezember) |
 | DHL Paket | Geschäftskunden, Regelabholung bis 12 Uhr | Noch nicht veröffentlicht (2025: Montag, 22. Dezember) |
 | Hermes | Abgabe im PaketShop bis 12 Uhr | Noch nicht veröffentlicht (2025: Freitag, 19. Dezember) |
 | Hermes | Paket- oder Gepäckabholung an der Haustür | Noch nicht veröffentlicht (2025: Freitag, 19. Dezember) |

@@ -41,7 +41,7 @@ Polski słowniczek FedEx nie opisuje statusów „gotowa do odbioru” i „dor�
 
 ## „Przygotowana przez nadawcę”: czy przewoźnik ma już paczkę?
 
-Nie. Sprzedawca wydrukował etykietę i przesłał dane, nic więcej. InPost przy `Przygotowana przez Nadawcę.` pisze, że paczka „wkrótce zostanie przekazana w nasze ręce”, a jeszcze wcześniej może pokazać `Przesyłka utworzona.`, czyli przesyłkę, która „nie jest gotowa do nadania”. FedEx przy `Utworzono etykietę` wyjaśnia, że nadawca dopiero przygotowuje paczkę do przekazania. Status zmienia się na `Mamy Twoją paczkę`, gdy kurier FedEx ją odbierze albo nadawca zostawi ją w oddziale.
+Nie. Sprzedawca wydrukował etykietę i przesłał dane, nic więcej. InPost przy `Przygotowana przez Nadawcę.` pisze, że paczka „wkrótce zostanie przekazana w nasze ręce”, a jeszcze wcześniej może pokazać `Przesyłka utworzona.`, czyli przesyłkę, która „nie jest gotowa do nadania”. [FedEx](carrier:fedex) przy `Utworzono etykietę` wyjaśnia, że nadawca dopiero przygotowuje paczkę do przekazania. Status zmienia się na `Mamy Twoją paczkę`, gdy kurier FedEx ją odbierze albo nadawca zostawi ją w oddziale.
 
 Paczka nadana w automacie też nie od razu rusza: `Paczka nadana w automacie Paczkomat.` znaczy, że czeka, aż doręczyciel wyjmie ją ze skrytki i zawiezie do oddziału InPost.
 
@@ -54,7 +54,7 @@ Przewoźnik ma Twoją paczkę gdzieś w swojej sieci. Nie znaczy to, że akurat 
 Między skanami cisza jest normalna:
 
 - FedEx uważa ponad 24 godziny bez skanu za nic niezwykłego.
-- UPS na długich trasach może nie zeskanować paczki aż do sortowni docelowej.
+- [UPS](carrier:ups) na długich trasach może nie zeskanować paczki aż do sortowni docelowej.
 - [Poczta Polska](carrier:poczta-polska) przy listach poleconych pokazuje tylko dzień nadania i dzień doręczenia, bez drogi przesyłki.
 
 ### Ile paczka jest w drodze?

@@ -18,7 +18,7 @@ Chronopost's number has 13 characters (two letters, nine digits, two letters), o
 | `AB000000000JB` | The same shape ending in JB, JF or TS. |
 | `00000000000000U` | 15 characters, 14 digits and a check letter: a parcel from abroad. |
 
-The 13-character shape is the international postal format: a number ending FR may be La Poste's Colissimo, one ending CH, GB or DE another country's post. The 15-character shape is also DPD's, so it may be a [DPD Switzerland](carrier:dpd-ch) or [DPD Germany](carrier:dpd-de) parcel. If Chronopost doesn't know it, check the carrier the shop's email names.
+The 13-character shape is the international postal format: a number ending FR may be [La Poste](carrier:la-poste)'s Colissimo, one ending CH, GB or DE another country's post. The 15-character shape is also DPD's, so it may be a [DPD Switzerland](carrier:dpd-ch) or [DPD Germany](carrier:dpd-de) parcel. If Chronopost doesn't know it, check the carrier the shop's email names.
 
 ## What Chronopost's tracking statuses mean
 

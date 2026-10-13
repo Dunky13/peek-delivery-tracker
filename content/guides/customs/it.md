@@ -37,7 +37,7 @@ Spesso niente. Per capirlo:
 
 ### Pacco bloccato in dogana: chi chiamare?
 
-Quasi mai la dogana: comincia dal corriere (passo 4). Poste sdogana solo i pacchi postali che viaggiano secondo la Convenzione dell'Unione postale universale, quindi per un pacco DHL, UPS o FedEx chiedi a loro. Non sai quale corriere ha il pacco? Spesso [lo dice il numero di tracking](guide:tracking-number-formats). In Ticino l'UDSC dice di non poter dare informazioni sullo stato di un invio; per lo sdoganamento postale la Posta risponde al +41 848 48 48 47, dal lunedì al venerdì dalle 8.00 alle 17.30.
+Quasi mai la dogana: comincia dal corriere (passo 4). Poste sdogana solo i pacchi postali che viaggiano secondo la Convenzione dell'Unione postale universale, quindi per un pacco DHL, [UPS](carrier:ups) o [FedEx](carrier:fedex) chiedi a loro. Non sai quale corriere ha il pacco? Spesso [lo dice il numero di tracking](guide:tracking-number-formats). In Ticino l'UDSC dice di non poter dare informazioni sullo stato di un invio; per lo sdoganamento postale la Posta risponde al +41 848 48 48 47, dal lunedì al venerdì dalle 8.00 alle 17.30.
 
 ## Quanto tempo può restare un pacco in dogana?
 
@@ -88,7 +88,7 @@ Dove paghi dipende da cosa è successo al checkout:
 | Italia | Hai già pagato tutto all'acquisto (Poste la chiama modalità PDDP), o è un regalo occasionale tra privati fino a 45 € | Dazio e IVA, più i diritti postali di Poste: fino a 150 €, 1 € online, oppure alla consegna 3 € fino a 22 € e 7 € oltre; sopra i 150 €, 18 € online o 21 € alla consegna |
 | Ticino | Le imposte non superano i 5 franchi (merce, spedizione compresa, fino a CHF 62.–, o CHF 193.– con l'IVA ridotta), o è un regalo tra privati fino a CHF 100.–, senza alcol né tabacco | IVA e dazi, più il prezzo della Posta (IVA esclusa): CHF 13.– dall'UE o 16.– dagli altri Paesi, CHF 1.50 in meno pagando online, più il 3% del valore; massimo CHF 70.– senza IVA né dazi |
 
-Le cifre cambiano: controllale sulle pagine di [Poste](https://www.poste.it/ricevere-spedizioni-da-estero) e della [Posta](https://www.post.ch/it/ricezione/sdoganamento-all-importazione). Con un corriere espresso come DHL o UPS il compenso lo fissa il corriere: anche l'UDSC ricorda che le imprese di trasporto si fanno pagare lo sdoganamento.
+Le cifre cambiano: controllale sulle pagine di [Poste](https://www.poste.it/ricevere-spedizioni-da-estero) e della [Posta](https://www.post.ch/it/ricezione/sdoganamento-all-importazione). Con un corriere espresso come [DHL](carrier:dhl-express) o UPS il compenso lo fissa il corriere: anche l'UDSC ricorda che le imprese di trasporto si fanno pagare lo sdoganamento.
 
 ### Cosa vuol dire «3 € per articolo»?
 

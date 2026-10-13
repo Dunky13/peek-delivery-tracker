@@ -17,7 +17,7 @@ Sameday calls the tracking number the AWB: 5 to 50 letters and digits, in the SA
 | `1ABC123456789` | An AWB: `1`, three to five letters and 9 to 11 digits. |
 | `1ABC123456789001` | A parcel number: the AWB plus 3 digits. Track the AWB without them. |
 
-The SAMEDAY App lists every AWB linked to the phone number you registered with; orders placed with another number don't appear. Some 17-character AWBs look like [Colis Privé](carrier:colis-prive) numbers, and some 16-character ones like Royal Mail's, so check which carrier the shop's email names.
+The SAMEDAY App lists every AWB linked to the phone number you registered with; orders placed with another number don't appear. Some 17-character AWBs look like [Colis Privé](carrier:colis-prive) numbers, and some 16-character ones like [Royal Mail](carrier:royal-mail)'s, so check which carrier the shop's email names.
 
 ## What Sameday's tracking statuses mean
 

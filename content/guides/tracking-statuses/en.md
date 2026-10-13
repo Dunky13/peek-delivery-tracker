@@ -39,19 +39,19 @@ Same stages, different words:
 
 ## "Label created" or "pre-shipment": does the carrier have it?
 
-No: the seller has printed a label and sent the details, nothing more. USPS says the parcel "has not yet been given to USPS", and UPS's `Label Created` changes once UPS has it. [An Post](carrier:an-post) words it `Sender/retailer has shared details of your item to An Post`. Some US parcels show `Picked Up by Shipping Partner, USPS Awaiting Item`: a partner company has it and will hand it to USPS.
+No: the seller has printed a label and sent the details, nothing more. [USPS](carrier:usps) says the parcel "has not yet been given to USPS", and [UPS](carrier:ups)'s `Label Created` changes once UPS has it. [An Post](carrier:an-post) words it `Sender/retailer has shared details of your item to An Post`. Some US parcels show `Picked Up by Shipping Partner, USPS Awaiting Item`: a partner company has it and will hand it to USPS.
 
 Australia Post's `Pending` (nothing scanned yet) should update within 24 to 48 hours. If nothing moves, ask the seller, not the carrier: USPS, An Post and [Evri](carrier:evri) say so.
 
 ## What does "in transit" mean?
 
-The carrier has your parcel, somewhere in its network. That doesn't mean it's moving: FedEx's `On the way` can mean in a vehicle or at a facility. `Arrived at` and `Departed` lines are hub scans, which USPS says can repeat from one facility on different days.
+The carrier has your parcel, somewhere in its network. That doesn't mean it's moving: [FedEx](carrier:fedex)'s `On the way` can mean in a vehicle or at a facility. `Arrived at` and `Departed` lines are hub scans, which USPS says can repeat from one facility on different days.
 
 Between hubs, silence is normal:
 
 - FedEx calls more than 24 hours without a scan "not unusual".
 - UPS may not scan a long-distance parcel again before the destination hub.
-- Royal Mail scans Signed For items only when it gets them and when it delivers.
+- [Royal Mail](carrier:royal-mail) scans Signed For items only when it gets them and when it delivers.
 
 ### How long will a parcel be in transit?
 
@@ -72,7 +72,7 @@ Usually, yes:
 - **FedEx:** generally 8 a.m. to 8 p.m.
 - **Australia Post:** `It's coming today` once the postie has loaded it, and it may text you a 2-hour window.
 
-Two look-alikes: Royal Mail's `Ready for delivery` means it has reached your local delivery office, not the van. And at DHL in Germany, a loading scan shown more than once means the round wasn't finished: a delay of 1 to 2 days is possible.
+Two look-alikes: Royal Mail's `Ready for delivery` means it has reached your local delivery office, not the van. And at [DHL](carrier:dhl) in Germany, a loading scan shown more than once means the round wasn't finished: a delay of 1 to 2 days is possible.
 
 [Peek](/) checks up to every 2 minutes once a parcel is out for delivery, and its notifications can be set to delivery day only.
 

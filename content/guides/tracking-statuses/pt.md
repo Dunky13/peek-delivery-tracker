@@ -42,13 +42,13 @@ Os estados em espanhol da [Correos Express](carrier:correos-express) e da [NACEX
 
 ## «Aguarda entrada nos CTT»: a transportadora já tem a encomenda?
 
-Não: a loja imprimiu uma etiqueta e mandou os dados, mais nada. Os CTT explicam que receberam informação eletrónica sobre o envio, que este «pode ainda estar a ser preparado pelo expedidor» e que ainda não entrou na rede dos CTT. A InPost diz o mesmo de `Preparado pelo remetente`: a etiqueta existe, mas a encomenda ainda não saiu, e é normal ficar assim algumas horas. Na UPS, `Etiqueta Criada` só muda quando o envio já anda na rede da UPS, e na FedEx `Etiqueta criada` quer dizer que o expedidor ainda está a preparar o volume.
+Não: a loja imprimiu uma etiqueta e mandou os dados, mais nada. Os CTT explicam que receberam informação eletrónica sobre o envio, que este «pode ainda estar a ser preparado pelo expedidor» e que ainda não entrou na rede dos CTT. A InPost diz o mesmo de `Preparado pelo remetente`: a etiqueta existe, mas a encomenda ainda não saiu, e é normal ficar assim algumas horas. Na [UPS](carrier:ups), `Etiqueta Criada` só muda quando o envio já anda na rede da UPS, e na FedEx `Etiqueta criada` quer dizer que o expedidor ainda está a preparar o volume.
 
 Os CTT não dão um prazo para este estado. Se nada mudar, fala com a loja, não com a transportadora: a encomenda ainda está do lado de quem a vendeu.
 
 ## O que significa uma encomenda estar em trânsito?
 
-A transportadora já tem a encomenda, algures na rede dela. Isso não quer dizer que esteja a andar: na FedEx, com `A caminho`, o volume tanto pode ir num veículo como estar numa das instalações da FedEx. Nos CTT, `Em trânsito` aparece várias vezes ao longo do percurso: quando o carteiro ou distribuidor recolhe o envio e sempre que é transportado ou tratado num centro de distribuição ou operacional. Um envio internacional pode ainda passar por vários países.
+A transportadora já tem a encomenda, algures na rede dela. Isso não quer dizer que esteja a andar: na [FedEx](carrier:fedex), com `A caminho`, o volume tanto pode ir num veículo como estar numa das instalações da FedEx. Nos CTT, `Em trânsito` aparece várias vezes ao longo do percurso: quando o carteiro ou distribuidor recolhe o envio e sempre que é transportado ou tratado num centro de distribuição ou operacional. Um envio internacional pode ainda passar por vários países.
 
 Entre centros, o silêncio é normal:
 

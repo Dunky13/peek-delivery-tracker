@@ -66,7 +66,7 @@ The free POST Parcel & Mail app also lets you choose where a parcel goes while y
 
 ## POST Luxembourg parcel delayed, lost or at customs
 
-**Delivery times:** POST says parcels within Luxembourg generally take two or three days. Abroad there are no guaranteed times, unless the item goes express with DHL. If the status hasn't moved for days, see [tracking that isn't updating](guide:tracking-not-updating).
+**Delivery times:** POST says parcels within Luxembourg generally take two or three days. Abroad there are no guaranteed times, unless the item goes express with [DHL](carrier:dhl-express). If the status hasn't moved for days, see [tracking that isn't updating](guide:tracking-not-updating).
 
 **Customs:** every parcel with goods from outside the EU goes through customs, and Luxembourg VAT, customs duty, POST handling fees and excise duties can be due on arrival. On POST's customs page:
 

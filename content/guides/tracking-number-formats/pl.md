@@ -35,11 +35,11 @@ Oto, co przewoźnicy i standard pocztowy mówią o numerach, które w Polsce spo
 | Poczta Polska | kilka wariantów: `PX` i 10 cyfr (`PX1234567890`), 19 cyfr (`0015900773123456789`), 20 cyfr z `5900773` po trzech pierwszych albo format pocztowy z `PL` na końcu, zaczynający się np. od `RR`, `CP`, `VV` lub `EE`. W tej samej wyszukiwarce śledzisz też Pocztex |
 | [DPD](carrier:dpd-pl) | 14 znaków: w DPD Polska 13 cyfr i litera (`1234567890123A`) albo 14 cyfr zaczynających się od 13 (`13000000000000`). Wyszukiwarka DPD Polska przyjmuje też 9-znakowy kod nadania |
 | [DHL eCommerce Polska](carrier:dhl-ecommerce-pl) (paczki krajowe) | 11 cyfr, bez liter, według serwisu Mój DHL |
-| DHL Express | 10 cyfr, bez liter, według DHL Express w Holandii |
+| [DHL Express](carrier:dhl-express) | 10 cyfr, bez liter, według DHL Express w Holandii |
 | GLS | numer paczki od nadawcy albo Track-ID z awiza; długości GLS nie podaje |
 | [Packeta](carrier:packeta) | litera `Z` i 10 cyfr, np. `Z1234567890`: „Numer śledzenia musi zaczynać się od litery 'Z' i składać się z 10 cyfr” |
 | [ORLEN Paczka](carrier:orlen-paczka) | numer paczki to 13 cyfr spod kodu kreskowego na etykiecie, zaczynających się od `21`, `23` albo `26` (`2101234567890`); wyszukiwarka przyjmuje też 10-cyfrowy kod nadania |
-| UPS | `1Z` i 16 liter lub cyfr, razem 18 znaków, np. `1Z999AA10123456784`, przykładowy numer z poprawną cyfrą kontrolną UPS |
+| [UPS](carrier:ups) | `1Z` i 16 liter lub cyfr, razem 18 znaków, np. `1Z999AA10123456784`, przykładowy numer z poprawną cyfrą kontrolną UPS |
 | Amazon | Amazon nie publikuje formatu, więcej niżej |
 | [YunExpress](carrier:yunexpress) | `YT` i 16 cyfr; `YT` i 13 cyfr to YTO Express |
 | [Cainiao](carrier:cainiao) (AliExpress) | Cainiao nie publikuje jednego formatu. W danych przewoźników, z których korzysta Peek, `DOFR` albo `CNFR`, 13 cyfr i `HD` to Cainiao; `LP` albo `CNG` i 14 cyfr to prawdopodobnie Cainiao, ale nie na pewno |

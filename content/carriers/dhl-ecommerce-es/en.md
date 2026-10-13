@@ -16,10 +16,10 @@ DHL publishes no example number. The shapes Peek's catalog knows (examples inven
 
 | Shape | Example | Whose it can be |
 | --- | --- | --- |
-| 10 digits | `1234567890` | DHL eCommerce Iberia, but also DHL Express, Mondial Relay, Relais Colis, TIPSA and GLS Spain |
+| 10 digits | `1234567890` | DHL eCommerce Iberia, but also [DHL Express](carrier:dhl-express), Mondial Relay, Relais Colis, TIPSA and GLS Spain |
 | Two letters, 7 digits, then `0` | `AB12345670` | DHL eCommerce Iberia |
 
-If the shop's email names [Mondial Relay](carrier:mondial-relay), [TIPSA](carrier:tipsa) or [GLS Spain](carrier:gls-es) for a 10-digit number, track it there. Two letters, nine digits and `ES` is a Correos number.
+If the shop's email names [Mondial Relay](carrier:mondial-relay), [TIPSA](carrier:tipsa) or [GLS Spain](carrier:gls-es) for a 10-digit number, track it there. Two letters, nine digits and `ES` is a [Correos](carrier:correos-spain) number.
 
 ## DHL eCommerce tracking statuses explained
 

@@ -6,7 +6,7 @@ published: 2026-10-11
 updated: 2026-10-11
 ---
 
-DHL eCommerce is the DHL division that ships parcels for high-volume online shops. It sorts your parcel at its own distribution centres, then hands it to a delivery company in your country: USPS in the US, elsewhere the local post or another carrier. Track it with the number in the shop's shipping email on DHL eCommerce's Webtrack site, or paste it in the box above.
+DHL eCommerce is the DHL division that ships parcels for high-volume online shops. It sorts your parcel at its own distribution centres, then hands it to a delivery company in your country: [USPS](carrier:usps) in the US, elsewhere the local post or another carrier. Track it with the number in the shop's shipping email on DHL eCommerce's Webtrack site, or paste it in the box above.
 
 ## DHL eCommerce tracking number format
 
@@ -21,7 +21,7 @@ DHL says its tracking IDs are 10 to 39 letters and digits, and that the shop or 
 
 Webtrack's "Delivery by" line names the last-mile carrier, whose own number may appear later.
 
-Lookalikes: 16 digits can also be TNT's or Evri's, and a 9261 or 9361 number USPS's. A 14-digit number belongs to [DHL eCommerce UK](carrier:dhl-ecommerce-uk), a separate network with its own tracking, a `JVGL` number to [DHL eCommerce Netherlands](carrier:dhl-ecommerce-nl), and DHL Express and DHL Paket use other shapes again. More in [tracking number formats](guide:tracking-number-formats).
+Lookalikes: 16 digits can also be TNT's or Evri's, and a 9261 or 9361 number USPS's. A 14-digit number belongs to [DHL eCommerce UK](carrier:dhl-ecommerce-uk), a separate network with its own tracking, a `JVGL` number to [DHL eCommerce Netherlands](carrier:dhl-ecommerce-nl), and [DHL Express](carrier:dhl-express) and [DHL Paket](carrier:dhl) use other shapes again. More in [tracking number formats](guide:tracking-number-formats).
 
 ## DHL eCommerce tracking statuses explained
 

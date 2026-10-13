@@ -24,7 +24,7 @@ Onde o encontras:
 - **Compra online:** no e-mail de envio da loja ou na página da encomenda.
 - **Por SMS:** os SMS verdadeiros da MRW chegam com o remetente «MRW-es», também em Portugal. As ligações www.mrw.pt/track/… abrem a página da MRW para agendar a entrega, não o seguimento.
 
-Doze algarismos sozinhos também servem para a FedEx, a DPD France, a [Mondial Relay](carrier:mondial-relay), a Colis Privé, a BRT, a SF Express e outras. Se a MRW não conhecer o número, procura o nome da transportadora no e-mail de envio ou vê [como saber a transportadora pelo número](guide:tracking-number-formats).
+Doze algarismos sozinhos também servem para a [FedEx](carrier:fedex), a DPD France, a [Mondial Relay](carrier:mondial-relay), a Colis Privé, a BRT, a SF Express e outras. Se a MRW não conhecer o número, procura o nome da transportadora no e-mail de envio ou vê [como saber a transportadora pelo número](guide:tracking-number-formats).
 
 Se a MRW responder «Envio não encontrado», confirma os algarismos. Se estiverem certos, a própria mensagem diz que o envio ainda está «pendente de receber na MRW».
 

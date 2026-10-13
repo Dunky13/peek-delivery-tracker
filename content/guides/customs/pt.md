@@ -39,7 +39,7 @@ O número do objeto ([2 letras, 9 algarismos e 2 letras](guide:tracking-number-f
 
 ### Preciso de contactar a alfândega?
 
-Quase nunca: começa pelos CTT (passo 4). São eles que apresentam a encomenda à AT e, depois de pagares, é a AT que lhes comunica a autorização de saída. Se a encomenda vier pela DHL Express, é a própria DHL que trata dos direitos e impostos em nome de quem recebe.
+Quase nunca: começa pelos CTT (passo 4). São eles que apresentam a encomenda à AT e, depois de pagares, é a AT que lhes comunica a autorização de saída. Se a encomenda vier pela [DHL Express](carrier:dhl-express), é a própria DHL que trata dos direitos e impostos em nome de quem recebe.
 
 Deixaste passar o prazo? Se o Seguir objeto ainda mostra a encomenda em Portugal, contacta os CTT: podem reabrir o processo a título excecional, sem garantia.
 

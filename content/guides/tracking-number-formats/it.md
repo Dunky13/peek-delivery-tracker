@@ -35,8 +35,8 @@ Ecco cosa dicono i corrieri, e lo standard postale, sui codici che incontri più
 | [BRT (ex Bartolini)](carrier:brt) | «BRTcode» di 14 o 19 cifre, oppure «numero di spedizione» di 12 o 14 cifre |
 | [GLS Italia](carrier:gls-it) | spedizione nazionale: due lettere, o una lettera e una cifra, seguite da al massimo 9 cifre, come `AB123456789` o `A1 123456789`; spedizione internazionale: 11 cifre, una per collo. Il modulo di GLS prende anche l'ID Collo, senza gli zeri iniziali e senza «GLS» finale |
 | [InPost](carrier:inpost) | il modulo «Trova il tuo pacco» accetta 8, 10, 11, 13, 15, 22, 24 o 26 cifre, oppure due formati con lettere: `LM` + 9 cifre + `IT`, o 4 lettere + 15 cifre |
-| DHL | DHL Express: 10 cifre, mai lettere. DHL in Germania: da 10 a 39 caratteri |
-| UPS | `1Z` + 16 lettere e cifre, 18 caratteri in tutto, come `1Z999AA10123456784`, un esempio con una cifra di controllo UPS valida |
+| DHL | [DHL Express](carrier:dhl-express): 10 cifre, mai lettere. DHL in Germania: da 10 a 39 caratteri |
+| [UPS](carrier:ups) | `1Z` + 16 lettere e cifre, 18 caratteri in tutto, come `1Z999AA10123456784`, un esempio con una cifra di controllo UPS valida |
 | La Posta (Svizzera) | la Posta lo chiama «numero d'invio». Per gli invii nazionali è un codice a barre di 18 cifre che iniziano con `98` o `99`, con o senza punti o spazi; sui pacchi spediti dalle aziende è stampato con i punti come `99.34.123456.12345678` (il 99, il numero di licenza di affrancatura del mittente e un numero progressivo). Altrimenti è il formato postale che finisce con `CH` |
 | [Quickpac](carrier:quickpac) | 18 cifre, dice Quickpac; nei dati dei corrieri che usa Peek iniziano con `44`. Il riquadro di tracking di Quickpac le mostra con i punti, come `44.12.345678.90123456` |
 | [Planzer](carrier:planzer) | Planzer lo chiama numero di spedizione e non ne pubblica il formato. Nei dati dei corrieri che usa Peek: 20 cifre che iniziano con `91346097`, o 13 cifre che iniziano con `99990` per le spedizioni condivise |

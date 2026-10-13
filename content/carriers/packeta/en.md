@@ -15,7 +15,7 @@ Packeta's tracking page accepts one shape: `Z` followed by 10 digits.
 | Shape (invented) | What it is |
 | --- | --- |
 | `Z1234567890` | A Packeta tracking number. |
-| `1234567890` | The ten digits without the `Z`: the shape also fits DHL, Relais Colis and others, so add the `Z`. |
+| `1234567890` | The ten digits without the `Z`: the shape also fits [DHL](carrier:dhl-express), Relais Colis and others, so add the `Z`. |
 | `Z123456789` | Nine digits: not Packeta (Australia Post's shape). |
 | `Z12345678901` | Eleven digits: not Packeta (Colis Privé's shape). |
 

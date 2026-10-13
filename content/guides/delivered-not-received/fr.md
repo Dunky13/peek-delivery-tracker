@@ -21,7 +21,7 @@ Où chaque transporteur peut le laisser :
 
 | Transporteur | Compte aussi comme livré |
 | --- | --- |
-| Colissimo (FR) | Dans ta boîte aux lettres, ou remis à « toute personne présente » à ton adresse, gardien ou concierge compris. Au-delà de 5 kg, contre signature ou contre un code reçu par SMS ou e-mail |
+| [Colissimo](carrier:la-poste) (FR) | Dans ta boîte aux lettres, ou remis à « toute personne présente » à ton adresse, gardien ou concierge compris. Au-delà de 5 kg, contre signature ou contre un code reçu par SMS ou e-mail |
 | [Chronopost](carrier:chronopost) (FR) | En lieu sûr : boîte aux lettres, pas-de-porte, voisin ou gardien. Chronopost conseille aussi de regarder « sous le porche, sur la terrasse » |
 | [Colis Privé](carrier:colis-prive) (FR) | Dans ta boîte aux lettres, ou remis à un gardien, un voisin ou « un tiers de confiance » |
 | [bpost](carrier:bpost) (BE) | Dans ta boîte aux lettres, sans sonner, pour un petit colis. Ou selon tes préférences : Point d'enlèvement, lieu sûr, voisin |

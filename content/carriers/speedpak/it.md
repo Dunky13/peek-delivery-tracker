@@ -97,7 +97,7 @@ Non è un corriere che consegna, ma un servizio di spedizione di eBay gestito da
 
 ### SpeedPAK è DHL o FedEx?
 
-Nessuno dei due, in generale: eBay nomina DHL e FedEx solo per SpeedPAK da altri Paesi di partenza, come gli Emirati Arabi Uniti e la Malesia (per la Bulgaria solo DHL). Per un pacco dalla Cina il corriere locale lo scopri dalla riga `LM Carrier`.
+Nessuno dei due, in generale: eBay nomina [DHL](carrier:dhl-express) e [FedEx](carrier:fedex) solo per SpeedPAK da altri Paesi di partenza, come gli Emirati Arabi Uniti e la Malesia (per la Bulgaria solo DHL). Per un pacco dalla Cina il corriere locale lo scopri dalla riga `LM Carrier`.
 
 ### Poste Italiane consegna i pacchi SpeedPAK?
 

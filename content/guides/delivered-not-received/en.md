@@ -13,7 +13,7 @@ If tracking says delivered but you haven't received the parcel, don't assume it'
 
 Because "delivered" records where the driver left the parcel, not that you have it. Three things can explain it:
 
-- **It was scanned early.** So yes, a parcel can say delivered before it arrives. Amazon warns that parcels "may be scanned as delivered before arrival", and Royal Mail mentions "a rare scanning error".
+- **It was scanned early.** So yes, a parcel can say delivered before it arrives. Amazon warns that parcels "may be scanned as delivered before arrival", and [Royal Mail](carrier:royal-mail) mentions "a rare scanning error".
 - **It's somewhere you haven't looked.** A neighbour, a safe place, a locker or a mailroom all count as delivered.
 - **It went astray.** A wrong address on the order, the wrong door, or a thief.
 
@@ -21,7 +21,7 @@ Where each carrier may leave it:
 
 | Carrier | Also counts as delivered |
 | --- | --- |
-| USPS | A parcel locker (key in your mailbox), building management, a porch, garage or back entrance, under a mat |
+| [USPS](carrier:usps) | A parcel locker (key in your mailbox), building management, a porch, garage or back entrance, under a mat |
 | Royal Mail | A neighbour, your chosen Safeplace, or the post room at work |
 | [Evri](carrier:evri) | A neighbour, or a Safe Place, which must not be "an exposed doorstep or otherwise in public view" |
 | [DPD UK](carrier:dpd-uk) | A neighbour, automatically if you're out, or a safe place you asked for |
@@ -71,7 +71,7 @@ It's on you instead when:
 
 ## What proof of delivery can you ask for?
 
-- **A photo.** Evri, DPD UK, Amazon and FedEx show one when the driver took one.
+- **A photo.** Evri, DPD UK, Amazon and [FedEx](carrier:fedex) show one when the driver took one.
 - **A name or signature.** Royal Mail asks if you "recognise the name of the person who accepted the item"; Canada Post's tracking shows who signed, if anyone did.
 - **Rarely a GPS pin.** Of the carriers whose pages we read, only [Planzer](carrier:planzer), in Switzerland, says its proof photo is GPS-tagged; USPS speaks of a recorded "delivery location".
 
@@ -100,7 +100,7 @@ Sometimes, but compensation usually goes to the sender, so the seller is quicker
 | Carrier | What you can do | Deadline |
 | --- | --- | --- |
 | USPS | After one postal business day, send your local Post Office a service request. Insured items: you or the sender can claim, with the mailing receipt | Lost: from 15 days (7 for Priority Mail Express) to 60 days after mailing |
-| UPS | File as a guest, unless the shipper blocked it or you let the driver release it. Payment goes to the shipper | Within 60 days of the scheduled delivery |
+| [UPS](carrier:ups) | File as a guest, unless the shipper blocked it or you let the driver release it. Payment goes to the shipper | Within 60 days of the scheduled delivery |
 | FedEx | "Report Missing Package" in Manage Delivery, or file a claim yourself | Within 9 months of the shipment date |
 | Royal Mail | Claim for 1st and 2nd Class, Signed For and Special Delivery (a sender's claim comes first). Tracked 24 and 48: the sender only | Within 80 days of posting |
 | DPD UK | None: "only the contract holder can register a claim" | Not stated |

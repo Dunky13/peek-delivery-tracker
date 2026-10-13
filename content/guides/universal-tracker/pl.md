@@ -75,7 +75,7 @@ Większość trackerów działa w pięciu krokach:
 
 :::steps
 - Wklejasz | Numer przesyłki, link od przewoźnika albo e-maila o wysyłce. Link jest najpewniejszy: wskazuje przewoźnika.
-- Czyta numer | Litery, długość i cyfra kontrolna zawężają wybór. `1Z999AA10123456784` zaczyna się od `1Z` UPS-a, a `RR123456785CH` ma 13 znaków w układzie, którego używają poczty krajowe.
+- Czyta numer | Litery, długość i cyfra kontrolna zawężają wybór. `1Z999AA10123456784` zaczyna się od `1Z` [UPS-a](carrier:ups), a `RR123456785CH` ma 13 znaków w układzie, którego używają poczty krajowe.
 - Typuje przewoźnika | Niektóre układy pasują do kilku firm: numer z samych 14 cyfr może należeć m.in. do DPD, SEUR, BRT albo niemieckiego Hermesa. Tracker pyta kilku przewoźników albo daje Ci wybrać.
 - Pobiera skany | Od przewoźnika albo z innego trackera, a potem układa je w jedną historię.
 - Sprawdza ponownie | Robi to w stałych odstępach i daje znać o każdej nowości.

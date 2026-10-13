@@ -88,7 +88,7 @@ As listed on Nova Poshta's and Nova Post Poland's sites on 12 October 2026:
 
 Other carriers share these shapes and [Peek](/) can't ask Nova Poshta about a number, so it never names it from the number alone. Press "Change" and pick "Nova Poshta (Ukraine)", or paste a novaposhta.ua tracking link; novapost.com links aren't read. It covers Ukrainian waybills, including those booked at Nova Post branches abroad, not Nova Poshta Global references.
 
-It shows Nova Poshta's English wordings, each scan's town on a map, the expected arrival, weight, the branch or locker holding it and the delivery time, and drops names, addresses and payment. When an export names its partner abroad, UPS or GoFo Express, Peek can follow the parcel there. It checks every 10 minutes, every 2 once out for delivery, and can notify you when the status changes.
+It shows Nova Poshta's English wordings, each scan's town on a map, the expected arrival, weight, the branch or locker holding it and the delivery time, and drops names, addresses and payment. When an export names its partner abroad, [UPS](carrier:ups) or GoFo Express, Peek can follow the parcel there. It checks every 10 minutes, every 2 once out for delivery, and can notify you when the status changes.
 
 ## Questions about Nova Poshta tracking
 

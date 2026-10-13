@@ -80,7 +80,7 @@ Hours may differ on public holidays. Cargus lists no contact for recipients outs
 
 ## Tracking Cargus parcels with Peek
 
-[Peek](/) can't tell a Cargus AWB from its digits. A 10-digit number is asked of Relais Colis, TIPSA and [DHL eCommerce Iberia](carrier:dhl-ecommerce-es) (and DHL Express when its check digit fits); a 9-digit one isn't asked of any carrier. When none knows it you'll see "not found yet · Peek keeps checking": pick "Cargus" with "Change". Or paste a cargus.ro tracking link, Romanian or English, which names Cargus whatever the number.
+[Peek](/) can't tell a Cargus AWB from its digits. A 10-digit number is asked of Relais Colis, TIPSA and [DHL eCommerce Iberia](carrier:dhl-ecommerce-es) (and [DHL Express](carrier:dhl-express) when its check digit fits); a 9-digit one isn't asked of any carrier. When none knows it you'll see "not found yet · Peek keeps checking": pick "Cargus" with "Change". Or paste a cargus.ro tracking link, Romanian or English, which names Cargus whatever the number.
 
 Peek reads the service behind the Cargus app, which knows some parcels the website reports as not found. Cargus's scans carry a time without a time zone, so Peek doesn't list them. It takes a dated history from [universal tracking services](guide:universal-tracker) when one knows the parcel, asks Cargus again every 6 hours and, if no service answers, shows Cargus's current status, dated when Peek saw it. Cargus's statuses keep its own wording, mostly English with a few in Romanian, except `Delivered`, shown in Peek's own words, and you can be notified when the status changes.
 

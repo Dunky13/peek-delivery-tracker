@@ -24,7 +24,7 @@ Dónde aparece:
 - **Si es una compra online:** en el correo de envío de la tienda o en la página del pedido.
 - **Por SMS:** los SMS auténticos de MRW llegan con el remitente «MRW-es».
 
-Doce cifras sueltas encajan también con FedEx, DPD Francia, [Mondial Relay](carrier:mondial-relay), Colis Privé, BRT, SF Express y otros. Si MRW no lo encuentra, busca en el correo de la tienda el nombre del transportista.
+Doce cifras sueltas encajan también con [FedEx](carrier:fedex), DPD Francia, [Mondial Relay](carrier:mondial-relay), Colis Privé, BRT, SF Express y otros. Si MRW no lo encuentra, busca en el correo de la tienda el nombre del transportista.
 
 Si MRW responde «Envío no encontrado», revisa las cifras. Si son correctas, el propio mensaje de MRW dice que el envío todavía está pendiente de recibir en MRW: la tienda aún no se lo ha entregado.
 

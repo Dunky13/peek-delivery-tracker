@@ -51,7 +51,7 @@ Bei `Arrived at Destination Hub` oder einer Zollzeile kann das Tracking mehrere 
 
 SpeedPAK stellt nicht selbst zu. Der Verlauf nennt den Paketdienst, der im Zielland übernimmt. In den Verläufen, die für diese Seite gelesen wurden, lieferten USPS, UniUni und DHL eCommerce (danach USPS) in den USA, und PostNL (geschrieben „NL Post“) übernahm Pakete in die Schweiz und nach Portugal.
 
-Für Deutschland und Österreich nennt keine Seite von eBay oder Orange Connex den Zustellpartner. Rate nicht, ob DHL oder ein anderer Dienst kommt: Warte auf die Zeile `LM Carrier` oder frag den Verkäufer. DHL nennt eBay.de nur für die umgekehrte Richtung: Verschickt ein Händler aus Deutschland mit SpeedPAK in die USA, nach Großbritannien oder Australien, fährt innerhalb Deutschlands DHL.
+Für Deutschland und Österreich nennt keine Seite von eBay oder Orange Connex den Zustellpartner. Rate nicht, ob [DHL](carrier:dhl) oder ein anderer Dienst kommt: Warte auf die Zeile `LM Carrier` oder frag den Verkäufer. DHL nennt eBay.de nur für die umgekehrte Richtung: Verschickt ein Händler aus Deutschland mit SpeedPAK in die USA, nach Großbritannien oder Australien, fährt innerhalb Deutschlands DHL.
 
 Regeln für Empfänger zu Zustellversuchen, Benachrichtigungskarten, Paketshops, Packstationen oder Lagerfristen veröffentlichen weder SpeedPAK noch Orange Connex. Hier gelten die Regeln des Paketdiensts, der zustellt. Kennst du seinen Namen und seine Nummer, findest du auf seiner Seite, wo das Paket wartet oder wie du die Zustellung änderst.
 

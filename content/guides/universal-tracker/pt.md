@@ -31,7 +31,7 @@ Começa pelas apps grátis das transportadoras que mais te entregam:
 | myDPD | Mostra onde está a encomenda, manda-te, se pedires, mensagens push com a hora prevista de entrega e deixa mudar o dia ou o local |
 | InPost Mobile | Segue os envios que esperas, avisa-te quando mudam de estado e guarda as encomendas levantadas nos últimos 30 dias |
 
-A UPS My Choice faz o mesmo com as encomendas UPS. Transportadora a transportadora, e com o que cada uma pede: [como seguir uma encomenda sem número](guide:find-tracking-number).
+A UPS My Choice faz o mesmo com as encomendas [UPS](carrier:ups). Transportadora a transportadora, e com o que cada uma pede: [como seguir uma encomenda sem número](guide:find-tracking-number).
 
 Outras opções, com os seus limites:
 

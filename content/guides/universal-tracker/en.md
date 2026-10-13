@@ -18,7 +18,7 @@ Yes, and you may already have one: besides universal trackers, several national 
 | You paste a number or link | That number | Every tracker |
 | You forward one email | That email | ParcelsApp, Shop, Deliveries |
 | You connect your inbox | Your mailbox, filtered by its own rules | Shop, AfterShip, PayPal |
-| The carrier or shop matches you | Your name, address, email or phone | USPS, Canada Post, Australia Post; Shopify orders in Shop |
+| The carrier or shop matches you | Your name, address, email or phone | [USPS](carrier:usps), Canada Post, Australia Post; Shopify orders in Shop |
 
 ## How do I see all the parcels coming to my house?
 
@@ -27,12 +27,12 @@ Start with the carriers' own free options:
 | Country | Option | What it does |
 | --- | --- | --- |
 | US | USPS Informed Delivery | After an identity and address check, a Daily Digest email previews incoming mail and parcels |
-| UK | DPD app | Lists [DPD](carrier:dpd-uk) and DPD Local parcels matched to your phone or email and your address. Royal Mail's app only follows a tracking ID you enter or scan |
+| UK | DPD app | Lists [DPD](carrier:dpd-uk) and DPD Local parcels matched to your phone or email and your address. [Royal Mail](carrier:royal-mail)'s app only follows a tracking ID you enter or scan |
 | Ireland | None found | The [An Post](carrier:an-post) app saves tracking numbers you enter and lets you pay customs charges, but lists nothing on its own |
 | Canada | Canada Post automatic tracking | A personal account, verified with the name and address on your photo ID; business and PO box addresses aren't eligible |
 | Australia | Australia Post app | Shows parcels automatically when the sender's data matches your MyPost details |
 
-UPS My Choice does the same for UPS parcels in all five countries. Carrier by carrier, with the catches: [track a parcel without a number](guide:find-tracking-number).
+UPS My Choice does the same for [UPS](carrier:ups) parcels in all five countries. Carrier by carrier, with the catches: [track a parcel without a number](guide:find-tracking-number).
 
 Other options, with their limits:
 
@@ -122,7 +122,7 @@ Trackers that link numbers, such as ParcelsApp, join A and B when B shows up in 
 
 Anything the carrier hasn't published. ParcelsApp puts it plainly: it "cannot create a scan that the company has not recorded". A tracker also sees each scan after the carrier, so delays add up:
 
-- DHL in Germany says a new shipment can take up to 24 hours to show in its own tracking.
+- [DHL](carrier:dhl) in Germany says a new shipment can take up to 24 hours to show in its own tracking.
 - Parcel says its app trails the carrier's website by "up to 90 minutes (on average it is 45 minutes)".
 
 **USPS changed the rules.** Since 1 April 2026, access to USPS's tracking data feeds is tied to the Mailer ID in the barcode, and "Service Providers and Others" can get paid access. 17TRACK warns that unverified USPS lookups "will be throttled, charged, or blocked entirely". If a USPS number shows little in a tracker, check usps.com.

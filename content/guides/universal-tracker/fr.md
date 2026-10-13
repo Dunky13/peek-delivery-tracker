@@ -11,7 +11,7 @@ Un suivi de colis universel (ou « tracker de colis ») est un site ou une app q
 
 ## Peut-on suivre tous ses colis dans une seule app ?
 
-Oui, et tu en as peut-être déjà une : l'app La Poste, My bpost, la Post-App de [La Poste suisse](carrier:swiss-post), PayPal ou Shop savent aussi regrouper des colis. Ce que le service voit dépend de la façon dont le colis entre dans ta liste :
+Oui, et tu en as peut-être déjà une : l'app [La Poste](carrier:la-poste), My bpost, la Post-App de [La Poste suisse](carrier:swiss-post), PayPal ou Shop savent aussi regrouper des colis. Ce que le service voit dépend de la façon dont le colis entre dans ta liste :
 
 | Comment le colis s'ajoute | Ce que le service voit | Exemples |
 | --- | --- | --- |
@@ -26,7 +26,7 @@ Commence par l'option gratuite de ta poste :
 
 | Pays | Option | Ce qu'elle fait |
 | --- | --- | --- |
-| France | App La Poste | Suit aussi les colis de « 1 036 transporteurs référencés » (FedEx, UPS, DHL, TNT, GLS…) : tu saisis ou scannes le numéro, l'app trouve le transporteur |
+| France | App La Poste | Suit aussi les colis de « 1 036 transporteurs référencés » ([FedEx](carrier:fedex), [UPS](carrier:ups), DHL, TNT, GLS…) : tu saisis ou scannes le numéro, l'app trouve le transporteur |
 | Belgique | App My bpost | Le « suivi automatique » retrouve tes colis [bpost](carrier:bpost) et tes recommandés grâce aux adresses e-mail de ton profil. Les autres s'ajoutent avec leur code-barres, le livreur et ton code postal |
 | Suisse | « Mes envois », La Poste suisse | Avec un compte, des infos gratuites sur les envois adressés à ton adresse enregistrée, par e-mail et push dans la Post-App, SMS en option |
 

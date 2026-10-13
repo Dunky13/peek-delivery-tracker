@@ -19,7 +19,7 @@ Les formes connues comme celles d'Asendia, avec des caractères inventés :
 | `ASE1234567890` | ASE, puis 8 à 37 lettres et chiffres : Asendia. |
 | `AS123456789US` | AS, 9 chiffres, US : Asendia. |
 | `AHOY12345678` | AHOY, puis 8 lettres et chiffres : Asendia. |
-| `LA123456785FR` | Un numéro postal international : celui de La Poste / Colissimo. |
+| `LA123456785FR` | Un numéro postal international : celui de [La Poste / Colissimo](carrier:la-poste). |
 | `RR123456785CH` | Le même pour la Suisse : [la Poste suisse](carrier:swiss-post). |
 | `EEUS000000000US0` | Une référence eBay International Shipping : aucun transporteur d'après le numéro seul. |
 

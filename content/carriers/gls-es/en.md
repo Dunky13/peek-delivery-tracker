@@ -79,7 +79,7 @@ GLS says 911 118 768 is a genuine number it uses only for quality calls.
 
 You then see each scan's time and GLS's English wording, such as `At delivery agency`, under a headline in Peek's words ("Ready for pickup"), with the expected delivery day, the weight and the Parcel Shop or locker where the parcel waits. GLS gives no scan places, and the pickup code stays on its page. Peek's link to GLS opens its form without the number. Checks run every 10 minutes, every 2 once the parcel is out for delivery, and you can be notified of changes.
 
-The number alone doesn't name GLS Spain, and GLS answers nothing without the postcode, so Peek asks TIPSA, Relais Colis, DHL eCommerce Iberia and, when its check digit fits, DHL Express about a 10-digit number. Press "Change", pick "GLS Spain" and add the postcode. A mygls.gls-spain.es link, or a gls-group.com or gls-group.eu link with `/ES/`, names GLS Spain at once, though the postcode is still asked. A parcel another carrier hands to GLS Spain isn't followed there automatically.
+The number alone doesn't name GLS Spain, and GLS answers nothing without the postcode, so Peek asks TIPSA, Relais Colis, DHL eCommerce Iberia and, when its check digit fits, [DHL Express](carrier:dhl-express) about a 10-digit number. Press "Change", pick "GLS Spain" and add the postcode. A mygls.gls-spain.es link, or a gls-group.com or gls-group.eu link with `/ES/`, names GLS Spain at once, though the postcode is still asked. A parcel another carrier hands to GLS Spain isn't followed there automatically.
 
 ## Questions about GLS tracking in Spain
 

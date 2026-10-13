@@ -20,7 +20,7 @@ Urząd celny sprawdza deklarację nadawcy (zawartość, wartość), może skontr
 | Paczka leży w magazynie pocztowo-celnym | Odprawa wymaga dodatkowego sprawdzenia, na przykład brakuje danych albo opis towaru jest niejednoznaczny |
 | Powiadomienie od Poczty Polskiej w sprawie pełnomocnictwa, elektroniczne albo w przesyłce rejestrowanej | Paczka jest warta od 150 do 1000 euro, a Poczta może ją zgłosić dopiero z Twoim pełnomocnictwem |
 | Informacja, że musisz zgłosić paczkę we własnym zakresie | Paczka jest warta ponad 1000 euro albo zawiera towary akcyzowe lub objęte ograniczeniami, na przykład leki. Zgłaszasz ją samodzielnie albo przez agencję celną |
-| DHL Express prosi o zapłatę cła | Kurier zapłacił już za Ciebie cło i podatki. Zasadniczo nie doręczy paczki, dopóki mu ich nie zwrócisz |
+| [DHL Express](carrier:dhl-express) prosi o zapłatę cła | Kurier zapłacił już za Ciebie cło i podatki. Zasadniczo nie doręczy paczki, dopóki mu ich nie zwrócisz |
 
 Nic z tego nie oznacza konfiskaty. Inaczej jest tylko z towarami, których przywóz do Polski jest zakazany: Poczta Polska przekazuje takie paczki do dyspozycji KAS i według swojego regulaminu nie zawiadamia wtedy odbiorcy o ich nadejściu.
 

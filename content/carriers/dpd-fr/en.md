@@ -6,7 +6,7 @@ published: 2026-10-11
 updated: 2026-10-11
 ---
 
-DPD France, called Exapaq until 2015, is the French parcel network of Geopost, part of the La Poste group. Track a parcel on trace.dpd.fr, with the link in DPD's SMS or email, or by pasting the number in the box above. The number is in the shop's shipping confirmation or in DPD France's own email or SMS.
+DPD France, called Exapaq until 2015, is the French parcel network of Geopost, part of the [La Poste](carrier:la-poste) group. Track a parcel on trace.dpd.fr, with the link in DPD's SMS or email, or by pasting the number in the box above. The number is in the shop's shipping confirmation or in DPD France's own email or SMS.
 
 ## DPD France tracking number: where to find it
 

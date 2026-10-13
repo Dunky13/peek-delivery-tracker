@@ -15,7 +15,7 @@ Aucun transporteur français n'a encore publié ses dates 2026. Celles de Coliss
 
 | Transporteur | Service | Envoyer au plus tard |
 | --- | --- | --- |
-| La Poste | Colissimo déposé au bureau de poste | Pas encore annoncée (2024 : vendredi 20 décembre) |
+| [La Poste](carrier:la-poste) | Colissimo déposé au bureau de poste | Pas encore annoncée (2024 : vendredi 20 décembre) |
 | Colissimo | Livraison en J+2, France métropolitaine | Pas encore annoncée (2025 : samedi 20 décembre) |
 | Colissimo | Livraison en J+1, France métropolitaine | Pas encore annoncée (2025 : lundi 22 décembre) |
 | Colissimo | Livraison en J, France métropolitaine | Pas encore annoncée (2025 : mardi 23 décembre) |
@@ -94,7 +94,7 @@ Les dates pour l'étranger tombent plus tôt, parfois dès novembre. Pour Coliss
 - **Colissimo :** sa page de 2025 cite la Hongrie, l'Irlande, l'Islande et le Portugal sur deux lignes. Dans le doute, vise la date la plus tôt.
 - **DPD Belgium :** ces enlèvements donnent une livraison à partir du mercredi 23 décembre, sans garantie. Vers la Grèce ou la Norvège, aucun enlèvement de son tableau ne livre avant Noël.
 - **La Poste suisse :** les délais URGENT ne valent que pour les centres économiques et les grandes agglomérations.
-- **bpost et POST Luxembourg :** pas de date. bpost compte 2 à 20 jours ouvrables pour une lettre selon la destination, et 2 à 10 pour un colis bpack World, douane non comprise. POST ne garantit aucun délai à l'étranger, sauf en express avec DHL.
+- **bpost et POST Luxembourg :** pas de date. bpost compte 2 à 20 jours ouvrables pour une lettre selon la destination, et 2 à 10 pour un colis bpack World, douane non comprise. POST ne garantit aucun délai à l'étranger, sauf en express avec [DHL](carrier:dhl-express).
 
 ## Commander en ligne : prévois le passage en douane
 

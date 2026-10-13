@@ -22,9 +22,9 @@ Escrito solo, un número de Dachser se parece a los de muchas otras empresas. To
 
 | Número | Con quién se confunde |
 | --- | --- |
-| `1234567890` | 10 cifras: DHL, Mondial Relay, [TIPSA](carrier:tipsa), DHL eCommerce y otras. |
+| `1234567890` | 10 cifras: [DHL](carrier:dhl-express), Mondial Relay, [TIPSA](carrier:tipsa), DHL eCommerce y otras. |
 | `12345678901` | 11 cifras: GLS y otras. |
-| `123456789012` | 12 cifras: FedEx, MRW, BRT y otras. |
+| `123456789012` | 12 cifras: [FedEx](carrier:fedex), MRW, BRT y otras. |
 | `12345678901234` | 14 cifras: [SEUR](carrier:seur), DPD y otras. |
 
 Si el mensaje dice Dachser, fíate de eso y no de la longitud del número.

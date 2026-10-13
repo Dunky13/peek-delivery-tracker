@@ -82,7 +82,7 @@ La maggior parte dei tracker funziona in cinque passaggi:
 
 :::steps
 - Incolli | Un codice di tracking, il link del corriere o l'e-mail di spedizione. Il link è la scelta più sicura: contiene il nome del corriere.
-- Legge il formato | Lettere, lunghezza e cifra di controllo restringono il campo. `1Z999AA10123456784` inizia con il `1Z` di UPS; `RR123456785CH` ha il formato a 13 caratteri comune alle poste nazionali.
+- Legge il formato | Lettere, lunghezza e cifra di controllo restringono il campo. `1Z999AA10123456784` inizia con il `1Z` di [UPS](carrier:ups); `RR123456785CH` ha il formato a 13 caratteri comune alle poste nazionali.
 - Valuta i candidati | Alcuni formati valgono per più corrieri: un codice di sole 14 cifre può essere di [BRT](carrier:brt), DPD, SEUR o Hermes Germania, tra gli altri. Allora il tracker ne interroga più d'uno, o ti fa scegliere.
 - Recupera le scansioni | Dal corriere o da un altro tracker, in un'unica cronologia.
 - Ricontrolla | A intervalli fissi, e ti avvisa quando c'è qualcosa di nuovo.

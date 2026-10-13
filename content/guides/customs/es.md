@@ -11,7 +11,7 @@ updated: 2026-10-10
 
 ## ¿Qué significa que un paquete esté retenido en aduanas?
 
-Todo lo que llega a España de fuera de la Unión Europea pasa por la Aduana, que aquí es la Agencia Tributaria (AEAT). Correos lo deja claro: cualquier envío importado tiene que pasar trámites aduaneros, sea cual sea su origen, su valor o su contenido, también lo que compras por internet. Eso incluye lo que viene del Reino Unido (salvo Irlanda del Norte) y lo que llega a la Península y Baleares desde Canarias, Ceuta o Melilla.
+Todo lo que llega a España de fuera de la Unión Europea pasa por la Aduana, que aquí es la Agencia Tributaria (AEAT). [Correos](carrier:correos-spain) lo deja claro: cualquier envío importado tiene que pasar trámites aduaneros, sea cual sea su origen, su valor o su contenido, también lo que compras por internet. Eso incluye lo que viene del Reino Unido (salvo Irlanda del Norte) y lo que llega a la Península y Baleares desde Canarias, Ceuta o Melilla.
 
 La Aduana revisa la declaración del remitente (contenido y valor), puede inspeccionar o retener el envío, calcula el IVA y el arancel, y lo libera. En los envíos de hasta 150 €, la AEAT explica que el transportista puede hacer ese trámite por ti sin consultarte y pedirte el IVA y el arancel antes de entregártelo. Lo que verás en el seguimiento:
 
@@ -56,7 +56,7 @@ No lo dejes para más tarde:
 | --- | --- |
 | Correos, hasta 150 € | Puedes pagar en la App o en Mi Oficina hasta que sale a reparto; después, al cartero o en la oficina. Si no estás, se queda en la oficina el plazo que indica el aviso (15 días si te avisan por SMS) y luego vuelve al remitente |
 | Correos, más de 150 € | Te deja un «Aviso de llegada» con los pasos en correosaduanas.es y no lo despacha hasta que pagas el presupuesto. Si pagas por transferencia sin poner el número de presupuesto y adjuntar el justificante, lo devuelve al origen |
-| DHL Express | No te lo entrega hasta que pagas los aranceles y tasas que adelantó |
+| [DHL Express](carrier:dhl-express) | No te lo entrega hasta que pagas los aranceles y tasas que adelantó |
 | Mercancía prohibida | La AEAT puede reexpedirla al origen o destruirla |
 
 Para no estar recargando la página, pega el número en [Peek](/): lo consulta hasta una vez cada 10 minutos y te envía una notificación cuando cambia el estado, aunque no puede pagar por ti ni acelerar la aduana. Si no se mueve en mucho tiempo y nadie te pide nada, mira [por qué no se actualiza el seguimiento](guide:tracking-not-updating).

@@ -52,7 +52,7 @@ Zwei Dinge verwirren oft. Erstens: `Zustellung empfangen` klingt nach Zustellung
 
 ## SunYou in Deutschland, Österreich und der Schweiz: wer zustellt
 
-SunYou stellt in Europa nichts selbst zu: Seine Handelslinie übergibt die Pakete im Zielland an einen Paketdienst vor Ort, und das Tracking nennt ihn. Welcher Dienst in welchem Land zustellt, veröffentlicht SunYou nicht. In den Verläufen auf seiner Tracking-Seite stellte in Deutschland DHL Paket zu. Für Österreich und die Schweiz gab es keinen solchen Verlauf; unter seinen Partnern zeigt SunYou die Logos von Deutscher Post, DHL und der Schweizerischen Post.
+SunYou stellt in Europa nichts selbst zu: Seine Handelslinie übergibt die Pakete im Zielland an einen Paketdienst vor Ort, und das Tracking nennt ihn. Welcher Dienst in welchem Land zustellt, veröffentlicht SunYou nicht. In den Verläufen auf seiner Tracking-Seite stellte in Deutschland [DHL Paket](carrier:dhl) zu. Für Österreich und die Schweiz gab es keinen solchen Verlauf; unter seinen Partnern zeigt SunYou die Logos von Deutscher Post, DHL und der Schweizerischen Post.
 
 Regeln für Zustellversuche, Benachrichtigungskarten, Abholstellen oder Lagerfristen nennt SunYou nicht. Das sind die Regeln des Paketdiensts vor Ort. Sobald du seinen Namen und seine Nummer hast, kannst du dort eine neue Zustellung vereinbaren oder nachsehen, wo das Paket auf dich wartet.
 

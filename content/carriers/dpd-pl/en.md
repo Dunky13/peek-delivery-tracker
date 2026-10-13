@@ -6,7 +6,7 @@ published: 2026-10-11
 updated: 2026-10-11
 ---
 
-DPD Poland (DPD Polska) is a Warsaw-based parcel carrier in the Geopost group, owned by France's La Poste. Track a parcel on DPD's [Track & Trace page](https://tracktrace.dpd.com.pl/EN/findParcel) with its 14-character parcel number, or paste it in the box above. The shop usually gives the number in its shipping email or on your order page.
+DPD Poland (DPD Polska) is a Warsaw-based parcel carrier in the Geopost group, owned by France's [La Poste](carrier:la-poste). Track a parcel on DPD's [Track & Trace page](https://tracktrace.dpd.com.pl/EN/findParcel) with its 14-character parcel number, or paste it in the box above. The shop usually gives the number in its shipping email or on your order page.
 
 ## Where to find your DPD tracking number in Poland
 

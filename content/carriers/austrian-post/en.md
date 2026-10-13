@@ -85,7 +85,7 @@ As listed on Austrian Post's pages on 11 October 2026:
 
 ## Tracking Austrian Post parcels with Peek
 
-[Peek](/) recognises an international number ending in AT with a valid check digit as Austrian Post at once. For 22 digits, shared with other carriers, Peek asks Austrian Post, USPS and Estafeta at once and names Austrian Post when only it knows the number; if several or none do, pick with "Change". A post.at link works only with an AT number inside.
+[Peek](/) recognises an international number ending in AT with a valid check digit as Austrian Post at once. For 22 digits, shared with other carriers, Peek asks Austrian Post, [USPS](carrier:usps) and Estafeta at once and names Austrian Post when only it knows the number; if several or none do, pick with "Change". A post.at link works only with an AT number inside.
 
 Peek shows the status, the history with each facility on a map, the weight, the dimensions, the delivery time and an expected delivery (a day, a span of days or a time window) while the parcel is accepted, in distribution or out for delivery. It shows a parcel as ready for pickup, but not where, and no sender. Austrian Post's wordings appear in German, as its tracking gives them, so a delivered parcel shows `Sendung wurde zugestellt`.
 

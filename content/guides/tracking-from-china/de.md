@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Ein Paket von AliExpress, Temu oder Shein geht durch mehrere Hände: Ein chinesisches Logistikunternehmen schickt es per Flugzeug los, der Zoll prüft es, und bei dir stellt es die Post, DHL oder ein anderer Paketdienst zu, oft unter einer neuen Nummer. Jeder scannt nur seine eigene Etappe. Rechne also mit bis zu 11 Tagen bis zum ersten Scan, mit Funkstille während des Flugs und mit Wartezeit nach „Arrived at destination country“. Verfolge erst die Nummer aus dem Shop, dann die des Paketdienstes vor Ort. Beim billigsten Versand ist an dieser Übergabe manchmal endgültig Schluss mit der Sendungsverfolgung.
+Ein Paket von AliExpress, Temu oder Shein geht durch mehrere Hände: Ein chinesisches Logistikunternehmen schickt es per Flugzeug los, der Zoll prüft es, und bei dir stellt es die Post, [DHL](carrier:dhl) oder ein anderer Paketdienst zu, oft unter einer neuen Nummer. Jeder scannt nur seine eigene Etappe. Rechne also mit bis zu 11 Tagen bis zum ersten Scan, mit Funkstille während des Flugs und mit Wartezeit nach „Arrived at destination country“. Verfolge erst die Nummer aus dem Shop, dann die des Paketdienstes vor Ort. Beim billigsten Versand ist an dieser Übergabe manchmal endgültig Schluss mit der Sendungsverfolgung.
 
 ## Wie kann ich ein Paket aus China verfolgen?
 

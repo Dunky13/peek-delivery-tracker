@@ -18,7 +18,7 @@ Selon Chronopost, le numéro de colis compte 13 caractères (2 lettres, 9 chiffr
 | `AB000000000JB` | La même forme, terminée par JB, JF ou TS. |
 | `00000000000000U` | 15 caractères, 14 chiffres et une lettre de contrôle : un colis venu de l'étranger. |
 
-**Attention aux numéros qui se ressemblent.** La forme à 13 caractères est le format postal international : un numéro qui finit par FR peut être un Colissimo de La Poste, un numéro qui finit par CH, GB ou DE celui d'une autre poste. La forme à 15 caractères est aussi celle de DPD : le colis peut être chez [DPD Suisse](carrier:dpd-ch) ou DPD Allemagne. Si Chronopost ne connaît pas ton numéro, vérifie le transporteur cité dans l'e-mail de la boutique.
+**Attention aux numéros qui se ressemblent.** La forme à 13 caractères est le format postal international : un numéro qui finit par FR peut être un Colissimo de [La Poste](carrier:la-poste), un numéro qui finit par CH, GB ou DE celui d'une autre poste. La forme à 15 caractères est aussi celle de DPD : le colis peut être chez [DPD Suisse](carrier:dpd-ch) ou DPD Allemagne. Si Chronopost ne connaît pas ton numéro, vérifie le transporteur cité dans l'e-mail de la boutique.
 
 ## Suivi colis Chronopost : ce que veulent dire les statuts
 

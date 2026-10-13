@@ -37,8 +37,8 @@ Eis o que as transportadoras, e a norma postal, dizem sobre os números que mais
 | GLS | «número de encomenda» ou «ID de Rastreamento», que vem em cada cartão de notificação; a GLS não indica o comprimento |
 | [InPost](carrier:inpost) | «número de expedição»; o exemplo da página de seguimento tem 8 caracteres |
 | [Mondial Relay](carrier:mondial-relay) | «n° d'expédition» de 8 algarismos, no topo da etiqueta; o site belga aceita também 10 algarismos (um código da loja e o número de expedição) e 12 (o mesmo, mais o número de ordem do volume); o código de barras da etiqueta tem 26 algarismos, com o número de expedição nos algarismos 3 a 10; em Portugal, segue-se agora no inpost.pt |
-| DHL | DHL Express: 10 algarismos, nunca letras |
-| UPS | `1Z` + 16 letras e algarismos, 18 caracteres no total, como `1Z999AA10123456784`, um exemplo com um dígito de controlo UPS válido |
+| DHL | [DHL Express](carrier:dhl-express): 10 algarismos, nunca letras |
+| [UPS](carrier:ups) | `1Z` + 16 letras e algarismos, 18 caracteres no total, como `1Z999AA10123456784`, um exemplo com um dígito de controlo UPS válido |
 | [Correos Express](carrier:correos-express) | a Correos Express não publica um formato; nos dados de transportadoras que o Peek usa, 16 algarismos (também DHL eCommerce, Canada Post, TNT e Evri UK) ou 23 algarismos, ambos terminados num dígito de controlo; com 000 nas posições 15 a 17, o Peek toma um número de 23 algarismos pela Australia Post |
 | [SEUR](carrier:seur) | a SEUR não publica o formato; o seguimento pede o «Identificador de envío». Costuma ter 14 ou 21 algarismos, e um código de 7 também funciona; os de 14 são partilhados com a DPD, a Relais Colis, a BRT e outras |
 | [MRW](carrier:mrw) | «Núm. expedição»; na etiqueta de exemplo da MRW, 12 algarismos por baixo do código de barras e, ao lado de «N.º Etiqueta», 5 algarismos, uma barra e 7 algarismos: tira a barra antes de o seguir. Cinco algarismos, uma letra e seis algarismos é uma forma vista em encomendas MRW, embora as páginas da MRW não a mostrem |
@@ -69,7 +69,7 @@ Não há um comprimento único. Estes são os comprimentos que as transportadora
 | --- | --- |
 | 8 caracteres | InPost, no exemplo da sua página de seguimento; Mondial Relay (8, 10 ou 12 algarismos) |
 | 10 algarismos | DHL Express; [DHL eCommerce Iberia](carrier:dhl-ecommerce-es); Mondial Relay |
-| 12 algarismos | MRW, na sua etiqueta de exemplo; Mondial Relay; FedEx Ground Economy, nos EUA |
+| 12 algarismos | MRW, na sua etiqueta de exemplo; Mondial Relay; [FedEx](carrier:fedex) Ground Economy, nos EUA |
 | 13 caracteres | o formato postal dos CTT e dos outros operadores postais |
 | 14 algarismos | DPD; SEUR; La Poste, em França |
 | 22 algarismos | CTT e CTT Express, só algarismos; USPS, nos EUA |

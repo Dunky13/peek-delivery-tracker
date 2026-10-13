@@ -91,7 +91,7 @@ Ukrposhta's channels, as ukrposhta.ua listed them in October 2026:
 
 ## Tracking Ukrposhta with Peek
 
-For 13 digits with Ukrposhta's check digit, [Peek](/) asks Ukrposhta, La Poste and Delhivery at once and shows "Ukrposhta has this parcel." when only Ukrposhta knows it; if another carrier knows it too, pick with "Change". A 13-digit number with a wrong check digit isn't offered to Ukrposhta: pick it with "Change". For a number ending `UA`, it asks Ukrposhta and [Chronopost](carrier:chronopost); if Ukrposhta doesn't know it yet, you see "Not found at … yet. Peek will keep checking after you add it." A track.ukrposhta.ua link with the number in it always names Ukrposhta.
+For 13 digits with Ukrposhta's check digit, [Peek](/) asks Ukrposhta, [La Poste](carrier:la-poste) and Delhivery at once and shows "Ukrposhta has this parcel." when only Ukrposhta knows it; if another carrier knows it too, pick with "Change". A 13-digit number with a wrong check digit isn't offered to Ukrposhta: pick it with "Change". For a number ending `UA`, it asks Ukrposhta and [Chronopost](carrier:chronopost); if Ukrposhta doesn't know it yet, you see "Not found at … yet. Peek will keep checking after you add it." A track.ukrposhta.ua link with the number in it always names Ukrposhta.
 
 A number from another country's post isn't offered to Ukrposhta. When the item is heading to Ukraine, Peek can follow it to Ukrposhta, or you can pick "Ukrposhta" with "Change".
 
@@ -105,7 +105,7 @@ Under martial law, Ukrposhta says EMS takes 10 to 14 days to most countries, by 
 
 ### Who delivers Ukrposhta parcels in the UK?
 
-Royal Mail, which Ukrposhta works with.
+[Royal Mail](carrier:royal-mail), which Ukrposhta works with.
 
 ### Why is my Ukrposhta tracking number not working?
 

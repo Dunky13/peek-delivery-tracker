@@ -50,7 +50,7 @@ Au-dessus des scans, Yanwen range chaque colis dans une catégorie. `Info_Receiv
 
 Yanwen ne livre pas lui-même en Europe : il dit travailler avec des transporteurs locaux pour le dernier kilomètre. Quand il nomme ce transporteur, la page de résultat affiche un encadré avec « Distributor », « Distributor Website » et « Contact Number ». Pour certains colis, l'encadré reste vide.
 
-Le transporteur dépend du pays et du service choisi par le vendeur. Le catalogue de Yanwen pour les vendeurs cite par exemple une ligne vers la France via Colissimo ; aucune page de Yanwen ne dit qui livre en Belgique ou en Suisse.
+Le transporteur dépend du pays et du service choisi par le vendeur. Le catalogue de Yanwen pour les vendeurs cite par exemple une ligne vers la France via [Colissimo](carrier:la-poste) ; aucune page de Yanwen ne dit qui livre en Belgique ou en Suisse.
 
 Tentatives, avis de passage, nouvelle date et durée de garde en point relais relèvent du transporteur local : Yanwen n'en publie aucune règle. `Available_For_Pick_Up` veut dire que le colis t'attend dans un point de retrait ; `Undelivered`, que la livraison a échoué. Avec le numéro « Last Mile Tracking » et le contact de l'encadré, demande à ce transporteur une nouvelle livraison.
 

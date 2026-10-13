@@ -20,10 +20,10 @@ The shapes known as Asendia's, with invented digits:
 | `AS123456789US` | AS, 9 digits, US: Asendia. |
 | `AHOY12345678` | AHOY, then 8 letters and digits: Asendia. |
 | `RR123456785CH` | An international postal number: the post that issued it, here [Swiss Post](carrier:swiss-post). |
-| `LA123456785FR` | The same for France: La Poste / Colissimo. |
+| `LA123456785FR` | The same for France: [La Poste / Colissimo](carrier:la-poste). |
 | `EEUS000000000US0` | An eBay International Shipping reference: no carrier from the number alone. |
 
-Many Asendia parcels travel under the delivering post's international number: two letters, nine digits and two letters, where the last two name the post (`CH` Swiss Post, `FR` La Poste, `GB` Royal Mail). Careful: `AS…US` is Asendia, but `AS…CH` is a Swiss Post number. If a number doesn't work, Asendia asks you to make sure you are on its own tracking site. More in [tracking number formats](guide:tracking-number-formats).
+Many Asendia parcels travel under the delivering post's international number: two letters, nine digits and two letters, where the last two name the post (`CH` Swiss Post, `FR` La Poste, `GB` [Royal Mail](carrier:royal-mail)). Careful: `AS…US` is Asendia, but `AS…CH` is a Swiss Post number. If a number doesn't work, Asendia asks you to make sure you are on its own tracking site. More in [tracking number formats](guide:tracking-number-formats).
 
 ## Asendia tracking statuses: what they mean
 
@@ -38,7 +38,7 @@ Asendia USA's A1 tracker writes its scans in English only, and relays the delive
 | `Processed by Asendia` | Asendia has the parcel in hand. |
 | `Sorted by Asendia` | Sorted for its route abroad. |
 | `Dispatched by Asendia` | Left Asendia for the international leg. |
-| `Pre-Shipment, USPS Awaiting Item` | A USPS scan: USPS has the details and is waiting for the parcel. |
+| `Pre-Shipment, USPS Awaiting Item` | A [USPS](carrier:usps) scan: USPS has the details and is waiting for the parcel. |
 | `Arrived at USPS Regional Facility` | The US delivery partner has it. |
 | `airline misroute – under investigation with airline` | The flight took it the wrong way; the airline is looking into it. |
 

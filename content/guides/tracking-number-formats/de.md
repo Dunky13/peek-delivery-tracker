@@ -31,8 +31,8 @@ Das schreiben die Paketdienste selbst und der internationale Poststandard über 
 
 | Paketdienst | So sieht die Nummer aus |
 | --- | --- |
-| DHL Paket | 10 bis 39 Stellen, Ziffern und Buchstaben, je nach Produkt. DHL Päckchen haben keine Sendungsverfolgung, außer DHL Päckchen International mit dem Service „Versicherung“ |
-| DHL Express | 10 Ziffern, nie Buchstaben, sagt DHL Express in den Niederlanden |
+| [DHL Paket](carrier:dhl) | 10 bis 39 Stellen, Ziffern und Buchstaben, je nach Produkt. DHL Päckchen haben keine Sendungsverfolgung, außer DHL Päckchen International mit dem Service „Versicherung“ |
+| [DHL Express](carrier:dhl-express) | 10 Ziffern, nie Buchstaben, sagt DHL Express in den Niederlanden |
 | Deutsche Post (Briefe) | kein Format veröffentlicht. Verfolgen lassen sich Einschreiben, Nachnahme, PRIO und Wert National, dazu als Basis-Sendungsverfolgung Briefe mit Matrixcode-Briefmarke, die du vorher in der Post & DHL App scannst |
 | [Hermes](carrier:hermes-de) (Deutschland) | 14 bis 20 Zeichen, Buchstaben und Ziffern |
 | DPD | 14 Zeichen, sagt [DPD Deutschland](carrier:dpd-de); 14 Stellen, sagt DPD Österreich |
@@ -40,7 +40,7 @@ Das schreiben die Paketdienste selbst und der internationale Poststandard über 
 | GLS | Paketnummer oder Track-ID von der Benachrichtigungskarte. Eine Länge nennt GLS nicht |
 | [GLS Deutschland](carrier:gls-de) | In Peeks Paketdienst-Daten 11 Ziffern, 12 Ziffern mit einer Prüfziffer am Ende oder 8 Zeichen aus Buchstaben und Ziffern, dazu die sechsstellige Track-ID von der Karte, wenn sie nur aus Buchstaben besteht |
 | [GLS Schweiz](carrier:gls-ch) | kein Format veröffentlicht, auch nicht von der Schweizerischen Post, die GLS-Pakete dort zustellt. In Peeks Paketdienst-Daten dieselben Formen wie bei GLS Deutschland |
-| UPS | `1Z` plus 16 Buchstaben und Ziffern, 18 Zeichen insgesamt, etwa `1Z999AA10123456784`, ein Beispiel mit gültiger UPS-Prüfziffer |
+| [UPS](carrier:ups) | `1Z` plus 16 Buchstaben und Ziffern, 18 Zeichen insgesamt, etwa `1Z999AA10123456784`, ein Beispiel mit gültiger UPS-Prüfziffer |
 | [Österreichische Post](carrier:austrian-post) | 22 Ziffern ab `10` oder das Postformat aus zwei Buchstaben, neun Ziffern und `AT` |
 | Schweizerische Post | 18 Ziffern ab `98` oder `99`, mit oder ohne Punkte und Leerzeichen: die Barcode-Nummer für Sendungen innerhalb der Schweiz, auf Paketen von Geschäftskunden gedruckt wie `99.34.123456.12345678`; oder das Postformat mit `CH` am Ende |
 | [Quickpac](carrier:quickpac) | 18 Ziffern, sagt Quickpac, aber nicht, wie sie beginnen. In Peeks Paketdienst-Daten: ab `44` |

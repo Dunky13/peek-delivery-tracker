@@ -21,7 +21,7 @@ Laut DHL ist die Tracking-ID zwischen 10 und 39 Zeichen lang, Buchstaben und Zif
 
 In Webtracks Detailbox steht unter „Delivery by“, welcher Paketdienst zustellt. Auf Webtrack kannst du bis zu 10 Nummern auf einmal eingeben, getrennt durch Kommas.
 
-Verwechslungsgefahr: 16 Ziffern können auch zu TNT oder Evri gehören, eine 9261-Nummer auch zu USPS. 14 Ziffern sind DHL eCommerce UK, ein eigenes Netz mit eigenem Tracking. DHL Paket und DHL Express nutzen wieder andere Formen, etwa `JJD…` bei DHL Paket. Mehr in [Sendungsnummer: welcher Paketdienst steckt dahinter](guide:tracking-number-formats).
+Verwechslungsgefahr: 16 Ziffern können auch zu TNT oder Evri gehören, eine 9261-Nummer auch zu USPS. 14 Ziffern sind DHL eCommerce UK, ein eigenes Netz mit eigenem Tracking. [DHL Paket](carrier:dhl) und [DHL Express](carrier:dhl-express) nutzen wieder andere Formen, etwa `JJD…` bei DHL Paket. Mehr in [Sendungsnummer: welcher Paketdienst steckt dahinter](guide:tracking-number-formats).
 
 ## DHL eCommerce Tracking: was die Status bedeuten
 

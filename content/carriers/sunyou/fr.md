@@ -52,7 +52,7 @@ Trois choses déroutent. D'abord, `Livré avec succès` peut suivre directement 
 
 ## SunYou livraison : qui livre en France, en Belgique et en Suisse
 
-SunYou ne livre rien lui-même en Europe : sa ligne commerciale confie les colis à des transporteurs locaux du pays de destination, et son suivi nomme celui qui prend le relais. Aucune page de SunYou ne dit qui livre dans quel pays. Parmi les logos de ses partenaires figurent La Poste, bpost et La Poste suisse, mais aussi DHL, UPS ou FedEx. Dans les historiques lus sur son suivi, DHL Paket livrait en Allemagne et Royal Mail au Royaume-Uni.
+SunYou ne livre rien lui-même en Europe : sa ligne commerciale confie les colis à des transporteurs locaux du pays de destination, et son suivi nomme celui qui prend le relais. Aucune page de SunYou ne dit qui livre dans quel pays. Parmi les logos de ses partenaires figurent [La Poste](carrier:la-poste), bpost et La Poste suisse, mais aussi DHL, [UPS](carrier:ups) ou [FedEx](carrier:fedex). Dans les historiques lus sur son suivi, DHL Paket livrait en Allemagne et Royal Mail au Royaume-Uni.
 
 SunYou ne publie aucune règle sur les tentatives de livraison, les avis de passage, les points de retrait ou la durée de garde. Ce sont celles du transporteur local : avec son nom et son numéro, passe par son site pour reprogrammer une livraison ou savoir où le colis t'attend.
 

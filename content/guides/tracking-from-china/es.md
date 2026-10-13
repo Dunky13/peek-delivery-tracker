@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Un paquete de AliExpress, Temu o Shein cambia de manos por el camino: una empresa logística china lo saca del país, la Aduana lo revisa al llegar y Correos u otra empresa de reparto te lo entrega, a menudo con otro número. Cada una solo escanea su tramo, así que es normal pasar hasta 11 días sin un primer escaneo, no ver nada durante el vuelo y volver a esperar cuando ya ha llegado al país de destino. Sigue primero el número de la tienda y luego el de la empresa de reparto. Con el envío más barato, el seguimiento puede cortarse ahí para siempre.
+Un paquete de AliExpress, Temu o Shein cambia de manos por el camino: una empresa logística china lo saca del país, la Aduana lo revisa al llegar y [Correos](carrier:correos-spain) u otra empresa de reparto te lo entrega, a menudo con otro número. Cada una solo escanea su tramo, así que es normal pasar hasta 11 días sin un primer escaneo, no ver nada durante el vuelo y volver a esperar cuando ya ha llegado al país de destino. Sigue primero el número de la tienda y luego el de la empresa de reparto. Con el envío más barato, el seguimiento puede cortarse ahí para siempre.
 
 ## ¿Es fiable el seguimiento de AliExpress?
 

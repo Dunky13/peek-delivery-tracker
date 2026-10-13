@@ -84,7 +84,7 @@ DPD gives no place for its scans, and Peek doesn't read DPD's expected day or Pr
 
 ### Is DPD part of Royal Mail?
 
-No. DPD UK is run by DPDgroup UK Ltd and belongs to Geopost, which is part of the French La Poste group.
+No. DPD UK is run by DPDgroup UK Ltd and belongs to Geopost, which is part of the French [La Poste](carrier:la-poste) group.
 
 ### How long does DPD take to deliver in the UK?
 

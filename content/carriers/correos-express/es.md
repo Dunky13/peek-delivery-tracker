@@ -6,7 +6,7 @@ published: 2026-10-10
 updated: 2026-10-11
 ---
 
-Correos Express, la empresa de paquetería urgente del Grupo Correos, reparte en España y Portugal y no es lo mismo que Correos, el servicio postal. Para seguir tu paquete, escribe el número de envío en su [buscador de envíos](https://s.correosexpress.com/) o pégalo en la casilla de arriba. Quien registra el envío en Correos Express es el remitente, por ejemplo la tienda donde compraste: si no tienes el número, pídeselo.
+Correos Express, la empresa de paquetería urgente del Grupo Correos, reparte en España y Portugal y no es lo mismo que [Correos](carrier:correos-spain), el servicio postal. Para seguir tu paquete, escribe el número de envío en su [buscador de envíos](https://s.correosexpress.com/) o pégalo en la casilla de arriba. Quien registra el envío en Correos Express es el remitente, por ejemplo la tienda donde compraste: si no tienes el número, pídeselo.
 
 ## Número de seguimiento de Correos Express: cómo es
 

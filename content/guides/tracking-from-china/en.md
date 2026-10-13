@@ -91,8 +91,8 @@ It depends on the shipping line:
 
 | Country | Who you may see on the last leg |
 | --- | --- |
-| US | USPS for postal numbers ending `CN` and on some 4PX lines (4PX scans read `Arrived at usps facility`), or a courier such as UniUni, SpeedX or GOFO. |
-| UK | Yanwen sells UK lines through Royal Mail, [Evri](carrier:evri), Yodel and Hermes. Shein's orders arrive "via our UK courier partners". |
+| US | [USPS](carrier:usps) for postal numbers ending `CN` and on some 4PX lines (4PX scans read `Arrived at usps facility`), or a courier such as UniUni, SpeedX or GOFO. |
+| UK | Yanwen sells UK lines through [Royal Mail](carrier:royal-mail), [Evri](carrier:evri), Yodel and Hermes. Shein's orders arrive "via our UK courier partners". |
 | Ireland | [An Post](carrier:an-post) for postal items. It tells you by postcard, email or text when customs charges are due. |
 | Canada | Canada Post for postal items, or a courier such as UniUni. |
 | Australia | Australia Post for postal items. Shein doesn't deliver to PO boxes or parcel lockers. |

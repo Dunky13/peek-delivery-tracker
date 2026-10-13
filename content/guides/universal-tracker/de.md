@@ -11,7 +11,7 @@ Eine Paketverfolgung aller Anbieter, kurz Paket-Tracker, ist eine Website oder A
 
 ## Gibt es eine Sendungsverfolgung für alle Paketdienste?
 
-Ja, und vielleicht hast du schon eine: Neben den Trackern sammeln auch die Apps von DHL und der Post, PayPal, Apple Wallet und Shop Pakete für dich. Was der Dienst dabei von dir zu sehen bekommt, hängt davon ab, wie das Paket in die Liste kommt:
+Ja, und vielleicht hast du schon eine: Neben den Trackern sammeln auch die Apps von [DHL](carrier:dhl) und der Post, PayPal, Apple Wallet und Shop Pakete für dich. Was der Dienst dabei von dir zu sehen bekommt, hängt davon ab, wie das Paket in die Liste kommt:
 
 | Wie das Paket in die Liste kommt | Was der Dienst sieht | Beispiele |
 | --- | --- | --- |
@@ -30,7 +30,7 @@ Fang mit dem kostenlosen Angebot deiner Post an:
 | Österreich | Post App, „Meine Sendungen“ im Post Account | Die App sammelt alle Lieferungen in einer Übersicht und meldet Statusänderungen per Push. Die e-Benachrichtigung kommt, wenn der Absender Versanddaten übermittelt hat, die zu deinem Post Account passen. Wurde das Paket von einer Privatperson, in einer Postfiliale oder bei einem Post Partner aufgegeben, fehlen diese Daten meist, außer bei einer Paketmarke |
 | Schweiz | „Meine Sendungen“ im Kundenportal „Meine Post“ | Kostenlose Infos zu allen Sendungen an die Adresse in deinem Kundenkonto, per E-Mail und Push in der Post-App, auf Wunsch per SMS. In immer mehr Gebieten meist mit einem Zeitfenster von 40 bis 90 Minuten |
 
-Ähnliche Dienste von [DPD](carrier:dpd-de), [Hermes](carrier:hermes-de) und UPS stellt [Sendungsnummer finden](guide:find-tracking-number) vor.
+Ähnliche Dienste von [DPD](carrier:dpd-de), [Hermes](carrier:hermes-de) und [UPS](carrier:ups) stellt [Sendungsnummer finden](guide:find-tracking-number) vor.
 
 Andere Möglichkeiten, mit ihren Grenzen:
 

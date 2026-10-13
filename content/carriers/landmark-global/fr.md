@@ -91,7 +91,7 @@ Peek lit la page anglaise de Landmark : tu y verras ses étapes en anglais et ce
 
 Les heures de Landmark n'ont pas de fuseau horaire : Peek n'affiche donc pas l'historique de Landmark. L'historique daté vient de services de suivi universels ou, une fois le colis suivi chez le livreur, de ce livreur ; Landmark est interrogé de nouveau toutes les 6 heures. Si aucun service ne répond, tu vois le statut actuel de Landmark, daté du moment où Peek l'a lu.
 
-Quand le livreur est un transporteur que Peek suit directement, comme La Poste / Colissimo ou la Poste suisse, Peek peut suivre le colis chez lui : la page indique alors « Livraison par » ce transporteur, avec son numéro et un lien. Ça ne marche pas pour tous les colis. Chaque scan arrive sur une carte, et tu peux recevoir des notifications : « Chaque scan », « Étapes importantes » ou « Jour de livraison uniquement ».
+Quand le livreur est un transporteur que Peek suit directement, comme [La Poste / Colissimo](carrier:la-poste) ou la Poste suisse, Peek peut suivre le colis chez lui : la page indique alors « Livraison par » ce transporteur, avec son numéro et un lien. Ça ne marche pas pour tous les colis. Chaque scan arrive sur une carte, et tu peux recevoir des notifications : « Chaque scan », « Étapes importantes » ou « Jour de livraison uniquement ».
 
 ## Questions sur le suivi Landmark Global
 

@@ -7,13 +7,13 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Tracking not updating usually means nobody has scanned your parcel (or package) lately, not that it has stopped moving. Carriers scan at depots and borders, not on the road, so a long drive, a flight, customs or a weekend can leave days without a new line. Worry only once the carrier's own waiting time has passed (7 days after mailing for a USPS search, 10 working days after the due date for a Royal Mail 1st or 2nd Class claim), and even then, ask the seller first: it's the carrier's customer.
+Tracking not updating usually means nobody has scanned your parcel (or package) lately, not that it has stopped moving. Carriers scan at depots and borders, not on the road, so a long drive, a flight, customs or a weekend can leave days without a new line. Worry only once the carrier's own waiting time has passed (7 days after mailing for a [USPS](carrier:usps) search, 10 working days after the due date for a [Royal Mail](carrier:royal-mail) 1st or 2nd Class claim), and even then, ask the seller first: it's the carrier's customer.
 
 ## Why has my tracking not updated in 3 days?
 
 Tracking shows scans, not movement, and a parcel is scanned only at certain points:
 
-- **No scan between hubs.** UPS says a parcel going a long way likely won't be scanned again until its destination hub. Canada Post typically scans a parcel when it's mailed and when it goes out for delivery, and says several days can pass in between.
+- **No scan between hubs.** [UPS](carrier:ups) says a parcel going a long way likely won't be scanned again until its destination hub. Canada Post typically scans a parcel when it's mailed and when it goes out for delivery, and says several days can pass in between.
 - **Weekends and holidays.** USPS delivers Monday to Saturday; on Sunday, only Priority Mail Express and Amazon parcels. Royal Mail counts Saturday as a working day for 1st and 2nd Class, but not Sunday or public holidays. Around Christmas, check [carriers' days off](guide:christmas-posting-dates).
 - **Weather and busy seasons.** Amazon's common reasons for late deliveries include bad weather, heavy traffic, holiday demand and customs.
 - **A label the machines can't read.** DHL names postcode typos, missing house numbers, hard-to-read handwriting, labels that came off and damaged packaging. The parcel may then be misrouted or sorted by hand, delaying it several days.
@@ -67,7 +67,7 @@ There's no single day. Most carriers say when they'll start looking, counted fro
 | --- | --- | --- |
 | USPS (US) | 7 days after mailing (Missing Mail search) | You or the sender |
 | UPS (US) | No day count; claims up to 60 days after the scheduled delivery | The shipper, or you unless the shipper blocked it |
-| FedEx (US) | No day count; lost parcels up to 9 months after shipping | The seller, or you |
+| [FedEx](carrier:fedex) (US) | No day count; lost parcels up to 9 months after shipping | The seller, or you |
 | Royal Mail (UK) | 10 working days after the due date (1st and 2nd Class), 7 (Tracked 24 and 48), 5 (Special Delivery Guaranteed) | The sender. For 1st, 2nd Class and Special Delivery you can too, but the sender's claim comes first |
 | Evri (UK) | More than 7 days with Evri | The sender, once you tell them |
 | [DPD](carrier:dpd-uk) (UK) | No waiting time given; the sender must report a loss within 14 days of despatch | The sender |

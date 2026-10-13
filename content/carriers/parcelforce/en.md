@@ -6,7 +6,7 @@ published: 2026-10-11
 updated: 2026-10-11
 ---
 
-Parcelforce Worldwide is Royal Mail's express parcel service, in the UK and abroad. It runs on one network with Royal Mail, so you track a Parcelforce parcel on [Royal Mail's Track your item page](https://www.royalmail.com/track-your-item) or in the Royal Mail app, or paste the number in the box above. The number comes from the shop or sender, usually in the order confirmation email.
+Parcelforce Worldwide is [Royal Mail](carrier:royal-mail)'s express parcel service, in the UK and abroad. It runs on one network with Royal Mail, so you track a Parcelforce parcel on [Royal Mail's Track your item page](https://www.royalmail.com/track-your-item) or in the Royal Mail app, or paste the number in the box above. The number comes from the shop or sender, usually in the order confirmation email.
 
 ## Parcelforce tracking number: where to find it
 

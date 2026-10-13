@@ -16,7 +16,7 @@ A DHL não publica nenhum número de exemplo. As formas que o catálogo do Peek 
 
 | Forma | Exemplo | De quem pode ser |
 | --- | --- | --- |
-| 10 algarismos | `1234567890` | DHL eCommerce Iberia, mas também DHL Express, Mondial Relay, Relais Colis, TIPSA e GLS Spain |
+| 10 algarismos | `1234567890` | DHL eCommerce Iberia, mas também [DHL Express](carrier:dhl-express), Mondial Relay, Relais Colis, TIPSA e GLS Spain |
 | Duas letras, 7 algarismos e `0` | `AB12345670` | DHL eCommerce Iberia |
 
 Se o email da loja indicar a [Mondial Relay](carrier:mondial-relay) para um número de 10 algarismos, segue-o lá. Duas letras, nove algarismos e `ES` é um código dos Correos espanhóis. Um número de 22 algarismos pode ser a etiqueta da [CTT Express](carrier:ctt-express), que entrega algumas encomendas da DHL.

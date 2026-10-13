@@ -11,7 +11,7 @@ updated: 2026-10-10
 
 ## What does "held at customs" mean?
 
-Every parcel crossing a customs border is presented to customs: by law, Royal Mail presents every item from outside the UK to Border Force, and Canada Post presents every incoming international parcel to the Canada Border Services Agency (CBSA). In Ireland, that means parcels from outside the EU, Great Britain included.
+Every parcel crossing a customs border is presented to customs: by law, [Royal Mail](carrier:royal-mail) presents every item from outside the UK to Border Force, and Canada Post presents every incoming international parcel to the Canada Border Services Agency (CBSA). In Ireland, that means parcels from outside the EU, Great Britain included.
 
 Customs checks the sender's declaration (contents, value), may open the parcel, works out any tax and duty, then releases it to the carrier. Carriers word this stage differently:
 
@@ -122,7 +122,7 @@ Real charges can come by text or email too, but each carrier's rules give most f
 | --- | --- |
 | Royal Mail, Parcelforce | A `Fee to pay` card, letter, SMS or email, whose details you enter on Royal Mail's "Pay a fee" page |
 | An Post | Post, text or email, but "never" a message containing any links |
-| USPS | Texts or emails only if you asked for tracking with your number, and never with a link |
+| [USPS](carrier:usps) | Texts or emails only if you asked for tracking with your number, and never with a link |
 | Canada Post | The E14 form on the parcel, or the Pay button in its own tracking or app |
 | Australia Post | It never calls, texts or emails you to request payment |
 

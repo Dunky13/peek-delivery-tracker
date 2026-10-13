@@ -26,7 +26,7 @@ TIPSA's locator asks for the 22-digit shipment number and marks the destination 
 
 Shops can have TIPSA send emails and SMS when the parcel sets off, when it reaches the agency, after an incident and after delivery, and their tracking links lead to TIPSA's shipment page. TIPSA's FAQ says that if you have no number, you should ask the sender or the agency that delivers. More places to look are in [how to find your tracking number](guide:find-tracking-number).
 
-Twenty-two digits also fit Austrian Post, USPS and Estafeta. A number whose two agency codes both start with `00` has the shape of a [CTT Express](carrier:ctt-express) number, another Spanish carrier, so check which carrier the shop's email names. People often search for "TIPSA 10 digits": only the full 22-digit form works, so find it in the email or ask the sender.
+Twenty-two digits also fit Austrian Post, [USPS](carrier:usps) and Estafeta. A number whose two agency codes both start with `00` has the shape of a [CTT Express](carrier:ctt-express) number, another Spanish carrier, so check which carrier the shop's email names. People often search for "TIPSA 10 digits": only the full 22-digit form works, so find it in the email or ask the sender.
 
 ## What TIPSA's tracking statuses mean
 

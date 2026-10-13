@@ -11,7 +11,7 @@ updated: 2026-10-10
 
 ## Que veut dire « colis bloqué en douane » ?
 
-Tout colis venu d'un pays hors Union européenne, Royaume-Uni compris, passe par des formalités d'importation. C'est le transporteur qui s'en charge : La Poste, [Chronopost](carrier:chronopost) ou FedEx en France, [bpost](carrier:bpost) en Belgique. La Suisse n'étant pas dans l'UE, tout envoi de marchandises venu de l'étranger doit en principe y être déclaré, même s'il part de France ou d'Allemagne.
+Tout colis venu d'un pays hors Union européenne, Royaume-Uni compris, passe par des formalités d'importation. C'est le transporteur qui s'en charge : [La Poste](carrier:la-poste), [Chronopost](carrier:chronopost) ou [FedEx](carrier:fedex) en France, [bpost](carrier:bpost) en Belgique. La Suisse n'étant pas dans l'UE, tout envoi de marchandises venu de l'étranger doit en principe y être déclaré, même s'il part de France ou d'Allemagne.
 
 La douane vérifie la déclaration de l'expéditeur (contenu, valeur), peut ouvrir le colis, calcule les taxes éventuelles, puis le rend au transporteur. Le suivi peut l'afficher de plusieurs façons :
 

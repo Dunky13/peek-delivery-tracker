@@ -11,7 +11,7 @@ El seguimiento universal de paquetes reúne todos tus envíos en una sola web o 
 
 ## ¿Hay una app para seguir todos tus paquetes en un solo sitio?
 
-Sí, y puede que ya la tengas: además de los localizadores universales, PayPal y Shop reúnen paquetes, y Correos, [GLS](carrier:gls-es) o [SEUR](carrier:seur) juntan los suyos en tu cuenta. Lo que ve cada servicio depende de cómo entra el paquete en la lista:
+Sí, y puede que ya la tengas: además de los localizadores universales, PayPal y Shop reúnen paquetes, y [Correos](carrier:correos-spain), [GLS](carrier:gls-es) o [SEUR](carrier:seur) juntan los suyos en tu cuenta. Lo que ve cada servicio depende de cómo entra el paquete en la lista:
 
 | Cómo entra el paquete | Qué ve el servicio | Ejemplos |
 | --- | --- | --- |
@@ -75,7 +75,7 @@ Casi todos siguen cinco pasos:
 
 :::steps
 - Pegas | Un [número de seguimiento](guide:find-tracking-number), el enlace del transportista o el correo de envío. El enlace es lo más seguro: dice quién es el transportista, y con [Dachser](carrier:dachser) es lo único que sirve.
-- Mira el formato | Las letras, la longitud y el dígito de control acotan la lista. `1Z999AA10123456784` empieza por el `1Z` de UPS; `RR123456785CH` tiene el formato de 13 caracteres que comparten los operadores postales.
+- Mira el formato | Las letras, la longitud y el dígito de control acotan la lista. `1Z999AA10123456784` empieza por el `1Z` de [UPS](carrier:ups); `RR123456785CH` tiene el formato de 13 caracteres que comparten los operadores postales.
 - Sopesa los candidatos | Algunos formatos encajan con varios transportistas: un número de 14 cifras puede ser de SEUR, DPD, BRT o Hermes Alemania, entre otros. Pregunta a más de uno o te deja elegir.
 - Recoge los escaneos | Del transportista o de otro localizador, en un solo historial.
 - Vuelve a mirar | Cada cierto tiempo, y te notifica si hay algo nuevo.

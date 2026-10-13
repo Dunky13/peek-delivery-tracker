@@ -14,7 +14,7 @@ Die Sendungsverfolgung sagt „zugestellt“, aber bei dir ist kein Paket? Dann 
 „Zugestellt“ hält nur fest, wo der Zusteller das Paket abgegeben hat, nicht, dass du es hast. Meist steckt eines von drei Dingen dahinter:
 
 - **Es wurde zu früh gescannt.** Ja, das gibt es: Ein Paket kann als zugestellt erscheinen, bevor es da ist. Amazon schreibt: „Pakete können bereits vor der Ankunft als zugestellt gescannt werden“, und bittet darum, 48 Stunden abzuwarten. Manche Paketdienste liefern laut Amazon bis 22 Uhr.
-- **Es liegt dort, wo du noch nicht nachgesehen hast.** Beim Nachbarn, am Ablageort, im Briefkasten, in der Packstation oder im Paketshop: Das alles zählt als zugestellt. Bei DHL kann „zugestellt“ sogar bedeuten, dass das Paket an den Absender zurückging und dort zugestellt wurde. Schau im vollständigen Sendungsverlauf nach dem Status „Rücksendung eingeleitet“.
+- **Es liegt dort, wo du noch nicht nachgesehen hast.** Beim Nachbarn, am Ablageort, im Briefkasten, in der Packstation oder im Paketshop: Das alles zählt als zugestellt. Bei [DHL](carrier:dhl) kann „zugestellt“ sogar bedeuten, dass das Paket an den Absender zurückging und dort zugestellt wurde. Schau im vollständigen Sendungsverlauf nach dem Status „Rücksendung eingeleitet“.
 - **Es ist wirklich weg.** Eine falsche Adresse in der Bestellung, die falsche Haustür oder ein Dieb.
 
 Wo die Paketdienste es außerdem abgeben dürfen:

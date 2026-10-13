@@ -12,7 +12,7 @@ Amazon Logistics to własna sieć dostaw Amazona: zamówienia z Amazona dowożą
 
 Otwórz „Moje zamówienia”, wybierz zamówienie i kliknij „Śledź przesyłkę”. Amazon.pl nazywa tam numer „identyfikatorem przesyłki” i pisze, że każda paczka może jechać z innym przewoźnikiem, a produkty z jednego zamówienia mogą mieć osobne daty dostawy i osobne śledzenie.
 
-Strony Amazon.pl nie mówią, że Amazon Logistics dostarcza w Polsce. Lista przewoźników na Amazon.pl obejmuje DHL Polska, InPost, Pocztę Polską, UPS Polska i DPD Polska, bez Amazona, a strony pomocy o Amazon Logistics mają amazon.de czy amazon.co.uk, ale nie amazon.pl. Gdy paczka jedzie do Polski z centrum logistycznego za granicą, Amazon.pl pisze, że śledzenie działa dopiero, gdy dotrze ona do centrum dystrybucyjnego przewoźnika w Polsce.
+Strony Amazon.pl nie mówią, że Amazon Logistics dostarcza w Polsce. Lista przewoźników na Amazon.pl obejmuje DHL Polska, InPost, Pocztę Polską, [UPS Polska](carrier:ups) i DPD Polska, bez Amazona, a strony pomocy o Amazon Logistics mają amazon.de czy amazon.co.uk, ale nie amazon.pl. Gdy paczka jedzie do Polski z centrum logistycznego za granicą, Amazon.pl pisze, że śledzenie działa dopiero, gdy dotrze ona do centrum dystrybucyjnego przewoźnika w Polsce.
 
 Amazon nie publikuje formatu swoich numerów. Takie kształty Peek rozpoznaje jako Amazon Logistics:
 

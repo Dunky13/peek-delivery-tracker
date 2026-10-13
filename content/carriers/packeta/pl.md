@@ -15,7 +15,7 @@ Strona śledzenia Packeta przyjmuje jeden kształt numeru: „Numer śledzenia m
 | Numer | Co to jest |
 | --- | --- |
 | `Z1234567890` | Numer przesyłki Packeta. |
-| `1234567890` | Te same cyfry bez `Z`: taki kształt mają też DHL, Relais Colis i inni, więc dopisz `Z`. |
+| `1234567890` | Te same cyfry bez `Z`: taki kształt mają też [DHL](carrier:dhl-express), Relais Colis i inni, więc dopisz `Z`. |
 | `Z123456789` | Tylko dziewięć cyfr: to nie Packeta (taki kształt ma Australia Post). |
 | `Z12345678901` | Jedenaście cyfr: to nie Packeta (kształt Colis Privé). |
 

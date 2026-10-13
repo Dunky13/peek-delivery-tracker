@@ -20,7 +20,7 @@ DHL eCommerce UK says its shipment number "is typically 14 numerical digits". DH
 
 The tracker also takes a calling-card number or a customer reference.
 
-Fourteen digits are not unique to DHL. [DPD UK](carrier:dpd-uk) uses them too (a number starting `1550` points to DPD UK), and so do SEUR and BRT. DHL eCommerce UK is also separate from DHL Express: each says it can't help with the other's parcels. In 2025 DHL Group announced that DHL eCommerce UK would be rebranded in 2026 as Evri Premium, a network of DHL kept apart from [Evri](carrier:evri). On 11 October 2026 the tracker and DHL's UK pages still used the name DHL eCommerce UK.
+Fourteen digits are not unique to DHL. [DPD UK](carrier:dpd-uk) uses them too (a number starting `1550` points to DPD UK), and so do SEUR and BRT. DHL eCommerce UK is also separate from [DHL Express](carrier:dhl-express): each says it can't help with the other's parcels. In 2025 DHL Group announced that DHL eCommerce UK would be rebranded in 2026 as Evri Premium, a network of DHL kept apart from [Evri](carrier:evri). On 11 October 2026 the tracker and DHL's UK pages still used the name DHL eCommerce UK.
 
 ## DHL eCommerce UK tracking statuses explained
 

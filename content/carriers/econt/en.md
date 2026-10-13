@@ -16,7 +16,7 @@ Econt publishes no format, but its tracker takes digits only and its manual's ex
 
 If Econt answers "A shipment with this number could not be found", check the digits and try again.
 
-Thirteen digits also fit other carriers, among them La Poste's Colissimo, [DPD France](carrier:dpd-fr) and Romania's [FAN Courier](carrier:fan-courier), so check which carrier the shop's email or the SMS names.
+Thirteen digits also fit other carriers, among them [La Poste's Colissimo](carrier:la-poste), [DPD France](carrier:dpd-fr) and Romania's [FAN Courier](carrier:fan-courier), so check which carrier the shop's email or the SMS names.
 
 ## What Econt's tracking statuses mean
 

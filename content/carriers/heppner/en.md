@@ -18,7 +18,7 @@ Heppner publishes no format. Peek takes 8 digits for Heppner (digits invented):
 | --- | --- |
 | `12345678` | Heppner, or a [Mondial Relay](carrier:mondial-relay) or [Colisweb](carrier:colisweb) number of the same length. |
 | `1234567` | Not Heppner: 7 digits point to SEUR. |
-| `1234567890` | Not Heppner: 10 digits fit DHL, Mondial Relay, Relais Colis and others. |
+| `1234567890` | Not Heppner: 10 digits fit [DHL](carrier:dhl-express), Mondial Relay, Relais Colis and others. |
 
 Eight digits don't say which company has your order: check the name in the SMS or email ([lookalike numbers](guide:tracking-number-formats)). If Heppner answers "We were unable to locate your order", it asks you to "Check the correspondence between the zip code entered and the tracking number": a wrong postcode looks like a wrong number.
 

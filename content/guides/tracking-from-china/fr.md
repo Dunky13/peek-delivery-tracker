@@ -39,7 +39,7 @@ En retard plutôt que muet ? Une fois le délai de livraison passé, va voir la 
 
 Ça dépend de ta douane et de ton transporteur local. `Arrive at Destination` veut dire, selon Cainiao, que le colis est arrivé dans le pays, mais qu'il doit encore être dédouané avant d'être livré.
 
-Si plus rien ne bouge après ce scan, Cainiao explique qu'en général, le suivi n'est simplement pas encore à jour dans ton pays, et conseille de demander à ton bureau de poste. En France, quand La Poste a le colis, son suivi affiche pendant ce temps `Les formalités d'importation sont en cours` : un contrôle qui « peut parfois prendre quelques jours ». En Belgique, [bpost](carrier:bpost) prévient aussi que la procédure « peut prendre plusieurs jours ». Pour savoir combien de temps la douane peut garder un colis : [colis bloqué en douane](guide:customs).
+Si plus rien ne bouge après ce scan, Cainiao explique qu'en général, le suivi n'est simplement pas encore à jour dans ton pays, et conseille de demander à ton bureau de poste. En France, quand [La Poste](carrier:la-poste) a le colis, son suivi affiche pendant ce temps `Les formalités d'importation sont en cours` : un contrôle qui « peut parfois prendre quelques jours ». En Belgique, [bpost](carrier:bpost) prévient aussi que la procédure « peut prendre plusieurs jours ». Pour savoir combien de temps la douane peut garder un colis : [colis bloqué en douane](guide:customs).
 
 ### Que veulent dire les autres statuts ?
 

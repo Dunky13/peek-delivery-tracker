@@ -15,7 +15,7 @@ Mondial Relay l'appelle « n° d'expédition » : 8 chiffres, en haut de l'étiq
 | Numéro (inventé) | Ce que c'est |
 | --- | --- |
 | `12345678` | Le numéro d'expédition. Même longueur chez [Colisweb](carrier:colisweb) et Heppner. |
-| `0012345678` | 10 chiffres : un code d'enseigne, puis le numéro d'expédition. Même longueur chez DHL, Relais Colis et d'autres. |
+| `0012345678` | 10 chiffres : un code d'enseigne, puis le numéro d'expédition. Même longueur chez [DHL](carrier:dhl-express), Relais Colis et d'autres. |
 | `001234567802` | 12 chiffres : la même chose, plus le rang du colis. Même longueur chez [DPD France](carrier:dpd-fr), [Colis Privé](carrier:colis-prive), BRT et d'autres. |
 | `00123456780101700000000000` | 26 chiffres : le code-barres de l'étiquette, propre à Mondial Relay, avec le numéro d'expédition du 3e au 10e chiffre. |
 

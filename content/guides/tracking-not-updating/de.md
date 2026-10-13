@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Wenn sich die Sendungsverfolgung nicht aktualisiert, hat meist nur niemand dein Paket gescannt. Stehen geblieben ist es deshalb nicht: Paketdienste scannen in Paketzentren und an Grenzen, nicht auf der Straße, und eine lange Fahrt, ein Flug, der Zoll oder ein Wochenende können Tage ohne neuen Eintrag bedeuten. Sorgen machen musst du dir erst, wenn die Frist des Paketdienstes abgelaufen ist (bei DHL mehr als 5 Werktage ohne neuen Status, bei der [Schweizerischen Post](carrier:swiss-post) im Inland mehr als zwei Tage über der erwarteten Laufzeit). Und auch dann fragst du zuerst den Händler: Er ist der Kunde des Paketdienstes.
+Wenn sich die Sendungsverfolgung nicht aktualisiert, hat meist nur niemand dein Paket gescannt. Stehen geblieben ist es deshalb nicht: Paketdienste scannen in Paketzentren und an Grenzen, nicht auf der Straße, und eine lange Fahrt, ein Flug, der Zoll oder ein Wochenende können Tage ohne neuen Eintrag bedeuten. Sorgen machen musst du dir erst, wenn die Frist des Paketdienstes abgelaufen ist (bei [DHL](carrier:dhl) mehr als 5 Werktage ohne neuen Status, bei der [Schweizerischen Post](carrier:swiss-post) im Inland mehr als zwei Tage über der erwarteten Laufzeit). Und auch dann fragst du zuerst den Händler: Er ist der Kunde des Paketdienstes.
 
 ## Warum aktualisiert sich meine Sendungsverfolgung seit Tagen nicht?
 

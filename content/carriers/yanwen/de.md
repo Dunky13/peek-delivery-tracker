@@ -52,7 +52,7 @@ Eine deutsche Version hat Yanwens Tracking-Seite nicht: Es gibt sie nur auf Engl
 
 Yanwen stellt in Europa nicht selbst zu: Es arbeitet nach eigenen Worten „with local carriers to fulfill the last mile package delivery“. Nennt Yanwen diesen Paketdienst, zeigt die Ergebnisseite einen Hinweiskasten mit „Distributor“, „Distributor Website“ und „Contact Number“. Bei manchen Paketen bleibt der Kasten leer.
 
-Welcher Paketdienst bei dir klingelt, hängt vom Land und von der Versandart des Shops ab. Für Deutschland, Österreich und die Schweiz nennt Yanwen keinen festen Partner. In seiner chinesischen Produktliste steht zum Beispiel eine Deutschland-Linie über DHL, für Frankreich eine über Colissimo. Das sind Angebote für Händler; wer dein Paket bringt, zeigt erst das Tracking.
+Welcher Paketdienst bei dir klingelt, hängt vom Land und von der Versandart des Shops ab. Für Deutschland, Österreich und die Schweiz nennt Yanwen keinen festen Partner. In seiner chinesischen Produktliste steht zum Beispiel eine Deutschland-Linie über [DHL](carrier:dhl), für Frankreich eine über Colissimo. Das sind Angebote für Händler; wer dein Paket bringt, zeigt erst das Tracking.
 
 Zustellversuche, Benachrichtigungskarten, neue Termine, Paketshops und wie lange ein Paket wartet, regelt der Paketdienst vor Ort: Yanwen veröffentlicht dazu nichts. `Available_For_Pick_Up` heißt, dass das Paket an einer Abholstelle auf dich wartet; `Undelivered` heißt, dass die Zustellung gescheitert ist. Mit der „Last Mile Tracking“-Nummer und dem Kontakt im Hinweiskasten fragst du den Paketdienst nach einer neuen Zustellung.
 

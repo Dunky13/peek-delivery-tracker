@@ -15,7 +15,7 @@ UK carriers haven't put their 2026 dates on their own pages yet (Royal Mail: "La
 
 | Carrier | Service | Send by |
 | --- | --- | --- |
-| Royal Mail | 2nd Class, 2nd Class Signed For | Not announced yet (2025: Wednesday 17 December) |
+| [Royal Mail](carrier:royal-mail) | 2nd Class, 2nd Class Signed For | Not announced yet (2025: Wednesday 17 December) |
 | Royal Mail | Tracked 48 | Not announced yet (2025: Friday 19 December) |
 | Royal Mail | 1st Class, 1st Class Signed For | Not announced yet (2025: Saturday 20 December) |
 | Royal Mail | Tracked 24 | Not announced yet (2025: Sunday 21 December) |
@@ -35,17 +35,17 @@ All three have published their 2026 dates. USPS aims at delivery before Christma
 
 | Carrier | Service | Send by |
 | --- | --- | --- |
-| USPS | Ground Advantage, First-Class Mail (cards and letters) | Thursday 17 December |
+| [USPS](carrier:usps) | Ground Advantage, First-Class Mail (cards and letters) | Thursday 17 December |
 | USPS | Priority Mail | Friday 18 December |
 | USPS | Priority Mail Express | Saturday 19 December |
 | USPS | Ground Advantage to Alaska, Hawaii, Puerto Rico and US territories | Wednesday 16 December |
 | USPS | Military APO/FPO/DPO, Ground Advantage | Wednesday 4 November |
 | USPS | Military APO/FPO/DPO, First-Class Mail and Priority Mail | Wednesday 9 December |
-| UPS | Ground | No fixed date: check ups.com/ctc |
+| [UPS](carrier:ups) | Ground | No fixed date: check ups.com/ctc |
 | UPS | 3 Day Select | Monday 21 December |
 | UPS | 2nd Day Air | Tuesday 22 December |
 | UPS | Next Day Air | Wednesday 23 December |
-| FedEx | Ground Economy | Tuesday 15 December |
+| [FedEx](carrier:fedex) | Ground Economy | Tuesday 15 December |
 | FedEx | Ground, Home Delivery | Thursday 17 December (5 days in transit) to Wednesday 23 December (1 day) |
 | FedEx | Express Saver | Monday 21 December |
 | FedEx | 2Day, 2Day AM | Tuesday 22 December |

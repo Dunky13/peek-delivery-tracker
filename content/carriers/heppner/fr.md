@@ -18,7 +18,7 @@ Heppner ne publie aucun format ; Peek attend 8 chiffres pour Heppner. Quelques e
 | --- | --- |
 | `12345678` | Heppner, ou un numéro [Mondial Relay](carrier:mondial-relay) ou [Colisweb](carrier:colisweb) de même longueur. |
 | `1234567` | Pas Heppner : 7 chiffres, c'est la forme de SEUR. |
-| `1234567890` | Pas Heppner : 10 chiffres correspondent à DHL, Mondial Relay, Relais Colis et d'autres. |
+| `1234567890` | Pas Heppner : 10 chiffres correspondent à [DHL](carrier:dhl-express), Mondial Relay, Relais Colis et d'autres. |
 
 Huit chiffres ne disent pas quelle entreprise a ta commande : regarde qui signe le SMS ou l'e-mail, et lis [à quel transporteur appartient un numéro](guide:tracking-number-formats). Si Heppner affiche « Nous n'avons pas pu retrouver votre commande », il ajoute : « Vérifiez la correspondance entre le code postal saisi et le numéro de suivi. » Un mauvais code postal ressemble donc à un mauvais numéro.
 

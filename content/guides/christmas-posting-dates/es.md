@@ -18,7 +18,7 @@ A 9 de octubre, la página de Navidad de GLS sigue titulada «Navidad 2025: Plaz
 | GLS | BusinessParcel, Península, para entregar en Nochebuena | Sin anunciar todavía (2025: lunes 22 de diciembre, entrega estimada el miércoles 24) |
 | GLS | BusinessParcel, Península, entrega después de Navidad | Sin anunciar todavía (2025: martes 23 de diciembre, entrega estimada el viernes 26) |
 | GLS | EconomyParcel, y envíos a Baleares, Canarias, Ceuta y Melilla | Sin anunciar todavía (2025: no estaban en su tabla) |
-| Correos | Paq Estándar, Paq Premium y cartas | Sin anunciar todavía (2025: no encontramos ninguna) |
+| [Correos](carrier:correos-spain) | Paq Estándar, Paq Premium y cartas | Sin anunciar todavía (2025: no encontramos ninguna) |
 | [Correos Express](carrier:correos-express), SEUR, [MRW](carrier:mrw) y [NACEX](carrier:nacex) | Todos los servicios | Sin anunciar todavía (2025: no encontramos ninguna) |
 
 ### Cuánto tarda cada una en la Península

@@ -6,7 +6,7 @@ published: 2026-10-10
 updated: 2026-10-11
 ---
 
-Correos Express is the express parcel company of Spain's Correos group, delivering across Spain and Portugal; it isn't Correos, the post office. Type your number into its Spanish-language [tracking page](https://s.correosexpress.com/) or paste it in the box above. The sender, usually the shop, registers the parcel with Correos Express, so ask the shop if you have no number.
+Correos Express is the express parcel company of Spain's Correos group, delivering across Spain and Portugal; it isn't [Correos](carrier:correos-spain), the post office. Type your number into its Spanish-language [tracking page](https://s.correosexpress.com/) or paste it in the box above. The sender, usually the shop, registers the parcel with Correos Express, so ask the shop if you have no number.
 
 ## Your Correos Express tracking number
 

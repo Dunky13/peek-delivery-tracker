@@ -80,7 +80,7 @@ FAN's channels, as listed on its site on 12 October 2026:
 
 ## Tracking FAN Courier parcels with Peek
 
-[Peek](/) can't tell a FAN Courier AWB from its 13 digits. It asks La Poste and Delhivery instead (and offers Correos Chile, Yunda and Korea Post); when none knows it you'll see "not found yet · Peek keeps checking". Pick "FAN Courier" with "Change", or paste a fancourier.ro link from the Romanian tracking page (`/awb-tracking/` with `tracking=` or `awb=`). Links to the English page aren't read.
+[Peek](/) can't tell a FAN Courier AWB from its 13 digits. It asks [La Poste](carrier:la-poste) and Delhivery instead (and offers Correos Chile, Yunda and Korea Post); when none knows it you'll see "not found yet · Peek keeps checking". Pick "FAN Courier" with "Change", or paste a fancourier.ro link from the Romanian tracking page (`/awb-tracking/` with `tracking=` or `awb=`). Links to the English page aren't read.
 
 FAN's scans carry a time without a time zone, so Peek doesn't show FAN's own scan list. It takes a dated history from [universal tracking services](guide:universal-tracker) when one knows the parcel, asks FAN Courier again every 6 hours and, if no service answers, shows FAN's current status, dated when Peek saw it. Statuses keep FAN's English wording, except `Delivered` and `Shipment picked up`, which appear in Peek's words. Peek can notify you when the status changes.
 

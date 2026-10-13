@@ -848,6 +848,70 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "APC Overnight tracking: numbers, statuses, missed deliveries",
       "name": "APC Overnight",
       "color": "#243269"
+    },
+    {
+      "id": "ups",
+      "catalog": "ups",
+      "slug": "ups-tracking",
+      "title": "UPS tracking: numbers, statuses and missed deliveries",
+      "name": "UPS",
+      "color": "#351c15"
+    },
+    {
+      "id": "fedex",
+      "catalog": "fedex",
+      "slug": "fedex-tracking",
+      "title": "FedEx tracking: numbers, statuses and missed deliveries",
+      "name": "FedEx",
+      "color": "#4d148c"
+    },
+    {
+      "id": "dhl-express",
+      "catalog": "dhl-express",
+      "slug": "dhl-express-tracking",
+      "title": "DHL Express tracking: waybill numbers and statuses",
+      "name": "DHL Express",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "dhl",
+      "catalog": "dhl",
+      "slug": "dhl-paket-tracking",
+      "title": "DHL Paket tracking: numbers, statuses and pickup help",
+      "name": "DHL Paket",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "la-poste",
+      "catalog": "la-poste",
+      "slug": "la-poste-colissimo-tracking",
+      "title": "La Poste / Colissimo tracking: numbers and statuses",
+      "name": "La Poste / Colissimo",
+      "color": "#ffcf00"
+    },
+    {
+      "id": "correos-spain",
+      "catalog": "correos-spain",
+      "slug": "correos-tracking",
+      "title": "Correos tracking: Spain's post, numbers and statuses",
+      "name": "Correos",
+      "color": "#ffcd00"
+    },
+    {
+      "id": "royal-mail",
+      "catalog": "royal-mail",
+      "slug": "royal-mail-tracking",
+      "title": "Royal Mail tracking: numbers, statuses and redelivery",
+      "name": "Royal Mail",
+      "color": "#da202a"
+    },
+    {
+      "id": "usps",
+      "catalog": "usps",
+      "slug": "usps-tracking",
+      "title": "USPS tracking: numbers, statuses and missed deliveries",
+      "name": "USPS",
+      "color": "#004b87"
     }
   ],
   "de": [
@@ -1025,6 +1089,38 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "slug": "swiss-post-cargo-sendungsverfolgung",
       "title": "Swiss Post Cargo Tracking: Status, Zustellung, Kontakt",
       "name": "Swiss Post Cargo",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "ups",
+      "catalog": "ups",
+      "slug": "ups-sendungsverfolgung",
+      "title": "UPS Sendungsverfolgung: Status, Zustellung und Kontakt",
+      "name": "UPS",
+      "color": "#351c15"
+    },
+    {
+      "id": "fedex",
+      "catalog": "fedex",
+      "slug": "fedex-sendungsverfolgung",
+      "title": "FedEx Tracking und Sendungsverfolgung: Status und Hilfe",
+      "name": "FedEx",
+      "color": "#4d148c"
+    },
+    {
+      "id": "dhl-express",
+      "catalog": "dhl-express",
+      "slug": "dhl-express-sendungsverfolgung",
+      "title": "DHL Express Sendungsverfolgung: Nummer, Status, Kontakt",
+      "name": "DHL Express",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "dhl",
+      "catalog": "dhl",
+      "slug": "dhl-paket-sendungsverfolgung",
+      "title": "DHL Paket Sendungsverfolgung: Nummer, Status, Packstation",
+      "name": "DHL Paket",
       "color": "#ffcc00"
     }
   ],
@@ -1292,6 +1388,38 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Swiss Post Cargo suivi\u00a0: statuts, livraison et contact",
       "name": "Swiss Post Cargo",
       "color": "#ffcc00"
+    },
+    {
+      "id": "ups",
+      "catalog": "ups",
+      "slug": "ups-tracking-suivi-colis",
+      "title": "UPS tracking\u00a0: suivi de colis, statuts et contact",
+      "name": "UPS",
+      "color": "#351c15"
+    },
+    {
+      "id": "fedex",
+      "catalog": "fedex",
+      "slug": "fedex-suivi-colis",
+      "title": "FedEx suivi\u00a0: colis, statuts et avis de passage",
+      "name": "FedEx",
+      "color": "#4d148c"
+    },
+    {
+      "id": "dhl-express",
+      "catalog": "dhl-express",
+      "slug": "dhl-express-suivi",
+      "title": "DHL Express suivi\u00a0: numéro de bordereau et statuts",
+      "name": "DHL Express",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "la-poste",
+      "catalog": "la-poste",
+      "slug": "suivi-la-poste-colissimo",
+      "title": "La Poste / Colissimo\u00a0: suivi de colis, numéro et statuts",
+      "name": "La Poste / Colissimo",
+      "color": "#ffcf00"
     }
   ],
   "it": [
@@ -1445,6 +1573,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "slug": "swiss-post-cargo-tracking",
       "title": "Swiss Post Cargo tracking: stati, consegna e contatti",
       "name": "Swiss Post Cargo",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "ups",
+      "catalog": "ups",
+      "slug": "ups-tracking",
+      "title": "UPS tracking: stato del pacco, consegna e contatti",
+      "name": "UPS",
+      "color": "#351c15"
+    },
+    {
+      "id": "fedex",
+      "catalog": "fedex",
+      "slug": "fedex-tracking",
+      "title": "FedEx tracking: numero, stati e consegna del pacco",
+      "name": "FedEx",
+      "color": "#4d148c"
+    },
+    {
+      "id": "dhl-express",
+      "catalog": "dhl-express",
+      "slug": "dhl-express-tracking",
+      "title": "DHL Express tracking: lettera di vettura, stati e contatti",
+      "name": "DHL Express",
       "color": "#ffcc00"
     }
   ],
@@ -1624,6 +1776,38 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Dachser seguimiento: enlace, estados y entrega con cita",
       "name": "Dachser",
       "color": "#005ca9"
+    },
+    {
+      "id": "ups",
+      "catalog": "ups",
+      "slug": "ups-seguimiento",
+      "title": "UPS seguimiento: estado del paquete, entrega y teléfono",
+      "name": "UPS",
+      "color": "#351c15"
+    },
+    {
+      "id": "fedex",
+      "catalog": "fedex",
+      "slug": "fedex-seguimiento",
+      "title": "FedEx seguimiento: estado del envío, entrega y teléfono",
+      "name": "FedEx",
+      "color": "#4d148c"
+    },
+    {
+      "id": "dhl-express",
+      "catalog": "dhl-express",
+      "slug": "dhl-express-seguimiento",
+      "title": "DHL Express seguimiento: número de albarán y estados",
+      "name": "DHL Express",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "correos-spain",
+      "catalog": "correos-spain",
+      "slug": "seguimiento-correos",
+      "title": "Correos seguimiento: estados, entregas, aduanas y teléfono",
+      "name": "Correos",
+      "color": "#ffcd00"
     }
   ],
   "pt": [
@@ -1786,6 +1970,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Dachser tracking: rastrear encomenda, estados e contactos",
       "name": "Dachser",
       "color": "#005ca9"
+    },
+    {
+      "id": "ups",
+      "catalog": "ups",
+      "slug": "ups-tracking",
+      "title": "UPS tracking: número 1Z, estados e entregas em Portugal",
+      "name": "UPS",
+      "color": "#351c15"
+    },
+    {
+      "id": "fedex",
+      "catalog": "fedex",
+      "slug": "fedex-tracking",
+      "title": "FedEx tracking: número, estados e entregas em Portugal",
+      "name": "FedEx",
+      "color": "#4d148c"
+    },
+    {
+      "id": "dhl-express",
+      "catalog": "dhl-express",
+      "slug": "dhl-express-tracking",
+      "title": "DHL Express tracking: carta de porte, estados e contactos",
+      "name": "DHL Express",
+      "color": "#ffcc00"
     }
   ],
   "pl": [
@@ -1908,6 +2116,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Nova Poshta (Nova Post) śledzenie: numer, statusy, odbiór",
       "name": "Nova Poshta",
       "color": "#e30613"
+    },
+    {
+      "id": "ups",
+      "catalog": "ups",
+      "slug": "ups-tracking-sledzenie-paczki",
+      "title": "UPS tracking: śledzenie paczki, statusy i kontakt",
+      "name": "UPS",
+      "color": "#351c15"
+    },
+    {
+      "id": "fedex",
+      "catalog": "fedex",
+      "slug": "fedex-sledzenie",
+      "title": "FedEx śledzenie: numer przesyłki, statusy i awizo",
+      "name": "FedEx",
+      "color": "#4d148c"
+    },
+    {
+      "id": "dhl-express",
+      "catalog": "dhl-express",
+      "slug": "dhl-express-sledzenie-przesylki",
+      "title": "DHL Express śledzenie przesyłki: numer, statusy i kontakt",
+      "name": "DHL Express",
+      "color": "#ffcc00"
     }
   ]
 };

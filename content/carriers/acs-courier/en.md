@@ -19,7 +19,7 @@ ACS calls it the shipping number; shops often say voucher.
 
 It's in ACS's SMS, Viber or email, in the locker message and often in the shop's shipping email. The number on the "Absent" note left after a missed delivery works in ACS's tracker too, and a return gets its own new number.
 
-Ten digits are not unique to ACS. [Geniki Taxydromiki](carrier:geniki-taxydromiki) vouchers look exactly the same, and DHL Express, [Relais Colis](carrier:relais-colis) and others use 10 digits too. If the shop's email names another carrier, track it there. More in [tracking number formats](guide:tracking-number-formats).
+Ten digits are not unique to ACS. [Geniki Taxydromiki](carrier:geniki-taxydromiki) vouchers look exactly the same, and [DHL Express](carrier:dhl-express), [Relais Colis](carrier:relais-colis) and others use 10 digits too. If the shop's email names another carrier, track it there. More in [tracking number formats](guide:tracking-number-formats).
 
 **Cyprus and orders from [Shein, Temu or AliExpress](guide:tracking-from-china).** With DPD or [Speedy](carrier:speedy), ACS texts you its 10-digit number once the parcel reaches Cyprus. No SMS or Viber message yet means, ACS says, it hasn't arrived and ACS can't tell you more.
 

@@ -18,7 +18,7 @@ The number is in DHL's shipping email or the shop's order email. On the label it
 | `3SABC12345678` | `3S`, three letters, then digits: a DHL barcode shape. |
 | Code on the yellow card | The delivery code on a missed-delivery card. Enter it with your postcode in track and trace. |
 
-Some numbers look alike. A `3S` code with four letters after it is usually PostNL's, a `JJD` number is DHL Germany's shape (though DHL's Dutch tracking can know it), and a DHL Express parcel has a waybill number under its barcode. Some 12-character `3S` codes also fit [Colis Privé](carrier:colis-prive). If the tracker finds nothing, check which carrier the shop's email names.
+Some numbers look alike. A `3S` code with four letters after it is usually PostNL's, a `JJD` number is [DHL Germany](carrier:dhl)'s shape (though DHL's Dutch tracking can know it), and a [DHL Express](carrier:dhl-express) parcel has a waybill number under its barcode. Some 12-character `3S` codes also fit [Colis Privé](carrier:colis-prive). If the tracker finds nothing, check which carrier the shop's email names.
 
 ## What DHL eCommerce tracking statuses mean
 

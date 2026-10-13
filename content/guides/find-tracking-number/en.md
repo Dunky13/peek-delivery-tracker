@@ -11,7 +11,7 @@ You'll usually find your tracking number in the shop's shipping email or text, o
 
 ## Where do I find my tracking number?
 
-USPS puts it plainly: the number "is generated and provided to the sender". It usually reaches you through them, so look in this order:
+[USPS](carrier:usps) puts it plainly: the number "is generated and provided to the sender". It usually reaches you through them, so look in this order:
 
 :::steps
 - Your inbox and texts | Search for "shipped", "dispatched", "tracking" or the shop's name, and check spam.
@@ -41,8 +41,8 @@ Ordered from AliExpress or another shop in China? See [tracking a parcel from Ch
 ### On a missed-delivery card
 
 - **USPS** PS Form 3849: search its barcode number on USPS.com "as you would use a tracking number".
-- **UPS** Delivery Notice, left on the first delivery attempt in select countries: its 12-digit reference number works in UPS tracking.
-- **FedEx** door tag: its number goes straight into FedEx tracking.
+- **[UPS](carrier:ups)** Delivery Notice, left on the first delivery attempt in select countries: its 12-digit reference number works in UPS tracking.
+- **[FedEx](carrier:fedex)** door tag: its number goes straight into FedEx tracking.
 - **Canada Post** Delivery Notice Card: 15 digits that serve "the same purpose as a tracking number".
 - **[Evri](carrier:evri)** calling card: its 8-digit number works on Evri's tracking page.
 
@@ -73,11 +73,11 @@ Several carriers list parcels heading your way once you prove the address, email
 | Canada | Canada Post automatic tracking, free | Personal accounts only, no business or PO box addresses, ID checked. No guarantee every parcel is added |
 | Australia | MyPost account, free | Australia Post adds parcels "if we have the information required" |
 
-We found nothing like this for Royal Mail, Evri or [An Post](carrier:an-post): with them, you need the number. To follow parcels from every carrier in one list, see [universal parcel tracking](guide:universal-tracker).
+We found nothing like this for [Royal Mail](carrier:royal-mail), Evri or [An Post](carrier:an-post): with them, you need the number. To follow parcels from every carrier in one list, see [universal parcel tracking](guide:universal-tracker).
 
 ### Track by the sender's reference
 
-If the sender tells you their own reference (a purchase order or invoice number), couriers can search by it: UPS **Track by Reference Number**, FedEx **Track by reference** and DHL Express **Track By Reference**. Canada Post's Track takes the reference with the shipping date. UPS warns the details will be "mostly masked".
+If the sender tells you their own reference (a purchase order or invoice number), couriers can search by it: UPS **Track by Reference Number**, FedEx **Track by reference** and [DHL Express](carrier:dhl-express) **Track By Reference**. Canada Post's Track takes the reference with the shipping date. UPS warns the details will be "mostly masked".
 
 ## Can you track a parcel with just a name or address?
 

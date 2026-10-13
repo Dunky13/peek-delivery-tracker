@@ -18,10 +18,10 @@ DHL no publica ningún número de ejemplo. Estas son las formas que conoce el ca
 
 | Forma | Ejemplo | De quién puede ser |
 | --- | --- | --- |
-| 10 cifras | `1234567890` | DHL eCommerce Iberia, pero también Mondial Relay, Relais Colis, TIPSA, GLS Spain o, si cuadra su dígito de control, DHL Express |
+| 10 cifras | `1234567890` | DHL eCommerce Iberia, pero también Mondial Relay, Relais Colis, TIPSA, GLS Spain o, si cuadra su dígito de control, [DHL Express](carrier:dhl-express) |
 | Dos letras, 7 cifras y un `0` | `AB12345670` | DHL eCommerce Iberia |
 
-Si el correo de la tienda nombra a [Mondial Relay](carrier:mondial-relay), [TIPSA](carrier:tipsa) o [GLS Spain](carrier:gls-es) para un número de 10 cifras, el paquete es suyo, no de DHL. Dos letras, nueve cifras y `ES` es un número de Correos, no de DHL.
+Si el correo de la tienda nombra a [Mondial Relay](carrier:mondial-relay), [TIPSA](carrier:tipsa) o [GLS Spain](carrier:gls-es) para un número de 10 cifras, el paquete es suyo, no de DHL. Dos letras, nueve cifras y `ES` es un número de [Correos](carrier:correos-spain), no de DHL.
 
 ## Estados de DHL eCommerce: qué significa cada uno
 

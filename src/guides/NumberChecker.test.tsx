@@ -24,7 +24,8 @@ const guide = parseGuide([
   ':::sources', '- [UPU](https://www.upu.int/) – the standard', ':::', '',
 ].join('\n'));
 const page = (locale: Locale, messages: Messages) => render(<GuidePage guide={guide} id="tracking-number-formats" locale={locale} t={t(locale, messages)} links={[]} others={[]} />);
-const yunexpress = (locale: Locale) => CARRIER_LINKS[locale].find(({ id }) => id === 'yunexpress')!;
+const carrier = (locale: Locale, id: string) => CARRIER_LINKS[locale].find((link) => link.id === id)!;
+const yunexpress = (locale: Locale) => carrier(locale, 'yunexpress');
 const assign = vi.fn();
 
 beforeEach(() => {
@@ -55,7 +56,7 @@ describe('the number checker in a guide', () => {
     const result = document.getElementById('number-checker-result')!;
     expect(await within(result).findByText('UPS')).toBeVisible();
     expect(result).toHaveTextContent(`1Z999AA10123456784${en['add.detectedCarrier']}UPS`);
-    expect(within(result).queryByRole('link')).toBeNull();
+    expect(within(result).getByRole('link', { name: 'UPS' })).toHaveAttribute('href', `/carriers/${carrier('en', 'ups').slug}`);
     await user.clear(field);
     await user.type(field, 'YT1234567890123456');
     expect(await within(result).findByRole('link', { name: 'YunExpress' })).toHaveAttribute('href', `/carriers/${yunexpress('en').slug}`);
@@ -63,6 +64,15 @@ describe('the number checker in a guide', () => {
     // Emptied, it says what it does again.
     await user.clear(field);
     expect(result).toHaveTextContent(en['guides.checker.hint']);
+  });
+
+  it('names a carrier without a link where the guide’s language has no page for it', async () => {
+    const user = userEvent.setup();
+    page('de', de);
+    await user.type(screen.getByRole('textbox', { name: de['guides.checker.label'] }), 'AB123456785GB');
+    const result = document.getElementById('number-checker-result')!;
+    expect(await within(result).findByText('Royal Mail')).toBeVisible();
+    expect(within(result).queryByRole('link')).toBeNull();
   });
 
   it('lists the carriers a shape fits without proving one, by the name of their page in the guide’s language', async () => {

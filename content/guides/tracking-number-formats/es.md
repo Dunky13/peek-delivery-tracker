@@ -33,7 +33,7 @@ Esto es lo que dicen las empresas y la norma postal sobre los números que más 
 
 | Empresa | Cómo es el número |
 | --- | --- |
-| Correos | «código de envío». Su ayuda no da formato; según esos datos, es el formato postal acabado en `ES`, o 16 o 23 caracteres que empiezan por `P` o `D` más otra letra (como `PQ`) y acaban en letra. Te llega por correo electrónico, por SMS o por ambos, y en el aviso de llegada |
+| [Correos](carrier:correos-spain) | «código de envío». Su ayuda no da formato; según esos datos, es el formato postal acabado en `ES`, o 16 o 23 caracteres que empiezan por `P` o `D` más otra letra (como `PQ`) y acaban en letra. Te llega por correo electrónico, por SMS o por ambos, y en el aviso de llegada |
 | [Correos Express](carrier:correos-express) | su ayuda no da formato; según esos datos, 16 o 23 cifras |
 | [SEUR](carrier:seur) | no publica el formato; su buscador pide el «Identificador de envío». Suelen ser 14 o 21 cifras, y un código de 7 cifras también sirve; las de 14 también encajan con DPD, Relais Colis, BRT y otros |
 | GLS | su página de seguimiento no da longitud y pide también el código postal de destino |
@@ -45,8 +45,8 @@ Esto es lo que dicen las empresas y la norma postal sobre los números que más 
 | InPost (Punto Pack, Locker) | «número de expedición»; el ejemplo de su localizador tiene 8 caracteres. La web de Mondial Relay en España ya lleva a la de InPost |
 | Ecoscooting | según esos datos, `CNESP` y 20 cifras |
 | [Paack](carrier:paack) | su seguimiento pide el «Número de pedido» (sus preguntas frecuentes lo llaman número de seguimiento) junto con el código postal de entrega. Paack no publica ningún formato y su propio ejemplo mezcla cifras, guiones y minúsculas, así que puede parecerse al número de otra empresa: cópialo tal cual, sin espacios y respetando mayúsculas y minúsculas |
-| UPS | `1Z` y 16 letras o cifras, 18 caracteres en total, como `1Z999AA10123456784`, un ejemplo con un dígito de control de UPS válido |
-| DHL Express | 10 cifras, nunca letras, según DHL Express en los Países Bajos |
+| [UPS](carrier:ups) | `1Z` y 16 letras o cifras, 18 caracteres en total, como `1Z999AA10123456784`, un ejemplo con un dígito de control de UPS válido |
+| [DHL Express](carrier:dhl-express) | 10 cifras, nunca letras, según DHL Express en los Países Bajos |
 | [4PX](carrier:4px) | `4PX`, 13 cifras y `CN`; 4PX no publica ningún número de ejemplo, y su web acepta de 5 a 50 letras y cifras. `LP`, 13 cifras y `CN` es probablemente de 4PX |
 | [Yanwen](carrier:yanwen) | Yanwen no publica ningún número de ejemplo; sus paquetes llevan `BYS` y 9 cifras, o dos letras, 9 cifras y `YP` (suele empezar por `UL` o `UK`). `YW`, tres letras y 12 cifras es su reparto propio en Estados Unidos |
 | AliExpress, [Cainiao](carrier:cainiao) | Cainiao no describe sus números; según esos datos, `DOFR` o `CNFR`, 13 cifras y `HD` es de Cainiao, y `LP` y `CNG` se explican justo abajo |

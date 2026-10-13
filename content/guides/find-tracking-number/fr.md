@@ -11,7 +11,7 @@ Ton numéro de suivi se trouve en général dans l'e-mail ou le SMS d'expéditio
 
 ## Où trouver mon numéro de suivi ?
 
-La Poste le dit simplement : le numéro est « communiqué par votre expéditeur », ou arrive dans un e-mail de La Poste. C'est donc en général l'expéditeur qui te le transmet. Selon le transporteur, il s'appelle aussi numéro d'envoi (La Poste, [La Poste suisse](carrier:swiss-post), [Planzer](carrier:planzer)), numéro du colis ([Quickpac](carrier:quickpac)), n° d'expédition ([Mondial Relay](carrier:mondial-relay)) ou code-barres ([bpost](carrier:bpost)). Cherche dans cet ordre :
+[La Poste](carrier:la-poste) le dit simplement : le numéro est « communiqué par votre expéditeur », ou arrive dans un e-mail de La Poste. C'est donc en général l'expéditeur qui te le transmet. Selon le transporteur, il s'appelle aussi numéro d'envoi (La Poste, [La Poste suisse](carrier:swiss-post), [Planzer](carrier:planzer)), numéro du colis ([Quickpac](carrier:quickpac)), n° d'expédition ([Mondial Relay](carrier:mondial-relay)) ou code-barres ([bpost](carrier:bpost)). Cherche dans cet ordre :
 
 :::steps
 - Tes e-mails et SMS | Cherche « expédié », « expédition », « suivi » ou le nom de la boutique, sans oublier les spams.
@@ -48,7 +48,7 @@ Trois pistes existent, et aucune ne passe par ton nom ou ton adresse.
 
 ### Demande-le à l'expéditeur
 
-Les transporteurs qui abordent le cas d'un numéro manquant te renvoient tous vers l'expéditeur : DHL, FedEx et Mondial Relay l'écrivent noir sur blanc. Demande-lui :
+Les transporteurs qui abordent le cas d'un numéro manquant te renvoient tous vers l'expéditeur : DHL, [FedEx](carrier:fedex) et Mondial Relay l'écrivent noir sur blanc. Demande-lui :
 
 - **Le nom du transporteur.** Sur le site d'un autre, le numéro ne donnera rien.
 - **Le numéro tel qu'il est imprimé.**
@@ -72,7 +72,7 @@ Chez La Poste, un colis commandé ailleurs ne s'ajoute à « Mes suivis » qu'av
 
 ### Suis le colis avec la référence de l'expéditeur
 
-Si l'expéditeur te donne sa propre référence (bon de commande, numéro de facture), les transporteurs express peuvent retrouver l'envoi grâce à elle : **Suivi par numéro de référence** chez UPS, **Suivre par référence** chez FedEx et chez DHL Express. UPS prévient que les détails de suivi seront alors « pour la plupart masqués ». Chez La Poste, bpost ou La Poste suisse, nous n'avons pas trouvé de recherche publique par référence.
+Si l'expéditeur te donne sa propre référence (bon de commande, numéro de facture), les transporteurs express peuvent retrouver l'envoi grâce à elle : **Suivi par numéro de référence** chez [UPS](carrier:ups), **Suivre par référence** chez FedEx et chez [DHL Express](carrier:dhl-express). UPS prévient que les détails de suivi seront alors « pour la plupart masqués ». Chez La Poste, bpost ou La Poste suisse, nous n'avons pas trouvé de recherche publique par référence.
 
 ## Peut-on suivre un colis avec son nom, son adresse ou son téléphone ?
 

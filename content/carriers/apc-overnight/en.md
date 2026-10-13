@@ -24,8 +24,8 @@ With the long number in the link, APC Choice opens the parcel's history without 
 
 Two things to watch:
 
-- A 22-digit number that doesn't start with a real date (`1234567890123456789012`, for example) isn't APC's. Numbers of that length can belong to USPS, [Austrian Post](carrier:austrian-post) or Estafeta.
-- APC's numbers don't look like Royal Mail's (ending in `GB`), [Parcelforce's](carrier:parcelforce), [Evri's](carrier:evri) or [DPD UK's](carrier:dpd-uk).
+- A 22-digit number that doesn't start with a real date (`1234567890123456789012`, for example) isn't APC's. Numbers of that length can belong to [USPS](carrier:usps), [Austrian Post](carrier:austrian-post) or Estafeta.
+- APC's numbers don't look like [Royal Mail's](carrier:royal-mail) (ending in `GB`), [Parcelforce's](carrier:parcelforce), [Evri's](carrier:evri) or [DPD UK's](carrier:dpd-uk).
 
 If nothing comes up, APC's FAQ lists the usual reasons: the sender hasn't dispatched the parcel yet, it hasn't been scanned into the network, or the number was mistyped. Try later or check the number with the sender. No number at all? See [how to find a tracking number](guide:find-tracking-number).
 

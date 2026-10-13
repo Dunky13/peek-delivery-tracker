@@ -15,7 +15,7 @@ Most CTT codes are two letters for the product, nine digits and two letters for 
 | Shape (invented) | What it is |
 | --- | --- |
 | `RR123456785PT` | A CTT postal code. The last of the nine digits is a check digit. |
-| `RR123456785ES` | Same shape, another country: that country's post created it (here Spain's Correos). |
+| `RR123456785ES` | Same shape, another country: that country's post created it (here Spain's [Correos](carrier:correos-spain)). |
 | `0012340012345678901234` | 22 digits: on ctt.pt, a shipment that started in Spain. |
 | `0012340012345678901234001` | 25 digits. |
 

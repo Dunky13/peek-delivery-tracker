@@ -42,7 +42,7 @@ Compraste no AliExpress ou noutra loja chinesa? Vê [como seguir uma encomenda d
 - **CTT:** quando não está ninguém em casa, os CTT podem deixar-te o código num aviso na caixa do correio. Se o aviso não tiver código ou o código estiver ilegível, podes levantar o envio na Loja ou Ponto CTT indicado no aviso, dentro do prazo.
 - **DPD:** o aviso de passagem traz o número da encomenda, que podes pôr no Track & Trace da DPD.
 - **GLS:** cada cartão de notificação traz um «ID de Rastreamento», que podes usar no seguimento da GLS. Se a GLS deixar a encomenda num GLS Point, tens 10 dias úteis para a levantar.
-- **FedEx:** o rastreio da FedEx também aceita o número do aviso de passagem.
+- **[FedEx](carrier:fedex):** o rastreio da FedEx também aceita o número do aviso de passagem.
 
 ## Como seguir uma encomenda sem número de seguimento
 
@@ -72,7 +72,7 @@ Os CTT não anunciam nada parecido. Na App CTT e na área de cliente, segues um 
 
 ### Segue pela referência do remetente
 
-Se o remetente te disser a referência dele (o número de uma nota de encomenda ou de uma fatura, por exemplo), algumas transportadoras deixam-te procurar por ela: a DPD em **Procurar por referência**, no Track & Trace; a UPS em **Seguir por Número de Referência**; a FedEx em **Rastrear por referência**; e a DHL Express em **Localização por referência de Expedidor**. A UPS avisa que os detalhes vão aparecer «sobretudo mascarados», ou seja, quase todos escondidos.
+Se o remetente te disser a referência dele (o número de uma nota de encomenda ou de uma fatura, por exemplo), algumas transportadoras deixam-te procurar por ela: a DPD em **Procurar por referência**, no Track & Trace; a [UPS](carrier:ups) em **Seguir por Número de Referência**; a FedEx em **Rastrear por referência**; e a [DHL Express](carrier:dhl-express) em **Localização por referência de Expedidor**. A UPS avisa que os detalhes vão aparecer «sobretudo mascarados», ou seja, quase todos escondidos.
 
 ## Dá para seguir uma encomenda pelo nome ou pela morada?
 

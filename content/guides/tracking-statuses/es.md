@@ -37,7 +37,7 @@ Las mismas fases, con otras palabras:
 | Para recoger | `A disposición del destinatario` | `Depositado en Parcel Shop` |
 | Entregado | `Entregado` | `Entregado` |
 
-Correos agrupa sus estados en cuatro fases: `Pre-admisión`, `En Camino`, `En entrega` y `Entregado`. [SEUR](carrier:seur) escribe frases enteras en mayúsculas: `EL ENVÍO HA SIDO REGISTRADO.` cuando solo tiene los datos, `EL ENVÍO ESTÁ EN REPARTO.` el día de la entrega y `EL ENVÍO ESTÁ DISPONIBLE PARA RECOGER EN EL PUNTO SEUR PICKUP.` cuando te espera en una tienda.
+[Correos](carrier:correos-spain) agrupa sus estados en cuatro fases: `Pre-admisión`, `En Camino`, `En entrega` y `Entregado`. [SEUR](carrier:seur) escribe frases enteras en mayúsculas: `EL ENVÍO HA SIDO REGISTRADO.` cuando solo tiene los datos, `EL ENVÍO ESTÁ EN REPARTO.` el día de la entrega y `EL ENVÍO ESTÁ DISPONIBLE PARA RECOGER EN EL PUNTO SEUR PICKUP.` cuando te espera en una tienda.
 
 ## «Pre-admisión» o «etiqueta creada»: ¿lo tiene ya el transportista?
 
@@ -54,8 +54,8 @@ Que el transportista tiene tu paquete en algún punto de su red. No quiere decir
 Entre centros, el silencio (y algún rodeo) es normal:
 
 - GLS explica que usa varios centros de distribución, así que la ruta no siempre es directa.
-- UPS avisa de que, en trayectos largos, es probable que no lo vuelva a escanear hasta el centro de destino.
-- Para FedEx, pasar más de 24 horas sin un escaneo no es raro.
+- [UPS](carrier:ups) avisa de que, en trayectos largos, es probable que no lo vuelva a escanear hasta el centro de destino.
+- Para [FedEx](carrier:fedex), pasar más de 24 horas sin un escaneo no es raro.
 
 ### ¿Cuánto tarda un paquete en tránsito?
 

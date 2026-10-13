@@ -11,12 +11,12 @@ Deine Sendungsnummer steht meist in der Versandmail oder SMS des Shops. Sonst fi
 
 ## Wo finde ich die Sendungsnummer?
 
-DHL sagt es klar: „Als Empfänger erhalten Sie die Sendungsnummer von dem Absender der Sendung.“ Du bekommst sie also meist über ihn. Such in dieser Reihenfolge:
+[DHL](carrier:dhl) sagt es klar: „Als Empfänger erhalten Sie die Sendungsnummer von dem Absender der Sendung.“ Du bekommst sie also meist über ihn. Such in dieser Reihenfolge:
 
 :::steps
 - Mails und SMS | Such nach „versandt“, „Sendungsnummer“, „Sendungsverfolgung“ oder dem Namen des Shops, auch im Spam-Ordner.
 - Deine Bestellung im Shop | Meist einen Klick von der Bestellnummer entfernt (Tabelle unten).
-- Die Benachrichtigungskarte | Bei der [Schweizerischen Post](carrier:swiss-post) und bei FedEx funktioniert der Code darauf wie eine Sendungsnummer.
+- Die Benachrichtigungskarte | Bei der [Schweizerischen Post](carrier:swiss-post) und bei [FedEx](carrier:fedex) funktioniert der Code darauf wie eine Sendungsnummer.
 - Dein Konto beim Paketdienst | Manche Paketdienste zeigen dir Pakete an deine Adresse von selbst an.
 - Der Absender | Er hat die Nummer, auch wenn sie nie bei dir angekommen ist.
 :::
@@ -44,7 +44,7 @@ Was dir die Karte bringt, hängt vom Paketdienst ab:
 - **Schweizerische Post**, Abholungseinladung: Der Abholcode passt ins Feld „Sendungsnummer oder Abholcode“ der Sendungsverfolgung. Pakete kannst du in der Regel 7 Tage lang abholen, internationale Sendungen 15 Tage, und die Frist lässt sich verlängern.
 - **[Österreichische Post](carrier:austrian-post)**, Gelber Zettel: Hat der Versender deine E-Mail-Adresse übermittelt oder passen Name und Adresse zu deinem Post Account, kommt er zusätzlich als kostenlose e-Benachrichtigung per Mail und in der Post App unter „Meine Sendungen“. Mit ihr und einem amtlichen Lichtbildausweis holst du das Paket ab, genau wie mit dem Zettel.
 - **FedEx**: Die Nummer der Benachrichtigungskarte nimmt die FedEx-Sendungsverfolgung direkt an.
-- **DHL Express**: Auf der Karte steht eine Sendungs-Referenznummer. Mit ihr buchst du kostenlos eine zweite Zustellung.
+- **[DHL Express](carrier:dhl-express)**: Auf der Karte steht eine Sendungs-Referenznummer. Mit ihr buchst du kostenlos eine zweite Zustellung.
 - **DHL**: Fehlt die Karte, schickt DHL sie dir in den nächsten Tagen per Post. Liegt das Paket in einer Filiale, brauchst du sie zum Abholen gar nicht: Dein Personalausweis reicht.
 - **[Hermes](carrier:hermes-de)**: Statt einer Karte schickt Hermes manchmal eine E-Mail.
 - **Quickpac**, Karte „Abholinformation“: Darauf steht die Sendungsnummer, wie die Seite zum [Quickpac Tracking](carrier:quickpac) erklärt.
@@ -81,7 +81,7 @@ Fehlt ein Paket in der Liste, brauchst du doch wieder die Nummer. Bei der Schwei
 
 ### Mit der Referenz des Absenders verfolgen
 
-Nennt dir der Absender seine eigene Referenz, etwa eine Auftrags- oder Rechnungsnummer, können die Expressdienste danach suchen. DHL Express beantwortet die Frage „Kann ich auch ohne Sendungsnummer meine Express-Sendung verfolgen?“ mit „Ja, unter bestimmten Voraussetzungen“: mit der Referenznummer des Versenders in der Referenzsuche. Bei UPS heißt das **Sendungsverfolgung anhand der Referenznummer** und verlangt zusätzlich einen Zeitraum, bei FedEx **Sendungsverfolgung nach Referenz**. UPS warnt, dass die Angaben dann „größtenteils ausgeblendet“ werden. Bei DHL Paket gibt es diesen Weg nicht.
+Nennt dir der Absender seine eigene Referenz, etwa eine Auftrags- oder Rechnungsnummer, können die Expressdienste danach suchen. DHL Express beantwortet die Frage „Kann ich auch ohne Sendungsnummer meine Express-Sendung verfolgen?“ mit „Ja, unter bestimmten Voraussetzungen“: mit der Referenznummer des Versenders in der Referenzsuche. Bei [UPS](carrier:ups) heißt das **Sendungsverfolgung anhand der Referenznummer** und verlangt zusätzlich einen Zeitraum, bei FedEx **Sendungsverfolgung nach Referenz**. UPS warnt, dass die Angaben dann „größtenteils ausgeblendet“ werden. Bei DHL Paket gibt es diesen Weg nicht.
 
 ## Kann man ein Paket nur mit Namen oder Adresse verfolgen?
 

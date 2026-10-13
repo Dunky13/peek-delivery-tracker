@@ -18,7 +18,7 @@ DHL rappelle que le numéro vient de l'expéditeur : c'est « le numéro de suiv
 | `3SABC12345678` | 3S, trois lettres, puis 8 à 10 chiffres : un autre code-barres de DHL eCommerce. |
 | Code de l'avis de passage | Le code de livraison imprimé en bas à droite de l'avis. Saisis-le avec ton code postal dans le Track & Trace. |
 
-**Attention aux numéros qui se ressemblent.** Un code 3S suivi de quatre lettres est en général celui de PostNL. Un numéro JJD a la forme de DHL en Allemagne, même si le suivi néerlandais de DHL peut le connaître. Un colis DHL Express porte un numéro Waybill sous son code-barres : c'est un autre réseau. Certains codes 3S à 12 caractères ont aussi la forme d'un numéro [Colis Privé](carrier:colis-prive). En cas de doute, regarde quel transporteur l'e-mail de la boutique cite.
+**Attention aux numéros qui se ressemblent.** Un code 3S suivi de quatre lettres est en général celui de PostNL. Un numéro JJD a la forme de DHL en Allemagne, même si le suivi néerlandais de DHL peut le connaître. Un colis [DHL Express](carrier:dhl-express) porte un numéro Waybill sous son code-barres : c'est un autre réseau. Certains codes 3S à 12 caractères ont aussi la forme d'un numéro [Colis Privé](carrier:colis-prive). En cas de doute, regarde quel transporteur l'e-mail de la boutique cite.
 
 ## Suivi DHL Parcel : ce que veulent dire les statuts
 

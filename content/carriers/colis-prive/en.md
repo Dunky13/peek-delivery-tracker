@@ -20,7 +20,7 @@ The number is 12 letters and digits:
 | One letter, eleven digits | `A12345678901` |
 | Twelve digits | `987654321098` |
 
-The tracking also asks for the delivery postcode; a number it doesn't recognise sends you back to the empty form. Twelve digits alone also fit FedEx, Mondial Relay, [BRT](carrier:brt) and others, `CC` plus ten digits points to Relais Colis and `FR` plus ten digits to Amazon Logistics. Check which carrier your email names, or see [tracking number formats](guide:tracking-number-formats). Colis Privé Store orders have an order number (the order reference) that usually starts with HS or 2R, and they're tracked only on colisprive-store.com with that reference.
+The tracking also asks for the delivery postcode; a number it doesn't recognise sends you back to the empty form. Twelve digits alone also fit [FedEx](carrier:fedex), Mondial Relay, [BRT](carrier:brt) and others, `CC` plus ten digits points to Relais Colis and `FR` plus ten digits to Amazon Logistics. Check which carrier your email names, or see [tracking number formats](guide:tracking-number-formats). Colis Privé Store orders have an order number (the order reference) that usually starts with HS or 2R, and they're tracked only on colisprive-store.com with that reference.
 
 ## Colis Privé tracking statuses: what the French words mean
 

@@ -22,9 +22,9 @@ Escrito sozinho, um número Dachser parece-se com os de muitas outras transporta
 
 | Número | Com que se parece |
 | --- | --- |
-| `1234567890` | 10 algarismos: DHL, Mondial Relay, TIPSA e outras. |
+| `1234567890` | 10 algarismos: [DHL](carrier:dhl-express), Mondial Relay, TIPSA e outras. |
 | `12345678901` | 11 algarismos: GLS e outras. |
-| `123456789012` | 12 algarismos: FedEx, MRW, BRT e outras. |
+| `123456789012` | 12 algarismos: [FedEx](carrier:fedex), MRW, BRT e outras. |
 | `1234567890123` | 13 algarismos: La Poste, DPD France e outras. |
 | `12345678901234` | 14 algarismos: SEUR, DPD e outras. |
 

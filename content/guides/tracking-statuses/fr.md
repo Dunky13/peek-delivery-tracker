@@ -26,7 +26,7 @@ Tous les colis passent par les mêmes étapes, et un colis venu de l'étranger e
 
 ## Que veulent dire les statuts de Colissimo, Mondial Relay et La Poste suisse ?
 
-Mêmes étapes, autres mots. Pour La Poste, ce sont les libellés de la frise de laposte.fr et de ses codes de suivi ; pour [Mondial Relay](carrier:mondial-relay), ceux relevés dans de vrais suivis, car son aide n'en donne pas la liste.
+Mêmes étapes, autres mots. Pour [La Poste](carrier:la-poste), ce sont les libellés de la frise de laposte.fr et de ses codes de suivi ; pour [Mondial Relay](carrier:mondial-relay), ceux relevés dans de vrais suivis, car son aide n'en donne pas la liste.
 
 | Étape | La Poste (Colissimo) | Mondial Relay | La Poste suisse |
 | --- | --- | --- | --- |
@@ -39,7 +39,7 @@ Mêmes étapes, autres mots. Pour La Poste, ce sont les libellés de la frise de
 
 ## « En préparation chez l'expéditeur » ou « étiquette créée » : le colis est-il parti ?
 
-Non : le vendeur a créé une étiquette et transmis les données, rien de plus. Chez UPS et FedEx, `Étiquette créée` ne change qu'une fois le colis remis au transporteur. À [La Poste suisse](carrier:swiss-post), `Transmission des données par l'expéditeur` veut dire que l'envoi ne lui a normalement pas encore été remis ; chez [Colis Privé](carrier:colis-prive), `Colis attendu par Colis Privé`, qu'il n'a pas encore reçu le colis.
+Non : le vendeur a créé une étiquette et transmis les données, rien de plus. Chez [UPS](carrier:ups) et [FedEx](carrier:fedex), `Étiquette créée` ne change qu'une fois le colis remis au transporteur. À [La Poste suisse](carrier:swiss-post), `Transmission des données par l'expéditeur` veut dire que l'envoi ne lui a normalement pas encore été remis ; chez [Colis Privé](carrier:colis-prive), `Colis attendu par Colis Privé`, qu'il n'a pas encore reçu le colis.
 
 Chez [bpost](carrier:bpost), `en préparation` a deux sens : soit l'expéditeur prépare encore le colis, soit bpost l'a déjà mais doit encore le trier. Selon bpost, la plupart des colis sont traités dans les 5 jours après que l'expéditeur l'a choisi.
 

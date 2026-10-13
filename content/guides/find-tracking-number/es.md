@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-Lo normal es que el número de seguimiento esté en el correo o el SMS que te manda la tienda cuando envía el pedido, o en el propio pedido, en su web o su app, a un clic del número de pedido. Si el paquete lo has enviado tú, está en el recibo o el justificante que te dieron al dejarlo. Ni Correos ni [SEUR](carrier:seur) ni GLS buscan envíos por nombre o DNI, pero aún puedes seguir el paquete con el aviso de llegada, con la cuenta de algunos transportistas o pidiéndole el número al remitente.
+Lo normal es que el número de seguimiento esté en el correo o el SMS que te manda la tienda cuando envía el pedido, o en el propio pedido, en su web o su app, a un clic del número de pedido. Si el paquete lo has enviado tú, está en el recibo o el justificante que te dieron al dejarlo. Ni [Correos](carrier:correos-spain) ni [SEUR](carrier:seur) ni GLS buscan envíos por nombre o DNI, pero aún puedes seguir el paquete con el aviso de llegada, con la cuenta de algunos transportistas o pidiéndole el número al remitente.
 
 ## ¿Dónde encuentro mi número de seguimiento?
 
@@ -43,7 +43,7 @@ No siempre se llama igual: Correos habla de «código de envío» o «número de
 
 - **Correos:** el aviso de llegada lleva el número de envío en la parte delantera, en «Datos del envío», junto al remitente y la fecha del intento de entrega. El envío te espera en la oficina a partir del siguiente día laborable. Si te avisan por SMS o por correo electrónico, ese mensaje sustituye al papel.
 - **GLS:** si no estabas en casa, la nota de paso que te deja el repartidor te dice dónde está el envío.
-- **FedEx:** su buscador acepta, además de los números de seguimiento, el de la «etiqueta de puerta», el aviso que te dejan si no estás.
+- **[FedEx](carrier:fedex):** su buscador acepta, además de los números de seguimiento, el de la «etiqueta de puerta», el aviso que te dejan si no estás.
 
 ## Cómo localizar un paquete sin número de seguimiento
 
@@ -74,7 +74,7 @@ La app de InPost en España, en cambio, solo habla de seguir tus envíos introdu
 
 ### Busca con la referencia del remitente
 
-Si el remitente te da su propia referencia (su número de pedido interno o el de la factura, por ejemplo), algunas empresas de mensajería te dejan buscar el envío con ella: UPS en **Realiza el seguimiento por número de referencia**, FedEx en **Seguimiento por referencia** y DHL Express en **Seguimiento por Referencia**. UPS te pide también un intervalo de fechas y avisa de que los detalles «estarán enmascarados en su mayoría». DHL añade que otros números de referencia del envío pueden servir en el sistema de seguimiento de la división que lo lleva, como DHL Express o DHL Freight.
+Si el remitente te da su propia referencia (su número de pedido interno o el de la factura, por ejemplo), algunas empresas de mensajería te dejan buscar el envío con ella: [UPS](carrier:ups) en **Realiza el seguimiento por número de referencia**, FedEx en **Seguimiento por referencia** y [DHL Express](carrier:dhl-express) en **Seguimiento por Referencia**. UPS te pide también un intervalo de fechas y avisa de que los detalles «estarán enmascarados en su mayoría». DHL añade que otros números de referencia del envío pueden servir en el sistema de seguimiento de la división que lo lleva, como DHL Express o DHL Freight.
 
 ## ¿Se puede localizar un envío por nombre, DNI o teléfono?
 

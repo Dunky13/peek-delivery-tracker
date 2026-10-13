@@ -6,7 +6,7 @@ published: 2026-10-11
 updated: 2026-10-11
 ---
 
-DPD France, qui s'appelait Exapaq jusqu'en 2015, est le réseau de livraison de colis en France de Geopost, filiale du groupe La Poste. Pour suivre ton colis, saisis son numéro sur trace.dpd.fr, ouvre le lien du SMS ou de l'e-mail de DPD, ou colle le numéro dans le champ ci-dessus. Ce numéro figure dans la confirmation d'expédition de la boutique, ou dans l'e-mail ou le SMS que DPD France t'envoie quand il prend ton colis en charge.
+DPD France, qui s'appelait Exapaq jusqu'en 2015, est le réseau de livraison de colis en France de Geopost, filiale du groupe [La Poste](carrier:la-poste). Pour suivre ton colis, saisis son numéro sur trace.dpd.fr, ouvre le lien du SMS ou de l'e-mail de DPD, ou colle le numéro dans le champ ci-dessus. Ce numéro figure dans la confirmation d'expédition de la boutique, ou dans l'e-mail ou le SMS que DPD France t'envoie quand il prend ton colis en charge.
 
 ## Numéro de suivi DPD : où le trouver et à quoi il ressemble
 

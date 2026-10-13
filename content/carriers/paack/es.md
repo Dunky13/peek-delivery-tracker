@@ -22,8 +22,8 @@ Como no tiene un formato fijo, un número de pedido puede parecerse al de otra e
 | --- | --- |
 | `123456789AB` | Letras y cifras: a ninguna empresa en concreto. |
 | `1234567` | 7 cifras: también el formato de SEUR. |
-| `1234567890` | 10 cifras: también de [TIPSA](carrier:tipsa), Estafeta, DHL y otras. |
-| `123456789012` | 12 cifras: también de MRW, FedEx, BRT y otras. |
+| `1234567890` | 10 cifras: también de [TIPSA](carrier:tipsa), Estafeta, [DHL](carrier:dhl-express) y otras. |
+| `123456789012` | 12 cifras: también de MRW, [FedEx](carrier:fedex), BRT y otras. |
 
 Si el correo viene de Paack, el número es de Paack.
 

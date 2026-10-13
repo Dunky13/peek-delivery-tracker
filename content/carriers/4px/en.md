@@ -46,7 +46,7 @@ On top of the scans, 4PX files each parcel under one summary label. `receive for
 
 ## 4PX delivery, pickup and failed delivery
 
-4PX doesn't deliver to your door itself. Its site says the parcel "is being delivered to the delivery company of the destination country", for example Royal Mail in the UK or USPS in the US. Once that happens, the result page's "Terminal Service Provider" box gives that company's contact details and website.
+4PX doesn't deliver to your door itself. Its site says the parcel "is being delivered to the delivery company of the destination country", for example [Royal Mail](carrier:royal-mail) in the UK or [USPS](carrier:usps) in the US. Once that happens, the result page's "Terminal Service Provider" box gives that company's contact details and website.
 
 Attempts, notice cards, rescheduling and how long a parcel is held are that carrier's rules, not 4PX's: 4PX publishes none. Its `Arrived for Pickup` note asks you to collect the parcel "as soon as possible to avoid it being returned by the service provider". After `Delivery attempt unsuccessful`, use the "Tracking No." and the contact in that box to ask the local carrier about a new delivery or a pickup.
 
