@@ -1369,6 +1369,23 @@ describe('universal preflight and recipient input', () => {
     expect(result.result.tracking_provider).toBe('Ship24');
     expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
   });
+  it('keeps provider history without filing an unknown parcel under a carrier that refuses the number', async () => {
+    const value = setup();
+    value.direct.mockRejectedValue(new InvalidInputError('DHL Express', 'The waybill check digit does not match'));
+    value.universal.mockResolvedValue({ ...history(), discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express'] });
+    const result = await value.router.fetch(parcel({ tracking_number: '1234567891' }), false);
+    expect(value.direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier: 'dhl-express' }), 'dhl-express');
+    expect(result.correction).toBeUndefined();
+    expect(result.result.tracking_provider).toBe('Ship24');
+    expect(result.result.routing).not.toHaveProperty('discovered_carrier');
+    expect(result.result.routing).toMatchObject({ failures: { 'dhl-express': { user_error: 'carrier:invalid_input' } } });
+    // Within the carrier's cooldown the provider names it again, unasked.
+    value.direct.mockClear();
+    const again = await value.router.fetch(parcel({ tracking_number: '1234567891', carrier_data: { routing: result.result.routing as JsonObject } }), false);
+    expect(value.direct).not.toHaveBeenCalled();
+    expect(again.correction).toBeUndefined();
+    expect(again.result.tracking_provider).toBe('Ship24');
+  });
 
   it('reuses a matching history before acquiring an upstream lease', async () => {
     const value = setup();

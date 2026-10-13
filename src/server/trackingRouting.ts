@@ -371,11 +371,13 @@ export class TrackingRouter {
         value.correction = { carrier: provider, trackingUrl: state.confirmed_tracking_url ?? null,
           postcode: state.confirmed_postcode ?? null };
       }
-      // A provider can name an unknown parcel without pretending the carrier answered.
+      // A provider can name an unknown parcel without pretending the carrier answered,
+      // but not a carrier whose adapter refuses the number.
       const identified = declared === 'unknown' && !withoutProgress && !state.confirmed_carrier
         && !metadata.original_carrier && universalNumber === number && sources.includes(provider as UniversalSource)
         ? providerCarrier(value.result, number) : undefined;
-      if (identified) {
+      if (identified && state.discovered_carrier === identified
+        && state.failures[identified]?.user_error !== 'carrier:invalid_input') {
         state.configured_carrier = identified;
         value.correction = { carrier: identified, trackingUrl: null, postcode: null };
       }
