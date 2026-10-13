@@ -7164,7 +7164,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "xpo-ltl",
+      "recognitionRank": 25
     },
     "trackingUrlTemplate": "https://ext-web.ltl-xpo.com/public-app/shipments?referenceNumber={trackingNumber}",
     "linkRules": [
@@ -7270,7 +7271,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "99minutos",
+      "recognitionRank": 40
     },
     "trackingUrlTemplate": "https://tracking.99minutos.com/search/{trackingNumber}",
     "linkRules": [
@@ -8201,7 +8203,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "paquetexpress",
+      "recognitionRank": 35
     },
     "trackingUrlTemplate": "https://www.paquetexpress.com.mx/rastreo/{trackingNumber}",
     "linkRules": [
