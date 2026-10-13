@@ -5506,10 +5506,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "abf-freight",
+      "recognitionRank": 10
     },
     "trackingUrlTemplate": "https://view.arcb.com/nlo/tools/tracking#/{trackingNumber}",
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "view.arcb.com"
+        ],
+        "pathPattern": "^/nlo/tools/tracking(?:/\\d{9})?/?$",
+        "path": "^/nlo/tools/tracking/(\\d{9})/?$",
+        "fragment": "^/(\\d{9})(?:[/?]|$)"
+      }
+    ],
     "detectionRules": [],
     "trackingSearchUrl": "https://view.arcb.com/nlo/tools/tracking"
   },
@@ -6824,7 +6834,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "rl-carriers",
+      "recognitionRank": 5
     },
     "trackingUrlTemplate": "https://www.rlcarriers.com/freight/shipping/shipment-tracing?pro={trackingNumber}&docType=PRO&source=web",
     "linkRules": [
