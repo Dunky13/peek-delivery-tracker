@@ -54,7 +54,7 @@ Key server modules:
   `sharedLookups.ts` lets the copies of a number in one scheduled run share their lookups.
 - `eventPlaces.ts` serves a parcel's timeline (see [Data lifecycle](#data-lifecycle))
   and uses the scraper's place resolver to put each scan on the map,
-  when the API returns a parcel ([README](https://github.com/plhery/universal-parcel-scraper/blob/main/places/README.md)).
+  when the API returns a parcel, telling it the parcel's destination and carriers ([README](https://github.com/plhery/universal-parcel-scraper/blob/main/places/README.md)).
   Lines between recorded stops are solid; approximate areas have dotted markers.
   On the web the route is drawn as one stroke, from its first place to the parcel's, and
   the way still to go shows once the stroke has arrived.

@@ -36,6 +36,23 @@ describe('withEventPlaces', () => {
     expect(located.tracking_events[2].place).toMatchObject({ country: 'DE', name: 'Köln' });
   });
 
+  it('knows a carrier\'s country from the catalog, whatever clock its scans keep', () => {
+    const row = {
+      id: 'parcel',
+      carrier: 'royal-mail',
+      carrier_data: { active_tracking_carrier: 'la-poste' },
+      tracking_events: [
+        event('1', 'Norwich MC', '2026-09-26T09:00:00+00:00'),
+        event('2', 'LANGLEY', '2026-09-27T12:00:00+00:00'),
+        event('3', 'ROISSY', '2026-09-28T07:00:00+00:00'),
+      ],
+    };
+    const located = withEventPlaces(row) as { tracking_events: { place: places.EventPlace | null }[] };
+    // A mail centre in England, not Monaco; Langley by Heathrow, not the one in Canada.
+    expect(located.tracking_events.map((scan) => scan.place && `${scan.place.name}, ${scan.place.country}`))
+      .toEqual(['Norwich, GB', 'Langley, GB', 'Roissy-en-France, FR']);
+  });
+
   it('moves a scan to the carrier\'s own point near its town, and never returns the point', () => {
     const row = {
       id: 'parcel',

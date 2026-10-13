@@ -1,8 +1,6 @@
-import { timeZoneCountry } from 'universal-parcel-scraper';
 import { describe, expect, it } from 'vitest';
 import demo from '../../shared/delivery-demo.json';
 import { SIMULATED_UPDATES } from '../store/demoRepo';
-import { carrierTimezone } from './carriers';
 import { locatePlace, placesForEvents } from 'universal-parcel-scraper/places';
 
 interface DemoEvent { location?: string; place?: unknown }
@@ -11,8 +9,7 @@ interface DemoEvent { location?: string; place?: unknown }
 describe('demo places', () => {
   it('match what the server locates for each sample scan', () => {
     for (const sample of demo as { carrier: string; events: DemoEvent[] }[]) {
-      const country = timeZoneCountry(carrierTimezone(sample.carrier));
-      const places = placesForEvents(sample.events.map((event) => event.location), { carrierCountries: country ? [country] : [] });
+      const places = placesForEvents(sample.events.map((event) => event.location), { carriers: [sample.carrier] });
       sample.events.forEach((event, index) => expect(event.place ?? null, `${sample.carrier}: ${event.location}`).toEqual(places[index]));
     }
     for (const update of Object.values(SIMULATED_UPDATES)) {

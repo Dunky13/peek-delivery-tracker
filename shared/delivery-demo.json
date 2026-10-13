@@ -339,8 +339,8 @@
         "description": "Collected from the outdoor shop",
         "location": "Buchs, Switzerland",
         "place": {
-          "latitude": 47.167,
-          "longitude": 9.478,
+          "latitude": 47.452,
+          "longitude": 8.43,
           "precision": "city",
           "country": "CH",
           "name": "Buchs"

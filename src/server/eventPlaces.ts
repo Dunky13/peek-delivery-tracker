@@ -1,7 +1,5 @@
 import 'server-only';
 
-import { timeZoneCountry } from 'universal-parcel-scraper';
-import { carrierTimezone } from './carriers';
 import { captureOperationalError } from './observability';
 import { placesForEvents, type EventPoint } from 'universal-parcel-scraper/places';
 import { relayCopies } from './relayCopies';
@@ -60,15 +58,6 @@ function eventPoint(value: unknown): EventPoint | null {
   return typeof latitude === 'number' && typeof longitude === 'number' ? { latitude, longitude } : null;
 }
 
-function carrierCountry(carrier: unknown): string | null {
-  if (typeof carrier !== 'string') return null;
-  try {
-    return timeZoneCountry(carrierTimezone(carrier));
-  } catch {
-    return null;
-  }
-}
-
 /**
  * An API package row as it is served. Every scan gets a `place`: where its
  * free text locates it, or null. Places are worked out when the package is
@@ -92,8 +81,8 @@ export function withEventPlaces(row: JsonObject): JsonObject {
     const ordered = [...events].sort((a, b) => String(a.occurred_at).localeCompare(String(b.occurred_at)));
     const places = placesForEvents(ordered.map((event) => typeof event.location === 'string' ? event.location : null), {
       destinationCountry: typeof carrierData.destination_country === 'string' ? carrierData.destination_country : null,
-      // The carrier delivering now says more than the one the parcel was added with.
-      carrierCountries: [carrierData.active_tracking_carrier, row.carrier].map(carrierCountry).filter((code): code is string => Boolean(code)),
+      // Their countries and their own hubs. The carrier delivering now says more than the one the parcel was added with.
+      carriers: [carrierData.active_tracking_carrier, row.carrier].filter((carrier): carrier is string => typeof carrier === 'string'),
       points: ordered.map((event) => eventPoint(event.point)),
     });
     const byEvent = new Map(ordered.map((event, index) => [event, places[index]]));
