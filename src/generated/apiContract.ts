@@ -1575,6 +1575,15 @@ export const CARRIER_CAPABILITIES = {
         "params": [
           "tracking_number"
         ]
+      },
+      {
+        "domains": [
+          "paack.co"
+        ],
+        "pathPattern": "^/shipments/tracking(?:/|$)",
+        "params": [
+          "tracking_number"
+        ]
       }
     ],
     "detectionRules": [],
