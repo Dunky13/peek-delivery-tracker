@@ -73,13 +73,14 @@
   gap: 14px; padding: 16px 16px 12px; border-radius: 28px; background: var(--map-glass);
   box-shadow: var(--map-glass-edge); -webkit-backdrop-filter: var(--map-glass-blur); backdrop-filter: var(--map-glass-blur);
 }
-.parcel-map__summary { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px 14px; width: 100%; }
+/* Each name takes the room it needs, and a long one ends in an ellipsis: a short name leaves the rest to the other. */
+.parcel-map__summary { display: grid; grid-template-columns: minmax(0, auto) minmax(0, auto); gap: 10px 14px; width: 100%; }
 .parcel-map__summary[data-single] { grid-template-columns: minmax(0, 1fr); }
 .parcel-map__summary > div { display: grid; align-content: start; gap: 2px; min-width: 0; }
 .parcel-map__summary > div[data-end] { justify-items: end; text-align: right; }
 .parcel-map__summary[data-single] > div[data-end] { justify-items: start; text-align: left; }
 .parcel-map__summary > div > span { color: var(--ink-soft); font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; }
-.parcel-map__summary > div > strong { overflow: hidden; font-size: 24px; font-weight: 650; line-height: 1.15; letter-spacing: -.04em; text-overflow: ellipsis; white-space: nowrap; }
+.parcel-map__summary > div > strong { max-width: 100%; overflow: hidden; font-size: 24px; font-weight: 650; line-height: 1.15; letter-spacing: -.04em; text-overflow: ellipsis; white-space: nowrap; }
 .parcel-map__summary > div > small { color: var(--ink-soft); font-size: 12px; }
 .parcel-map__facts { display: flex; flex-wrap: wrap; grid-column: 1 / -1; gap: 4px 16px; margin: 0; color: var(--ink-soft); font-size: 12px; font-variant-numeric: tabular-nums; }
 .parcel-map__views { display: inline-flex; gap: 2px; padding: 3px; border-radius: 17px; background: color-mix(in srgb, var(--ink) 7%, transparent); }
