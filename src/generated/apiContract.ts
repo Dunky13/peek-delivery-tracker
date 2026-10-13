@@ -2824,7 +2824,7 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|LTN|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|LTN|NZC|RWM))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ],
@@ -6883,6 +6883,10 @@ export const CARRIER_CAPABILITIES = {
         "pattern": "^(?:[A-Z]{2}\\d{7}|\\d{9})$",
         "confidence": "low",
         "rawPattern": "^(?:[A-Z]{2}\\d{6}|\\d{8})-\\d$"
+      },
+      {
+        "pattern": "^I\\d{9}$",
+        "confidence": "low"
       }
     ],
     "trackingSearchUrl": "https://www.rlcarriers.com/freight/shipping/shipment-tracing"
@@ -8243,7 +8247,12 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/(?:en/)?rastreo/([^/?#-]+)/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{3}\\d{2}[A-Z]{2}\\d{5,7}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://www.paquetexpress.com.mx/rastreo"
   },
   "passport": {
@@ -8563,6 +8572,85 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.cacesa.com/en/tracking"
+  },
+  "aramex-au": {
+    "displayName": "Aramex Australia",
+    "aliases": [
+      "Aramex AU",
+      "Fastway Australia",
+      "Fastway Couriers Australia"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "color": "#dc291e",
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "aramex-au",
+      "recognitionRank": 445
+    },
+    "trackingUrlTemplate": "https://www.aramex.com.au/tools/track?l={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "aramex.com.au",
+          "fastway.com.au"
+        ],
+        "params": [
+          "l"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:[A-Z]{2}|\\d[A-Z])\\d{10}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://www.aramex.com.au/tools/track/"
+  },
+  "dai-post": {
+    "displayName": "DAI Post",
+    "countries": [
+      "AU",
+      "NZ",
+      "SG"
+    ],
+    "color": "#008faf",
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "dai-post",
+      "recognitionRank": 62
+    },
+    "trackingUrlTemplate": "https://daipost.com/track?tracknbr={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "daipost.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "tracknbr"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^NZC\\d{9}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^0039358094\\d{10}$",
+        "confidence": "low",
+        "checksum": "sscc",
+        "preferred": true
+      }
+    ],
+    "trackingSearchUrl": "https://daipost.com/track"
   }
 } as const;
 
@@ -8806,7 +8894,9 @@ export const CARRIER_IDS = [
   "stallion-express",
   "venipak",
   "vinted-go",
-  "cacesa"
+  "cacesa",
+  "aramex-au",
+  "dai-post"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
