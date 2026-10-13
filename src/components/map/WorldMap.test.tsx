@@ -481,6 +481,29 @@ describe('WorldMap', () => {
     delete (HTMLElement.prototype as Partial<HTMLElement>).setPointerCapture;
   });
 
+  it('forgets a finger that lifted where the map did not see it', async () => {
+    // A finger that has lifted can no longer be captured.
+    Object.defineProperty(HTMLElement.prototype, 'setPointerCapture', { configurable: true, value: vi.fn((id: number) => {
+      if (id === 1) throw new DOMException('The object can not be found here.', 'NotFoundError');
+    }) });
+    Object.defineProperty(HTMLElement.prototype, 'hasPointerCapture', { configurable: true, value: () => false });
+    const onOpen = vi.fn();
+    const route = buildRoute([scan(kyoto), scan(leipzig), scan(zurich)]);
+    const { container } = render(<div onClick={onOpen}><WorldMap route={route} mode="journey" time={time} peek /></div>);
+    await waitFor(() => expect(container.querySelector('path[data-kind="travelled"]')).not.toBeNull());
+    const map = screen.getByRole('img');
+    // Neither a finger the map lost hold of nor one it cannot hold makes the next a pinch: the tap opens the map.
+    fireEvent.pointerDown(map, { pointerId: 3, button: 0, clientX: 150, clientY: 150 });
+    fireEvent.lostPointerCapture(map, { pointerId: 3 });
+    fireEvent.pointerDown(map, { pointerId: 1, button: 0, clientX: 150, clientY: 150 });
+    fireEvent.pointerDown(map, { pointerId: 2, button: 0, clientX: 250, clientY: 150 });
+    fireEvent.pointerUp(map, { pointerId: 2 });
+    fireEvent.click(map);
+    expect(onOpen).toHaveBeenCalledTimes(1);
+    delete (HTMLElement.prototype as Partial<HTMLElement>).setPointerCapture;
+    delete (HTMLElement.prototype as Partial<HTMLElement>).hasPointerCapture;
+  });
+
   it('keeps the names in view when a new scan frames the map the same way', async () => {
     reducedMotion(false);
     const scans = [scan(kyoto), scan(basel), scan(zurich)];

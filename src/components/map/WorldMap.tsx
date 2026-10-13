@@ -236,18 +236,27 @@ export function WorldMap({
     return gesture.camera;
   }
 
+  /** Holds a finger on the map. One that cannot be held has lifted where the map did not see it, and is forgotten. */
+  function capture(element: HTMLDivElement, id: number) {
+    try {
+      element.setPointerCapture(id);
+    } catch {
+      touches.current.delete(id);
+    }
+  }
+
   function onPointerDown(event: PointerEvent<HTMLDivElement>) {
     if ((!interactive && !peek) || event.button > 0) return;
     touches.current.set(event.pointerId, local(event));
+    // A second finger turns a drag into a pinch, once the map holds both.
+    if (touches.current.size === 2) for (const id of touches.current.keys()) capture(event.currentTarget, id);
     if (touches.current.size === 2) {
-      // A second finger turns a drag into a pinch.
       const [a, b] = [...touches.current.values()];
       pinch.current = { distance: Math.hypot(a[0] - b[0], a[1] - b[1]) || 1, anchor: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], camera: current.current };
       drag.current = null;
-      for (const id of touches.current.keys()) event.currentTarget.setPointerCapture(id);
     } else if (interactive) {
       drag.current = { x: event.clientX, y: event.clientY, camera: current.current, id: event.pointerId };
-      event.currentTarget.setPointerCapture(event.pointerId);
+      capture(event.currentTarget, event.pointerId);
     } else {
       // One finger on a card still scrolls the page or taps the map open.
       return;
@@ -305,6 +314,11 @@ export function WorldMap({
     }
   }
 
+  function onLostCapture(event: PointerEvent<HTMLDivElement>) {
+    // A finger the map has let go of may lift where the map does not see it; one it took over from the canvas it still holds.
+    if (!event.currentTarget.hasPointerCapture(event.pointerId)) onPointerEnd(event);
+  }
+
   function onClickCapture(event: MouseEvent<HTMLDivElement>) {
     // Lifting the fingers from a pinch is not a tap.
     if (event.timeStamp - pinchedAt.current < 400) event.stopPropagation();
@@ -314,7 +328,7 @@ export function WorldMap({
     role="img" aria-label={label ?? describe(route)}
     data-interactive={interactive || undefined} data-peek={peek || undefined} data-quiet={quiet || undefined} data-scale={route.scale} data-mode={mode}
     onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd} onPointerCancel={onPointerEnd}
-    onClickCapture={onClickCapture}>
+    onLostPointerCapture={onLostCapture} onClickCapture={onClickCapture}>
     <span ref={probes} className={styles.probes} aria-hidden="true">
       {COLORS.map(name => <span key={name} data-color={name} style={{ color: `var(--map-${name})` }} />)}
     </span>
