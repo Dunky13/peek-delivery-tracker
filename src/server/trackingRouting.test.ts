@@ -620,7 +620,8 @@ describe('persistent tracking routing', () => {
       ['RR123456785FI', 'posti', ['posti', 'chronopost']],
       ['RA123456785DE', 'chronopost', ['chronopost']],
       ['33870000000000001', 'dhl-ecommerce', ['dhl-ecommerce']],
-      ['505600001', 'tnt', ['tnt']],
+      // Other carriers whose numbers pass the same check are asked beside TNT.
+      ['505600001', 'tnt', recognitionAskedCarriers('505600001')],
     ])('tracks %s through its confirmed carrier before a provider', async (number, carrier, candidates) => {
       const { router, direct, universal, recognize } = setup();
       recognize.mockImplementation(knows(carrier as string));
