@@ -1999,7 +1999,10 @@
       "countries": [
         "GB"
       ],
-      "trackingSearchUrl": "https://www.royalmail.com/track-your-item"
+      "trackingSearchUrl": "https://www.royalmail.com/track-your-item",
+      "aliases": [
+        "Parcelforce"
+      ]
     },
     "evri": {
       "displayName": "Evri",
@@ -5911,7 +5914,8 @@
       "timezone": "America/Moncton",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "day-ross",
+        "recognitionRank": 38
       },
       "linkRules": [],
       "detectionRules": [
@@ -5919,7 +5923,8 @@
           "pattern": "^(?:MRO|MTN|SMI|SML|XTO)\\d{7}$",
           "confidence": "low"
         }
-      ]
+      ],
+      "trackingSearchUrl": "https://dayross.com/track-shipments"
     },
     "dsv": {
       "displayName": "DSV",
@@ -6930,15 +6935,26 @@
       "timezone": "America/New_York",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "saia",
+        "recognitionRank": 12
       },
-      "trackingUrlTemplate": "https://www.saia.com/track?pro={trackingNumber}",
+      "trackingUrlTemplate": "https://www.saia.com/track/details;pro={trackingNumber}",
       "linkRules": [
         {
           "domains": [
             "saia.com"
           ],
           "pathPattern": "^/track/?$",
+          "params": [
+            "pro"
+          ]
+        },
+        {
+          "domains": [
+            "saia.com"
+          ],
+          "pathPattern": "^/track/details(?:/|;|$)",
+          "path": "^/track/details;pro=(\\d+)",
           "params": [
             "pro"
           ]
@@ -7080,7 +7096,9 @@
       "timezone": "Asia/Shanghai",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "wanbexpress",
+        "recognitionRank": 33,
+        "browserRecognitionRank": 33
       },
       "linkRules": [],
       "detectionRules": [
@@ -7202,7 +7220,8 @@
       "tracking": {
         "mode": "automatic",
         "adapter": "xpo-ltl",
-        "recognitionRank": 25
+        "recognitionRank": 25,
+        "browserRecognitionRank": 25
       },
       "trackingUrlTemplate": "https://ext-web.ltl-xpo.com/public-app/shipments?referenceNumber={trackingNumber}",
       "linkRules": [
@@ -7938,9 +7957,29 @@
       "timezone": "Europe/Stockholm",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "instabox",
+        "requirements": [
+          {
+            "field": "trackingUrl",
+            "validator": "instaboxCapabilityUrl",
+            "optional": true,
+            "label": "Instabox notification URL",
+            "type": "url",
+            "placeholder": "https://track.instabox.com/…",
+            "help": "The complete notification link opens your parcel history. Without it, other sources are asked."
+          }
+        ]
       },
-      "linkRules": [],
+      "linkRules": [
+        {
+          "domains": [
+            "track.instabox.com"
+          ],
+          "pathPattern": "^/[a-z]{2}(?:-[A-Z]{2})?/[A-Za-z0-9]{4,40}(?:/locker-to-locker-recipient)?/?$",
+          "path": "^/[a-z]{2}(?:-[A-Z]{2})?/([A-Za-z0-9]{4,40})(?:/locker-to-locker-recipient)?/?$",
+          "keepsCapabilityUrl": true
+        }
+      ],
       "detectionRules": [],
       "trackingSearchUrl": "https://track.instabox.com/en"
     },
