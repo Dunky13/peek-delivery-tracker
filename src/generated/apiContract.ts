@@ -545,12 +545,12 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       },
       {
-        "pattern": "^0034043[345]\\d{12}$",
+        "pattern": "^0034043(?!366)[345]\\d{12}$",
         "confidence": "high",
         "checksum": "sscc"
       },
       {
-        "pattern": "^0034043[345]\\d{12}$",
+        "pattern": "^0034043(?!366)[345]\\d{12}$",
         "confidence": "low"
       },
       {
@@ -13116,6 +13116,10 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^[A-Z]{2}\\d{10}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^\\d[A-Z]\\d{10}$",
         "confidence": "low"
       }
     ],
