@@ -341,7 +341,8 @@ Key JSON events:
   `attempt_id` of the check whose lookup they belong to. Lookups outside a check, such as
   carrier recognition, have none. A `tracking_scrape` `outcome` is `success`, `error`, or
   an answer about the number: `not_found`, `no_history` (a provider has no scans for it
-  yet), `input_required` or `invalid_input`;
+  yet, or a carrier's tracking does not know the item: an inconclusive answer with the
+  reason `status_api_not_found` or `portal_not_found`), `input_required` or `invalid_input`;
 - `tracking_sync_audit_write_failed`, `tracking_sync_audit_maintenance_failed`,
   `tracking_status_observation_write_failed`;
 - `dpd_app_session`: the scraper took up a saved session at start (`outcome` `taken_up`,
@@ -566,8 +567,9 @@ Every deploy restarts the counters, so a new series is served at 0 on its first 
 counts from the next one. `increase()` then still sees an event that happens once per
 container.
 A step or lookup `outcome`, and a fallback's `reason`, is `ok` or the scraper's error kind
-(`not_found`, `rate_limited`, `transport`…). A provider with no history for the number yet
-is `no_history` rather than `indeterminate`.
+(`not_found`, `rate_limited`, `transport`…). A provider with no history for the number yet,
+or a carrier's tracking that does not know the item, is `no_history` rather than
+`indeterminate`, as routing and health monitoring count it.
 
 | Series | Answers |
 | --- | --- |

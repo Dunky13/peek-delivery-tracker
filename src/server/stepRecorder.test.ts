@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { NoHistoryError } from 'universal-parcel-scraper';
+import { IndeterminateError, NoHistoryError } from 'universal-parcel-scraper';
 
 const metrics = { distribution: vi.fn(), count: vi.fn() };
 const observability = {
@@ -71,8 +71,12 @@ describe('sentryStepRecorder', () => {
     sentryStepRecorder.lookup({ ...record, outcome: 'input_required', errorType: 'InputRequiredError' });
     sentryStepRecorder.lookup({ ...record, outcome: 'indeterminate', errorType: 'IndeterminateError' });
     sentryStepRecorder.lookup({ ...record, outcome: 'transport', errorType: 'TimeoutError' });
+    sentryStepRecorder.lookup({
+      ...record, outcome: 'indeterminate', errorType: 'IndeterminateError',
+      error: new IndeterminateError('seur', 'Unknown shipment', { reason: 'portal_not_found' }),
+    });
     expect(observability.logOperationalEvent.mock.calls.map(([, fields]) => fields.outcome))
-      .toEqual(['not_found', 'no_history', 'input_required', 'error', 'error']);
+      .toEqual(['not_found', 'no_history', 'input_required', 'error', 'error', 'no_history']);
     expect(metrics.count).toHaveBeenCalledWith('tracking.scrape.attempts', 1, {
       attributes: { carrier: 'ups', phase: 'total', outcome: 'not_found', error_type: 'NotFoundError' },
     });

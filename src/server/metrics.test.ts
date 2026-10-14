@@ -63,6 +63,22 @@ describe('prometheus carrier metrics', () => {
     expect(text).toContain('carrier_lookup_total{carrier="india-post",final_step="direct",outcome="no_history",attempts="2"} 1');
   });
 
+  it('files a carrier whose tracking does not know the item as no history, not as a failure', async () => {
+    const unknown = new IndeterminateError('seur', 'Unknown shipment', { reason: 'portal_not_found' });
+    expect(metrics.stepOutcome('indeterminate', new Error('wrapped', { cause: unknown }))).toBe('no_history');
+    expect(metrics.stepOutcome('indeterminate', new IndeterminateError('ukrposhta', 'Unknown', { reason: 'status_api_not_found' })))
+      .toBe('no_history');
+    expect(metrics.stepOutcome('indeterminate', new IndeterminateError('seur', 'Outage page', { reason: 'maintenance_page' })))
+      .toBe('indeterminate');
+    expect(metrics.stepOutcome('indeterminate', new IndeterminateError('seur'))).toBe('indeterminate');
+    metrics.prometheusStepRecorder.step({
+      carrier: 'seur', step: 'direct', attempt: 1, outcome: 'indeterminate', errorType: 'IndeterminateError', durationMs: 200,
+      fallbackFrom: null, fallbackReason: null, fallbackErrorType: null, error: unknown,
+    });
+    const text = await scraped();
+    expect(text).toContain('carrier_step_total{carrier="seur",step="direct",outcome="no_history",error_type="IndeterminateError"} 1');
+  });
+
   it('serves what another bundled copy of the module recorded', async () => {
     // Next evaluates this module once per bundle: the scheduled sync records in
     // the instrumentation copy while the scrape endpoint reads its own copy.

@@ -5,6 +5,7 @@ import { Counter, Gauge, Histogram, Registry, collectDefaultMetrics, type LabelV
 import { CarrierError, NoHistoryError } from 'universal-parcel-scraper';
 import { METRICS, type LookupRecord, type StepOutcome, type StepRecord, type StepRecorder } from 'universal-parcel-scraper/node';
 import { initObservability } from './observability';
+import { UNKNOWN_ITEM_REASONS } from './trackingFailure';
 
 /**
  * Prometheus sink for carrier telemetry. Labels are deliberately
@@ -259,14 +260,17 @@ function count<L extends string>(counter: Counter<L>, name: string, labels: Labe
 
 /**
  * A step's outcome as the telemetry names it: the scraper's error kind, except
- * that a provider with no history for a number yet has answered, so it is told
- * apart from the indeterminate failures its kind files it under.
+ * that a provider with no history for a number yet, or a carrier's tracking
+ * that does not know the item, has answered, so it is told apart from the
+ * indeterminate failures its kind files it under, as routing and health do.
  */
 export function stepOutcome(outcome: StepOutcome, error: unknown): string {
   if (outcome !== 'indeterminate') return outcome;
   let current = error;
   for (let depth = 0; current instanceof Error && depth < 8; depth++, current = current.cause) {
-    if (current instanceof CarrierError) return current instanceof NoHistoryError ? 'no_history' : outcome;
+    if (current instanceof CarrierError) {
+      return current instanceof NoHistoryError || UNKNOWN_ITEM_REASONS.has(current.reason ?? '') ? 'no_history' : outcome;
+    }
   }
   return outcome;
 }
