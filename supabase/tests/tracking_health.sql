@@ -47,6 +47,11 @@ begin
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
   for i in 1..3 loop result := pg_temp.health_sample('test-carrier',true,'refresh','20000000-0000-4000-8000-000000000001'); end loop;
   assert result='[]', 'Other healthy parcels must not clear a still-failing parcel';
+  -- A parcel that stopped being checked, a one-off lookup leaving the schedule, holds nothing open.
+  update public.tracking_health_samples set observed_at=now()-interval '2 hours'
+    where subject='test-carrier' and package_id='10000000-0000-4000-8000-000000000001';
+  result := pg_temp.health_sample('test-carrier',true,'refresh','20000000-0000-4000-8000-000000000001');
+  assert result->0->>'state'='recovered', 'A streak that ended before the window must let the incident recover';
 
   for i in 1..10 loop result := pg_temp.health_sample('half-failing',i%2=0); end loop;
   assert result='[]', 'Exactly 50 percent must not alert';

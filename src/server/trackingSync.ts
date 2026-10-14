@@ -1139,7 +1139,9 @@ export class TrackingSyncService {
         // The parcel's own carrier does not know it yet: fallback providers failing on the
         // same unannounced number is not an outage, and the routing state keeps their cooldowns.
         // Without a carrier to ask, every provider answering without history means the same.
-        const failures = error instanceof RoutingDeferred ? Object.values(error.routing.failures) : [];
+        // A provider resting on a rate limit was not asked, so it says nothing about the number.
+        const failures = error instanceof RoutingDeferred
+          ? Object.values(error.routing.failures).filter((failure) => failure.kind !== 'rate_limited') : [];
         const routingUnannounced = error instanceof RoutingDeferred
           && (Boolean(error.routing.provider_input_needed) || error.routing.failures[carrierId]?.kind === 'not_found'
             || (failures.length > 0 && failures.every((failure) => ['not_found', 'no_history', 'input_required'].includes(failure.kind))));

@@ -2960,6 +2960,25 @@ describe('TrackingSyncService', () => {
       .resolves.toMatchObject({ waiting: 1, errors: 0 });
   });
 
+  it('keeps a number nobody has seen waiting while one provider rests on a rate limit', async () => {
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn(async (source: string) => ({ token: source === 'ParcelsApp' ? null : 'lease',
+        retry_at: source === 'ParcelsApp' ? '2026-09-10T13:00:00Z' : '2026-09-10T12:01:30Z' })),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch: vi.fn(), fetchUniversal: vi.fn(async (source: string) => { throw new NotFoundError(source); }) };
+    // The previous check already missed, so another missed check would show an error.
+    const parcel = { id: 'unseen', carrier: 'unknown', tracking_number: 'TEST1234', current_stage: 'pending',
+      carrier_data: { routing: { version: 1, configured_carrier: 'unknown', consecutive_failures: 1, probe_cursor: 0, discovery_cursor: 0 } } };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    await expect(service.syncPackage(parcel, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 1, errors: 0 });
+    expect(adapter.fetchUniversal.mock.calls.map(([source]) => source)).not.toContain('ParcelsApp');
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'waiting', sync_error: null,
+      carrier_data: { routing: { failures: { Ship24: { kind: 'not_found' }, ParcelsApp: { kind: 'rate_limited' } } } } });
+    expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'unseen',
+      expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: true })]));
+  });
+
   it('keeps a parcel waiting while its carrier lists it without scans and no provider has history', async () => {
     const client = { ...fakeClient(),
       acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),

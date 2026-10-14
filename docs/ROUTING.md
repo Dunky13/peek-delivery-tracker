@@ -119,7 +119,8 @@ A longer `Retry-After` is honoured, up to 7 days. A carrier often doesn't know a
 before its first scan, hence its shorter not-found wait. When a universal provider shows
 progress the parcel hasn't had yet and names a carrier that said not found, that carrier is
 asked again in the same check. A pending parcel whose failures are all not-found or
-`no_history` shows as waiting, not as an outage. When a failed direct adapter recovers, it
+`no_history` shows as waiting, not as an outage. A provider resting on a rate limit was
+not asked, so it leaves that answer as it is. When a failed direct adapter recovers, it
 takes over from the universal provider again.
 
 When every source fails, the parcel keeps its last progress. The error chip appears only

@@ -12,7 +12,7 @@ failure that recovers never opens an issue. See [OBSERVABILITY.md](../../docs/OB
 
 | Incident | Opens when | Recovers when |
 | --- | --- | --- |
-| Shipment refresh | 3 failed scheduled checks of one parcel in 24 h, or ≥ 5 failures and > 20 % of checks in one hour | The 3 latest checks succeed and no threshold is still breached |
+| Shipment refresh | The 3 latest scheduled checks of one parcel failed, the last within the hour, or ≥ 5 failures and > 20 % of checks in one hour | The 3 latest checks succeed and no threshold is still breached |
 | Direct transport | > 50 % of ≥ 10 direct probes failed in 24 h | The 3 latest direct probes succeed |
 | Provider lookup | > 50 % of ≥ 10 lookups failed in 24 h | The 3 latest lookups succeed |
 
