@@ -47,12 +47,16 @@ export function LandingFooter() {
     <a href="/privacy.html" onClick={() => trackAction('privacy-open')}>{t('auth.privacyLink')}</a>
     <a href={SOURCE_URL} target="_blank" rel="noopener noreferrer"><LandingIcon name="github" />GitHub</a>
     <LanguageControl englishAddress={englishAddress} />
-    {/* The sentence is cut around the two names, which are the links. No `noreferrer`: each site may see that the visit came from Peek. */}
+    {/* The sentence is cut around the three names, which are the links. What touches a name, a comma or the "d’" before it, stays on
+        its line. No `noreferrer`: each site may see that the visit came from Peek. */}
     <p className="landing-footer__maker">
-      {t('landing.footer.maker').split(/\{\{(horoscope|monkey)\}\}/).map((part, index) => {
+      {t('landing.footer.maker').split(/(\S*\{\{(?:horoscope|monkey|scootradar)\}\}\S*)/).map((part, index) => {
         if (index % 2 === 0) return part;
-        const site = OTHER_SITES[part as keyof typeof OTHER_SITES];
-        return <a key={part} href={site.address(locale)} target="_blank" rel="noopener">{site.name}</a>;
+        const [, before, name, after] = /^(\S*)\{\{(\w+)\}\}(\S*)$/.exec(part) ?? [];
+        const site = OTHER_SITES[name as keyof typeof OTHER_SITES];
+        return <span key={name} className="landing-footer__site">
+          {before}<a href={site.address(locale)} target="_blank" rel="noopener">{site.name}</a>{after}
+        </span>;
       })}
     </p>
   </footer>;

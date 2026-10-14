@@ -38,6 +38,8 @@
 /* Last, on a line of its own: what else its author makes. Each name is as tall to the finger as the links above. */
 .landing-footer__maker { display: block; flex-basis: 100%; min-height: 0; margin: 0; text-align: center; text-wrap: balance; }
 .landing-footer__maker a { display: inline-block; padding: 13px 0; }
+/* A name keeps the comma after it, or the "d’" before it, on its line. */
+.landing-footer__site { white-space: nowrap; }
 
 /* One column on the page's middle, as wide as the sections above it. */
 @media (max-width: 760px) {

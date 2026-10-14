@@ -122,11 +122,11 @@ describe('Landing', () => {
   });
 
   it('names what else its author makes last, each at its address for the reader’s language', async () => {
-    const sites = () => within(screen.getByRole('contentinfo')).getAllByRole('link').slice(-2);
+    const sites = () => within(screen.getByRole('contentinfo')).getAllByRole('link').slice(-3);
     const english = render(<LandingFooter />);
-    expect(screen.getByRole('contentinfo').lastElementChild).toHaveTextContent('By the creator of X Horoscope and UnfollowMonkey');
+    expect(screen.getByRole('contentinfo').lastElementChild).toHaveTextContent(/^By the creator of X Horoscope, UnfollowMonkey and ScootRadar$/);
     expect(sites().map((link) => [link.textContent, link.getAttribute('href')])).toEqual([
-      ['X Horoscope', 'https://x-horoscope.com/en/x'], ['UnfollowMonkey', 'https://unfollow-monkey.com/en'],
+      ['X Horoscope', 'https://x-horoscope.com/en/x'], ['UnfollowMonkey', 'https://unfollow-monkey.com/en'], ['ScootRadar', 'https://scootradar.com'],
     ]);
     // Followed links that open beside the page and tell the site where the visit came from.
     for (const link of sites()) {
@@ -136,13 +136,20 @@ describe('Landing', () => {
     english.unmount();
 
     const french = render(<I18nProvider initialLocale="fr" initialMessages={await loadMessages('fr')}><LandingFooter /></I18nProvider>);
-    expect(screen.getByRole('contentinfo').lastElementChild).toHaveTextContent('Par le créateur de X Horoscope et d’UnfollowMonkey');
-    expect(sites().map((link) => link.getAttribute('href'))).toEqual(['https://x-horoscope.com/fr/x', 'https://unfollow-monkey.com/fr']);
+    expect(screen.getByRole('contentinfo').lastElementChild).toHaveTextContent(/^Par le créateur de X Horoscope, d’UnfollowMonkey et de ScootRadar$/);
+    expect(sites().map((link) => link.getAttribute('href'))).toEqual([
+      'https://x-horoscope.com/fr/x', 'https://unfollow-monkey.com/fr', 'https://scootradar.com/fr',
+    ]);
+    // A name keeps what touches it on its line: the comma after it, the "d’" before it.
+    expect(sites().map((link) => link.parentElement?.textContent)).toEqual(['X Horoscope,', 'd’UnfollowMonkey', 'ScootRadar']);
     french.unmount();
 
-    // X Horoscope has no Polish: its English page is linked.
+    // ScootRadar has no Polish: its English page is linked, at its bare domain.
     render(<I18nProvider initialLocale="pl" initialMessages={await loadMessages('pl')}><LandingFooter /></I18nProvider>);
-    expect(sites().map((link) => link.getAttribute('href'))).toEqual(['https://x-horoscope.com/en/x', 'https://unfollow-monkey.com/pl']);
+    expect(screen.getByRole('contentinfo').lastElementChild).toHaveTextContent(/^Od twórcy X Horoscope, UnfollowMonkey i ScootRadar$/);
+    expect(sites().map((link) => link.getAttribute('href'))).toEqual([
+      'https://x-horoscope.com/pl/x', 'https://unfollow-monkey.com/pl', 'https://scootradar.com',
+    ]);
   });
 
   it('moves a language’s address with the language chosen at its foot, to where the landing is in English for this reader', async () => {

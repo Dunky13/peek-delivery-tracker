@@ -7,10 +7,17 @@ export { SOURCE_URL } from '../../lib/source';
 /** Who makes Peek, on X. */
 export const AUTHOR_URL = 'https://x.com/plhery';
 
-/** What else its author makes, each at its own address for the reader's language. X Horoscope has no Polish. */
+/**
+ * What else its author makes, each at its own address for the reader's language. ScootRadar's English is at its bare
+ * domain, and it has no Polish: a Polish reader gets its English.
+ */
 export const OTHER_SITES = {
-  horoscope: { name: 'X Horoscope', address: (locale: Locale) => `https://x-horoscope.com/${locale === 'pl' ? 'en' : locale}/x` },
+  horoscope: { name: 'X Horoscope', address: (locale: Locale) => `https://x-horoscope.com/${locale}/x` },
   monkey: { name: 'UnfollowMonkey', address: (locale: Locale) => `https://unfollow-monkey.com/${locale}` },
+  scootradar: {
+    name: 'ScootRadar',
+    address: (locale: Locale) => locale === 'en' || locale === 'pl' ? 'https://scootradar.com' : `https://scootradar.com/${locale}`,
+  },
 } as const;
 
 /** A public build-time address, taken only when it is a secure link. */
