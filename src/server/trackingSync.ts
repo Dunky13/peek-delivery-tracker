@@ -40,7 +40,7 @@ import {
 import { isRecord, type JsonObject } from './types';
 import { UniversalTracker } from 'universal-parcel-scraper/node';
 import type { UniversalSource } from 'universal-parcel-scraper';
-import { answeredWithoutHistory, detectionNames, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter } from './trackingRouting';
+import { answeredWithoutHistory, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter } from './trackingRouting';
 import { upuHistory } from './upuHistory';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent } from './directLocalHistory';
@@ -1419,10 +1419,10 @@ export class TrackingSyncService {
         outcome,
         selected_stage: selectedStage,
       }));
-      // A correction to the carrier detection names is expected: it is logged without an issue.
+      // A correction to the carrier detection names or asks first is expected: it is logged without an issue.
       if (values.carrier) reportRoutingEvent('carrier_auto_swapped', {
         carrier: carrierId, provider: String(values.carrier), trackingNumber: String(parcel.tracking_number ?? ''), attemptId: audit.attemptId,
-        ...(detectionNames(String(parcel.tracking_number ?? ''), String(values.carrier)) ? { category: 'detected' } : {}),
+        ...(detectionExpects(String(parcel.tracking_number ?? ''), String(values.carrier)) ? { category: 'detected' } : {}),
       });
       const reannounced = await this.reopenAnnouncements(parcel, restaged, context, audit);
       audit.record('persist_events', 'succeeded', 0, {

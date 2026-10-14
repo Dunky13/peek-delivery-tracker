@@ -306,6 +306,14 @@ describe('persistent tracking routing', () => {
     expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('detected_carrier_confirmed', expect.objectContaining({ carrier, provider: 'ups' }));
     expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('carrier_mismatch_confirmed', expect.anything());
   });
+  it('logs the carrier detection asks first for a parcel filed as unknown without a detection warning', async () => {
+    const { router, universal } = setup();
+    // A 595000 export waybill: detection asks Nova Poshta first among the 14-digit carriers.
+    universal.mockResolvedValue({ ...history(), discovered_carrier: 'nova-poshta' });
+    await router.fetch(parcel({ tracking_number: '59500000000012' }), false);
+    expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('detected_carrier_confirmed', expect.objectContaining({ carrier: 'unknown', provider: 'nova-poshta' }));
+    expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('carrier_mismatch_confirmed', expect.anything());
+  });
   it('warns of a detection gap when a provider names a carrier detection does not', async () => {
     // Detection cannot place the number.
     const hinted = setup();

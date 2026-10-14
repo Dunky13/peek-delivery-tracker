@@ -207,6 +207,14 @@ export function detectionNames(number: string, carrier: string): boolean {
   const detected = detectCarrierMatch(number);
   return detected.confidence === 'high' && detected.carrier === carrier;
 }
+/**
+ * Whether detection names this carrier for the number or lists it first among
+ * the carriers to ask. Either way the parcel turning out to be that carrier's
+ * shows no gap in the detection rules, so no alert is raised.
+ */
+export function detectionExpects(number: string, carrier: string): boolean {
+  return detectionNames(number, carrier) || detectCarrierMatch(number).preferred[0] === carrier;
+}
 
 const CANDIDATE_PROBE_WINDOW = 30 * DAY;
 /** Every recognition answer a sync waits for; later answers are ignored. */
@@ -472,7 +480,7 @@ export class TrackingRouter {
         // same holds when detection already names the confirming carrier.
         if (carrier !== declared && state.confirmed_carrier !== carrier) {
           report(probe ? 'candidate_probe_confirmed'
-            : detectionNames(number, carrier) ? 'detected_carrier_confirmed' : 'carrier_mismatch_confirmed', carrier);
+            : detectionExpects(number, carrier) ? 'detected_carrier_confirmed' : 'carrier_mismatch_confirmed', carrier);
         }
         // The carrier's own answer for this very number, the first time: count
         // the rules whose failed check digit kept it out of detection's
