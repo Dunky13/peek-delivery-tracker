@@ -109,7 +109,7 @@ Dans l'UE, les 3 € s'appliquent même si la boutique a encaissé la TVA (IOSS)
 
 ## Comment reconnaître un faux SMS de frais de douane ?
 
-Les vraies demandes arrivent aussi par SMS ou par e-mail, mais les règles de chaque transporteur trahissent la plupart des faux :
+Les vraies demandes arrivent aussi par SMS ou par e-mail, mais les règles de chaque transporteur trahissent [la plupart des faux](guide:delivery-scam-texts) :
 
 | Transporteur | À quoi ressemblent ses vrais messages |
 | --- | --- |

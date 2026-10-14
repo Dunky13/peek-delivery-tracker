@@ -121,7 +121,7 @@ Ed ecco cosa non fanno mai, parola loro:
 
 - **Poste Italiane:** né Poste né le Forze dell'Ordine ti chiedono mai, per e-mail, SMS, lettera, telefono o social, dati personali, credenziali bancarie, codici della carta o codici di autorizzazione. Il consiglio: digita sempre www.poste.it nella barra del browser.
 - **UDSC:** non manda mai richieste di pagamento per e-mail o SMS e non telefona mai prima. I falsi arrivano spesso da indirizzi come «notification@ezv.admin.ch» o «zoll-paket-dienste@schweiz-zoll.ch».
-- **La Posta:** non chiede mai password, codici SMS o dati completi della carta per e-mail, SMS o WhatsApp. Tra gli esempi di truffa cita proprio la «piccola commissione» per spese di porto o doganali, con un link a un sito falso.
+- **La Posta:** non chiede mai password, codici SMS o dati completi della carta per e-mail, SMS o WhatsApp. Tra gli [esempi di truffa](guide:delivery-scam-texts) cita proprio la «piccola commissione» per spese di porto o doganali, con un link a un sito falso.
 
 La strada più sicura è il passo 1: apri tu il sito o l'app del corriere e inserisci il codice.
 
@@ -134,7 +134,7 @@ Per segnalare un falso:
 
 ## Cosa succede se non pago la dogana?
 
-- **Italia:** con Poste le spese di importazione si pagano al più tardi alla consegna, a casa o all'ufficio postale. Se non paghi e non ritiri il pacco, può tornare al mittente: le condizioni di Poste lo prevedono, e il tracking lo segue fino al «re-inoltro al mittente». Se avevi pagato online e la consegna non va a buon fine, Poste ti restituisce l'importo entro 90 giorni: fino alla consegna è solo un deposito cauzionale. Se ha calcolato male e hai pagato troppo, ti rimborsa la differenza; se la dogana accerta di più, paghi l'integrazione.
+- **Italia:** con Poste le spese di importazione si pagano al più tardi alla consegna, a casa o all'ufficio postale. Se non paghi e non ritiri il pacco, può [tornare al mittente](guide:returned-to-sender): le condizioni di Poste lo prevedono, e il tracking lo segue fino al «re-inoltro al mittente». Se avevi pagato online e la consegna non va a buon fine, Poste ti restituisce l'importo entro 90 giorni: fino alla consegna è solo un deposito cauzionale. Se ha calcolato male e hai pagato troppo, ti rimborsa la differenza; se la dogana accerta di più, paghi l'integrazione.
 - **Ticino:** hai 20 giorni per pagare online; dopo ricevi una QR-fattura e online non si può più. Non sei d'accordo con i costi? Contatta il Servizio clienti internazionale della Posta, per telefono o con il modulo di contatto. Per un ricorso valgono i termini dell'UDSC: 60 giorni dalla decisione d'imposizione per correggere i tributi doganali, l'indirizzo o il regime, cinque anni dalla fine dell'anno civile per l'IVA calcolata male, per esempio sul valore o sull'aliquota.
 
 :::sources

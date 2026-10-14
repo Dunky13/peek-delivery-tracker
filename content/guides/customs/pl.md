@@ -120,7 +120,7 @@ Jak takie zamówienia podróżują, opisuje poradnik o [śledzeniu paczki z Chin
 
 ## SMS o dopłacie do paczki albo o cle: jak rozpoznać oszustwo?
 
-Prawdziwe powiadomienia też przychodzą e-mailem czy SMS-em, ale zasady przewoźników zdradzają większość fałszywek:
+Prawdziwe powiadomienia też przychodzą e-mailem czy SMS-em, ale zasady przewoźników zdradzają [większość fałszywek](guide:delivery-scam-texts):
 
 | Kto | Jak wyglądają prawdziwe wiadomości i płatności |
 | --- | --- |

@@ -128,7 +128,7 @@ Sprawdź, czy ktoś wskazał to miejsce: safeplace w aplikacji DPD Mobile, miejs
 
 ### Ktoś odebrał moją paczkę z Paczkomatu?
 
-Zadzwoń na infolinię InPost, 722 444 000 lub 746 600 000: przy skradzionej paczce InPost prosi o kontakt niezwłocznie. Sprawdź też, kto ma dostęp do Twojej skrzynki e-mail, SMS-ów albo aplikacji InPost Mobile, bo tam przychodzi kod odbioru. Potem napisz do sprzedawcy, tak jak przy każdej zaginionej paczce.
+Zadzwoń na infolinię InPost, 722 444 000 lub 746 600 000: przy skradzionej paczce InPost prosi o kontakt niezwłocznie. Sprawdź też, kto ma dostęp do Twojej skrzynki e-mail, SMS-ów albo aplikacji InPost Mobile, bo tam przychodzi kod odbioru. Potem napisz do sprzedawcy, tak jak przy [każdej zaginionej paczce](guide:lost-parcel).
 
 :::sources
 - [UOKiK: Odpowiedzialność za przesyłkę](https://prawakonsumenta.uokik.gov.pl/prawa-ogolne/odpowiedzialnosc-sprzedawcy-za-przesylke/) – ryzyko do otrzymania przesyłki, wpływ na wybór przewoźnika, list ekonomiczny, znajomy, reklamacja do sprzedawcy

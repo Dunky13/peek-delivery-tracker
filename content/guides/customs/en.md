@@ -132,7 +132,7 @@ Customs authorities warn too:
 - **The CBSA** never initiates a request for your Social Insurance Number or card number by phone, text or email; a call demanding duty with threats of jail is a scam.
 - **ABF** warns of scam calls that seem to come from its Regional Office numbers.
 
-Safest is step 1 above: open the carrier's site or app yourself. The same goes for [any delivery text you didn't ask for](guide:universal-tracker).
+Safest is step 1 above: open the carrier's site or app yourself. The same goes for [any delivery text you didn't ask for](guide:delivery-scam-texts).
 
 > Tapped the link and typed your card details? Call your bank now, even if you never pressed submit, as the U.S. Postal Inspection Service advises.
 
@@ -145,7 +145,7 @@ To report a fake:
 
 ## What if I don't pay, or send it back?
 
-In the UK and Ireland, an unpaid parcel goes back to the sender after the waiting times above. In Australia, a parcel over AUD 1,000 may go back if you take no action within 30 days of the First Notice. Refunds and disputes:
+In the UK and Ireland, an unpaid parcel [goes back to the sender](guide:returned-to-sender) after the waiting times above. In Australia, a parcel over AUD 1,000 may go back if you take no action within 30 days of the First Notice. Refunds and disputes:
 
 - **UK:** reclaim VAT or duty after a return or overcharge with form BOR 286 (Royal Mail, Parcelforce) or C285 (other couriers).
 - **Canada:** ask for a review before paying (the parcel waits), or pay and claim afterwards, as the E14 explains.

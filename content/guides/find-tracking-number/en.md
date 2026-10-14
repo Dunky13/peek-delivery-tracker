@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-10
 ---
 
-You'll usually find your tracking number in the shop's shipping email or text, or in your order on its website or app, one click past the order number. If you sent the parcel yourself, it's on your post office receipt. No carrier will track a package by your name or address, but a missed-delivery card, some carriers' free accounts for incoming parcels, or the sender can still get you tracking.
+You'll usually find your tracking number in the shop's shipping email or text, or in your order on its website or app, one click past the order number. If you sent the parcel yourself, it's on your post office receipt. No carrier will track a package by your name or address, but a [missed-delivery card](guide:missed-delivery), some carriers' free accounts for incoming parcels, or the sender can still get you tracking.
 
 ## Where do I find my tracking number?
 

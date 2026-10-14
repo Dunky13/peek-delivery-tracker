@@ -47,7 +47,7 @@ Alcuni stati ingannano. `In consegna` può restare anche dopo la consegna, perch
 
 ## Pacco Poste non consegnato: giacenza, ufficio postale e Punto Poste
 
-Poste prevede 2 tentativi a domicilio, al piano strada. Dopo il primo il portalettere lascia un avviso e tu non devi fare niente: arriva un secondo tentativo, per i pacchi dei negozi (Crono, Poste Delivery Business) il giorno lavorativo successivo. Se fallisce anche quello, il pacco va in giacenza all'ufficio postale indicato sull'avviso.
+Poste prevede 2 tentativi a domicilio, al piano strada. Dopo il primo il portalettere lascia un avviso e tu non devi fare niente: arriva un secondo tentativo, per i pacchi dei negozi (Crono, Poste Delivery Business) il giorno lavorativo successivo. Se fallisce anche quello, il pacco [va in giacenza](guide:uncollected-parcel) all'ufficio postale indicato sull'avviso.
 
 **Quanto tempo hai per ritirarlo.** La data giusta è sull'avviso o nell'SMS. Le pagine di Poste danno da 3 giorni lavorativi (locker) a 10 (ufficio postale), secondo il servizio scelto dal mittente; per Poste Delivery Web, per esempio, 10 in ufficio postale, 7 in un Punto Poste e 3 in un locker. La giacenza è gratuita, e alla fine il pacco torna al mittente.
 

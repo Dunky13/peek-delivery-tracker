@@ -60,7 +60,7 @@ When someone must be in, for an age check, a one-time password or a scheduled de
 
 **Lost in transit.** Amazon may send a replacement automatically and email you. You can refuse it or return it for a refund; if both parcels arrive, return the extra one free.
 
-**Undeliverable.** A wrong address, failed attempts, a refusal, an illegible label, damage or a dog can send it back. Amazon.co.uk refunds within five business days. It can't resend the order: place a new one.
+**Undeliverable.** A wrong address, failed attempts, a refusal, an illegible label, damage or a dog can [send it back](guide:returned-to-sender). Amazon.co.uk refunds within five business days. It can't resend the order: place a new one.
 
 **Marketplace sellers.** Contact the seller first. With no satisfying answer within 48 hours, you can turn to the A-to-z Guarantee.
 

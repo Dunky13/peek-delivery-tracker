@@ -58,7 +58,7 @@ Otros estados despistan. `En proceso de entrega` no significa que vaya en la fur
 
 **Citypaq.** Son taquillas en supermercados, gasolineras y centros comerciales, abiertas a cualquier hora. La taquilla se abre con un PIN de un solo uso que llega por SMS, correo o la app de Correos, sin documento ni firma, y tienes 5 días naturales. ¿Has perdido el PIN? Pide que te lo reenvíen en la página de Citypaq con el número de seguimiento y el móvil o correo del envío.
 
-**Modificar la entrega.** Con Correos Modify, el SMS o correo con la fecha de entrega trae un enlace (también en la app) para cambiar lo que permita la tienda: otra dirección, una oficina o un Citypaq de la misma provincia. Con el envío `En reparto` ya no se puede cambiar nada.
+**Modificar la entrega.** Con Correos Modify, el SMS o correo con la fecha de entrega trae un enlace (también en la app) para cambiar lo que permita la tienda: [otra dirección](guide:change-delivery-address), una oficina o un Citypaq de la misma provincia. Con el envío `En reparto` ya no se puede cambiar nada.
 
 ## Paquete de Correos parado, perdido, dañado o en aduanas
 

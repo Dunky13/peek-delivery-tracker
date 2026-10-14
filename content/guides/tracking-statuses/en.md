@@ -67,7 +67,7 @@ Evri typically delivers 1 to 3 days after receiving a parcel, while Australia Po
 
 Usually, yes:
 
-- **USPS:** `Out for Delivery` means today, perhaps at a different time from your usual mail. No delivery recorded by 9 pm? It becomes `Awaiting Delivery Scan` (or `Delivery Status Not Updated`), and USPS expects it the next business day.
+- **USPS:** `Out for Delivery` means today, perhaps [at a different time from your usual mail](guide:delivery-times). No delivery recorded by 9 pm? It becomes `Awaiting Delivery Scan` (or `Delivery Status Not Updated`), and USPS expects it the next business day.
 - **UPS:** typically 9 a.m. to 7 p.m. for homes.
 - **FedEx:** generally 8 a.m. to 8 p.m.
 - **Australia Post:** `It's coming today` once the postie has loaded it, and it may text you a 2-hour window.
@@ -78,7 +78,7 @@ Two look-alikes: Royal Mail's `Ready for delivery` means it has reached your loc
 
 ## "Delivery attempted" or "notice left": what now?
 
-This one needs you: nobody could take the parcel, or the driver couldn't get in.
+This one needs you: [nobody could take the parcel](guide:missed-delivery), or the driver couldn't get in.
 
 :::steps
 - Read the notice | Card, text or email: where the parcel went, and a number to quote.
@@ -98,11 +98,11 @@ This one needs you: nobody could take the parcel, or the driver couldn't get in.
 | Canada Post | `Notice left`: a card naming the post office | 15 calendar days |
 | Australia Post | A card or message; a Post Office, or maybe a Parcel Locker if your mobile number is on the item | Locker 2 business days; returned after 10 business days |
 
-> A text saying your delivery "has been stopped" and asking you to sort it out online is a scam, says An Post, which never sends payment links by email or text. Rebook only on the carrier's own site or app.
+> A text saying your delivery "has been stopped" and asking you to sort it out online [is a scam](guide:delivery-scam-texts), says An Post, which never sends payment links by email or text. Rebook only on the carrier's own site or app.
 
 ## "Ready for pickup" or "awaiting collection": where is it?
 
-It's at a post office, shop or locker, until the deadline in the table above. Canada Post, like USPS, says `Available for Pickup`; UPS says `Awaiting Customer Pickup`, and `Delivered to a UPS Access Point` means it's ready for you there.
+It's at a post office, shop or locker, [until the deadline](guide:uncollected-parcel) in the table above. Canada Post, like USPS, says `Available for Pickup`; UPS says `Awaiting Customer Pickup`, and `Delivered to a UPS Access Point` means it's ready for you there.
 
 Wait for this status or the carrier's message before going: USPS makes items available from the next business day, and Australia Post's notification gives the date and time. Canada Post prints the pickup place on the card, and it can change from one delivery to the next.
 
@@ -131,7 +131,7 @@ The carriers' reasons: not collected in time, a wrong or incomplete address, a r
 - **Australia Post** `Contact sender`: a return, after wrong details or 10 business days uncollected.
 - **Royal Mail** `Forwarded to Returns Centre`: with no return address on it, the centre opens it to find one.
 
-Don't count on stopping it: "Once the return process starts, we can't stop it," says Canada Post. Ask the seller to send it again or refund you.
+Don't count on stopping it: "Once the return process starts, we can't stop it," says Canada Post. Ask the seller to [send it again or refund you](guide:returned-to-sender).
 
 :::sources
 - [USPS: Where is my package?](https://faq.usps.com/s/article/Where-is-my-package) – statuses, 9 pm rule

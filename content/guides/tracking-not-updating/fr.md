@@ -57,11 +57,11 @@ Commande passée sur AliExpress, Temu ou Shein ? Lis [comment suivre un colis ve
 
 ### En cours de livraison, puis plus rien
 
-Attends la fin de la journée : UPS livre en général les particuliers entre 9 h et 19 h, parfois plus tard. En cas d'imprévu, la date peut glisser. Chez UPS, l'imprévu apparaît comme une `Anomalie` et le suivi affiche la nouvelle date de livraison ; Chronopost reconnaît qu'il ne peut pas toujours tenir la date annoncée. Amazon demande d'attendre 48 heures après la date de livraison estimée, car le colis est peut-être sur le point d'arriver. Si le suivi indique « livré » et que tu n'as rien reçu, lis [colis livré mais pas reçu](guide:delivered-not-received).
+Attends la fin de la journée : UPS livre en général les particuliers [entre 9 h et 19 h](guide:delivery-times), parfois plus tard. En cas d'imprévu, la date peut glisser. Chez UPS, l'imprévu apparaît comme une `Anomalie` et le suivi affiche la nouvelle date de livraison ; Chronopost reconnaît qu'il ne peut pas toujours tenir la date annoncée. Amazon demande d'attendre 48 heures après la date de livraison estimée, car le colis est peut-être sur le point d'arriver. Si le suivi indique « livré » et que tu n'as rien reçu, lis [colis livré mais pas reçu](guide:delivered-not-received).
 
 ## Au bout de combien de temps un colis est-il déclaré perdu ?
 
-Il n'y a pas de délai unique. La plupart des transporteurs disent à partir de quand ils lancent une recherche, et plusieurs comptent depuis le dernier changement de statut, pas depuis la date prévue. Pour un envoi vers l'étranger, bpost demande par exemple d'attendre au moins 5 jours ouvrables sans changement (pays voisin), 10 pour les autres pays. Beaucoup réservent la démarche à l'expéditeur :
+Il n'y a pas de délai unique. La plupart des transporteurs disent à partir de quand [ils lancent une recherche](guide:lost-parcel), et plusieurs comptent depuis le dernier changement de statut, pas depuis la date prévue. Pour un envoi vers l'étranger, bpost demande par exemple d'attendre au moins 5 jours ouvrables sans changement (pays voisin), 10 pour les autres pays. Beaucoup réservent la démarche à l'expéditeur :
 
 | Transporteur | Quand demander | Qui demande |
 | --- | --- | --- |

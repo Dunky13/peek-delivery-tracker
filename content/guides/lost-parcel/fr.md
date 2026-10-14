@@ -1,0 +1,150 @@
+---
+title: Colis perdu : que faire et comment se faire rembourser
+description: Colis perdu ? Quand il est considéré comme perdu, qui doit te rembourser, ce que paient La Poste, bpost ou La Poste suisse, et comment réclamer.
+slug: colis-perdu-remboursement
+picture: Une étagère de centre de tri chargée de cartons, avec un vide en pointillés, une loupe dessus, et Pip à côté d'une lampe torche qui éclaire le vide.
+published: 2026-10-14
+updated: 2026-10-14
+---
+
+Si tu as commandé à une boutique, c'est elle qui te rembourse, pas le transporteur. Une fois passé le délai du transporteur (48 heures sans nouveau statut chez Chronopost, délai d'acheminement dépassé de plus de deux jours chez La Poste suisse), demande au vendeur un nouvel envoi ou un remboursement : c'est lui qui a choisi le transporteur et qui touche son indemnisation, et en France comme en Belgique, le colis voyage à ses risques jusqu'à ce que tu l'aies en main. Réclamer au transporteur, c'est surtout l'affaire de l'expéditeur.
+
+## Colis perdu : que faire pour être remboursé ?
+
+:::steps
+- Laisse passer le délai | Avant, le colis est en retard, pas perdu.
+- Écris au vendeur | Avec les numéros de commande et de suivi, demande-lui un nouvel envoi ou un remboursement.
+- Ouvre un litige sur la plateforme | Amazon, eBay ou Vinted te remboursent si le vendeur ne le fait pas, dans leurs délais.
+- Réclame au transporteur | Si c'est toi qui as envoyé le colis. La Poste suisse accepte aussi la recherche du destinataire. Garde la preuve de dépôt et de valeur.
+- Puis ta banque ou PayPal | En dernier recours : une rétrofacturation peut mettre fin au litige de la plateforme.
+:::
+
+Le vendeur peut te demander d'attendre le résultat de l'enquête, ou de confirmer par écrit que tu n'as rien reçu : bpost prévoit qu'un expéditeur te le demande par e-mail ou par un document signé. En France, il ne peut pas te renvoyer vers le transporteur. Le vendeur à distance est « responsable de plein droit » de la livraison, même confiée à un transporteur (code de la consommation, art. L221-15). Le gouvernement le rappelle : tu te tournes vers le vendeur, et c'est à lui de se retourner ensuite contre le transporteur.
+
+Le suivi dit « livré » mais tu n'as rien ? Lis plutôt [colis livré mais non reçu](guide:delivered-not-received). Arrivé cassé ? Voir [colis endommagé](guide:damaged-parcel).
+
+> Ne commence pas par ta banque. Une fois la rétrofacturation demandée, Amazon refuse la Garantie A à Z, Etsy ne te laisse plus ouvrir de litige et eBay peut clôturer le tien.
+
+## Au bout de combien de temps un colis est-il considéré comme perdu ?
+
+Chaque transporteur fixe son propre délai, compté depuis le dépôt ou le dernier changement de statut. La plupart des colis « perdus » sont seulement en retard : Vinted prévient qu'une commande peut encore être livrée dans les 25 jours ouvrés suivant son envoi. Pourquoi le suivi se tait, transporteur par transporteur : [suivi de colis qui ne bouge plus](guide:tracking-not-updating).
+
+| Transporteur | Recherche à partir de | Délai pour réclamer | Qui réclame |
+| --- | --- | --- | --- |
+| [Colissimo, La Poste](carrier:la-poste) (FR) | Non indiqué. Un colis non distribué 40 jours après le dépôt est « considéré comme perdu » | 1 an après le dépôt (6 mois pour l'international) | Toute personne peut réclamer, seul l'expéditeur est indemnisé |
+| [Chronopost](carrier:chronopost) (FR) | Statut inchangé depuis plus de 48 heures, hors week-ends et jours fériés | Particulier : 14 jours après la date de livraison (21 jours pour l'international) | Toi pour l'enquête, l'expéditeur pour la réclamation |
+| [Mondial Relay](carrier:mondial-relay) (FR) | Colis bloqué au même point depuis 5 jours | Non indiqué | L'expéditeur. Étiquette achetée sur Vinted ou Leboncoin : la plateforme |
+| [bpost](carrier:bpost) (BE) | Vers l'étranger, statut inchangé depuis 5 jours ouvrables (pays voisin) ou 10 (autres pays) | Non indiqué | L'expéditeur seulement |
+| [La Poste suisse](carrier:swiss-post) (CH) | Délai d'acheminement dépassé de plus de 2 jours | 1 an après le dépôt (6 mois pour l'international) | L'expéditeur ou le destinataire |
+
+## Colis perdu : qui est responsable, le vendeur ou l'acheteur ?
+
+Si tu as acheté à un professionnel, en général le vendeur :
+
+- **France :** le risque ne passe à toi qu'à la prise de possession physique du colis, par toi ou par un tiers que tu as désigné (code de la consommation, art. L216-2). Sans preuve de livraison, Service-Public.fr indique que le vendeur reste responsable.
+- **Belgique :** même règle. Le risque passe quand toi, ou un tiers que tu as désigné « et autre que le transporteur », prends physiquement possession du bien (Code de droit économique, art. VI.44).
+- **Suisse :** pas de règle de ce genre. Selon le Code des obligations (art. 185), les risques passent à l'acheteur au plus tard quand le vendeur remet le colis au transporteur, sauf accord contraire. Lis les conditions générales de la boutique : beaucoup renvoient l'article ou remboursent quand même.
+
+Le risque est pour toi si tu as choisi un transporteur que la boutique ne proposait pas (art. L216-3 en France), ou si tu as acheté à un particulier. Le détail, pays par pays, est dans [colis livré mais non reçu](guide:delivered-not-received).
+
+## Colis perdu sur Amazon, Vinted, eBay, Etsy, AliExpress ou Temu : le remboursement
+
+Si le vendeur ne fait rien, la plateforme peut te rembourser, si tu as payé par son système :
+
+| Plateforme | Tu peux agir | Jusqu'à |
+| --- | --- | --- |
+| Amazon, expédié par Amazon | 48 heures après la date de livraison estimée | 30 jours après cette date |
+| Amazon, vendeur tiers (Garantie A à Z) | 3 jours après la dernière date de livraison estimée, si tu as contacté le vendeur il y a plus de 48 heures sans solution | 90 jours après la dernière date de livraison possible |
+| eBay (Garantie client eBay) | Dès que la date de livraison estimée est passée ; le vendeur a 3 jours ouvrés pour répondre | 30 jours calendaires après cette date |
+| Etsy | Date de livraison estimée passée et vendeur contacté il y a plus de 48 heures | 30 jours après la date de livraison estimée |
+| Vinted (envoi intégré) | Statut « semble perdu », ou 25 jours ouvrés après l'envoi : « J'ai un problème » | 2 jours après l'avis de Vinted |
+| AliExpress | À partir du 11e jour après l'expédition, ou à la fin du délai de livraison si le colis avance encore | 15 jours après la fin du délai de livraison |
+| Temu | Article perdu pendant le transport | 90 jours après l'achat |
+
+Sur Vinted, tu es remboursé « si la perte est confirmée » : l'enquête avec le transporteur « peut prendre plusieurs semaines », et ton paiement est conservé en attendant. Pour une étiquette Mondial Relay achetée sur Vinted, Leboncoin ou Rakuten, c'est le service client de la plateforme qui indemnise, après une enquête « généralement traitée sous 30 jours ». Etsy exclut les retards dus à une grève, à des intempéries graves ou à des événements comparables, et les colis bloqués parce que tu as refusé de payer les frais de douane. AliExpress, Temu et Shein en détail : [suivre un colis venu de Chine](guide:tracking-from-china).
+
+## Colis perdu : combien indemnise le transporteur ?
+
+Pas grand-chose. La couverture de base est plafonnée et ne paie que la valeur prouvée :
+
+| Transporteur | Couverture incluse | En option |
+| --- | --- | --- |
+| Colissimo (FR) | 23 € par kilo, frais de port compris | Recommandé R1 50 €, R2 200 € ; Ad Valorem jusqu'à 1 000 € |
+| Chronopost (FR) | Chrono 13, Chrono 10, Chrono Express : la valeur, jusqu'à 250 €. Shop2Shop : 23 € par kilo, jusqu'à 460 €. Chrono Classic, Chrono 18 : 23 € par kilo, jusqu'à 690 € | Assurance par paliers, de 500 € à 5 000 € |
+| Mondial Relay (FR) | 25 € forfaitaires, frais de port compris | Cinq niveaux de 50 € à 500 €, seulement à la création de l'étiquette |
+| bpost (BE), en Belgique | Remboursement des frais de port seulement | « Avec garantie » : jusqu'à 500 € pour des marchandises, 15 € pour des documents |
+| bpost (BE), vers l'étranger | Standard : 40 DTS plus 4,5 DTS par kilo. Economy : rien | Garantie jusqu'à 500 € |
+| La Poste suisse (CH), en Suisse | CHF 500.– par colis | Signature CHF 1500.– ; Assurance ou Fragile CHF 5000.– |
+| La Poste suisse (CH), PostPac International | CHF 250.– pour un colis qui arrive en Suisse, CHF 500.– pour un colis envoyé à l'étranger | |
+| Colis entre postes nationales (UPU) | 40 DTS plus 4,50 DTS par kilo | Envois avec valeur déclarée |
+
+Le DTS (droit de tirage spécial) vaut 1,2119 € en 2026, selon le taux de l'Union postale universelle que publie Correos. Un colis postal international de 2 kg perdu rapporte donc au plus 49 DTS, environ 59 €, plus les frais d'envoi. Chez Colissimo, le même colis de 2 kg rapporte 46 €. En France et en Belgique, la boutique te doit de toute façon un nouvel envoi ou un remboursement complet.
+
+Même avec une option, seule la perte prouvée est payée. La Poste suisse rembourse au plus le prix de revient du contenu, hors TVA, et ne paie rien pour un colis déposé ailleurs à ta demande. bpost exige toujours une preuve de valeur ou une facture d'achat. Chez Mondial Relay, l'indemnisation complémentaire ne se rajoute pas après coup et n'est versée qu'en cas de perte confirmée.
+
+## Comment faire une réclamation pour colis perdu à La Poste, Chronopost ou bpost ?
+
+Sur le site ou au service client du transporteur, avant le délai du tableau plus haut, avec :
+
+- **Le numéro et l'historique de suivi.** Fais des captures d'écran : les pages de suivi finissent par disparaître. [Peek](/) affiche chaque scan sur la page du colis, mais ne peut pas réclamer à ta place.
+- **La preuve de dépôt.** La Poste indemnise sur présentation de la date de dépôt et du montant de l'affranchissement. Pour une recherche vers l'étranger, La Poste suisse demande la quittance de dépôt.
+- **La preuve de valeur.** Facture, ticket de caisse, relevé bancaire ou paiement PayPal. bpost l'exige toujours, La Poste suisse demande le prix de revient du contenu.
+- **Le contenu et les deux adresses,** avec les numéros de téléphone chez La Poste suisse.
+
+La Poste répond sous 21 jours pour un envoi en France métropolitaine. Chez Mondial Relay, une étiquette faite sur son site est remboursée automatiquement sur le compte de l'expéditeur, sous 10 jours après la déclaration de perte. Si la réponse de La Poste ne te convient pas, fais d'abord un recours au 3631, puis saisis gratuitement le Médiateur du groupe La Poste si le désaccord subsiste ou sans réponse deux mois après le recours.
+
+## Acheté à un particulier sur Vinted, Leboncoin ou eBay ?
+
+Le code de la consommation ne s'applique pas entre particuliers. En France, c'est le code civil : selon le gouvernement, tu te tournes vers le vendeur s'il a organisé le transport, sinon vers le transporteur. En Suisse, le risque est pour toi dès que le vendeur a remis le colis au transporteur. Ce qui te protège, c'est la façon dont tu as payé :
+
+- **Vinted** te rembourse quand un colis envoyé avec son étiquette n'arrive pas, et « le vendeur sera indemnisé ». Si tu as payé en dehors de Vinted, « tu ne seras pas couvert ».
+- **eBay** couvre aussi les vendeurs particuliers, pour les commandes payées par son système de paiement.
+- **PayPal** couvre les paiements pour des biens. Les paiements personnels, envoyés par exemple avec la fonctionnalité Proches, ne le sont pas.
+
+Payé par virement ? Demande au vendeur de réclamer au transporteur et de te reverser l'indemnisation : chez La Poste comme chez bpost, seul l'expéditeur est payé.
+
+## Se faire rembourser par sa banque ou PayPal ?
+
+En dernier recours seulement. Sur PayPal, ouvre un litige « Objet non reçu » dans les 180 jours suivant le paiement, en France, en Belgique comme en Suisse. Pour une carte bancaire, ta banque peut demander une rétrofacturation, « ni automatique ni garantie » selon le Centre européen des consommateurs France : contacte-la vite, avec la preuve de commande, tes échanges avec le vendeur et le suivi. Les délais et les pièces à fournir sont détaillés dans [colis livré mais non reçu](guide:delivered-not-received).
+
+:::sources
+- [La Poste : CGV Courrier-Colis](https://www.laposte.fr/ecom/occ/smartedit/medias/sys_master/pdf/hfb/ha1/31823066595358/CGV_COURRIER_COLIS_07-07-2026/CGV-COURRIER-COLIS-07-07-2026.pdf) – perdu après 40 jours, 23 € par kilo, preuves, 1 an et 6 mois, toute personne peut réclamer, 21 jours, recours, Médiateur
+- [La Poste : Garanties et indemnisations Colissimo](https://aide.laposte.fr/contenu/quelles-sont-les-garanties-et-indemnisations-pour-un-envoi-avec-colissimo) – 23 € par kilo, R1, R2, Ad Valorem, seul l'expéditeur est indemnisé
+- [La Poste : Garanties et indemnisations Chronopost](https://aide.laposte.fr/contenu/quelles-sont-les-garanties-et-indemnisations-pour-un-envoi-avec-chronopost) – 250 €, 460 €, 690 €
+- [Chronopost : Suis-je indemnisé en cas de perte ou d'avarie ?](https://www.chronopost.fr/fr/faq/expediteur/suis-je-indemnise-en-cas-de-perte-ou-davarie) – 14 et 21 jours, assurance jusqu'à 5 000 €
+- [Chronopost : Que faire si mon colis est en retard ?](https://www.chronopost.fr/fr/faq/destinataire/que-faire-si-mon-colis-est-en-retard-ou-livre-en-retard) – 48 heures, enquête, site marchand
+- [Mondial Relay : Que faire en cas de retard de livraison ?](https://www.mondialrelay.fr/faq/recevoir-un-colis/que-faire-en-cas-de-retard-de-livraison/) – bloqué 5 jours au même point
+- [Mondial Relay : Y a-t-il une indemnisation ?](https://www.mondialrelay.fr/faq/assurance/y-a-t-il-une-indemnisation-lorsque-j-envoie-un-colis/) – 25 € forfaitaires
+- [Mondial Relay : Assurer mon colis](https://www.mondialrelay.fr/envoi-de-colis/assurer-mon-colis/) – de 50 € à 500 €, à la création de l'étiquette
+- [Mondial Relay : Conditions de remboursement de l'indemnisation](https://www.mondialrelay.fr/faq/assurance/quelles-sont-les-conditions-de-remboursement-de-lindemnisation/) – perte confirmée
+- [Mondial Relay : Comment obtenir un remboursement d'un colis perdu ?](https://www.mondialrelay.fr/faq/recevoir-un-colis/comment-obtenir-un-remboursement-dun-colis-perdu/) – crédit sous 10 jours, destinataire vers l'expéditeur
+- [Mondial Relay : Colis envoyé via Vinted, Leboncoin ou Rakuten déclaré perdu](https://www.mondialrelay.fr/faq/envoyer-un-colis/un-colis-envoye-via-un-site-partenaire-vinted-leboncoin-rakuten-est-declare-perdu-que-faire/) – la plateforme indemnise, 30 jours
+- [bpost : Comment introduire une plainte ?](https://www.bpost.be/fr/faq/comment-introduire-une-plainte-en-cas-de-colis-endommage-perdu-ou-non-livre) – seul l'expéditeur
+- [bpost : Pourquoi contacter l'expéditeur ?](https://www.bpost.be/fr/faq/pourquoi-dois-je-contacter-lexpediteur-si-mon-colis-na-pas-ete-livre) – confirmation par e-mail ou document signé
+- [bpost : Mon colis semble coincé quelque part](https://www.bpost.be/fr/faq/mon-colis-semble-coince-quelque-part-il-na-pas-bouge-sur-track-trace-depuis-un-moment) – 5 et 10 jours ouvrables
+- [bpost : Remboursement en cas de dommage ou de perte](https://www.bpost.be/fr/faq/comment-mon-destinataire-etou-moi-memes-serons-nous-rembourses-pour-les-dommages-ou-la-perte-de-mon) – frais de port, Avec garantie, preuve de valeur
+- [bpost : Guide pratique 2026 pour les envois du particulier](https://www.bpost.be/sites/default/files/pricing/2026/Praktische_gids_voor_particuliere_zendingen_2026_FR.pdf) – 500 €, 15 €, 40 DTS et 4,5 DTS par kilo, Economy
+- [La Poste suisse : Détérioration ou perte](https://www.post.ch/fr/expedier-des-colis/dommage-ou-perte) – recherche, deux jours, 1 an, 6 mois, documents
+- [La Poste suisse : CG clientèle privée](https://www.post.ch/-/media/post/agb/agb-postdienstleistungen-pk.pdf?vs=24&sc_lang=fr&hash=84B987128A5FDC7FD6E9EA6641A5CEBB) – CHF 500.–, 1500.–, 5000.–, PostPac International, prix de revient, dépôt à ta demande
+- [UPU : Règlement de la Convention (en anglais)](https://www.upu.int/UPU/media/upu/files/aboutUpu/acts/05-actsRegulationsConventionAndPostalPayment/POC-REGL-2025-1%E2%94%80Doc-1.pdf) – 40 DTS et 4,50 DTS par kilo
+- [Correos : Extravío internacional (en espagnol)](https://www.correos.es/es/es/atencion-al-cliente/coberturas-y-garantias/internacionales/extravio-internacional) – 1 DTS = 1,2119 € en 2026
+- [Service-Public.fr : Achat à distance, livraison du bien](https://www.service-public.gouv.fr/particuliers/vosdroits/F10037) – risque, preuve de livraison, transporteur choisi par toi
+- [INC : Délivrance et transfert de risques](https://www.inc-conso.fr/sites/default/files/pdf/vi-delivrance-fourniture-transfert-risque.pdf) – art. L216-2 et L216-3
+- [Assemblée nationale : question écrite n° 10528](https://www.assemblee-nationale.fr/dyn/17/questions/QANR5L17QE10528) – art. L221-15, vente entre particuliers
+- [Justel : Code de droit économique](https://www.ejustice.just.fgov.be/eli/loi/2013/02/28/2013A11134/justel) – art. VI.44
+- [Konsumentenschutz : Paket gestohlen oder beschädigt (en allemand)](https://www.konsumentenschutz.ch/online-ratgeber/paket-gestohlen-oder-beschaedigt-wer-haftet/) – art. 185 CO, risque jusqu'à la remise au transporteur
+- [Amazon.fr : Livraisons en retard](https://www.amazon.fr/gp/help/customer/display.html?nodeId=GL669SSDXFCJ2ZA6) – 48 heures, 30 jours
+- [Amazon.fr : Garantie A à Z](https://www.amazon.fr/gp/help/customer/display.html?nodeId=GQ37ZCNECJKTFYQV) – 3 jours, 48 heures, 90 jours, rétrofacturation
+- [eBay.fr : Garantie client eBay](https://www.ebay.fr/help/policies/ebay-money-back-guarantee-policy/ebay-money-back-guarantee-policy?id=4210) – 30 jours, 3 jours ouvrés, paiement par eBay, rétrofacturation
+- [Etsy : L'ouverture d'un litige (copie archivée)](https://web.archive.org/web/20260504151748/https://help.etsy.com/hc/fr/articles/5745586898199-L-ouverture-d-un-litige) – 48 heures, 30 jours, rétrofacturation
+- [Etsy : How to Open a Case (en anglais)](https://help.etsy.com/hc/en-us/articles/5745586898199-How-to-Open-a-Case) – grèves et intempéries
+- [Etsy : Purchase Protection Programme (en anglais)](https://help.etsy.com/hc/en-gb/articles/7471925990807-Etsy-s-Purchase-Protection-Programme) – frais de douane refusés
+- [Vinted : Politique de remboursement](https://www.vinted.fr/help/465) – perte confirmée, plusieurs semaines, 25 jours ouvrés, paiement hors Vinted
+- [Vinted : Le colis n'est pas arrivé](https://www.vinted.fr/help/658) – 25 jours ouvrés, « J'ai un problème », vendeur indemnisé
+- [AliExpress : How to open dispute? (en anglais)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015227&language=en) – 11e jour, 15 jours
+- [Temu : Purchase Protection Program (en anglais)](https://www.temu.com/uk/bgt_purchase_protection.html) – 90 jours
+- [PayPal : Protection des Achats](https://www.paypal.com/fr/legalhub/paypal/buyer-protection) – 180 jours, paiements personnels exclus
+- [PayPal Belgique : Protection des Achats](https://www.paypal.com/be/legalhub/paypal/buyer-protection?locale.x=fr_BE) – mêmes délais
+- [PayPal Suisse : Protection des Achats](https://www.paypal.com/ch/legalhub/paypal/buyer-protection?locale.x=fr_CH) – mêmes délais
+- [Centre européen des consommateurs France : le chargeback](https://www.europe-consommateurs.eu/thematiques/argent/chargeback/) – ni automatique ni garanti, pièces
+:::

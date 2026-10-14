@@ -68,9 +68,9 @@ Si tu as choisi un point relais pour une commande en ligne, tu ne peux plus en c
 
 Un retard s'affiche sur laposte.fr avec `La livraison de votre Colissimo est retardée.` La Poste ne donne pas de nombre de jours au-delà duquel un suivi immobile est anormal. Elle annonce 48 h, soit 2 jours ouvrables, en France métropolitaine. Si rien ne bouge, cherche un avis de passage dans ta boîte (et chez tes voisins), puis contacte l'expéditeur. Voir aussi [suivi de colis qui ne bouge plus](guide:tracking-not-updating).
 
-**Colis perdu.** Seul l'expéditeur peut être indemnisé : c'est donc à lui de faire la réclamation, La Poste le dit au destinataire. Elle accepte les réclamations jusqu'à un an après la prise en charge pour un envoi en France, six mois pour un envoi international.
+**Colis perdu.** Seul l'expéditeur peut être indemnisé : c'est donc à lui de [faire la réclamation](guide:lost-parcel), La Poste le dit au destinataire. Elle accepte les réclamations jusqu'à un an après la prise en charge pour un envoi en France, six mois pour un envoi international.
 
-**Colis abîmé.** À la porte, tu peux le refuser (il retourne à l'expéditeur) ou le prendre et demander au facteur de noter ton observation. S'il a été déposé dans ta boîte ou chez un voisin et que tu ne l'as pas ouvert, rapporte-le au bureau de poste au plus tard le jour ouvrable suivant. Contenu abîmé à l'ouverture : contacte l'expéditeur.
+**Colis abîmé.** À la porte, [tu peux le refuser](guide:damaged-parcel) (il retourne à l'expéditeur) ou le prendre et demander au facteur de noter ton observation. S'il a été déposé dans ta boîte ou chez un voisin et que tu ne l'as pas ouvert, rapporte-le au bureau de poste au plus tard le jour ouvrable suivant. Contenu abîmé à l'ouverture : contacte l'expéditeur.
 
 **Colis venu hors de l'UE.** Tu paies les droits, les taxes et les frais de dossier de La Poste : 2 ou 5 € en ligne avec le numéro du colis ou de l'avis, 8 € au facteur ou au bureau de poste en France métropolitaine. La [page douane de La Poste](https://www.laposte.fr/conseils-pratiques/comment-payer-frais-de-douane-colis-international) explique aussi les droits forfaitaires de 3 € par article appliqués par l'UE depuis le 1er juillet 2026. Garde la preuve du paiement pour un retour ou un litige. Plus de détails dans [colis bloqué en douane](guide:customs).
 

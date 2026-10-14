@@ -95,7 +95,7 @@ Bought on AliExpress, Temu or Shein? Their deadlines are in [tracking a parcel f
 
 ## Can I claim from the carrier myself?
 
-Sometimes, but compensation usually goes to the sender, so the seller is quicker.
+Sometimes, but [compensation usually goes to the sender](guide:lost-parcel), so the seller is quicker.
 
 | Carrier | What you can do | Deadline |
 | --- | --- | --- |

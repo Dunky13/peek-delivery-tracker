@@ -45,7 +45,7 @@ DPD UK's tracking is in English only. These are the lines most parcels show, in 
 
 **Predict.** DPD sends a one-hour delivery window by SMS and email. It arrives on the day once the driver has loaded the van, usually by 12 noon. A live map then narrows it to a 15-minute slot. You can't change the slot itself.
 
-**Changing the delivery.** The night before and on the day, the SMS, email or DPD app lets you pick another day, a neighbour, a safe place or a DPD Pickup Shop, or upgrade to an earlier, afternoon or weekend delivery. If the sender asked for a signature, some of these options aren't offered. To send it to a different address, contact the shop.
+**Changing the delivery.** The night before and on the day, the SMS, email or DPD app lets you pick another day, a neighbour, a safe place or a DPD Pickup Shop, or upgrade to an earlier, afternoon or weekend delivery. If the sender asked for a signature, some of these options aren't offered. To send it to [a different address](guide:change-delivery-address), contact the shop.
 
 **Not in.** DPD automatically tries a neighbour. Its terms define one as someone living or working within 50 metres' walk. You can name a preferred neighbour or a safe place in advance. Otherwise the driver leaves a card, and you can choose a new date, a safe place, a neighbour or a Pickup Shop with your reference number and postcode. DPD's pages don't say how many attempts it makes. Tracking says delivered but you can't find it? See [delivered but not received](guide:delivered-not-received).
 

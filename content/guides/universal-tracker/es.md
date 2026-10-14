@@ -132,7 +132,7 @@ El RGPD te deja pedir al responsable de tus datos que te dé acceso a ellos o qu
 
 ## ¿Te pueden mandar un SMS de seguimiento falso?
 
-Sí, y suele traer un enlace. Correos cuenta que pedir un pago o completar la dirección de entrega son las excusas más usadas en su nombre, y deja claro que «nunca solicita datos personales, bancarios o movimientos económicos por correo electrónico o mensaje de texto (SMS)». Sus correos sobre envíos llevan al final un código de letras y números que puedes comprobar en su [Verificador de email](https://www.correos.es/es/es/atencion-al-cliente/seguridad-de-la-informacion/verificador-de-email): si no tiene código, no es de Correos.
+Sí, y suele traer un enlace. Correos cuenta que pedir un pago o completar la dirección de entrega son [las excusas más usadas en su nombre](guide:delivery-scam-texts), y deja claro que «nunca solicita datos personales, bancarios o movimientos económicos por correo electrónico o mensaje de texto (SMS)». Sus correos sobre envíos llevan al final un código de letras y números que puedes comprobar en su [Verificador de email](https://www.correos.es/es/es/atencion-al-cliente/seguridad-de-la-informacion/verificador-de-email): si no tiene código, no es de Correos.
 
 > No toques nunca el enlace de un mensaje de entrega que no esperabas. Abre la página del pedido en la tienda o escribe tú la dirección del transportista, y busca allí la misma petición. Los mensajes que piden pagar aduanas están en [la guía de aduanas](guide:customs).
 

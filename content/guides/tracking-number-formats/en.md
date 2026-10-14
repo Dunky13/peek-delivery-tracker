@@ -118,7 +118,7 @@ If it has 13 characters and ends in two letters, such as `CN`, it's a postal num
 Other numbers travel with a parcel. Some lead back to it, some don't:
 
 - **Order number.** The shop's own reference. DHL reminds you that a tracking number is not an order number.
-- **Missed-delivery cards.** A FedEx door tag (`DT` + 12 digits, US and Canada only), an Evri calling card (8 digits), a Canada Post Delivery Notice Card (15 digits) and the barcode on a USPS PS Form 3849 all lead back to the parcel in their carrier's tracking. [What to do after a missed delivery](guide:tracking-statuses) depends on the carrier.
+- **Missed-delivery cards.** A FedEx door tag (`DT` + 12 digits, US and Canada only), an Evri calling card (8 digits), a Canada Post Delivery Notice Card (15 digits) and the barcode on a USPS PS Form 3849 all lead back to the parcel in their carrier's tracking. [What to do after a missed delivery](guide:missed-delivery) depends on the carrier.
 - **An Post's Trans Ref ID.** It only records your transaction with An Post and tracks nothing.
 
 Have only an order number? [Where to find a tracking number](guide:find-tracking-number) shows where to look in your order.

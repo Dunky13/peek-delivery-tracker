@@ -43,7 +43,7 @@ Hai ordinato su AliExpress o in un altro negozio cinese? Leggi [come tracciare u
 
 - **[BRT](carrier:brt)** (ex Bartolini): il BRTcode, oltre che negli SMS e nelle e-mail, è anche «sul tagliando lasciato dal corriere dopo un tentativo di consegna». Lo cerchi sul sito di BRT come sempre.
 - **[FedEx](carrier:fedex)**: la ricerca accetta anche i numeri degli «avvisi di tentata consegna».
-- **[Poste Italiane](carrier:poste-italiane)**: il portalettere lascia un avviso di giacenza per il ritiro in Ufficio Postale. Se lo perdi, puoi averne un duplicato telefonando al Servizio Clienti.
+- **[Poste Italiane](carrier:poste-italiane)**: il portalettere lascia un [avviso di giacenza](guide:missed-delivery) per il ritiro in Ufficio Postale. Se lo perdi, puoi averne un duplicato telefonando al Servizio Clienti.
 - **La Posta**, in Ticino: l'«Invito di ritiro» ha un codice di ritiro che funziona nella ricerca, dove il campo chiede il «Numero d'invio o codice di ritiro». Di norma hai sette giorni per ritirare un pacco (15 per gli invii internazionali), e il termine si può prolungare.
 - **[Planzer](carrier:planzer)**, in Svizzera: il codice di consegna sull'avviso apre il portale destinatari, ma per seguire il pacco serve il numero di spedizione, che trovi nel messaggio «A breve riceverà una spedizione».
 - **[Quickpac](carrier:quickpac)**, in Svizzera: il numero di 18 cifre è anche sulla scheda per il ritiro lasciata nella bucalettere.

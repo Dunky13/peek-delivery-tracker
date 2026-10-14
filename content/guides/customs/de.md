@@ -123,7 +123,7 @@ Manche echten Aufforderungen kommen per SMS oder E-Mail, aber die Regeln der Pak
 | Österreichische Post | Ein Zollhindernis meldet sie per Brief, E-Mail oder in der Post App. Ihre Web- und E-Mail-Adressen enden immer auf post.at |
 | Schweizerische Post | Bist du bei „Meine Sendungen“ registriert, kommt ein Zahlungslink per SMS oder E-Mail. Nach Passwörtern, SMS-Codes oder vollständigen Kartendaten fragt sie nie, und ihre Adressen sind post.ch, poste.ch, posta.ch, swisspost.ch und swisspost.com |
 
-Unter den Fake-SMS, die die Verbraucherzentrale zeigt, sind kleine Beträge wie „Zollgebühren (0,99€)“. Die Behörden warnen ebenfalls:
+Unter den [Fake-SMS](guide:delivery-scam-texts), die die Verbraucherzentrale zeigt, sind kleine Beträge wie „Zollgebühren (0,99€)“. Die Behörden warnen ebenfalls:
 
 - **Der Zoll** (Deutschland) schickt Steuerbescheide und Zahlungsaufforderungen nie per Telefon, E-Mail, SMS oder Messenger. Echte Bescheide sind auf Deutsch und nennen Name und Telefonnummer der Person, die sie bearbeitet. Gezahlt wird nur auf Konten der Bundeskasse bei der Bundesbank (IBAN mit DE), nie über einen Link, in Kryptowährung oder über einen Prepaid-Zahlungsdienst.
 - **Das Finanzministerium (BMF)** in Österreich warnt vor Betrügern, die sich etwa als Zollamt Österreich ausgeben. Echte Bescheide kommen per Post oder in die FinanzOnline-Databox, und nach Passwörtern, Kartendaten oder Kontoinformationen fragt die Finanzverwaltung nie.

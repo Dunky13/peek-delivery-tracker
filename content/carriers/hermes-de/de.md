@@ -46,7 +46,7 @@ Bei Nachbarn abgegeben? Die Benachrichtigung von Hermes nennt die Adresse des Na
 
 ## Hermes Zustellung: Uhrzeit, Wunschzustellung und PaketShop
 
-**Uhrzeit.** Die Hermes Boten sind montags bis samstags zwischen 8 und 20 Uhr unterwegs, telefonisch ankündigen kann Hermes die Zustellung nicht. Innerhalb Deutschlands zeigt Hermes in der Regel am Vortag ein kostenloses, unverbindliches Zeitfenster von höchstens vier Stunden: in der Sendungsverfolgung, als Push-Nachricht der Hermes App oder per E-Mail. Manchmal steht nur der Tag da, und für PaketShop-Direktzustellungen und Retouren gibt es kein Zeitfenster.
+**Uhrzeit.** Die Hermes Boten sind montags bis samstags [zwischen 8 und 20 Uhr](guide:delivery-times) unterwegs, telefonisch ankündigen kann Hermes die Zustellung nicht. Innerhalb Deutschlands zeigt Hermes in der Regel am Vortag ein kostenloses, unverbindliches Zeitfenster von höchstens vier Stunden: in der Sendungsverfolgung, als Push-Nachricht der Hermes App oder per E-Mail. Manchmal steht nur der Tag da, und für PaketShop-Direktzustellungen und Retouren gibt es kein Zeitfenster.
 
 **Zustellung ändern.** Mit der Hermes WunschZustellung wählst du kostenlos einen WunschAblageort, einen WunschPaketShop, einen WunschNachbarn oder einen WunschTag (bis zu 6 Werktage nach der geplanten Zustellung). Das geht unter „Zustellung ändern“ in der Sendungsverfolgung oder der Hermes App, mit der Postleitzahl des Empfängers und bis kurz vor der Zustellung. Ist alles ausgegraut, gibt es noch keinen Zustelltermin, der Absender lässt es nicht zu, oder es geht aus logistischen Gründen nicht mehr. Die Zustellung an Ablageort oder WunschNachbarn geschieht laut den AGB der WunschZustellung auf deine eigene Gefahr, und eine einmalige Buchung lässt sich weder ändern noch widerrufen. Ob ein Paket TAN-gesichert ist, entscheidet der Shop; dann gibt es keinen WunschAblageort.
 
@@ -107,7 +107,7 @@ Ja, mit deiner unterschriebenen [Vollmacht](https://www.myhermes.de/service/voll
 
 ### Ist die SMS „Verfolgen Sie Ihr Paket“ von Hermes?
 
-Nein. Hermes Germany nutzt laut eigener Sicherheitsseite keinen SMS-Service und stuft jede SMS in seinem Namen als Betrug ein, ausgenommen die vom Hermes Einrichtungs Service.
+Nein. Hermes Germany nutzt laut eigener Sicherheitsseite keinen SMS-Service und stuft jede SMS in seinem Namen als [Betrug](guide:delivery-scam-texts) ein, ausgenommen die vom Hermes Einrichtungs Service.
 
 ### Wie verfolge ich ein Hermes-Paket nach Österreich?
 

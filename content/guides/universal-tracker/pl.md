@@ -128,7 +128,7 @@ ParcelsApp ma przedstawiciela w UE na podstawie art. 27 RODO: firmę EU Rep z Ir
 
 ## Czy SMS o paczce może być fałszywy?
 
-Tak. W kwietniu 2026 roku CERT Polska ostrzegał przed SMS-ami podszywającymi się pod DPD: pisały o nieudanej próbie doręczenia i prowadziły na fałszywą stronę, która prosiła o dane kontaktowe i dane karty, rzekomo żeby opłacić zmianę terminu dostawy. InPost pisze wprost, że „nigdy nie wysyła SMS-ów z informacją o dopłatach”. Podejrzany SMS przekaż w całości, razem z linkiem, do CERT Polska na numer 8080. W Polsce to nic nie kosztuje.
+Tak. W kwietniu 2026 roku CERT Polska ostrzegał przed [SMS-ami podszywającymi się pod DPD](guide:delivery-scam-texts): pisały o nieudanej próbie doręczenia i prowadziły na fałszywą stronę, która prosiła o dane kontaktowe i dane karty, rzekomo żeby opłacić zmianę terminu dostawy. InPost pisze wprost, że „nigdy nie wysyła SMS-ów z informacją o dopłatach”. Podejrzany SMS przekaż w całości, razem z linkiem, do CERT Polska na numer 8080. W Polsce to nic nie kosztuje.
 
 > Nie klikaj linku w wiadomości o paczce, której się nie spodziewasz. Otwórz zamówienie w sklepie albo wpisz ręcznie adres strony przewoźnika i sprawdź, czy tam też widać tę samą prośbę. O SMS-ach z żądaniem opłaty za paczkę z zagranicy piszemy w [poradniku o paczce zatrzymanej przez urząd celny](guide:customs).
 

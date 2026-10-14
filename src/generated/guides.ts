@@ -50,6 +50,46 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "christmas-posting-dates",
       "slug": "christmas-posting-dates",
       "title": "Last posting dates for Christmas and shipping deadlines"
+    },
+    {
+      "id": "uncollected-parcel",
+      "slug": "parcel-not-collected-from-post-office",
+      "title": "Parcel not collected from the post office: what happens?"
+    },
+    {
+      "id": "damaged-parcel",
+      "slug": "parcel-arrived-damaged",
+      "title": "What to do if a parcel arrives damaged, and how to claim"
+    },
+    {
+      "id": "lost-parcel",
+      "slug": "lost-parcel-claim",
+      "title": "Lost parcel claim: how to get your money back"
+    },
+    {
+      "id": "delivery-scam-texts",
+      "slug": "parcel-scam-text",
+      "title": "Parcel scam texts: how to spot a fake delivery message"
+    },
+    {
+      "id": "change-delivery-address",
+      "slug": "change-delivery-address",
+      "title": "How to change a delivery address, before or after shipping"
+    },
+    {
+      "id": "returned-to-sender",
+      "slug": "returned-to-sender",
+      "title": "Returned to sender: why it happens, stopping it, refunds"
+    },
+    {
+      "id": "missed-delivery",
+      "slug": "missed-delivery",
+      "title": "Missed delivery: what to do, redelivery and ID to collect"
+    },
+    {
+      "id": "delivery-times",
+      "slug": "what-time-do-parcels-get-delivered",
+      "title": "What time do parcels get delivered? Carrier by carrier"
     }
   ],
   "de": [
@@ -97,6 +137,46 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "christmas-posting-dates",
       "slug": "weihnachten-paket-letzter-termin",
       "title": "Weihnachtspost: letzter Termin für Pakete und Briefe"
+    },
+    {
+      "id": "uncollected-parcel",
+      "slug": "paket-nicht-abgeholt",
+      "title": "Paket nicht abgeholt: Was passiert dann?"
+    },
+    {
+      "id": "damaged-parcel",
+      "slug": "paket-beschaedigt-was-tun",
+      "title": "Paket beschädigt: Was tun, wer haftet, wer muss melden?"
+    },
+    {
+      "id": "lost-parcel",
+      "slug": "paket-verloren-was-tun",
+      "title": "Paket verloren: Was tun, wer haftet und wer zahlt?"
+    },
+    {
+      "id": "delivery-scam-texts",
+      "slug": "fake-paket-sms-erkennen",
+      "title": "Fake-Paket-SMS erkennen: echt oder Betrug?"
+    },
+    {
+      "id": "change-delivery-address",
+      "slug": "paket-umleiten-lieferadresse-aendern",
+      "title": "Paket umleiten oder Lieferadresse ändern: So geht’s"
+    },
+    {
+      "id": "returned-to-sender",
+      "slug": "paket-zurueck-an-absender",
+      "title": "Paket zurück an Absender: Gründe, Kosten, Geld zurück"
+    },
+    {
+      "id": "missed-delivery",
+      "slug": "paket-verpasst-was-tun",
+      "title": "Paket verpasst: Was tun? Erneut zustellen oder abholen"
+    },
+    {
+      "id": "delivery-times",
+      "slug": "wann-liefert-dhl-uhrzeit-paketzustellung",
+      "title": "Wann liefert DHL? Uhrzeit der Paketzustellung im Überblick"
     }
   ],
   "fr": [
@@ -144,6 +224,46 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "christmas-posting-dates",
       "slug": "date-limite-envoi-colis-noel",
       "title": "Date limite d'envoi des colis de Noël\u00a0: La Poste, Colissimo"
+    },
+    {
+      "id": "uncollected-parcel",
+      "slug": "colis-non-retire",
+      "title": "Colis non retiré\u00a0: délai de retrait et ce qu'il devient"
+    },
+    {
+      "id": "damaged-parcel",
+      "slug": "colis-endommage-que-faire",
+      "title": "Colis endommagé\u00a0: que faire et comment réclamer"
+    },
+    {
+      "id": "lost-parcel",
+      "slug": "colis-perdu-remboursement",
+      "title": "Colis perdu\u00a0: que faire et comment se faire rembourser"
+    },
+    {
+      "id": "delivery-scam-texts",
+      "slug": "arnaque-colis-sms",
+      "title": "Arnaque colis par SMS\u00a0: comment repérer un faux message"
+    },
+    {
+      "id": "change-delivery-address",
+      "slug": "changer-adresse-livraison-colis",
+      "title": "Changer l'adresse de livraison d'un colis\u00a0: comment faire"
+    },
+    {
+      "id": "returned-to-sender",
+      "slug": "colis-retourne-expediteur",
+      "title": "Colis retourné à l'expéditeur\u00a0: pourquoi et que faire"
+    },
+    {
+      "id": "missed-delivery",
+      "slug": "avis-de-passage-que-faire",
+      "title": "Avis de passage\u00a0: que faire et comment retirer ton colis"
+    },
+    {
+      "id": "delivery-times",
+      "slug": "a-quelle-heure-livre-colissimo",
+      "title": "À quelle heure livre Colissimo\u202f? Horaires par transporteur"
     }
   ],
   "it": [
@@ -191,6 +311,46 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "christmas-posting-dates",
       "slug": "spedire-pacco-per-natale-ultimo-giorno",
       "title": "Spedire un pacco per Natale: ultimo giorno e scadenze"
+    },
+    {
+      "id": "uncollected-parcel",
+      "slug": "pacco-in-giacenza-non-ritirato",
+      "title": "Pacco in giacenza non ritirato: quanti giorni e cosa succede"
+    },
+    {
+      "id": "damaged-parcel",
+      "slug": "pacco-danneggiato-cosa-fare",
+      "title": "Pacco danneggiato: cosa fare, reclamo e rimborso"
+    },
+    {
+      "id": "lost-parcel",
+      "slug": "pacco-smarrito-rimborso",
+      "title": "Pacco smarrito: cosa fare e come avere il rimborso"
+    },
+    {
+      "id": "delivery-scam-texts",
+      "slug": "truffa-pacco-sms",
+      "title": "Truffa pacco via SMS: come riconoscerla e cosa fare"
+    },
+    {
+      "id": "change-delivery-address",
+      "slug": "come-cambiare-indirizzo-di-consegna",
+      "title": "Come cambiare indirizzo di consegna di un pacco"
+    },
+    {
+      "id": "returned-to-sender",
+      "slug": "pacco-rispedito-al-mittente",
+      "title": "Pacco rispedito al mittente: perché, cosa fare, rimborso"
+    },
+    {
+      "id": "missed-delivery",
+      "slug": "mancata-consegna-pacco",
+      "title": "Mancata consegna pacco: cosa fare, giacenza e ritiro"
+    },
+    {
+      "id": "delivery-times",
+      "slug": "a-che-ora-consegna-il-corriere",
+      "title": "A che ora consegna il corriere? Orari, sabato e domenica"
     }
   ],
   "es": [
@@ -238,6 +398,46 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "christmas-posting-dates",
       "slug": "fecha-limite-envio-paquetes-navidad",
       "title": "Fecha límite de envío en Navidad: Correos, GLS, SEUR y MRW"
+    },
+    {
+      "id": "uncollected-parcel",
+      "slug": "paquete-no-recogido",
+      "title": "Paquete no recogido: qué pasa y cuánto tiempo lo guardan"
+    },
+    {
+      "id": "damaged-parcel",
+      "slug": "paquete-danado-que-hacer",
+      "title": "Paquete dañado: qué hacer y cómo reclamar"
+    },
+    {
+      "id": "lost-parcel",
+      "slug": "paquete-perdido-como-reclamar",
+      "title": "Paquete perdido: cómo reclamar y recuperar tu dinero"
+    },
+    {
+      "id": "delivery-scam-texts",
+      "slug": "estafa-paquete-sms-falso",
+      "title": "Estafa del paquete por SMS: cómo saber si un aviso es falso"
+    },
+    {
+      "id": "change-delivery-address",
+      "slug": "cambiar-direccion-de-entrega",
+      "title": "Cómo cambiar la dirección de entrega de un paquete"
+    },
+    {
+      "id": "returned-to-sender",
+      "slug": "paquete-devuelto-al-remitente",
+      "title": "Paquete devuelto al remitente: qué significa y qué hacer"
+    },
+    {
+      "id": "missed-delivery",
+      "slug": "intento-de-entrega-ausente",
+      "title": "Intento de entrega ausente: qué hacer y cómo recogerlo"
+    },
+    {
+      "id": "delivery-times",
+      "slug": "a-que-hora-reparte-correos",
+      "title": "¿A qué hora reparte Correos? Horarios de cada empresa"
     }
   ],
   "pt": [
@@ -285,6 +485,46 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "christmas-posting-dates",
       "slug": "prazos-envio-encomendas-natal",
       "title": "Prazos de envio no Natal: datas limite dos CTT, DPD e GLS"
+    },
+    {
+      "id": "uncollected-parcel",
+      "slug": "quanto-tempo-tenho-para-levantar-encomenda",
+      "title": "Quanto tempo tenho para levantar uma encomenda?"
+    },
+    {
+      "id": "damaged-parcel",
+      "slug": "encomenda-danificada",
+      "title": "Encomenda danificada: o que fazer e como reclamar"
+    },
+    {
+      "id": "lost-parcel",
+      "slug": "encomenda-perdida-o-que-fazer",
+      "title": "Encomenda perdida: o que fazer e como pedir indemnização"
+    },
+    {
+      "id": "delivery-scam-texts",
+      "slug": "burla-ctt-mensagem-falsa",
+      "title": "Burla CTT por SMS: como reconhecer uma mensagem falsa"
+    },
+    {
+      "id": "change-delivery-address",
+      "slug": "mudar-morada-encomenda",
+      "title": "Mudar a morada de uma encomenda: CTT, Amazon, DPD e GLS"
+    },
+    {
+      "id": "returned-to-sender",
+      "slug": "encomenda-devolvida-ao-remetente",
+      "title": "Encomenda devolvida ao remetente: porquê e o que fazer"
+    },
+    {
+      "id": "missed-delivery",
+      "slug": "encomenda-nao-entregue",
+      "title": "Encomenda não entregue: o que fazer se não estavas em casa"
+    },
+    {
+      "id": "delivery-times",
+      "slug": "a-que-horas-entrega-ctt",
+      "title": "A que horas entregam os CTT? Horários, sábado e domingo"
     }
   ],
   "pl": [
@@ -332,6 +572,46 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "christmas-posting-dates",
       "slug": "do-kiedy-wyslac-paczke-przed-swietami",
       "title": "Do kiedy wysłać paczkę przed świętami: terminy przewoźników"
+    },
+    {
+      "id": "uncollected-parcel",
+      "slug": "paczka-nie-odebrana",
+      "title": "Nieodebrana paczka z paczkomatu lub poczty: co dalej?"
+    },
+    {
+      "id": "damaged-parcel",
+      "slug": "uszkodzona-paczka-co-robic",
+      "title": "Uszkodzona paczka – co robić i jak złożyć reklamację"
+    },
+    {
+      "id": "lost-parcel",
+      "slug": "zaginiona-paczka",
+      "title": "Zaginiona paczka – co zrobić, reklamacja i odszkodowanie"
+    },
+    {
+      "id": "delivery-scam-texts",
+      "slug": "oszustwo-paczka-falszywy-sms",
+      "title": "Oszustwo na paczkę: jak rozpoznać fałszywy SMS"
+    },
+    {
+      "id": "change-delivery-address",
+      "slug": "zmiana-adresu-dostawy-przekierowanie-paczki",
+      "title": "Zmiana adresu dostawy i przekierowanie paczki: jak to zrobić"
+    },
+    {
+      "id": "returned-to-sender",
+      "slug": "paczka-wraca-do-nadawcy",
+      "title": "Paczka wraca do nadawcy: dlaczego, co dalej, zwrot pieniędzy"
+    },
+    {
+      "id": "missed-delivery",
+      "slug": "awizo-jak-odebrac-paczke",
+      "title": "Awizo: jak odebrać paczkę po nieudanej próbie doręczenia"
+    },
+    {
+      "id": "delivery-times",
+      "slug": "o-ktorej-dostarczaja-paczki",
+      "title": "O której dostarczają paczki? Godziny kurierów i soboty"
     }
   ]
 };

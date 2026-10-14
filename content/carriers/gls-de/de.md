@@ -67,7 +67,7 @@ Den Vertrag mit GLS hat der Versender, bei einem Online-Kauf ist also der Shop d
 
 **Zugestellt, aber nicht da.** Schau in den Details nach einem Nachbarn oder Paketshop, im Briefkasten nach einer Karte und in deine E-Mails. Wurde anders zugestellt als gewünscht, schreib an service@gls-germany.com. Mehr in [Paket zugestellt, aber nicht erhalten](guide:delivered-not-received).
 
-**Beschädigt.** Einen äußerlich beschädigten Karton kannst du ablehnen: GLS nimmt ihn mit ins Depot und informiert den Versender. Ist der Inhalt beschädigt, wende dich an den Versender, denn GLS darf den Inhalt nicht kontrollieren. Das Kontaktformular rät, den Schaden zu fotografieren und das Foto an den Versender zu schicken.
+**Beschädigt.** Einen äußerlich beschädigten Karton [kannst du ablehnen](guide:damaged-parcel): GLS nimmt ihn mit ins Depot und informiert den Versender. Ist der Inhalt beschädigt, wende dich an den Versender, denn GLS darf den Inhalt nicht kontrollieren. Das Kontaktformular rät, den Schaden zu fotografieren und das Foto an den Versender zu schicken.
 
 **Fristen und Haftung.** Ohne Versicherung des Versenders ersetzt GLS laut AGB den Warenwert bis 750 € je Paket. Nach § 438 HGB zeigst du sichtbare Schäden spätestens bei der Ablieferung an, verdeckte innerhalb von sieben und Verspätungen innerhalb von 21 Tagen nach der Ablieferung, beide in Textform. Das Transportrisiko trägt der Händler, außer du hast den Paketdienst selbst beauftragt (§ 475 BGB). Einigst du dich mit GLS über Verlust oder Beschädigung nicht, kannst du die Schlichtungsstelle Post der Bundesnetzagentur anrufen, auch als Empfänger.
 

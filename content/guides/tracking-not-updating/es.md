@@ -55,7 +55,7 @@ DHL dice que, según el país de destino, es completamente normal que un paquete
 
 ### En reparto y no llega
 
-Si el repartidor no puede entregarlo, el paquete no se pierde: se queda esperándote en otro sitio.
+[Si el repartidor no puede entregarlo](guide:missed-delivery), el paquete no se pierde: se queda esperándote en otro sitio.
 
 - **Correos:** si te avisa por SMS de una entrega a domicilio, cuenta con que llegue entre 24 y 72 horas más tarde, según el producto. Si al final no puede entregarlo, te manda otro SMS con la oficina donde recogerlo: tienes 15 días, y estará disponible a partir del día siguiente al mensaje.
 - **GLS:** según el servicio que contrató la tienda, puede haber un segundo intento. Si también falla, el paquete se queda en la delegación y vuelve al remitente 7 días naturales después del primer intento. Con EconomyParcel solo hay un intento, y el paquete pasa al Parcel Shop más cercano.
@@ -65,7 +65,7 @@ Si pone «Entregado» y no tienes nada, mira [paquete entregado pero no recibido
 
 ## ¿Cuándo se considera perdido un paquete?
 
-No hay un día fijo. Los transportistas que publican un plazo lo cuentan desde que admitieron el envío o desde el aviso de envío, no desde el último escaneo:
+[No hay un día fijo](guide:lost-parcel). Los transportistas que publican un plazo lo cuentan desde que admitieron el envío o desde el aviso de envío, no desde el último escaneo:
 
 | Transportista | Cuándo se puede reclamar | Quién |
 | --- | --- | --- |

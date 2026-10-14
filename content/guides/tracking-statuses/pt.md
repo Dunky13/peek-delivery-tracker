@@ -82,7 +82,7 @@ No [Peek](/), esta etapa chama-se «Em distribuição»: no último troço, o se
 
 ## «Entrega não conseguida»: e agora?
 
-Este já te pede alguma coisa: não estava ninguém para receber a encomenda. Nos CTT, o aviso chega em papel na caixa do correio, por SMS ou por e-mail.
+Este já te pede alguma coisa: [não estava ninguém para receber a encomenda](guide:missed-delivery). Nos CTT, o aviso chega em papel na caixa do correio, por SMS ou por e-mail.
 
 :::steps
 - Lê o aviso | Em papel, SMS ou e-mail: onde está a encomenda e até quando a podes levantar.
@@ -104,7 +104,7 @@ Este já te pede alguma coisa: não estava ninguém para receber a encomenda. No
 
 ## Encomenda para levantar: onde está e quando posso ir?
 
-Está numa Loja CTT, num Ponto CTT, num Agente Payshop, num cacifo ou no ponto de recolha de outra transportadora, até ao fim do prazo da tabela acima. Nos CTT, o seguimento mostra `No ponto de entrega`; a InPost escreve `Colocada no Locker ou Ponto Pack` e, perto do fim, `Último aviso: falta pouco para a recolha`. Na UPS, `Entregue a um local UPS Access Point` quer dizer que está pronta para a levantares lá.
+Está numa Loja CTT, num Ponto CTT, num Agente Payshop, num cacifo ou no ponto de recolha de outra transportadora, [até ao fim do prazo](guide:uncollected-parcel) da tabela acima. Nos CTT, o seguimento mostra `No ponto de entrega`; a InPost escreve `Colocada no Locker ou Ponto Pack` e, perto do fim, `Último aviso: falta pouco para a recolha`. Na UPS, `Entregue a um local UPS Access Point` quer dizer que está pronta para a levantares lá.
 
 Espera pelo aviso antes de ir: os CTT pedem-te que confirmes primeiro que o envio já está disponível. O SMS ou e-mail dos CTT só chega quando o envio já está à tua espera, e diz o local e a data-limite; um aviso em papel indica a partir de que dia e hora podes levantar. A InPost avisa por e-mail ou SMS quando a encomenda chega ao ponto, e a DPD manda um SMS quando chega ao ponto Pickup e outro 2 dias antes de o prazo acabar.
 

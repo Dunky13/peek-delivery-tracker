@@ -14,7 +14,7 @@ Quando o tracking não atualiza, normalmente é porque ninguém leu a etiqueta d
 O seguimento mostra leituras, não movimento, e uma encomenda só é lida em certos pontos:
 
 - **Sem leituras entre centros.** A [UPS](carrier:ups) explica que uma encomenda que vai para longe provavelmente só volta a ser lida no centro de destino. A GLS avisa que trabalha com centros de distribuição e que, por isso, o percurso nem sempre parece direto. Nos CTT, o estado `Em trânsito` aparece várias vezes ao longo do caminho, porque o envio pode passar por vários centros operacionais.
-- **Fins de semana e feriados.** A GLS entrega de segunda a sexta-feira, em horário comercial. Na DPD, a entrega ao sábado é um serviço à parte, até às 13h. Os CTT dão os prazos em dias úteis.
+- **Fins de semana e feriados.** A GLS [entrega de segunda a sexta-feira, em horário comercial](guide:delivery-times). Na DPD, a entrega ao sábado é um serviço à parte, até às 13h. Os CTT dão os prazos em dias úteis.
 - **Ilhas, mau tempo e épocas altas.** Para os Açores e a Madeira, os CTT avisam que os prazos podem alargar-se por limitações de transporte. Entre as causas habituais de atraso, a Amazon aponta o mau tempo, o trânsito, a procura nas [épocas festivas](guide:christmas-posting-dates) e a alfândega.
 - **Uma etiqueta que as máquinas não leem.** A DHL aponta códigos postais mal escritos, números de porta em falta, letra difícil de ler, etiquetas descoladas e embalagens danificadas. A encomenda pode ir parar ao sítio errado ou ser triada à mão, com vários dias de atraso.
 
@@ -54,7 +54,7 @@ Compraste no AliExpress, na Temu ou na Shein? Vê [como seguir uma encomenda da 
 
 ### Em entrega e depois nada
 
-Nos CTT, `Em entrega` quer dizer que o carteiro ou distribuidor já está no percurso do dia. Se a entrega falhar, o estado passa a `Entrega não conseguida` e, conforme o tipo de envio e as instruções do remetente, a encomenda fica para levantar numa Loja CTT, num Ponto CTT, num cacifo Locky ou num Agente Payshop, tem nova tentativa de entrega (se o remetente a contratou), volta ao remetente ou fica num centro operacional à espera de instruções. Se aparece como entregue e não recebeste nada, vê [encomenda entregue mas não recebida](guide:delivered-not-received).
+Nos CTT, `Em entrega` quer dizer que o carteiro ou distribuidor já está no percurso do dia. [Se a entrega falhar](guide:missed-delivery), o estado passa a `Entrega não conseguida` e, conforme o tipo de envio e as instruções do remetente, a encomenda fica para levantar numa Loja CTT, num Ponto CTT, num cacifo Locky ou num Agente Payshop, tem nova tentativa de entrega (se o remetente a contratou), volta ao remetente ou fica num centro operacional à espera de instruções. Se aparece como entregue e não recebeste nada, vê [encomenda entregue mas não recebida](guide:delivered-not-received).
 
 ## Quando é que uma encomenda é dada como perdida?
 

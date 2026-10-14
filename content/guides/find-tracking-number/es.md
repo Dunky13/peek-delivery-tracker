@@ -41,7 +41,7 @@ No siempre se llama igual: Correos habla de «código de envío» o «número de
 
 ### En el aviso de llegada
 
-- **Correos:** el aviso de llegada lleva el número de envío en la parte delantera, en «Datos del envío», junto al remitente y la fecha del intento de entrega. El envío te espera en la oficina a partir del siguiente día laborable. Si te avisan por SMS o por correo electrónico, ese mensaje sustituye al papel.
+- **Correos:** el aviso de llegada lleva el número de envío en la parte delantera, en «Datos del envío», junto al remitente y la fecha del [intento de entrega](guide:missed-delivery). El envío te espera en la oficina a partir del siguiente día laborable. Si te avisan por SMS o por correo electrónico, ese mensaje sustituye al papel.
 - **GLS:** si no estabas en casa, la nota de paso que te deja el repartidor te dice dónde está el envío.
 - **[FedEx](carrier:fedex):** su buscador acepta, además de los números de seguimiento, el de la «etiqueta de puerta», el aviso que te dejan si no estás.
 

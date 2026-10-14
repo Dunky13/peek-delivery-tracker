@@ -137,7 +137,7 @@ The checklist above works for ParcelsApp or any other tracker too.
 
 ## Can a scammer send a fake tracking number?
 
-Yes, usually by text, with a link. The US Postal Inspection Service says USPS only texts or emails you if you first asked for updates on a number, and even then the message "will NOT contain a link".
+Yes, [usually by text, with a link](guide:delivery-scam-texts). The US Postal Inspection Service says USPS only texts or emails you if you first asked for updates on a number, and even then the message "will NOT contain a link".
 
 > Never tap the link in a delivery message you didn't ask for. Open the shop's order page or type the carrier's address yourself, and look for the same request. Messages asking for a fee are covered in [parcels held at customs](guide:customs).
 

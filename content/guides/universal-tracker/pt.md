@@ -133,7 +133,7 @@ A lista de verificação mais acima serve para qualquer outro serviço.
 
 ## Um SMS com um número de seguimento pode ser burla?
 
-Pode, e costuma trazer uma ligação. Os CTT mantêm uma página de alertas de phishing com as burlas em circulação. Em julho de 2026 avisaram de SMS falsos sobre entregas não efetuadas que pedem um reagendamento, e sobre entregas suspensas «por falta de número de porta». Em 2025, avisaram de SMS falsos «com número de rastreio» a pedir taxas alfandegárias. Segundo os CTT, todos os links CTT começam por www.ctt.pt.
+Pode, e costuma trazer uma ligação. Os CTT mantêm uma página de alertas de phishing com as burlas em circulação. Em julho de 2026 avisaram de [SMS falsos sobre entregas não efetuadas](guide:delivery-scam-texts) que pedem um reagendamento, e sobre entregas suspensas «por falta de número de porta». Em 2025, avisaram de SMS falsos «com número de rastreio» a pedir taxas alfandegárias. Segundo os CTT, todos os links CTT começam por www.ctt.pt.
 
 > Nunca toques na ligação de uma mensagem de entrega que não esperavas. Abre a página da encomenda na loja ou escreve tu o endereço do site da transportadora, e vê se lá aparece o mesmo pedido. As mensagens que pedem para pagar alguma coisa estão no [guia da alfândega](guide:customs).
 

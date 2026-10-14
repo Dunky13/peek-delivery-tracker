@@ -73,7 +73,7 @@ Nenhuma página dos CTT diz o que fazer quando o seguimento para. Quem comprou o
 
 **Reclamações** sobre objetos postais: pelo formulário de contacto, pela linha de apoio ou numa Loja ou Ponto CTT, até 1 ano depois da aceitação (nacional) ou 6 meses (internacional). As condições do CTT Expresso dão ao cliente, ou seja ao remetente, 8 dias após a entrega para reclamar danos e 30 dias para perda ou atraso.
 
-**Devoluções** não se podem cancelar: fala com o remetente sobre um novo envio ou o reembolso. O que não pode ser entregue nem devolvido vai para o Refugo Postal, de onde as encomendas se recuperam entre 20 dias e 3 meses através do Apoio ao Cliente, nunca presencialmente.
+**Devoluções** [não se podem cancelar](guide:returned-to-sender): fala com o remetente sobre um novo envio ou o reembolso. O que não pode ser entregue nem devolvido vai para o Refugo Postal, de onde as encomendas se recuperam entre 20 dias e 3 meses através do Apoio ao Cliente, nunca presencialmente.
 
 ## CTT contactos: telefone, formulário e lojas
 

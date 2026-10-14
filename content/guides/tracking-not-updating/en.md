@@ -57,7 +57,7 @@ Ordered from AliExpress, Temu or Shein? See [tracking a parcel from China](guide
 
 ### Out for delivery, then nothing
 
-USPS's `Delivery Status Not Updated` (or `Awaiting Delivery Scan`) means no delivery was recorded by 9 pm on the out-for-delivery day; expect it the next business day. Still nothing more than one full postal business day later? Submit a service request to your local Post Office. If it says delivered and nothing is there, see [delivered but not received](guide:delivered-not-received).
+USPS's `Delivery Status Not Updated` (or `Awaiting Delivery Scan`) means no delivery was recorded [by 9 pm on the out-for-delivery day](guide:delivery-times); expect it the next business day. Still nothing more than one full postal business day later? Submit a service request to your local Post Office. If it says delivered and nothing is there, see [delivered but not received](guide:delivered-not-received).
 
 ## When is a parcel considered lost?
 
@@ -75,7 +75,7 @@ There's no single day. Most carriers say when they'll start looking, counted fro
 | Canada Post | Once the expected delivery date has passed | You or the sender; only the sender can claim |
 | Australia Post | Domestic: 10 business days after the expected delivery date | You or the sender, with a free MyPost account |
 
-Royal Mail doesn't process early claims, and wants 1st Class, 2nd Class and Special Delivery claims within 80 calendar days of posting.
+Royal Mail doesn't process [early claims](guide:lost-parcel), and wants 1st Class, 2nd Class and Special Delivery claims within 80 calendar days of posting.
 
 ## Should I contact the seller or the carrier?
 

@@ -311,6 +311,300 @@ function Christmas() {
   </>;
 }
 
+/** The kraft of a parcel that is not Pip: its faces, its tape and its inside. */
+const CARD = { top: '#DDBD96', left: '#C9A47B', right: '#B78F66', tape: '#EBDDCA', inside: '#806345', ink: '#987450' };
+
+/** A parcel seen from the front, taped down the middle of its lid. */
+function Box({ x, y, width, height, children }: { x: number; y: number; width: number; height: number; children?: ReactNode }) {
+  return <g transform={`translate(${x} ${y})`}>
+    <rect width={width} height={height} rx="4" fill={CARD.top} />
+    <path d={`M0 ${height * .24}H${width}`} stroke={CARD.left} strokeWidth="2" />
+    <rect x={width / 2 - 5} width="10" height={height * .24} fill={CARD.tape} />
+    {children}
+  </g>;
+}
+
+/** A phone, its screen in the page's paper. */
+function Phone({ x, y, width, height, children }: { x: number; y: number; width: number; height: number; children?: ReactNode }) {
+  return <g transform={`translate(${x} ${y})`}>
+    <rect y="4" width={width} height={height} rx="24" fill={ink} opacity=".08" />
+    <rect width={width} height={height} rx="24" fill={ink} />
+    <rect x="7" y="7" width={width - 14} height={height - 14} rx="18" fill={paper} />
+    <rect x={width / 2 - 17} y="15" width="34" height="8" rx="4" fill={ink} />
+    {children}
+  </g>;
+}
+
+/** A month on a sheet: a header in a tone, and its days, each drawn by `day`. */
+function Month({ x, y, tone, columns, rows, day, children }: {
+  x: number; y: number; tone: string; columns: number; rows: number; day: (index: number) => { fill: string; opacity?: number }; children?: ReactNode;
+}) {
+  const width = 28 + columns * 21 - 7;
+  return <Sheet x={x} y={y} width={width} height={52 + rows * 21} rx={14}>
+    <rect width={width} height="28" rx="14" fill={`var(--${tone})`} />
+    <rect y="14" width={width} height="14" fill={`var(--${tone})`} />
+    {Array.from({ length: rows * columns }, (_, index) => {
+      const { fill, opacity = 1 } = day(index);
+      return <rect key={index} x={14 + index % columns * 21} y={40 + Math.floor(index / columns) * 21} width="14" height="11" rx="3" fill={fill} opacity={opacity} />;
+    })}
+    {children}
+  </Sheet>;
+}
+
+function Uncollected() {
+  const doors = [[64, 44, 80, 56], [160, 44, 80, 56], [256, 44, 80, 56], [64, 108, 80, 76], [256, 108, 80, 76], [64, 192, 80, 44], [160, 192, 80, 44], [256, 192, 80, 44]] as const;
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* A parcel locker, one of its doors open. */}
+    <rect x="48" y="28" width="304" height="220" rx="12" fill="var(--ochre)" />
+    {doors.map(([x, y, width, height]) => <g key={`${x}-${y}`}>
+      <rect x={x} y={y} width={width} height={height} rx="5" fill={paper} opacity=".2" />
+      <circle cx={x + width - 11} cy={y + height / 2} r="3.5" fill={paper} opacity=".6" />
+    </g>)}
+    <rect x="160" y="108" width="80" height="76" rx="4" fill="#20251E" opacity=".55" />
+    <Pip x={200} ground={182} width={112} mood="wait" />
+    <path d="M240 108 274 98v106l-34-20z" fill={paper} />
+    <circle cx="265" cy="152" r="3.5" fill="var(--ochre)" />
+    {/* The days it waits, the last two circled. */}
+    <Month x={410} y={58} tone="ochre" columns={7} rows={4} day={(index) => index < 23 ? { fill: 'var(--ochre-soft)' } : index < 25 ? { fill: 'var(--ochre)' } : { fill: 'var(--control)', opacity: .45 }}>
+      <rect x="50" y="97" width="47" height="23" rx="11.5" stroke="var(--ochre)" strokeWidth="2.6" />
+    </Month>
+  </>;
+}
+
+function Damaged() {
+  return <>
+    <path d="M40 252H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* A dented box, a corner torn, its tape coming off. */}
+    <g transform="translate(64 58) scale(1.5)">
+      <path d="M0 40 62 71v58L0 98z" fill={CARD.left} />
+      <path d="m62 71 62-31v58l-62 31z" fill={CARD.right} />
+      <path d="M0 40 62 9l62 31-62 31z" fill={CARD.top} />
+      <path d="M82 76q12-5 19 7-6 11-17 7 4-7-2-14Z" fill={CARD.ink} opacity=".45" />
+      <path d="m82 76-7-5m26 12 8-3m-25 7-5 6" stroke={CARD.ink} strokeWidth="1.4" strokeLinecap="round" />
+      <path d="m0 40 17-8-4 8 8 5-9 5 3 7-15-3z" fill={CARD.inside} />
+      <path d="m17 32 9 2-5 11" fill={CARD.top} />
+      <path d="M52 35 93 55.5" stroke={CARD.ink} strokeWidth="1.2" strokeDasharray="3 3" opacity=".6" />
+      <path d="M31 24.5 52 35" stroke={CARD.tape} strokeWidth="9" />
+      <path d="M52 35c8-2 12-8 12-17" stroke={CARD.tape} strokeWidth="9" />
+    </g>
+    {/* A phone takes its picture, with the flash. */}
+    <g transform="rotate(-8 356 144)">
+      <Phone x={302} y={52} width={108} height={184}>
+        <path d="M22 40V28h12M86 28h12v12M98 124v12H86M34 136H22v-12" stroke="var(--orange)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <g transform="translate(29 54) scale(.4)">
+          <path d="M0 40 62 71v58L0 98z" fill={CARD.left} />
+          <path d="m62 71 62-31v58l-62 31z" fill={CARD.right} />
+          <path d="M0 40 62 9l62 31-62 31z" fill={CARD.top} />
+          <path d="m0 40 17-8-4 8 8 5-9 5 3 7-15-3z" fill={CARD.inside} />
+        </g>
+        <circle cx="54" cy="160" r="9" fill="var(--orange)" />
+      </Phone>
+    </g>
+    <g transform="translate(294 66)">
+      <circle r="11" fill="var(--yellow)" />
+      <path d="M-18 0h-12M-13-13l-8-8M0-18v-12M13-13l8-8M-13 13l-8 8" stroke="var(--yellow)" strokeWidth="4" strokeLinecap="round" />
+    </g>
+    <Pip x={530} ground={262} width={190} mood="worry" side={-1} />
+    {/* A plaster on Pip. */}
+    <g transform="translate(566 206) rotate(-28)">
+      <rect x="-26" y="-10" width="52" height="20" rx="10" fill="#F2CDA8" />
+      <rect x="-9" y="-7" width="18" height="14" rx="3" fill="#E0A982" />
+      <path d="M-18-3v0m0 6v0m36-6v0m0 6v0" stroke="#E0A982" strokeWidth="2.4" strokeLinecap="round" />
+    </g>
+  </>;
+}
+
+function Lost() {
+  const upper = [[64, 80, 70, 60], [142, 96, 54, 44], [278, 72, 92, 68]] as const;
+  const lower = [[62, 170, 84, 68], [154, 188, 58, 50], [220, 178, 72, 60], [300, 192, 70, 46]] as const;
+  return <>
+    {/* A sorting centre's shelf, a gap among its boxes. */}
+    <rect x="48" y="34" width="10" height="214" rx="3" fill={soft} />
+    <rect x="376" y="34" width="10" height="214" rx="3" fill={soft} />
+    {[...upper, ...lower].map(([x, y, width, height]) => <Box key={`${x}-${y}`} x={x} y={y} width={width} height={height} />)}
+    <rect x="42" y="140" width="350" height="10" rx="3" fill={soft} />
+    <rect x="42" y="238" width="350" height="10" rx="3" fill={soft} />
+    <g transform="translate(204 84)">
+      <rect width="66" height="56" rx="4" fill={paper} opacity=".4" />
+      <rect width="66" height="56" rx="4" stroke={soft} strokeWidth="3" strokeDasharray="7 8" />
+    </g>
+    {/* A torch lights the gap, and a magnifier searches it. */}
+    <path d="M436 150 262 76v74l174 22z" fill="var(--yellow)" opacity=".35" />
+    <g transform="translate(237 112)">
+      <circle r="30" fill={paper} opacity=".3" />
+      <circle r="30" stroke={ink} strokeWidth="5.5" />
+      <path d="m23 23 20 20" stroke={ink} strokeWidth="9" strokeLinecap="round" />
+    </g>
+    <g transform="translate(436 161) rotate(8)">
+      <rect x="6" y="-8" width="38" height="16" rx="5" fill={ink} />
+      <path d="M-4-14h12v28H-4z" fill={soft} />
+      <rect x="-6" y="-12" width="4" height="24" rx="2" fill="var(--yellow)" />
+    </g>
+    <Pip x={530} ground={262} width={190} mood="look" side={-1} />
+  </>;
+}
+
+function Scam() {
+  return <>
+    {/* A text on a phone, a warning in it, and a hook on its link. */}
+    <Phone x={70} y={24} width={176} height={252}>
+      <circle cx="34" cy="48" r="12" fill="var(--control)" />
+      <rect x="54" y="43" width="70" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="18" y="74" width="140" height="128" rx="18" fill="var(--lilac-soft)" />
+      <g transform="translate(46 104)">
+        <path d="M0-20 20 14h-40z" fill="var(--yellow)" stroke="var(--yellow)" strokeWidth="6" strokeLinejoin="round" />
+        <path d="M0-8v10" stroke="var(--on-yellow)" strokeWidth="4" strokeLinecap="round" />
+        <circle cy="9" r="2.4" fill="var(--on-yellow)" />
+      </g>
+      <rect x="78" y="94" width="64" height="8" rx="4" fill="var(--lilac)" opacity=".35" />
+      <rect x="78" y="110" width="46" height="8" rx="4" fill="var(--lilac)" opacity=".35" />
+      <rect x="32" y="138" width="108" height="8" rx="4" fill="var(--lilac)" opacity=".35" />
+      <rect x="32" y="162" width="96" height="10" rx="5" fill="var(--blue)" opacity=".75" />
+      <path d="M32 179h96" stroke="var(--blue)" strokeWidth="2.4" strokeLinecap="round" />
+    </Phone>
+    <path d="M164 0v186" stroke={ink} strokeWidth="2" opacity=".7" />
+    <path d="M164 186v14a11 11 0 0 1-22 0v-10m-5 6 5-6 5 6" stroke={ink} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+    {/* A coin, crossed out. */}
+    <g transform="translate(340 168)">
+      <circle r="32" fill="var(--yellow)" />
+      <circle r="23" stroke="var(--on-yellow)" strokeWidth="2.4" opacity=".3" />
+      <circle r="44" stroke="var(--rose)" strokeWidth="7" />
+      <path d="m-31-31 62 62" stroke="var(--rose)" strokeWidth="7" strokeLinecap="round" />
+    </g>
+    {/* Pip says stop, a raised hand in his bubble. */}
+    <Sheet x={420} y={30} width={84} height={84} rx={42}>
+      <g fill="var(--rose)">
+        <rect x="28" y="38" width="30" height="28" rx="10" />
+        {[[28, 26], [35.5, 20], [43, 22], [50.5, 28]].map(([x, top]) => <rect key={x} x={x} y={top} width="7" height={50 - top} rx="3.5" />)}
+        <rect x="22" y="40" width="7" height="24" rx="3.5" transform="rotate(-30 25.5 62)" />
+      </g>
+    </Sheet>
+    <path d="M478 112l14 22 4-26z" fill={paper} />
+    <Pip x={530} ground={266} width={190} mood="worry" side={-1} />
+  </>;
+}
+
+function ChangeAddress() {
+  const roads = ['M10 290C120 284 200 252 282 214', 'M282 214C334 190 362 142 446 120', 'M282 214C344 232 420 238 524 236'];
+  return <>
+    {/* A road that forks: up to the old address, on to a parcel locker. */}
+    {roads.map((road) => <path key={road} d={road} stroke={paper} strokeWidth="34" strokeLinecap="round" opacity=".8" />)}
+    {roads.map((road) => <path key={road} d={road} stroke={line} strokeWidth="3" strokeLinecap="round" strokeDasharray="10 12" />)}
+    <g opacity=".6">
+      <path d="M420 72 468 34l48 38z" fill={soft} />
+      <rect x="430" y="70" width="76" height="52" fill={paper} />
+      <rect x="458" y="90" width="20" height="32" rx="3" fill={soft} />
+    </g>
+    <rect x="520" y="136" width="84" height="104" rx="8" fill="var(--green)" />
+    {[0, 1].flatMap((column) => [0, 1, 2].map((row) => <rect key={`${column}-${row}`} x={528 + column * 36} y={144 + row * 31} width="32" height="26" rx="4"
+      fill={column === 1 && row === 1 ? 'var(--yellow)' : paper} opacity={column === 1 && row === 1 ? 1 : .22} />))}
+    {/* The signpost at the fork, and the van taking the new turn. */}
+    <rect x="276" y="114" width="8" height="102" rx="3" fill={soft} />
+    <path d="M284 136 330 112l16 2-6 15-46 24z" fill={soft} opacity=".6" />
+    <path d="M284 158h50l13 12-13 12h-50z" fill="var(--green)" />
+    <Truck x={368} y={190} tone="green" scale={2.2} />
+    <Pip x={116} ground={268} width={164} mood="look" side={1} />
+  </>;
+}
+
+function Returned() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The shop it came from. */}
+    <rect x="64" y="112" width="136" height="136" fill={paper} />
+    <rect x="80" y="134" width="60" height="52" rx="4" fill="var(--orange-soft)" />
+    <rect x="154" y="150" width="34" height="98" rx="3" fill="var(--orange)" opacity=".8" />
+    <rect x="56" y="84" width="152" height="28" rx="6" fill="var(--orange)" />
+    {[0, 1, 2, 3].map((stripe) => <rect key={stripe} x={65 + stripe * 38} y="84" width="19" height="28" fill={paper} opacity=".35" />)}
+    {[0, 1, 2, 3, 4, 5, 6, 7].map((scallop) => <circle key={scallop} cx={65.5 + scallop * 19} cy="112" r="9.5" fill="var(--orange)" />)}
+    {/* The way back, and the van on it with the stamped parcel. */}
+    <path d="M500 118C440 30 300 22 230 74" stroke="var(--orange)" strokeWidth="5" strokeLinecap="round" strokeDasharray="2 12" />
+    <path d="M250 73 230 74l6-19" stroke="var(--orange)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+    <Truck x={440} y={184} tone="orange" scale={3.4} flip />
+    <Box x={376} y={150} width={54} height={44}>
+      <g transform="translate(27 28)">
+        <circle r="12" stroke="var(--orange)" strokeWidth="2.4" />
+        <path d="M-5-3h5a4 4 0 0 1 0 8h-4m-1-12-4 4 4 4" stroke="var(--orange)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+    </Box>
+    <g stroke={soft} strokeWidth="3" strokeLinecap="round" opacity=".6">
+      <path d="M448 204h30M452 220h22M446 236h26" />
+    </g>
+    <Pip x={548} ground={262} width={176} mood="look" side={-1} />
+  </>;
+}
+
+function Missed() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <path d="M52 262h186l-14-14H66z" fill="var(--ink-soft)" opacity=".35" />
+    {/* The card under the door. */}
+    <g transform="rotate(-7 146 250)">
+      <rect x="110" y="226" width="78" height="42" rx="5" fill={paper} />
+      <rect x="110" y="252" width="78" height="8" fill="var(--yellow)" />
+    </g>
+    <rect x="70" y="36" width="150" height="212" rx="10" fill="var(--ochre)" />
+    <rect x="86" y="54" width="118" height="78" rx="6" fill={paper} opacity=".22" />
+    <rect x="86" y="146" width="118" height="84" rx="6" fill={paper} opacity=".14" />
+    <circle cx="196" cy="150" r="7" fill={paper} opacity=".85" />
+    <rect x="124" y="92" width="42" height="9" rx="4.5" fill={ink} opacity=".5" />
+    {/* The van, already far off. */}
+    <path d="M456 150H608" stroke={line} strokeWidth="3" strokeLinecap="round" />
+    <g stroke={soft} strokeWidth="2.4" strokeLinecap="round" opacity=".6">
+      <path d="M462 128h22M470 140h16" />
+    </g>
+    <Truck x={496} y={116} tone="ochre" scale={1.8} />
+    {/* Pip, a moment too late and out of breath. */}
+    <g fill={soft} opacity=".45">
+      <circle cx="300" cy="190" r="9" /><circle cx="282" cy="180" r="6" /><circle cx="270" cy="168" r="4" />
+    </g>
+    <g fill="var(--blue)" opacity=".7">
+      <path d="M444 140c5 7 7 10 7 13a7 7 0 0 1-14 0c0-3 2-6 7-13Z" />
+      <path d="M460 164c3.5 5 5 7 5 9a5 5 0 0 1-10 0c0-2 1.5-4 5-9Z" />
+    </g>
+    <g stroke={soft} strokeWidth="3" strokeLinecap="round" opacity=".6">
+      <path d="M452 206h30M458 222h22" />
+    </g>
+    <Pip x={384} ground={262} width={180} mood="worry" side={-1} />
+  </>;
+}
+
+function DeliveryTimes() {
+  const stars = [[214, 24], [420, 112], [548, 22], [612, 44], [236, 150], [26, 30]] as const;
+  return <>
+    {stars.map(([cx, cy]) => <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="3" fill="var(--yellow)" />)}
+    <circle cx="428" cy="50" r="20" fill="var(--yellow)" />
+    <circle cx="439" cy="43" r="18" fill="var(--blue-soft)" />
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* A clock in the evening. */}
+    <circle cx="124" cy="140" r="86" fill={paper} />
+    <circle cx="124" cy="140" r="86" stroke="var(--blue)" strokeWidth="8" />
+    {Array.from({ length: 12 }, (_, hour) => {
+      const angle = hour * Math.PI / 6;
+      const inner = hour % 3 ? 68 : 60;
+      return <path key={hour} d={`M${124 + Math.sin(angle) * inner} ${140 - Math.cos(angle) * inner}L${124 + Math.sin(angle) * 74} ${140 - Math.cos(angle) * 74}`}
+        stroke={soft} strokeWidth="3.5" strokeLinecap="round" />;
+    })}
+    <path d="M124 140 86 162M124 140V80" stroke={ink} strokeWidth="6" strokeLinecap="round" />
+    <circle cx="124" cy="140" r="7" fill={ink} />
+    {/* A week whose weekend is marked. */}
+    <Month x={234} y={34} tone="blue" columns={7} rows={2} day={(index) => ({ fill: index % 7 > 4 ? 'var(--blue)' : 'var(--control)', opacity: index % 7 > 4 ? .8 : 1 })} />
+    {/* The van, its headlights on. */}
+    <path d="M330 218 430 198v50l-100-20z" fill="var(--yellow)" opacity=".4" />
+    <Truck x={234} y={186} tone="blue" scale={3} />
+    <circle cx="330" cy="224" r="3.5" fill="var(--yellow)" />
+    {/* Pip at a window, watching. */}
+    <rect x="460" y="70" width="190" height="240" fill={paper} />
+    <rect x="452" y="60" width="200" height="16" rx="4" fill="var(--blue)" />
+    <rect x="484" y="98" width="124" height="108" rx="6" fill="var(--yellow-soft)" />
+    <Pip x={546} ground={216} width={150} mood="look" side={-1} />
+    <rect x="460" y="206" width="190" height="104" fill={paper} />
+    <rect x="484" y="98" width="124" height="108" rx="6" stroke={soft} strokeWidth="5" />
+    <rect x="474" y="202" width="144" height="10" rx="4" fill={soft} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -321,6 +615,14 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },
+  'uncollected-parcel': { tone: 'ochre', draw: Uncollected },
+  'damaged-parcel': { tone: 'orange', draw: Damaged },
+  'lost-parcel': { tone: 'lilac', draw: Lost },
+  'delivery-scam-texts': { tone: 'lilac', draw: Scam },
+  'change-delivery-address': { tone: 'green', draw: ChangeAddress },
+  'returned-to-sender': { tone: 'orange', draw: Returned },
+  'missed-delivery': { tone: 'ochre', draw: Missed },
+  'delivery-times': { tone: 'blue', draw: DeliveryTimes },
 };
 
 /** The ids that have a picture of their own. Every guide must. */

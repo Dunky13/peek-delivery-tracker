@@ -83,7 +83,7 @@ Toujours rien le soir ? Regarde si la date a bougé : chez FedEx, `Livraison mis
 
 ## « Destinataire absent » ou « avis de passage » : que faire ?
 
-Là, il faut agir : personne n'a pu prendre le colis, ou le livreur n'a pas pu entrer.
+Là, il faut agir : [personne n'a pu prendre le colis](guide:missed-delivery), ou le livreur n'a pas pu entrer.
 
 :::steps
 - Lis l'avis | Papier, SMS ou e-mail : où est parti le colis, et [le numéro à donner](guide:find-tracking-number).
@@ -105,7 +105,7 @@ Là, il faut agir : personne n'a pu prendre le colis, ou le livreur n'a pas pu e
 
 ## « En instance » ou « disponible en point de retrait » : où est le colis ?
 
-Il t'attend au bureau de poste, en point relais ou en consigne, jusqu'à la fin du délai indiqué dans le tableau ci-dessus. La frise de La Poste dit `A disposition en point de retrait`, et Mondial Relay affiche les jours restants pour le retirer. Chez UPS, `Livré en relais UPS Access Point` veut dire qu'il t'attend au relais, pas chez toi.
+Il t'attend au bureau de poste, en point relais ou en consigne, [jusqu'à la fin du délai](guide:uncollected-parcel) indiqué dans le tableau ci-dessus. La frise de La Poste dit `A disposition en point de retrait`, et Mondial Relay affiche les jours restants pour le retirer. Chez UPS, `Livré en relais UPS Access Point` veut dire qu'il t'attend au relais, pas chez toi.
 
 Attends ce statut ou le message du transporteur avant d'y aller : Chronopost demande d'attendre la notification de mise à disposition, et bpost de vérifier l'état du colis en ligne avant d'aller au Point d'enlèvement. À La Poste suisse, `Arrivée à l'office de retrait / à l'office de distribution` donne l'heure à partir de laquelle tu peux le retirer, et le point de retrait figure sur l'invitation à retirer un envoi.
 
@@ -117,7 +117,7 @@ Pas toujours. Ça veut dire que le livreur l'a scanné comme remis ou déposé :
 - **Dans un lieu sûr ou chez un voisin.** bpost le fait si tu l'as choisi dans tes préférences, Chronopost si tu l'as choisi avec Predict. Sans signature exigée, UPS laisse le colis dans un endroit sûr et protégé (porche, porte latérale, garage), avec une photo du lieu sur son suivi.
 - **Au guichet.** `Remis au guichet` (La Poste suisse) : dans une filiale, une filiale en partenariat ou un point PickPost.
 
-Attention à `Distribué à l'expéditeur` chez La Poste : c'est un retour arrivé chez le vendeur. Sur le suivi en anglais de [Planzer](carrier:planzer), qui sert aussi aux colis [Quickpac](carrier:quickpac), `Shipped` veut dire livré, pas expédié. Rien à la porte ? Cherche dans le suivi complet une photo, un nom ou un lieu, puis lis [colis livré mais pas reçu](guide:delivered-not-received).
+Attention à `Distribué à l'expéditeur` chez La Poste : c'est un retour arrivé chez le vendeur. Sur le suivi en anglais de [Planzer](carrier:planzer), qui sert aussi aux colis [Quickpac](carrier:quickpac), `Shipped` veut dire livré, pas expédié. Rien à la porte ? Cherche dans le suivi complet une photo, un nom ou un lieu, puis lis [colis livré mais non reçu](guide:delivered-not-received).
 
 ## « Anomalie » ou « exception de livraison » : le colis est-il perdu ?
 
@@ -135,7 +135,7 @@ Les raisons que donnent les transporteurs : colis non retiré à temps, adresse 
 - **Mondial Relay :** un colis non retiré en 5 jours repart vers le Point Relais ou le Locker où l'expéditeur l'avait déposé.
 - **La Poste suisse :** `Renvoi`, avec le motif : `Envoi non retiré`, `Refusé`, `Destinataire introuvable à l'adresse indiquée` ou `Destinataire a déménagé, délai de réexpédition expiré`.
 
-Et ensuite ? Chronopost te conseille de contacter l'expéditeur (le site marchand) pour un nouvel envoi ou un remboursement.
+Et ensuite ? Chronopost te conseille de contacter l'expéditeur (le site marchand) pour [un nouvel envoi ou un remboursement](guide:returned-to-sender).
 
 :::sources
 - [La Poste : API Suivi v2](https://developer.laposte.fr/catalog-apis/suivi@latest?tab=1) – frise, codes de suivi, partenaire

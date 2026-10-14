@@ -99,7 +99,7 @@ Commande passée sur AliExpress, Temu ou Shein ? Leurs délais sont dans [suivre
 
 ## Peut-on réclamer directement au transporteur ?
 
-Parfois, mais l'indemnisation va en général à l'expéditeur : passer par le vendeur est plus rapide.
+Parfois, mais [l'indemnisation va en général à l'expéditeur](guide:lost-parcel) : passer par le vendeur est plus rapide.
 
 | Transporteur | Ce que tu peux faire | Délai |
 | --- | --- | --- |

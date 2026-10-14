@@ -135,7 +135,7 @@ As mensagens verdadeiras também chegam por SMS e e-mail, mas as regras dos CTT 
 Outros sinais:
 
 - **A página de alertas dos CTT** lista as burlas em circulação, com data: em fevereiro de 2026, um SMS em nome da CTT Expresso sobre encomendas retidas por falta de pagamento de «taxas alfandegárias»; em abril, um e-mail sobre encomendas retidas à espera do pagamento de um imposto.
-- **O Gabinete Cibercrime da Procuradoria-Geral da República** descreveu, num alerta de 2023, mensagens falsas em nome dos CTT que pedem uma pequena taxa, normalmente de 2 ou 3 euros, e depois os dados do cartão e o código recebido por SMS.
+- **O Gabinete Cibercrime da Procuradoria-Geral da República** descreveu, num alerta de 2023, [mensagens falsas em nome dos CTT](guide:delivery-scam-texts) que pedem uma pequena taxa, normalmente de 2 ou 3 euros, e depois os dados do cartão e o código recebido por SMS.
 - **A urgência** é um sinal de fraude, avisam os CTT, que lembram ainda que não pedem pagamentos por e-mail ou SMS: o desalfandegamento faz-se todo no portal.
 
 O mais seguro continua a ser o passo 1: abre tu o site ou a app dos CTT.
@@ -149,7 +149,7 @@ Para denunciar:
 
 ## E se eu não pagar, ou quiser devolver a encomenda?
 
-Se não terminares o desalfandegamento até à data limite, a encomenda volta ao remetente, sem retrocesso. Também podes desistir: no portal, abre o processo e carrega em «Devolver à Origem» (não dá para anular) ou, se já desalfandegaste, recusa a encomenda na entrega. A devolução não é prioritária e não tem prazo definido.
+Se não terminares o desalfandegamento até à data limite, a encomenda [volta ao remetente](guide:returned-to-sender), sem retrocesso. Também podes desistir: no portal, abre o processo e carrega em «Devolver à Origem» (não dá para anular) ou, se já desalfandegaste, recusa a encomenda na entrega. A devolução não é prioritária e não tem prazo definido.
 
 Reembolsos e acertos:
 

@@ -60,7 +60,7 @@ For a ParcelShop delivery, `on its way` means it's heading to your ParcelShop.
 
 **Delivered but not there.** Ask your household and neighbours, then start a chat so your local depot can investigate. More in [delivered but not received](guide:delivered-not-received).
 
-**Damaged or lost.** Ask the sender for a refund or replacement: Evri can't give either, and only the sender can claim. Evri recommends senders claim within 28 days of the order for UK services, 45 for international.
+**Damaged or lost.** Ask the sender for a refund or replacement: Evri can't give either, and [only the sender can claim](guide:damaged-parcel). Evri recommends senders claim within 28 days of the order for UK services, 45 for international.
 
 ## Evri contact number and customer service
 

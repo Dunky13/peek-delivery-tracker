@@ -124,7 +124,7 @@ Casi seguro. Correos cobra aduanas de verdad, pero dice que nunca pide pagos por
 | Correos, más de 150 € | Con un «Aviso de llegada». Inicias tú el trámite en correosaduanas.es y pagas allí el presupuesto que te mandan |
 | Agencia Tributaria | Nunca pide por correo electrónico, SMS o Bizum datos económicos ni números de cuenta o de tarjeta, y no se dirigirá a ti para reclamar el arancel |
 
-INCIBE avisa de los SMS falsos que suplantan a Correos y a [Correos Express](carrier:correos-express): dicen que no se ha podido entregar tu paquete porque no se han pagado las tasas de aduana, piden importes pequeños como 1,79 € o 2,64 € y llevan a una web que imita la real para robarte los datos de la tarjeta.
+INCIBE avisa de [los SMS falsos que suplantan a Correos](guide:delivery-scam-texts) y a [Correos Express](carrier:correos-express): dicen que no se ha podido entregar tu paquete porque no se han pagado las tasas de aduana, piden importes pequeños como 1,79 € o 2,64 € y llevan a una web que imita la real para robarte los datos de la tarjeta.
 
 Lo más seguro es el primer paso de arriba: abre tú la web o la app del transportista.
 
@@ -137,7 +137,7 @@ Para pedir ayuda o denunciarlo:
 
 ## ¿Y si no pago o lo devuelvo?
 
-Si no pagas, Correos no lo entrega, y el paquete vuelve al remitente cuando acaba el plazo de recogida. Si ya habías pagado el arancel en la App o en Mi Oficina, Correos solo te lo devuelve cuando la culpa es suya (una devolución indebida o un extravío), no si no lo recogiste.
+Si no pagas, Correos no lo entrega, y el paquete [vuelve al remitente](guide:returned-to-sender) cuando acaba el plazo de recogida. Si ya habías pagado el arancel en la App o en Mi Oficina, Correos solo te lo devuelve cuando la culpa es suya (una devolución indebida o un extravío), no si no lo recogiste.
 
 Si lo devuelves a la tienda:
 

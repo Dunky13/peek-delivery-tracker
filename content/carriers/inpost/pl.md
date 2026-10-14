@@ -57,13 +57,13 @@ Jeśli PaczkoPunkt albo Paczkomat o ograniczonych godzinach jest zamknięty w dn
 
 **Przedłużenie.** Czas możesz wydłużyć o 24 godziny, tylko w InPost Mobile. Zamówisz to od 12 godzin przed końcem terminu (24 godzin przy PaczkoPunkcie i Paczkomacie o ograniczonych godzinach), także kilka razy, ale już nie po otwarciu skrytki. Regulamin podaje opłatę 6,50 zł netto (7,99 zł brutto); cennik obowiązujący od 1 marca 2026 roku jej nie wymienia, więc cenę sprawdź w aplikacji.
 
-**Po terminie.** Nieodebraną paczkę InPost zwraca nadawcy: do Paczkomatu albo PaczkoPunktu, w którym ją nadał, albo na jego adres.
+**Po terminie.** [Nieodebraną paczkę](guide:uncollected-parcel) InPost zwraca nadawcy: do Paczkomatu albo PaczkoPunktu, w którym ją nadał, albo na jego adres.
 
 **Pełny albo zepsuty Paczkomat.** InPost może wtedy zostawić paczkę w zastępczym PaczkoPunkcie albo Paczkomacie, nie dalej niż 2 km w linii prostej, zwykle na 1 dzień kalendarzowy, i daje Ci o tym znać.
 
 ## Paczka InPost nie dotarła albo jest uszkodzona: reklamacja
 
-Śledzenie od kilku dni stoi w miejscu? Kiedy to jeszcze normalne, opisuje poradnik [status przesyłki się nie zmienia](guide:tracking-not-updating). Według regulaminu paczkę, która w ciągu 30 dni od nadania nie dotarła albo o której nie przyszło powiadomienie o możliwości odbioru, uważa się za utraconą.
+Śledzenie od kilku dni stoi w miejscu? Kiedy to jeszcze normalne, opisuje poradnik [status przesyłki się nie zmienia](guide:tracking-not-updating). Według regulaminu paczkę, która w ciągu 30 dni od nadania nie dotarła albo o której nie przyszło powiadomienie o możliwości odbioru, [uważa się za utraconą](guide:lost-parcel).
 
 **Kto składa reklamację.** Nadawca. Ty możesz ją złożyć, gdy nadawca przekaże Ci to prawo albo gdy paczka została Ci już doręczona. Przy zakupach w sklepie nadawcą jest zwykle sklep, więc gdy paczka nie dociera, zacznij od niego.
 

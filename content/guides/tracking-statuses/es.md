@@ -82,7 +82,7 @@ Ojo con un estado que despista: en una entrega a domicilio, `Alta en la unidad d
 
 ## «Intento de entrega» o «ausente»: ¿y ahora qué?
 
-Este sí te necesita: no había nadie para recibir el paquete o el repartidor no pudo llegar a la puerta. En Correos aparece como `Realizado intento de entrega` o `Intento de entrega. Ausente`, normalmente después de un primer intento que no se completó por ausencia, un problema con la dirección u otro inconveniente. SEUR lo escribe `EL ENVÍO NO SE HA ENTREGADO POR AUSENCIA O CIERRE…`.
+Este sí te necesita: [no había nadie para recibir el paquete](guide:missed-delivery) o el repartidor no pudo llegar a la puerta. En Correos aparece como `Realizado intento de entrega` o `Intento de entrega. Ausente`, normalmente después de un primer intento que no se completó por ausencia, un problema con la dirección u otro inconveniente. SEUR lo escribe `EL ENVÍO NO SE HA ENTREGADO POR AUSENCIA O CIERRE…`.
 
 :::steps
 - Lee el aviso | Papel en el buzón, SMS o email: dónde está el paquete y qué número dar.
@@ -102,7 +102,7 @@ Este sí te necesita: no había nadie para recibir el paquete o el repartidor no
 
 ## «A disposición del destinatario» o «para recoger»: ¿dónde está?
 
-En una oficina, una tienda o un locker, hasta que acabe el plazo de la tabla de arriba. Correos usa `A disposición del destinatario` tanto para la oficina como para la taquilla Citypaq; GLS, `Depositado en Parcel Shop`. InPost te manda un email o un SMS cuando el paquete llega al Punto Pack o al Locker, y SEUR te manda por email o SMS el PIN del locker en cuanto lo deposita.
+En una oficina, una tienda o un locker, [hasta que acabe el plazo](guide:uncollected-parcel) de la tabla de arriba. Correos usa `A disposición del destinatario` tanto para la oficina como para la taquilla Citypaq; GLS, `Depositado en Parcel Shop`. InPost te manda un email o un SMS cuando el paquete llega al Punto Pack o al Locker, y SEUR te manda por email o SMS el PIN del locker en cuanto lo deposita.
 
 Espera a ese estado o al aviso antes de ir: en Correos, el envío no está en la oficina hasta el día siguiente al SMS, o hasta el siguiente día laborable si te dejaron el aviso en papel. En un Punto Pack de InPost puedes enseñar el DNI, el pasaporte o el carnet de conducir. En SEUR puede ir otra persona si le pasas la notificación con el código QR o el PIN.
 
@@ -132,7 +132,7 @@ Los motivos que dan los transportistas: no lo recogiste a tiempo, la dirección 
 - **GLS:** si el segundo intento falla, el paquete se queda en la agencia y vuelve 7 días naturales después del primer intento.
 - **InPost:** pasados los 5 días en el Locker o el Punto Pack, vuelve al remitente (tienda online, vendedor o particular).
 
-Si ya va de vuelta, habla con la tienda: SEUR, por ejemplo, te dice que contactes con el remitente para cualquier gestión. Pídele que te lo vuelva a enviar o que te devuelva el dinero.
+Si ya [va de vuelta](guide:returned-to-sender), habla con la tienda: SEUR, por ejemplo, te dice que contactes con el remitente para cualquier gestión. Pídele que te lo vuelva a enviar o que te devuelva el dinero.
 
 :::sources
 - [Correos: Sigue tu paquete con el Localizador de Envíos](https://www.correos.es/es/es/actualidad/2023/sigue-tu-paquete-en-tiempo-real-con-nuestra-herramienta-de-local) – estados y fases

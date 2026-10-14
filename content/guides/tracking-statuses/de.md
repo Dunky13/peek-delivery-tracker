@@ -71,7 +71,7 @@ Zwischen zwei Scans ist Funkstille normal:
 Meistens, ja:
 
 - **DHL:** Nach `Die Sendung wurde in das Zustellfahrzeug geladen.` kommt das Paket in der Regel noch am selben Tag. Eine voraussichtliche Uhrzeit nennt die Paketankündigung, wenn du bei DHL registriert bist.
-- **Hermes:** Bei `Die Sendung befindet sich in der Zustellung` ist der Bote unterwegs, Montag bis Samstag zwischen 8 und 20 Uhr.
+- **Hermes:** Bei `Die Sendung befindet sich in der Zustellung` ist der Bote unterwegs, [Montag bis Samstag zwischen 8 und 20 Uhr](guide:delivery-times).
 - **DPD:** Mit Predict siehst du am Zustelltag die genaue Lieferzeit.
 - **UPS:** Bei `Zustellung läuft` kommt das Paket an Wohnadressen in der Regel zwischen 9 und 19 Uhr, gelegentlich auch später.
 - **Österreichische Post:** Bei `Sendung in Zustellung` kommt die Sendung voraussichtlich heute.
@@ -83,7 +83,7 @@ Zwei Stolperfallen: `Sendung in Verteilung` heißt bei der Österreichischen Pos
 
 ## Zustellversuch verpasst, Karte im Briefkasten: Was jetzt?
 
-Hier bist du gefragt: Niemand konnte das Paket annehmen, auch kein Nachbar. Anders bei der DHL-Meldung `Leider war eine Zustellung Ihrer Sendung heute nicht möglich. Wir versuchen es am nächsten Werktag.`: Sie kommt selten vor, etwa nach einer abgebrochenen Tour, und du musst nichts tun.
+Hier bist du gefragt: [Niemand konnte das Paket annehmen](guide:missed-delivery), auch kein Nachbar. Anders bei der DHL-Meldung `Leider war eine Zustellung Ihrer Sendung heute nicht möglich. Wir versuchen es am nächsten Werktag.`: Sie kommt selten vor, etwa nach einer abgebrochenen Tour, und du musst nichts tun.
 
 :::steps
 - Benachrichtigung lesen | Karte, gelber Zettel, Abholungseinladung, SMS oder E-Mail: wo das Paket liegt und ab wann.
@@ -102,11 +102,11 @@ Hier bist du gefragt: Niemand konnte das Paket annehmen, auch kein Nachbar. Ande
 
 Ob der Code auf der Karte auch als Sendungsnummer taugt, steht unter [Sendungsnummer finden](guide:find-tracking-number).
 
-> DHL fragt per SMS nie nach persönlichen Daten und fordert per SMS nie zur Zahlung auf. Eine SMS, die zur Zahlung auffordert und auf eine fremde Seite verlinkt, ist laut DHL gefälscht, auch wenn eine Sendungsnummer drinsteht. Neuen Termin oder Umleitung buchst du nur auf der Website oder in der App des Paketdienstes.
+> DHL fragt per SMS nie nach persönlichen Daten und fordert per SMS nie zur Zahlung auf. Eine SMS, die zur Zahlung auffordert und auf eine fremde Seite verlinkt, ist laut DHL [gefälscht](guide:delivery-scam-texts), auch wenn eine Sendungsnummer drinsteht. Neuen Termin oder Umleitung buchst du nur auf der Website oder in der App des Paketdienstes.
 
 ## „Zur Abholung bereit“: Wo liegt mein Paket?
 
-In einer Filiale, einem Paketshop, einer Packstation oder, in Österreich, einer Poststation, bis die Frist aus der Tabelle oben abläuft. Bei der Österreichischen Post heißt das `Sendung abholbereit`: In der Post-Geschäftsstelle holst du es zu den Öffnungszeiten ab, aus der Poststation jederzeit mit dem Benachrichtigungscode. Bei `Sendung in Post Empfangsbox eingelangt` kannst du es aus der Post Empfangsbox nehmen. Die Schweizerische Post zeigt mit `Ankunft an der Abhol-/Zustellstelle`, ab wann das Paket in der Filiale bereitliegt. Bei UPS heißt es `Zustellung an einen UPS Access Point`.
+In einer Filiale, einem Paketshop, einer Packstation oder, in Österreich, einer Poststation, [bis die Frist aus der Tabelle oben abläuft](guide:uncollected-parcel). Bei der Österreichischen Post heißt das `Sendung abholbereit`: In der Post-Geschäftsstelle holst du es zu den Öffnungszeiten ab, aus der Poststation jederzeit mit dem Benachrichtigungscode. Bei `Sendung in Post Empfangsbox eingelangt` kannst du es aus der Post Empfangsbox nehmen. Die Schweizerische Post zeigt mit `Ankunft an der Abhol-/Zustellstelle`, ab wann das Paket in der Filiale bereitliegt. Bei UPS heißt es `Zustellung an einen UPS Access Point`.
 
 Schau in die Sendungsverfolgung, bevor du losgehst. Bei DHL kann das Paket in Ausnahmefällen woanders landen als auf der Karte vermerkt. Der tatsächliche Ort steht in der Sendungsverfolgung. Stimmen beide überein, warst du vielleicht zu früh dran: Prüf die Uhrzeit auf der Karte. In der Schweiz lässt du dir das Paket mit einem Login bei „Meine Sendungen“ auch nochmals zustellen: kostenlos zum Deponieren oder an den Nachbarn, CHF 3.30 auf die Etage, CHF 7.00 am Samstag. Weiterleiten kostet CHF 8.00 von Montag bis Freitag.
 
@@ -135,7 +135,7 @@ Die Paketdienste nennen diese Gründe: nicht rechtzeitig abgeholt, Adresse falsc
 - **Österreichische Post** `Rücksendung/Adressierungsfehler`: Das Paket ist schon auf dem Rückweg, und nur der Absender kann die Adresse ändern oder ergänzen.
 - **Schweizerische Post** `Nicht erfolgreiche Zustellung`: Das Paket liegt je nach Fall noch einige Tage in der Filiale, dann geht es an den Absender zurück oder wird nachgesandt.
 
-Rechne nicht damit, sie aufzuhalten. Bei internationalen Sendungen schreibt DHL: „Die Rücksendung kann aus betrieblichen sowie haftungstechnischen Gründen leider nicht gestoppt werden.“ Bitte den Händler, das Paket neu zu schicken oder dir das Geld zu erstatten.
+Rechne nicht damit, sie aufzuhalten. Bei internationalen Sendungen schreibt DHL: „Die Rücksendung kann aus betrieblichen sowie haftungstechnischen Gründen leider nicht gestoppt werden.“ Bitte den Händler, [das Paket neu zu schicken oder dir das Geld zu erstatten](guide:returned-to-sender).
 
 :::sources
 - [DHL: Bedeutung des Sendungsstatus](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/sendungsverfolgung/was-bedeutet-mein-sendungsstatus.html) – Status, 24 Stunden, Zustellfahrzeug, 7 Werktage, Vollmacht, Empfängerfeld, Ablageort, Verzögerungen

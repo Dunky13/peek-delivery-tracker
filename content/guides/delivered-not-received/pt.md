@@ -107,7 +107,7 @@ Se a encomenda veio pela [Correos Express](carrier:correos-express) ou pela [NAC
 
 ### Os CTT pagam uma encomenda perdida?
 
-Em regra, só a quem a enviou, e só em certos casos. A ANACOM explica que, nos envios nacionais, há indemnização por extravio, furto ou dano apenas para envios registados ou com valor declarado. O direito é do remetente, mas passa para ti se ele to atribuir. O valor é o declarado ou, sem ele, o prejuízo real até 20 vezes a taxa de registo (até 5 kg), 30 vezes (de 5 a 10 kg) ou 40 vezes (mais de 10 kg). Correio não registado e atrasos não dão direito a indemnização. Nos serviços de correio expresso valem as condições de cada um: a CTT Expresso paga ao cliente até 10 € por kg de peso bruto em falta. Mais uma razão para ser a loja a tratar disto.
+Em regra, só a quem a enviou, e só em certos casos. A ANACOM explica que, nos envios nacionais, há [indemnização por extravio](guide:lost-parcel), furto ou dano apenas para envios registados ou com valor declarado. O direito é do remetente, mas passa para ti se ele to atribuir. O valor é o declarado ou, sem ele, o prejuízo real até 20 vezes a taxa de registo (até 5 kg), 30 vezes (de 5 a 10 kg) ou 40 vezes (mais de 10 kg). Correio não registado e atrasos não dão direito a indemnização. Nos serviços de correio expresso valem as condições de cada um: a CTT Expresso paga ao cliente até 10 € por kg de peso bruto em falta. Mais uma razão para ser a loja a tratar disto.
 
 ## Consegues reaver o dinheiro pelo cartão ou pelo PayPal?
 
@@ -125,7 +125,7 @@ Não. O [Peek](/), como qualquer [serviço de seguimento](guide:universal-tracke
 
 ### Devo apresentar queixa à polícia se a encomenda foi roubada?
 
-Podes, mas nenhuma das regras acima o exige para teres o reembolso. Um furto pode ser denunciado à PSP ou à GNR, também online, pela Queixa Eletrónica. Se a encomenda chegou aberta ou violada, a ANACOM recomenda apresentar queixa à PSP ou à GNR, além de reclamar junto da transportadora.
+Podes, mas nenhuma das regras acima o exige para teres o reembolso. Um furto pode ser denunciado à PSP ou à GNR, também online, pela Queixa Eletrónica. Se a encomenda [chegou aberta ou violada](guide:damaged-parcel), a ANACOM recomenda apresentar queixa à PSP ou à GNR, além de reclamar junto da transportadora.
 
 :::sources
 - [PGDL: Decreto-Lei n.º 84/2021, versão atualizada](https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=3471&tabela=leis) – art. 3.º, âmbito; art. 11.º, risco, prova, 30 dias, 14 dias, reembolso em dobro

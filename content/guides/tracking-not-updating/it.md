@@ -73,7 +73,7 @@ Non c'è un giorno fisso. I corrieri dicono da quando accettano un reclamo o una
 | La Posta (Svizzera), invii nazionali | Tempo di consegna abituale superato di oltre due giorni, entro un anno dall'impostazione | Mittente o destinatario, con il modulo online |
 | La Posta, invii internazionali | Qualche giorno lavorativo dopo la data prevista, se il tracciamento non dice niente; entro sei mesi | Il mittente. Se sei il destinatario e contesti il recapito, lo fai per iscritto |
 
-Con Poste il reclamo puoi farlo anche tu, ma l'indennizzo va al mittente, salvo che rinunci formalmente a tuo favore. Per i pacchi arrivati dall'estero, Poste consiglia al mittente di rivolgersi alla posta del Paese di partenza. Per un Poste Delivery Standard in ritardo, Poste rimborsa il costo della spedizione (senza i servizi accessori) oltre il 10° giorno lavorativo, 15 € più quel costo oltre il 20°, 30 € più quel costo oltre il 30°, come per un pacco perso. Tempi di risposta, conciliazione e AGCOM, per Poste e per BRT, li trovi in [pacco consegnato ma non ricevuto](guide:delivered-not-received).
+Con Poste [il reclamo](guide:lost-parcel) puoi farlo anche tu, ma l'indennizzo va al mittente, salvo che rinunci formalmente a tuo favore. Per i pacchi arrivati dall'estero, Poste consiglia al mittente di rivolgersi alla posta del Paese di partenza. Per un Poste Delivery Standard in ritardo, Poste rimborsa il costo della spedizione (senza i servizi accessori) oltre il 10° giorno lavorativo, 15 € più quel costo oltre il 20°, 30 € più quel costo oltre il 30°, come per un pacco perso. Tempi di risposta, conciliazione e AGCOM, per Poste e per BRT, li trovi in [pacco consegnato ma non ricevuto](guide:delivered-not-received).
 
 ## Meglio scrivere al venditore o al corriere?
 

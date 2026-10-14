@@ -58,11 +58,11 @@ Zamówienie z AliExpress, Temu albo Shein? Zobacz, jak [śledzić paczkę z Chin
 
 ### Wydana do doręczenia, a potem cisza
 
-Na Amazonie status `W trakcie dostawy` oznacza, że paczka prawdopodobnie dotrze dziś. Amazon dodaje, że jeśli paczka ma przyjść dziś lub jutro, a status się nie zmienił, to normalne: przesyłki bywają doręczane późnym wieczorem. Gdy DPD wyda paczkę do doręczenia, numer telefonu do kuriera znajdziesz w aplikacji DPD Mobile. Jeśli kurier nie zastał Cię w domu, Allegro radzi skontaktować się bezpośrednio z przewoźnikiem i sprawdzić, czy w SMS-ie albo e-mailu od niego nie ma numeru do kuriera, który wiezie Twoją paczkę. Jeśli status pokazuje, że paczka jest doręczona, a jej nie ma, przeczytaj poradnik [paczka doręczona, a jej nie ma](guide:delivered-not-received).
+Na Amazonie status `W trakcie dostawy` oznacza, że paczka prawdopodobnie dotrze dziś. Amazon dodaje, że jeśli paczka ma przyjść dziś lub jutro, a status się nie zmienił, to normalne: przesyłki bywają [doręczane późnym wieczorem](guide:delivery-times). Gdy DPD wyda paczkę do doręczenia, numer telefonu do kuriera znajdziesz w aplikacji DPD Mobile. Jeśli kurier nie zastał Cię w domu, Allegro radzi skontaktować się bezpośrednio z przewoźnikiem i sprawdzić, czy w SMS-ie albo e-mailu od niego nie ma numeru do kuriera, który wiezie Twoją paczkę. Jeśli status pokazuje, że paczka jest doręczona, a jej nie ma, przeczytaj poradnik [paczka doręczona, a jej nie ma](guide:delivered-not-received).
 
 ## Kiedy paczkę uznaje się za zaginioną?
 
-Nie ma jednego dnia. Przewoźnicy podają, od kiedy przyjmą reklamację albo uznają paczkę za utraconą, i liczą to od nadania albo od terminu doręczenia, a nie od ostatniego skanu. Spóźniona paczka zwykle dociera dużo wcześniej: Amazon pisze, że większość opóźnionych przesyłek dociera w ciągu 48 godzin od podanej daty dostawy.
+Nie ma jednego dnia. Przewoźnicy podają, od kiedy przyjmą reklamację albo [uznają paczkę za utraconą](guide:lost-parcel), i liczą to od nadania albo od terminu doręczenia, a nie od ostatniego skanu. Spóźniona paczka zwykle dociera dużo wcześniej: Amazon pisze, że większość opóźnionych przesyłek dociera w ciągu 48 godzin od podanej daty dostawy.
 
 | Przewoźnik | Kiedy możesz działać | Kto składa reklamację |
 | --- | --- | --- |

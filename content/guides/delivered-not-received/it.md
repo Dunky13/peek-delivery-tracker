@@ -103,7 +103,7 @@ A volte, ma l'indennizzo di solito va al mittente, quindi fai prima a passare da
 | La Posta (Svizzera), invii nazionali | Apri tu una ricerca, online o in filiale, se confermi di non aver ricevuto il pacco | Fino a un anno dall'impostazione |
 | La Posta, invii internazionali | La ricerca la apre il mittente; se contesti la consegna, lo fai per iscritto | Fino a sei mesi dall'impostazione |
 
-Anche quando il corriere paga, paga poco. Per un pacco perso, Poste Delivery Standard dà 30 € più il costo della spedizione; Poste Delivery Business, in caso di furto o smarrimento, 1 € al chilo più il costo della spedizione senza IVA, salvo coperture extra pagate dal negozio. La Posta, secondo la Stiftung für Konsumentenschutz, risponde fino a CHF 500 per un pacco normale e fino a CHF 1500 per un pacco «Signature». Il prezzo pieno, di solito, te lo rimborsa solo il venditore.
+Anche quando il corriere paga, paga poco. Per un [pacco perso](guide:lost-parcel), Poste Delivery Standard dà 30 € più il costo della spedizione; Poste Delivery Business, in caso di furto o smarrimento, 1 € al chilo più il costo della spedizione senza IVA, salvo coperture extra pagate dal negozio. La Posta, secondo la Stiftung für Konsumentenschutz, risponde fino a CHF 500 per un pacco normale e fino a CHF 1500 per un pacco «Signature». Il prezzo pieno, di solito, te lo rimborsa solo il venditore.
 
 ### E se il reclamo non basta?
 

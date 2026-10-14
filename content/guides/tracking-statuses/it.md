@@ -70,7 +70,7 @@ In Italia, di solito poco. L'obiettivo di Poste per il Poste Delivery Standard �
 Di solito sì:
 
 - **Poste:** `In consegna` vuol dire che il pacco è stato affidato a chi lo consegna. Ma anche con questo stato, per Poste la data prevista è solo indicativa.
-- **UPS:** salvo servizi con orario definito, a casa consegna di solito tra le 9 e le 19, a volte più tardi.
+- **UPS:** salvo servizi con orario definito, a casa consegna di solito [tra le 9 e le 19](guide:delivery-times), a volte più tardi.
 - **FedEx:** il collo è stato caricato su un veicolo per la consegna in giornata; la fascia oraria stimata la trovi nella pagina di tracking.
 
 Due diciture ingannano. Su Poste, `In consegna` può restare anche dopo che il pacco è stato consegnato, o quando ti aspetta già in un ufficio postale o in un Punto Poste; se la consegna non riesce, torna `In transito`. E `L'invio è stato spartito per il recapito` della Posta vuol dire che un centro l'ha smistato verso la tua località: non è detto che sia già sul furgone. Quanto a «fuori per la consegna», che si legge su alcuni tracking tradotti dall'inglese, è semplicemente «in consegna».
@@ -79,7 +79,7 @@ Due diciture ingannano. Su Poste, `In consegna` può restare anche dopo che il p
 
 ## Tentativo di consegna fallito o pacco in giacenza: cosa fare?
 
-Questo stato invece ti chiede di muoverti: non c'era nessuno a ricevere il pacco, o il corriere non è riuscito a entrare. «In giacenza» vuol dire che ora il pacco aspetta in filiale o all'ufficio postale, finché lo ritiri o qualcuno decide cosa farne.
+Questo stato invece ti chiede di muoverti: [non c'era nessuno a ricevere il pacco](guide:missed-delivery), o il corriere non è riuscito a entrare. «In giacenza» vuol dire che ora il pacco aspetta in filiale o all'ufficio postale, [finché lo ritiri o qualcuno decide cosa farne](guide:uncollected-parcel).
 
 :::steps
 - Leggi l'avviso | Cartaceo, SMS o e-mail: dice dov'è finito il pacco e ti dà un codice da usare.
@@ -100,7 +100,7 @@ Questo stato invece ti chiede di muoverti: non c'era nessuno a ricevere il pacco
 
 Con BRT, il BRTcode lo trovi negli SMS, nelle e-mail o sul tagliando del corriere: con quello cambi data e fascia oraria, scegli un BRT-fermopoint o sblocchi la giacenza. Con la Posta, dopo il login a «I miei invii», puoi chiedere un secondo recapito (gratis se il pacco viene depositato o dato a un vicino, CHF 3.30 al piano, CHF 7.00 il sabato) o un inoltro (CHF 8.00 dal lunedì al venerdì). Hai perso l'avviso di Poste? Chiama il Servizio Clienti e il portalettere te ne porta un duplicato.
 
-> Un SMS che parla di un pacco trattenuto e ti chiede di pagare da un link è il classico messaggio truffa. La Posta svizzera cita proprio «Pacco trattenuto presso il terminale» tra le frasi tipiche dei messaggi falsi, di solito seguita da una richiesta di pagamento. Poste Italiane ricorda che non ti chiederà mai, né via SMS né via e-mail, i dati della carta, i codici OTP o le credenziali. Controlla il pacco solo sul sito o nell'app del corriere, scrivendo tu l'indirizzo.
+> Un SMS che parla di un pacco trattenuto e ti chiede di pagare da un link è il [classico messaggio truffa](guide:delivery-scam-texts). La Posta svizzera cita proprio «Pacco trattenuto presso il terminale» tra le frasi tipiche dei messaggi falsi, di solito seguita da una richiesta di pagamento. Poste Italiane ricorda che non ti chiederà mai, né via SMS né via e-mail, i dati della carta, i codici OTP o le credenziali. Controlla il pacco solo sul sito o nell'app del corriere, scrivendo tu l'indirizzo.
 
 ## «Disponibile per il ritiro»: dove si trova il pacco?
 
@@ -137,7 +137,7 @@ I motivi dei corrieri: non ritirato in tempo, indirizzo sbagliato o incompleto, 
 - **BRT:** un pacco in giacenza torna indietro dopo 10 giorni dall'avviso di giacenza mandato al mittente, se lui non dà istruzioni scritte.
 - **Mondial Relay:** un pacco non ritirato entro 7 giorni torna in automatico al mittente.
 
-A quel punto decide il venditore: chiedigli di rispedirtelo o di rimborsarti.
+A quel punto decide il venditore: chiedigli di [rispedirtelo o di rimborsarti](guide:returned-to-sender).
 
 :::sources
 - [Poste Italiane: Cerca spedizioni, legenda degli stati](https://www.poste.it/cerca/index.html) – Presa in carico, In transito, In consegna, sdoganamento, Centro di lavorazione Internazionale, Resa al mittente, Tracciatura non disponibile, data prevista indicativa

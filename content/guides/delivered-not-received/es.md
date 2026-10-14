@@ -13,7 +13,7 @@ Si el seguimiento pone «Entregado» pero no tienes el paquete, no lo des por pe
 
 Porque «entregado» registra dónde lo dejó el repartidor, no que lo tengas tú. Suele ser por una de estas tres cosas:
 
-- **Lo escanearon antes de tiempo.** Sí, un paquete puede aparecer como entregado antes de llegar. Amazon reconoce en su web francesa que a veces se marca por error como entregado hasta 48 horas antes de la entrega real, y en la española recuerda que algunos transportistas reparten hasta las 22:00.
+- **Lo escanearon antes de tiempo.** Sí, un paquete puede aparecer como entregado antes de llegar. Amazon reconoce en su web francesa que a veces se marca por error como entregado hasta 48 horas antes de la entrega real, y en la española recuerda que algunos transportistas [reparten hasta las 22:00](guide:delivery-times).
 - **Está donde aún no has mirado.** Un vecino, el conserje, tu buzón, una taquilla o un punto de recogida también cuentan como entrega.
 - **Ha acabado donde no debía.** Una dirección mal escrita en el pedido, la puerta equivocada o un robo.
 
@@ -105,7 +105,7 @@ A veces, pero la indemnización suele ir al remitente, así que por la tienda ll
 
 ### ¿Responde Correos si se pierde un paquete?
 
-Sí, pero ante el remitente. Puedes reclamar tú, porque la CNMC considera usuario postal tanto a quien envía como a quien recibe, aunque cobra quien lo envió. Si Correos no te contesta en un mes o no te convence su respuesta, la CNMC te manda a las vías de consumo: la OMIC, tu comunidad autónoma o una Junta Arbitral de Consumo. Si el envío es del servicio postal universal, que incluye paquetes de hasta 20 kg, también puedes acudir al Ministerio de Transportes y Movilidad Sostenible en el mes siguiente a esa respuesta (o al fin del plazo para darla), salvo que ya hayas ido a una Junta Arbitral.
+Sí, pero ante el remitente. [Puedes reclamar tú](guide:lost-parcel), porque la CNMC considera usuario postal tanto a quien envía como a quien recibe, aunque cobra quien lo envió. Si Correos no te contesta en un mes o no te convence su respuesta, la CNMC te manda a las vías de consumo: la OMIC, tu comunidad autónoma o una Junta Arbitral de Consumo. Si el envío es del servicio postal universal, que incluye paquetes de hasta 20 kg, también puedes acudir al Ministerio de Transportes y Movilidad Sostenible en el mes siguiente a esa respuesta (o al fin del plazo para darla), salvo que ya hayas ido a una Junta Arbitral.
 
 ## ¿Puedo recuperar el dinero con la tarjeta o PayPal?
 

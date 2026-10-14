@@ -135,7 +135,7 @@ Lo stesso controllo vale per ParcelsApp o per qualsiasi altro tracker. L'informa
 
 ## Un SMS sul pacco con un link può essere una truffa?
 
-Sì, e il punto pericoloso è proprio il link. Poste Italiane avverte che un SMS falso può comparire perfino nella stessa conversazione dei suoi messaggi veri, con una tecnica chiamata spoofing.
+Sì, e [il punto pericoloso è proprio il link](guide:delivery-scam-texts). Poste Italiane avverte che un SMS falso può comparire perfino nella stessa conversazione dei suoi messaggi veri, con una tecnica chiamata spoofing.
 
 > Non toccare mai il link di un messaggio di consegna che non hai chiesto. Apri la pagina dell'ordine del negozio o scrivi tu l'indirizzo del corriere, come www.poste.it o www.post.ch, e guarda se lì compare la stessa richiesta. Come sono fatti i messaggi veri di Poste e della Posta, e dove segnalare quelli falsi, lo spiega [la guida sulla dogana](guide:customs).
 

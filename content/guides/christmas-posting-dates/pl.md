@@ -79,7 +79,7 @@ Paczka spoza UE przechodzi też odprawę celną, która może ją zatrzymać, a 
 
 ## Co zrobić, gdy świąteczna paczka się spóźnia?
 
-Nie zdążysz z terminem? W 2025 r. Poczta Polska dawała jeszcze poniedziałek 22 grudnia, ale bez pewności dostawy przed świętami. Później paczka czeka już na koniec świąt: InPost i DPD doręczały paczki nadane we wtorek 23 grudnia dopiero w poniedziałek 29 grudnia. Przy InPost wyjątkiem była usługa Paczka w Weekend i kurier z opcją Dostawy w sobotę.
+Nie zdążysz z terminem? W 2025 r. Poczta Polska dawała jeszcze poniedziałek 22 grudnia, ale bez pewności dostawy przed świętami. Później paczka czeka już na koniec świąt: InPost i DPD doręczały paczki nadane we wtorek 23 grudnia dopiero w poniedziałek 29 grudnia. Przy InPost wyjątkiem była usługa Paczka w Weekend i [kurier z opcją Dostawy w sobotę](guide:delivery-times).
 
 | Przewoźnik | Dni bez usług, święta 2026 |
 | --- | --- |

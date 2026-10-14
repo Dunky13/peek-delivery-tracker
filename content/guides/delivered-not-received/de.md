@@ -93,11 +93,11 @@ Bei AliExpress, Temu oder Shein bestellt? Was dort gilt, steht unter [Paket aus 
 
 ## Kannst du selbst beim Paketdienst reklamieren?
 
-Manchmal, aber entschädigt wird meist der Absender, deshalb geht es über den Händler schneller.
+Manchmal, aber [entschädigt wird meist der Absender](guide:lost-parcel), deshalb geht es über den Händler schneller.
 
 | Paketdienst | Was du tun kannst | Frist |
 | --- | --- | --- |
-| DHL (DE) | Kennst du den genannten Nachbarn nicht und meldet er sich nicht, kontaktierst du den Kundenservice. Eine Nachforschung ist möglich, DHL rät Empfängern aber, zuerst mit dem Absender zu sprechen | Nach zwei Tagen (unbekannter Nachbar). Fehlender Inhalt: innerhalb von 7 Tagen nach der Zustellung |
+| DHL (DE) | Kennst du den genannten Nachbarn nicht und meldet er sich nicht, kontaktierst du den Kundenservice. Eine Nachforschung ist möglich, DHL rät Empfängern aber, zuerst mit dem Absender zu sprechen | Nach zwei Tagen (unbekannter Nachbar). [Fehlender Inhalt](guide:damaged-parcel): innerhalb von 7 Tagen nach der Zustellung |
 | [Hermes](carrier:hermes-de) (DE) | Sendungsrecherche über das Kontaktformular. Eine „ungeklärte Zustellung“ klärt sich laut Hermes meist in wenigen Werktagen. Für die Verlustmeldung braucht Hermes die Abgabequittung des Absenders und einen Wertnachweis | Recherche frühestens nach 5 Werktagen. Bleibt sie 20 Tage erfolglos (national), folgt die Verlustmeldung |
 | DPD (DE) | Nichts Eigenes: Der Versender kann eine offizielle Nachforschung einleiten | Nicht angegeben |
 | Österreichische Post | Nur der Versender beantragt eine Nachforschung, auch wenn „zugestellt“ angezeigt wird. Sie ist derzeit kostenlos | Pakete im Inland 3 Monate, international 6 Monate |

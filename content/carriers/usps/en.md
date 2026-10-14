@@ -48,7 +48,7 @@ USPS writes its tracking in English. These are the steps a parcel usually shows,
 
 ## Missed delivery: redelivery, Post Office pickup and lockers
 
-After a failed attempt the carrier leaves PS Form 3849, a peach notice saying why. Your options:
+After [a failed attempt](guide:missed-delivery) the carrier leaves PS Form 3849, a peach notice saying why. Your options:
 
 - **Redelivery**, free, at usps.com/redelivery, in USPS Tracking, by the notice's QR code, by phone, or by signing the notice and leaving it in your mailbox. You get one request, to the original address, before the return date; you can't pick a time. Online requests by 2 a.m. CST, Monday to Saturday, can come the same day. It isn't offered everywhere.
 - **Pickup at the Post Office** on the notice, with photo ID and the notice. Someone else can go with your written permission and their own ID. USPS Tracking shows that Post Office's address and hours.
@@ -99,7 +99,7 @@ Only Priority Mail Express and Amazon parcels, says USPS. Everything else comes 
 
 ### Is a USPS text about my package a scam?
 
-Usually, if you didn't ask for it. Real USPS texts come only after you've signed up with a tracking number and never carry a link.
+Usually, if you didn't ask for it. [Real USPS texts](guide:delivery-scam-texts) come only after you've signed up with a tracking number and never carry a link.
 
 ### Does USPS tracking show an exact delivery time?
 

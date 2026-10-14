@@ -48,7 +48,7 @@ These are UPS's English wordings, in the order a parcel usually meets them.
 
 ## Missed UPS delivery, InfoNotice and Access Points
 
-UPS delivers Monday to Friday, plus Saturday in select areas (and Sunday in some US areas), excluding UPS holidays. Unless the sender paid for a time-definite service, homes are typically served between 9 a.m. and 7 p.m., occasionally later; in the US, UPS says as late as 9 p.m. UPS may make up to three attempts. After the last one, an undeliverable parcel goes back to the sender.
+UPS delivers Monday to Friday, plus Saturday in select areas (and Sunday in some US areas), excluding UPS holidays. Unless the sender paid for a time-definite service, homes are typically served [between 9 a.m. and 7 p.m.](guide:delivery-times), occasionally later; in the US, UPS says as late as 9 p.m. UPS may make up to three attempts. After the last one, an undeliverable parcel goes back to the sender.
 
 When the first attempt fails, the driver leaves a UPS InfoNotice (a Delivery Notice or door tag in the US). Track the parcel first, then you can:
 
@@ -102,7 +102,7 @@ Once the sender has sent UPS the shipment details, the number shows `Label Creat
 
 ### Is a UPS delivery text a scam?
 
-It can be. UPS never asks for payment or personal details unprompted, and its real texts come from 75137 (or 24031 in the US), so track the parcel on ups.com instead of tapping the link.
+It can be. UPS never asks for payment or personal details unprompted, and [its real texts](guide:delivery-scam-texts) come from 75137 (or 24031 in the US), so track the parcel on ups.com instead of tapping the link.
 
 :::sources
 - [UPS: Tracking Support (United Kingdom)](https://www.ups.com/gb/en/support/tracking-support) – number shapes, 5 to 7 days, 7 p.m., delivered not found, card payments, texts from 75137

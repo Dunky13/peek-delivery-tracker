@@ -59,7 +59,7 @@ Bei AliExpress, Temu oder Shein bestellt? Lies, wie du ein [Paket aus China verf
 
 ## Ab wann gilt ein Paket als verloren?
 
-Einen festen Tag nennen die Paketdienste nicht. Sie sagen, ab wann sie suchen, gezählt mal ab dem letzten Status, mal ab dem Versand oder der erwarteten Laufzeit. In Deutschland gibt das Handelsgesetzbuch einen Anhaltspunkt: Wer Ansprüche gegen den Paketdienst hat, darf ein Paket als verloren betrachten, wenn es nach Ablauf der Lieferfrist noch einmal so lange ausbleibt, mindestens aber 20 Tage, grenzüberschreitend 30 Tage (§ 424 HGB). Die meisten verspäteten Pakete tauchen viel früher wieder auf: Unklare Verläufe, etwa ein Status, der sich 3 Werktage nicht ändert, klären sich laut Hermes meist innerhalb weniger Werktage.
+Einen festen Tag nennen die Paketdienste nicht. Sie sagen, ab wann sie suchen, gezählt mal ab dem letzten Status, mal ab dem Versand oder der erwarteten Laufzeit. In Deutschland gibt das Handelsgesetzbuch einen Anhaltspunkt: Wer Ansprüche gegen den Paketdienst hat, darf [ein Paket als verloren betrachten](guide:lost-parcel), wenn es nach Ablauf der Lieferfrist noch einmal so lange ausbleibt, mindestens aber 20 Tage, grenzüberschreitend 30 Tage (§ 424 HGB). Die meisten verspäteten Pakete tauchen viel früher wieder auf: Unklare Verläufe, etwa ein Status, der sich 3 Werktage nicht ändert, klären sich laut Hermes meist innerhalb weniger Werktage.
 
 | Paketdienst | Ab wann du nachfragen kannst | Wer fragt |
 | --- | --- | --- |

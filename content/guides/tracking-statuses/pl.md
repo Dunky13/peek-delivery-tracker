@@ -84,7 +84,7 @@ Dwa statusy łatwo pomylić. `Przyjęta w Oddziale Docelowym.` znaczy, że paczk
 
 ## Awizo i nieudana próba doręczenia: co teraz?
 
-Tu musisz coś zrobić: nikt nie odebrał paczki albo kurier nie mógł jej doręczyć.
+Tu musisz coś zrobić: [nikt nie odebrał paczki albo kurier nie mógł jej doręczyć](guide:missed-delivery).
 
 :::steps
 - Przeczytaj powiadomienie | SMS, e-mail, aplikacja albo awizo w skrzynce: gdzie jest paczka i do kiedy czeka.
@@ -104,7 +104,7 @@ Tu musisz coś zrobić: nikt nie odebrał paczki albo kurier nie mógł jej dor�
 | Pocztex PUNKT i AUTOMAT | – | Placówka pocztowa 7 dni, punkt w sklepie (np. Żabka) 3 dni, automat 72 godziny, bez przedłużenia |
 | Mondial Relay w Polsce | – | Automat 48 godzin (72 w środku budynku), punkt 72 godziny |
 
-Przy paczce pocztowej cięższej niż 2 kg albo przesyłce z należnościami celnymi rozporządzenie pozwala Poczcie Polskiej od razu zostawić awizo, bez próby doręczenia do drzwi. Przedłużenie w InPost kupisz tylko przed końcem pierwotnych 48 godzin: żółty przycisk Przedłuż pojawia się w aplikacji 12 godzin przed terminem (24 godziny w punktach z ograniczonymi godzinami otwarcia).
+Przy paczce pocztowej cięższej niż 2 kg albo przesyłce z należnościami celnymi rozporządzenie pozwala Poczcie Polskiej od razu zostawić awizo, bez próby doręczenia do drzwi. [Przedłużenie w InPost](guide:uncollected-parcel) kupisz tylko przed końcem pierwotnych 48 godzin: żółty przycisk Przedłuż pojawia się w aplikacji 12 godzin przed terminem (24 godziny w punktach z ograniczonymi godzinami otwarcia).
 
 > SMS o nieudanej próbie doręczenia z linkiem do „ustalenia nowego terminu” albo do dopłaty to znany schemat oszustwa. InPost zapewnia, że nigdy nie wysyła SMS-ów o dopłatach, a Pocztex, że nie wysyła linków do płatności i nie prosi SMS-em o dane karty. Zmieniaj dostawę tylko na stronie lub w aplikacji przewoźnika, a podejrzany SMS prześlij na numer 8080 (CERT Polska).
 
@@ -140,7 +140,7 @@ Przewoźnicy podają takie powody: paczka nieodebrana w terminie, błędny lub n
 - **InPost `Powrót do oddziału.`** Kurier drugi raz Cię nie zastał i paczka jest już w drodze powrotnej.
 - **FedEx `W trakcie zwrotu do oddziału FedEx`.** Odbiorca odmówił przyjęcia, na przykład z powodu uszkodzenia albo braku możliwości zapłaty; o dalszym losie paczki decyduje nadawca.
 
-Odmowa działa od razu: w Pocztex odmówiona paczka wraca do nadawcy niezwłocznie, a odmowa zapłaty należności za przesyłkę liczy się jak odmowa przyjęcia. Przy paczce spoza Unii Poczta Polska też przypomina, że możesz odmówić jej przyjęcia. Przesyłka nieodebrana z poczty w terminie wraca do nadawcy, a zwrot InPost trafia do miejsca nadania albo na adres zwrotny. Gdy paczka już wraca, poproś sprzedawcę o ponowną wysyłkę albo zwrot pieniędzy.
+Odmowa działa od razu: w Pocztex odmówiona paczka wraca do nadawcy niezwłocznie, a odmowa zapłaty należności za przesyłkę liczy się jak odmowa przyjęcia. Przy paczce spoza Unii Poczta Polska też przypomina, że możesz odmówić jej przyjęcia. Przesyłka nieodebrana z poczty w terminie [wraca do nadawcy](guide:returned-to-sender), a zwrot InPost trafia do miejsca nadania albo na adres zwrotny. Gdy paczka już wraca, poproś sprzedawcę o ponowną wysyłkę albo zwrot pieniędzy.
 
 :::sources
 - [InPost: statusy przesyłek (API ShipX)](https://api-shipx-pl.easypack24.net/v1/statuses?lang=pl_PL) – nazwy i opisy statusów

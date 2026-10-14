@@ -53,7 +53,7 @@ Royal Mail aims to deliver to most addresses by 4:30pm, Monday to Saturday; some
 
 If you're out, the postie may leave the item with a neighbour either side or opposite and leaves a card saying which one. Special Delivery Guaranteed, items from abroad needing a signature and age- or ID-checked items never go to a neighbour.
 
-Otherwise you get a Something for You card, and Royal Mail tries again automatically the next working day. You can't collect after the first attempt, only after the second, from the following working day. Redelivery is free: book it at [royalmail.com/receiving-mail/redelivery](https://www.royalmail.com/receiving-mail/redelivery) or in the Royal Mail app, with 48 working hours' notice, to your address, another address in your postcode area, a Royal Mail Shop or Parcel Locker there, or your local Post Office.
+Otherwise you get a [Something for You card](guide:missed-delivery), and Royal Mail tries again automatically the next working day. You can't collect after the first attempt, only after the second, from the following working day. Redelivery is free: book it at [royalmail.com/receiving-mail/redelivery](https://www.royalmail.com/receiving-mail/redelivery) or in the Royal Mail app, with 48 working hours' notice, to your address, another address in your postcode area, a Royal Mail Shop or Parcel Locker there, or your local Post Office.
 
 To collect, bring the card and ID in the addressee's name, or the code from the email or text for a Shop or Locker. Royal Mail holds items for 18 calendar days, or 21 when a customs charge is due; a Parcel Locker keeps them 3 days, then the delivery office 18 more. After that the item goes back to the sender.
 

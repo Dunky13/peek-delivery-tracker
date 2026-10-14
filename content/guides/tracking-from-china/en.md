@@ -53,7 +53,7 @@ If nothing moves after that scan, Cainiao says your country usually hasn't updat
 | `Arrived at the pick-up point`, `Waiting for Pick Up` | At a pickup point or post office. Collect it in time, or it may go back. |
 | `Not Found` | Not in the system yet, or a mistyped number. Normal for the first 11 days. |
 | `Security Check Failed` | It can't be shipped. Talk to the seller. |
-| `Unclaimed`, `Storage term expired` | Not collected in time, so it's going back to the sender. |
+| `Unclaimed`, `Storage term expired` | [Not collected in time](guide:uncollected-parcel), so it's going back to the sender. |
 
 Out for delivery and other everyday statuses: [what tracking statuses mean](guide:tracking-statuses).
 

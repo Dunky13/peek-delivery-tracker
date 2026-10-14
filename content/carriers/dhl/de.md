@@ -47,7 +47,7 @@ Auf der englischen Seite stehen die gleichen Schritte auf Englisch, etwa `The sh
 
 ## DHL Paket nicht zugestellt: Filiale, Packstation, Zweitzustellung
 
-Bist du nicht da, kann DHL das Paket bei Nachbarn oder jemandem aus deinem Haushalt abgeben und hinterlässt dann eine Benachrichtigungskarte oder E-Mail. Sonst kommt es in eine nahe Filiale, einen Paketshop oder eine Packstation. Die Sendungsverfolgung zeigt den tatsächlichen Ort, auch wenn auf der Karte ein anderer steht. Ist nach 3 bis 4 Tagen keine Karte da, schau dort nach.
+Bist du nicht da, kann DHL das Paket bei Nachbarn oder jemandem aus deinem Haushalt abgeben und hinterlässt dann eine [Benachrichtigungskarte](guide:missed-delivery) oder E-Mail. Sonst kommt es in eine nahe Filiale, einen Paketshop oder eine Packstation. Die Sendungsverfolgung zeigt den tatsächlichen Ort, auch wenn auf der Karte ein anderer steht. Ist nach 3 bis 4 Tagen keine Karte da, schau dort nach.
 
 - **Filiale oder Paketshop:** 7 Werktage Lagerzeit, Samstage mitgezählt, ab dem Tag nach dem ersten Zustellversuch. Zwei Werktage vor Ablauf kommt eine Erinnerung. Bring einen amtlichen Lichtbildausweis mit, die Karte brauchst du in der Filiale nicht. Jemand anderes kann mit deiner unterschriebenen Vollmacht, der Karte und dem eigenen Ausweis abholen, außer bei Sendungen mit Ident- oder Altersprüfung.
 - **Packstation:** 7 Kalendertage für Pakete, die an die Packstation adressiert oder umgeleitet wurden, 9 nach einem gescheiterten Zustellversuch. Verlängern lässt sich das nicht. Du öffnest das Fach mit dem Abholcode aus der Post & DHL App, nach einem verpassten Zustellversuch reicht die Karte.
@@ -61,7 +61,7 @@ Am Zustelltag bietet DHL für ausgewählte Pakete Live-Tracking an: ein Zeitfens
 
 Hat sich die Sendungsverfolgung seit weniger als 5 Werktagen nicht verändert, bittet DHL dich, sie weiter zu beobachten. Nach mehr als 5 Werktagen kannst du einen Nachforschungsauftrag stellen. Sprich aber zuerst mit dem Absender: Bei Online-Bestellungen klärt der Shop das meist schneller. DHLs Kundenservice sieht dieselbe Sendungsverfolgung wie du und kann ein Paket nicht beschleunigen. Mehr dazu in [Sendungsverfolgung aktualisiert sich nicht](guide:tracking-not-updating).
 
-Steht da „zugestellt“, aber nichts ist da? Schau im Feld „Zugestellt an“ nach dem Nachbarn oder Briefkasten. Meldet sich ein unbekannter Nachbar nach zwei Tagen nicht, wende dich an den Kundenservice. Such auch nach `Rücksendung eingeleitet`: Das Paket ist vielleicht zurück zum Absender gegangen, und eine Rücksendung lässt sich nicht stoppen. Siehe [Paket zugestellt, aber nicht erhalten](guide:delivered-not-received).
+Steht da „zugestellt“, aber nichts ist da? Schau im Feld „Zugestellt an“ nach dem Nachbarn oder Briefkasten. Meldet sich ein unbekannter Nachbar nach zwei Tagen nicht, wende dich an den Kundenservice. Such auch nach `Rücksendung eingeleitet`: Das Paket ist vielleicht zurück zum Absender gegangen, und [eine Rücksendung lässt sich nicht stoppen](guide:returned-to-sender). Siehe [Paket zugestellt, aber nicht erhalten](guide:delivered-not-received).
 
 Schäden oder fehlenden Inhalt meldest du DHL innerhalb von 7 Tagen nach der Zustellung: Schadensanzeige ausfüllen, dann über 0228 4333112 eine kostenlose Abholung buchen oder das ganze Paket mit allen Teilen in einer Filiale abgeben (nicht im Paketshop oder an der Packstation). DHL meldet sich beim Absender.
 
