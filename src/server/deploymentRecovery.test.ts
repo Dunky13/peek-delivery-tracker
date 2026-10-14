@@ -159,6 +159,7 @@ it('closes the check-in of a scheduled run lost with its worker as an error, bef
   vi.spyOn(client, 'maintainSyncAudit').mockResolvedValue({ abandoned: 0, purged: 0 });
   vi.spyOn(client, 'forgetExpiredParcelLinks').mockResolvedValue({ links: 0, packages: 0, stopped: 0, alerts: 0 });
   vi.spyOn(client, 'forgetOldParcelFeedback').mockResolvedValue(0);
+  vi.spyOn(client, 'recordUsageMetrics').mockResolvedValue();
   vi.spyOn(client, 'publicLookupUsageSummary').mockResolvedValue({ buckets: 0, p50: 0, p90: 0, max: 0, detection: { buckets: 0, p50: 0, p90: 0, max: 0 } });
   worker.start();
   await vi.advanceTimersByTimeAsync(1);
@@ -184,6 +185,7 @@ it('runs on when lost runs cannot be read, and leaves them alone when resuming a
   vi.spyOn(client, 'maintainSyncAudit').mockResolvedValue({ abandoned: 0, purged: 0 });
   vi.spyOn(client, 'forgetExpiredParcelLinks').mockResolvedValue({ links: 0, packages: 0, stopped: 0, alerts: 0 });
   vi.spyOn(client, 'forgetOldParcelFeedback').mockResolvedValue(0);
+  vi.spyOn(client, 'recordUsageMetrics').mockResolvedValue();
   vi.spyOn(client, 'publicLookupUsageSummary').mockResolvedValue({ buckets: 0, p50: 0, p90: 0, max: 0, detection: { buckets: 0, p50: 0, p90: 0, max: 0 } });
   worker.start();
   await vi.advanceTimersByTimeAsync(1);
@@ -216,6 +218,7 @@ it('finishes the persisted Sentry check-in when a replacement resumes the job', 
   vi.spyOn(client, 'maintainSyncAudit').mockResolvedValue({ abandoned: 0, purged: 0 });
   vi.spyOn(client, 'forgetExpiredParcelLinks').mockResolvedValue({ links: 0, packages: 0, stopped: 0, alerts: 0 });
   vi.spyOn(client, 'forgetOldParcelFeedback').mockResolvedValue(0);
+  vi.spyOn(client, 'recordUsageMetrics').mockResolvedValue();
   vi.spyOn(client, 'publicLookupUsageSummary').mockResolvedValue({ buckets: 0, p50: 0, p90: 0, max: 0, detection: { buckets: 0, p50: 0, p90: 0, max: 0 } });
   worker.start();
   await vi.advanceTimersByTimeAsync(1);

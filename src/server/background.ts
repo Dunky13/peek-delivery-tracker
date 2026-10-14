@@ -384,6 +384,20 @@ export class SyncJobWorker {
             trigger: kind,
           });
         }
+        try {
+          // The usage dashboard's counts for today, and the last additions of yesterday.
+          await this.service.client.recordUsageMetrics();
+        } catch (maintenanceError) {
+          logOperationalEvent('usage_metrics_failed', {
+            error_type: errorType(maintenanceError),
+          }, 'error');
+          captureOperationalError(maintenanceError, {
+            component: 'usage-metrics',
+            operation: 'record',
+            jobId,
+            trigger: kind,
+          });
+        }
         this.state.lastScheduledSync = Date.now() / 1_000;
         this.state.lastAutoArchived = archived;
       } else {

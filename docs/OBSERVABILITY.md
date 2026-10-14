@@ -630,6 +630,28 @@ Grafana dashboard with these panels; choose its Prometheus data source at the to
 "Silent carriers" table lists carriers with lookups last week but none in two days: silence
 isn't success. The "Deploys" toggle marks app restarts, where the counters start again.
 
+## Usage dashboard
+
+[ops/grafana/users-and-parcels.json](../ops/grafana/users-and-parcels.json) shows the
+accounts, how many open their deliveries, and the parcels added and being tracked, by UTC
+day. It reads the database's `metrics` schema through a PostgreSQL data source that
+connects as `metrics_reader`. That role can read nothing else, and the schema holds counts
+only: no account, parcel or number. To set it up, give the role `LOGIN` and a password,
+add the data source and import the dashboard. In production, the Grafana container joins
+the Supabase stack's network to reach the database.
+
+- `metrics.daily`: accounts, accounts made, parcels added and parcels being tracked, with
+  and without an account. The maintenance pass after each scheduled sync rewrites today's
+  row and yesterday's additions, and logs `usage_metrics_failed` when it cannot.
+- `metrics.active_accounts`: accounts that opened their deliveries in each day, week and
+  month. `record_account_opened` counts an account the first time it opens them in a period.
+- `metrics.live`, `metrics.open_parcels` and `metrics.carriers`: the latest figures, counted
+  when read.
+
+Days from before the schema existed were rebuilt from the rows stored then, so they miss
+the accounts and parcels deleted earlier, and their activity counts sign-ins and session
+renewals instead of openings.
+
 ## Incident checklist
 
 1. Read the Sentry component, operation, carrier and error/anomaly type.

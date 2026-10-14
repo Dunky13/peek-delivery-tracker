@@ -1601,6 +1601,11 @@ export class SupabaseServiceClient extends SupabaseClient {
     return Number(await this.request('/rest/v1/rpc/forget_old_parcel_feedback', { method: 'POST', body: {} }) ?? 0);
   }
 
+  /** Rewrites today's counts for the usage dashboard, and the additions of the day before. */
+  async recordUsageMetrics(): Promise<void> {
+    await this.request('/rest/v1/rpc/record_usage_metrics', { method: 'POST', body: {} });
+  }
+
   /**
    * The DPD app sessions DPD has not refused, newest first: the scraper takes up
    * the newest, whatever its age, and checks the others for a week after they opened.

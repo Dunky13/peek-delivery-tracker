@@ -257,6 +257,13 @@ describe('one-off parcels and their links', () => {
     expect(request.mock.calls[3]).toEqual(['/rest/v1/rpc/forget_old_parcel_feedback', { method: 'POST', body: {} }]);
   });
 
+  it('rewrites the usage counts through a function', async () => {
+    const client = service();
+    const request = vi.spyOn(client, 'request').mockResolvedValueOnce(null);
+    await client.recordUsageMetrics();
+    expect(request).toHaveBeenCalledExactlyOnceWith('/rest/v1/rpc/record_usage_metrics', { method: 'POST', body: {} });
+  });
+
   it('changes a link and its alerts through functions, with ids, key hashes and endpoints in request bodies', async () => {
     const client = service();
     const hash = 'a'.repeat(64);

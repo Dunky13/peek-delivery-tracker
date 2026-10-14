@@ -27,7 +27,14 @@ create schema if not exists extensions;
 create table if not exists auth.users (
   id uuid primary key,
   email text,
-  is_anonymous boolean not null default false
+  is_anonymous boolean not null default false,
+  created_at timestamptz default now()
+);
+
+create table if not exists auth.audit_log_entries (
+  id uuid primary key,
+  payload json,
+  created_at timestamptz
 );
 
 create table if not exists auth.sessions (
