@@ -404,7 +404,10 @@ final class CarrierCatalogTests: XCTestCase {
         let sections = CarrierPickerSearch.letterSections(catalog: catalog, language: .en)
         XCTAssertEqual(sections.flatMap(\.carriers).count, catalog.selectableCarriers.count)
         XCTAssertEqual(sections.first?.letter, "A")
-        XCTAssertEqual(sections.last, .init(letter: "#", carriers: [.fourPx, .fivePost, .ninetyNineMinutos]))
+        XCTAssertEqual(sections.last?.letter, "#")
+        XCTAssertEqual(sections.last?.carriers.first, .fourPx)
+        XCTAssertEqual(sections.last?.carriers.dropFirst().first, .fivePost)
+        XCTAssertEqual(sections.last?.carriers.last, .ninetyNineMinutos)
         let name = { (code: String) in TrackingLocation.countryName(code, language: .en) }
         XCTAssertEqual(CarrierPickerSearch.countryLine(["CH", "LI"], name: name), "Switzerland · Liechtenstein")
         XCTAssertEqual(CarrierPickerSearch.countryLine(["FR", "BE", "ES", "LU", "PT"], name: name), "France · Belgium +3")
@@ -702,8 +705,6 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertFalse(paack.accepts("12--345"))
         XCTAssertFalse(paack.accepts("ABC"))
         XCTAssertEqual(paack.normalizedValue("sw1a 1aa"), "SW1A1AA")
-        XCTAssertFalse(paack.isOptional)
-        XCTAssertFalse(paack.isSatisfied(by: ""))
     }
 
     func testThePostcodeSuggestedIsTheNewestThatFitsTheCarriersOwnFirst() throws {

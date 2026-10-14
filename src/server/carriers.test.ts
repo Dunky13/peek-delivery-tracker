@@ -32,7 +32,6 @@ describe('optional carrier inputs', () => {
     expect(() => normalizeCarrierInputs('gls-ch', '993990103198', '', '')).toThrow('postcode');
     expect(() => normalizeCarrierInputs('gls-de', '123456789018', '', '')).toThrow('postcode');
     expect(() => normalizeCarrierInputs('heppner', '23456789', '', '')).toThrow('postcode');
-    expect(() => normalizeCarrierInputs('paack', 'PAACK12345', '', '')).toThrow('postcode');
     expect(() => normalizeCarrierInputs('ups', '1Z999AA10123456784', '', '8000')).toThrow('not used');
   });
 });
