@@ -1090,6 +1090,25 @@ final class CarrierCatalogTests: XCTestCase {
         }
     }
 
+    /// Made-up Magyar Posta domestic numbers: `P`, a product letter, a three-character code, then
+    /// seven digits weighing 3, 1, 3, … from the left whose sum mod 10 is the last digit.
+    func testMagyarPostaDomesticNumbersCheckTheirSevenDigits() {
+        // 1 × 3 = 3; 9 × 3 + 9 + 9 × 3 + 9 + 9 × 3 + 9 + 9 × 3 = 135 leaves 5; the code is not counted.
+        for number in ["PNZZZ00000013", "PB00000000013", "PKA1B99999995", "PNZZZ00000000"] {
+            XCTAssertTrue(CarrierCatalog.isValidMagyarPostaNumber(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("magyar-posta", number), true, number)
+        }
+        for number in [
+            "PNZZZ00000014", "PKA1B99999996", "PB00000000010",
+            // Another first letter, a lowercase or digit product letter, and a digit short or over.
+            "QNZZZ00000013", "pNZZZ00000013", "PnZZZ00000013", "P1ZZZ00000013", "PNZZZ0000013", "PNZZZ000000013",
+            "PNZZZ00000013\n", "PNZZZ 0000 0013", "PNZZZ\u{0669}0000013", "PNZZZ0000001\u{0663}",
+        ] {
+            XCTAssertFalse(CarrierCatalog.isValidMagyarPostaNumber(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("magyar-posta", number), false, number)
+        }
+    }
+
     func testPostlogisticsPrintedReferenceAndTrackingLink() throws {
         let printed = "12345678-001"
         let compact = "12345678001"

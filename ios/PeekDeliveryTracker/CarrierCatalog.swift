@@ -927,6 +927,7 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         case "fedex-ground-economy": isValidFedExGroundEconomyNumber(number)
         case "pos-laju": isValidPosLajuConsignment(number)
         case "saia": isValidSaiaPro(number)
+        case "magyar-posta": isValidMagyarPostaNumber(number)
         default: nil
         }
     }
@@ -993,6 +994,16 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         guard matches(value, pattern: "^[0-9]{10}0[0-6]$"),
               let ten = Int(value.prefix(10)), let check = value.last?.wholeNumberValue else { return false }
         return ten % 7 == check
+    }
+
+    /// Magyar Posta's domestic numbers: `P`, a product letter, a three-character customer code,
+    /// seven digits and a check digit. The seven digits weigh 3, 1, 3, … from the left; the sum
+    /// mod 10 is the last digit, with no complement. The code is outside the check.
+    static func isValidMagyarPostaNumber(_ value: String) -> Bool {
+        guard matches(value, pattern: "^P[A-Z][0-9A-Z]{3}[0-9]{8}$") else { return false }
+        let digits = value.dropFirst(5).compactMap(\.wholeNumberValue)
+        let sum = digits[0..<7].enumerated().reduce(0) { $0 + $1.element * ($1.offset % 2 == 0 ? 3 : 1) }
+        return sum % 10 == digits[7]
     }
 
     /// GS1 mod 10: counted from the check digit, the digits before it weigh 3, 1, 3, …
