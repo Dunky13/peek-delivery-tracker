@@ -878,6 +878,33 @@ describe('TrackingSyncService', () => {
     expect(report).toHaveBeenCalledWith('carrier_mismatch_confirmed', expect.objectContaining({ provider: 'ups', trackingNumber: 'TEST1234' }));
   });
 
+  it('files an unknown parcel under the detected carrier that answered with local clocks once a provider dates it', async () => {
+    const report = vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    const adapter = {
+      fetch: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: null,
+        events: [{ local_time: '2026-09-10T09:00:00', description: 'Departed the sorting centre', stage: 'in_transit' }] }),
+      fetchUniversal: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-09-10T11:00:00Z',
+        reported_carriers: ['17FEIA', 'DPD'], events: [{ time: '2026-09-10T11:00:00Z', description: 'In transit', stage: 'in_transit' }] }),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null,
+      () => new Date('2026-09-10T12:00:00Z'));
+    // A synthetic number in 17FEIA's own shape, filed before detection named the carrier.
+    const number = 'FEIXY0000000001YQ';
+    await service.syncPackage({ id: 'filed-unknown', carrier: 'unknown', tracking_number: number, current_stage: 'in_transit',
+      carrier_data: { tracking_provider: 'Ship24', routing: { version: 1, configured_carrier: 'unknown', last_event_at: '2026-09-10T10:00:00.000Z' } } });
+    expect(adapter.fetch).toHaveBeenCalledExactlyOnceWith('17feia', number, null, null);
+    const saved = client.updatePackage.mock.calls.at(-1)![1];
+    expect(saved).toMatchObject({ carrier: '17feia', tracking_url: null, dpd_postcode: null, carrier_data: {
+      carrier_answered: true, routing: { configured_carrier: '17feia' },
+      direct_local_history: { carrier: '17feia', number, events: [expect.objectContaining({ local_time: '2026-09-10T09:00:00' })] },
+    } });
+    expect(saved.carrier_data.routing).not.toHaveProperty('confirmed_carrier');
+    expect(report).toHaveBeenCalledWith('carrier_auto_swapped', expect.objectContaining({ carrier: 'unknown', provider: '17feia', category: 'detected' }));
+  });
+
   it('persists routing for a universal-only carrier and respects it on the next manual check', async () => {
     const client = { ...fakeClient(),
       acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),

@@ -270,6 +270,8 @@ export class TrackingRouter {
     let localHistory: JsonObject | undefined;
     // The filed carrier's status alone, or part of its history, while providers are asked for the rest.
     let partialDirect: { value: RoutedResult; carrier: string } | undefined;
+    // The carrier detection names for the number, when its own answer moved but had only local clocks.
+    let localCandidate: string | undefined;
     const universalNumber = metadata.original_carrier && metadata.active_tracking_carrier
       && typeof metadata.active_tracking_number === 'string' ? metadata.active_tracking_number : number;
     // The owner's answer to a provider's postcode request, for this number only.
@@ -373,18 +375,24 @@ export class TrackingRouter {
         value.correction = { carrier: provider, trackingUrl: state.confirmed_tracking_url ?? null,
           postcode: state.confirmed_postcode ?? null };
       }
+      const unnamed = declared === 'unknown' && !withoutProgress && !state.confirmed_carrier
+        && !metadata.original_carrier && universalNumber === number && sources.includes(provider as UniversalSource);
       // A provider can name an unknown parcel without pretending the carrier answered,
       // but not a carrier whose adapter refuses the number.
-      const identified = declared === 'unknown' && !withoutProgress && !state.confirmed_carrier
-        && !metadata.original_carrier && universalNumber === number && sources.includes(provider as UniversalSource)
-        ? providerCarrier(value.result, number) : undefined;
-      if (identified && state.discovered_carrier === identified
-        && state.failures[identified]?.user_error !== 'carrier:invalid_input') {
-        state.configured_carrier = identified;
-        value.correction = { carrier: identified, trackingUrl: null, postcode: null };
+      const identified = unnamed ? providerCarrier(value.result, number) : undefined;
+      // The carrier detection names answered too, with local clocks only: a
+      // provider dating the progress files the parcel under it, where a parcel
+      // added today would start, and links stay with that carrier.
+      const answered = unnamed && hasRoutingProgress(value.result) ? localCandidate : undefined;
+      const named = answered ?? (identified && state.discovered_carrier === identified
+        && state.failures[identified]?.user_error !== 'carrier:invalid_input' ? identified : undefined);
+      if (named) {
+        state.configured_carrier = named;
+        value.correction = { carrier: named, trackingUrl: null, postcode: null };
       }
       return { ...value, result: { ...value.result, routing: state,
         ...(localHistory ? { direct_local_history: localHistory } : {}),
+        ...(answered ? { carrier_answered: true } : {}),
         ...(directCarrier(provider) ? { active_tracking_carrier: value.sourceCarrierId } : {}),
         ...(swap ? { auto_changed_from: declared, auto_changed_to: provider, auto_changed_at: now().toISOString() } : {}),
       } };
@@ -426,6 +434,11 @@ export class TrackingRouter {
           || (value.result.summary_only === true && hasUnresolvedDirectCurrent(value.sourceCarrierId, value.result))
           ? captureDirectLocalHistory(value.sourceCarrierId, String(directHistoryNumber(lookupParcel, value.result)), value.result)
           : undefined;
+        // A probe needs movement: a pre-advice ("Order created") proves the
+        // label, not that this carrier has the parcel yet.
+        const notYet = probe ? ['pending', 'unknown', 'registered'] : ['pending', 'unknown'];
+        const moved = [value.result.status, value.result.current_stage, ...(value.result.events ?? []).map((event) => event.stage)]
+          .some((stage) => stage && !notYet.includes(stage));
         if (hasUnresolvedDirectCurrent(value.sourceCarrierId, value.result)) {
           // Preserve the direct evidence, but let timestamped or richer
           // providers supply the normal timeline and freshness watermark.
@@ -439,13 +452,14 @@ export class TrackingRouter {
             // but cannot replace history from the parcel's own carrier.
             localHistory = capturedHistory;
           }
+          // The carrier detection names, answering for this very number, can
+          // still file an unknown parcel once a provider dates the parcel's
+          // progress. Its newest scan has no instant to hold against the watermark.
+          if (candidate && moved && value.sourceCarrierId === carrier && detectionNames(number, carrier)
+            && !earlierLeg(carrier, value)) localCandidate = carrier;
           return null;
         }
-        // A probe needs movement: a pre-advice ("Order created") proves the
-        // label, not that this carrier has the parcel yet.
-        const notYet = probe ? ['pending', 'unknown', 'registered'] : ['pending', 'unknown'];
-        if (candidate && ![value.result.status, value.result.current_stage, ...(value.result.events ?? []).map((event) => event.stage)]
-          .some((stage) => stage && !notYet.includes(stage))) return null;
+        if (candidate && !moved) return null;
         if (candidate && latest(value) < millis(state.last_event_at)) return null;
         if (terminalStage && ['delivered', 'returned'].includes(terminalStage)
           && value.result.current_stage !== terminalStage) return null;

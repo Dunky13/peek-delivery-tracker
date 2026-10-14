@@ -1224,6 +1224,91 @@ describe('persistent tracking routing', () => {
     expect(later.universal).toHaveBeenCalledOnce();
   });
 
+  describe('an unknown parcel whose detected carrier answers with local clocks only', () => {
+    // A synthetic number in 17FEIA's own shape: detection names the carrier with high confidence.
+    const number = 'FEIXY0000000001YQ';
+    const local = (carrier = '17feia'): RoutedResult => ({ sourceCarrierId: carrier, swissPostReady: null, handoffFallbackErrorType: null,
+      result: { status: 'in_transit', current_stage: 'in_transit', last_update: null, last_update_local: '2026-09-10T09:00:00',
+        events: [{ local_time: '2026-09-10T09:00:00', description: 'Departed the sorting centre', stage: 'in_transit' }] } });
+    // Filed before detection named the carrier, with a provider's timeline saved since.
+    const filed = (routing: JsonObject = {}, overrides: JsonObject = {}) => parcel({ tracking_number: number, current_stage: 'in_transit',
+      carrier_data: { routing: state({ last_event_at: '2026-09-10T10:00:00.000Z', ...routing }) }, ...overrides });
+    // First and last mile: no single carrier for the provider to name.
+    const legs = (result: CarrierResult) => ({ ...result, reported_carriers: ['17FEIA', 'DPD'] });
+
+    it('takes the carrier once a provider dates the progress, as a parcel added with it would', async () => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(local());
+      universal.mockResolvedValue(legs(history()));
+      const result = await router.fetch(filed(), false);
+      expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier: '17feia' }), '17feia');
+      expect(result).toMatchObject({ sourceCarrierId: 'unknown', correction: { carrier: '17feia', trackingUrl: null, postcode: null },
+        result: { tracking_provider: 'Ship24', carrier_answered: true, routing: { configured_carrier: '17feia' },
+          direct_local_history: { carrier: '17feia', number, events: [expect.objectContaining({ local_time: '2026-09-10T09:00:00' })] } } });
+      expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+      expect(result.result).not.toHaveProperty('auto_changed_from');
+      // Filed under the carrier, its next answer is the filed carrier's local fallback.
+      const next = setup(new Date('2026-09-10T19:00:00Z'));
+      next.direct.mockResolvedValue(local());
+      next.universal.mockResolvedValue(legs(history('2026-09-10T18:00:00Z')));
+      const again = await next.router.fetch(filed({}, { carrier: '17feia', carrier_data: { routing: result.result.routing } }), false);
+      expect(next.direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier: '17feia', carrier_data: expect.objectContaining({ routing: expect.anything() }) }), '17feia');
+      expect(again.correction).toBeUndefined();
+      expect(again.result).toMatchObject({ tracking_provider: 'Ship24', carrier_answered: true, direct_local_history: { carrier: '17feia' } });
+    });
+
+    it('leaves the parcel unknown while no provider dates the progress', async () => {
+      fixedPlan('Ship24', '17TRACK');
+      const failing = setup();
+      failing.direct.mockResolvedValue(local());
+      failing.universal.mockRejectedValue(new NotFoundError('Ship24'));
+      const error = await failing.router.fetch(filed(), false).catch((caught: unknown) => caught);
+      expect(error).toBeInstanceOf(RoutingDeferred);
+      expect((error as RoutingDeferred).routing.configured_carrier).toBe('unknown');
+      // A registration alone, for a parcel still waiting for movement and for one that has moved.
+      for (const stage of ['pending', 'in_transit']) {
+        const thin = setup();
+        thin.direct.mockResolvedValue(local());
+        thin.universal.mockResolvedValue(legs(thinHistory()));
+        const result = await thin.router.fetch(filed({}, { current_stage: stage }), false);
+        expect(result.result.tracking_provider).toBe('Ship24');
+        expect(result.correction).toBeUndefined();
+        expect(result.result.routing).toMatchObject({ configured_carrier: 'unknown' });
+        expect(result.result).not.toHaveProperty('carrier_answered');
+      }
+    });
+
+    it.each([
+      ['a provider named', 'TEST1234', '17feia', { discovered_carrier: '17feia' }],
+      ['recognition found for a shape detection is unsure of', '123456789012', 'sto', {}],
+    ])('does not take a carrier %s', async (_label, trackingNumber, carrier, routing) => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal, recognize } = setup();
+      recognize.mockImplementation(async (asked: string) => ({ known: asked === carrier }));
+      direct.mockImplementation(async (_parcel, asked: string) => local(asked));
+      universal.mockResolvedValue(legs(history()));
+      const result = await router.fetch(filed(routing, { tracking_number: trackingNumber }), false);
+      expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier }), carrier);
+      expect(result.correction).toBeUndefined();
+      expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { configured_carrier: 'unknown' } });
+    });
+
+    it('does not replace a carrier already confirmed for the number', async () => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal } = setup();
+      direct.mockImplementation(async (_parcel, carrier: string) => {
+        if (carrier !== '17feia') throw new NotFoundError(carrier);
+        return local();
+      });
+      universal.mockResolvedValue(legs(history()));
+      const result = await router.fetch(filed({ confirmed_carrier: 'ups', confirmed_number: number }), false);
+      expect(direct.mock.calls.map(([, carrier]) => carrier)).toEqual(['ups', '17feia']);
+      expect(result.correction).toBeUndefined();
+      expect(result.result.routing).toMatchObject({ configured_carrier: 'unknown', confirmed_carrier: 'ups' });
+    });
+  });
+
   it('keeps the origin watermark when a verified delivery partner confirms the same completion', async () => {
     const { router, direct, universal } = setup();
     direct.mockResolvedValue({ sourceCarrierId: 'posti', swissPostReady: null, handoffFallbackErrorType: null,

@@ -132,7 +132,10 @@ evidence while the chip is hidden.
 
 An adapter whose answer has only local clocks or an undated status summary keeps its
 evidence while a universal provider dates the timeline. It is asked again 6 h later,
-not on every check.
+not on every check. When detection names that carrier for an unknown parcel's number and
+its answer shows movement, a provider's progress in the same check files the parcel under
+it, as one added with that carrier would be. Without such a provider answer the parcel
+stays unknown.
 
 The filed carrier's partial answer, its status without scans or only its newest scans
 (`summary_only`, `history_truncated`), stands unless a provider holds a fuller history that is
