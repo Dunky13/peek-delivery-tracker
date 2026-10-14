@@ -3,6 +3,20 @@ import XCTest
 
 @MainActor
 final class LocalizationTests: XCTestCase {
+    func testOIDCSignInCopyUsesTheConfiguredProviderInEveryLanguage() {
+        let localizer = Localizer()
+        let originalLanguage = localizer.language
+        defer { localizer.language = originalLanguage }
+        for language in AppLanguage.allCases {
+            localizer.language = language
+            for key in ["auth.oidc", "auth.oidcOpening", "auth.oidcFailed"] {
+                let text = localizer.text(key, ["provider": "Authentik"])
+                XCTAssertTrue(text.contains("Authentik"), "\(language).\(key)")
+                XCTAssertFalse(text.contains("{{provider}}"), "\(language).\(key)")
+            }
+        }
+    }
+
     func testSharedTrackingMessagesPreserveOriginalNotesAndHideDiagnostics() {
         let localizer = Localizer()
         for language in AppLanguage.allCases {

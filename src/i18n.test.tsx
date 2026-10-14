@@ -43,6 +43,18 @@ function TranslationProbe() {
 describe('localization', () => {
   beforeAll(async () => { await Promise.all(SUPPORTED_LOCALES.map(loadMessages)); });
 
+  it('preserves literal replacement tokens in provider display names in every locale', () => {
+    const provider = 'ACME $& $$ SSO';
+    const keys: MessageKey[] = ['auth.oidc', 'auth.oidcOpening', 'auth.oidcFailed'];
+    for (const locale of SUPPORTED_LOCALES) {
+      for (const key of keys) {
+        const message = translate(locale, key, { provider });
+        expect(message).toContain(provider);
+        expect(message).not.toContain('{{provider}}');
+      }
+    }
+  });
+
   it('restores the saved language before persisting during StrictMode effect replay', async () => {
     window.localStorage.setItem('deliveryTrackerLocale', 'fr');
     render(<StrictMode><I18nProvider><TranslationProbe /></I18nProvider></StrictMode>);

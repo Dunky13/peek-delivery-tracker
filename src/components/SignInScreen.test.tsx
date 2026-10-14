@@ -4,6 +4,47 @@ import { describe, expect, it, vi } from 'vitest';
 import { SignInScreen } from './SignInScreen';
 
 describe('SignInScreen', () => {
+  it('offers a sole custom provider without email, Google or Apple', async () => {
+    const signInWithOidc = vi.fn().mockResolvedValue(undefined);
+    render(<SignInScreen configured oidcName="Authentik" signInWithOidc={signInWithOidc}
+      emailOtpEnabled={false} sendCode={vi.fn()} verifyCode={vi.fn()} />);
+    expect(screen.queryByLabelText('Email address')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('button')).toHaveLength(1);
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Continue with Authentik' }));
+    expect(signInWithOidc).toHaveBeenCalledOnce();
+    expect(screen.getByRole('button', { name: 'Opening Authentik…' })).toHaveAttribute('aria-busy', 'true');
+  });
+
+  it('offers OIDC alongside social providers, prevents duplicate starts and retries translated failures', async () => {
+    let reject!: (error: Error) => void;
+    const signInWithOidc = vi.fn().mockImplementationOnce(() => new Promise((_, fail) => { reject = fail; }))
+      .mockResolvedValue(undefined);
+    const user = userEvent.setup();
+    render(<SignInScreen configured oidcName="Authentik" signInWithOidc={signInWithOidc}
+      googleEnabled appleEnabled signInWithGoogle={vi.fn()} signInWithApple={vi.fn()}
+      sendCode={vi.fn()} verifyCode={vi.fn()} />);
+    await user.click(screen.getByRole('button', { name: 'Continue with Authentik' }));
+    for (const button of screen.getAllByRole('button')) expect(button).toBeDisabled();
+    await user.click(screen.getByRole('button', { name: 'Opening Authentik…' }));
+    expect(signInWithOidc).toHaveBeenCalledOnce();
+    reject(new Error('Internal provider diagnostics'));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Couldn’t open Authentik sign-in. Try again.');
+    await user.click(screen.getByRole('button', { name: 'Continue with Authentik' }));
+    expect(signInWithOidc).toHaveBeenCalledTimes(2);
+  });
+
+  it('hides an unconfigured custom provider', () => {
+    render(<SignInScreen configured signInWithOidc={vi.fn()} sendCode={vi.fn()} verifyCode={vi.fn()} />);
+    expect(screen.queryByRole('button', { name: /Continue with/ })).not.toBeInTheDocument();
+  });
+
+  it('renders the configured provider name as text', () => {
+    render(<SignInScreen configured oidcName={'<img src=x onerror=alert(1)>'} signInWithOidc={vi.fn()}
+      sendCode={vi.fn()} verifyCode={vi.fn()} />);
+    const button = screen.getByRole('button', { name: 'Continue with <img src=x onerror=alert(1)>' });
+    expect(button.querySelector('img')).toBeNull();
+  });
+
   it('requests and verifies an emailed one-time code', async () => {
     const sendCode = vi.fn().mockResolvedValue(undefined);
     const verifyCode = vi.fn().mockResolvedValue(undefined);

@@ -119,8 +119,8 @@ export function ApiAccount({ auth, experience, invitation, demoAddress, linkId, 
   }, [userId]);
   const invitationProps: ComponentProps<typeof FriendInvitation> = {
     invitation, onDismiss: () => { invitation.clear(); if (!auth.user) experience.navigate('welcome'); },
-    configured: auth.status !== 'unconfigured', googleEnabled: auth.googleEnabled, appleEnabled: auth.appleEnabled, emailOtpEnabled: auth.emailOtpEnabled,
-    signInWithGoogle: auth.signInWithGoogle, signInWithApple: auth.signInWithApple, sendCode: auth.sendCode, verifyCode: auth.verifyCode,
+    configured: auth.status !== 'unconfigured', googleEnabled: auth.googleEnabled, appleEnabled: auth.appleEnabled, emailOtpEnabled: auth.emailOtpEnabled, oidcName: auth.oidcName,
+    signInWithGoogle: auth.signInWithGoogle, signInWithApple: auth.signInWithApple, signInWithOidc: auth.signInWithOidc, sendCode: auth.sendCode, verifyCode: auth.verifyCode,
   };
   // Someone signed in has the landing at its own address; a visitor's is `/`, where leaving the demo leads.
   const demo = <ParcelsProvider key="demo" repo={demoRepo}>
@@ -138,6 +138,8 @@ export function ApiAccount({ auth, experience, invitation, demoAddress, linkId, 
         configured={auth.status !== 'unconfigured'}
         googleEnabled={auth.googleEnabled}
         appleEnabled={auth.appleEnabled}
+        oidcName={auth.oidcName}
+        signInWithOidc={auth.signInWithOidc}
         emailOtpEnabled={auth.emailOtpEnabled}
         signInWithGoogle={auth.signInWithGoogle}
         signInWithApple={auth.signInWithApple}

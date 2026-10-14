@@ -214,13 +214,29 @@ final class SessionStore: ObservableObject {
         var analyticsSucceeded = false
         DeliveryAnalytics.shared.action("sign-in-google", .started)
         defer { DeliveryAnalytics.shared.action("sign-in-google", analyticsSucceeded ? .success : .error) }
+        try await signInWithOAuth(provider: "google")
+        analyticsSucceeded = true
+    }
+
+    func signInWithOIDC() async throws {
+        guard configuration.authenticationConfigured, configuration.oidcAuthEnabled else {
+            throw AuthenticationError.notConfigured
+        }
+        var analyticsSucceeded = false
+        DeliveryAnalytics.shared.action("sign-in-oidc", .started)
+        defer { DeliveryAnalytics.shared.action("sign-in-oidc", analyticsSucceeded ? .success : .error) }
+        try await signInWithOAuth(provider: configuration.oidcProvider)
+        analyticsSucceeded = true
+    }
+
+    private func signInWithOAuth(provider: String) async throws {
         let generation = generation
         guard let base = configuration.supabaseURL else { throw AuthenticationError.notConfigured }
         let verifier = try Self.randomVerifier()
         let challenge = Self.codeChallenge(for: verifier)
         guard let authorizationURL = OAuthFlow.authorizationURL(
             baseURL: base,
-            provider: "google",
+            provider: provider,
             codeChallenge: challenge
         ) else { throw AuthenticationError.invalidResponse }
         let callback = try await startWebAuthentication(url: authorizationURL)
@@ -236,7 +252,6 @@ final class SessionStore: ObservableObject {
         try checkGeneration(generation)
         try accept(result)
         DeliveryAnalytics.shared.action("sign-in-complete", .success)
-        analyticsSucceeded = true
     }
 
     func signInWithApple() async throws {

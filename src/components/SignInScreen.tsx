@@ -1,4 +1,4 @@
-import { userErrorMessage } from '../lib/userMessages';
+import { userErrorKey, userErrorMessage } from '../lib/userMessages';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { useI18n } from '../i18n';
 
@@ -8,8 +8,10 @@ export function SignInScreen({
   googleEnabled = false,
   appleEnabled = false,
   emailOtpEnabled = true,
+  oidcName,
   signInWithGoogle,
   signInWithApple,
+  signInWithOidc,
   sendCode,
   verifyCode,
   title,
@@ -24,8 +26,10 @@ export function SignInScreen({
   googleEnabled?: boolean;
   appleEnabled?: boolean;
   emailOtpEnabled?: boolean;
+  oidcName?: string | null;
   signInWithGoogle?: () => Promise<void>;
   signInWithApple?: () => Promise<void>;
+  signInWithOidc?: () => Promise<void>;
   sendCode: (email: string) => Promise<void>;
   verifyCode: (email: string, code: string) => Promise<void>;
 }) {
@@ -33,21 +37,23 @@ export function SignInScreen({
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [codeSent, setCodeSent] = useState(false);
-  const socialEnabled = !!((googleEnabled && signInWithGoogle) || (appleEnabled && signInWithApple));
+  const socialEnabled = !!((googleEnabled && signInWithGoogle) || (appleEnabled && signInWithApple) || (oidcName && signInWithOidc));
   const [emailExpanded, setEmailExpanded] = useState(!socialEnabled);
-  const [working, setWorking] = useState<'google' | 'apple' | 'email' | 'code' | null>(null);
+  const [working, setWorking] = useState<'google' | 'apple' | 'oidc' | 'email' | 'code' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const emailVisible = emailOtpEnabled && (!socialEnabled || emailExpanded);
 
-  async function startSocialSignIn(provider: 'google' | 'apple') {
-    const signIn = provider === 'apple' ? signInWithApple : signInWithGoogle;
+  async function startSocialSignIn(provider: 'google' | 'apple' | 'oidc') {
+    const signIn = provider === 'oidc' ? signInWithOidc : provider === 'apple' ? signInWithApple : signInWithGoogle;
     if (working || !signIn) return;
     setWorking(provider);
     setError(null);
     try {
       await signIn();
     } catch (reason) {
-      setError(userErrorMessage(reason, t, provider === 'apple' ? 'auth.appleFailed' : 'auth.googleFailed'));
+      setError(provider === 'oidc'
+        ? t(userErrorKey(reason) ?? 'auth.oidcFailed', { provider: oidcName ?? '' })
+        : userErrorMessage(reason, t, provider === 'apple' ? 'auth.appleFailed' : 'auth.googleFailed'));
       setWorking(null);
     }
   }
@@ -130,6 +136,17 @@ export function SignInScreen({
           </form>
         ) : (
           <div className="auth-flow__methods">
+            {oidcName && signInWithOidc && (
+              <button
+                className="button button--primary"
+                type="button"
+                disabled={Boolean(working)}
+                aria-busy={working === 'oidc'}
+                onClick={() => void startSocialSignIn('oidc')}
+              >
+                {t(working === 'oidc' ? 'auth.oidcOpening' : 'auth.oidc', { provider: oidcName })}
+              </button>
+            )}
             {appleEnabled && signInWithApple && (
               <button className="button auth-flow__apple" type="button" disabled={Boolean(working)} onClick={() => void startSocialSignIn('apple')}>
                 <svg aria-hidden="true" viewBox="0 0 24 24">

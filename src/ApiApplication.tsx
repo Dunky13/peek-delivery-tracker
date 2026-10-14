@@ -42,11 +42,11 @@ export function ApiApplication({ invitationRoute = false, parcelLinkId = null, d
   const visitorSession = useMemo<PeekSession>(() => ({
     ...visitor,
     signInWith: {
-      configured: auth.status !== 'unconfigured', googleEnabled: auth.googleEnabled, appleEnabled: auth.appleEnabled, emailOtpEnabled: auth.emailOtpEnabled,
-      signInWithGoogle: auth.signInWithGoogle, signInWithApple: auth.signInWithApple, sendCode: auth.sendCode, verifyCode: auth.verifyCode,
+      configured: auth.status !== 'unconfigured', googleEnabled: auth.googleEnabled, appleEnabled: auth.appleEnabled, emailOtpEnabled: auth.emailOtpEnabled, oidcName: auth.oidcName,
+      signInWithGoogle: auth.signInWithGoogle, signInWithApple: auth.signInWithApple, signInWithOidc: auth.signInWithOidc, sendCode: auth.sendCode, verifyCode: auth.verifyCode,
     },
     deliveryEmails,
-  }), [visitor, deliveryEmails, auth.status, auth.googleEnabled, auth.appleEnabled, auth.emailOtpEnabled, auth.signInWithGoogle, auth.signInWithApple, auth.sendCode, auth.verifyCode]);
+  }), [visitor, deliveryEmails, auth.status, auth.googleEnabled, auth.appleEnabled, auth.emailOtpEnabled, auth.oidcName, auth.signInWithOidc, auth.signInWithGoogle, auth.signInWithApple, auth.sendCode, auth.verifyCode]);
   const waiting = <div className="auth-loading" role="status"><ParcelIllustration /><span>{t('auth.loading')}</span></div>;
   if (!demoAddress) {
     // A parcel's address shows the parcel to anyone at once, while a saved sign-in is still being restored.

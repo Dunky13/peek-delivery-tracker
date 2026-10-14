@@ -50,13 +50,22 @@ export function validateProductionConfig(environment = process.env) {
     [...BOOLEAN_VARIABLES, 'NEXT_PUBLIC_AUTH_APPLE_ENABLED'].map((key) => [key,
       key === 'NEXT_PUBLIC_AUTH_APPLE_ENABLED' && environment[key] == null ? false : booleanValue(environment, key)]),
   );
-  if (!Object.values(providers).some(Boolean)) {
+  const oidcProvider = environment.NEXT_PUBLIC_AUTH_OIDC_PROVIDER?.trim() ?? '';
+  const oidcName = environment.NEXT_PUBLIC_AUTH_OIDC_NAME?.trim() ?? '';
+  if (oidcProvider || oidcName) {
+    if (oidcProvider.length > 50 || !/^custom:[a-z0-9:-]+$/.test(oidcProvider)) {
+      throw new Error('NEXT_PUBLIC_AUTH_OIDC_PROVIDER must be a custom: identifier of at most 50 lowercase alphanumeric, hyphen or colon characters');
+    }
+    requiredValue(environment, 'NEXT_PUBLIC_AUTH_OIDC_NAME');
+  }
+  const oidc = oidcProvider ? { provider: oidcProvider, name: oidcName } : null;
+  if (!Object.values(providers).some(Boolean) && !oidc) {
     throw new Error('At least one production authentication method must be enabled');
   }
   if (environment.NEXT_PUBLIC_USE_API?.trim() !== 'true') {
     throw new Error('NEXT_PUBLIC_USE_API must be true for a production container');
   }
-  return { supabaseUrl, providers };
+  return { supabaseUrl, providers, oidc };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

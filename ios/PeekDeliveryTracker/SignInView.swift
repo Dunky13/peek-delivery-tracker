@@ -572,6 +572,31 @@ struct SignInView: View {
                 .disabled(working)
             }
 
+            if session.configuration.oidcAuthEnabled {
+                Button {
+                    run(provider: "oidc") { try await session.signInWithOIDC() }
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "person.badge.key.fill")
+                            .accessibilityHidden(true)
+                        Text(localizer.text(activeProvider == "oidc" ? "auth.oidcOpening" : "auth.oidc",
+                                            ["provider": session.configuration.oidcName]))
+                            .font(.subheadline.weight(.medium))
+                        if activeProvider == "oidc" { ProgressView().controlSize(.small) }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 12)
+                    .frame(minHeight: 48)
+                    .foregroundStyle(Brand.ink)
+                    .background(Brand.paper, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 13).stroke(Brand.separator.opacity(0.35), lineWidth: 0.75))
+                }
+                .buttonStyle(TactileButtonStyle())
+                .accessibilityIdentifier("auth.oidc")
+                .disabled(working)
+            }
+
             if socialSignInEnabled && emailFormVisible {
                 HStack {
                     Rectangle().frame(height: 0.5)
@@ -614,6 +639,7 @@ struct SignInView: View {
 
     private var socialSignInEnabled: Bool {
         session.configuration.googleAuthEnabled || session.configuration.appleAuthEnabled
+            || session.configuration.oidcAuthEnabled
     }
 
     private var emailForm: some View {
@@ -699,7 +725,11 @@ struct SignInView: View {
             do { try await operation() }
             catch AuthenticationError.oauthCancelled { }
             catch is CancellationError { }
-            catch { errorMessage = localizer.errorMessage(error) }
+            catch {
+                errorMessage = provider == "oidc"
+                    ? localizer.text("auth.oidcFailed", ["provider": session.configuration.oidcName])
+                    : localizer.errorMessage(error)
+            }
             working = false
             activeProvider = nil
         }

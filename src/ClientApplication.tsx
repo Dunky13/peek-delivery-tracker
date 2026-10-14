@@ -34,6 +34,8 @@ const authConfig = authConfigFromEnvironment({
   googleEnabled: process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED,
   appleEnabled: process.env.NEXT_PUBLIC_AUTH_APPLE_ENABLED,
   emailOtpEnabled: process.env.NEXT_PUBLIC_AUTH_EMAIL_OTP_ENABLED,
+  oidcProvider: process.env.NEXT_PUBLIC_AUTH_OIDC_PROVIDER,
+  oidcName: process.env.NEXT_PUBLIC_AUTH_OIDC_NAME,
 });
 
 interface ApplicationProps {
