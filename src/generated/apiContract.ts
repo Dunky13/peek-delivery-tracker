@@ -13047,6 +13047,45 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://wardtlctools.com/wardtrucking/traceshipment/create"
+  },
+  "aramex-nz": {
+    "displayName": "Aramex New Zealand",
+    "aliases": [
+      "Aramex NZ",
+      "Fastway New Zealand",
+      "Fastway NZ",
+      "Fastway Couriers New Zealand"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "color": "#dc291e",
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "aramex-nz",
+      "recognitionRank": 444
+    },
+    "trackingUrlTemplate": "https://www.aramex.co.nz/tools/track?l={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "aramex.co.nz",
+          "fastway.co.nz"
+        ],
+        "params": [
+          "l"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{10}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://www.aramex.co.nz/tools/track/"
   }
 } as const;
 
@@ -13409,7 +13448,8 @@ export const CARRIER_IDS = [
   "vasp-expresso",
   "viettel-post",
   "vnpost",
-  "ward-trucking"
+  "ward-trucking",
+  "aramex-nz"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
