@@ -72,6 +72,9 @@
   "asendia": {
     "decal": "asendia"
   },
+  "asyad-express": {
+    "decal": "asyad-express"
+  },
   "australia-post": {
     "decal": "australia-post"
   },
@@ -108,6 +111,12 @@
   },
   "blue-express": {
     "decal": "blue-express"
+  },
+  "border-express": {
+    "decal": "border-express"
+  },
+  "bosta": {
+    "decal": "bosta"
   },
   "box-now": {
     "decal": "box-now"
@@ -233,6 +242,9 @@
   "correo-argentino": {
     "decal": "correo-argentino"
   },
+  "correo-uruguayo": {
+    "decal": "correo-uruguayo"
+  },
   "correos-chile": {
     "decal": "correos-chile"
   },
@@ -255,6 +267,9 @@
   },
   "courier-center": {
     "decal": "courier-center"
+  },
+  "courier-it": {
+    "decal": "courier-it"
   },
   "couriersplease": {
     "decal": "couriersplease"
@@ -293,6 +308,9 @@
       "edge": "#000000"
     }
   },
+  "daylight-transport": {
+    "decal": "daylight-transport"
+  },
   "dayton-freight": {
     "decal": "dayton-freight"
   },
@@ -315,6 +333,9 @@
     "palette": {
       "accent": "#ffe100"
     }
+  },
+  "deprisa": {
+    "decal": "deprisa"
   },
   "dhl": {
     "palette": {
@@ -419,6 +440,9 @@
   "ems": {
     "decal": "ems"
   },
+  "envia-colombia": {
+    "decal": "envia-colombia"
+  },
   "envialia": {
     "decal": "envialia"
   },
@@ -433,6 +457,9 @@
     "palette": {
       "accent": "#212121"
     }
+  },
+  "europochta": {
+    "decal": "europochta"
   },
   "evri": {
     "palette": {
@@ -715,6 +742,9 @@
   "meest": {
     "decal": "meest"
   },
+  "midland-transport": {
+    "decal": "midland-transport"
+  },
   "mng-kargo": {
     "family": "dhl"
   },
@@ -760,6 +790,9 @@
   },
   "nz-post": {
     "decal": "nz-post"
+  },
+  "oak-harbor": {
+    "decal": "oak-harbor"
   },
   "oca": {
     "decal": "oca"
@@ -991,6 +1024,9 @@
   "singapore-post": {
     "decal": "singapore-post"
   },
+  "skroutz-last-mile": {
+    "decal": "skroutz-last-mile"
+  },
   "skynet-worldwide": {
     "decal": "skynet-worldwide"
   },
@@ -1063,6 +1099,9 @@
   },
   "swiss-post-cargo": {
     "family": "swiss-post"
+  },
+  "tci-express": {
+    "decal": "tci-express"
   },
   "team-global-express": {
     "decal": "team-global-express",
@@ -1137,6 +1176,9 @@
     },
     "decal": "ups"
   },
+  "urbano": {
+    "decal": "urbano"
+  },
   "usps": {
     "decal": "usps",
     "palette": {
@@ -1161,6 +1203,14 @@
     "decal": "vnpost",
     "palette": {
       "accent": "#f9a81a"
+    }
+  },
+  "vrl-logistics": {
+    "decal": "vrl-logistics",
+    "palette": {
+      "truck": "#ffcb00",
+      "edge": "#c99f00",
+      "accent": "#1a1a1a"
     }
   },
   "wanbexpress": {

@@ -70,7 +70,10 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'speedex' | 'starken' | 'surat-kargo' | 'team-global-express' | 'tforce-freight' | 'toptrans'
   | 'total-express' | 'trackon' | 'trendyol-express' | 'vasp-expresso' | 'viettel-post' | 'vnpost'
   | 'ward-trucking' | '17feia' | 'tsjy' | 'hywl' | 'dhlink' | 'gzyl' | 'thhy' | 'jrt' | 'jhgj'
-  | 'ktd' | 'swiftx' | 'celeritas';
+  | 'ktd' | 'swiftx' | 'celeritas' | 'asyad-express' | 'border-express' | 'bosta'
+  | 'correo-uruguayo' | 'courier-it' | 'daylight-transport' | 'deprisa' | 'envia-colombia'
+  | 'europochta' | 'midland-transport' | 'oak-harbor' | 'skroutz-last-mile' | 'tci-express'
+  | 'urbano' | 'vrl-logistics';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

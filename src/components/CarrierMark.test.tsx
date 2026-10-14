@@ -56,6 +56,9 @@ describe('carrier mark', () => {
     'starken', 'surat-kargo', 'team-global-express', 'tforce-freight', 'toptrans', 'total-express', 'trackon',
     'trendyol-express', 'vasp-expresso', 'viettel-post', 'vnpost', 'ward-trucking',
     '17feia', 'tsjy', 'hywl', 'dhlink', 'gzyl', 'thhy', 'jrt', 'jhgj', 'ktd', 'swiftx', 'celeritas',
+    'asyad-express', 'border-express', 'bosta', 'correo-uruguayo', 'courier-it', 'daylight-transport',
+    'deprisa', 'envia-colombia', 'europochta', 'midland-transport', 'oak-harbor', 'skroutz-last-mile',
+    'tci-express', 'urbano', 'vrl-logistics',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

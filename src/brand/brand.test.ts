@@ -112,6 +112,9 @@ describe('carrier brand', () => {
       'tforce-freight', 'toptrans', 'total-express', 'trackon', 'trendyol-express', 'vasp-expresso',
       'viettel-post', 'vnpost', 'ward-trucking',
       '17feia', 'tsjy', 'hywl', 'dhlink', 'gzyl', 'thhy', 'jrt', 'jhgj', 'ktd', 'swiftx', 'celeritas',
+      'asyad-express', 'border-express', 'bosta', 'correo-uruguayo', 'courier-it', 'daylight-transport',
+      'deprisa', 'envia-colombia', 'europochta', 'midland-transport', 'oak-harbor', 'skroutz-last-mile',
+      'tci-express', 'urbano', 'vrl-logistics',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {
