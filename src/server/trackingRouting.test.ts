@@ -314,6 +314,24 @@ describe('persistent tracking routing', () => {
     expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('detected_carrier_confirmed', expect.objectContaining({ carrier: 'unknown', provider: 'nova-poshta' }));
     expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('carrier_mismatch_confirmed', expect.anything());
   });
+  it('files a parcel filed as unknown under the carrier that answers and hands it on in the same lookup', async () => {
+    const { router, direct, universal } = setup();
+    universal.mockResolvedValue({ ...history(), discovered_carrier: 'nova-poshta' });
+    const handedOn = (earlierFollowUp?: true): RoutedResult => ({ sourceCarrierId: 'gofo', swissPostReady: null, handoffFallbackErrorType: null,
+      earlierCarrierId: 'nova-poshta', earlierResult: history('2026-09-10T10:00:00Z'), ...(earlierFollowUp ? { earlierFollowUp } : {}),
+      result: { ...history(), original_carrier: 'nova-poshta', active_tracking_carrier: 'gofo', active_tracking_number: 'GFUS01000000000001' } });
+    direct.mockResolvedValue(handedOn());
+    const result = await router.fetch(parcel({ tracking_number: '59500000000012' }), false);
+    expect(direct.mock.calls.map(([, asked]) => asked)).toEqual(['nova-poshta']);
+    expect(result.correction?.carrier).toBe('nova-poshta');
+    expect(result.result.routing).toMatchObject({ configured_carrier: 'nova-poshta', confirmed_carrier: 'nova-poshta' });
+    expect(result.result).toMatchObject({ auto_changed_from: 'unknown', auto_changed_to: 'nova-poshta', active_tracking_carrier: 'gofo' });
+    // The delivery carrier answering alone, with the earlier one only asked again, files nothing.
+    const followUp = setup();
+    followUp.universal.mockResolvedValue({ ...history(), discovered_carrier: 'nova-poshta' });
+    followUp.direct.mockResolvedValue(handedOn(true));
+    expect((await followUp.router.fetch(parcel({ tracking_number: '59500000000012' }), false)).correction).toBeUndefined();
+  });
   it('warns of a detection gap when a provider names a carrier detection does not', async () => {
     // Detection cannot place the number.
     const hinted = setup();

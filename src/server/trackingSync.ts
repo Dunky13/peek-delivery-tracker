@@ -30,7 +30,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
-import { restatedIdentities, sameInstantIdentities, sharedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { restatedIdentities, sameInstantIdentities, sharedScans, withIdentities, withoutCopyDrift, withoutRelayedScans } from './eventIdentity';
 import {
   TrackingSyncAudit,
   WorkerShutdown,
@@ -1200,8 +1200,9 @@ export class TrackingSyncService {
           : latestEventStage ?? normalizedReportedStage;
         return {
           events: [
+            // The earlier carrier's copies of the delivery carrier's scans are left out.
             ...(fetched.earlierResult && fetched.earlierCarrierId
-              ? buildEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId, now) : []),
+              ? withoutRelayedScans(buildEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId, now), normalizedEvents) : []),
             ...normalizedEvents,
           ],
           reportedStage: normalizedReportedStage,

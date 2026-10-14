@@ -30,6 +30,9 @@
  *   in its own wording as well (ParcelsApp put Paack's scans two hours early). A universal copy of a stored scan is
  *   left out of the batch, and a carrier's scan takes over the universal copy
  *   stored while it was down (`sharedScans`).
+ * - A handoff's batch carries the earlier carrier's scans too, and that
+ *   carrier may relay the delivery carrier's scans in its own words. Those
+ *   copies are left out of the batch (`withoutRelayedScans`).
  */
 import { DateTime } from 'luxon';
 import { sameInstantIdentityPolicy, trackingPlace, type SameInstantIdentityPolicy, type SameInstantScan } from 'universal-parcel-scraper/app';
@@ -241,10 +244,16 @@ function sameWording(left: string, right: string): boolean {
   return /[.!?]$/.test(shorter) && longer.startsWith(`${shorter} `);
 }
 
-/** Two times of one minute, one of them that minute itself: a source that keeps only minutes. */
-function sameMinute(left: number, right: number): boolean {
-  const minute = (at: number) => Math.floor(at / MINUTE_MS) * MINUTE_MS;
-  return left !== right && minute(left) === minute(right) && (left === minute(left) || right === minute(right));
+/**
+ * Two times of one second or minute, one of them that whole second or minute:
+ * a source that keeps only seconds (ParcelsApp's copy of Nova Poshta's
+ * milliseconds) or only minutes.
+ */
+function sameTruncated(left: number, right: number): boolean {
+  return left !== right && [1_000, MINUTE_MS].some((unit) => {
+    const whole = (at: number) => Math.floor(at / unit) * unit;
+    return whole(left) === whole(right) && (left === whole(left) || right === whole(right));
+  });
 }
 
 /** Stages that can name one scan: the same, or one source left it unclassified. */
@@ -288,8 +297,8 @@ export interface SharedScans {
  * with the same wording, or the only row there at all, with the same stage,
  * and the scan the only new scan there. With no row at that instant, a row at
  * an instant no scan of the batch shows matches with the same wording when one
- * of the two is dated to the minute the other falls in (UPS to the second, a
- * provider to the minute), or else when it is a whole number of quarter hours
+ * of the two is dated to the second or minute the other falls in (UPS to the
+ * second, a provider to the minute), or else when it is a whole number of quarter hours
  * up to 14 h away: the same scan read in the wrong zone. Failing that, a
  * carrier's row for a universal scan, or a universal row for a carrier's scan,
  * at least an hour away matches in any wording when the stages agree or one is
@@ -330,7 +339,7 @@ export function sharedScans(
     if (!own) pending.push(event);
     else if (source === UNIVERSAL && instantOf(own) !== instantOf(event)) {
       shared.skipped.set(id, id);
-      if (!sameMinute(instantOf(own), instantOf(event))) shared.shifted.add(id);
+      if (!sameTruncated(instantOf(own), instantOf(event))) shared.shifted.add(id);
     }
   }
   const newAt = new Map<number, number>();
@@ -347,7 +356,7 @@ export function sharedScans(
     const exact = eligible.filter((row) => instantOf(row) === at);
     const worded = exact.filter((row) => sameWording(wordingOf(row), wording));
     const minuted = occupied.has(at) ? [] : eligible.filter((row) => (
-      sameMinute(at, instantOf(row)) && !shown.has(instantOf(row)) && sameWording(wordingOf(row), wording)
+      sameTruncated(at, instantOf(row)) && !shown.has(instantOf(row)) && sameWording(wordingOf(row), wording)
     ));
     const place = placeWords(event);
     const zoned = occupied.has(at) ? [] : eligible.filter((row) => {
@@ -374,9 +383,24 @@ export function sharedScans(
     if (sourceOf(id) === UNIVERSAL) shared.skipped.set(id, rowId);
     else shared.reused.set(id, rowId);
     const [at, rowAt] = [instantOf(scans[0]!), instantOf(storedById.get(rowId)!)];
-    if (at !== rowAt && !sameMinute(at, rowAt)) shared.shifted.add(id);
+    if (at !== rowAt && !sameTruncated(at, rowAt)) shared.shifted.add(id);
   }
   return shared;
+}
+
+/**
+ * The earlier carrier's scans in a handoff's batch, without its copies of the
+ * delivery carrier's scans. Nova Poshta relays each GOFO scan in its own
+ * wording at the same second and place; GOFO's own scan stands for it. A copy
+ * falls in the same second as a delivery scan, with stages that agree and
+ * places that share a word or name no more than a country. Wording may differ.
+ */
+export function withoutRelayedScans(earlier: readonly JsonObject[], delivery: readonly JsonObject[]): JsonObject[] {
+  const scans = delivery.filter((row) => !observedOnly(row) && Number.isFinite(instantOf(row)));
+  const second = (row: JsonObject) => Math.floor(instantOf(row) / 1_000);
+  return earlier.filter((row) => observedOnly(row) || !Number.isFinite(instantOf(row)) || !scans.some((scan) => (
+    second(scan) === second(row) && stagesAgree(stageOf(scan), stageOf(row)) && !placesConflict(placeWords(scan), placeWords(row))
+  )));
 }
 
 /**

@@ -376,7 +376,10 @@ export class TrackingRouter {
         ? iso(now().getTime() + universalSpacing(now())) : undefined;
       // A correction changes the selected carrier, not merely its display source.
       // Delivery-leg handoffs remain separate from correcting an incorrect label.
-      const swap = provider !== declared && directCarrier(provider) && value.sourceCarrierId === provider
+      // A carrier that answered for this number and handed the parcel on in the
+      // same lookup is the parcel's carrier, the delivery carrier its last leg.
+      const answeredFirst = value.earlierCarrierId === provider && !value.earlierFollowUp;
+      const swap = provider !== declared && directCarrier(provider) && (value.sourceCarrierId === provider || answeredFirst)
         && state.confirmed_number === number && !metadata.original_carrier && !earlierLeg(provider, value);
       if (swap) {
         state.configured_carrier = provider;

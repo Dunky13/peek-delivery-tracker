@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { restatedIdentities, sameInstantIdentities, sharedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { restatedIdentities, sameInstantIdentities, sharedScans, withIdentities, withoutCopyDrift, withoutRelayedScans } from './eventIdentity';
 
 // India Post's policy names the zone it once read every clock in from the next scraper release;
 // until the app takes that version, its tests add the zone themselves.
@@ -406,6 +406,23 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(again.shifted.size).toBe(0);
   });
 
+  it('matches the same wording dated to the second the other scan falls in', () => {
+    // Nova Poshta keeps milliseconds; ParcelsApp's copy of its scan keeps whole seconds.
+    const copy = row('unknown:customs', '2026-01-07T03:15:23+00:00', 'Placed at the customs terminal', 'customs');
+    const own = sharedScans([scan('nova-poshta:customs', '2026-01-07T03:15:23.164Z', 'Placed at the customs terminal', 'customs')], [copy]);
+    expect(pairs(own.reused)).toEqual([['nova-poshta:customs', 'unknown:customs']]);
+    expect(own.shifted.size).toBe(0);
+    const late = sharedScans([scan('unknown:customs', '2026-01-07T03:15:23Z', 'Placed at the customs terminal', 'customs')],
+      [row('nova-poshta:customs', '2026-01-07T03:15:23.164+00:00', 'Placed at the customs terminal', 'customs')]);
+    expect(pairs(late.skipped)).toEqual([['unknown:customs', 'nova-poshta:customs']]);
+    // The next second, or two times that both carry milliseconds, are other scans.
+    for (const at of ['2026-01-07T03:15:24.164Z', '2026-01-07T03:15:23.500Z']) {
+      const shared = sharedScans([scan('nova-poshta:customs', at, 'Placed at the customs terminal', 'customs')],
+        [row('unknown:customs', '2026-01-07T03:15:23.164+00:00', 'Placed at the customs terminal', 'customs')]);
+      expect(shared.reused.size, at).toBe(0);
+    }
+  });
+
   it('leaves a minute apart, other wording, both to the second, or two rows in the minute alone', () => {
     const matched = (at: string, description = 'Label Created', rows = [row('ups:label', '2026-01-02T21:25:25+00:00', 'Label Created')]) => {
       const shared = sharedScans([scan('unknown:label', at, description)], rows);
@@ -558,6 +575,38 @@ describe('scans a carrier and a universal provider both report', () => {
       [observed]).skipped.size).toBe(0);
     expect(sharedScans([scan('unknown:dated', '2026-09-25T10:00:00Z', 'Delivered', 'delivered')],
       [observed]).skipped.size).toBe(0);
+  });
+});
+
+describe('an earlier carrier relaying the delivery carrier\'s scans', () => {
+  const at = (id: string, occurredAt: string, description: string, location: string, stage = 'in_transit') => ({
+    ...scan(id, occurredAt, description, stage), location,
+  });
+  const delivery = [
+    at('gofo:hub', '2026-01-11T21:11:25Z', 'Arrived at GOFO Regional Hub', 'Springfield Gardens, NY'),
+    at('gofo:station', '2026-01-14T09:31:13Z', 'Arrived at GOFO Delivery Station', 'Hollywood, FL'),
+  ];
+
+  it('leaves out its copy of a delivery scan in the same second and place, in any wording', () => {
+    const relays = [
+      at('nova-poshta:hub', '2026-01-11T21:11:25Z', 'Arrived at the depot', 'Springfield Gardens, NY'),
+      at('nova-poshta:station', '2026-01-14T09:31:13.412Z', 'Arrived at the address depot', 'Hollywood, FL'),
+    ];
+    expect(withoutRelayedScans(relays, delivery)).toEqual([]);
+    // A copy with no place, or a pending one, is still a copy.
+    expect(withoutRelayedScans([at('nova-poshta:hub', '2026-01-11T21:11:25Z', 'Arrived at the depot', '', 'pending')], delivery)).toEqual([]);
+  });
+
+  it('keeps its own scans: another second, another place, another stage, or an observation', () => {
+    const own = [
+      at('nova-poshta:handover', '2026-01-11T21:01:29Z', 'Transferred to delivery partner GoFo Express', 'Jamaica, NY'),
+      at('nova-poshta:hub', '2026-01-11T21:11:26Z', 'Arrived at the depot', 'Springfield Gardens, NY'),
+      at('nova-poshta:lviv', '2026-01-11T21:11:25Z', 'Left the sorting center', 'Lviv'),
+      at('nova-poshta:customs', '2026-01-11T21:11:25Z', 'Customs clearance in progress', 'Springfield Gardens, NY', 'customs'),
+      { ...at('nova-poshta:seen', '2026-01-11T21:11:25Z', 'In transit', 'Springfield Gardens, NY'), observed_without_provider_timestamp: true },
+    ];
+    expect(withoutRelayedScans(own, delivery)).toEqual(own);
+    expect(withoutRelayedScans(own, [])).toEqual(own);
   });
 });
 
