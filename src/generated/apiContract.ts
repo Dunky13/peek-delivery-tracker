@@ -6962,7 +6962,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "saia",
-      "recognitionRank": 12
+      "recognitionRank": 12,
+      "recognitionPattern": "^\\d{11}$"
     },
     "trackingUrlTemplate": "https://www.saia.com/track/details;pro={trackingNumber}",
     "linkRules": [
@@ -6986,7 +6987,13 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}0\\d$",
+        "confidence": "low",
+        "checksum": "saia"
+      }
+    ],
     "trackingSearchUrl": "https://www.saia.com/track"
   },
   "sameday": {
