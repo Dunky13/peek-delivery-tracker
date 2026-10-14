@@ -114,7 +114,7 @@
     {
       "type": "stat",
       "id": 2,
-      "title": "New accounts, 7 days",
+      "title": "New, 7 days",
       "description": "Accounts made in the last seven UTC days, today included.",
       "datasource": {
         "type": "grafana-postgresql-datasource",
@@ -177,8 +177,8 @@
     {
       "type": "stat",
       "id": 3,
-      "title": "Active, 24 h",
-      "description": "Accounts that opened their deliveries, on the web or the iPhone in the last 24 hours.",
+      "title": "Active accounts",
+      "description": "Accounts that opened their deliveries, on the web or the iPhone in the last 24 hours, 7 days and 30 days.",
       "datasource": {
         "type": "grafana-postgresql-datasource",
         "uid": "${datasource}"
@@ -186,7 +186,7 @@
       "gridPos": {
         "x": 6,
         "y": 0,
-        "w": 3,
+        "w": 6,
         "h": 4
       },
       "targets": [
@@ -199,7 +199,7 @@
           "editorMode": "code",
           "rawQuery": true,
           "format": "table",
-          "rawSql": "select active_day from metrics.live"
+          "rawSql": "select active_day as \"24 h\", active_week as \"7 days\", active_month as \"30 days\"\nfrom metrics.live"
         }
       ],
       "fieldConfig": {
@@ -233,78 +233,15 @@
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "center",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "wideLayout": true
       }
     },
     {
       "type": "stat",
       "id": 4,
-      "title": "Active, 7 days",
-      "description": "Accounts that opened their deliveries, on the web or the iPhone in the last 7 days.",
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "x": 9,
-        "y": 0,
-        "w": 3,
-        "h": 4
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "${datasource}"
-          },
-          "refId": "A",
-          "editorMode": "code",
-          "rawQuery": true,
-          "format": "table",
-          "rawSql": "select active_week from metrics.live"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "none",
-          "decimals": 0,
-          "noValue": "0",
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "wideLayout": true
-      }
-    },
-    {
-      "type": "stat",
-      "id": 5,
-      "title": "Active, 30 days",
-      "description": "Accounts that opened their deliveries, on the web or the iPhone in the last 30 days.",
+      "title": "Tracking now",
+      "description": "Parcels neither delivered, returned nor archived, with or without an account.",
       "datasource": {
         "type": "grafana-postgresql-datasource",
         "uid": "${datasource}"
@@ -312,70 +249,7 @@
       "gridPos": {
         "x": 12,
         "y": 0,
-        "w": 3,
-        "h": 4
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "${datasource}"
-          },
-          "refId": "A",
-          "editorMode": "code",
-          "rawQuery": true,
-          "format": "table",
-          "rawSql": "select active_month from metrics.live"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "none",
-          "decimals": 0,
-          "noValue": "0",
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "wideLayout": true
-      }
-    },
-    {
-      "type": "stat",
-      "id": 6,
-      "title": "Being tracked",
-      "description": "Parcels neither delivered, returned nor archived, with or without an account.",
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "x": 15,
-        "y": 0,
-        "w": 3,
+        "w": 4,
         "h": 4
       },
       "targets": [
@@ -428,7 +302,7 @@
     },
     {
       "type": "stat",
-      "id": 7,
+      "id": 5,
       "title": "Added, 24 h",
       "description": "Parcels added to an account or looked up without one in the last 24 hours.",
       "datasource": {
@@ -436,9 +310,9 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "x": 18,
+        "x": 16,
         "y": 0,
-        "w": 3,
+        "w": 4,
         "h": 4
       },
       "targets": [
@@ -491,17 +365,17 @@
     },
     {
       "type": "stat",
-      "id": 8,
-      "title": "Parcels, all time",
+      "id": 6,
+      "title": "All parcels",
       "description": "Every parcel added to an account or looked up without one. Days from before the counts were kept miss the parcels deleted since.",
       "datasource": {
         "type": "grafana-postgresql-datasource",
         "uid": "${datasource}"
       },
       "gridPos": {
-        "x": 21,
+        "x": 20,
         "y": 0,
-        "w": 3,
+        "w": 4,
         "h": 4
       },
       "targets": [
@@ -554,7 +428,7 @@
     },
     {
       "type": "row",
-      "id": 9,
+      "id": 7,
       "title": "Accounts",
       "collapsed": false,
       "gridPos": {
@@ -567,7 +441,7 @@
     },
     {
       "type": "timeseries",
-      "id": 10,
+      "id": 8,
       "title": "Accounts",
       "description": "Accounts at the end of each UTC day. Days from before the counts were kept miss the accounts deleted since.",
       "datasource": {
@@ -631,7 +505,7 @@
     },
     {
       "type": "timeseries",
-      "id": 11,
+      "id": 9,
       "title": "New accounts per day",
       "description": "Accounts made each UTC day.",
       "datasource": {
@@ -673,7 +547,7 @@
               "mode": "none",
               "group": "A"
             },
-            "barAlignment": 0
+            "barAlignment": 1
           },
           "color": {
             "mode": "fixed",
@@ -696,7 +570,7 @@
     },
     {
       "type": "row",
-      "id": 12,
+      "id": 10,
       "title": "Activity",
       "collapsed": false,
       "gridPos": {
@@ -709,7 +583,7 @@
     },
     {
       "type": "timeseries",
-      "id": 13,
+      "id": 11,
       "title": "Active accounts per day",
       "description": "Accounts that opened their deliveries, on the web or the iPhone each UTC day. Earlier periods count sign-ins and session renewals instead, from before openings were recorded.",
       "datasource": {
@@ -751,7 +625,7 @@
               "mode": "none",
               "group": "A"
             },
-            "barAlignment": 0
+            "barAlignment": 1
           },
           "color": {
             "mode": "fixed",
@@ -774,7 +648,7 @@
     },
     {
       "type": "timeseries",
-      "id": 14,
+      "id": 12,
       "title": "Active accounts per week",
       "description": "Accounts that opened their deliveries, on the web or the iPhone each UTC week (from Monday). Earlier periods count sign-ins and session renewals instead, from before openings were recorded.",
       "datasource": {
@@ -816,7 +690,7 @@
               "mode": "none",
               "group": "A"
             },
-            "barAlignment": 0
+            "barAlignment": 1
           },
           "color": {
             "mode": "fixed",
@@ -839,7 +713,7 @@
     },
     {
       "type": "timeseries",
-      "id": 15,
+      "id": 13,
       "title": "Active accounts per month",
       "description": "Accounts that opened their deliveries, on the web or the iPhone each UTC month. Earlier periods count sign-ins and session renewals instead, from before openings were recorded.",
       "datasource": {
@@ -881,7 +755,7 @@
               "mode": "none",
               "group": "A"
             },
-            "barAlignment": 0
+            "barAlignment": 1
           },
           "color": {
             "mode": "fixed",
@@ -904,7 +778,7 @@
     },
     {
       "type": "row",
-      "id": 16,
+      "id": 14,
       "title": "Parcels",
       "collapsed": false,
       "gridPos": {
@@ -917,7 +791,7 @@
     },
     {
       "type": "timeseries",
-      "id": 17,
+      "id": 15,
       "title": "Parcels being tracked",
       "description": "Parcels neither delivered, returned nor archived at the end of each UTC day. Days from before the counts were kept are rebuilt from the parcels stored now.",
       "datasource": {
@@ -1012,7 +886,7 @@
     },
     {
       "type": "timeseries",
-      "id": 18,
+      "id": 16,
       "title": "Parcels added per day",
       "description": "Parcels added to an account (kept lookups included) or looked up without one, each UTC day.",
       "datasource": {
@@ -1054,7 +928,7 @@
               "mode": "normal",
               "group": "A"
             },
-            "barAlignment": 0
+            "barAlignment": 1
           },
           "color": {
             "mode": "fixed",
@@ -1108,7 +982,7 @@
     },
     {
       "type": "timeseries",
-      "id": 19,
+      "id": 17,
       "title": "Parcels, all time",
       "description": "Running total of the parcels added, to the end of each UTC day.",
       "datasource": {
@@ -1203,7 +1077,7 @@
     },
     {
       "type": "barchart",
-      "id": 20,
+      "id": 18,
       "title": "Being tracked, by stage",
       "description": "Parcels being tracked now, with or without an account, by their stage.",
       "datasource": {
@@ -1250,6 +1124,9 @@
         "orientation": "horizontal",
         "xField": "stage",
         "showValue": "always",
+        "text": {
+          "valueSize": 12
+        },
         "barWidth": 0.7,
         "groupWidth": 0.7,
         "legend": {
@@ -1265,7 +1142,7 @@
     },
     {
       "type": "barchart",
-      "id": 21,
+      "id": 19,
       "title": "Carriers",
       "description": "Carriers of the parcels added in the time range that are still stored.",
       "datasource": {
@@ -1312,6 +1189,9 @@
         "orientation": "horizontal",
         "xField": "carrier",
         "showValue": "always",
+        "text": {
+          "valueSize": 12
+        },
         "barWidth": 0.7,
         "groupWidth": 0.7,
         "legend": {
@@ -1327,7 +1207,7 @@
     },
     {
       "type": "row",
-      "id": 22,
+      "id": 20,
       "title": "Notifications",
       "collapsed": false,
       "gridPos": {
@@ -1340,7 +1220,7 @@
     },
     {
       "type": "stat",
-      "id": 23,
+      "id": 21,
       "title": "Web push",
       "description": "Accounts with web push switched on in at least one browser.",
       "datasource": {
@@ -1403,7 +1283,7 @@
     },
     {
       "type": "stat",
-      "id": 24,
+      "id": 22,
       "title": "iPhone notifications",
       "description": "Accounts with notifications switched on on at least one iPhone.",
       "datasource": {
@@ -1466,7 +1346,7 @@
     },
     {
       "type": "stat",
-      "id": 25,
+      "id": 23,
       "title": "Delivery emails",
       "description": "Accounts that get an email when a parcel is delivered.",
       "datasource": {
@@ -1529,7 +1409,7 @@
     },
     {
       "type": "stat",
-      "id": 26,
+      "id": 24,
       "title": "Alerts on links",
       "description": "Alerts readers of a parcel link turned on, without an account.",
       "datasource": {
