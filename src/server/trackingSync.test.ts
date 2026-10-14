@@ -2690,11 +2690,15 @@ describe('TrackingSyncService', () => {
     } } });
     expect(capture).not.toHaveBeenCalled();
     now = new Date('2026-09-11T00:00:00Z');
-    await expect(service.syncPackage({ ...parcel, ...saved })).resolves.toMatchObject({ waiting: 0, errors: 1 });
+    await expect(service.syncPackage({ ...parcel, ...saved }, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 0, errors: 1 });
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error', carrier_data: { routing: {
       consecutive_failures: 3, last_success_at: '2026-09-10T21:00:00Z',
     } } });
     expect(capture).toHaveBeenCalledExactlyOnceWith('progress_disappeared', expect.objectContaining({ carrier: 'unknown' }));
+    // The answer came without an error: its anomaly is the refresh incident's evidence.
+    expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'overnight-thin',
+      expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: false,
+        details: expect.objectContaining({ anomaly_codes: 'progress_disappeared' }) })]));
   });
 
   it.each(['result', 'error', 'unannounced'] as const)(
@@ -3061,10 +3065,10 @@ describe('TrackingSyncService', () => {
         details: expect.objectContaining({ providers_attempted: expect.any(Number), provider_failures: expect.stringContaining('dhl:transport') }),
       })]),
     );
-    // No tier produced a sample here, so the attempt's own type is the refresh evidence.
+    // No tier produced a sample here, so the attempt's own type and routing's failures are the refresh evidence.
     expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'stale',
       expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: false,
-        details: { error_type: 'RoutingDeferredError' } })]));
+        details: { error_type: 'RoutingDeferredError', provider_failures: expect.stringContaining('dhl:transport') } })]));
   });
 
   it('preserves progressed shipment data when a carrier later reports not found', async () => {

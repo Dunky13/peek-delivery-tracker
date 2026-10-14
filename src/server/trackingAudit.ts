@@ -13,7 +13,7 @@ import {
 import { recordRefresh } from './metrics';
 import { observeTrackingHealth, type HealthSample } from './trackingHealth';
 import { SupabaseError, type SupabaseServiceClient } from './supabase';
-import type { JsonObject } from './types';
+import { isRecord, type JsonObject } from './types';
 import { trackingSupportContext } from './trackingSupport';
 
 export type SyncTrigger = 'package' | 'scheduled';
@@ -74,6 +74,8 @@ export interface SyncAuditCompletion {
   eventsNew?: number;
   anomalyCodes?: SyncAnomalyCode[];
   error?: unknown;
+  /** Routing's `failures`, each with its `kind`, keyed by provider or carrier id: a failed refresh's evidence. */
+  providerFailures?: unknown;
   /** False when no provider was contacted, so the check is not evidence of provider health. */
   evaluateHealth?: boolean;
   supportEvidence?: JsonObject;
@@ -97,6 +99,27 @@ function elapsedMilliseconds(startedAt: number): number {
 
 function boundedCount(value: number | undefined): number {
   return Number.isInteger(value) && value! >= 0 ? Math.min(value!, 10_000) : 0;
+}
+
+/** Each source's failure kind as `source:kind` pairs: provider and carrier ids only, bounded. */
+export function providerFailureSummary(failures: unknown): string | null {
+  if (!isRecord(failures)) return null;
+  const pairs = Object.entries(failures).flatMap(([source, failure]) => (
+    isRecord(failure) && typeof failure.kind === 'string' ? [`${source.slice(0, 40)}:${failure.kind.slice(0, 40)}`] : []
+  ));
+  return pairs.length ? pairs.join(',').slice(0, 300) : null;
+}
+
+/**
+ * What a failed refresh adds to its health sample beyond its error class: the
+ * check's anomaly codes and routing's failure per source. A check that failed
+ * because its answer lost progress has no error, and one that every tier
+ * deferred names no failing tier of its own.
+ */
+function refreshEvidence(completion: SyncAuditCompletion): JsonObject {
+  const anomalies = [...new Set(completion.anomalyCodes ?? [])].join(',').slice(0, 200);
+  const failures = providerFailureSummary(completion.providerFailures);
+  return { ...(anomalies ? { anomaly_codes: anomalies } : {}), ...(failures ? { provider_failures: failures } : {}) };
 }
 
 function safeDetails(details: JsonObject): JsonObject {
@@ -280,12 +303,13 @@ export class TrackingSyncAudit {
     if (this.context.trigger === 'scheduled' && !this.context.signal?.aborted && completion.evaluateHealth !== false
       && ['updated', 'unchanged', 'waiting', 'error'].includes(completion.outcome)) {
       const failedFetch = this.#steps.some(step => step.step === 'fetch' && step.status === 'failed');
+      const healthy = completion.outcome !== 'error' && !failedFetch;
       const samples: JsonObject[] = [...this.#healthSamples.values(), {
-        kind: 'refresh', subject: this.configuredCarrier,
-        healthy: completion.outcome !== 'error' && !failedFetch,
+        kind: 'refresh', subject: this.configuredCarrier, healthy,
         // The failing tier's own error class is better evidence than the attempt's summary.
         details: { ...(values.error_type ? { error_type: values.error_type } : {}),
-          ...[...this.#healthSamples.values()].reverse().find(sample => !sample.healthy)?.details },
+          ...[...this.#healthSamples.values()].reverse().find(sample => !sample.healthy)?.details,
+          ...(healthy ? {} : refreshEvidence(completion)) },
       }];
       await this.writeAudit('evaluate_health', async () => {
         const incidents = await this.client.recordTrackingHealth(this.attemptId, this.packageId, samples);

@@ -4,6 +4,7 @@ import { TrackingCaptureError } from 'universal-parcel-scraper/node';
 import { healthMessage, healthStepRecorder, observeTrackingHealth, type HealthSample } from './trackingHealth';
 import { TrackingSyncAudit } from './trackingAudit';
 import type { SupabaseServiceClient } from './supabase';
+import type { JsonObject } from './types';
 import * as observability from './observability';
 
 const step = { carrier: 'ups', step: 'direct', attempt: 1, outcome: 'transport' as const,
@@ -140,6 +141,29 @@ it('keeps the failing tier as refresh evidence when the attempt only reports a d
   expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'synthetic-package',
     expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: false,
       details: expect.objectContaining({ error_type: 'UpstreamNetworkError' }) })]));
+});
+
+it('gives a failed refresh the anomaly and each provider\'s failure kind as evidence', async () => {
+  const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),
+    recordTrackingHealth: vi.fn().mockResolvedValue([]), ackTrackingHealth: vi.fn() };
+  const audit = () => new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+    'synthetic-package', 'TEST1234', 'inpost', 'in_transit', { trigger: 'scheduled' });
+  const failures = { ParcelsApp: { kind: 'no_history', count: 2, retry_at: '2026-01-01T00:00:00Z' },
+    Ship24: { kind: 'transport', count: 1, retry_at: '2026-01-01T00:00:00Z' }, broken: null };
+  const refreshSample = () => (client.recordTrackingHealth.mock.lastCall![2] as JsonObject[])
+    .find((sample) => sample.kind === 'refresh')!;
+  // The carrier answered without the progress already saved: no error object, every tier healthy.
+  await audit().finish({ outcome: 'error', anomalyCodes: ['progress_disappeared', 'provider_clock_offset'], providerFailures: failures });
+  expect(refreshSample()).toMatchObject({ healthy: false, details: {
+    anomaly_codes: 'progress_disappeared,provider_clock_offset', provider_failures: 'ParcelsApp:no_history,Ship24:transport',
+  } });
+  const deferred = Object.assign(new Error('every provider failed'), { name: 'RoutingDeferredError' });
+  await audit().finish({ outcome: 'error', error: deferred, providerFailures: { 'la-poste': { kind: 'verification' } } });
+  expect(refreshSample().details).toEqual({ error_type: 'RoutingDeferredError', provider_failures: 'la-poste:verification' });
+  expect(JSON.stringify(refreshSample())).not.toContain('TEST1234');
+  // A refresh that worked is no evidence, whatever a provider did.
+  await audit().finish({ outcome: 'unchanged', anomalyCodes: ['provider_clock_offset'], providerFailures: failures });
+  expect(refreshSample()).toEqual(expect.objectContaining({ healthy: true, details: {} }));
 });
 
 it('counts every finished attempt by who served it', async () => {

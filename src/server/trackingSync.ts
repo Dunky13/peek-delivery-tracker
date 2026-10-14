@@ -32,6 +32,7 @@ import { PushDispatchError, type CompositePushNotificationService } from './push
 import { STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
 import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
+  providerFailureSummary,
   TrackingSyncAudit,
   WorkerShutdown,
   type SyncAnomalyCode,
@@ -139,11 +140,7 @@ function sharedAnswers(checks: ParcelLookups | undefined): JsonObject {
 
 /** Which tiers a deferred lookup gave up on, as provider ids and failure kinds only. */
 function deferredFetchDetails(error: RoutingDeferred): JsonObject {
-  return {
-    providers_attempted: error.attempted,
-    provider_failures: Object.entries(error.routing.failures)
-      .map(([provider, failure]) => `${provider}:${failure.kind}`).join(',').slice(0, 300),
-  };
+  return { providers_attempted: error.attempted, provider_failures: providerFailureSummary(error.routing.failures) ?? '' };
 }
 
 export function isTrackingSyncDue(parcel: JsonObject, now: Date): boolean {
@@ -1456,6 +1453,7 @@ export class TrackingSyncService {
         eventsNormalized: events.length,
         eventsNew,
         anomalyCodes: anomalies,
+        providerFailures: routing?.failures,
         supportEvidence: trackingSupportEvidence(parcel, result, sourceCarrierId, outcome, preserveSummary),
       } as const;
       await audit.finish(completion);
@@ -1479,7 +1477,7 @@ export class TrackingSyncService {
         // A check that contacted nobody says nothing about provider health.
         // Keep the failure evidence even while the parcel's error chip is suppressed.
         await audit.finish({ outcome: error.stale ? 'error' : 'waiting', sourceCarrier: carrierId,
-          evaluateHealth: error.attempted > 0, error });
+          evaluateHealth: error.attempted > 0, error, providerFailures: error.routing.failures });
         return error.stale ? 'errors' : 'waiting';
       }
       let message = error instanceof Error ? error.message.trim() || error.name : String(error);

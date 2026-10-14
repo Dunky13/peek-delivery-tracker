@@ -5,7 +5,10 @@ Postgres (`record_tracking_health`) decides when, from scheduled refreshes only.
 refreshes, unsupported carriers and superseded work don't count. Samples last 24 hours and
 hold only provider ids, outcome categories, HTTP statuses and opaque ids. A sample's
 `http_status` is one a provider answered with; a carrier error the adapter raised on its
-own, such as not-found, has none.
+own, such as not-found, has none. A failed refresh's sample also names the check's anomaly
+codes (`progress_disappeared` when an answer lost the saved progress without an error) and
+routing's failure kind for each provider and carrier (`provider_failures`), which become a
+refresh incident's evidence.
 
 Individual attempts, retries and fallbacks go to logs, metrics and Prometheus instead. A
 failure that recovers never opens an issue. See [OBSERVABILITY.md](../../docs/OBSERVABILITY.md).
