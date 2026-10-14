@@ -14140,6 +14140,46 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.vrlgroup.in/Tracking/TrackShipment"
+  },
+  "mtscn": {
+    "displayName": "Meiteshun Logistics",
+    "aliases": [
+      "MTSCN",
+      "Meiteshun",
+      "美特顺",
+      "美特顺物流",
+      "深圳美特顺物流",
+      "深圳市美特顺物流有限公司",
+      "Shenzhen Meiteshun Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#f89f3b",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "mtscn",
+      "recognitionRank": 986
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "182.254.194.208"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^AMTS\\d{9}FS$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -14530,7 +14570,8 @@ export const CARRIER_IDS = [
   "skroutz-last-mile",
   "tci-express",
   "urbano",
-  "vrl-logistics"
+  "vrl-logistics",
+  "mtscn"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
