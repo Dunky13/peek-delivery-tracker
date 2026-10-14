@@ -1560,10 +1560,11 @@
           {
             "field": "dpdPostcode",
             "validator": "paackPostcode",
+            "optional": true,
             "label": "Delivery postcode",
             "type": "text",
             "placeholder": "75001",
-            "help": "Paack requires the recipient postcode together with the order number.",
+            "help": "Paack shows most orders only with the delivery postcode. Without it, other sources are asked.",
             "pattern": "^(?=.{3,10}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ -][A-Za-z0-9]+)*$",
             "maxLength": 10,
             "inputMode": "text",
@@ -1591,7 +1592,12 @@
           ]
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^PK\\d{18}$",
+          "confidence": "high"
+        }
+      ],
       "aliases": [
         "Paack Logistics"
       ],
@@ -2047,7 +2053,9 @@
       ],
       "trackingUrlTemplate": "https://globaleco.app/track",
       "aliases": [
-        "Evri International"
+        "Evri International",
+        "Global Eco",
+        "GlobalEco"
       ],
       "countries": [
         "GB"
@@ -13115,6 +13123,370 @@
         }
       ],
       "trackingSearchUrl": "https://www.aramex.co.nz/tools/track/"
+    },
+    "17feia": {
+      "displayName": "17FEIA",
+      "aliases": [
+        "17FEIA",
+        "Feia",
+        "17Feia Express",
+        "一起飞",
+        "上海宏杉国际物流",
+        "Shanghai Hongshan International Logistics"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#00a9e4",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "17feia",
+        "recognitionRank": 991
+      },
+      "trackingUrlTemplate": "https://www.17feia.com/tracking?orderNumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "17feia.com",
+            "www.17feia.com"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "orderNumber"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^FEI[A-Z]{2}\\d{10}YQ$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://www.17feia.com/"
+    },
+    "celeritas": {
+      "displayName": "Celeritas",
+      "aliases": [
+        "Celeritas",
+        "Celeritas Transporte",
+        "Celeritas Transporte y Logística"
+      ],
+      "countries": [
+        "ES",
+        "PT"
+      ],
+      "color": "#009aab",
+      "selectable": true,
+      "timezone": "Europe/Madrid",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "celeritas",
+        "recognitionRank": 996
+      },
+      "trackingUrlTemplate": "https://celeritastransporte.com/seguimiento-paquete-pedidos/?refer={trackingNumber}&lang=es",
+      "linkRules": [
+        {
+          "domains": [
+            "celeritastransporte.com"
+          ],
+          "pathPattern": "^/seguimiento-paquete-pedidos/?$",
+          "params": [
+            "refer"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://celeritastransporte.com/seguimiento-paquete-pedidos/"
+    },
+    "dhlink": {
+      "displayName": "DHLink",
+      "aliases": [
+        "DHLink",
+        "Dhlink",
+        "驼飞侠",
+        "駝飛俠"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#143167",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "dhlink",
+        "recognitionRank": 995
+      },
+      "trackingUrlTemplate": "https://www.dhlink.com/trackQuery?intlExpressNo={trackingNumber}&lang=en",
+      "linkRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^FC\\d{13}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.dhlink.com/trackQuery"
+    },
+    "geodis-pl": {
+      "displayName": "GEODIS Poland",
+      "aliases": [
+        "Pekaes",
+        "GeodisPL",
+        "GEODIS Road Network"
+      ],
+      "countries": [
+        "PL"
+      ],
+      "color": "#3100e6",
+      "selectable": true,
+      "timezone": "Europe/Warsaw",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "geodis-pl",
+        "recognitionRank": 994
+      },
+      "trackingUrlTemplate": "https://strefaklienta.pekaes.geodis.pl/en/?ShNumber={trackingNumber}",
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://strefaklienta.pekaes.geodis.pl/en/"
+    },
+    "gzyl": {
+      "displayName": "GZYL",
+      "aliases": [
+        "GZYL",
+        "Gzyl",
+        "广州云链",
+        "廣州云鏈",
+        "广州云链货运代理有限公司"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#4e79e1",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "gzyl"
+      },
+      "linkRules": [],
+      "detectionRules": []
+    },
+    "hywl": {
+      "displayName": "Huiyi Logistics",
+      "aliases": [
+        "HYWL",
+        "汇一物流",
+        "匯一物流",
+        "Huiyi Logistics",
+        "SZHYWL",
+        "深圳市汇一物流有限公司"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#0b8f91",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "hywl",
+        "recognitionRank": 993
+      },
+      "trackingUrlTemplate": "https://www.szhywl.it.com/track.html?number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "szhywl.it.com",
+            "www.szhywl.it.com"
+          ],
+          "pathPattern": "^/track\\.html$",
+          "params": [
+            "number",
+            "trackingNumber"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^TRK[0-9A-F]{12}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.szhywl.it.com/track.html"
+    },
+    "jhgj": {
+      "displayName": "Jiuhao International",
+      "aliases": [
+        "JHGJ",
+        "九好国际",
+        "九好國際",
+        "广州九好国际货运代理有限公司"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#283593",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": []
+    },
+    "jrt": {
+      "displayName": "JRT",
+      "aliases": [
+        "JRT",
+        "今日通",
+        "Jinritong",
+        "厦门今日通",
+        "厦门今日通商贸有限公司",
+        "今日通商贸有限公司"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#023053",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "jrt"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "106.53.64.22"
+          ],
+          "pathPattern": "^/trackIndex\\.htm$",
+          "params": [
+            "documentCode"
+          ]
+        }
+      ],
+      "detectionRules": []
+    },
+    "ktd": {
+      "displayName": "KTD",
+      "aliases": [
+        "跨通达",
+        "跨通達",
+        "跨通达物流",
+        "深圳市跨通达物流有限公司",
+        "Kuatongda"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#01234d",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": []
+    },
+    "swiftx": {
+      "displayName": "SwiftX",
+      "aliases": [
+        "SwiftX Express"
+      ],
+      "countries": [
+        "US"
+      ],
+      "color": "#5e51d3",
+      "selectable": true,
+      "timezone": "America/Los_Angeles",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "swiftx"
+      },
+      "trackingUrlTemplate": "https://swiftx-express.com/track?trackingNumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "swiftx-express.com",
+            "www.swiftx-express.com"
+          ],
+          "pathPattern": "^/(?:[a-z]{2}/)?track/?$",
+          "params": [
+            "trackingNumber"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^SWX\\d{18}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://swiftx-express.com/"
+    },
+    "thhy": {
+      "displayName": "Tianhui Hengyuan",
+      "aliases": [
+        "TH",
+        "THHY",
+        "Tian Hui Hen Yuan",
+        "天汇恒源",
+        "深圳市天汇恒源供应链有限公司",
+        "广州市天慧恒源供应链有限公司"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#00a2e9",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "thhy"
+      },
+      "linkRules": [],
+      "detectionRules": []
+    },
+    "tsjy": {
+      "displayName": "TSJY",
+      "aliases": [
+        "TSJY",
+        "通世集运",
+        "通世集運",
+        "Tonse Supply Chain",
+        "苏州通世供应链"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#4042e2",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "tsjy",
+        "recognitionRank": 992
+      },
+      "trackingUrlTemplate": "https://www.tsjy56.com/orderResult.html?nos={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tsjy56.com",
+            "www.tsjy56.com"
+          ],
+          "pathPattern": "^/orderResult\\.html$",
+          "params": [
+            "nos"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.tsjy56.com/"
     }
   },
   "servers": [
@@ -15919,7 +16291,19 @@
           "viettel-post",
           "vnpost",
           "ward-trucking",
-          "aramex-nz"
+          "aramex-nz",
+          "17feia",
+          "celeritas",
+          "dhlink",
+          "geodis-pl",
+          "gzyl",
+          "hywl",
+          "jhgj",
+          "jrt",
+          "ktd",
+          "swiftx",
+          "thhy",
+          "tsjy"
         ]
       },
       "Stage": {
