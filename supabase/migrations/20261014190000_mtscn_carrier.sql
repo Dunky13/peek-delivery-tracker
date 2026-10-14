@@ -1,4 +1,4 @@
--- Accept Meiteshun Logistics (mtscn) from Universal Parcel Scraper 0.151.0, a forwarder
+-- Accept Meiteshun Logistics (mtscn) from Universal Parcel Scraper 0.152.0, a forwarder
 -- only aggregators named before. It asks for no postcode or tracking URL.
 
 alter table public.packages
