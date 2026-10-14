@@ -214,6 +214,17 @@ const QUARTER_HOUR_MS = 15 * MINUTE_MS;
 const HOUR_MS = 60 * 60 * 1_000;
 const MAX_ZONE_SHIFT_MS = 14 * HOUR_MS;
 
+/**
+ * Whole quarter hours apart, up to 14 h: one scan read in the wrong zone. A
+ * copy may drop the milliseconds a carrier keeps (Vinted Go, InPost), so a
+ * time in whole seconds is compared to the other's second.
+ */
+function zoneApart(left: number, right: number): boolean {
+  const second = (at: number) => Math.floor(at / 1_000) * 1_000;
+  const shift = left % 1_000 === 0 || right % 1_000 === 0 ? second(left) - second(right) : left - right;
+  return shift !== 0 && shift % QUARTER_HOUR_MS === 0 && Math.abs(shift) <= MAX_ZONE_SHIFT_MS;
+}
+
 function sourceOf(id: string): string {
   const separator = id.indexOf(':');
   return separator > 0 ? id.slice(0, separator) : '';
@@ -237,12 +248,16 @@ function observedOnly(row: JsonObject): boolean {
     || (isRecord(row.raw_data) && row.raw_data.observed_without_provider_timestamp === true);
 }
 
-/** The same wording, or one followed by a further sentence (GOFO's support line). */
+/**
+ * The same wording, or one with a further sentence after it (GOFO's support
+ * line) or before it (ParcelsApp's heading for an Ecoscooting scan).
+ */
 function sameWording(left: string, right: string): boolean {
   if (!left || !right) return false;
   if (left === right) return true;
   const [shorter, longer] = left.length < right.length ? [left, right] : [right, left];
-  return /[.!?]$/.test(shorter) && longer.startsWith(`${shorter} `);
+  return (/[.!?]$/.test(shorter) && longer.startsWith(`${shorter} `))
+    || (longer.endsWith(` ${shorter}`) && /[.!?]$/.test(longer.slice(0, -shorter.length - 1)));
 }
 
 /**
@@ -295,15 +310,19 @@ export interface SharedScans {
  * that no event of this batch carries and `reused` has not taken, never the
  * app's own rows, and never a scan the sync observed without a provider time.
  * A row matches a scan at the exact same instant when it is the only row there
- * with the same wording, or the only row there at all, with the same stage,
+ * with the same wording, or the only row there at all, with a stage that
+ * agrees (La Poste's French scan and a provider's unclassified English copy),
  * and the scan the only new scan there. With no row at that instant, a row at
- * an instant no scan of the batch shows matches with the same wording when one
- * of the two is dated to the second or minute the other falls in (UPS to the
- * second, a provider to the minute), or else when it is a whole number of quarter hours
- * up to 14 h away: the same scan read in the wrong zone. Failing that, a
- * carrier's row for a universal scan, or a universal row for a carrier's scan,
- * at least an hour away matches in any wording when the stages agree or one is
- * pending and the time has seconds other than zero: a provider whose clock is
+ * an instant no scan of the batch shows matches when one of the two is dated
+ * to the second or minute the other falls in (UPS to the second, a provider to
+ * the minute): with the same wording, or else alone in other wording when a
+ * provider's copy to the minute meets a carrier's scan to the second, with a
+ * stage that agrees and no conflicting place (FedEx's own wording of a scan a
+ * provider copied). Failing that, the same wording matches a
+ * whole number of quarter hours up to 14 h away: the same scan read in the
+ * wrong zone. Failing that, a carrier's row for a universal scan, or a
+ * universal row for a carrier's scan, at least an hour away matches in any
+ * wording when the stages agree and the time has seconds other than zero: a provider whose clock is
  * off by a zone's offset from UTC. Times to the minute fall whole quarter
  * hours apart too often by chance, and carriers stamp some scans 15 or 30
  * minutes after another to the second (Swiss Post sorts a parcel a quarter
@@ -356,26 +375,30 @@ export function sharedScans(
     const eligible = universal ? rows : rows.filter((row) => sourceOf(identity(row)) === UNIVERSAL);
     const exact = eligible.filter((row) => instantOf(row) === at);
     const worded = exact.filter((row) => sameWording(wordingOf(row), wording));
-    const minuted = occupied.has(at) ? [] : eligible.filter((row) => (
-      sameTruncated(at, instantOf(row)) && !shown.has(instantOf(row)) && sameWording(wordingOf(row), wording)
-    ));
     const place = placeWords(event);
-    const zoned = occupied.has(at) ? [] : eligible.filter((row) => {
-      const shift = at - instantOf(row);
-      return shift % QUARTER_HOUR_MS === 0 && Math.abs(shift) <= MAX_ZONE_SHIFT_MS && !shown.has(instantOf(row))
-        && !placesConflict(place, placeWords(row));
-    });
+    const truncated = occupied.has(at) ? [] : eligible.filter((row) => sameTruncated(at, instantOf(row)) && !shown.has(instantOf(row)));
+    const minuted = truncated.filter((row) => sameWording(wordingOf(row), wording));
+    // Other wording only for a provider's copy to the minute of a carrier's scan to the second.
+    // An earlier carrier's relay of a delivery scan (India Post's, Nova Poshta's) is no such pair.
+    const restaged = stageOf(event) === '' ? [] : truncated.filter((row) => (
+      (sourceOf(identity(row)) === UNIVERSAL) !== universal && (universal ? at : instantOf(row)) % MINUTE_MS === 0
+      && stagesAgree(stageOf(row), stageOf(event)) && !placesConflict(place, placeWords(row))
+    ));
+    const zoned = occupied.has(at) ? [] : eligible.filter((row) => (
+      zoneApart(at, instantOf(row)) && !shown.has(instantOf(row)) && !placesConflict(place, placeWords(row))
+    ));
     const shifted = zoned.filter((row) => sameWording(wordingOf(row), wording));
     const reclocked = Math.floor(at / 1_000) % 60 === 0 ? [] : zoned.filter((row) => (
       (sourceOf(identity(row)) === UNIVERSAL) !== universal && Math.abs(at - instantOf(row)) >= HOUR_MS
       && stagesAgree(stageOf(row), stageOf(event))
     ));
-    const staged = exact.length === 1 && newAt.get(at) === 1 && stageOf(event) !== '' && stageOf(exact[0]!) === stageOf(event);
+    const staged = exact.length === 1 && newAt.get(at) === 1 && stageOf(event) !== '' && stagesAgree(stageOf(exact[0]!), stageOf(event));
     const match = worded.length === 1 ? worded[0]
       : worded.length === 0 && staged ? exact[0]
         : minuted.length > 0 ? (minuted.length === 1 ? minuted[0] : undefined)
-          : shifted.length === 1 ? shifted[0]
-            : shifted.length === 0 && reclocked.length === 1 ? reclocked[0] : undefined;
+          : restaged.length > 0 ? (restaged.length === 1 ? restaged[0] : undefined)
+            : shifted.length === 1 ? shifted[0]
+              : shifted.length === 0 && reclocked.length === 1 ? reclocked[0] : undefined;
     if (match) picks.set(identity(match), [...(picks.get(identity(match)) ?? []), event]);
   }
   for (const [rowId, scans] of picks) {

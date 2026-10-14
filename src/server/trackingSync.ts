@@ -652,8 +652,8 @@ export function detectSyncAnomalies(
   ))) {
     anomalies.add('invalid_event_timestamp');
   }
-  // A local clock read in the wrong zone lands hours ahead; small upstream
-  // skew (La Poste partner scans run about half an hour early) does not alert.
+  // A scan dated more than an hour after the check has a clock read in the wrong
+  // zone or labelled with the wrong offset. A lead under an hour does not alert.
   const futureBoundary = now.getTime() + 60 * 60 * 1_000;
   if (events.some((event) => {
     const occurredAt = Date.parse(String(event.occurred_at ?? ''));
