@@ -55,6 +55,7 @@ describe('carrier mark', () => {
     'skynet-worldwide', 'smsa-express', 'south-african-post-office', 'southeastern-freight-lines', 'speedex',
     'starken', 'surat-kargo', 'team-global-express', 'tforce-freight', 'toptrans', 'total-express', 'trackon',
     'trendyol-express', 'vasp-expresso', 'viettel-post', 'vnpost', 'ward-trucking',
+    '17feia', 'tsjy', 'hywl', 'dhlink', 'gzyl', 'thhy', 'jrt', 'jhgj', 'ktd', 'swiftx', 'celeritas',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

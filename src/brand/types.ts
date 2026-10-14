@@ -69,7 +69,8 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'skynet-worldwide' | 'smsa-express' | 'south-african-post-office' | 'southeastern-freight-lines'
   | 'speedex' | 'starken' | 'surat-kargo' | 'team-global-express' | 'tforce-freight' | 'toptrans'
   | 'total-express' | 'trackon' | 'trendyol-express' | 'vasp-expresso' | 'viettel-post' | 'vnpost'
-  | 'ward-trucking';
+  | 'ward-trucking' | '17feia' | 'tsjy' | 'hywl' | 'dhlink' | 'gzyl' | 'thhy' | 'jrt' | 'jhgj'
+  | 'ktd' | 'swiftx' | 'celeritas';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

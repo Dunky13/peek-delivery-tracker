@@ -111,6 +111,7 @@ describe('carrier brand', () => {
       'southeastern-freight-lines', 'speedex', 'starken', 'surat-kargo', 'team-global-express',
       'tforce-freight', 'toptrans', 'total-express', 'trackon', 'trendyol-express', 'vasp-expresso',
       'viettel-post', 'vnpost', 'ward-trucking',
+      '17feia', 'tsjy', 'hywl', 'dhlink', 'gzyl', 'thhy', 'jrt', 'jhgj', 'ktd', 'swiftx', 'celeritas',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

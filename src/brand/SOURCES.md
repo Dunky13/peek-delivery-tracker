@@ -15,6 +15,7 @@ and [`truck.json`](truck.json).
 
 | Carrier | Source |
 | --- | --- |
+| `17feia` | [17feia.com](https://www.17feia.com/) — search-button gradient #00d4f3 to #00a9e4 in the site's tracking and home CSS; the header logo is white |
 | `5post` | [fivepost.ru](https://fivepost.ru/files/public/favicon/favicon.svg) — favicon SVG fill #64b441 with grey #575756 |
 | `99minutos` | [tracking.99minutos.com](https://tracking.99minutos.com/) — logo fills #85c440 (ring) and #323634 (99) |
 | `a-duie-pyle` | [aduiepyle.com](https://aduiepyle.com/) — site theme CSS #f27629 (most used colour); favicon swoosh #f58022 (approximate) |
@@ -56,6 +57,7 @@ and [`truck.json`](truck.json).
 | `castores` | [castores.com.mx](https://www.castores.com.mx/Code/front_end/dist/prod/images/global/favicon-144x144.png) — favicon red #c72628 (approximate); CSS --red-3 #c72628 |
 | `cdek` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:CDEK_logo.svg) — fill #00B33C |
 | `cdl` | [cdldelivers.com](https://cdldelivers.com/) — header background `#3d74b2` in the site CSS; flame `#fb3e3e` from the logo PNG's flat red |
+| `celeritas` | [celeritastransporte.com](https://celeritastransporte.com/wp-content/uploads/elementor/css/post-9.css) — Elementor --e-global-color-primary #009AAB (secondary #EE7D00) |
 | `central-transport` | [centraltransport.com](https://www.centraltransport.com/favicon.ico) — favicon yellow field with black CT; site CSS #FAE800 |
 | `ceska-posta` | [ceskaposta.cz](https://www.ceskaposta.cz/) |
 | `ceva-logistics` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Logo_of_CEVA_Logistics_(2023).svg) — logo SVG fill #1d2546 (navy) and #ff0000 (A) |
@@ -91,6 +93,7 @@ and [`truck.json`](truck.json).
 | `delhivery` | [delhivery.com](https://www.delhivery.com/) |
 | `dellin` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Dellin_Logo.svg) — logo SVG symbol fill #FCAF17 |
 | `deppon` | [deppon.com](https://ca.deppon.com.cn/ows/static/pc/new/logo.png) — logo PNG blue #004191 and yellow #fde600; favicon #003c8d/#ffe100 (approximate) |
+| `dhlink` | [dhlink.com](https://www.dhlink.com/static/img/tfx-logo.eaa9b6df.png) — logo pixels #143167 ('DH', 驼飞侠); 'LINK' and the line run #f7c96d to #e2793b (approximate) |
 | `direct-freight-express` | [directfreight.com.au](https://www.directfreight.com.au/images/dfelogo_desktop.svg) — logo SVG navy rgb(11.8%,26.7%,53.3%) #1e4488, orange #f16924 |
 | `dsv` | [dsv.com](https://www.dsv.com/en) — header logo fill #002664 |
 | `dtdc` | [dtdc.com](https://www.dtdc.com/) (approximate) |
@@ -126,12 +129,14 @@ and [`truck.json`](truck.json).
 | `ghtk` | [ghtk.vn](https://ghtk.vn/assets/logo.svg) — logo SVG fill #01B53B |
 | `go-express` | [general-overnight.com](https://www.general-overnight.com/) (inline header logo fill #B9242B, CSS --bs-primary) |
 | `gofo` | [gofo.com](https://www.gofo.com/us/) |
+| `gzyl` | [yunlianhouyun.com](http://yunlianhouyun.com/skin/logistics/css/style.css) — CSS --blue #4e79e1; every opaque logo pixel #4e79e1 |
 | `hanjin` | [hanjin.com](https://www.hanjin.com/attach/IMAGE/TopDesignMgr/LogoImgUpload/2025/1/ijmShJL6Y2PPN8tQ.PNG) — logo navy #051469 (approximate) |
 | `helthjem` | [helthjem.no](https://helthjem.no/next-assets/images/hh_logo.svg) — logo SVG fill #ffb202 (parcel front), #050505 (lid, side, name) |
 | `hepsijet` | [hepsijet.com](https://www.hepsijet.com/images/hepsijet.svg) — logo SVG fill #562898 for JET (archived copy; live site returns 403) |
 | `hongkong-post` | [hongkongpost.hk](https://www.hongkongpost.hk/en/home/index.html) |
 | `hrvatska-posta` | [logo SVG](https://posiljka.posta.hr/assets/icons/hp-full-logo.svg) |
 | `hunter-express` | [hunterexpress.com.au](https://www.hunterexpress.com.au/wp-content/uploads/2025/05/NEW-Hunter-Logo-with-Slogan-scaled.jpg) — logo JPG wordmark orange #f7aa3a, oval blue #0053a1 (approximate) |
+| `hywl` | [szhywl.it.com](https://www.szhywl.it.com/assets/logo-huiyi.svg) — logo SVG fill and arc stroke #0b8f91 ('HUIYI LOGISTICS'), styles.css --teal #0b8f91 |
 | `ics-courier` | [icscourier.ca](https://www.icscourier.ca/rcdesign/styles/main.css) — logo CSS: .letters fill #004B8E, .swoosh fill #D93835 |
 | `ids-logistik` | [ids-logistik.de](https://www.ids-logistik.de/assets/images/h/Logo_IDS-enhm9snaty2njcm.svg) — logo SVG fill #006BAB |
 | `imile` | [imile.com](https://www.imile.com/favicon.png) — favicon blue #0032a0 (approximate) |
@@ -146,12 +151,15 @@ and [`truck.json`](truck.json).
 | `japan-post` | [post.japanpost.jp](https://www.post.japanpost.jp/) |
 | `jd-logistics` | [jingdonglogistics.com](https://www.jingdonglogistics.com/) |
 | `jersey-post` | [jerseypost.com](https://www.jerseypost.com/public/img/icons/icon180.png) — app icon red #e72b37 (approximate); site CSS #ee3d44 |
+| `jhgj` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/192049.png) — icon pixels blue #283593, green #78cc1d (approximate) |
 | `jitsu` | [gojitsu.com](https://gojitsu.com/hubfs/jitsu-2024/image/logo-jitsu.svg) — logo SVG fill #4DC480, also the site stylesheet's main colour |
 | `jne` | [jne.co.id](https://www.jne.co.id/cfind/source/images/logo.svg) — logo SVG fills #1E3378 (letters) and #E11B22 (swoosh) |
+| `jrt` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/192125.png) — icon pixels navy #023053, orange #e66926 (approximate) |
 | `kazpost` | [post.kz](https://post.kz/react/static/css/main.a6b7127e.chunk.css) — site CSS yellow #fed201 with logo blue #0157a5 |
 | `kex` | [th.kex-express.com](https://th.kex-express.com/images/favicon/apple-icon-180x180.png) — app icon orange #f36f21 (approximate) |
 | `kolay-gelsin` | [kolaygelsin.com](https://kolaygelsin.com/favicon.png) — favicon check mark #3aae2a (approximate) |
 | `korea-post` | [koreapost.go.kr](https://postman.koreapost.go.kr/kpost/subIndex/4263.do) (Pantone 485 C equivalent) |
+| `ktd` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/190522.png) — icon pixels #01234d (approximate) |
 | `kuehne-nagel` | [kuehne-nagel.com](https://www.kuehne-nagel.com/) |
 | `landmark-global` | [landmarkglobal.com](https://landmarkglobal.com/) |
 | `latvijas-pasts` | [pasts.lv](https://pasts.lv/) — --color-header-logo #0C72BA; the mans.pasts.lv icon blue is #0072bb |
@@ -250,10 +258,12 @@ and [`truck.json`](truck.json).
 | `sto` | [sto.cn](https://www.sto.cn/) |
 | `sunyou` | [sunyou.hk](https://www.sunyou.hk/) (sampled from the site icon) |
 | `surat-kargo` | [suratkargo.com.tr](https://www.suratkargo.com.tr/KargoTakip/) — tracking page CSS #03387b (archived copy); logo blue #0e4595 (approximate) |
+| `swiftx` | [swiftx-express.com](https://swiftx-express.com/) — site CSS .bg-primary rgb(94 81 211) = #5e51d3; logo swoosh pixels close to it |
 | `team-global-express` | [teamglobalexp.com](https://teamglobalexp.com/image/layout_set_logo?img_id=5087020) — logo PNG #143200 (approximate), site CSS #143200 and wattle #cbff55 |
 | `tforce-freight` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:TForce_Freight_Logo.svg) — logo SVG fills #0053a1 (letters) and #e6403b (swoosh) |
 | `thailand-post` | [international.thailandpost.com](https://international.thailandpost.com/) |
 | `the-courier-guy` | [thecourierguy.co.za](https://www.thecourierguy.co.za/) (approximate) |
+| `thhy` | [51thhy.cn](http://www.51thhy.cn/static/upload/image/20250110/1736521739422556.png) — logo pixels #00a2e9 (approximate) |
 | `tipsa` | [tip-sa.com](https://www.tip-sa.com/) |
 | `tnt` | [tnt.com](https://www.tnt.com/express/en_gb/site/home.html) |
 | `toptrans` | [toptrans.cz](https://www.toptrans.cz/_nuxt/logo.e9ca4bc8.svg) — logo SVG fill #005DAA, stripe #EE3124 |
@@ -261,6 +271,7 @@ and [`truck.json`](truck.json).
 | `trackon` | [trackon.in](https://www.trackon.in/assets/images/trackon_logo.png) — logo PNG maroon #981e21 and orange #f27224 (approximate) |
 | `trans-o-flex` | [trans-o-flex.com](https://www.trans-o-flex.com/) (approximate) |
 | `trendyol-express` | [trendyolexpress.com](https://www.trendyolexpress.com/) — header logo orange #f16623 (approximate, embedded PNG) |
+| `tsjy` | [tsjy56.com](https://www.tsjy56.com/public/imgs/logo_01.png) — logo pixels #4042e2 ('Tonse Supply Chain', blue half of the monogram), orange #ff6600 (approximate) |
 | `ubi-smart-parcel` | [ubismartparcel.com](https://www.ubismartparcel.com/) |
 | `ukrposhta` | [ukrposhta.ua](https://www.ukrposhta.ua/en) |
 | `uniuni` | [uniuni.com](https://www.uniuni.com/) |
@@ -579,3 +590,14 @@ and [`truck.json`](truck.json).
 | `viettel-post` | White VTP on red | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Viettel_Post_logo.svg) — viettel post wordmark |
 | `vnpost` | Yellow envelope check with speed stripes on blue | [vnpost.vn](https://vnpost.vn/apps/frontend/images/header/logo-fuild.png) — Vietnam Post envelope mark |
 | `ward-trucking` | White italic WARD over a bar on dark green | [wardtlc.com](https://www.wardtlc.com/wp-content/uploads/2023/02/Ward-TLC-Logo-1.png) — white italic WARD with an underline on a green panel |
+| `17feia` | White '17' in an open ring on light blue | [17feia.com](https://www.17feia.com/_nuxt/img/logo.d3540dd.png) — header logo, '17' inside a circular swoosh |
+| `tsjy` | White 'TS' on an orange disc on blue | [tsjy56.com](https://www.tsjy56.com/public/imgs/logo_01.png) — round orange and blue TS monogram |
+| `hywl` | White route line and arc with an orange tag on teal | [szhywl.it.com](https://www.szhywl.it.com/assets/logo-huiyi.svg) — logo SVG: H-shaped route stroke, teal arc and orange parcel tag |
+| `dhlink` | White italic 'DH' under an orange roof line on navy | [dhlink.com](https://www.dhlink.com/static/img/tfx-logo.eaa9b6df.png) — DHLINK wordmark under its roof-and-arrow line |
+| `gzyl` | White delivery truck with speed lines on blue | [yunlianhouyun.com](http://yunlianhouyun.com/skin/logistics/images/3917_j9az1wzg.png) — header logo, a truck with three speed lines |
+| `thhy` | White italic 'THHY' on bright blue | [51thhy.cn](http://www.51thhy.cn/static/upload/image/20250110/1736521739422556.png) — header logo, slanted THHY capitals |
+| `jrt` | White warehouse outline over an orange truck on navy | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/192125.png) — the carrier icon: warehouse outline over a delivery truck |
+| `jhgj` | White italic 'JHGJ' under a green swoosh on blue | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/192049.png) — the carrier icon: JHGJ badge between a green and a blue swoosh |
+| `ktd` | Navy crescent swoosh with slanted bars on a white disc on navy | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/190522.png) — the carrier icon: crescent swoosh and slanted bars on a white disc |
+| `swiftx` | Three white speed swooshes on violet | [swiftx-express.com](https://swiftx-express.com/logo.png) — logo, three stacked speed swooshes before the SwiftX wordmark |
+| `celeritas` | Two white cycling arrows on teal | [celeritastransporte.com](https://celeritastransporte.com/wp-content/uploads/2024/08/Celeritas-logo.png) — logo symbol of two curved arrows |
