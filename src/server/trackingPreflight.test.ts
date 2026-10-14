@@ -74,6 +74,13 @@ it('returns one carrier when every available history agrees on its dated movemen
     discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express'] });
   expect(await preflightTracking('1234500201', health())).toMatchObject({ carrier: 'dhl-express', trackingFound: true });
 });
+it('names no carrier whose adapter refuses the number', async () => {
+  vi.spyOn(UniversalTracker.prototype, 'fetchSource').mockResolvedValue({ ...history,
+    discovered_carrier: 'china-post', reported_carriers: ['China Post'] });
+  const answer = await preflightTracking('ZZ12345678901', health());
+  expect(answer.trackingFound).toBe(true);
+  expect(answer.carrier).toBeUndefined();
+});
 it('keeps conflicting provider identities unresolved', async () => {
   vi.spyOn(UniversalTracker.prototype, 'fetchSource').mockImplementation(async (source) => ({ ...history,
     discovered_carrier: source === 'Ship24' ? 'dhl-express' : 'tipsa',

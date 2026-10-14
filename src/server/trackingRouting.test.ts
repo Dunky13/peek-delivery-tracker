@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { freshnessWindow, RoutingDeferred, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
+import { refusesNumber } from './numberRefusal';
 import type { JsonObject } from './types';
 import type { CarrierResult, UniversalSource } from 'universal-parcel-scraper';
 import * as monitoring from './observability';
@@ -1470,6 +1471,19 @@ describe('universal preflight and recipient input', () => {
     expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
     expect(result.result).not.toHaveProperty('auto_changed_from');
     expect(value.direct).not.toHaveBeenCalled();
+  });
+  it('does not file prefetched history under a named carrier whose adapter refuses the number', async () => {
+    const value = setup();
+    value.router.options.takePrefetchedUniversal = vi.fn(() => ({ ...history(),
+      discovered_carrier: 'china-post', reported_carriers: ['China Post'] }));
+    value.router.options.refuses = vi.fn(refusesNumber);
+    const result = await value.router.fetch(parcel({ tracking_number: 'ZZ12345678901' }), false);
+    expect(value.router.options.refuses).toHaveBeenCalledWith('china-post', 'ZZ12345678901');
+    expect(value.universal).not.toHaveBeenCalled();
+    expect(value.direct).not.toHaveBeenCalled();
+    expect(result.correction).toBeUndefined();
+    expect(result.result.routing).not.toHaveProperty('configured_carrier', 'china-post');
+    expect(result.result.routing).not.toHaveProperty('discovered_carrier');
   });
   it.each(['unknown', 'ups'])('keeps provider history and changes only an unknown carrier: %s', async (carrier) => {
     const value = setup();

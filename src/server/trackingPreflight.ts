@@ -7,6 +7,7 @@ import { hostAdapterEnvironment } from './adapterRegistry';
 import { plausibleInputRequest, type ProviderHealth } from './trackingRouting';
 import type { ApiCarrierId } from '../generated/apiContract';
 import { providerCarrier } from './providerCarrier';
+import { refusesNumber } from './numberRefusal';
 
 export type PreflightOutcome = { provider: UniversalSource; outcome: 'history' | 'no_history' | 'input_required' | 'unavailable' | 'deferred' };
 const BUDGET_MS = 8_000;
@@ -97,7 +98,9 @@ async function lookup(number: string, health: ProviderHealth, signal: AbortSigna
         kind = 'not_found'; return { provider, outcome: 'no_history' };
       }
       remember(state.histories, `${provider}:${number}`, { at: Date.now(), result: structuredClone(result) });
-      identities.add(providerCarrier(result, number));
+      // A carrier whose adapter refuses the number does not identify it, as on a sync.
+      const named = providerCarrier(result, number);
+      identities.add(named && await refusesNumber(named, number) ? undefined : named);
       if (datedHistory(result)) grace ??= setTimeout(() => settled.abort(), GRACE_MS);
       return { provider, outcome: 'history' };
     } catch (error) {

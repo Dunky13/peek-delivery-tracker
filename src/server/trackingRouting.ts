@@ -260,6 +260,8 @@ export class TrackingRouter {
     /** A carrier's cheap check of whether it knows a number; without it, no recognition runs. */
     recognize?: (carrier: string, number: string, context?: TrackingContext) => Promise<Recognition>;
     recognizeBrowser?: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) => Promise<Recognition>;
+    /** Whether a carrier's adapter refuses the number as one it does not issue, without a request. */
+    refuses?: (carrier: string, number: string) => Promise<boolean>;
     now?: () => Date;
     /** Waits out a provider's spacing; tests replace the timer. */
     wait?: (ms: number, signal?: AbortSignal) => Promise<unknown>;
@@ -819,7 +821,11 @@ export class TrackingRouter {
       if (!withoutProgress && !directCarrier(declared) && declared !== 'unknown' && declared !== 'intl-post' && !preferred) report('direct_support_opportunity', declared);
       state.preferred_provider = withoutProgress || chosen === 'UPU' ? preferred : chosen;
       state.preferred_number = state.preferred_provider ? universalNumber : undefined;
-      if (typeof value.result.discovered_carrier === 'string') {
+      // Prefetched history skips the direct confirmation below, which forgets a
+      // carrier that refuses the number, but not the adapter's own number check.
+      const refused = prefetchedUniversal.has(chosen) && typeof value.result.discovered_carrier === 'string'
+        && await this.options.refuses?.(value.result.discovered_carrier, universalNumber);
+      if (typeof value.result.discovered_carrier === 'string' && !refused) {
         state.discovered_carrier = value.result.discovered_carrier;
         if (directCarrier(state.discovered_carrier) && state.discovered_carrier !== state.confirmed_carrier) {
           state.direct_retry_at = now().toISOString();

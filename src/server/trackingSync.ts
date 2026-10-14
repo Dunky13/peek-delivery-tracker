@@ -18,6 +18,7 @@ import { trackCarrier } from 'universal-parcel-scraper/node';
 import type { StepRecorder } from 'universal-parcel-scraper/node';
 import { createAdapterRegistry, hostAdapterEnvironment } from './adapterRegistry';
 import { preflightInputNeeded, takePreflightHistory } from './trackingPreflight';
+import { refusesNumber } from './numberRefusal';
 import { recognizeBrowser, takeBrowserHistory } from './browserRecognition';
 import { hostStepRecorder } from './stepRecorder';
 import { recordStatusMapping } from './metrics';
@@ -1116,7 +1117,7 @@ export class TrackingSyncService {
             ...(checks ? { reusedUniversal: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null, carrier: string | null) =>
               checks.reuse<CarrierResult>(universalLookupKey(source, number, postcode, timezone, carrier)) } : {}),
             health: this.client, now: this.now,
-            takePrefetchedUniversal: takePreflightHistory, preflightInputNeeded,
+            takePrefetchedUniversal: takePreflightHistory, preflightInputNeeded, refuses: refusesNumber,
             ...(this.adapter.recognize ? { recognize: (carrier: string, number: string, context?: TrackingContext) =>
               once(recognitionKey('http', carrier, number), () => this.adapter.recognize!(carrier, number, context)) } : {}),
             ...(this.adapter.recognizeBrowser ? { recognizeBrowser: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) =>

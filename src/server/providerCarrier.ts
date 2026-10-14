@@ -4,7 +4,11 @@ import { carrierIdFromName, latestResultTime } from 'universal-parcel-scraper/ap
 import type { ApiCarrierId } from '../generated/apiContract';
 import { AUTOMATIC_CARRIER_IDS, requiredRequirements } from './carriers';
 
-/** Identify an unselected parcel from one named carrier and dated shipment movement. */
+/**
+ * Identify an unselected parcel from one named carrier and dated shipment
+ * movement. Callers then ask that carrier's adapter whether it refuses the
+ * number (numberRefusal.ts).
+ */
 export function providerCarrier(result: CarrierResult, number: string): ApiCarrierId | undefined {
   if (result.tracking_provider === 'UPU' || !Array.isArray(result.reported_carriers)
     || result.reported_carriers.length !== 1 || typeof result.reported_carriers[0] !== 'string') return undefined;
