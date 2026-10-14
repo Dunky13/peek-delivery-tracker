@@ -323,7 +323,8 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "aliases": [
-      "SYPost"
+      "SYPost",
+      "SunYou - Sytrack"
     ],
     "countries": [
       "CN"
@@ -4929,6 +4930,7 @@ export const CARRIER_CAPABILITIES = {
     "displayName": "Nova Poshta (Ukraine)",
     "aliases": [
       "Nova Poshta",
+      "Nova Post",
       "Nova Post Ukraine",
       "Нова Пошта"
     ],
