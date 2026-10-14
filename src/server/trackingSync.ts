@@ -1190,16 +1190,19 @@ export class TrackingSyncService {
       const normalized = await audit.step('normalize', () => {
         const normalizedEvents = buildEvents(parcel, result!, sourceCarrierId!, now);
         const normalizedReportedStage = resultStage(result!);
-        const latestEvent = [...normalizedEvents].sort(
+        const newestEvents = [...normalizedEvents].sort(
           (left, right) => String(right.occurred_at).localeCompare(String(left.occurred_at)),
-        )[0];
-        const latestEventStage = latestEvent ? String(latestEvent.stage) : null;
+        );
+        // A scan no rule reads yet is pending; it does not undo the progress
+        // of the scans before it.
+        const progressEvent = newestEvents.find((event) => event.stage !== 'pending');
+        const latestEventStage = newestEvents[0] ? String(newestEvents[0].stage) : null;
         // A provider's explicit non-pending summary can be newer than its last
         // timestamped milestone. Timed progress remains authoritative only
         // while the provider's summary is still pending.
         const normalizedSelectedStage = normalizedReportedStage && result!.status !== 'pending'
           ? normalizedReportedStage
-          : latestEventStage ?? normalizedReportedStage;
+          : (progressEvent ? String(progressEvent.stage) : null) ?? normalizedReportedStage ?? latestEventStage;
         const earlierEvents = fetched.earlierResult && fetched.earlierCarrierId
           ? buildEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId, now) : [];
         return {

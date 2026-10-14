@@ -1025,6 +1025,22 @@ describe('TrackingSyncService', () => {
       expect.objectContaining({ anomaly_codes: [] }), expect.any(Array));
   });
 
+  it('keeps the progress of earlier scans when the newest scan has wording no rule reads', async () => {
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch: vi.fn().mockResolvedValue({ status: 'pending', current_stage: 'registered',
+      last_status_text: 'Noted at the fixture desk', last_update: '2026-09-10T10:00:00Z',
+      events: [
+        { time: '2026-09-10T10:00:00Z', description: 'Noted at the fixture desk', stage: 'pending' },
+        { time: '2026-09-10T08:00:00Z', description: 'Label created', stage: 'registered' },
+      ] }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    await service.syncPackage({ id: 'unread', carrier: 'dpd', tracking_number: 'TEST1234', current_stage: 'pending' });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'registered' });
+  });
+
   it('does not regress a newer saved summary when a fallback returns older history', async () => {
     const client = { ...fakeClient(),
       acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
