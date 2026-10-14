@@ -88,7 +88,7 @@ export function healthMessage(incident: JsonObject): { title: string; nextSteps:
   else if (subject === 'ups' && incident.kind === 'direct') nextSteps = 'Plain HTTP runs only without a browser service and Akamai holds its status call open until the timeout. Configure FLARESOLVERR_URL so the status reply is read from the browser page.';
   else if (['trawl','browser','page'].includes(String(evidence?.step))) nextSteps = 'Check TRAWL health, container memory/OOM events and browser availability. A closed browser needs replacement before retrying; keep concurrency bounded.';
   else if (Number(evidence?.http_status) >= 500 || evidence?.category === 'maintenance') nextSteps = 'Check the upstream service for maintenance. Inspect the bounded retry and fallback results; allow scheduled backoff rather than adding more retries.';
-  return { title, nextSteps: recovered ? 'Three recent checks succeeded. No action needed; threshold monitoring remains active.' : nextSteps,
+  return { title, nextSteps: recovered ? 'Three recent checks succeeded and failures are back under the threshold. No action needed; threshold monitoring remains active.' : nextSteps,
     impact: refresh ? recovered ? 'Scheduled shipment refreshes are succeeding again.' : 'Scheduled shipment refreshes failed after routing and fallback. Previous saved progress is retained.'
       : 'This describes one provider or direct transport, not the final shipment refresh. Check refresh incidents to determine user impact.' };
 }

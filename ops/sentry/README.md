@@ -16,8 +16,12 @@ failure that recovers never opens an issue. See [OBSERVABILITY.md](../../docs/OB
 | Incident | Opens when | Recovers when |
 | --- | --- | --- |
 | Shipment refresh | The 3 latest scheduled checks of one parcel failed, the last within the hour, or ≥ 5 failures and > 20 % of checks in one hour | The 3 latest checks succeed and no threshold is still breached |
-| Direct transport | > 50 % of ≥ 10 direct probes failed in 24 h | The 3 latest direct probes succeed |
-| Provider lookup | > 50 % of ≥ 10 lookups failed in 24 h | The 3 latest lookups succeed |
+| Direct transport | > 50 % of ≥ 10 direct probes failed in 24 h | The 3 latest direct probes succeed and no more than half of the 24 h's failed |
+| Provider lookup | > 50 % of ≥ 10 lookups failed in 24 h | The 3 latest lookups succeed and no more than half of the 24 h's failed |
+
+While a threshold is still breached and the 3 latest samples are healthy, an incident
+waits: no recovery and no reminder. It recovers once enough later checks succeed or its
+failures age out of the window; a new failure meanwhile reminds as usual.
 
 ## Counting rules
 

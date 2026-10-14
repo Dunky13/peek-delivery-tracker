@@ -31,8 +31,16 @@ begin
   assert pg_temp.health_sample('test-provider',false)='[]', 'An active incident must be suppressed for six hours';
   assert pg_temp.health_sample('test-provider',true)='[]';
   assert pg_temp.health_sample('test-provider',true)='[]';
+  assert pg_temp.health_sample('test-provider',true)='[]', 'Three successful probes while most lookups failed must not recover';
+  update public.tracking_health_incidents set last_notified_at=now()-interval '7 hours' where subject='test-provider';
+  assert pg_temp.health_sample('test-provider',true)='[]', 'A breached incident whose latest probes succeed must not remind';
+  -- 11 failures: the 22nd lookup brings the rate down to half.
+  for i in 1..6 loop
+    assert pg_temp.health_sample('test-provider',true)='[]', 'Recovery must wait until the rate is back under its threshold';
+  end loop;
   result := pg_temp.health_sample('test-provider',true);
-  assert result->0->>'state'='recovered', 'Three consecutive successful probes must recover';
+  assert result->0->>'state'='recovered' and (result->0->>'failures')::int=11 and (result->0->>'attempts')::int=22,
+    'Successful probes must recover once no more than half the lookups failed';
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
   assert pg_temp.health_sample('test-provider',false)='[]', 'Historical errors must not cause an immediate re-open';
   update public.tracking_health_incidents set last_notified_at=now()-interval '7 hours' where subject='test-provider';
@@ -70,8 +78,11 @@ begin
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
   assert pg_temp.answered_sample('probe-carrier')='[]';
   assert pg_temp.answered_sample('probe-carrier')='[]';
+  assert pg_temp.answered_sample('probe-carrier')='[]', 'Answered probes must not recover while every real lookup failed';
+  update public.tracking_health_samples set observed_at=now()-interval '25 hours'
+    where subject='probe-carrier' and not healthy;
   result := pg_temp.answered_sample('probe-carrier');
-  assert result->0->>'state'='recovered', 'Three answered probes must recover an incident';
+  assert result->0->>'state'='recovered', 'Answered probes must recover an incident once its failures have aged out';
   -- A tier that is no longer probed cannot recover; its incident closes when the evidence expires.
   for i in 1..10 loop result := pg_temp.health_sample('retired-tier',false,'direct'); end loop;
   assert result->0->>'state'='open';
@@ -87,7 +98,7 @@ begin
   -- A notice still waiting for delivery keeps its incident until it has been acknowledged.
   for i in 1..10 loop result := pg_temp.health_sample('unsent-tier',false,'direct'); end loop;
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
-  for i in 1..3 loop result := pg_temp.health_sample('unsent-tier',true,'direct'); end loop;
+  for i in 1..10 loop result := pg_temp.health_sample('unsent-tier',true,'direct'); end loop;
   assert result->0->>'state'='recovered';
   update public.tracking_health_samples set observed_at=now()-interval '25 hours' where subject='unsent-tier';
   assert pg_temp.health_sample('other-tier',true)='[]';
