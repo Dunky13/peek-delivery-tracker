@@ -2636,6 +2636,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^CN(?:ESP|PRT)\\d{20}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^(?:ESP\\d{5}1234\\d{11}|PRT\\d{7}1234\\d{9})$",
+        "confidence": "high"
       }
     ],
     "trackingUrlTemplate": "https://ecoscooting.com/tracking/{trackingNumber}",
@@ -6380,6 +6384,10 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^[A-Z]{2}\\d{9}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]\\d{10}$",
         "confidence": "low"
       }
     ],
