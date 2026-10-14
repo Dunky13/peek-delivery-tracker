@@ -53,6 +53,17 @@ describe('tracking support audit persistence', () => {
     });
   });
 
+  it('does not call a number another carrier tracked directly a mismatch', async () => {
+    const client = new SupabaseServiceClient('https://database.example', 'service-key');
+    const request = vi.spyOn(client, 'request').mockResolvedValue(true);
+    const audit = new TrackingSyncAudit(client, 'synthetic-package', 'HL123456789FR', 'dhl', 'pending',
+      { trigger: 'package' }, new Date('2026-09-10T12:00:00Z'), 'chronopost');
+    await audit.start();
+    expect(request).toHaveBeenNthCalledWith(1, '/rest/v1/tracking_sync_attempts', expect.objectContaining({
+      body: expect.objectContaining({ support_context: expect.objectContaining({ reasons: ['ambiguous_shape'] }) }),
+    }));
+  });
+
   it('records a fallback success without losing the unresolved detection context', async () => {
     const client = new SupabaseServiceClient('https://database.example', 'service-key');
     const request = vi.spyOn(client, 'request').mockResolvedValue(true);

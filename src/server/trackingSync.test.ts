@@ -2755,6 +2755,17 @@ describe('TrackingSyncService', () => {
     expect(client.updatePackage).not.toHaveBeenCalled();
   });
 
+  it('tells support the carrier that confirmed the number directly', async () => {
+    const parcel = { id: 'package-1', user_id: 'user-1', carrier: 'dhl', tracking_number: 'HL123456789FR', current_stage: 'pending',
+      carrier_data: { routing: { version: 1, confirmed_carrier: 'chronopost', confirmed_number: 'HL123456789FR' } } };
+    const client = fakeClient([parcel]);
+    const adapter: TrackingAdapter = { fetch: vi.fn().mockResolvedValue({ status: 'in_transit', events: [] }) };
+    await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter).syncPackage(parcel);
+    expect(client.startSyncAttempt).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+      support_context: expect.objectContaining({ reasons: ['ambiguous_shape'] }),
+    }), undefined);
+  });
+
   it('stores normalized events and advances the package stage', async () => {
     const parcel = {
       id: 'package-1',

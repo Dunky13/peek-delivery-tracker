@@ -150,6 +150,8 @@ export class TrackingSyncAudit {
     readonly previousStage: string,
     readonly context: SyncRunContext,
     now = new Date(),
+    /** The carrier that confirmed this number directly, if any (trackingSupport.ts). */
+    readonly answeredBy: string | null = null,
   ) {
     this.#startedAtIso = now.toISOString();
   }
@@ -167,7 +169,7 @@ export class TrackingSyncAudit {
         configured_carrier: this.configuredCarrier,
         previous_stage: this.previousStage,
         started_at: this.#startedAtIso,
-        support_context: trackingSupportContext(this.trackingNumber, this.configuredCarrier),
+        support_context: trackingSupportContext(this.trackingNumber, this.configuredCarrier, this.answeredBy),
       }, this.context.lease);
     });
     logOperationalEvent('tracking_sync_started', this.logContext());

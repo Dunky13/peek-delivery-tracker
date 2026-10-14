@@ -113,7 +113,13 @@ no new scan. Thin answers keep the previous provider preference and event waterm
 recognition is unknown, ambiguous or generic postal, the carrier has no direct adapter,
 or its number points elsewhere. The audit captures recognition before fetching, so a
 successful fallback still leaves the gap visible. Known-carrier outages stay in health
-monitoring.
+monitoring. A number is not marked as pointing elsewhere when detection offers its
+carrier under another id (Amazon Shipping as Amazon Logistics), or when the parcel's
+carrier, or the carrier it handed the parcel to, tracked that number directly.
+
+Each check computes the shape and carrier reasons afresh and replaces them on its case.
+Recognition reasons from the Add sheet, gap evidence, and sightings older than the case's
+latest still add to them, so a reason that no longer applies leaves with the next check.
 
 Cases and their bounded `tracking_support_observations` are service-role only. They
 survive parcel deletion and audit pruning. Repeating an audit write does not count the
@@ -138,7 +144,8 @@ order by last_seen desc;
 
 Each server version replays the backlog once, a minute after it starts. It reruns
 detection and the adapter check for the 500 most recently seen open cases, without asking
-any carrier, and marks `fixed` each case it finds no gap for: `fix_reference` names the
+any carrier but counting the one that last tracked the number directly, and marks `fixed`
+each case it finds no gap for: `fix_reference` names the
 version (the scraper release the app pins, plus the app commit in an image) and `notes`
 says why. A case whose configured carrier changed meanwhile stays open.
 `tracking_review_runs` keeps one row per version, so restarts and other servers do not

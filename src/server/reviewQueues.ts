@@ -32,8 +32,8 @@ export function deployedVersion(environment: Record<string, string | undefined> 
  * Replays an open support case through this server's detection and
  * adapters: a note saying why no gap is left, or null while one is.
  */
-export function replaySupportCase(trackingNumber: string, configuredCarrier: string | null): string | null {
-  const context = trackingSupportContext(trackingNumber, configuredCarrier ?? 'unknown');
+export function replaySupportCase(trackingNumber: string, configuredCarrier: string | null, verifiedCarrier: string | null = null): string | null {
+  const context = trackingSupportContext(trackingNumber, configuredCarrier ?? 'unknown', verifiedCarrier);
   if ((context.reasons as string[]).length > 0) return null;
   return `Replay found no gap: detection names ${String(context.detection_carrier)} with ${String(context.detection_confidence)} confidence.`;
 }
@@ -135,7 +135,8 @@ export async function replayReviewQueues(
   const cases = await client.listOpenTrackingSupportCases(MAX_REPLAYED_CASES);
   const resolved = cases.flatMap((supportCase) => {
     const configuredCarrier = typeof supportCase.configured_carrier === 'string' ? supportCase.configured_carrier : null;
-    const note = replaySupportCase(String(supportCase.tracking_number ?? ''), configuredCarrier);
+    const verifiedCarrier = typeof supportCase.direct_verified_carrier === 'string' ? supportCase.direct_verified_carrier : null;
+    const note = replaySupportCase(String(supportCase.tracking_number ?? ''), configuredCarrier, verifiedCarrier);
     return note ? [{ id: String(supportCase.id), configured_carrier: configuredCarrier, note }] : [];
   });
   const fixed = resolved.length ? await client.fixReplayedTrackingSupportCases(version, resolved) : 0;

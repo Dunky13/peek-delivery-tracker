@@ -118,6 +118,46 @@ begin
 end;
 $$;
 
+-- A check's sighting replaces the shape and carrier reasons; other sightings add to them.
+do $$
+declare
+  case_id uuid;
+  reasons_now text[];
+begin
+  case_id := public.record_tracking_support_observation('REASONTEST1234',
+    '{"configured_carrier":"unknown", "reasons":["ambiguous_shape", "recognition_unknown"]}', '{}',
+    '2026-10-04T10:00:00Z', 'detection:a7100000-0000-4000-8000-000000000010');
+  perform public.record_tracking_support_observation('REASONTEST1234',
+    '{"configured_carrier":"synthetic-carrier", "reasons":["ambiguous_shape", "carrier_mismatch", "no_direct_adapter"]}', '{}',
+    '2026-10-04T11:00:00Z', 'attempt:a7100000-0000-4000-8000-000000000011');
+  select reasons into reasons_now from public.tracking_support_cases where id = case_id;
+  assert reasons_now = array['ambiguous_shape', 'carrier_mismatch', 'no_direct_adapter', 'recognition_unknown'], reasons_now::text;
+  perform public.record_tracking_support_observation('REASONTEST1234',
+    '{"configured_carrier":"synthetic-carrier", "reasons":["ambiguous_shape"]}', '{}',
+    '2026-10-04T12:00:00Z', 'attempt:a7100000-0000-4000-8000-000000000012');
+  select reasons into reasons_now from public.tracking_support_cases where id = case_id;
+  assert reasons_now = array['ambiguous_shape', 'recognition_unknown'], 'A newer check must replace stale reasons: ' || reasons_now::text;
+  perform public.record_tracking_support_observation('REASONTEST1234',
+    '{"configured_carrier":"synthetic-carrier", "reasons":[]}', '{}',
+    '2026-10-04T11:30:00Z', 'attempt:a7100000-0000-4000-8000-000000000013');
+  perform public.record_tracking_support_observation('REASONTEST1234',
+    '{"configured_carrier":"unknown", "reasons":["ambiguous_shape", "recognition_choice"]}', '{}',
+    '2026-10-04T13:00:00Z', 'detection:a7100000-0000-4000-8000-000000000014');
+  perform public.record_tracking_support_observation('REASONTEST1234', '{"configured_carrier":"synthetic-carrier"}',
+    '{"outcome":"error", "error_type":"TransportError"}', '2026-10-04T13:30:00Z', 'attempt:a7100000-0000-4000-8000-000000000015');
+  select reasons into reasons_now from public.tracking_support_cases where id = case_id;
+  assert reasons_now = array['ambiguous_shape', 'recognition_choice', 'recognition_unknown'],
+    'Older checks, detection and checks without reasons must only add: ' || reasons_now::text;
+  perform public.record_tracking_support_observation('REASONTEST1234',
+    '{"configured_carrier":"synthetic-carrier", "reasons":[]}',
+    '{"outcome":"updated", "source_carrier":"unknown", "support_gap_reason":"no_direct_adapter"}',
+    '2026-10-04T14:00:00Z', 'attempt:a7100000-0000-4000-8000-000000000016');
+  select reasons into reasons_now from public.tracking_support_cases where id = case_id;
+  assert reasons_now = array['no_direct_adapter', 'recognition_choice', 'recognition_unknown'],
+    'A check keeps recognition reasons and its own gap evidence: ' || reasons_now::text;
+end;
+$$;
+
 insert into public.sync_jobs(id, user_id, package_id, kind, state, locked_by, lease_until)
 values('a7100000-0000-4000-8000-000000000006', 'a7100000-0000-4000-8000-000000000001',
   'a7100000-0000-4000-8000-000000000002', 'package', 'running', 'support-worker', now() + interval '1 minute');

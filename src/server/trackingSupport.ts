@@ -11,8 +11,16 @@ import type { SupabaseServiceClient } from './supabase';
 import { directCarrier, hasRoutingProgress } from './trackingRouting';
 import type { JsonObject } from './types';
 
-/** Capture a detection gap before a successful provider can hide it. */
-export function trackingSupportContext(trackingNumber: string, configuredCarrier: string): JsonObject {
+/** Carriers detection offers under another id: the Add check promotes an Amazon Logistics number Amazon Shipping tracks (carrierDetection.ts). */
+const DETECTED_AS: Readonly<Record<string, string>> = { 'amazon-shipping': 'amazon-logistics' };
+
+/**
+ * Capture a detection gap before a successful provider can hide it.
+ * `answeredBy` is the carrier that tracked this number directly: the parcel's
+ * own carrier, or the local carrier its origin handed the parcel to. Either
+ * way the number is where it belongs, whatever its shape suggests.
+ */
+export function trackingSupportContext(trackingNumber: string, configuredCarrier: string, answeredBy: string | null = null): JsonObject {
   const number = trackingNumber.replace(/[\s.-]/g, '').toUpperCase();
   const detection = detectCarrierMatch(number);
   const reasons: string[] = [];
@@ -24,9 +32,10 @@ export function trackingSupportContext(trackingNumber: string, configuredCarrier
   if (!['unknown', 'intl-post'].includes(configuredCarrier) && !directCarrier(configuredCarrier)) {
     reasons.push('no_direct_adapter');
   }
+  const offered = (carrier: string) => detection.candidates.some((candidate) => candidate === (DETECTED_AS[carrier] ?? carrier));
   if (!['unknown', 'intl-post'].includes(configuredCarrier)
     && detection.carrier !== 'intl-post' && detection.candidates.length
-    && !detection.candidates.some(carrier => carrier === configuredCarrier)) {
+    && !offered(configuredCarrier) && answeredBy !== configuredCarrier && !(answeredBy && offered(answeredBy))) {
     reasons.push('carrier_mismatch');
   }
   return {

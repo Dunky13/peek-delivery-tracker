@@ -995,6 +995,7 @@ export class TrackingSyncService {
     const id = String(parcel.id ?? '');
     if (!id) throw new TypeError('A package id is required for synchronization');
     const now = this.now();
+    const routing = routingState(parcel);
     const audit = new TrackingSyncAudit(
       this.client,
       id,
@@ -1003,6 +1004,7 @@ export class TrackingSyncService {
       String(parcel.current_stage ?? 'pending'),
       context,
       now,
+      routing.confirmed_number === parcel.tracking_number ? routing.confirmed_carrier ?? null : null,
     );
     await audit.start();
     try {

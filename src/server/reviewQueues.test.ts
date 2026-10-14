@@ -79,6 +79,9 @@ describe('review queue replay', () => {
     expect(replaySupportCase('123456789012', 'fedex')).toBeNull();
     expect(replaySupportCase('730000000001', 'zto')).toBeNull();
     expect(replaySupportCase('RR123456785FI', null)).toBeNull();
+    // Filed under the origin, verified directly by the local carrier the number names.
+    expect(replaySupportCase('CNPRT12345678901234567890', 'aliexpress')).toBeNull();
+    expect(replaySupportCase('CNPRT12345678901234567890', 'aliexpress', 'ecoscooting')).not.toBeNull();
   });
 
   it('fixes the resolved open cases once and records the outcome for the version', async () => {

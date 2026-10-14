@@ -84,6 +84,22 @@ describe('tracking support context', () => {
     });
   });
 
+  it('takes Amazon Shipping for the Amazon Logistics number detection names', () => {
+    expect(trackingSupportContext('ES1234567890', 'amazon-shipping')).toMatchObject({
+      detection_carrier: 'amazon-logistics', reasons: [],
+    });
+  });
+
+  it('finds no mismatch for a parcel its carrier or its local carrier tracked by this number', () => {
+    // An origin's number that names its local carrier.
+    const local = 'CNPRT12345678901234567890';
+    expect(trackingSupportContext(local, 'aliexpress').reasons).toEqual(['carrier_mismatch']);
+    expect(trackingSupportContext(local, 'aliexpress', 'aliexpress').reasons).toEqual([]);
+    expect(trackingSupportContext(local, 'aliexpress', 'ecoscooting').reasons).toEqual([]);
+    // Another carrier the number does not name proves nothing.
+    expect(trackingSupportContext(local, 'aliexpress', 'dhl').reasons).toEqual(['carrier_mismatch']);
+  });
+
   it('does not turn a recognized UPS shape into a format case when the carrier is unavailable', () => {
     expect(trackingSupportContext(number, 'ups')).toMatchObject({
       detection_carrier: 'ups', detection_confidence: 'high', reasons: [],
