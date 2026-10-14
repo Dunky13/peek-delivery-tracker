@@ -377,6 +377,21 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let swiftx = CarrierID(rawValue: "swiftx")
     static let thhy = CarrierID(rawValue: "thhy")
     static let tsjy = CarrierID(rawValue: "tsjy")
+    static let asyadExpress = CarrierID(rawValue: "asyad-express")
+    static let borderExpress = CarrierID(rawValue: "border-express")
+    static let bosta = CarrierID(rawValue: "bosta")
+    static let correoUruguayo = CarrierID(rawValue: "correo-uruguayo")
+    static let courierIt = CarrierID(rawValue: "courier-it")
+    static let daylightTransport = CarrierID(rawValue: "daylight-transport")
+    static let deprisa = CarrierID(rawValue: "deprisa")
+    static let enviaColombia = CarrierID(rawValue: "envia-colombia")
+    static let europochta = CarrierID(rawValue: "europochta")
+    static let midlandTransport = CarrierID(rawValue: "midland-transport")
+    static let oakHarbor = CarrierID(rawValue: "oak-harbor")
+    static let skroutzLastMile = CarrierID(rawValue: "skroutz-last-mile")
+    static let tciExpress = CarrierID(rawValue: "tci-express")
+    static let urbano = CarrierID(rawValue: "urbano")
+    static let vrlLogistics = CarrierID(rawValue: "vrl-logistics")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -719,6 +734,21 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .swiftx,
         .thhy,
         .tsjy,
+        .asyadExpress,
+        .borderExpress,
+        .bosta,
+        .correoUruguayo,
+        .courierIt,
+        .daylightTransport,
+        .deprisa,
+        .enviaColombia,
+        .europochta,
+        .midlandTransport,
+        .oakHarbor,
+        .skroutzLastMile,
+        .tciExpress,
+        .urbano,
+        .vrlLogistics,
     ]
 
     init(from decoder: Decoder) throws {

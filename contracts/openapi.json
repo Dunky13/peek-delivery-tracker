@@ -13543,6 +13543,608 @@
         }
       ],
       "trackingSearchUrl": "https://www.tsjy56.com/"
+    },
+    "asyad-express": {
+      "displayName": "Asyad Express",
+      "aliases": [
+        "Oman Post",
+        "Asyad Express Oman",
+        "أسياد إكسبريس",
+        "البريد العماني"
+      ],
+      "countries": [
+        "OM"
+      ],
+      "color": "#221a37",
+      "selectable": true,
+      "timezone": "Asia/Muscat",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.asyadexpress.om/track-trace/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "asyadexpress.om",
+            "www.asyadexpress.om"
+          ],
+          "path": "^/track-trace/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "omanpost.om",
+            "www.omanpost.om"
+          ],
+          "pathPattern": "^/Tracking/?$",
+          "params": [
+            "trackingno"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.asyadexpress.om/track-trace"
+    },
+    "border-express": {
+      "displayName": "Border Express",
+      "aliases": [
+        "BEX",
+        "Border Express Pty Ltd"
+      ],
+      "countries": [
+        "AU"
+      ],
+      "color": "#cc092f",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.borderexpress.com.au/tracking/?cn={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "borderexpress.com.au",
+            "www.borderexpress.com.au"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "cn"
+          ]
+        },
+        {
+          "domains": [
+            "bexonline.borderexpress.com.au"
+          ],
+          "pathPattern": "^/bxo/track/?$",
+          "params": [
+            "consignmentNumber"
+          ]
+        },
+        {
+          "domains": [
+            "bexonline.borderexpress.com.au"
+          ],
+          "path": "^/bxo/track/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^[A-Z]{4}BX\\d{14}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://bexonline.borderexpress.com.au/bxo/track"
+    },
+    "bosta": {
+      "displayName": "Bosta",
+      "aliases": [
+        "Bosta Egypt",
+        "بوسطة"
+      ],
+      "countries": [
+        "EG",
+        "SA"
+      ],
+      "color": "#e30613",
+      "selectable": true,
+      "timezone": "Africa/Cairo",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://bosta.co/en-eg/tracking-shipments?shipment-number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "bosta.co",
+            "www.bosta.co"
+          ],
+          "pathPattern": "^/(?:[a-z]{2}-[a-z]{2}/)?tracking-shipments/?$",
+          "params": [
+            "shipment-number"
+          ]
+        },
+        {
+          "domains": [
+            "bosta.co",
+            "www.bosta.co"
+          ],
+          "pathPattern": "^/tracking-shipment/?$",
+          "params": [
+            "track_num"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://bosta.co/en-eg/tracking-shipments"
+    },
+    "correo-uruguayo": {
+      "displayName": "Correo Uruguayo",
+      "aliases": [
+        "Administración Nacional de Correos",
+        "ANC",
+        "Uruguay Post",
+        "Correos de Uruguay"
+      ],
+      "countries": [
+        "UY"
+      ],
+      "color": "#00a7e6",
+      "selectable": true,
+      "timezone": "America/Montevideo",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://ahiva.correo.com.uy/servicioConsultaTntIps-web/SeguimientoJSNuevo?codigoPieza={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "ahiva.correo.com.uy"
+          ],
+          "pathPattern": "^/servicioConsultaTntIps-web/SeguimientoJSNuevo/?$",
+          "params": [
+            "codigoPieza"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.correo.com.uy/seguimientodeenvios"
+    },
+    "courier-it": {
+      "displayName": "Courier IT",
+      "aliases": [
+        "CourierIT",
+        "Courier IT SA"
+      ],
+      "countries": [
+        "ZA"
+      ],
+      "color": "#eb2227",
+      "selectable": true,
+      "timezone": "Africa/Johannesburg",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://intellitrack.courierit.co.za/?SearchString={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "intellitrack.courierit.co.za"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "SearchString"
+          ]
+        },
+        {
+          "domains": [
+            "courierit.co.za",
+            "www.courierit.co.za"
+          ],
+          "pathPattern": "^/Trackit/Trackit\\.aspx$",
+          "params": [
+            "WaybillNumber"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://intellitrack.courierit.co.za/"
+    },
+    "daylight-transport": {
+      "displayName": "Daylight Transport",
+      "aliases": [
+        "Daylight",
+        "Daylight Transport, LLC",
+        "DYLT"
+      ],
+      "countries": [
+        "US"
+      ],
+      "color": "#006bb7",
+      "selectable": true,
+      "timezone": "America/Los_Angeles",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://mydaylight.dylt.com/external/shipment?probill={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "mydaylight.dylt.com"
+          ],
+          "pathPattern": "^/external/shipment/?$",
+          "params": [
+            "probill"
+          ]
+        },
+        {
+          "domains": [
+            "www.dylt.com",
+            "dylt.com"
+          ],
+          "pathPattern": "^/shipment-tracing-result11\\.asp$",
+          "params": [
+            "SelectionValue"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.dylt.com/"
+    },
+    "deprisa": {
+      "displayName": "Deprisa",
+      "aliases": [
+        "Avianca Express",
+        "Deprisa Avianca"
+      ],
+      "countries": [
+        "CO"
+      ],
+      "color": "#295191",
+      "selectable": true,
+      "timezone": "America/Bogota",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.deprisa.com/Tracking/?track={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "deprisa.com"
+          ],
+          "pathPattern": "^/+Tracking(/index)?/?$",
+          "params": [
+            "track"
+          ]
+        }
+      ],
+      "detectionRules": []
+    },
+    "envia-colombia": {
+      "displayName": "Envía",
+      "aliases": [
+        "Envía Colvanes",
+        "Colvanes",
+        "Envia Colombia"
+      ],
+      "countries": [
+        "CO"
+      ],
+      "color": "#ba0020",
+      "selectable": true,
+      "timezone": "America/Bogota",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://envia.co/tracking?guia={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "envia.co"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "guia"
+          ]
+        },
+        {
+          "domains": [
+            "portal.envia.co"
+          ],
+          "pathPattern": "^/OnLineRastreo(/Rastreo/Rastreo|/Consulta/Index)?/?$",
+          "params": [
+            "Guia"
+          ]
+        },
+        {
+          "domains": [
+            "enviacolvanes.com.co"
+          ],
+          "pathPattern": "^/Contenido\\.aspx$",
+          "params": [
+            "rastreo"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://envia.co/tracking"
+    },
+    "europochta": {
+      "displayName": "Europochta",
+      "aliases": [
+        "Evropochta",
+        "Европочта"
+      ],
+      "countries": [
+        "BY"
+      ],
+      "color": "#225ba8",
+      "selectable": true,
+      "timezone": "Europe/Minsk",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://evropochta.by/?number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "evropochta.by"
+          ],
+          "pathPattern": "^/$",
+          "params": [
+            "number"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^BY08\\d{10}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://evropochta.by/"
+    },
+    "midland-transport": {
+      "displayName": "Midland Transport",
+      "aliases": [
+        "Midland Transport Limited",
+        "Midland Courier"
+      ],
+      "countries": [
+        "CA"
+      ],
+      "color": "#009057",
+      "selectable": true,
+      "timezone": "America/Moncton",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings?TrackingNumber={trackingNumber}&Lang=0",
+      "linkRules": [
+        {
+          "domains": [
+            "ship.midlandtransport.com"
+          ],
+          "pathPattern": "^/Tracking/TrackClientTrackings/?$",
+          "params": [
+            "TrackingNumber"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings"
+    },
+    "oak-harbor": {
+      "displayName": "Oak Harbor Freight Lines",
+      "aliases": [
+        "Oak Harbor",
+        "Oak Harbor Freight Lines, Inc.",
+        "OHFL"
+      ],
+      "countries": [
+        "US"
+      ],
+      "color": "#1e2251",
+      "selectable": true,
+      "timezone": "America/Los_Angeles",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.oakh.com/quicktrace&PRO={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.oakh.com",
+            "oakh.com"
+          ],
+          "path": "^/quicktrace&[Pp][Rr][Oo]=([^/?#&]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.oakh.com/page/tracing"
+    },
+    "skroutz-last-mile": {
+      "displayName": "Skroutz Last Mile",
+      "aliases": [
+        "Skroutz",
+        "SLM",
+        "SendX",
+        "Skroutz Last Mile Cargo"
+      ],
+      "countries": [
+        "GR",
+        "CY"
+      ],
+      "color": "#f68b24",
+      "selectable": true,
+      "timezone": "Europe/Athens",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.skroutzlastmile.gr/#{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "skroutz.gr"
+          ],
+          "path": "^/track/([A-Z0-9]{13})/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.skroutzlastmile.gr/"
+    },
+    "tci-express": {
+      "displayName": "TCI Express",
+      "aliases": [
+        "TCIEXPRESS",
+        "TCI Express Limited",
+        "Transport Corporation of India Express",
+        "TCI"
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#0d5fa6",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.tciexpress.in/track-your-shipment?trackshipment={trackingNumber}&dwb=dwb",
+      "linkRules": [
+        {
+          "domains": [
+            "www.tciexpress.in",
+            "tciexpress.in"
+          ],
+          "pathPattern": "^/trackingdocket\\.aspx$",
+          "params": [
+            "trackshipment"
+          ]
+        },
+        {
+          "domains": [
+            "www.tciexpress.in",
+            "tciexpress.in"
+          ],
+          "pathPattern": "^/track-your-shipment/?$",
+          "params": [
+            "trackshipment"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.tciexpress.in/trackingdocket.aspx"
+    },
+    "urbano": {
+      "displayName": "Urbano",
+      "aliases": [
+        "Urbano Express",
+        "Urbano Perú",
+        "Urbano Ecuador"
+      ],
+      "countries": [
+        "PE",
+        "EC"
+      ],
+      "color": "#5c068c",
+      "selectable": true,
+      "timezone": "America/Lima",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.urbano.com.pe/tracking/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "urbano.com.pe"
+          ],
+          "path": "^/tracking/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "app.urbano.com.pe",
+            "api.urbano.com.pe"
+          ],
+          "pathPattern": "^/plugin/etracking/etracking/?$",
+          "params": [
+            "guia"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^G\\d{8}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.urbano.com.pe/tracking/"
+    },
+    "vrl-logistics": {
+      "displayName": "VRL Logistics",
+      "aliases": [
+        "VRL",
+        "VRL Logistics Ltd",
+        "VRL Group",
+        "Vijayanand Road Lines"
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#ffcb00",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "vrlgroup.in",
+            "www.vrlgroup.in"
+          ],
+          "pathPattern": "^/vrlwebs/lrtrack\\.aspx$",
+          "params": [
+            "lno"
+          ]
+        },
+        {
+          "domains": [
+            "vrlgroup.in",
+            "www.vrlgroup.in"
+          ],
+          "pathPattern": "^/(tc|track_consignment)\\.aspx$",
+          "params": [
+            "lrno"
+          ]
+        },
+        {
+          "domains": [
+            "vrlgroup.in",
+            "www.vrlgroup.in"
+          ],
+          "pathPattern": "^/search_vrl_consignment_number\\.aspx$",
+          "params": [
+            "consignment_no"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.vrlgroup.in/Tracking/TrackShipment"
     }
   },
   "servers": [
@@ -16359,7 +16961,22 @@
           "ktd",
           "swiftx",
           "thhy",
-          "tsjy"
+          "tsjy",
+          "asyad-express",
+          "border-express",
+          "bosta",
+          "correo-uruguayo",
+          "courier-it",
+          "daylight-transport",
+          "deprisa",
+          "envia-colombia",
+          "europochta",
+          "midland-transport",
+          "oak-harbor",
+          "skroutz-last-mile",
+          "tci-express",
+          "urbano",
+          "vrl-logistics"
         ]
       },
       "Stage": {
