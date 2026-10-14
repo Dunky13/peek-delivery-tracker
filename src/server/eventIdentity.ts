@@ -30,6 +30,10 @@
  *   in its own wording as well (ParcelsApp put Paack's scans two hours early). A universal copy of a stored scan is
  *   left out of the batch, and a carrier's scan takes over the universal copy
  *   stored while it was down (`sharedScans`).
+ * - A row only a universal provider has written names that provider
+ *   (`UNIVERSAL_PROVIDER`), and follows the provider's clock when a scraper
+ *   fix moves it. A carrier's scan writes the row without the name, so the
+ *   row keeps the carrier's instant from then on.
  * - A handoff's batch carries the earlier carrier's scans too, and that
  *   carrier may relay the delivery carrier's scans in its own words. Both are
  *   stored (relayCopies.ts), but only the delivery carrier's scan takes over a
@@ -38,6 +42,15 @@
 import { DateTime } from 'luxon';
 import { sameInstantIdentityPolicy, trackingPlace, type SameInstantIdentityPolicy, type SameInstantScan } from 'universal-parcel-scraper/app';
 import { isRecord, type JsonObject } from './types';
+
+/**
+ * The `raw_data` key that names the universal provider (`tracking_provider`)
+ * whose reading a row holds, set on its scans when they are built. A carrier's
+ * scan replaces the row's raw data without it, a universal scan that rewrites
+ * a row without it leaves it out (`withIdentities`), and rows stored before
+ * the key existed have none.
+ */
+export const UNIVERSAL_PROVIDER = 'universal_provider';
 
 function providerCode(row: JsonObject): string {
   const code = row.provider_code ?? (isRecord(row.raw_data) ? row.raw_data.provider_code : undefined);
@@ -242,6 +255,16 @@ function stageOf(row: JsonObject): string {
   return typeof row.stage === 'string' ? row.stage : '';
 }
 
+function providerOf(row: JsonObject): string {
+  const name = row[UNIVERSAL_PROVIDER] ?? (isRecord(row.raw_data) ? row.raw_data[UNIVERSAL_PROVIDER] : undefined);
+  return typeof name === 'string' ? name : '';
+}
+
+/** A stored row that only the scan's universal provider has written, so it follows that provider's clock. */
+function followsClock(row: JsonObject, scan: JsonObject): boolean {
+  return providerOf(row) !== '' && providerOf(row) === providerOf(scan);
+}
+
 /** A stage change the sync stamped with the time it saw it, not a provider scan. */
 function observedOnly(row: JsonObject): boolean {
   return row.observed_without_provider_timestamp === true
@@ -295,7 +318,11 @@ function placesConflict(left: readonly string[], right: readonly string[]): bool
 }
 
 export interface SharedScans {
-  /** A carrier scan's computed identity → the universal copy it takes over in place. */
+  /**
+   * A scan's computed identity → the stored row it takes over in place: a
+   * carrier's scan the universal copy, a universal scan a row only its
+   * provider wrote, on another clock (its own row maps to itself).
+   */
   reused: Map<string, string>;
   /** A universal scan left out of the batch → the stored identity it repeats. */
   skipped: Map<string, string>;
@@ -335,6 +362,14 @@ export interface SharedScans {
  * at another instant: a carrier's scan has taken that row over and corrected
  * its time. At the same instant a universal scan still rewrites its own row,
  * so a row DPD took over follows whichever source answered last.
+ *
+ * A row that only the scan's universal provider has written follows that
+ * provider's clock instead (a scraper fix that reads its scans in another
+ * zone). A scan whose own row it is moves the row to the scan's instant,
+ * unless another row matches the scan by the rules above: that row holds the
+ * scan already, so the scan is left out as before. A scan that matches such a
+ * row across an offset, not just within a minute, takes it over as a carrier's
+ * scan would.
  */
 export function sharedScans(
   events: readonly JsonObject[],
@@ -351,6 +386,8 @@ export function sharedScans(
       && Number.isFinite(instantOf(row));
   });
   const pending: JsonObject[] = [];
+  // Universal scans whose own row, which only their provider wrote, stands at another instant.
+  const moving: JsonObject[] = [];
   for (const event of events) {
     const id = identity(event);
     const source = sourceOf(id);
@@ -358,7 +395,8 @@ export function sharedScans(
     const own = storedById.get(id);
     if (!own) pending.push(event);
     else if (source === UNIVERSAL && instantOf(own) !== instantOf(event)) {
-      shared.skipped.set(id, id);
+      if (followsClock(own, event)) moving.push(event);
+      else shared.skipped.set(id, id);
       if (!sameTruncated(instantOf(own), instantOf(event))) shared.shifted.add(id);
     }
   }
@@ -367,8 +405,8 @@ export function sharedScans(
   const occupied = new Set(rows.map(instantOf));
   // A row the batch shows at its own instant is that scan's, not a shifted copy's.
   const shown = new Set(events.map(instantOf));
-  const picks = new Map<string, JsonObject[]>();
-  for (const event of pending) {
+  /** The row a scan repeats; `alone` when no other new scan stands at its instant. */
+  const matchOf = (event: JsonObject, alone: boolean): JsonObject | undefined => {
     const universal = sourceOf(identity(event)) === UNIVERSAL;
     const at = instantOf(event);
     const wording = wordingOf(event);
@@ -392,22 +430,34 @@ export function sharedScans(
       (sourceOf(identity(row)) === UNIVERSAL) !== universal && Math.abs(at - instantOf(row)) >= HOUR_MS
       && stagesAgree(stageOf(row), stageOf(event))
     ));
-    const staged = exact.length === 1 && newAt.get(at) === 1 && stageOf(event) !== '' && stagesAgree(stageOf(exact[0]!), stageOf(event));
-    const match = worded.length === 1 ? worded[0]
+    const staged = exact.length === 1 && alone && stageOf(event) !== '' && stagesAgree(stageOf(exact[0]!), stageOf(event));
+    return worded.length === 1 ? worded[0]
       : worded.length === 0 && staged ? exact[0]
         : minuted.length > 0 ? (minuted.length === 1 ? minuted[0] : undefined)
           : restaged.length > 0 ? (restaged.length === 1 ? restaged[0] : undefined)
             : shifted.length === 1 ? shifted[0]
               : shifted.length === 0 && reclocked.length === 1 ? reclocked[0] : undefined;
+  };
+  const picks = new Map<string, JsonObject[]>();
+  for (const event of pending) {
+    const match = matchOf(event, newAt.get(instantOf(event)) === 1);
     if (match) picks.set(identity(match), [...(picks.get(identity(match)) ?? []), event]);
   }
   for (const [rowId, scans] of picks) {
     if (scans.length !== 1) continue;
-    const id = identity(scans[0]!);
-    if (sourceOf(id) === UNIVERSAL) shared.skipped.set(id, rowId);
-    else shared.reused.set(id, rowId);
-    const [at, rowAt] = [instantOf(scans[0]!), instantOf(storedById.get(rowId)!)];
-    if (at !== rowAt && !sameTruncated(at, rowAt)) shared.shifted.add(id);
+    const scan = scans[0]!;
+    const id = identity(scan);
+    const row = storedById.get(rowId)!;
+    const offset = instantOf(scan) !== instantOf(row) && !sameTruncated(instantOf(scan), instantOf(row));
+    if (sourceOf(id) !== UNIVERSAL || (offset && followsClock(row, scan))) shared.reused.set(id, rowId);
+    else shared.skipped.set(id, rowId);
+    if (offset) shared.shifted.add(id);
+  }
+  // Moving its own row beside another row that holds the scan would store the scan twice.
+  for (const event of moving) {
+    const id = identity(event);
+    if (matchOf(event, !newAt.has(instantOf(event)))) shared.skipped.set(id, id);
+    else shared.reused.set(id, id);
   }
   return shared;
 }
@@ -432,8 +482,9 @@ export function relayedScans(earlier: readonly JsonObject[], delivery: readonly 
 /**
  * A newest-event time (the routing watermark, a result's summary time) that
  * universal copies read in the wrong zone may have set hours late. A skipped
- * copy counts at its stored twin's instant, and a stored copy a carrier's scan
- * takes over at that scan's instant. The time drops to the newest instant left
+ * copy counts at its stored twin's instant, and a stored copy a scan takes over
+ * (a carrier's, or its provider's on a corrected clock) at that scan's
+ * instant. The time drops to the newest instant left
  * only when it is later than that and no later than the newest instant a copy
  * claimed, so the copies explain the excess (the router caps a future-dated
  * copy at the time of the check); a time they do not explain stands. The batch
@@ -469,13 +520,23 @@ export function withoutCopyDrift(
   return Number.isFinite(newest) && time > newest && time <= claimedNewest ? newest : time;
 }
 
-/** The events as persisted: a reused identity replaces the computed one. */
+/**
+ * The events as persisted: a reused identity replaces the computed one. A
+ * universal scan that rewrites a stored row naming no provider (a carrier
+ * wrote it, or it was stored before rows named one) leaves it unnamed.
+ */
 export function withIdentities(
   events: readonly JsonObject[],
   identities: ReadonlyMap<string, string>,
+  stored: readonly JsonObject[] = [],
 ): JsonObject[] {
+  const unnamed = new Set(stored.filter((row) => providerOf(row) === '').map(identity));
   return events.map((event) => {
     const reused = identities.get(identity(event));
-    return reused ? { ...event, provider_event_id: reused } : event;
+    const persisted = reused ? { ...event, provider_event_id: reused } : event;
+    if (!unnamed.has(identity(persisted)) || providerOf(event) === '' || !isRecord(event.raw_data)) return persisted;
+    const raw = { ...event.raw_data };
+    delete raw[UNIVERSAL_PROVIDER];
+    return { ...persisted, raw_data: raw };
   });
 }

@@ -666,6 +666,70 @@ describe('scans a carrier and a universal provider both report', () => {
   });
 });
 
+describe('rows only a universal provider wrote', () => {
+  // A provider first read a warehouse's clock as UTC, eight hours late; a scraper fix reads it on the warehouse's own.
+  const named = <T extends object>(value: T, provider = 'ParcelsApp') => ({ ...value, universal_provider: provider });
+  const fixed = (id: string, occurredAt: string, description: string, provider = 'ParcelsApp') => ({
+    ...scan(id, occurredAt, description), raw_data: { universal_provider: provider },
+  });
+  const late = named(row('unknown:sorted', '2026-01-03T21:15:42+00:00', 'Arrived at sorting center'));
+  const sorted = fixed('unknown:sorted', '2026-01-03T13:15:42Z', 'Arrived at sorting center');
+
+  it('moves its own row to the provider\'s corrected clock, unless a carrier or another provider wrote it, or it predates the name', () => {
+    const moved = sharedScans([sorted], [late]);
+    expect(pairs(moved.reused)).toEqual([['unknown:sorted', 'unknown:sorted']]);
+    expect(moved.skipped.size).toBe(0);
+    expect([...moved.shifted]).toEqual(['unknown:sorted']);
+    // A row a carrier took over, or one stored before rows named their provider, names none.
+    for (const stored of [row('unknown:sorted', '2026-01-03T21:15:42+00:00', 'Arrived at sorting center'), named(late, 'Ship24')]) {
+      const kept = sharedScans([sorted], [stored]);
+      expect(kept.reused.size).toBe(0);
+      expect(pairs(kept.skipped)).toEqual([['unknown:sorted', 'unknown:sorted']]);
+      expect([...kept.shifted]).toEqual(['unknown:sorted']);
+    }
+  });
+
+  it('takes over a row its provider alone wrote across an offset, not within the minute', () => {
+    // The fix changed the time the identity hashes, so the scan meets its old row under another identity.
+    const unnamed = row('unknown:departed-late', '2026-01-04T02:30:10+00:00', 'Departed from sorting center');
+    const departed = named(unnamed);
+    const scan = fixed('unknown:departed', '2026-01-03T18:30:10Z', 'Departed from sorting center');
+    const moved = sharedScans([scan], [departed]);
+    expect(pairs(moved.reused)).toEqual([['unknown:departed', 'unknown:departed-late']]);
+    expect(moved.skipped.size).toBe(0);
+    expect([...moved.shifted]).toEqual(['unknown:departed']);
+    expect(withIdentities([scan], moved.reused, [departed])).toMatchObject([
+      { provider_event_id: 'unknown:departed-late', occurred_at: '2026-01-03T18:30:10Z', raw_data: { universal_provider: 'ParcelsApp' } },
+    ]);
+    // A copy to the minute is no clock fix, and an unnamed row stays where it is.
+    const minuted = sharedScans([fixed('unknown:departed', '2026-01-04T02:30:00Z', 'Departed from sorting center')], [departed]);
+    expect(pairs(minuted.skipped)).toEqual([['unknown:departed', 'unknown:departed-late']]);
+    expect(minuted.reused.size).toBe(0);
+    expect(pairs(sharedScans([scan], [unnamed]).skipped)).toEqual([['unknown:departed', 'unknown:departed-late']]);
+  });
+
+  it('leaves the scan out when another row at the corrected instant already holds it', () => {
+    // A carrier's own row of the scan stands where the provider's row would move.
+    const carrier = row('speedaf:sorted', '2026-01-03T13:15:42+00:00', 'Arrived at sorting center');
+    const twinned = sharedScans([sorted], [late, carrier]);
+    expect(twinned.reused.size).toBe(0);
+    expect(pairs(twinned.skipped)).toEqual([['unknown:sorted', 'unknown:sorted']]);
+    expect([...twinned.shifted]).toEqual(['unknown:sorted']);
+    // Another scan's row there does not hold it.
+    const other = row('speedaf:weighed', '2026-01-03T13:15:42+00:00', 'Weighed', 'accepted');
+    expect(pairs(sharedScans([sorted], [late, other]).reused)).toEqual([['unknown:sorted', 'unknown:sorted']]);
+  });
+
+  it('names the provider on its new rows and the rows it named, never on a row a carrier or an earlier release wrote', () => {
+    const scans = [sorted, fixed('unknown:new', '2026-01-03T15:00:00Z', 'Loaded'), fixed('unknown:copy', '2026-01-03T16:00:00Z', 'Sorted')];
+    const stored = [late, row('unknown:taken', '2026-01-03T16:00:00+00:00', 'Sorted')];
+    const persisted = withIdentities(scans, new Map([['unknown:copy', 'unknown:taken']]), stored);
+    expect(persisted.map((event) => [event.provider_event_id, (event.raw_data as Record<string, unknown>).universal_provider])).toEqual([
+      ['unknown:sorted', 'ParcelsApp'], ['unknown:new', 'ParcelsApp'], ['unknown:taken', undefined],
+    ]);
+  });
+});
+
 describe('an earlier carrier relaying the delivery carrier\'s scans', () => {
   const at = (id: string, occurredAt: string, description: string, location: string, stage = 'in_transit') => ({
     ...scan(id, occurredAt, description, stage), location,

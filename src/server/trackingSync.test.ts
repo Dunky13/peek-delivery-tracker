@@ -3438,6 +3438,7 @@ function eventStore() {
       time: (row.raw_data as JsonObject | undefined)?.time,
       provider_code: (row.raw_data as JsonObject | undefined)?.provider_code,
       observed_without_provider_timestamp: (row.raw_data as JsonObject | undefined)?.observed_without_provider_timestamp,
+      universal_provider: (row.raw_data as JsonObject | undefined)?.universal_provider,
     })),
     batch: () => (client.applyTrackingSync.mock.calls.at(-1)?.[2] ?? []) as JsonObject[],
   };
@@ -3970,6 +3971,117 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(ids(store.batch())).toEqual([providerEventId('unknown', lyon.time, lyon.location!, lyon.description)]);
     expect(store.rows.size).toBe(2);
     expect(watermark).toBe('2026-01-04T12:00:00.000Z');
+  });
+
+  describe('rows only the provider wrote', () => {
+    const down = new Error('GOFO tracking endpoint is unavailable');
+    const leased = (store: ReturnType<typeof eventStore>) => ({ ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    });
+    const named = (row: JsonObject | undefined) => (row?.raw_data as JsonObject | undefined)?.universal_provider;
+    // A warehouse's scans, first read as UTC, eight hours late. A scraper fix reads them on the warehouse's
+    // clock: one by the zone the answer declares for a clock without an offset, one by an offset of its own.
+    const sorted: Scan = { time: '2026-01-03T21:15:42', location: 'Example City, CN', description: 'Arrived at sorting center', stage: 'in_transit' };
+    const departed = (time: string): Scan => ({ time, location: 'Example City, CN', description: 'Departed from sorting center', stage: 'in_transit' });
+    const answer = (timezone: string, scans: Scan[]): CarrierResult => ({ ...result(scans), timezone });
+    const universal = (scan: Scan) => providerEventId('unknown', scan.time, scan.location ?? '', scan.description);
+
+    it('move to the provider\'s corrected clock in place, and bring the watermark back', async () => {
+      vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+      const store = eventStore();
+      const client = leased(store);
+      const adapter = { fetch: vi.fn().mockRejectedValue(down), fetchUniversal: vi.fn()
+        .mockResolvedValueOnce(answer('UTC', [departed('2026-01-04T02:30:10Z'), sorted]))
+        .mockResolvedValueOnce(answer('Asia/Shanghai', [departed('2026-01-03T18:30:10.000Z'), sorted])) };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+      let watermark: unknown;
+      const sync = async (stage: string) => {
+        await service.syncPackage({ ...parcel, current_stage: stage,
+          ...(watermark ? { carrier_data: { routing: { version: 1, configured_carrier: 'gofo', last_event_at: watermark } } } : {}),
+          [STORED_EVENT_IDENTITIES]: store.identities() });
+        const values = store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject;
+        watermark = ((values.carrier_data as JsonObject).routing as JsonObject).last_event_at;
+        return { values, anomalies: client.completeSyncAttempt.mock.calls.at(-1)![1].anomaly_codes };
+      };
+      const lateDeparture = universal(departed('2026-01-04T02:30:10Z'));
+
+      const first = await sync('pending');
+      const provider = (first.values.carrier_data as JsonObject).tracking_provider;
+      expect(first.anomalies).not.toContain('provider_clock_offset');
+      expect(watermark).toBe('2026-01-04T02:30:10.000Z');
+      expect([...store.rows.values()].map(named)).toEqual([provider, provider]);
+      const rowIds = [lateDeparture, universal(sorted)].map((id) => store.rows.get(id)!.id);
+
+      const second = await sync('in_transit');
+      expect(second.anomalies).toEqual(expect.arrayContaining(['provider_clock_offset']));
+      // Each scan rewrites its row, the one whose identity the new time changed under its old identity.
+      expect(ids(store.batch())).toEqual([lateDeparture, universal(sorted)]);
+      expect(store.rows.size).toBe(2);
+      expect(store.rows.get(lateDeparture)).toMatchObject({ id: rowIds[0], occurred_at: '2026-01-03T18:30:10Z' });
+      expect(store.rows.get(universal(sorted))).toMatchObject({ id: rowIds[1], occurred_at: '2026-01-03T13:15:42Z' });
+      expect([...store.rows.values()].map(named)).toEqual([provider, provider]);
+      expect(second.values).toMatchObject({ last_status_text: 'Departed from sorting center' });
+      expect(watermark).toBe('2026-01-03T18:30:10.000Z');
+    });
+
+    it('keep a row a carrier took over on the carrier\'s clock', async () => {
+      vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+      const store = eventStore();
+      const client = leased(store);
+      const adapter = {
+        fetch: vi.fn().mockRejectedValueOnce(down).mockResolvedValueOnce(result([out])).mockRejectedValueOnce(down),
+        fetchUniversal: vi.fn().mockResolvedValue(result([copied(out)])),
+      };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+      const sync = async (stage: string) => {
+        await service.syncPackage({ ...parcel, current_stage: stage, [STORED_EVENT_IDENTITIES]: store.identities() });
+        return ids(store.batch());
+      };
+
+      // GOFO is down: the copy, three hours late, names its provider.
+      await sync('pending');
+      expect(named(store.rows.get(copy(out)))).toEqual(expect.any(String));
+      // GOFO is back: its scan takes the row over on its own clock, without the name.
+      await sync('in_transit');
+      expect(store.rows.get(copy(out))).toMatchObject({ occurred_at: '2026-01-04T12:59:03Z' });
+      expect(named(store.rows.get(copy(out)))).toBeUndefined();
+      // Down again: the provider's clock no longer moves the row.
+      expect(await sync('out_for_delivery')).toEqual([]);
+      expect(store.rows.size).toBe(1);
+      expect(store.rows.get(copy(out))).toMatchObject({ occurred_at: '2026-01-04T12:59:03Z' });
+    });
+
+    it('leave a row stored before rows named their provider, and a scan another row at the corrected instant holds', async () => {
+      vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+      const store = eventStore();
+      const client = leased(store);
+      const loaded: Scan = { time: '2026-01-03T09:05:00', location: 'Example City, CN', description: 'Loaded onto truck', stage: 'in_transit' };
+      const weighed: Scan = { time: '2026-01-03T08:40:00', location: 'Example City, CN', description: 'Weighed at warehouse', stage: 'in_transit' };
+      const seed = (id: string, scan: Scan, occurredAt: string, raw: JsonObject) => store.rows.set(id, {
+        id: `seed-${store.rows.size}`, package_id: parcel.id, provider_event_id: id, stage: scan.stage, description: scan.description,
+        location: scan.location, occurred_at: occurredAt, raw_data: { time: scan.time, stage_source: 'carrier_map', ...raw },
+      });
+      // Stored before rows named their provider, eight hours late.
+      seed(universal(sorted), sorted, '2026-01-03T21:15:42Z', {});
+      // Named, and GOFO's own row of the scan already stands at the corrected instant.
+      seed(universal(loaded), loaded, '2026-01-03T09:05:00Z', { universal_provider: 'ParcelsApp' });
+      seed('gofo:loaded', { ...loaded, time: '2026-01-03T01:05:00Z' }, '2026-01-03T01:05:00Z', {});
+      // Named, with nothing at the corrected instant.
+      seed(universal(weighed), weighed, '2026-01-03T08:40:00Z', { universal_provider: 'ParcelsApp' });
+      const adapter = { fetch: vi.fn().mockRejectedValue(down),
+        fetchUniversal: vi.fn().mockResolvedValue(answer('Asia/Shanghai', [sorted, loaded, weighed])) };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+      await service.syncPackage({ ...parcel, current_stage: 'in_transit', [STORED_EVENT_IDENTITIES]: store.identities() });
+
+      expect((store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject).carrier_data)
+        .toMatchObject({ tracking_provider: 'ParcelsApp' });
+      expect(ids(store.batch())).toEqual([universal(weighed)]);
+      expect(store.rows.size).toBe(4);
+      expect(store.rows.get(universal(weighed))).toMatchObject({ id: 'seed-3', occurred_at: '2026-01-03T00:40:00Z' });
+      expect(store.rows.get(universal(sorted))).toMatchObject({ occurred_at: '2026-01-03T21:15:42Z' });
+      expect(store.rows.get(universal(loaded))).toMatchObject({ occurred_at: '2026-01-03T09:05:00Z' });
+    });
   });
 });
 

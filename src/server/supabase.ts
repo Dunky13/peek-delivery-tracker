@@ -43,7 +43,7 @@ const ACTIVE_PACKAGE_SELECT = 'id,user_id,tracking_number,label,carrier,current_
  * mapper reads it.
  */
 export const STORED_EVENT_IDENTITIES = 'stored_event_identities';
-const SYNC_EVENT_IDENTITIES = `${STORED_EVENT_IDENTITIES}:tracking_events(provider_event_id,occurred_at,stage,description,location,time:raw_data->>time,provider_code:raw_data->>provider_code,observed_without_provider_timestamp:raw_data->observed_without_provider_timestamp)`;
+const SYNC_EVENT_IDENTITIES = `${STORED_EVENT_IDENTITIES}:tracking_events(provider_event_id,occurred_at,stage,description,location,time:raw_data->>time,provider_code:raw_data->>provider_code,observed_without_provider_timestamp:raw_data->observed_without_provider_timestamp,universal_provider:raw_data->>universal_provider)`;
 
 /** Where each channel records that a scan was announced, or handled without an alert. */
 const SCAN_RECEIPT_TABLES = ['push_deliveries', 'native_push_deliveries', 'parcel_link_alert_deliveries', 'live_activity_event_deliveries'];

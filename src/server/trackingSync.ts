@@ -31,7 +31,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
-import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, UNIVERSAL_PROVIDER, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   providerFailureSummary,
   TrackingSyncAudit,
@@ -409,6 +409,9 @@ export function buildEvents(
   // times in the same minute). A repeat has the same identity, and a batch that
   // holds an identity twice cannot be saved, so each scan is kept once.
   const identities = new Set<string>();
+  // A universal provider's scans name it, so their rows follow its clock until a carrier writes them (eventIdentity.ts).
+  const provider = carrierId === 'unknown' && typeof result.tracking_provider === 'string'
+    ? { [UNIVERSAL_PROVIDER]: result.tracking_provider } : {};
   for (const raw of result.events ?? []) {
     const description = String(raw.description ?? 'Tracking update').trim();
     const location = String(raw.location ?? '').trim();
@@ -426,7 +429,7 @@ export function buildEvents(
       location: location || null,
       occurred_at: occurredAt,
       provider_event_id: identity,
-      raw_data: { ...raw, stage_source: stageSource(declaredStage, description, raw.stage_source) },
+      raw_data: { ...raw, stage_source: stageSource(declaredStage, description, raw.stage_source), ...provider },
     });
   }
   if (rows.length === 0 && current && result.last_status_text) {
@@ -443,6 +446,7 @@ export function buildEvents(
         raw_data: {
           time: result.last_update,
           stage_source: stageSource(String(result.current_stage ?? ''), description, result.current_stage_source),
+          ...provider,
         },
       });
     }
@@ -1406,7 +1410,7 @@ export class TrackingSyncService {
       const eventsToPersist = keepSaved || (preserveSummary && (result.tracking_provider === 'UPU' || localOnlyFallback)) ? [] : events;
       const persistedIds = new Set(eventsToPersist.map((event) => String(event.provider_event_id)));
       const persistedEvents = withIdentities(
-        eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))), matches.reused,
+        eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))), matches.reused, stored,
       );
       // A scan already stored is rewritten in place, which is no news.
       const storedIds = new Set(stored.map((event) => String(event.provider_event_id)));
