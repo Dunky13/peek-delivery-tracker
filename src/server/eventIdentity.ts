@@ -31,8 +31,9 @@
  *   left out of the batch, and a carrier's scan takes over the universal copy
  *   stored while it was down (`sharedScans`).
  * - A handoff's batch carries the earlier carrier's scans too, and that
- *   carrier may relay the delivery carrier's scans in its own words. Those
- *   copies are left out of the batch (`withoutRelayedScans`).
+ *   carrier may relay the delivery carrier's scans in its own words. Both are
+ *   stored (relayCopies.ts), but only the delivery carrier's scan takes over a
+ *   universal copy (`relayedScans`).
  */
 import { DateTime } from 'luxon';
 import { sameInstantIdentityPolicy, trackingPlace, type SameInstantIdentityPolicy, type SameInstantScan } from 'universal-parcel-scraper/app';
@@ -389,18 +390,20 @@ export function sharedScans(
 }
 
 /**
- * The earlier carrier's scans in a handoff's batch, without its copies of the
- * delivery carrier's scans. Nova Poshta relays each GOFO scan in its own
- * wording at the same second and place; GOFO's own scan stands for it. A copy
- * falls in the same second as a delivery scan, with stages that agree and
- * places that share a word or name no more than a country. Wording may differ.
+ * The identities of the earlier carrier's scans in a handoff's batch that
+ * relay a delivery scan: Nova Poshta tells each GOFO scan in its own words at
+ * the same second and place. A relay falls in the same second as a delivery
+ * scan, with stages that agree and places that share a word or name no more
+ * than a country; wording may differ. Left out of `sharedScans`, a relay stays
+ * a row of the earlier carrier, which relayCopies.ts pairs with the scan, and
+ * the delivery scan takes over a universal copy alone.
  */
-export function withoutRelayedScans(earlier: readonly JsonObject[], delivery: readonly JsonObject[]): JsonObject[] {
+export function relayedScans(earlier: readonly JsonObject[], delivery: readonly JsonObject[]): Set<string> {
   const scans = delivery.filter((row) => !observedOnly(row) && Number.isFinite(instantOf(row)));
   const second = (row: JsonObject) => Math.floor(instantOf(row) / 1_000);
-  return earlier.filter((row) => observedOnly(row) || !Number.isFinite(instantOf(row)) || !scans.some((scan) => (
+  return new Set(earlier.filter((row) => !observedOnly(row) && Number.isFinite(instantOf(row)) && scans.some((scan) => (
     second(scan) === second(row) && stagesAgree(stageOf(scan), stageOf(row)) && !placesConflict(placeWords(scan), placeWords(row))
-  )));
+  ))).map(identity));
 }
 
 /**

@@ -30,7 +30,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
-import { restatedIdentities, sameInstantIdentities, sharedScans, withIdentities, withoutCopyDrift, withoutRelayedScans } from './eventIdentity';
+import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   TrackingSyncAudit,
   WorkerShutdown,
@@ -1198,13 +1198,11 @@ export class TrackingSyncService {
         const normalizedSelectedStage = normalizedReportedStage && result!.status !== 'pending'
           ? normalizedReportedStage
           : latestEventStage ?? normalizedReportedStage;
+        const earlierEvents = fetched.earlierResult && fetched.earlierCarrierId
+          ? buildEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId, now) : [];
         return {
-          events: [
-            // The earlier carrier's copies of the delivery carrier's scans are left out.
-            ...(fetched.earlierResult && fetched.earlierCarrierId
-              ? withoutRelayedScans(buildEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId, now), normalizedEvents) : []),
-            ...normalizedEvents,
-          ],
+          events: [...earlierEvents, ...normalizedEvents],
+          relays: relayedScans(earlierEvents, normalizedEvents),
           reportedStage: normalizedReportedStage,
           selectedStage: normalizedSelectedStage,
         };
@@ -1264,7 +1262,8 @@ export class TrackingSyncService {
           if (!reworded.has(id) && !taken.has(saved)) reworded.set(id, saved);
         }
       }
-      const shared = sharedScans(events, stored, reworded);
+      // The earlier carrier's relay of a delivery scan stays its own row.
+      const shared = sharedScans(events.filter((event) => !normalized.relays.has(String(event.provider_event_id))), stored, reworded);
       const matches = { reused: new Map([...reworded, ...shared.reused]), skipped: shared.skipped };
       // Copies a universal provider read in the wrong zone must not make a result
       // look fresher, or the carrier's own reply older, than it is.

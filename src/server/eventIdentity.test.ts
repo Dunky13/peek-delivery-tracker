@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { restatedIdentities, sameInstantIdentities, sharedScans, withIdentities, withoutCopyDrift, withoutRelayedScans } from './eventIdentity';
+import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
 
 // India Post's policy names the zone it once read every clock in from the next scraper release;
 // until the app takes that version, its tests add the zone themselves.
@@ -587,17 +587,17 @@ describe('an earlier carrier relaying the delivery carrier\'s scans', () => {
     at('gofo:station', '2026-01-14T09:31:13Z', 'Arrived at GOFO Delivery Station', 'Hollywood, FL'),
   ];
 
-  it('leaves out its copy of a delivery scan in the same second and place, in any wording', () => {
+  it('finds its copy of a delivery scan in the same second and place, in any wording', () => {
     const relays = [
       at('nova-poshta:hub', '2026-01-11T21:11:25Z', 'Arrived at the depot', 'Springfield Gardens, NY'),
       at('nova-poshta:station', '2026-01-14T09:31:13.412Z', 'Arrived at the address depot', 'Hollywood, FL'),
+      // A copy with no place, or a pending one, is still a copy.
+      at('nova-poshta:bare', '2026-01-11T21:11:25Z', 'Arrived at the depot', '', 'pending'),
     ];
-    expect(withoutRelayedScans(relays, delivery)).toEqual([]);
-    // A copy with no place, or a pending one, is still a copy.
-    expect(withoutRelayedScans([at('nova-poshta:hub', '2026-01-11T21:11:25Z', 'Arrived at the depot', '', 'pending')], delivery)).toEqual([]);
+    expect([...relayedScans(relays, delivery)]).toEqual(['nova-poshta:hub', 'nova-poshta:station', 'nova-poshta:bare']);
   });
 
-  it('keeps its own scans: another second, another place, another stage, or an observation', () => {
+  it('leaves its own scans: another second, another place, another stage, or an observation', () => {
     const own = [
       at('nova-poshta:handover', '2026-01-11T21:01:29Z', 'Transferred to delivery partner GoFo Express', 'Jamaica, NY'),
       at('nova-poshta:hub', '2026-01-11T21:11:26Z', 'Arrived at the depot', 'Springfield Gardens, NY'),
@@ -605,8 +605,8 @@ describe('an earlier carrier relaying the delivery carrier\'s scans', () => {
       at('nova-poshta:customs', '2026-01-11T21:11:25Z', 'Customs clearance in progress', 'Springfield Gardens, NY', 'customs'),
       { ...at('nova-poshta:seen', '2026-01-11T21:11:25Z', 'In transit', 'Springfield Gardens, NY'), observed_without_provider_timestamp: true },
     ];
-    expect(withoutRelayedScans(own, delivery)).toEqual(own);
-    expect(withoutRelayedScans(own, [])).toEqual(own);
+    expect(relayedScans(own, delivery).size).toBe(0);
+    expect(relayedScans(delivery, []).size).toBe(0);
   });
 });
 

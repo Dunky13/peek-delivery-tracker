@@ -1954,7 +1954,7 @@ describe('TrackingSyncService', () => {
     expect(client.updatePackage.mock.calls.at(-1)![1].carrier_data.active_tracking_carrier).toBe('posti');
   });
 
-  it('leaves out the origin\'s copies of the delivery carrier\'s scans at a handoff', async () => {
+  it('lets the delivery scan take over a universal copy at a handoff and keeps the origin\'s relay of it', async () => {
     const client = fakeClient();
     const hub = { location: 'Springfield Gardens, NY', stage: 'in_transit' };
     const adapter = { fetch: vi.fn()
@@ -1966,12 +1966,15 @@ describe('TrackingSyncService', () => {
       .mockResolvedValueOnce({ status: 'in_transit', last_update: '2026-01-11T21:11:25Z', events: [
         { time: '2026-01-11T21:11:25Z', description: 'Arrived at GOFO Regional Hub', ...hub },
       ] }) };
+    // A universal provider's copy of the relay, stored before the handoff.
+    const copy = { provider_event_id: 'unknown:copy', occurred_at: '2026-01-11T21:11:25+00:00', description: 'Arrived at the depot', ...hub };
     await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null)
-      .syncPackage({ id: 'relayed', carrier: 'nova-poshta', tracking_number: '59500000000012' });
+      .syncPackage({ id: 'relayed', carrier: 'nova-poshta', tracking_number: '59500000000012', [STORED_EVENT_IDENTITIES]: [copy] });
     expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['nova-poshta', 'gofo']);
     const saved = client.insertEvents.mock.calls[0][0].map((event: JsonObject) => [String(event.provider_event_id).split(':')[0], event.description]);
-    expect(saved).toEqual(expect.arrayContaining([['nova-poshta', 'Left the sorting center'], ['gofo', 'Arrived at GOFO Regional Hub']]));
-    expect(saved).not.toContainEqual(['nova-poshta', 'Arrived at the depot']);
+    expect(saved).toEqual(expect.arrayContaining([['nova-poshta', 'Left the sorting center'], ['nova-poshta', 'Arrived at the depot'],
+      ['unknown', 'Arrived at GOFO Regional Hub']]));
+    expect(saved).toHaveLength(3);
   });
 
   it('hands a Cainiao result to its reported local number through normalization', async () => {
