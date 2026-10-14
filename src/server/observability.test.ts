@@ -63,6 +63,18 @@ describe('the check a line belongs to', () => {
   });
 });
 
+describe('routing log levels', () => {
+  it('logs a provider without history for the number at info, and other provider failures as warnings', () => {
+    const info = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    reportRoutingEvent('provider_failed', { carrier: 'unknown', provider: 'ParcelsApp', category: 'no_history' });
+    reportRoutingEvent('provider_failed', { carrier: 'unknown', provider: 'Ship24', category: 'transport' });
+    reportRoutingEvent('transport_fallback', { carrier: 'ups', provider: 'ups', category: 'trawl' });
+    expect(info.mock.calls.map(([line]) => JSON.parse(String(line)).provider)).toEqual(['ParcelsApp']);
+    expect(warn.mock.calls.map(([line]) => JSON.parse(String(line)).provider)).toEqual(['Ship24', 'ups']);
+  });
+});
+
 describe('observability configuration', () => {
   it('accepts only bounded trace sample rates', () => {
     expect(parseSampleRate(undefined)).toBe(0);

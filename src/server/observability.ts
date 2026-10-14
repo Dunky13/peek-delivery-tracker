@@ -353,6 +353,14 @@ function applyUpstreamHttpContext(scope: Sentry.Scope, metadata: OperationalErro
   if (metadata.upstreamHttp.error_code) scope.setTag('upstream_error_code', metadata.upstreamHttp.error_code);
 }
 
+/**
+ * A provider failure or a transport recovery is a warning. A provider's answer
+ * that it has no history for the number yet is an answer about the parcel.
+ */
+function warnsOf(code: string, category: string | undefined): boolean {
+  return code === 'transport_fallback' || (code === 'provider_failed' && category !== 'no_history');
+}
+
 /** Fixed grouping plus bounded HTTP diagnostics, captured before fallback. */
 export function reportRoutingEvent(code: string, context: {
   carrier: string; provider: string; category?: string; trackingNumber?: string; errorClass?: string; error?: unknown;
@@ -371,7 +379,7 @@ export function reportRoutingEvent(code: string, context: {
       upstream_content_type: metadata.upstreamHttp?.content_type,
       upstream_body_read: metadata.upstreamHttp?.body_read,
       upstream_body_signals: metadata.upstreamHttp?.body_signals.join(','),
-    }, ['provider_failed', 'transport_fallback'].includes(code) ? 'warning' : 'info');
+    }, warnsOf(code, context.category) ? 'warning' : 'info');
     if (!initObservability()) return;
     Sentry.withScope((scope) => {
       applyContext(scope, { component: 'tracking-routing', operation: code,

@@ -342,7 +342,9 @@ Key JSON events:
   carrier recognition, have none. A `tracking_scrape` `outcome` is `success`, `error`, or
   an answer about the number: `not_found`, `no_history` (a provider has no scans for it
   yet, or a carrier's tracking does not know the item: an inconclusive answer with the
-  reason `status_api_not_found` or `portal_not_found`), `input_required` or `invalid_input`;
+  reason `status_api_not_found` or `portal_not_found`), `input_required` or `invalid_input`.
+  A `tracking_routing` line is a warning for `transport_fallback` and `provider_failed`,
+  except a provider's `no_history` answer, which is info;
 - `tracking_sync_audit_write_failed`, `tracking_sync_audit_maintenance_failed`,
   `tracking_status_observation_write_failed`;
 - `dpd_app_session`: the scraper took up a saved session at start (`outcome` `taken_up`,

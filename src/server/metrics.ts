@@ -201,7 +201,7 @@ function createRuntime(): PrometheusRuntime {
     }),
     dpdAppSessionTotal: new Counter({
       name: 'dpd_app_session_total',
-      help: 'DPD app sessions taken up at start, and openings that ended opened or failed, by what began them (start, renewal, retry, refused, lookup).',
+      help: 'DPD app sessions taken up at start, and openings that ended opened or failed, by what began them (start, retry, refused, lookup).',
       labelNames: ['outcome', 'trigger'] as const,
       registers: [registry],
     }),

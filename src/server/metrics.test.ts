@@ -212,11 +212,11 @@ describe('prometheus carrier metrics', () => {
   });
 
   it('counts DPD app sessions by outcome and what began them', async () => {
-    metrics.recordDpdAppSession('opened', 'renewal');
-    metrics.recordDpdAppSession('opened', 'renewal');
+    metrics.recordDpdAppSession('opened', 'refused');
+    metrics.recordDpdAppSession('opened', 'refused');
     metrics.recordDpdAppSession('failed', 'lookup');
     const text = await scraped();
-    expect(text).toContain('dpd_app_session_total{outcome="opened",trigger="renewal"} 2');
+    expect(text).toContain('dpd_app_session_total{outcome="opened",trigger="refused"} 2');
     expect(text).toContain('dpd_app_session_total{outcome="failed",trigger="lookup"} 1');
   });
 
