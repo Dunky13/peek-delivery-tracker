@@ -2509,10 +2509,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -3785,10 +3789,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -4299,10 +4307,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -5676,10 +5688,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -5688,10 +5704,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -5714,10 +5734,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -5734,10 +5758,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -5758,10 +5786,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -5834,10 +5866,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -11523,10 +11559,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -17458,10 +17498,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -17470,10 +17514,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -17825,10 +17873,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -21453,10 +21505,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -21465,10 +21521,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -22788,10 +22848,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -23628,10 +23692,14 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "bpost",
+      "ecoscooting",
+      "bpost"
+    ],
+    "preferred": [
       "ecoscooting"
     ],
     "asked": [
+      "ecoscooting",
       "bpost"
     ]
   },
@@ -26545,10 +26613,11 @@
     ]
   },
   {
-    "input": "59500007235170",
+    "input": "59500007231597",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "nova-poshta",
       "dpd",
       "relais-colis",
       "ciblex",
@@ -26557,15 +26626,44 @@
       "delhivery",
       "dhl-ecommerce-uk",
       "dpd-de",
-      "dpd-uk",
+      "dpd-uk"
+    ],
+    "preferred": [
       "nova-poshta"
     ],
     "asked": [
+      "nova-poshta",
       "dpd",
       "dpd-de",
       "seur",
+      "brt"
+    ]
+  },
+  {
+    "input": "59500007235170",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "nova-poshta",
+      "dpd",
+      "relais-colis",
+      "ciblex",
+      "seur",
       "brt",
-      "relais-colis"
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-de",
+      "dpd-uk"
+    ],
+    "preferred": [
+      "nova-poshta"
+    ],
+    "asked": [
+      "nova-poshta",
+      "dpd",
+      "dpd-de",
+      "seur",
+      "brt"
     ]
   },
   {
@@ -26573,6 +26671,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "nova-poshta",
       "dpd",
       "relais-colis",
       "ciblex",
@@ -26581,15 +26680,17 @@
       "delhivery",
       "dhl-ecommerce-uk",
       "dpd-de",
-      "dpd-uk",
+      "dpd-uk"
+    ],
+    "preferred": [
       "nova-poshta"
     ],
     "asked": [
+      "nova-poshta",
       "dpd",
       "dpd-de",
       "seur",
-      "brt",
-      "relais-colis"
+      "brt"
     ]
   },
   {
@@ -26597,6 +26698,7 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "nova-poshta",
       "dpd",
       "relais-colis",
       "ciblex",
@@ -26605,15 +26707,45 @@
       "delhivery",
       "dhl-ecommerce-uk",
       "dpd-de",
-      "dpd-uk",
+      "dpd-uk"
+    ],
+    "preferred": [
       "nova-poshta"
     ],
     "asked": [
+      "nova-poshta",
       "dpd",
       "dpd-de",
       "seur",
+      "brt"
+    ]
+  },
+  {
+    "input": "59500007591779",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "nova-poshta",
+      "dpd",
+      "relais-colis",
+      "ciblex",
+      "hermes-de",
+      "seur",
       "brt",
-      "relais-colis"
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-de",
+      "dpd-uk"
+    ],
+    "preferred": [
+      "nova-poshta"
+    ],
+    "asked": [
+      "nova-poshta",
+      "hermes-de",
+      "dpd",
+      "dpd-de",
+      "seur"
     ]
   },
   {
@@ -37249,6 +37381,17 @@
     ]
   },
   {
+    "input": "AT9900000001TH",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "thhy"
+    ],
+    "asked": [
+      "thhy"
+    ]
+  },
+  {
     "input": "ATL16984398",
     "carrier": "unknown",
     "confidence": "none",
@@ -43981,6 +44124,14 @@
     ]
   },
   {
+    "input": "JH9900000001CN",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "jhgj"
+    ]
+  },
+  {
     "input": "JJBEA2356412012365478896541",
     "carrier": "bpost",
     "confidence": "high",
@@ -44373,6 +44524,14 @@
       "j-and-t",
       "aramex-au",
       "aramex-nz"
+    ]
+  },
+  {
+    "input": "JRT9900000001MM",
+    "carrier": "jrt",
+    "confidence": "high",
+    "candidates": [
+      "jrt"
     ]
   },
   {
@@ -44812,6 +44971,14 @@
     ],
     "asked": [
       "colis-prive"
+    ]
+  },
+  {
+    "input": "KTDWE9900000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "ktd"
     ]
   },
   {
@@ -48543,6 +48710,17 @@
     "candidates": []
   },
   {
+    "input": "PL2878740005530001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "geodis-pl"
+    ],
+    "asked": [
+      "geodis-pl"
+    ]
+  },
+  {
     "input": "PL770916548048",
     "carrier": "unknown",
     "confidence": "none",
@@ -52052,6 +52230,14 @@
     ]
   },
   {
+    "input": "TSJY990000006CN",
+    "carrier": "tsjy",
+    "confidence": "high",
+    "candidates": [
+      "tsjy"
+    ]
+  },
+  {
     "input": "TYPQYU501214190",
     "carrier": "unknown",
     "confidence": "none",
@@ -53515,6 +53701,17 @@
     ],
     "asked": [
       "australia-post"
+    ]
+  },
+  {
+    "input": "YL9900000001YQ",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gzyl"
+    ],
+    "asked": [
+      "gzyl"
     ]
   },
   {

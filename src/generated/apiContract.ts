@@ -2611,7 +2611,9 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "ecoscooting"
+      "adapter": "ecoscooting",
+      "recognitionRank": 655,
+      "recognitionPattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$"
     },
     "linkRules": [
       {
@@ -2622,6 +2624,11 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+        "confidence": "low",
+        "preferred": true
+      },
       {
         "pattern": "^\\d{18}$",
         "confidence": "low"
@@ -4942,7 +4949,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "nova-poshta"
+      "adapter": "nova-poshta",
+      "recognitionRank": 685
     },
     "trackingUrlTemplate": "https://novaposhta.ua/en/tracking/{trackingNumber}",
     "linkRules": [
@@ -4954,6 +4962,11 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^595000\\d{8}$",
+        "confidence": "low",
+        "preferred": true
+      },
       {
         "pattern": "^(?:(?:20[4678]|590|595)\\d{11}|(?:21|51)\\d{12})$",
         "confidence": "low"
@@ -13250,7 +13263,12 @@ export const CARRIER_CAPABILITIES = {
     },
     "trackingUrlTemplate": "https://strefaklienta.pekaes.geodis.pl/en/?ShNumber={trackingNumber}",
     "linkRules": [],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^PL\\d{16}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://strefaklienta.pekaes.geodis.pl/en/"
   },
   "gzyl": {
@@ -13270,10 +13288,16 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "gzyl"
+      "adapter": "gzyl",
+      "recognitionRank": 988
     },
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^YL\\d{10}YQ$",
+        "confidence": "low"
+      }
+    ]
   },
   "hywl": {
     "displayName": "Huiyi Logistics",
@@ -13337,7 +13361,12 @@ export const CARRIER_CAPABILITIES = {
       "adapter": "universal"
     },
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^JH\\d{10}CN$",
+        "confidence": "low"
+      }
+    ]
   },
   "jrt": {
     "displayName": "JRT",
@@ -13370,7 +13399,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^JRT\\d{10}MM$",
+        "confidence": "high"
+      }
+    ]
   },
   "ktd": {
     "displayName": "KTD",
@@ -13392,7 +13426,12 @@ export const CARRIER_CAPABILITIES = {
       "adapter": "universal"
     },
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^KTDWE\\d{10}$",
+        "confidence": "low"
+      }
+    ]
   },
   "swiftx": {
     "displayName": "SwiftX",
@@ -13448,10 +13487,16 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "thhy"
+      "adapter": "thhy",
+      "recognitionRank": 987
     },
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^AT\\d{10}TH$",
+        "confidence": "low"
+      }
+    ]
   },
   "tsjy": {
     "displayName": "TSJY",
@@ -13486,7 +13531,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^TSJY\\d{9}CN$",
+        "confidence": "high"
+      }
+    ],
     "trackingSearchUrl": "https://www.tsjy56.com/"
   }
 } as const;
