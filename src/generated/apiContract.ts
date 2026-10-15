@@ -15104,7 +15104,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hct-logistics",
+      "recognitionRank": 967
     },
     "linkRules": [],
     "detectionRules": [],
