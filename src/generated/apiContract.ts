@@ -10002,7 +10002,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "couriersplease",
+      "recognitionRank": 961
     },
     "trackingUrlTemplate": "https://www.couriersplease.com.au/tools-track?no={trackingNumber}",
     "linkRules": [
@@ -11782,7 +11783,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pos-indonesia",
+      "recognitionRank": 964
     },
     "trackingUrlTemplate": "https://www.posindonesia.co.id/id/tracking/{trackingNumber}",
     "linkRules": [
@@ -15517,7 +15519,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "leopards-courier",
+      "recognitionRank": 965
     },
     "linkRules": [
       {
