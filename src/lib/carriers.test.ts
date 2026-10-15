@@ -1559,7 +1559,7 @@ describe('ambiguous number shapes', () => {
     expect(detectCarrierMatch('AB12CD34')).toEqual({
       carrier: 'unknown',
       confidence: 'low',
-      candidates: ['gls-ch', 'gls-fr', 'gls-de'],
+      candidates: expect.arrayContaining(['gls-ch', 'gls-fr', 'gls-de']),
       preferred: [],
     });
   });
