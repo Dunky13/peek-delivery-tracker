@@ -9840,7 +9840,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cj-packet",
+      "recognitionRank": 956
     },
     "trackingUrlTemplate": "https://www.cjpacket.com/?trackingNumber={trackingNumber}",
     "linkRules": [
@@ -11134,7 +11135,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Bangkok",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kex",
+      "recognitionRank": 959
     },
     "trackingUrlTemplate": "https://th.kex-express.com/en/track/?track={trackingNumber}",
     "linkRules": [
