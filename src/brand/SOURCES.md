@@ -109,6 +109,7 @@ and [`truck.json`](truck.json).
 | `cse-russia` | [cse.ru](https://www.cse.ru/) — theme-color and inline logo symbol fill #f47920 |
 | `ctt` | [ctt.pt](https://www.ctt.pt/) |
 | `ctt-express` | [cttexpress.com](https://www.cttexpress.com/) |
+| `cttyex` | [cttyvip888.com](https://www.cttyvip888.com/assets/img/logo.png) — logo blue around #0068ac (approximate), orange play mark around #e88c20 |
 | `cycloon` | [cycloon.eu](https://www.cycloon.eu/assets/img/logo-cycloon.svg) — logo SVG fill #E4002B, theme-color #e4002b |
 | `cyprus-post` | [cypruspost.post](https://www.cypruspost.post/themes/post-office/css/style1000.css) — #e4a50e in the site CSS, matching the horn in the logo JPEG (approximate) |
 | `d-express` | [dexpress.rs](https://www.dexpress.rs/files/images/Daily_Express_doo/logo/DExpress_logo_sa_sloganom.png) — logo red #ff0000 (approximate) |
@@ -892,3 +893,4 @@ and [`truck.json`](truck.json).
 | `yimidida` | Dark six-armed asterisk split by a white bar on yellow | [yimidida.com](https://web.archive.org/web/2023/https://www.yimidida.com/img/logooo.87b9e3ac.png) — the symbol before 壹米滴答 |
 | `zoom-ve` | White leaping kangaroo on blue | [zoom.red](https://zoom.red/wp-content/uploads/2021/04/cropped-canguro-transparente-192x192.png) — the kangaroo of the logo and site icon |
 | `mayiyinfu` | White ant on black | [mayiyinfu.com.cn](http://www.mayiyinfu.com.cn/) — site logo, an ant in profile beside 蚂蚁银服 |
+| `cttyex` | White C around an orange play triangle on blue | [cttyvip888.com](https://www.cttyvip888.com/assets/img/logo.png) — the C and play triangle between 诚通 and 泰运 in the logo |

@@ -134,6 +134,7 @@ describe('carrier brand', () => {
       '4-72', 'aex-paraguay', 'ampm', 'chazki', 'cruz-del-sur', 'forza-delivery', 'guatex', 'jamaica-post',
       'laar-courier', 'pullman-cargo', 'tealca', 'tufesa', 'via-cargo', 'yimidida', 'zoom-ve',
       'mayiyinfu',
+      'cttyex',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

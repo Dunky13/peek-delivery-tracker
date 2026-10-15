@@ -523,6 +523,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "cse-russia": "cse-russia",
   "ctt": "ctt",
   "ctt-express": "ctt",
+  "cttyex": "cttyex",
   "cycloon": "cycloon",
   "cyprus-post": "cyprus-post",
   "d-express": "d-express",
@@ -8924,6 +8925,19 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "d": "M15.7 6.9L16.4 4.8L18.6 4.4",
         "stroke": "accent",
         "strokeWidth": 1.4
+      }
+    ],
+    "cttyex": [
+      {
+        "type": "line",
+        "d": "M14.11 6.39L13.5 5.88L12.81 5.49L12.05 5.23L11.27 5.11L10.47 5.13L9.69 5.3L8.96 5.6L8.29 6.04L7.71 6.58L7.23 7.22L6.89 7.94L6.67 8.71L6.6 9.5L6.67 10.29L6.89 11.06L7.23 11.78L7.71 12.42L8.29 12.96L8.96 13.4L9.69 13.7L10.47 13.87L11.27 13.89L12.05 13.77L12.81 13.51L13.5 13.12L14.11 12.61",
+        "stroke": "accent",
+        "strokeWidth": 2.2
+      },
+      {
+        "type": "polygon",
+        "d": "M10 7.6L10 11.4L13.3 9.5Z",
+        "fill": "#E88C20"
       }
     ]
   }

@@ -78,6 +78,7 @@ describe('carrier mark', () => {
     'aex-paraguay', 'ampm', 'chazki', 'cruz-del-sur', 'forza-delivery', 'guatex', 'jamaica-post',
     'laar-courier', 'pullman-cargo', 'tealca', 'tufesa', 'via-cargo', 'yimidida', 'zoom-ve',
     'mayiyinfu',
+    'cttyex',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

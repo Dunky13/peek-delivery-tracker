@@ -94,7 +94,7 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'tanzania-posts' | 'tst-cf-express' | 'uzbekistan-post' | 'zajil' | '4-72' | 'aex-paraguay'
   | 'ampm' | 'chazki' | 'cruz-del-sur' | 'forza-delivery' | 'guatex' | 'jamaica-post'
   | 'laar-courier' | 'pullman-cargo' | 'tealca' | 'tufesa' | 'via-cargo' | 'yimidida' | 'zoom-ve'
-  | 'mayiyinfu';
+  | 'mayiyinfu' | 'cttyex';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {
