@@ -11345,7 +11345,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "naqel",
+      "recognitionRank": 413
     },
     "trackingUrlTemplate": "https://www.naqelexpress.com/en/Track/TrackShipment/{trackingNumber}",
     "linkRules": [
@@ -12154,7 +12155,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "saudi-post",
+      "recognitionRank": 963
     },
     "trackingUrlTemplate": "https://splonline.com.sa/en/shipmentdetailsstatic/?tid={trackingNumber}",
     "linkRules": [
