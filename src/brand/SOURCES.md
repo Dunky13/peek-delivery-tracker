@@ -249,6 +249,7 @@ and [`truck.json`](truck.json).
 | `maritime-ontario` | [m-o.com](https://www.m-o.com/wp-content/uploads/2023/05/M-O-New-Logo-New.png) — logo blue #0064b1 (approximate); site CSS --blue #0060A9 |
 | `matkahuolto` | [matkahuolto.fi](https://www.matkahuolto.fi/favicon.svg) — favicon SVG fill #001E60, same as the home page theme-color |
 | `mauritius-post` | [mauritiuspost.mu](https://www.mauritiuspost.mu/) — Elementor global colours accent #F5D800 (yellow) and secondary #00539B (blue); logo stamp yellow #ffe716, blue #00529b (approximate) |
+| `mayiyinfu` | [mayiyinfu.com.cn](http://www.mayiyinfu.com.cn/) — the logo is a black ant and black lettering |
 | `mds-collivery` | [collivery.net](https://collivery.net/img/collivery.net-logo.svg) — logo SVG fill #00823D; the arrow is #D9262E |
 | `meest` | [meest.com](https://meest.com/assets/d246552d/img/icon/logo.svg) — logo.svg: `.st0{fill:#0061AF}` (blue), `.st1{fill:#E60033}` (red) |
 | `midland-transport` | [midlandtransport.com](https://www.midlandtransport.com/) — theme-color #009057 and header logo SVG fill #009057 |
@@ -890,3 +891,4 @@ and [`truck.json`](truck.json).
 | `via-cargo` | White italic V check on green | [viacargo.com.ar](https://viacargo.com.ar/wp-content/uploads/2025/07/cropped-Sin-titulo-320-x-320-px-1-192x192.png) — the V site icon, as in the Vía of the logo |
 | `yimidida` | Dark six-armed asterisk split by a white bar on yellow | [yimidida.com](https://web.archive.org/web/2023/https://www.yimidida.com/img/logooo.87b9e3ac.png) — the symbol before 壹米滴答 |
 | `zoom-ve` | White leaping kangaroo on blue | [zoom.red](https://zoom.red/wp-content/uploads/2021/04/cropped-canguro-transparente-192x192.png) — the kangaroo of the logo and site icon |
+| `mayiyinfu` | White ant on black | [mayiyinfu.com.cn](http://www.mayiyinfu.com.cn/) — site logo, an ant in profile beside 蚂蚁银服 |

@@ -693,6 +693,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "maritime-ontario": "maritime-ontario",
   "matkahuolto": "matkahuolto",
   "mauritius-post": "mauritius-post",
+  "mayiyinfu": "mayiyinfu",
   "mds-collivery": "mds-collivery",
   "meest": "meest",
   "midland-transport": "midland-transport",
@@ -8892,6 +8893,37 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M8.96 5.82L7.53 7.08L6.08 8.4L4.85 9.37L4.19 9.68L3.79 9.39L3.15 10.41L4.12 10.98L5.51 10.6L7.02 9.69L8.64 8.62L10.29 7.82Z",
         "fill": "accent"
+      }
+    ],
+    "mayiyinfu": [
+      {
+        "type": "polygon",
+        "d": "M8.9 9.02L8.95 9.49L8.85 9.98L8.6 10.46L8.23 10.9L7.75 11.29L7.17 11.6L6.54 11.83L5.89 11.95L5.23 11.96L4.62 11.87L4.07 11.67L3.63 11.38L3.3 11.01L3.1 10.58L3.05 10.11L3.15 9.62L3.4 9.14L3.77 8.7L4.25 8.31L4.83 8L5.46 7.77L6.11 7.65L6.77 7.64L7.38 7.73L7.93 7.93L8.37 8.22L8.7 8.59Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M12.88 9.08L12.87 9.29L12.78 9.51L12.62 9.71L12.39 9.9L12.11 10.05L11.78 10.17L11.43 10.24L11.08 10.27L10.73 10.24L10.42 10.17L10.14 10.06L9.93 9.91L9.78 9.73L9.72 9.52L9.73 9.31L9.82 9.09L9.98 8.89L10.21 8.7L10.49 8.55L10.82 8.43L11.17 8.36L11.52 8.33L11.87 8.36L12.18 8.43L12.46 8.54L12.67 8.69L12.82 8.87Z",
+        "fill": "accent"
+      },
+      {
+        "type": "circle",
+        "cx": 14.9,
+        "cy": 8.3,
+        "r": 1.6,
+        "fill": "accent"
+      },
+      {
+        "type": "line",
+        "d": "M10.3 9.8L9.1 12L8.3 14.6M11.3 10L11.9 12.2L11.5 14.6M12.3 9.7L14.1 11.6L15 14.4",
+        "stroke": "accent",
+        "strokeWidth": 1.4
+      },
+      {
+        "type": "line",
+        "d": "M15.7 6.9L16.4 4.8L18.6 4.4",
+        "stroke": "accent",
+        "strokeWidth": 1.4
       }
     ]
   }
