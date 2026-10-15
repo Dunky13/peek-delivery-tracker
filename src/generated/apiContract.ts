@@ -8805,7 +8805,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "5post"
     },
     "trackingUrlTemplate": "https://fivepost.ru/tracking?id={trackingNumber}",
     "linkRules": [
@@ -11670,7 +11670,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pecom"
     },
     "trackingUrlTemplate": "https://pecom.ru/services-are/order-status/?code={trackingNumber}",
     "linkRules": [
@@ -17379,7 +17379,9 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ems-vietnam",
+      "recognitionRank": 962,
+      "recognitionPattern": "^E[A-Z]\\d{9}VN$"
     },
     "trackingUrlTemplate": "https://ems.com.vn/tra-cuu/tra-cuu-buu-gui?code={trackingNumber}",
     "linkRules": [
