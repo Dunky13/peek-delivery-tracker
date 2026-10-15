@@ -11027,7 +11027,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jne"
     },
     "linkRules": [],
     "detectionRules": [
@@ -11036,7 +11036,7 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ],
-    "trackingSearchUrl": "https://www.jne.co.id/"
+    "trackingSearchUrl": "https://www.jne.co.id/tracking-package"
   },
   "kazpost": {
     "displayName": "Kazpost",

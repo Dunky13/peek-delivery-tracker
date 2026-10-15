@@ -11026,7 +11026,7 @@
       "timezone": "Asia/Jakarta",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "jne"
       },
       "linkRules": [],
       "detectionRules": [
@@ -11035,7 +11035,7 @@
           "confidence": "high"
         }
       ],
-      "trackingSearchUrl": "https://www.jne.co.id/"
+      "trackingSearchUrl": "https://www.jne.co.id/tracking-package"
     },
     "kazpost": {
       "displayName": "Kazpost",
