@@ -59,6 +59,16 @@ describe('carrier mark', () => {
     'asyad-express', 'border-express', 'bosta', 'correo-uruguayo', 'courier-it', 'daylight-transport',
     'deprisa', 'envia-colombia', 'europochta', 'midland-transport', 'oak-harbor', 'skroutz-last-mile',
     'tci-express', 'urbano', 'vrl-logistics',
+    'blueex', 'leopards-courier', 'tcs-pakistan', 'postex', 'slgtrax', 'm-and-p', 'pakistan-post',
+    'pathao-courier', 'redx', 'steadfast', 'sundarban-courier', 'paperfly', 'ecourier', 'bangladesh-post',
+    'sri-lanka-post', 'domex', 'akash-ganga', 'madhur-courier', 'shree-nandan', 'st-courier',
+    'tirupati-courier', 'prompt-xpress', 'pronto-lanka', 'nepal-post', 'idexpress', 'lion-parcel',
+    'sapx-express', 'tiki', 'wahana', 'line-clear', '2go', 'flash-express-ph', 'jrs-express', 'xde-logistics',
+    'chunil', 'gs-postbox', 'hapdong', 'ilyang-logis', 'kunyoung', 'hct-logistics', 'kerry-tj',
+    'pelican-express', 'seven-eleven-tw', 't-cat', 'kex-express-hk', 'sbs-sokuhai', 'tracx-logis',
+    'quantium-solutions', 'janio', 'j-and-t-cn', 'equick', 'pfc-express', 'ecms-express', '139express',
+    'winit', 'energia-tk', 'zheldor', 'kit-tk', 'alem-tat', 'sat-ukraine', 'taxydema', 'dropp', 'yalidine',
+    'zr-express', 'fargo-courier', 'internet-express', 'mds-collivery', 'paxi', 'buffalo-ex',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);
