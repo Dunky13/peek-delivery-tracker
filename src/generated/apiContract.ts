@@ -14253,6 +14253,57 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.speedaf.com/cn-en/send-parcel"
+  },
+  "mailamericas": {
+    "displayName": "MailAmericas",
+    "aliases": [
+      "Mail Americas"
+    ],
+    "countries": [
+      "AR",
+      "BR",
+      "CL",
+      "CO",
+      "CR",
+      "EC",
+      "MX",
+      "PE",
+      "SV",
+      "UY"
+    ],
+    "color": "#76bd1d",
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "mailamericas",
+      "recognitionRank": 985
+    },
+    "trackingUrlTemplate": "https://mailamericas.com/tracking?number_id={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "mailamericas.com",
+          "www.mailamericas.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?tracking/?$",
+        "params": [
+          "number_id",
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^ML[A-Z]{2}\\d{9}(?:R|EX)$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^MMXQP\\d{9}[ENR]$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://mailamericas.com/"
   }
 } as const;
 
@@ -14645,7 +14696,8 @@ export const CARRIER_IDS = [
   "urbano",
   "vrl-logistics",
   "mtscn",
-  "speedaf"
+  "speedaf",
+  "mailamericas"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
