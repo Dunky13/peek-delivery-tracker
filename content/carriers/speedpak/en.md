@@ -49,7 +49,7 @@ The tracking can sit at `Arrived at Destination Hub` or a customs line for sever
 
 ## Who delivers SpeedPAK parcels
 
-SpeedPAK doesn't deliver to your door itself. Its history names the carrier that takes over in your country. In the histories read for this page, [USPS](carrier:usps), UniUni and DHL eCommerce (then USPS) delivered in the US, and PostNL (written "NL Post") handled parcels to Switzerland and Portugal.
+SpeedPAK doesn't deliver to your door itself. Its history names the carrier that takes over in your country. In the histories read for this page, [USPS](carrier:usps), [UniUni](carrier:uniuni) and DHL eCommerce (then USPS) delivered in the US, and PostNL (written "NL Post") handled parcels to Switzerland and Portugal.
 
 No eBay or Orange Connex page names the delivering carrier in the UK, Germany, France, Italy or Spain. Don't guess: wait for the `LM Carrier` line, or ask the seller.
 

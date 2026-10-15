@@ -16,7 +16,7 @@ Packeta's tracking page accepts one shape: `Z` followed by 10 digits.
 | --- | --- |
 | `Z1234567890` | A Packeta tracking number. |
 | `1234567890` | The ten digits without the `Z`: the shape also fits [DHL](carrier:dhl-express), Relais Colis and others, so add the `Z`. |
-| `Z123456789` | Nine digits: not Packeta (Australia Post's shape). |
+| `Z123456789` | Nine digits: not Packeta ([Australia Post](carrier:australia-post)'s shape). |
 | `Z12345678901` | Eleven digits: not Packeta (Colis Privé's shape). |
 
 The **pick-up code** is different: Packeta sends it by SMS and email once the parcel reaches your point, and you need it to pick the parcel up, not to track it. No `Z` number in the shop's email? Ask the shop. More in [how to find a tracking number](guide:find-tracking-number).

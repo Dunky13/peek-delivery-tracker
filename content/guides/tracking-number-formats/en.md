@@ -42,8 +42,8 @@ Here's what the carriers and the postal standard say about the numbers you're mo
 | [APC Overnight](carrier:apc-overnight) | a 7-digit consignment number, used with the delivery postcode; shops often send a 22-digit number that starts with the booking date (20YYMMDD) and ends with those 7 digits |
 | [InPost](carrier:inpost) | in the UK, `JD` or `JJD` + 16 digits, or `8YDR` + 9 digits (InPost UK says its numbers usually start with `JD`, `JJD` or `8`); `JD` or `JJD` + 18 digits is DHL |
 | [An Post](carrier:an-post) | two letters, nine digits, two letters ending `IE`, such as `RR123456785IE` |
-| Canada Post | 16 digits (online labels) or 13 characters ending `CA`; 12 digits for Priority Worldwide |
-| Australia Post | its help page gives no format and calls it a "tracking number, or article ID"; numbers in the postal format end `AU` |
+| [Canada Post](carrier:canada-post) | 16 digits (online labels) or 13 characters ending `CA`; 12 digits for Priority Worldwide |
+| [Australia Post](carrier:australia-post) | its help page gives no format and calls it a "tracking number, or article ID"; numbers in the postal format end `AU` |
 | [YunExpress](carrier:yunexpress) | `YT` + 16 digits (`YT` + 13 digits is YTO Express) |
 | [Yanwen](carrier:yanwen) | `BYS` + 9 digits, or two letters, nine digits and `YP` (often starting `UL` or `UK`); Yanwen publishes no example number. `YW`, three letters and 12 digits is Yanwen's own US delivery service |
 | [4PX](carrier:4px) | `4PX` + 13 digits + `CN`; 4PX publishes no example number, and its site takes 5 to 50 letters and digits. `LP` + 13 digits + `CN` is likely 4PX too |

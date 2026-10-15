@@ -7,7 +7,7 @@ published: 2026-10-14
 updated: 2026-10-14
 ---
 
-After a missed delivery, the card, text or email tells you where your parcel is now and how long it will wait. Book a redelivery on the carrier's own site or app (usually free), or collect it with the notice and ID from the time printed on it, which is rarely the same day. Royal Mail tries again by itself the next working day; USPS and An Post wait for you to book, and Australia Post doesn't redeliver at all.
+After a missed delivery, the card, text or email tells you where your parcel is now and how long it will wait. Book a redelivery on the carrier's own site or app (usually free), or collect it with the notice and ID from the time printed on it, which is rarely the same day. Royal Mail tries again by itself the next working day; USPS and An Post wait for you to book, and [Australia Post](carrier:australia-post) doesn't redeliver at all.
 
 ## What to do if you missed your delivery
 
@@ -29,7 +29,7 @@ Each carrier's notice, and what it does next:
 | [Evri](carrier:evri) (UK) | Calling card with an 8-digit number | Up to three attempts on consecutive working days; no depot collection |
 | [DPD UK](carrier:dpd-uk) | "Sorry we missed you" card | A neighbour if possible, otherwise you pick a new day or a Pickup shop |
 | [An Post](carrier:an-post) (IE) | "Sorry we missed you" (Docket In Box) | Back to the local Delivery Service Unit; no new attempt unless you book one |
-| Canada Post | Delivery Notice Card; tracking says `Notice left` | Waits at the post office named on the card |
+| [Canada Post](carrier:canada-post) | Delivery Notice Card; tracking says `Notice left` | Waits at the post office named on the card |
 | Australia Post | App, email or SMS notification (paper cards are being phased out) | A Post Office or Parcel Locker; "We don't offer redelivery" |
 
 ## What does "Notice left" mean?

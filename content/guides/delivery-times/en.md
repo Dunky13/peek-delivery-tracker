@@ -23,9 +23,9 @@ Parcels get delivered any time from early morning to late evening, and almost no
 | Yodel, now [InPost](carrier:inpost) (UK) | 7 a.m. to 9 p.m. | 7 a.m. to 9 p.m. in mainland UK | Busy periods only |
 | [DPD](carrier:dpd-uk) (UK) | None published; a one-hour window on the day | An upgrade offered in Predict | An upgrade offered in Predict |
 | [An Post](carrier:an-post) (Ireland) | None published | A sender option on business parcels | None found |
-| Canada Post | Homes 9 a.m. to as late as 8 p.m.; businesses 9 a.m. to 5 p.m. | Select areas of Toronto, Ottawa and Montreal | The same select areas |
-| Purolator (Canada) | "End of day" means 9 p.m. on guaranteed services | Saturday Service, a sender option | No Sunday service listed |
-| Australia Post | None published; a 2-hour window by text | Express Post has a Saturday network | None found |
+| [Canada Post](carrier:canada-post) | Homes 9 a.m. to as late as 8 p.m.; businesses 9 a.m. to 5 p.m. | Select areas of Toronto, Ottawa and Montreal | The same select areas |
+| [Purolator](carrier:purolator) (Canada) | "End of day" means 9 p.m. on guaranteed services | Saturday Service, a sender option | No Sunday service listed |
+| [Australia Post](carrier:australia-post) | None published; a 2-hour window by text | Express Post has a Saturday network | None found |
 
 Two things the table can't show:
 

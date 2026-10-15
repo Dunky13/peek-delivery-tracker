@@ -23,7 +23,7 @@ Planzer publishes no number format. Peek knows these shapes (digits invented):
 | `441234567890123456` | [Quickpac](carrier:quickpac), part of Planzer Paket: 18 digits starting 44. |
 | `99.60.987654.98765432` | Swiss Post: 18 digits, longer than Planzer's dotted shape. |
 
-Copy the number rather than typing it: one digit too many and a Planzer number reads as Australia Post's ([lengths overlap between carriers](guide:tracking-number-formats)).
+Copy the number rather than typing it: one digit too many and a Planzer number reads as [Australia Post](carrier:australia-post)'s ([lengths overlap between carriers](guide:tracking-number-formats)).
 
 ## Planzer track and trace statuses explained
 

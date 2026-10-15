@@ -80,7 +80,7 @@ SEUR publishes no opening hours and no English-language line.
 
 ## Tracking SEUR parcels with Peek
 
-[Peek](/) asks SEUR about 21- and 7-digit numbers directly. For 14 digits it asks the likely carriers at once, SEUR first for readers in Spain or Portugal. You see "asking…" and then "SEUR has this parcel." when only SEUR knows it; otherwise press "Change" and pick SEUR. A miSEUR or live-tracking link with `tracking=` works too, and no postcode is needed. A 21-digit number with `000` as its 13th to 15th digits is taken for Australia Post's: pick SEUR with "Change".
+[Peek](/) asks SEUR about 21- and 7-digit numbers directly. For 14 digits it asks the likely carriers at once, SEUR first for readers in Spain or Portugal. You see "asking…" and then "SEUR has this parcel." when only SEUR knows it; otherwise press "Change" and pick SEUR. A miSEUR or live-tracking link with `tracking=` works too, and no postcode is needed. A 21-digit number with `000` as its 13th to 15th digits is taken for [Australia Post](carrier:australia-post)'s: pick SEUR with "Change".
 
 Peek shows the status, the history and the weight. SEUR gives no place for its scans, so nothing appears on the map. Statuses stay in SEUR's Spanish; the delivered ones show as "Delivered". Peek drops the parcel count, the sender, the recipient and the delivery PIN and QR code. SEUR's scan times carry no reliable time zone, so the dated history comes from other tracking services and SEUR is asked again every 6 hours; if none answers, you see only SEUR's current status. Multi-parcel shipments are followed only through those services. You can be notified when the status changes.
 

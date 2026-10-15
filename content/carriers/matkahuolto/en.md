@@ -82,7 +82,7 @@ As listed on Matkahuolto's English pages on 13 October 2026:
 
 ## Tracking a Matkahuolto parcel with Peek
 
-[Peek](/) asks Matkahuolto, Posti and [Chronopost](carrier:chronopost) about an `MH…FI` number and says "Matkahuolto has this parcel." when only Matkahuolto knows it; if Posti knows it too, pick Matkahuolto with "Change". An `MA` number goes to Matkahuolto alone, though about one in a thousand is taken for Australia Post's: use "Change". The 18 and 20-digit barcodes are offered to other carriers, never Matkahuolto, so pick Matkahuolto with "Change" or paste a matkahuolto.fi tracking link with `parcelNumber=` in it, which works with any number.
+[Peek](/) asks Matkahuolto, Posti and [Chronopost](carrier:chronopost) about an `MH…FI` number and says "Matkahuolto has this parcel." when only Matkahuolto knows it; if Posti knows it too, pick Matkahuolto with "Change". An `MA` number goes to Matkahuolto alone, though about one in a thousand is taken for [Australia Post](carrier:australia-post)'s: use "Change". The 18 and 20-digit barcodes are offered to other carriers, never Matkahuolto, so pick Matkahuolto with "Change" or paste a matkahuolto.fi tracking link with `parcelNumber=` in it, which works with any number.
 
 Matkahuolto's scans carry no time zone, so Peek doesn't show its scan list: it takes the dated history from [universal tracking services](guide:universal-tracker), asks Matkahuolto again every 6 hours and, if no service answers, shows Matkahuolto's current status, dated when Peek saw it. Statuses keep Matkahuolto's English wording. Peek can show the service name and the pickup point or locker with its town and street, and can notify you of every scan, important steps only or "Delivery day only".
 

@@ -22,7 +22,7 @@ Express One publishes no format. Package IDs seen so far come in two shapes (dig
 | `100000000000000000001011` | 24 digits, ending in a Hungarian postcode: Express One. [InPost](carrier:inpost), [bpost](carrier:bpost) and [Ciblex](carrier:ciblex) also use 24 digits. |
 | `00000000000000` | 14 digits: DPD, never Express One. |
 | `00000000000` | 11 or 12 digits: GLS, never Express One. |
-| `RR123456785HU` | Two letters, 9 digits, `HU`: Magyar Posta, never Express One. |
+| `RR123456785HU` | Two letters, 9 digits, `HU`: [Magyar Posta](carrier:magyar-posta), never Express One. |
 
 Go by the carrier the shop's email names; more in [tracking number formats](guide:tracking-number-formats).
 

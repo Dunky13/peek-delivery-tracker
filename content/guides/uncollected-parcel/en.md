@@ -7,7 +7,7 @@ published: 2026-10-14
 updated: 2026-10-14
 ---
 
-If nobody collects a parcel from a post office, parcel shop or locker, it goes back to the sender once its last day has passed. Post offices hold parcels longest (Royal Mail 18 days, USPS usually 15, Canada Post 15 calendar days), while many lockers give you only 2 or 3. The date on your card, text or email is the one that counts, and if you've missed it, ask the shop for a refund or to send it again.
+If nobody collects a parcel from a post office, parcel shop or locker, it goes back to the sender once its last day has passed. Post offices hold parcels longest (Royal Mail 18 days, USPS usually 15, [Canada Post](carrier:canada-post) 15 calendar days), while many lockers give you only 2 or 3. The date on your card, text or email is the one that counts, and if you've missed it, ask the shop for a refund or to send it again.
 
 ## What happens if a parcel is not collected?
 
@@ -36,7 +36,7 @@ Once the parcel is on its way back, [returned to sender](guide:returned-to-sende
 | UK | Royal Mail: 18 days, 21 with a customs charge; Parcelforce at a Post Office: 15 to 18 days | Evri ParcelShop: 10 days; Post Office for Amazon, DHL and DPD: 7 days | Evri: 3 days; InPost: 3 days; Amazon: 3 calendar days |
 | Ireland | An Post: 5 working days, 3 for registered post, 16 from abroad | – | An Post: 48 hours, then 5 more days at the depot |
 | Canada | Canada Post: 15 calendar days | – | – |
-| Australia | Australia Post: 10 business days | – | 2 business days, then 10 business days at a Post Office |
+| Australia | [Australia Post](carrier:australia-post): 10 business days | – | 2 business days, then 10 business days at a Post Office |
 
 For [Parcelforce](carrier:parcelforce), the [Post Office](https://www.postoffice.co.uk/mail/collection-services) says 18 days on two of its pages and 15 on a third, so go by the date you're sent. At a Post Office, Amazon, DHL and DPD parcels get 7 days from the day they reach the branch, and [Evri](carrier:evri) parcels get 10.
 

@@ -41,7 +41,7 @@ Same stages, different words:
 
 No: the seller has printed a label and sent the details, nothing more. [USPS](carrier:usps) says the parcel "has not yet been given to USPS", and [UPS](carrier:ups)'s `Label Created` changes once UPS has it. [An Post](carrier:an-post) words it `Sender/retailer has shared details of your item to An Post`. Some US parcels show `Picked Up by Shipping Partner, USPS Awaiting Item`: a partner company has it and will hand it to USPS.
 
-Australia Post's `Pending` (nothing scanned yet) should update within 24 to 48 hours. If nothing moves, ask the seller, not the carrier: USPS, An Post and [Evri](carrier:evri) say so.
+[Australia Post](carrier:australia-post)'s `Pending` (nothing scanned yet) should update within 24 to 48 hours. If nothing moves, ask the seller, not the carrier: USPS, An Post and [Evri](carrier:evri) say so.
 
 ## What does "in transit" mean?
 
@@ -60,7 +60,7 @@ Evri typically delivers 1 to 3 days after receiving a parcel, while Australia Po
 ## Parcels from abroad: left the country, customs, local carrier
 
 - **Left the country.** It's booked onto a flight, ship or train. For a parcel heading to Germany, DHL warns the next update can be several days away. Royal Mail's `OE` (Office of Exchange) means it reached import customs. On an item from abroad, Australia Post's `It's on its way` means it's in Australia.
-- **Customs.** `In customs` (Royal Mail) or `Item held by customs` (Canada Post) is usually routine: Canada Post calls it standard for every international parcel, screened by the Canada Border Services Agency, and can't step in. DHL speaks of several business days; none of these carriers gives a general maximum. Once released, Canada Post's tracking says it has cleared customs. Act only on a request, such as Royal Mail's `Fee to pay`; see [parcels held at customs](guide:customs).
+- **Customs.** `In customs` (Royal Mail) or `Item held by customs` ([Canada Post](carrier:canada-post)) is usually routine: Canada Post calls it standard for every international parcel, screened by the Canada Border Services Agency, and can't step in. DHL speaks of several business days; none of these carriers gives a general maximum. Once released, Canada Post's tracking says it has cleared customs. Act only on a request, such as Royal Mail's `Fee to pay`; see [parcels held at customs](guide:customs).
 - **Local carrier.** UPS's `Transferred to Post Office for Delivery` means the post office does the last leg: allow an extra day or two. DHL points you to the destination carrier's tracking. The local carrier can give the parcel [a number of its own](guide:tracking-number-formats). Ordered from AliExpress, Temu or Shein? See [tracking a parcel from China](guide:tracking-from-china), and [Cainiao's own wordings](carrier:cainiao) for AliExpress parcels.
 
 ## Does "out for delivery" mean it arrives today?

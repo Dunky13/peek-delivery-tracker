@@ -13,14 +13,14 @@ A text or email saying your parcel is on hold, needs a small fee or a corrected 
 
 A fake usually shows several of these:
 
-- **You never asked for updates.** Royal Mail only texts or emails you if the sender asked for tracking updates when posting. USPS only texts if you requested tracking yourself, and Canada Post only if you signed up.
+- **You never asked for updates.** Royal Mail only texts or emails you if the sender asked for tracking updates when posting. USPS only texts if you requested tracking yourself, and [Canada Post](carrier:canada-post) only if you signed up.
 - **It wants money to deliver.** A redelivery fee, "unpaid shipping fees", a small charge to release the parcel. DPD UK says it "will never ask you to pay a 'redelivery fee' via a link", An Post never charges to redeliver, and Royal Mail never asks for an underpaid postage fee by text or email: it leaves a grey `Fee to pay` card.
 - **It hurries you.** "Within 24 hours", "within 48 hours", "or your parcel will be returned". As Royal Mail puts it: "Scammers often create urgency. Royal Mail does not." An Post says it never tells you to "act now".
 - **The link isn't the carrier's own.** Shortened links (bit.ly), look-alikes such as `fedx.com` or `unitedparcelservices.com` (FedEx's and UPS's own examples), and new endings like `.shop`, which FedEx currently warns about.
 - **The sender is a mobile number or an email address.** Evri texts only ever come from "Evri", and DPD UK's usually show "DPD UK", "DPD Local" or "DPDgroup UK". DPD UK says a random number or an address like random123@icloud.com in their place means a scam.
 - **It asks you to reply "Y", call a number or install an app,** or greets you as "Dear Customer", which DPD UK says it never writes.
 
-A familiar sender name proves nothing: Australia Post warns that scammers can set it so a fake lands in the same thread as its real messages.
+A familiar sender name proves nothing: [Australia Post](carrier:australia-post) warns that scammers can set it so a fake lands in the same thread as its real messages.
 
 Since 1 July 2026, Australian phones show texts from unregistered sender names as `Unverified`. In Ireland, ComReg labels them `Likely Scam`, but says genuine businesses that haven't registered can get that label too. Treat both labels as a reason to check, not as a verdict.
 

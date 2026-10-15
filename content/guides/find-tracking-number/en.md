@@ -18,7 +18,7 @@ You'll usually find your tracking number in the shop's shipping email or text, o
 - The shop's order page | One click past the order number (table below).
 - A missed-delivery card | Many carry a number the carrier's tracking accepts.
 - The carrier's account | Some carriers list parcels heading to your address.
-- The sender | "Only the sender can provide the tracking number," says Canada Post.
+- The sender | "Only the sender can provide the tracking number," says [Canada Post](carrier:canada-post).
 :::
 
 Found the email but can't tell which number is which? Paste the whole thing into [Peek](/): it picks out the tracking number and the carrier.
@@ -71,7 +71,7 @@ Several carriers list parcels heading your way once you prove the address, email
 | US | FedEx Delivery Manager, free | Deliveries to your home, address checked by a texted code. FedEx doesn't say parcels without a number will appear |
 | UK | DPD app | [DPD](carrier:dpd-uk) and DPD Local parcels, matched to "your mobile phone number or email address and your delivery address" |
 | Canada | Canada Post automatic tracking, free | Personal accounts only, no business or PO box addresses, ID checked. No guarantee every parcel is added |
-| Australia | MyPost account, free | Australia Post adds parcels "if we have the information required" |
+| Australia | MyPost account, free | [Australia Post](carrier:australia-post) adds parcels "if we have the information required" |
 
 We found nothing like this for [Royal Mail](carrier:royal-mail), Evri or [An Post](carrier:an-post): with them, you need the number. To follow parcels from every carrier in one list, see [universal parcel tracking](guide:universal-tracker).
 

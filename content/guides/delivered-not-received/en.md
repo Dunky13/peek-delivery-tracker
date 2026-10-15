@@ -25,8 +25,8 @@ Where each carrier may leave it:
 | Royal Mail | A neighbour, your chosen Safeplace, or the post room at work |
 | [Evri](carrier:evri) | A neighbour, or a Safe Place, which must not be "an exposed doorstep or otherwise in public view" |
 | [DPD UK](carrier:dpd-uk) | A neighbour, automatically if you're out, or a safe place you asked for |
-| Canada Post | A parcel locker (key in your mailbox), a concierge or a mailroom |
-| Australia Post | Someone who accepted it for you, or a safe place "under or behind something" |
+| [Canada Post](carrier:canada-post) | A parcel locker (key in your mailbox), a concierge or a mailroom |
+| [Australia Post](carrier:australia-post) | Someone who accepted it for you, or a safe place "under or behind something" |
 
 Tracking never said delivered? See [why tracking stops updating](guide:tracking-not-updating) or [what tracking statuses mean](guide:tracking-statuses).
 

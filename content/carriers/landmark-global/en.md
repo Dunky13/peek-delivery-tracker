@@ -86,7 +86,7 @@ It reads Landmark's English page, so wordings appear in English, partners' scans
 
 Landmark's scan times carry no time zone, so its own history isn't shown: the dated history comes from universal tracking services or, once the parcel is followed, from the delivery partner, and Landmark is asked again every 6 hours. With no service answering, you see Landmark's current status, dated when Peek saw it.
 
-When the partner is one Peek tracks directly, such as Evri, [Royal Mail](carrier:royal-mail), [USPS](carrier:usps) or Canada Post, the parcel can be followed there; its page then says "Delivery with" that carrier and lists the partner's number with a link. That doesn't happen for every parcel. Each scan goes on a map, and you can be notified of every scan, important steps or "Delivery day only".
+When the partner is one Peek tracks directly, such as Evri, [Royal Mail](carrier:royal-mail), [USPS](carrier:usps) or [Canada Post](carrier:canada-post), the parcel can be followed there; its page then says "Delivery with" that carrier and lists the partner's number with a link. That doesn't happen for every parcel. Each scan goes on a map, and you can be notified of every scan, important steps or "Delivery day only".
 
 ## Questions about Landmark Global tracking
 

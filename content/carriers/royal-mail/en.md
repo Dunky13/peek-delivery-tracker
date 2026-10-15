@@ -79,7 +79,7 @@ Royal Mail's pages list these channels for recipients (read 13 October 2026):
 
 ## Tracking Royal Mail parcels with Peek
 
-[Peek](/) names Royal Mail at once for a valid `AB123456785GB`-style number; if the check digit fails, check the number or press "Change". For 21- and 16-character references it asks tracking services first and Royal Mail's site last, so this can take a little while; if nothing answers, or a rare reference is named Australia Post, pick Royal Mail with "Change". A royalmail.com link with `trackNumber=` works with any of these numbers; a `#/tracking-results/` link only with a number ending `GB`.
+[Peek](/) names Royal Mail at once for a valid `AB123456785GB`-style number; if the check digit fails, check the number or press "Change". For 21- and 16-character references it asks tracking services first and Royal Mail's site last, so this can take a little while; if nothing answers, or a rare reference is named [Australia Post](carrier:australia-post), pick Royal Mail with "Change". A royalmail.com link with `trackNumber=` works with any of these numbers; a `#/tracking-results/` link only with a number ending `GB`.
 
 Peek opens royalmail.com in a browser on its own server. Royal Mail often refuses automated visits, so a Royal Mail parcel is checked at most once an hour, even on delivery day, and tracking services hold little of its history: it can stay on its last status for hours.
 

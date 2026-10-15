@@ -67,7 +67,7 @@ USPS notes that Hanukkah, from Friday 4 to Saturday 12 December, is earlier this
 
 ## Canada: Canada Post
 
-Canada Post's 2026 dates are out, by zone, between major urban centres. Its tool at canadapost.ca/deliverytool gives the time from your postal code.
+[Canada Post](carrier:canada-post)'s 2026 dates are out, by zone, between major urban centres. Its tool at canadapost.ca/deliverytool gives the time from your postal code.
 
 | Carrier | Service | Send by |
 | --- | --- | --- |
@@ -80,7 +80,7 @@ Canada Post's 2026 dates are out, by zone, between major urban centres. Its tool
 
 ## Australia: Australia Post
 
-Australia Post's 2026 dates are out, for metro areas: elsewhere, allow more time. Over the counter, Parcel Post and Express Post must be lodged by 2.30pm.
+[Australia Post](carrier:australia-post)'s 2026 dates are out, for metro areas: elsewhere, allow more time. Over the counter, Parcel Post and Express Post must be lodged by 2.30pm.
 
 | Carrier | Service | Send by |
 | --- | --- | --- |

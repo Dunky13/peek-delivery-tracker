@@ -111,5 +111,20 @@
   { "id": "la-poste", "catalog": "la-poste", "name": "La Poste / Colissimo", "languages": ["en", "fr"] },
   { "id": "correos-spain", "catalog": "correos-spain", "name": "Correos", "languages": ["en", "es"] },
   { "id": "royal-mail", "catalog": "royal-mail", "name": "Royal Mail", "languages": ["en"] },
-  { "id": "usps", "catalog": "usps", "name": "USPS", "languages": ["en"] }
+  { "id": "usps", "catalog": "usps", "name": "USPS", "languages": ["en"] },
+  { "id": "canada-post", "catalog": "canada-post", "name": "Canada Post", "languages": ["en", "fr"] },
+  { "id": "purolator", "catalog": "purolator", "name": "Purolator", "languages": ["en", "fr"] },
+  { "id": "intelcom", "catalog": "intelcom", "name": "Intelcom / Dragonfly", "languages": ["en", "fr"] },
+  { "id": "canpar", "catalog": "canpar", "name": "Canpar", "languages": ["en"] },
+  { "id": "uniuni", "catalog": "uniuni", "name": "UniUni", "languages": ["en"] },
+  { "id": "ontrac", "catalog": "ontrac", "name": "OnTrac", "languages": ["en"] },
+  { "id": "lso", "catalog": "lso", "name": "LSO", "languages": ["en"] },
+  { "id": "gofo", "catalog": "gofo", "name": "GOFO Express", "languages": ["en"] },
+  { "id": "speedx", "catalog": "speedx", "name": "SpeedX", "languages": ["en"] },
+  { "id": "australia-post", "catalog": "australia-post", "name": "Australia Post", "languages": ["en"] },
+  { "id": "aramex-au", "catalog": "aramex-au", "name": "Aramex Australia", "languages": ["en"] },
+  { "id": "couriersplease", "catalog": "couriersplease", "name": "CouriersPlease", "languages": ["en"] },
+  { "id": "nz-post", "catalog": "nz-post", "name": "NZ Post", "languages": ["en"] },
+  { "id": "aramex-nz", "catalog": "aramex-nz", "name": "Aramex New Zealand", "languages": ["en"] },
+  { "id": "magyar-posta", "catalog": "magyar-posta", "name": "Magyar Posta", "languages": ["en"] }
 ]

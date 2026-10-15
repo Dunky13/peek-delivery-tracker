@@ -84,7 +84,7 @@ Have the tracking number or pickup code ready. Helthjem mentions no support in E
 
 ## Tracking a Helthjem parcel with Peek
 
-[Peek](/) can't tell Helthjem's numbers from Bring's by shape, and can't ask Bring. For 18 digits starting `37072476`, or the 20-digit form, it asks Helthjem and the other likely carriers at once ([bpost](carrier:bpost), or [Swiss Post Cargo](carrier:swiss-post-cargo), PostNord and NZ Post for 20 digits). When only Helthjem knows it, you see "Helthjem has this parcel."; otherwise pick with "Change". Helthjem's 17-digit shipment numbers and its other 20-digit barcodes need "Change" or a helthjem.no tracking link, which works with any number.
+[Peek](/) can't tell Helthjem's numbers from Bring's by shape, and can't ask Bring. For 18 digits starting `37072476`, or the 20-digit form, it asks Helthjem and the other likely carriers at once ([bpost](carrier:bpost), or [Swiss Post Cargo](carrier:swiss-post-cargo), PostNord and [NZ Post](carrier:nz-post) for 20 digits). When only Helthjem knows it, you see "Helthjem has this parcel."; otherwise pick with "Change". Helthjem's 17-digit shipment numbers and its other 20-digit barcodes need "Change" or a helthjem.no tracking link, which works with any number.
 
 Peek shows the status, each scan's place on a map (including sorter scans Helthjem's page hides), the time it was delivered, the shop that sent it and the pickup point's name while it waits or once collected. Statuses stay in Helthjem's Norwegian, and scan times match Helthjem's. Peek leaves out the expected day Helthjem's page shows, the point's address, the photo and postcodes.
 

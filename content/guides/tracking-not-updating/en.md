@@ -13,7 +13,7 @@ Tracking not updating usually means nobody has scanned your parcel (or package) 
 
 Tracking shows scans, not movement, and a parcel is scanned only at certain points:
 
-- **No scan between hubs.** [UPS](carrier:ups) says a parcel going a long way likely won't be scanned again until its destination hub. Canada Post typically scans a parcel when it's mailed and when it goes out for delivery, and says several days can pass in between.
+- **No scan between hubs.** [UPS](carrier:ups) says a parcel going a long way likely won't be scanned again until its destination hub. [Canada Post](carrier:canada-post) typically scans a parcel when it's mailed and when it goes out for delivery, and says several days can pass in between.
 - **Weekends and holidays.** USPS delivers Monday to Saturday; on Sunday, only Priority Mail Express and Amazon parcels. Royal Mail counts Saturday as a working day for 1st and 2nd Class, but not Sunday or public holidays. Around Christmas, check [carriers' days off](guide:christmas-posting-dates).
 - **Weather and busy seasons.** Amazon's common reasons for late deliveries include bad weather, heavy traffic, holiday demand and customs.
 - **A label the machines can't read.** DHL names postcode typos, missing house numbers, hard-to-read handwriting, labels that came off and damaged packaging. The parcel may then be misrouted or sorted by hand, delaying it several days.
@@ -40,7 +40,7 @@ Hours to days. If yours is stuck on `Label Created`, the carrier may not have th
 - **UPS:** `Label Created` changes once UPS has the parcel.
 - **Royal Mail:** a number it doesn't recognise may be for an item not handed in yet. Try again later.
 - **[Evri](carrier:evri):** after the sender's dispatch notice, it can take a few days for Evri to receive the parcel.
-- **Australia Post:** a number it doesn't recognise may not be scanned yet: try again in 24 hours. After more than a week on `Pending`, ask the sender whether it was really sent.
+- **[Australia Post](carrier:australia-post):** a number it doesn't recognise may not be scanned yet: try again in 24 hours. After more than a week on `Pending`, ask the sender whether it was really sent.
 - **Vinted:** tracking can take up to 48 hours to first appear.
 
 For other statuses, see [what tracking statuses mean](guide:tracking-statuses).

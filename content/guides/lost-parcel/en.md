@@ -27,7 +27,7 @@ Tracking says delivered but nothing came? See [delivered but not received](guide
 
 ## How long before you can claim for a lost parcel?
 
-Carriers count from posting or the due date, not from the last scan. Most "lost" parcels are only late: Canada Post and Australia Post say most turn up within 5 business days of the expected date. Tracking just gone quiet? See [tracking not updating](guide:tracking-not-updating).
+Carriers count from posting or the due date, not from the last scan. Most "lost" parcels are only late: [Canada Post](carrier:canada-post) and [Australia Post](carrier:australia-post) say most turn up within 5 business days of the expected date. Tracking just gone quiet? See [tracking not updating](guide:tracking-not-updating).
 
 | Carrier | Search or claim from | Claim deadline | Who claims |
 | --- | --- | --- | --- |

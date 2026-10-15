@@ -31,7 +31,7 @@ If you bought from a business, the seller is. In the UK, Ireland and the EU, the
 | UK | Goods must be of "satisfactory quality", including "appearance and finish". You can reject a faulty item for a full refund within 30 days (Consumer Rights Act 2015, ss. 9 and 22) |
 | Ireland | "If your parcel is damaged or lost in transit, the business should replace the product," says the CCPC. You can ask for a full refund if you tell the business within 30 days of delivery |
 | US | No federal rule: under UCC § 2-509 the sale's terms decide who bears the risk in transit, so read the shop's policy. A card dispute is the fallback (below) |
-| Canada | Consumer law is provincial. Canada Post tells recipients to "inform the sender", and only the sender can be refunded |
+| Canada | Consumer law is provincial. [Canada Post](carrier:canada-post) tells recipients to "inform the sender", and only the sender can be refunded |
 | Australia | A damaged item may fail the consumer guarantee of acceptable quality. "The store or seller is responsible for resolving any issues with Australia Post or a courier company," says Consumer Affairs Victoria |
 
 It's different in three cases:
@@ -54,7 +54,7 @@ Most carriers deal only with the sender, so your claim usually goes through the 
 | [DPD UK](carrier:dpd-uk) | Sender | 14 days after despatch | Up to £100 |
 | [An Post](carrier:an-post), business senders | Sender | 30 days after posting | Nothing for standard parcels |
 | Canada Post | Sender | 90 days after shipping within Canada | Insured value and postage |
-| Australia Post | Recipient, in person at a Post Office | 6 months after posting | Up to A$100 plus postage |
+| [Australia Post](carrier:australia-post) | Recipient, in person at a Post Office | 6 months after posting | Up to A$100 plus postage |
 
 Many carriers on the Continent give about a week from delivery: 7 days at [DHL Paket](carrier:dhl) in Germany, 8 at [Swiss Post](carrier:swiss-post).
 

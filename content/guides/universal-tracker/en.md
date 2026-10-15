@@ -18,7 +18,7 @@ Yes, and you may already have one: besides universal trackers, several national 
 | You paste a number or link | That number | Every tracker |
 | You forward one email | That email | ParcelsApp, Shop, Deliveries |
 | You connect your inbox | Your mailbox, filtered by its own rules | Shop, AfterShip, PayPal |
-| The carrier or shop matches you | Your name, address, email or phone | [USPS](carrier:usps), Canada Post, Australia Post; Shopify orders in Shop |
+| The carrier or shop matches you | Your name, address, email or phone | [USPS](carrier:usps), [Canada Post](carrier:canada-post), [Australia Post](carrier:australia-post); Shopify orders in Shop |
 
 ## How do I see all the parcels coming to my house?
 

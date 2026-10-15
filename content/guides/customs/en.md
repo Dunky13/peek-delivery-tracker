@@ -11,7 +11,7 @@ updated: 2026-10-10
 
 ## What does "held at customs" mean?
 
-Every parcel crossing a customs border is presented to customs: by law, [Royal Mail](carrier:royal-mail) presents every item from outside the UK to Border Force, and Canada Post presents every incoming international parcel to the Canada Border Services Agency (CBSA). In Ireland, that means parcels from outside the EU, Great Britain included.
+Every parcel crossing a customs border is presented to customs: by law, [Royal Mail](carrier:royal-mail) presents every item from outside the UK to Border Force, and [Canada Post](carrier:canada-post) presents every incoming international parcel to the Canada Border Services Agency (CBSA). In Ireland, that means parcels from outside the EU, Great Britain included.
 
 Customs checks the sender's declaration (contents, value), may open the parcel, works out any tax and duty, then releases it to the carrier. Carriers word this stage differently:
 
@@ -37,7 +37,7 @@ Often nothing. To find out:
 
 ### How do I contact customs about a package?
 
-Mostly you don't: start with the carrier (step 4). In Canada, even Canada Post can't intervene while the CBSA reviews a parcel, so you wait for release. In Australia, ask Australia Post (13 13 18) about delivery and ABF about an Import Declaration or a payment.
+Mostly you don't: start with the carrier (step 4). In Canada, even Canada Post can't intervene while the CBSA reviews a parcel, so you wait for release. In Australia, ask [Australia Post](carrier:australia-post) (13 13 18) about delivery and ABF about an Import Declaration or a payment.
 
 ## How long can a parcel be held at customs?
 

@@ -7,7 +7,7 @@ published: 2026-10-14
 updated: 2026-10-14
 ---
 
-"Returned to sender" means the carrier couldn't hand your parcel (or package) over and is taking it back to whoever sent it, because of the address, a refusal, a missed pickup deadline or unpaid charges. Once a return has started, carriers such as Canada Post and DHL say they can't stop it. Message the seller straight away and say, in writing, whether you want it sent again or your money back.
+"Returned to sender" means the carrier couldn't hand your parcel (or package) over and is taking it back to whoever sent it, because of the address, a refusal, a missed pickup deadline or unpaid charges. Once a return has started, carriers such as [Canada Post](carrier:canada-post) and DHL say they can't stop it. Message the seller straight away and say, in writing, whether you want it sent again or your money back.
 
 ## Why was my parcel returned to sender?
 
@@ -18,7 +18,7 @@ The reason is usually in the latest scan, and the carrier marks it on the parcel
 | Address wrong or incomplete | [USPS](carrier:usps) `Insufficient Address`, `No Such Number`, `No Such Street`; [DHL](carrier:dhl): no clear name on the doorbell or letterbox |
 | Nobody known at the address, or moved | USPS `Moved, Left No Address`, `Vacant`; Canada Post `Recipient not located at address provided. Item being returned to sender.` |
 | Not collected in time | USPS `Unclaimed`; [An Post](carrier:an-post) `Your item was not collected within the specified timeframe. This item will now be returned to sender.` |
-| Refused at the door | USPS `Refused`; Australia Post: "someone declined delivery" |
+| Refused at the door | USPS `Refused`; [Australia Post](carrier:australia-post): "someone declined delivery" |
 | Customs charges unpaid or paperwork incomplete | An Post: charges not paid by the "pay by date", or the sender's customs declaration incomplete |
 | Postage or label problem | Canada Post: not enough postage, an improper label, a reused tracking number |
 | Not allowed in the post | USPS `Returned to Sender, Mailpiece Contains Nonmailable Contents` |

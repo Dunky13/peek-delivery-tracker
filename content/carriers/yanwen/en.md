@@ -51,7 +51,7 @@ Above the scans, Yanwen files each parcel under a category. `Info_Received` is t
 
 Yanwen doesn't deliver in Europe itself: it says it works "with local carriers to fulfill the last mile package delivery". When it names that carrier, the result page shows a notes box with "Distributor", "Distributor Website" and "Contact Number". For some parcels the box is empty.
 
-Who delivers depends on the country and the shop's choice of service. Yanwen's product list names UK lines via [Royal Mail](carrier:royal-mail), Yodel, Hermes and [Evri](carrier:evri), for example. In the US, parcels tracked on Yanwen's site have been delivered by [USPS](carrier:usps), UniUni or YanwenExpress, Yanwen's own US last-mile arm, and in Canada by Emile or UniUni.
+Who delivers depends on the country and the shop's choice of service. Yanwen's product list names UK lines via [Royal Mail](carrier:royal-mail), Yodel, Hermes and [Evri](carrier:evri), for example. In the US, parcels tracked on Yanwen's site have been delivered by [USPS](carrier:usps), [UniUni](carrier:uniuni) or YanwenExpress, Yanwen's own US last-mile arm, and in Canada by Emile or UniUni.
 
 Attempts, notice cards, rescheduling and how long a parcel waits are the local carrier's rules: Yanwen publishes none. `Available_For_Pick_Up` means the parcel is waiting at a pickup point; `Undelivered` means delivery failed. Use the "Last Mile Tracking" number and the contact in the notes box to ask that carrier about a new delivery.
 

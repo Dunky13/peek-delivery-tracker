@@ -59,8 +59,8 @@ What each carrier lets you change, and what it costs:
 | [DPD UK](carrier:dpd-uk) | Another day, a safe place, a neighbour, a Pickup shop. A new address goes through the sender | No fee stated |
 | [DPD Ireland](carrier:dpd-ie) | Another address up to the day before, another date, a safe place, a Pickup Point | No fee stated |
 | [An Post](carrier:an-post) | A safe spot or neighbour you set in My Deliveries, a parcel locker from its text | Lockers free |
-| Canada Post | A safe-drop spot at your address, chosen before the first attempt | Free |
-| Australia Post (MyPost) | Another street address, a Parcel Locker, Parcel Collect at a Post Office, your PO Box | No fee stated |
+| [Canada Post](carrier:canada-post) | A safe-drop spot at your address, chosen before the first attempt | Free |
+| [Australia Post](carrier:australia-post) (MyPost) | Another street address, a Parcel Locker, Parcel Collect at a Post Office, your PO Box | No fee stated |
 
 A few catches:
 

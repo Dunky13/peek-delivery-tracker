@@ -80,8 +80,8 @@ Besides Cainiao, you'll see [YunExpress](carrier:yunexpress), [4PX](carrier:4px)
 | two letters, nine digits, `YP`, or `BYS` + 9 digits | Yanwen (`YP` isn't a country) |
 | `SF` + 13 digits | SF Express |
 | `SY` + 11 digits | Sunyou |
-| `UUS…` | UniUni, a last-mile courier (US and Canada) |
-| `SPX…` or `GFUS…` | SpeedX or GOFO, last-mile couriers (US) |
+| `UUS…` | [UniUni](carrier:uniuni), a last-mile courier (US and Canada) |
+| `SPX…` or `GFUS…` | [SpeedX](carrier:speedx) or [GOFO](carrier:gofo), last-mile couriers (US) |
 
 Paste either number into [Peek](/) and it works out the carrier among more than 3,500. For numbers in general, see [tracking number formats](guide:tracking-number-formats).
 
@@ -94,8 +94,8 @@ It depends on the shipping line:
 | US | [USPS](carrier:usps) for postal numbers ending `CN` and on some 4PX lines (4PX scans read `Arrived at usps facility`), or a courier such as UniUni, SpeedX or GOFO. |
 | UK | Yanwen sells UK lines through [Royal Mail](carrier:royal-mail), [Evri](carrier:evri), Yodel and Hermes. Shein's orders arrive "via our UK courier partners". |
 | Ireland | [An Post](carrier:an-post) for postal items. It tells you by postcard, email or text when customs charges are due. |
-| Canada | Canada Post for postal items, or a courier such as UniUni. |
-| Australia | Australia Post for postal items. Shein doesn't deliver to PO boxes or parcel lockers. |
+| Canada | [Canada Post](carrier:canada-post) for postal items, or a courier such as UniUni. |
+| Australia | [Australia Post](carrier:australia-post) for postal items. Shein doesn't deliver to PO boxes or parcel lockers. |
 
 ## How long does shipping from China take?
 

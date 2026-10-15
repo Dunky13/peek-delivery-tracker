@@ -912,6 +912,126 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "USPS tracking: numbers, statuses and missed deliveries",
       "name": "USPS",
       "color": "#004b87"
+    },
+    {
+      "id": "canada-post",
+      "catalog": "canada-post",
+      "slug": "canada-post-tracking",
+      "title": "Canada Post tracking: numbers, statuses and notice cards",
+      "name": "Canada Post",
+      "color": "#e4002b"
+    },
+    {
+      "id": "purolator",
+      "catalog": "purolator",
+      "slug": "purolator-tracking",
+      "title": "Purolator tracking: PIN, statuses and missed deliveries",
+      "name": "Purolator",
+      "color": "#da291c"
+    },
+    {
+      "id": "intelcom",
+      "catalog": "intelcom",
+      "slug": "intelcom-dragonfly-tracking",
+      "title": "\"Intelcom / Dragonfly tracking: numbers, statuses, contact\"",
+      "name": "Intelcom / Dragonfly",
+      "color": "#13a58f"
+    },
+    {
+      "id": "canpar",
+      "catalog": "canpar",
+      "slug": "canpar-tracking",
+      "title": "Canpar tracking: numbers, statuses and missed deliveries",
+      "name": "Canpar",
+      "color": "#003b70"
+    },
+    {
+      "id": "uniuni",
+      "catalog": "uniuni",
+      "slug": "uniuni-tracking",
+      "title": "UniUni tracking: statuses, missed deliveries and contact",
+      "name": "UniUni",
+      "color": "#f68841"
+    },
+    {
+      "id": "ontrac",
+      "catalog": "ontrac",
+      "slug": "ontrac-tracking",
+      "title": "OnTrac tracking: numbers, statuses and missed deliveries",
+      "name": "OnTrac",
+      "color": "#cc2027"
+    },
+    {
+      "id": "lso",
+      "catalog": "lso",
+      "slug": "lso-tracking",
+      "title": "\"LSO tracking: airbill numbers, statuses and delivery help\"",
+      "name": "LSO",
+      "color": "#0047ba"
+    },
+    {
+      "id": "gofo",
+      "catalog": "gofo",
+      "slug": "gofo-express-tracking",
+      "title": "GOFO Express tracking: statuses, photos and support",
+      "name": "GOFO Express",
+      "color": "#fc4c02"
+    },
+    {
+      "id": "speedx",
+      "catalog": "speedx",
+      "slug": "speedx-tracking",
+      "title": "SpeedX tracking: statuses, missed deliveries and contact",
+      "name": "SpeedX",
+      "color": "#1aa3ff"
+    },
+    {
+      "id": "australia-post",
+      "catalog": "australia-post",
+      "slug": "australia-post-tracking",
+      "title": "Australia Post tracking: numbers, statuses and lockers",
+      "name": "Australia Post",
+      "color": "#dc1928"
+    },
+    {
+      "id": "aramex-au",
+      "catalog": "aramex-au",
+      "slug": "aramex-australia-tracking",
+      "title": "Aramex Australia tracking: numbers, statuses, contacts",
+      "name": "Aramex Australia",
+      "color": "#dc291e"
+    },
+    {
+      "id": "couriersplease",
+      "catalog": "couriersplease",
+      "slug": "couriersplease-tracking",
+      "title": "\"CouriersPlease tracking: numbers, statuses and help\"",
+      "name": "CouriersPlease",
+      "color": "#c21e36"
+    },
+    {
+      "id": "nz-post",
+      "catalog": "nz-post",
+      "slug": "nz-post-tracking",
+      "title": "NZ Post tracking: numbers, statuses and missed parcels",
+      "name": "NZ Post",
+      "color": "#d8291c"
+    },
+    {
+      "id": "aramex-nz",
+      "catalog": "aramex-nz",
+      "slug": "aramex-new-zealand-tracking-number",
+      "title": "Aramex New Zealand tracking number: statuses, contacts",
+      "name": "Aramex New Zealand",
+      "color": "#dc291e"
+    },
+    {
+      "id": "magyar-posta",
+      "catalog": "magyar-posta",
+      "slug": "magyar-posta-tracking",
+      "title": "Magyar Posta tracking: Hungarian statuses in English",
+      "name": "Magyar Posta",
+      "color": "#346631"
     }
   ],
   "de": [
@@ -1420,6 +1540,30 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "La Poste / Colissimo\u00a0: suivi de colis, numéro et statuts",
       "name": "La Poste / Colissimo",
       "color": "#ffcf00"
+    },
+    {
+      "id": "canada-post",
+      "catalog": "canada-post",
+      "slug": "canada-post-suivi",
+      "title": "Postes Canada (Canada Post) suivi\u00a0: numéro, statuts, avis",
+      "name": "Canada Post",
+      "color": "#e4002b"
+    },
+    {
+      "id": "purolator",
+      "catalog": "purolator",
+      "slug": "purolator-suivi",
+      "title": "Purolator suivi\u00a0: NIC, statuts et livraison manquée",
+      "name": "Purolator",
+      "color": "#da291c"
+    },
+    {
+      "id": "intelcom",
+      "catalog": "intelcom",
+      "slug": "intelcom-dragonfly-suivi-colis",
+      "title": "\"Intelcom / Dragonfly suivi colis\u00a0: statuts et contact\"",
+      "name": "Intelcom / Dragonfly",
+      "color": "#13a58f"
     }
   ],
   "it": [

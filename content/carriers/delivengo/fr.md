@@ -6,7 +6,7 @@ published: 2026-10-12
 updated: 2026-10-12
 ---
 
-Delivengo est le service de [La Poste](carrier:la-poste) qui permet aux entreprises françaises d'envoyer à l'étranger de petits colis légers, jusqu'à 2 kg. Si une boutique française l'a choisi, ton colis quitte la France avec La Poste et c'est la poste de ton pays qui le livre : bpost en Belgique, la Poste suisse, Postes Canada au Québec. Tu le suis sur le suivi de La Poste avec le numéro que la boutique te donne, ou en le collant dans la case ci-dessus.
+Delivengo est le service de [La Poste](carrier:la-poste) qui permet aux entreprises françaises d'envoyer à l'étranger de petits colis légers, jusqu'à 2 kg. Si une boutique française l'a choisi, ton colis quitte la France avec La Poste et c'est la poste de ton pays qui le livre : bpost en Belgique, la Poste suisse, [Postes Canada](carrier:canada-post) au Québec. Tu le suis sur le suivi de La Poste avec le numéro que la boutique te donne, ou en le collant dans la case ci-dessus.
 
 ## Numéro de suivi Delivengo : où le trouver
 
