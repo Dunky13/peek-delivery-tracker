@@ -10574,9 +10574,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gdex",
+      "recognitionRank": 957
     },
     "linkRules": [
+      {
+        "domains": [
+          "gdexpress.com",
+          "www.gdexpress.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "consignmentno"
+        ]
+      },
       {
         "domains": [
           "web2.gdexpress.com"
@@ -10592,7 +10603,9 @@ export const CARRIER_CAPABILITIES = {
         "pattern": "^MY\\d{11}$",
         "confidence": "high"
       }
-    ]
+    ],
+    "trackingUrlTemplate": "https://gdexpress.com/tracking/?consignmentno={trackingNumber}",
+    "trackingSearchUrl": "https://gdexpress.com/our-business/delivery/tools-references/tracking/"
   },
   "ghn": {
     "displayName": "GHN",
