@@ -12437,12 +12437,17 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sfc",
+      "recognitionRank": 955
     },
     "linkRules": [],
     "detectionRules": [
       {
         "pattern": "^SFC\\d[A-Z]{2}\\d{13,14}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^SFC[A-Z]{2}\\d{10}YQ$",
         "confidence": "high"
       }
     ],
@@ -16531,7 +16536,6 @@ export const CARRIER_CAPABILITIES = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "trackingUrlTemplate": "https://steadfast.com.bd/t/{trackingNumber}",
     "linkRules": [
       {
         "domains": [
