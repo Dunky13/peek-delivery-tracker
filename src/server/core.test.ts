@@ -595,7 +595,9 @@ describe('input validation', () => {
     });
     // Six letters are a GLS Track ID.
     expect(lettersOnly(' abcdef ').trackingNumber).toBe('ABCDEF');
-    for (const word of ['bonjour', 'tracking', 'confirmation', 'abc def']) {
+    // Eight letters are also a Loggi tracking code.
+    expect(lettersOnly(' abcdefgh ').trackingNumber).toBe('ABCDEFGH');
+    for (const word of ['bonjour', 'confirmation', 'abc def']) {
       expect(() => lettersOnly(word)).toThrow('include a digit');
     }
   });

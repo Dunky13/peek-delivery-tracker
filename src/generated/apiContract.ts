@@ -10228,7 +10228,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "deppon"
     },
     "linkRules": [],
     "detectionRules": [],
@@ -11194,7 +11194,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Sao_Paulo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "loggi"
     },
     "linkRules": [
       {
@@ -11204,7 +11204,12 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/rastreador/([A-Za-z0-9]{8})/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^(?=[A-Z0-9]*[A-Z])[A-Z0-9]{8}$",
+        "confidence": "low"
+      }
+    ]
   },
   "lotte-global": {
     "displayName": "Lotte Global Logistics",
@@ -13059,7 +13064,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "viettel-post"
     },
     "linkRules": [
       {
