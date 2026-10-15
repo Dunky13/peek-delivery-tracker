@@ -1,4 +1,4 @@
--- Accept seventy carriers from Universal Parcel Scraper 0.167.0 that only aggregators named
+-- Accept seventy carriers from Universal Parcel Scraper 0.168.0 that only aggregators named
 -- before: couriers and posts in Bangladesh, Pakistan, India, Sri Lanka, Nepal, China, Hong
 -- Kong, Korea, Taiwan, Japan, Indonesia, the Philippines, Malaysia, Singapore, Kazakhstan,
 -- Russia, Ukraine, Greece, Iceland, Algeria, Kenya, South Africa and Brazil. They ask for no
