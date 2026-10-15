@@ -11146,7 +11146,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "logen",
+      "recognitionRank": 48
     },
     "trackingUrlTemplate": "https://www.ilogen.com/web/personal/trace/{trackingNumber}",
     "linkRules": [
@@ -11222,9 +11223,9 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lotte-global"
     },
-    "trackingUrlTemplate": "https://www.lotteglogis.com/open/tracking?invno={trackingNumber}",
+    "trackingUrlTemplate": "https://www.lotteglogis.com/home/reservation/tracking/linkView?InvNo={trackingNumber}",
     "linkRules": [
       {
         "domains": [
