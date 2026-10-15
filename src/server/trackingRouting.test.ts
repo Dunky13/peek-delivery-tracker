@@ -1251,6 +1251,105 @@ describe('persistent tracking routing', () => {
     expect(later.universal).toHaveBeenCalledOnce();
   });
 
+  it('confirms the filed carrier from its local-clock answer, so a provider naming it does not ask it again', async () => {
+    fixedPlan('Ship24', '17TRACK');
+    const { router, direct, universal } = setup();
+    direct.mockResolvedValue(yearlessYamato());
+    universal.mockResolvedValue({ ...history(), discovered_carrier: 'yamato' });
+    const filed = (routing?: JsonObject) => parcel({ carrier: 'yamato', tracking_number: '123456789012',
+      ...(routing ? { carrier_data: { routing } } : {}) });
+    const first = await router.fetch(filed(), true);
+    expect(direct).toHaveBeenCalledOnce();
+    expect(first.result).toMatchObject({ tracking_provider: 'Ship24', carrier_answered: true,
+      routing: { confirmed_carrier: 'yamato', confirmed_number: '123456789012', direct_retry_at: '2026-09-10T18:00:00.000Z' } });
+    expect(vi.mocked(monitoring.reportRoutingEvent)).not.toHaveBeenCalledWith('direct_carrier_discovered', expect.anything());
+    const later = setup(new Date('2026-09-10T12:30:00Z'));
+    later.universal.mockResolvedValue({ ...history(), discovered_carrier: 'yamato' });
+    const next = await later.router.fetch(filed(first.result.routing as JsonObject), true);
+    expect(later.direct).not.toHaveBeenCalled();
+    expect(later.universal).toHaveBeenCalledOnce();
+    expect(next.result.routing).toMatchObject({ direct_retry_at: '2026-09-10T18:00:00.000Z' });
+  });
+
+  describe('a provider that only dates the filed carrier\'s local-clock answer', () => {
+    const local = (scans = 1, stage = 'in_transit'): RoutedResult => ({ sourceCarrierId: 'yamato', swissPostReady: null, handoffFallbackErrorType: null,
+      result: { status: 'in_transit', current_stage: stage, last_update: null,
+        events: Array.from({ length: scans }, (_, index) => ({ local_time: `2026-09-10T0${index + 1}:00:00`, description: `Scan ${index + 1}`, stage })) } });
+    const dated = (scans = 1, stage = 'in_transit'): CarrierResult => ({ status: 'in_transit', current_stage: stage, last_update: '2026-09-10T11:00:00Z',
+      events: Array.from({ length: scans }, (_, index) => ({ time: `2026-09-10T0${index + 1}:00:00Z`, description: `Scan ${index + 1}`, stage })) });
+    // The parcel shows the provider's dated copy of the carrier's scans.
+    const filed = (routing: JsonObject) => parcel({ carrier: 'yamato', tracking_number: '123456789012', current_stage: 'in_transit',
+      carrier_data: { tracking_provider: 'Ship24', routing } });
+    async function copied() {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(local());
+      universal.mockResolvedValue(dated());
+      const result = await router.fetch(filed(state({ configured_carrier: 'yamato' })), true);
+      return result.result.routing as JsonObject;
+    }
+
+    it('keeps the carrier first and remembers what the provider held', async () => {
+      const routing = await copied();
+      expect(routing).toMatchObject({ confirmed_carrier: 'yamato', preferred_provider: 'Ship24', provider_copy: {
+        carrier: 'yamato', number: '123456789012', scans: 1, stage: 'in_transit', checked_at: time.toISOString() } });
+      expect(routing.direct_retry_at).toBeUndefined();
+    });
+
+    it('is not asked again on a scheduled check while the carrier\'s answer stays the same', async () => {
+      const routing = await copied();
+      const later = setup(new Date('2026-09-10T12:30:00Z'));
+      later.direct.mockResolvedValue(local());
+      const result = await later.router.fetch(filed(routing), true);
+      expect(later.direct).toHaveBeenCalledOnce();
+      expect(later.universal).not.toHaveBeenCalled();
+      expect(result).toMatchObject({ sourceCarrierId: 'yamato', result: { direct_local_fallback: true,
+        routing: { provider_copy: { checked_at: time.toISOString() } } } });
+      expect((result.result.routing as JsonObject).next_check_at).toBeUndefined();
+    });
+
+    it.each([
+      ['a new scan', local(2), true, '2026-09-10T12:30:00Z', 'in_transit'],
+      ['a new stage', local(1, 'customs'), true, '2026-09-10T12:30:00Z', 'in_transit'],
+      ['a refresh by hand', local(), false, '2026-09-10T12:30:00Z', 'in_transit'],
+      ['6 h', local(), true, '2026-09-10T18:00:00Z', 'in_transit'],
+      ['a stage the parcel does not show', local(), true, '2026-09-10T12:30:00Z', 'accepted'],
+    ])('is asked again after %s', async (_label, answer, scheduled, at, shown) => {
+      const routing = await copied();
+      const later = setup(new Date(at));
+      later.direct.mockResolvedValue(answer);
+      later.universal.mockResolvedValue(dated(answer.result.events!.length, String(answer.result.current_stage)));
+      const result = await later.router.fetch({ ...filed(routing), current_stage: shown }, scheduled);
+      expect(later.universal).toHaveBeenCalledOnce();
+      expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { provider_copy: {
+        scans: answer.result.events!.length, stage: answer.result.current_stage, checked_at: new Date(at).toISOString() } } });
+    });
+
+    it('stays on the provider when it holds scans the carrier does not list', async () => {
+      const routing = await copied();
+      const later = setup(new Date('2026-09-10T12:30:00Z'));
+      later.direct.mockResolvedValue(local(2));
+      later.universal.mockResolvedValue(dated(3));
+      const result = await later.router.fetch(filed(routing), true);
+      expect(result.result.tracking_provider).toBe('Ship24');
+      expect(result.result.routing).not.toHaveProperty('provider_copy');
+      expect(result.result.routing).toMatchObject({ direct_retry_at: '2026-09-10T18:30:00.000Z' });
+      // Its next check asks the provider alone, as before.
+      const next = setup(new Date('2026-09-10T13:00:00Z'));
+      await next.router.fetch(filed(result.result.routing as JsonObject), true);
+      expect(next.direct).not.toHaveBeenCalled();
+      expect(next.universal).toHaveBeenCalledOnce();
+    });
+
+    it('is not matched against another number or carrier', async () => {
+      const routing = await copied();
+      const later = setup(new Date('2026-09-10T12:30:00Z'));
+      later.direct.mockResolvedValue(local());
+      await later.router.fetch(filed({ ...routing, provider_copy: { ...routing.provider_copy as JsonObject, number: '123456789013' } }), true);
+      expect(later.universal).toHaveBeenCalledOnce();
+    });
+  });
+
   describe('an unknown parcel whose detected carrier answers with local clocks only', () => {
     // A synthetic number in 17FEIA's own shape: detection names the carrier with high confidence.
     const number = 'FEIXY0000000001YQ';

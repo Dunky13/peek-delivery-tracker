@@ -129,6 +129,35 @@ describe('new direct adapters through the host', () => {
     } } });
   });
 
+  it.each(cases)('$carrier keeps the saved history without asking providers that only dated the same answer', async (entry) => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const test = setup(entry.carrier, entry.fixture);
+    const direct = await test.adapter.fetch(entry.carrier, entry.number, null);
+    const client = {
+      autoLinkPackages: vi.fn().mockResolvedValue(0), startSyncAttempt: vi.fn(), completeSyncAttempt: vi.fn().mockResolvedValue(true),
+      recordTrackingHealth: vi.fn().mockResolvedValue([]), ackTrackingHealth: vi.fn(), recordTrackingStatusObservations: vi.fn(),
+      applyTrackingSync: vi.fn().mockResolvedValue(true), acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'example-lease' }),
+      finishTrackingProvider: vi.fn(),
+    };
+    const adapter = { fetch: vi.fn().mockResolvedValue(direct), fetchUniversal: vi.fn() };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => observedAt);
+    const copy = { carrier: entry.carrier, number: entry.number, scans: direct.events!.length, stage: entry.stage,
+      checked_at: '2026-09-26T11:00:00.000Z' };
+    await service.syncPackage({ id: 'example-package', carrier: entry.carrier, tracking_number: entry.number, current_stage: entry.stage,
+      last_status_text: 'Saved status', carrier_data: { tracking_provider: 'Ship24', routing: { version: 1, configured_carrier: entry.carrier,
+        confirmed_carrier: entry.carrier, confirmed_number: entry.number, preferred_provider: 'Ship24', last_event_at: '2026-09-25T10:00:00Z',
+        provider_copy: copy } } }, { trigger: 'scheduled' });
+    expect(adapter.fetch).toHaveBeenCalledOnce();
+    expect(adapter.fetchUniversal).not.toHaveBeenCalled();
+    const saved = client.applyTrackingSync.mock.calls.at(-1)!;
+    expect(saved[1]).not.toHaveProperty('current_stage');
+    expect(saved[1]).not.toHaveProperty('last_status_text');
+    expect(saved[2] ?? []).toEqual([]);
+    expect(saved[1]).toMatchObject({ sync_status: 'ok', carrier_data: { tracking_provider: 'Ship24',
+      routing: { last_event_at: '2026-09-25T10:00:00Z', provider_copy: copy },
+      direct_local_history: { carrier: entry.carrier, number: entry.number } } });
+  });
+
   it('keeps a bounded archive across shorter responses and later provider recovery', () => {
     const archive = { carrier: 'evri', number: 'H000000000000001', events: [
       { local_time: '2026-09-25T10:00:00', description: 'Latest scan' },

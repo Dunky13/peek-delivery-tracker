@@ -66,6 +66,8 @@ export interface RoutingState extends JsonObject {
   provider_input_needed?: { provider: string; field: 'dpdPostcode' };
   /** When providers last held no fuller history than the filed carrier's partial answer. */
   partial_checked_at?: string;
+  /** The filed carrier's local-clock answer that a provider's history last matched, adding no scan or stage. */
+  provider_copy?: { carrier: string; number: string; scans: number; stage: string | null; checked_at: string };
   probe_cursor: number;
   discovery_cursor: number;
   failures: Record<string, Failure>;
@@ -167,6 +169,10 @@ const PROGRESS_STAGES = new Set<string>(STAGES.filter((stage) => !['pending', 'r
 export function hasRoutingProgress(result: CarrierResult): boolean {
   return PROGRESS_STAGES.has(resultStage(result) ?? '') || (result.events ?? []).some((event) =>
     PROGRESS_STAGES.has(event.stage ?? '') || PROGRESS_STAGES.has(inferStage(event.description ?? '', 'pending')));
+}
+/** What a carrier's local-clock answer shows: its scans and its stage. */
+function localAnswer(result: CarrierResult): { scans: number; stage: string | null } {
+  return { scans: result.events?.length ?? 0, stage: resultStage(result) };
 }
 /** The newest instant of a routed result, read in its source's zone exactly as its events are persisted. */
 function latest(value: RoutedResult): number {
@@ -452,6 +458,26 @@ export class TrackingRouter {
         const notYet = probe ? ['pending', 'unknown', 'registered'] : ['pending', 'unknown'];
         const moved = [value.result.status, value.result.current_stage, ...(value.result.events ?? []).map((event) => event.stage)]
           .some((stage) => stage && !notYet.includes(stage));
+        const confirm = () => {
+          // The carrier's own answer for this very number, the first time: count
+          // the rules whose failed check digit kept it out of detection's
+          // suggestions. The carrier and rule ids are recorded, never the number.
+          if (value.sourceCarrierId === carrier && !metadata.original_carrier
+            && (state.confirmed_carrier !== carrier || state.confirmed_number !== number)) {
+            for (const rejection of checksumRejections(number)) {
+              if (rejection.carrier === carrier) recordChecksumRejection(carrier, rejection.rule);
+            }
+          }
+          state.confirmed_carrier = carrier;
+          state.confirmed_number = number;
+          if (candidate && !ownInputs) {
+            state.confirmed_tracking_url = null;
+            state.confirmed_postcode = null;
+          } else if (!candidate) {
+            state.confirmed_tracking_url = typeof parcel.tracking_url === 'string' ? parcel.tracking_url : null;
+            state.confirmed_postcode = typeof parcel.dpd_postcode === 'string' ? parcel.dpd_postcode : null;
+          }
+        };
         if (hasUnresolvedDirectCurrent(value.sourceCarrierId, value.result)) {
           // Preserve the direct evidence, but let timestamped or richer
           // providers supply the normal timeline and freshness watermark.
@@ -460,6 +486,9 @@ export class TrackingRouter {
           if (!candidate) {
             localDirectFallback = { value, carrier };
             localHistory = capturedHistory;
+            // The filed carrier answered: a provider naming it later is no discovery
+            // to confirm again, and it keeps its own retry time.
+            confirm();
           } else if (!localHistory && !directLocalHistory(parcel, {})) {
             // An unconfirmed candidate may add evidence for an unknown parcel,
             // but cannot replace history from the parcel's own carrier.
@@ -487,24 +516,7 @@ export class TrackingRouter {
           report(probe ? 'candidate_probe_confirmed'
             : detectionExpects(number, carrier) ? 'detected_carrier_confirmed' : 'carrier_mismatch_confirmed', carrier);
         }
-        // The carrier's own answer for this very number, the first time: count
-        // the rules whose failed check digit kept it out of detection's
-        // suggestions. The carrier and rule ids are recorded, never the number.
-        if (value.sourceCarrierId === carrier && !metadata.original_carrier
-          && (state.confirmed_carrier !== carrier || state.confirmed_number !== number)) {
-          for (const rejection of checksumRejections(number)) {
-            if (rejection.carrier === carrier) recordChecksumRejection(carrier, rejection.rule);
-          }
-        }
-        state.confirmed_carrier = carrier;
-        state.confirmed_number = number;
-        if (candidate && !ownInputs) {
-          state.confirmed_tracking_url = null;
-          state.confirmed_postcode = null;
-        } else if (!candidate) {
-          state.confirmed_tracking_url = typeof parcel.tracking_url === 'string' ? parcel.tracking_url : null;
-          state.confirmed_postcode = typeof parcel.dpd_postcode === 'string' ? parcel.dpd_postcode : null;
-        }
+        confirm();
         state.direct_retry_at = undefined;
         return value;
       } catch (error) {
@@ -536,6 +548,23 @@ export class TrackingRouter {
         && now().getTime() - millis(state.partial_checked_at) >= universalSpacing(now())) {
         partialDirect = { value, carrier: primary };
       } else if (value) return persistResult(value, primary);
+    }
+    // The filed carrier's answer, kept although its clocks are local: it
+    // creates no scan instants, and a provider's history already shown stays.
+    const keepLocal = ({ value, carrier }: { value: RoutedResult; carrier: string }) => {
+      value.result = { ...value.result, direct_local_fallback: true };
+      return persistResult(value, carrier);
+    };
+    // A provider last held exactly the scans and stage of that answer. While the
+    // answer stays the same, a scheduled check keeps the parcel's history instead
+    // of asking the providers again, and asks them after 6 h for scans the
+    // carrier doesn't list.
+    const copy = state.provider_copy;
+    const local = localDirectFallback && localAnswer(localDirectFallback.value.result);
+    if (scheduled && localDirectFallback && local && copy?.carrier === localDirectFallback.carrier && copy.number === number
+      && universalNumber === number && copy.scans === local.scans && copy.stage === local.stage && local.stage === parcel.current_stage
+      && typeof metadata.tracking_provider === 'string' && now().getTime() - millis(copy.checked_at) < 6 * HOUR) {
+      return keepLocal(localDirectFallback);
     }
 
     // One evidence-based correction, not a fan-out to every matching number shape.
@@ -839,11 +868,14 @@ export class TrackingRouter {
         // Progress the parcel hasn't had yet: a carrier that said "not found"
         // may know the parcel now, so it is asked without waiting its turn.
         const missed = state.failures[state.discovered_carrier];
-        if (missed?.kind === 'not_found' && !attemptedDirect.has(state.discovered_carrier) && latest(value) > millis(watermark)) {
-          missed.retry_at = now().toISOString();
-        }
+        const overtaken = missed?.kind === 'not_found' && !attemptedDirect.has(state.discovered_carrier) && latest(value) > millis(watermark);
+        if (overtaken) missed.retry_at = now().toISOString();
+        // Otherwise the carrier already confirmed for the number keeps its own
+        // retry time, as when the check starts.
+        const later = !overtaken && state.discovered_carrier === state.confirmed_carrier && state.confirmed_number === number
+          && millis(state.direct_retry_at) > now().getTime();
         state.last_event_at = withoutProgress ? watermark : iso(Math.max(millis(watermark), latest(value)));
-        const direct = await tryDirect(state.discovered_carrier, state.discovered_carrier !== declared,
+        const direct = later ? null : await tryDirect(state.discovered_carrier, state.discovered_carrier !== declared,
           value.result.current_stage ?? value.result.status).catch((error: unknown) => {
           if (!(error instanceof RoutingDeferred)) throw error;
           return null;
@@ -862,10 +894,19 @@ export class TrackingRouter {
         state.reported_carriers_seen = [...new Set([...seen, ...value.result.reported_carriers])].slice(-20);
       }
       // The carrier's own answer had no current instant, so this provider dates the
-      // timeline: ask the carrier again in 6 h. A retry time left over from an
-      // earlier failure has expired and would otherwise keep it due on every check.
+      // timeline. A provider holding just the carrier's scans and stage adds
+      // nothing else: the carrier stays first on every check and shows when there
+      // is something new to date. Otherwise ask the carrier again in 6 h. A retry
+      // time left over from an earlier failure has expired and would otherwise
+      // keep it due on every check.
       // A carrier that answered only in part stays first on every check.
-      if (partialDirect) state.direct_retry_at = undefined;
+      const answer = localDirectFallback && !withoutProgress && universalNumber === number
+        ? localAnswer(localDirectFallback.value.result) : undefined;
+      const copied = answer && answer.scans === (value.result.events?.length ?? 0) && answer.stage === resultStage(value.result);
+      if (localDirectFallback && answer && copied) {
+        state.provider_copy = { carrier: localDirectFallback.carrier, number, ...answer, checked_at: now().toISOString() };
+      } else if (localDirectFallback) delete state.provider_copy;
+      if (partialDirect || copied) state.direct_retry_at = undefined;
       else if (localDirectFallback || !state.direct_retry_at) state.direct_retry_at = iso(now().getTime() + 6 * HOUR);
       delete state.partial_checked_at;
       state.last_probe_at ??= now().toISOString();
@@ -878,11 +919,7 @@ export class TrackingRouter {
       state.partial_checked_at = now().toISOString();
       return persistResult(partialDirect.value, partialDirect.carrier);
     }
-    if (localDirectFallback) {
-      const { value, carrier } = localDirectFallback;
-      value.result = { ...value.result, direct_local_fallback: true };
-      return persistResult(value, carrier);
-    }
+    if (localDirectFallback) return keepLocal(localDirectFallback);
     state.discovery_cursor = (offset + Math.max(1, [...attemptedUniversal].filter((source) => rotation.includes(source)).length)) % Math.max(1, rotation.length);
     const deadlines = Object.entries(state.failures).filter(([provider]) => !awaitsInput(provider))
       .map(([, failure]) => millis(failure.retry_at)).filter((time) => time > now().getTime());

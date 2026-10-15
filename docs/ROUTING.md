@@ -133,8 +133,13 @@ wait for cooldowns leave it unchanged. Provider failures remain in the audit and
 evidence while the chip is hidden.
 
 An adapter whose answer has only local clocks or an undated status summary keeps its
-evidence while a universal provider dates the timeline. It is asked again 6 h later,
-not on every check. When detection names that carrier for an unknown parcel's number and
+evidence while a universal provider dates the timeline. Its answer confirms the filed
+carrier, so a provider naming that carrier doesn't send the check back to it. A provider
+whose history holds just the carrier's scans and stage only dates them: the carrier stays
+first on every check, and scheduled checks keep the parcel's history without asking the
+providers until the carrier shows a new scan or stage, or for at most 6 h. A provider that
+adds scans or a different stage stays the source, and the carrier is asked again 6 h
+later, not on every check. When detection names that carrier for an unknown parcel's number and
 its answer shows movement, a provider's progress in the same check files the parcel under
 it, as one added with that carrier would be, even when the provider also names the platform
 the parcel went through (MailAmericas with Cainiao). Without such a provider answer the parcel
