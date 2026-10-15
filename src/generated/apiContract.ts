@@ -10658,7 +10658,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hanjin",
+      "recognitionRank": 545
     },
     "trackingUrlTemplate": "https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&wblnum={trackingNumber}&schLang=KR",
     "linkRules": [
