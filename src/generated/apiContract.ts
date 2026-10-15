@@ -17088,7 +17088,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "DZ"
     ],
-    "color": "#213f98",
+    "color": "#22297c",
     "selectable": true,
     "timezone": "Africa/Algiers",
     "tracking": {
@@ -17217,7 +17217,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "VN"
     ],
-    "color": "#022344",
+    "color": "#d80c18",
     "selectable": true,
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
@@ -17373,7 +17373,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "VN"
     ],
-    "color": "#0050a0",
+    "color": "#0054a6",
     "selectable": true,
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
@@ -17486,7 +17486,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "GH"
     ],
-    "color": "#f57500",
+    "color": "#f7730f",
     "selectable": true,
     "timezone": "Africa/Accra",
     "tracking": {
@@ -17526,7 +17526,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AM"
     ],
-    "color": "#0063bd",
+    "color": "#fa4616",
     "selectable": true,
     "timezone": "Asia/Yerevan",
     "tracking": {
@@ -17613,7 +17613,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "TN"
     ],
-    "color": "#fa891c",
+    "color": "#10155f",
     "selectable": true,
     "timezone": "Africa/Tunis",
     "tracking": {
@@ -17675,7 +17675,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "MU"
     ],
-    "color": "#00539b",
+    "color": "#f5d800",
     "selectable": true,
     "timezone": "Indian/Mauritius",
     "tracking": {
@@ -17739,7 +17739,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "ID"
     ],
-    "color": "#e32222",
+    "color": "#243f80",
     "selectable": true,
     "timezone": "Asia/Jakarta",
     "tracking": {
@@ -17842,7 +17842,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AU"
     ],
-    "color": "#e3173e",
+    "color": "#000000",
     "selectable": true,
     "timezone": "Australia/Sydney",
     "tracking": {
@@ -18249,7 +18249,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "SA"
     ],
-    "color": "#f8941d",
+    "color": "#ff6b00",
     "selectable": true,
     "timezone": "Asia/Riyadh",
     "tracking": {
@@ -18298,7 +18298,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "TH"
     ],
-    "color": "#ed1c06",
+    "color": "#ed1c24",
     "selectable": true,
     "timezone": "Asia/Bangkok",
     "tracking": {
@@ -18586,7 +18586,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "TZ"
     ],
-    "color": "#c31f26",
+    "color": "#dd1f2e",
     "selectable": true,
     "timezone": "Africa/Dar_es_Salaam",
     "tracking": {
@@ -18656,7 +18656,7 @@ export const CARRIER_CAPABILITIES = {
       "CA",
       "US"
     ],
-    "color": "#0050a0",
+    "color": "#0052a2",
     "selectable": true,
     "timezone": "America/Toronto",
     "tracking": {
@@ -18689,7 +18689,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "UZ"
     ],
-    "color": "#0d47a1",
+    "color": "#183e98",
     "selectable": true,
     "timezone": "Asia/Tashkent",
     "tracking": {
@@ -18926,7 +18926,7 @@ export const CARRIER_CAPABILITIES = {
       "SV",
       "HN"
     ],
-    "color": "#ff5100",
+    "color": "#ea5c1d",
     "selectable": true,
     "timezone": "America/Guatemala",
     "tracking": {
@@ -18960,7 +18960,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "GT"
     ],
-    "color": "#141b49",
+    "color": "#282f6a",
     "selectable": true,
     "timezone": "America/Guatemala",
     "tracking": {
@@ -19024,7 +19024,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "MX"
     ],
-    "color": "#e62019",
+    "color": "#e60012",
     "selectable": true,
     "timezone": "America/Mexico_City",
     "tracking": {
@@ -19060,7 +19060,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "JM"
     ],
-    "color": "#e8312f",
+    "color": "#e3352e",
     "selectable": true,
     "timezone": "America/Jamaica",
     "tracking": {
@@ -19080,7 +19080,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "EC"
     ],
-    "color": "#ff0000",
+    "color": "#fce200",
     "selectable": true,
     "timezone": "America/Guayaquil",
     "tracking": {
@@ -19149,7 +19149,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "VE"
     ],
-    "color": "#0560a2",
+    "color": "#00559e",
     "selectable": true,
     "timezone": "America/Caracas",
     "tracking": {
@@ -19223,7 +19223,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AR"
     ],
-    "color": "#1e8d34",
+    "color": "#589b50",
     "selectable": true,
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
@@ -19261,7 +19261,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CN"
     ],
-    "color": "#fabe00",
+    "color": "#f5a91a",
     "selectable": true,
     "timezone": "Asia/Shanghai",
     "tracking": {
@@ -19302,7 +19302,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "VE"
     ],
-    "color": "#1574b3",
+    "color": "#006ab0",
     "selectable": true,
     "timezone": "America/Caracas",
     "tracking": {
