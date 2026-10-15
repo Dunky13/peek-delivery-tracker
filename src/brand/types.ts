@@ -84,7 +84,16 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'tracx-logis' | 'quantium-solutions' | 'janio' | 'j-and-t-cn' | 'equick' | 'pfc-express'
   | 'ecms-express' | '139express' | 'winit' | 'energia-tk' | 'zheldor' | 'kit-tk' | 'alem-tat'
   | 'sat-ukraine' | 'taxydema' | 'dropp' | 'yalidine' | 'zr-express' | 'fargo-courier'
-  | 'internet-express' | 'mds-collivery' | 'paxi' | 'buffalo-ex';
+  | 'internet-express' | 'mds-collivery' | 'paxi' | 'buffalo-ex' | 'aeropost' | 'aks-express'
+  | 'algerie-poste' | 'aymakan' | 'azerpost' | 'best-express-vn' | 'city-express-rs' | 'cse-russia'
+  | 'dohrn-transfer' | 'ems-vietnam' | 'ethiopian-post' | 'euroexpress-ba' | 'followmont'
+  | 'ghana-post' | 'groupe-guilbault' | 'haypost' | 'hi-trans' | 'jordan-post'
+  | 'la-poste-tunisienne' | 'libanpost' | 'mauritius-post' | 'mylerz' | 'ncs-courier' | 'nhat-tin'
+  | 'nim-express' | 'northline' | 'ozon-logistics' | 'pargo' | 'pbt' | 'polaris-transport'
+  | 'posta-kenya' | 'postaplus' | 'quiqup' | 'roadie' | 'rpx-indonesia' | 'saee' | 'scg-express'
+  | 'tanzania-posts' | 'tst-cf-express' | 'uzbekistan-post' | 'zajil' | '4-72' | 'aex-paraguay'
+  | 'ampm' | 'chazki' | 'cruz-del-sur' | 'forza-delivery' | 'guatex' | 'jamaica-post'
+  | 'laar-courier' | 'pullman-cargo' | 'tealca' | 'tufesa' | 'via-cargo' | 'yimidida' | 'zoom-ve';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {
