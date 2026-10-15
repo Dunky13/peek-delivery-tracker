@@ -142,7 +142,7 @@ describe('new direct adapters through the host', () => {
     const adapter = { fetch: vi.fn().mockResolvedValue(direct), fetchUniversal: vi.fn() };
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => observedAt);
     const copy = { carrier: entry.carrier, number: entry.number, scans: direct.events!.length, stage: entry.stage,
-      checked_at: '2026-09-26T11:00:00.000Z' };
+      provider: 'Ship24', checked_at: '2026-09-26T11:00:00.000Z' };
     await service.syncPackage({ id: 'example-package', carrier: entry.carrier, tracking_number: entry.number, current_stage: entry.stage,
       last_status_text: 'Saved status', carrier_data: { tracking_provider: 'Ship24', routing: { version: 1, configured_carrier: entry.carrier,
         confirmed_carrier: entry.carrier, confirmed_number: entry.number, preferred_provider: 'Ship24', last_event_at: '2026-09-25T10:00:00Z',

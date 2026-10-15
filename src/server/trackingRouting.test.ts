@@ -1292,34 +1292,33 @@ describe('persistent tracking routing', () => {
     it('keeps the carrier first and remembers what the provider held', async () => {
       const routing = await copied();
       expect(routing).toMatchObject({ confirmed_carrier: 'yamato', preferred_provider: 'Ship24', provider_copy: {
-        carrier: 'yamato', number: '123456789012', scans: 1, stage: 'in_transit', checked_at: time.toISOString() } });
+        carrier: 'yamato', number: '123456789012', scans: 1, stage: 'in_transit', provider: 'Ship24', checked_at: time.toISOString() } });
       expect(routing.direct_retry_at).toBeUndefined();
     });
 
-    it('is not asked again on a scheduled check while the carrier\'s answer stays the same', async () => {
+    // The sync may hold a stage of its own, such as a later one the provider no longer shows.
+    it.each(['in_transit', 'out_for_delivery'])('is not asked again on a scheduled check while the carrier\'s answer stays the same (%s shown)', async (shown) => {
       const routing = await copied();
       const later = setup(new Date('2026-09-10T12:30:00Z'));
       later.direct.mockResolvedValue(local());
-      const result = await later.router.fetch(filed(routing), true);
+      const result = await later.router.fetch({ ...filed(routing), current_stage: shown }, true);
       expect(later.direct).toHaveBeenCalledOnce();
       expect(later.universal).not.toHaveBeenCalled();
       expect(result).toMatchObject({ sourceCarrierId: 'yamato', result: { direct_local_fallback: true,
-        routing: { provider_copy: { checked_at: time.toISOString() } } } });
-      expect((result.result.routing as JsonObject).next_check_at).toBeUndefined();
+        routing: { provider_copy: { checked_at: time.toISOString() }, next_check_at: '2026-09-10T12:45:00.000Z' } } });
     });
 
     it.each([
-      ['a new scan', local(2), true, '2026-09-10T12:30:00Z', 'in_transit'],
-      ['a new stage', local(1, 'customs'), true, '2026-09-10T12:30:00Z', 'in_transit'],
-      ['a refresh by hand', local(), false, '2026-09-10T12:30:00Z', 'in_transit'],
-      ['6 h', local(), true, '2026-09-10T18:00:00Z', 'in_transit'],
-      ['a stage the parcel does not show', local(), true, '2026-09-10T12:30:00Z', 'accepted'],
-    ])('is asked again after %s', async (_label, answer, scheduled, at, shown) => {
+      ['a new scan', local(2), true, '2026-09-10T12:30:00Z'],
+      ['a new stage', local(1, 'customs'), true, '2026-09-10T12:30:00Z'],
+      ['a refresh by hand', local(), false, '2026-09-10T12:30:00Z'],
+      ['6 h', local(), true, '2026-09-10T18:00:00Z'],
+    ])('is asked again after %s', async (_label, answer, scheduled, at) => {
       const routing = await copied();
       const later = setup(new Date(at));
       later.direct.mockResolvedValue(answer);
       later.universal.mockResolvedValue(dated(answer.result.events!.length, String(answer.result.current_stage)));
-      const result = await later.router.fetch({ ...filed(routing), current_stage: shown }, scheduled);
+      const result = await later.router.fetch(filed(routing), scheduled);
       expect(later.universal).toHaveBeenCalledOnce();
       expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { provider_copy: {
         scans: answer.result.events!.length, stage: answer.result.current_stage, checked_at: new Date(at).toISOString() } } });
@@ -1341,12 +1340,68 @@ describe('persistent tracking routing', () => {
       expect(next.universal).toHaveBeenCalledOnce();
     });
 
-    it('is not matched against another number or carrier', async () => {
+    it.each([
+      ['number', { number: '123456789013' }],
+      ['carrier', { carrier: 'sagawa' }],
+    ])('is not matched against another %s', async (_label, other) => {
       const routing = await copied();
       const later = setup(new Date('2026-09-10T12:30:00Z'));
       later.direct.mockResolvedValue(local());
-      await later.router.fetch(filed({ ...routing, provider_copy: { ...routing.provider_copy as JsonObject, number: '123456789013' } }), true);
+      await later.router.fetch(filed({ ...routing, provider_copy: { ...routing.provider_copy as JsonObject, ...other } }), true);
       expect(later.universal).toHaveBeenCalledOnce();
+    });
+
+    it.each([
+      ["another provider's history", 'in_transit', '17TRACK'],
+      ['a pending parcel', 'pending', 'Ship24'],
+    ])('asks the carrier again in 6 h when the parcel shows %s', async (_label, stage, provider) => {
+      const routing = await copied();
+      const later = setup(new Date('2026-09-10T12:30:00Z'));
+      later.direct.mockResolvedValue(local());
+      later.universal.mockResolvedValue(dated());
+      const result = await later.router.fetch({ ...filed(routing), current_stage: stage,
+        carrier_data: { tracking_provider: provider, routing } }, true);
+      expect(later.universal).toHaveBeenCalledOnce();
+      // The copy keeps its time, so it lapses rather than being renewed on every check.
+      expect(result.result.routing).toMatchObject({ provider_copy: { checked_at: time.toISOString() },
+        direct_retry_at: '2026-09-10T18:30:00.000Z' });
+    });
+
+    it('keeps no copy of a pending answer', async () => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(local(1, 'pending'));
+      universal.mockResolvedValue(dated(1, 'pending'));
+      const result = await router.fetch(filed(state({ configured_carrier: 'yamato' })), true);
+      expect(result.result.routing).not.toHaveProperty('provider_copy');
+      expect(result.result.routing).toMatchObject({ direct_retry_at: '2026-09-10T18:00:00.000Z' });
+    });
+
+    it('forgets the copy when the carrier fails and a provider holds more', async () => {
+      const routing = await copied();
+      const later = setup(new Date('2026-09-10T12:30:00Z'));
+      later.direct.mockRejectedValue(new Error('down'));
+      later.universal.mockResolvedValue(dated(2));
+      const result = await later.router.fetch(filed(routing), true);
+      expect(result.result.routing).not.toHaveProperty('provider_copy');
+    });
+
+    it('asks a carrier chosen by hand first, after the one it replaced answered with local clocks only', async () => {
+      const routing = await copied();
+      const later = setup(new Date('2026-09-10T12:30:00Z'));
+      later.direct.mockImplementation(async (_parcel, carrier) => {
+        if (carrier === 'yamato') return local();
+        throw new Error('down');
+      });
+      later.universal.mockResolvedValue(dated());
+      const moved = (saved: JsonObject) => ({ ...filed(saved), carrier: 'sagawa' });
+      const result = await later.router.fetch(moved(routing), false);
+      expect(later.direct.mock.calls.map(([, carrier]) => carrier)).toEqual(['sagawa', 'yamato']);
+      expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+      const next = setup(new Date('2026-09-10T13:00:00Z'));
+      next.universal.mockResolvedValue(dated());
+      await next.router.fetch(moved(result.result.routing as JsonObject), true);
+      expect(next.direct.mock.calls[0][1]).toBe('sagawa');
     });
   });
 

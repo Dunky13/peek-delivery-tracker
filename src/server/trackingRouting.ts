@@ -67,7 +67,7 @@ export interface RoutingState extends JsonObject {
   /** When providers last held no fuller history than the filed carrier's partial answer. */
   partial_checked_at?: string;
   /** The filed carrier's local-clock answer that a provider's history last matched, adding no scan or stage. */
-  provider_copy?: { carrier: string; number: string; scans: number; stage: string | null; checked_at: string };
+  provider_copy?: { carrier: string; number: string; scans: number; stage: string | null; provider: string; checked_at: string };
   probe_cursor: number;
   discovery_cursor: number;
   failures: Record<string, Failure>;
@@ -555,16 +555,20 @@ export class TrackingRouter {
       value.result = { ...value.result, direct_local_fallback: true };
       return persistResult(value, carrier);
     };
-    // A provider last held exactly the scans and stage of that answer. While the
-    // answer stays the same, a scheduled check keeps the parcel's history instead
-    // of asking the providers again, and asks them after 6 h for scans the
-    // carrier doesn't list.
+    // A provider held exactly the scans and stage of that answer in the last 6 h.
     const copy = state.provider_copy;
     const local = localDirectFallback && localAnswer(localDirectFallback.value.result);
-    if (scheduled && localDirectFallback && local && copy?.carrier === localDirectFallback.carrier && copy.number === number
-      && universalNumber === number && copy.scans === local.scans && copy.stage === local.stage && local.stage === parcel.current_stage
-      && typeof metadata.tracking_provider === 'string' && now().getTime() - millis(copy.checked_at) < 6 * HOUR) {
-      return keepLocal(localDirectFallback);
+    const unchanged = Boolean(localDirectFallback && local && copy?.carrier === localDirectFallback.carrier && copy.number === number
+      && copy.scans === local.scans && copy.stage === local.stage && now().getTime() - millis(copy.checked_at) < 6 * HOUR);
+    // While the answer stays the same and the parcel shows that provider's
+    // history, a scheduled check keeps it instead of asking the providers again,
+    // at their cadence. The sync keeps a provider's summary over a local-clock
+    // answer, unless the parcel is still pending.
+    if (scheduled && unchanged && localDirectFallback && universalNumber === number && metadata.tracking_provider === copy?.provider
+      && parcel.current_stage !== 'pending') {
+      const kept = keepLocal(localDirectFallback);
+      state.next_check_at = iso(now().getTime() + universalSpacing(now()));
+      return kept;
     }
 
     // One evidence-based correction, not a fan-out to every matching number shape.
@@ -576,6 +580,12 @@ export class TrackingRouter {
     for (const candidate of partialDirect ? [] : candidates) {
       const value = await tryDirect(candidate, true);
       if (value) return persistResult(value, candidate);
+    }
+    // A carrier chosen by hand that has its own adapter comes first from now on:
+    // the one confirmed before it is set aside unless it just tracked the number.
+    if (changed && directCarrier(declared) && state.confirmed_number === number && state.confirmed_carrier !== declared) {
+      delete state.confirmed_carrier; delete state.confirmed_number;
+      delete state.confirmed_tracking_url; delete state.confirmed_postcode;
     }
 
     // The filed carrier cannot track this number: it has no adapter of its own
@@ -902,11 +912,16 @@ export class TrackingRouter {
       // A carrier that answered only in part stays first on every check.
       const answer = localDirectFallback && !withoutProgress && universalNumber === number
         ? localAnswer(localDirectFallback.value.result) : undefined;
-      const copied = answer && answer.scans === (value.result.events?.length ?? 0) && answer.stage === resultStage(value.result);
-      if (localDirectFallback && answer && copied) {
-        state.provider_copy = { carrier: localDirectFallback.carrier, number, ...answer, checked_at: now().toISOString() };
-      } else if (localDirectFallback) delete state.provider_copy;
-      if (partialDirect || copied) state.direct_retry_at = undefined;
+      // A pending answer is left out: it would replace the provider's pending summary.
+      const copied = Boolean(answer && answer.stage !== 'pending' && answer.scans === (value.result.events?.length ?? 0)
+        && answer.stage === resultStage(value.result));
+      // The same copy on a scheduled check: the parcel did not keep that
+      // provider's history, so the carrier waits its 6 h as for any other answer.
+      const again = copied && scheduled && unchanged;
+      if (localDirectFallback && answer && copied && !again) {
+        state.provider_copy = { carrier: localDirectFallback.carrier, number, ...answer, provider: chosen, checked_at: now().toISOString() };
+      } else if (!copied) delete state.provider_copy;
+      if (partialDirect || (copied && !again)) state.direct_retry_at = undefined;
       else if (localDirectFallback || !state.direct_retry_at) state.direct_retry_at = iso(now().getTime() + 6 * HOUR);
       delete state.partial_checked_at;
       state.last_probe_at ??= now().toISOString();
