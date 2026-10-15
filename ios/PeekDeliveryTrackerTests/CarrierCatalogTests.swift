@@ -549,7 +549,7 @@ final class CarrierCatalogTests: XCTestCase {
             XCTAssertEqual(catalog.parse(input).source, .number, input)
         }
         // A word no carrier uses stays a word, whatever a general rule makes of its length.
-        for input in ["ABCDE", "BONJOUR", "TRACKING", "CONFIRMATION", "ABC DEF", "ABC-DEF", "AB.CD.EF"] {
+        for input in ["ABCDE", "BONJOUR", "DELIVERED", "CONFIRMATION", "ABC DEF", "ABC-DEF", "AB.CD.EF"] {
             XCTAssertEqual(catalog.parse(input).source, TrackingInputMatch.Source.none, input)
         }
         // A word that follows a label in a message stays a word.
