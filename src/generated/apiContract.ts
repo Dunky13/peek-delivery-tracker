@@ -19405,6 +19405,48 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ]
+  },
+  "cttyex": {
+    "displayName": "CTTYEX",
+    "aliases": [
+      "CTTY",
+      "CTYYEX",
+      "Chengtai Tongyun",
+      "诚泰通运",
+      "誠泰通運",
+      "深圳诚泰通运国际物流",
+      "Shenzhen Chengtai Tongyun International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#0068AC",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.cttyvip888.com/index/tracknumber/track?nos={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "cttyvip888.com",
+          "www.cttyvip888.com"
+        ],
+        "pathPattern": "^/index/tracknumber/track/?$",
+        "params": [
+          "nos"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^CTTY\\d{10}CN$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.cttyvip888.com/assets/html/search.html"
   }
 } as const;
 
@@ -19934,7 +19976,8 @@ export const CARRIER_IDS = [
   "via-cargo",
   "yimidida",
   "zoom-ve",
-  "mayiyinfu"
+  "mayiyinfu",
+  "cttyex"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
