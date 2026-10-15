@@ -19,8 +19,8 @@ describe('universal tracking dispatch', () => {
     expect(spy).toHaveBeenNthCalledWith(1, number, null, expect.any(Object), undefined, 'unknown');
     expect(spy).toHaveBeenNthCalledWith(2, number, null, expect.any(Object), undefined, 'intl-post');
     // A carrier without an adapter of its own passes its postcode to the providers.
-    await adapter.fetch('zto', number, null, '01234');
-    expect(spy).toHaveBeenLastCalledWith(number, '01234', expect.any(Object), undefined, 'zto');
+    await adapter.fetch('intl-post', number, null, '01234');
+    expect(spy).toHaveBeenLastCalledWith(number, '01234', expect.any(Object), undefined, 'intl-post');
   });
 
   it('dispatches the added regional carriers without falling back to a generic adapter', async () => {
@@ -30,12 +30,15 @@ describe('universal tracking dispatch', () => {
     const hermes = vi.spyOn(adapter.registry.for('hermes-de')!, 'track').mockResolvedValue(expected);
     const gls = vi.spyOn(adapter.registry.for('gls-de')!, 'track').mockResolvedValue(expected);
     const laPoste = vi.spyOn(adapter.registry.for('delivengo')!, 'track').mockResolvedValue(expected);
+    const zto = vi.spyOn(adapter.registry.for('zto')!, 'track').mockResolvedValue(expected);
     await adapter.fetch('hermes-de', 'H1234567890123456789', null);
     await adapter.fetch('gls-de', '12345678901', null, '01067');
     await adapter.fetch('delivengo', 'LD123456785FR', null);
+    await adapter.fetch('zto', '730000000001', null);
     expect(hermes).toHaveBeenCalledWith({ number: 'H1234567890123456789', trackingUrl: null, postcode: null });
     expect(gls).toHaveBeenCalledWith({ number: '12345678901', trackingUrl: null, postcode: '01067' });
     expect(laPoste).toHaveBeenCalledWith({ number: 'LD123456785FR', trackingUrl: null, postcode: null });
+    expect(zto).toHaveBeenCalledWith({ number: '730000000001', trackingUrl: null, postcode: null });
   });
 
   it('does not treat an exhausted provider chain as an unannounced shipment', () => {

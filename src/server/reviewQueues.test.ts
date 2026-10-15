@@ -46,8 +46,8 @@ function fakeClient(claims: Array<'claimed' | 'running' | 'done' | Error> = ['cl
       { id: 'case-royal', tracking_number: 'RR123456785GB', configured_carrier: 'royal-mail' },
       // Still ambiguous.
       { id: 'case-ambiguous', tracking_number: '123456789012', configured_carrier: 'fedex' },
-      // Still without a direct adapter: only universal providers track ZTO.
-      { id: 'case-adapter', tracking_number: '730000000001', configured_carrier: 'zto' },
+      // The tracking platform still depends on universal providers.
+      { id: 'case-adapter', tracking_number: 'ZZTEST1234', configured_carrier: 'shipup' },
     ]),
     fixReplayedTrackingSupportCases: vi.fn().mockResolvedValue(1),
     listOpenTrackingStatusObservations: vi.fn().mockResolvedValue(OPEN_OBSERVATIONS),
@@ -77,7 +77,7 @@ describe('review queue replay', () => {
     expect(replaySupportCase('RR123456785GB', 'royal-mail'))
       .toBe('Replay found no gap: detection names royal-mail with high confidence.');
     expect(replaySupportCase('123456789012', 'fedex')).toBeNull();
-    expect(replaySupportCase('730000000001', 'zto')).toBeNull();
+    expect(replaySupportCase('ZZTEST1234', 'shipup')).toBeNull();
     expect(replaySupportCase('RR123456785FI', null)).toBeNull();
     // Filed under the origin, verified directly by the local carrier the number names.
     expect(replaySupportCase('CNPRT12345678901234567890', 'aliexpress')).toBeNull();

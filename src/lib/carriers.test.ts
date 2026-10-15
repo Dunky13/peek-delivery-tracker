@@ -48,10 +48,6 @@ function expectAutomaticProfile(id: keyof typeof CARRIERS, adapter: string) {
   expect(tracksAutomatically(id)).toBe(true);
 }
 
-function expectUniversalFallback(id: keyof typeof CARRIERS) {
-  expectAutomaticProfile(id, 'universal');
-}
-
 function expectDirectTracking(id: keyof typeof CARRIERS) {
   expectAutomaticProfile(id, id);
 }
@@ -1476,7 +1472,7 @@ describe('carrier detection', () => {
     const match = detectCarrierMatch('778564698005');
     expect(match).toMatchObject({ carrier: 'unknown', confidence: 'low' });
     expect(match.candidates).toContain('zto');
-    expectUniversalFallback('zto');
+    expectDirectTracking('zto');
   });
 });
 

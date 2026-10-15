@@ -3176,7 +3176,7 @@ describe('TrackingSyncService', () => {
       { trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {} } satisfies AdapterEnvironment);
     const adapter = new CarrierTrackingAdapter(universal as unknown as UniversalTracker, registry, NOOP_RECORDER);
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
-    // ZTO has no adapter of its own, and a parcel this old asks no carrier whether it knows the number.
+    // This registry has no ZTO adapter, and a parcel this old asks no carrier whether it knows the number.
     await service.syncPackage({ id: 'filed', carrier: 'zto', tracking_number: 'TEST1234', current_stage: 'in_transit', created_at: '2026-07-01T00:00:00Z' });
     expect(universal.fetchSource).toHaveBeenCalledExactlyOnceWith('17TRACK', 'TEST1234', expect.any(Number), null, 'Asia/Shanghai', undefined, null, 'zto');
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ carrier_data: { tracking_provider: '17TRACK' } });
@@ -3389,7 +3389,7 @@ describe('tracking anomaly detection', () => {
     expect(detect('dpd', { tracking_provider: 'ParcelsApp' }, { status: 'pending', events: [scan] }, 'dpd')).toEqual(['progress_disappeared']);
     // No adapter of its own: routing exhausts the eligible providers before returning a thin answer.
     expect(detect('unknown', { tracking_provider: 'Ship24' }, fallback, 'unknown')).toEqual(['progress_disappeared']);
-    expect(detect('zto', { tracking_provider: 'Ship24' }, fallback, 'unknown')).toEqual(['progress_disappeared']);
+    expect(detect('intl-post', { tracking_provider: 'Ship24' }, fallback, 'unknown')).toEqual(['progress_disappeared']);
     expect(detect('royal-mail', { tracking_provider: 'Ship24' }, fallback, 'unknown')).toEqual(['fallback_without_progress']);
   });
   it('preserves real movement when a provider has only registration, without flagging a new label', () => {

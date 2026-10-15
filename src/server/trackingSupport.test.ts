@@ -72,9 +72,8 @@ describe('tracking support context', () => {
   });
 
   it('records a carrier whose tracking still depends on providers', () => {
-    // ZTO has no adapter of its own, so only universal providers track it.
-    expect(trackingSupportContext('730000000001', 'zto')).toMatchObject({
-      detection_carrier: 'unknown', reasons: ['ambiguous_shape', 'no_direct_adapter'],
+    expect(trackingSupportContext('ZZTEST1234', 'shipup')).toMatchObject({
+      detection_carrier: 'unknown', reasons: ['unknown_shape', 'no_direct_adapter'],
     });
   });
 
@@ -144,7 +143,7 @@ describe('tracking support evidence', () => {
   });
 
   it('does not count a universal-only carrier as a direct fix without a provider label', () => {
-    expect(trackingSupportEvidence(parcel, progress, 'zto', 'updated', false).support_direct_progress).toBe(false);
+    expect(trackingSupportEvidence(parcel, progress, 'intl-post', 'updated', false).support_direct_progress).toBe(false);
   });
 
   it('binds handoff evidence to the delivery number so it cannot verify the original number', () => {

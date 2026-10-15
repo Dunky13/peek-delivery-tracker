@@ -3710,12 +3710,18 @@
       "timezone": "Asia/Shanghai",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "zto",
+        "recognitionRank": 51,
+        "browserRecognitionRank": 51
       },
       "linkRules": [],
       "detectionRules": [
         {
           "pattern": "^\\d{12}$",
+          "confidence": "low"
+        },
+        {
+          "pattern": "^7\\d{13}$",
           "confidence": "low"
         }
       ],
