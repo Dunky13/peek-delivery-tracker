@@ -230,7 +230,9 @@ const swiftInlineNames = {
 };
 
 const swiftEnumCaseNames = {
+  'CarrierId.139express': 'oneThirtyNineExpress',
   'CarrierId.17feia': 'seventeenFeia',
+  'CarrierId.2go': 'twoGo',
   'CarrierId.5post': 'fivePost',
   'CarrierId.99minutos': 'ninetyNineMinutos',
   'CarrierId.intl-post': 'internationalPost',

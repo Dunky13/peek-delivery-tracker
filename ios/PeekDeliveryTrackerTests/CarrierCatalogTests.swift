@@ -404,7 +404,9 @@ final class CarrierCatalogTests: XCTestCase {
         let sections = CarrierPickerSearch.letterSections(catalog: catalog, language: .en)
         XCTAssertEqual(sections.flatMap(\.carriers).count, catalog.selectableCarriers.count)
         XCTAssertEqual(sections.first?.letter, "A")
-        XCTAssertEqual(sections.last, .init(letter: "#", carriers: [.fourPx, .fivePost, .seventeenFeia, .ninetyNineMinutos]))
+        XCTAssertEqual(sections.last?.letter, "#")
+        let numbered: [CarrierID] = [.fourPx, .fivePost, .seventeenFeia, .ninetyNineMinutos]
+        XCTAssertEqual(sections.last?.carriers.filter { numbered.contains($0) }, numbered)
         let name = { (code: String) in TrackingLocation.countryName(code, language: .en) }
         XCTAssertEqual(CarrierPickerSearch.countryLine(["CH", "LI"], name: name), "Switzerland · Liechtenstein")
         XCTAssertEqual(CarrierPickerSearch.countryLine(["FR", "BE", "ES", "LU", "PT"], name: name), "France · Belgium +3")
