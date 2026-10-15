@@ -482,7 +482,7 @@ describe('tracking audit PostgREST client', () => {
 
     expect(request.mock.calls.slice(0, 4)).toEqual([
       ['/rest/v1/rpc/claim_tracking_review_run', { method: 'POST', body: { p_version: 'v1', p_lease_seconds: 600 } }],
-      ['/rest/v1/tracking_support_cases?select=id%2Ctracking_number%2Cconfigured_carrier%2Cdirect_verified_carrier&fix_status=eq.open&order=last_seen.desc&limit=500'],
+      ['/rest/v1/tracking_support_cases?select=id%2Ctracking_number%2Cconfigured_carrier%2Cdirect_verified_carrier%2Creasons&fix_status=eq.open&order=last_seen.desc&limit=500'],
       ['/rest/v1/rpc/fix_replayed_tracking_support_cases', { method: 'POST', body: { p_version: 'v1', p_cases: cases } }],
       ['/rest/v1/rpc/finish_tracking_review_run', {
         method: 'POST', body: { p_version: 'v1', p_result: { cases_replayed: 1, cases_fixed: 1 } },

@@ -24,15 +24,17 @@ export function trackingSupportContext(trackingNumber: string, configuredCarrier
   const number = trackingNumber.replace(/[\s.-]/g, '').toUpperCase();
   const detection = detectCarrierMatch(number);
   const reasons: string[] = [];
+  const offered = (carrier: string) => detection.candidates.some((candidate) => candidate === (DETECTED_AS[carrier] ?? carrier));
   if (detection.carrier === 'unknown') {
-    reasons.push(detection.candidates.length ? 'ambiguous_shape' : 'unknown_shape');
+    // A shape several carriers issue leaves no gap once the filed one, among them, tracked the number.
+    if (!detection.candidates.length) reasons.push('unknown_shape');
+    else if (answeredBy !== configuredCarrier || !offered(configuredCarrier)) reasons.push('ambiguous_shape');
   } else if (detection.carrier === 'intl-post') {
     reasons.push('generic_postal');
   }
   if (!['unknown', 'intl-post'].includes(configuredCarrier) && !directCarrier(configuredCarrier)) {
     reasons.push('no_direct_adapter');
   }
-  const offered = (carrier: string) => detection.candidates.some((candidate) => candidate === (DETECTED_AS[carrier] ?? carrier));
   if (!['unknown', 'intl-post'].includes(configuredCarrier)
     && detection.carrier !== 'intl-post' && detection.candidates.length
     && !offered(configuredCarrier) && answeredBy !== configuredCarrier && !(answeredBy && offered(answeredBy))) {

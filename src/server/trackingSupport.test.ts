@@ -57,6 +57,14 @@ describe('tracking support context', () => {
     });
   });
 
+  it('finds no ambiguity once the filed carrier, one of those the shape fits, tracked the number', () => {
+    expect(trackingSupportContext('123456789012', 'fedex', 'fedex').reasons).toEqual([]);
+    // Another carrier, or a filed one the shape does not fit, settles nothing.
+    expect(trackingSupportContext('123456789012', 'fedex', 'dhl').reasons).toEqual(['ambiguous_shape']);
+    expect(trackingSupportContext('HL123456789FR', 'dhl', 'dhl').reasons).toEqual(['ambiguous_shape']);
+    expect(trackingSupportContext('zz-test 1234', 'ups', 'ups').reasons).toEqual(['unknown_shape']);
+  });
+
   it('keeps a generic postal match unresolved without assigning its issuer to a carrier', () => {
     expect(trackingSupportContext('RR123456785FI', 'intl-post')).toMatchObject({
       detection_carrier: 'intl-post', detection_confidence: 'high', reasons: ['generic_postal'],

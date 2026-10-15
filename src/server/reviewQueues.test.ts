@@ -82,6 +82,22 @@ describe('review queue replay', () => {
     // Filed under the origin, verified directly by the local carrier the number names.
     expect(replaySupportCase('CNPRT12345678901234567890', 'aliexpress')).toBeNull();
     expect(replaySupportCase('CNPRT12345678901234567890', 'aliexpress', 'ecoscooting')).not.toBeNull();
+    // An ambiguous shape its filed carrier tracked directly.
+    expect(replaySupportCase('123456789012', 'fedex', 'fedex'))
+      .toBe('Replay found no gap: fedex, one of the carriers its shape fits, tracks the number directly.');
+  });
+
+  it("fixes a case its parcel's latest check left without a reason", async () => {
+    const client = fakeClient();
+    client.listOpenTrackingSupportCases.mockResolvedValue([
+      { id: 'case-settled', tracking_number: '123456789012', configured_carrier: 'fedex', reasons: [] },
+      { id: 'case-ambiguous', tracking_number: '123456789012', configured_carrier: 'fedex', reasons: ['ambiguous_shape'] },
+      { id: 'case-recognition', tracking_number: '123456789012', configured_carrier: 'fedex', reasons: ['recognition_unknown'] },
+    ]);
+    await replayReviewQueues(client as unknown as SupabaseServiceClient, 'v1');
+    expect(client.fixReplayedTrackingSupportCases).toHaveBeenCalledExactlyOnceWith('v1', [{
+      id: 'case-settled', configured_carrier: 'fedex', note: 'Replay found no gap: the latest check of its parcel gave no reason.',
+    }]);
   });
 
   it('fixes the resolved open cases once and records the outcome for the version', async () => {

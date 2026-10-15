@@ -116,7 +116,9 @@ or its number points elsewhere. The audit captures recognition before fetching, 
 successful fallback still leaves the gap visible. Known-carrier outages stay in health
 monitoring. A number is not marked as pointing elsewhere when detection offers its
 carrier under another id (Amazon Shipping as Amazon Logistics), or when the parcel's
-carrier, or the carrier it handed the parcel to, tracked that number directly.
+carrier, or the carrier it handed the parcel to, tracked that number directly. Nor is a
+shape several carriers issue ambiguous once the parcel's carrier, one of them, confirmed
+the number directly.
 
 Each check computes the shape and carrier reasons afresh and replaces them on its case.
 Recognition reasons from the Add sheet, gap evidence, and sightings older than the case's
@@ -146,7 +148,8 @@ order by last_seen desc;
 Each server version replays the backlog once, a minute after it starts. It reruns
 detection and the adapter check for the 500 most recently seen open cases, without asking
 any carrier but counting the one that last tracked the number directly, and marks `fixed`
-each case it finds no gap for: `fix_reference` names the
+each case it finds no gap for, or that its parcel's latest check left without a reason:
+`fix_reference` names the
 version (the scraper release the app pins, plus the app commit in an image) and `notes`
 says why. A case whose configured carrier changed meanwhile stays open.
 `tracking_review_runs` keeps one row per version, so restarts and other servers do not

@@ -35,6 +35,9 @@ export function deployedVersion(environment: Record<string, string | undefined> 
 export function replaySupportCase(trackingNumber: string, configuredCarrier: string | null, verifiedCarrier: string | null = null): string | null {
   const context = trackingSupportContext(trackingNumber, configuredCarrier ?? 'unknown', verifiedCarrier);
   if ((context.reasons as string[]).length > 0) return null;
+  if (context.detection_carrier === 'unknown') {
+    return `Replay found no gap: ${String(verifiedCarrier)}, one of the carriers its shape fits, tracks the number directly.`;
+  }
   return `Replay found no gap: detection names ${String(context.detection_carrier)} with ${String(context.detection_confidence)} confidence.`;
 }
 
@@ -136,7 +139,11 @@ export async function replayReviewQueues(
   const resolved = cases.flatMap((supportCase) => {
     const configuredCarrier = typeof supportCase.configured_carrier === 'string' ? supportCase.configured_carrier : null;
     const verifiedCarrier = typeof supportCase.direct_verified_carrier === 'string' ? supportCase.direct_verified_carrier : null;
-    const note = replaySupportCase(String(supportCase.tracking_number ?? ''), configuredCarrier, verifiedCarrier);
+    // Each check of a saved parcel replaces its shape and carrier reasons: one it
+    // left without a reason found no gap, whatever its carrier confirmed.
+    const note = replaySupportCase(String(supportCase.tracking_number ?? ''), configuredCarrier, verifiedCarrier)
+      ?? (Array.isArray(supportCase.reasons) && supportCase.reasons.length === 0
+        ? 'Replay found no gap: the latest check of its parcel gave no reason.' : null);
     return note ? [{ id: String(supportCase.id), configured_carrier: configuredCarrier, note }] : [];
   });
   const fixed = resolved.length ? await client.fixReplayedTrackingSupportCases(version, resolved) : 0;
