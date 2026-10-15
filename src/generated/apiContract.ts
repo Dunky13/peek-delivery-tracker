@@ -18380,7 +18380,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-id"
     },
     "trackingUrlTemplate": "https://spx.co.id/track?{trackingNumber}",
     "linkRules": [
@@ -18425,7 +18425,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-my"
     },
     "trackingUrlTemplate": "https://spx.com.my/track?{trackingNumber}",
     "linkRules": [
@@ -18479,7 +18479,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Bangkok",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-th"
     },
     "trackingUrlTemplate": "https://spx.co.th/track?{trackingNumber}",
     "linkRules": [
@@ -18519,7 +18519,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-tw"
     },
     "linkRules": [
       {
@@ -18551,7 +18551,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-vn"
     },
     "trackingUrlTemplate": "https://spx.vn/track?{trackingNumber}",
     "linkRules": [
