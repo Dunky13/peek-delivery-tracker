@@ -9357,7 +9357,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "blue-express",
+      "recognitionRank": 971
     },
     "trackingUrlTemplate": "https://www.blue.cl/enviar/seguimiento?n_seguimiento={trackingNumber}",
     "linkRules": [
@@ -9628,9 +9629,10 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chilexpress",
+      "recognitionRank": 958
     },
-    "trackingUrlTemplate": "https://www.chilexpress.cl/Views/ChilexpressCL/Resultado-busqueda.aspx?DATA={trackingNumber}",
+    "trackingUrlTemplate": "https://centrodeayuda.chilexpress.cl/pre-seguimiento/{trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -9645,11 +9647,11 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "centrodeayuda.chilexpress.cl"
         ],
-        "path": "^/seguimiento/([^/?#]+)/?$"
+        "path": "^/(?:pre-)?seguimiento/([^/?#]+)/?$"
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://www.chilexpress.cl/"
+    "trackingSearchUrl": "https://centrodeayuda.chilexpress.cl/"
   },
   "chunghwa-post": {
     "displayName": "Chunghwa Post",
@@ -9873,7 +9875,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "coordinadora",
+      "recognitionRank": 973
     },
     "trackingUrlTemplate": "https://rastreo.coordinadora.com/?guia={trackingNumber}",
     "linkRules": [
@@ -12751,7 +12754,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "starken"
     },
     "trackingUrlTemplate": "https://www.starken.cl/seguimiento?codigo={trackingNumber}",
     "linkRules": [
@@ -16400,7 +16403,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Sao_Paulo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "spx-br",
+      "recognitionRank": 982
     },
     "trackingUrlTemplate": "https://spx.com.br/track?{trackingNumber}",
     "linkRules": [

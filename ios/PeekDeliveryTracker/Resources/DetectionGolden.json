@@ -16806,6 +16806,28 @@
     ]
   },
   {
+    "input": "21401502990",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "blue-dart",
+      "japan-post",
+      "aramex",
+      "dhl-ecommerce-pl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
     "input": "21453846387",
     "carrier": "unknown",
     "confidence": "low",
@@ -17070,6 +17092,29 @@
     ],
     "asked": [
       "stallion-express"
+    ]
+  },
+  {
+    "input": "2209565643",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-express",
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "dhl-ecommerce-es"
+    ],
+    "preferred": [
+      "dhl-express"
+    ],
+    "asked": [
+      "dhl-express",
+      "relais-colis",
+      "tipsa",
+      "dhl-ecommerce-es"
     ]
   },
   {
@@ -18170,6 +18215,12 @@
     ]
   },
   {
+    "input": "240278577",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "24034200454699",
     "carrier": "unknown",
     "confidence": "low",
@@ -18190,6 +18241,29 @@
       "seur",
       "brt",
       "relais-colis"
+    ]
+  },
+  {
+    "input": "2408964154",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl-express",
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "dhl-ecommerce-es"
+    ],
+    "preferred": [
+      "dhl-express"
+    ],
+    "asked": [
+      "dhl-express",
+      "relais-colis",
+      "tipsa",
+      "dhl-ecommerce-es"
     ]
   },
   {
@@ -19123,6 +19197,12 @@
     ]
   },
   {
+    "input": "261538238",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "26181000287",
     "carrier": "unknown",
     "confidence": "low",
@@ -19225,6 +19305,12 @@
       "j-and-t",
       "zto"
     ]
+  },
+  {
+    "input": "262586044",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "262780949064",
@@ -19660,6 +19746,12 @@
       "colisweb",
       "heppner"
     ]
+  },
+  {
+    "input": "271897355",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "2719919119816",
@@ -34943,6 +35035,139 @@
     ]
   },
   {
+    "input": "713117508541",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "mondial-relay",
+      "gls-fr",
+      "colis-prive",
+      "gls-de",
+      "mrw",
+      "brt",
+      "japan-post",
+      "sf-express",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "sagawa"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "brt",
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "713123388983",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "japan-post",
+      "sf-express",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "sagawa"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
+    "input": "713124476971",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "japan-post",
+      "sf-express",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "sagawa"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
+    "input": "713124563804",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "japan-post",
+      "sf-express",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "sagawa"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
+    "input": "713130996104",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "japan-post",
+      "sf-express",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "sagawa"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "71445621",
     "carrier": "unknown",
     "confidence": "low",
@@ -36656,6 +36881,25 @@
       "sto",
       "j-and-t",
       "zto"
+    ]
+  },
+  {
+    "input": "78390147090",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
     ]
   },
   {
@@ -41760,6 +42004,25 @@
     ]
   },
   {
+    "input": "99020121581",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
     "input": "99110007024671",
     "carrier": "unknown",
     "confidence": "low",
@@ -43858,6 +44121,9 @@
     "confidence": "low",
     "candidates": [
       "spx-br"
+    ],
+    "asked": [
+      "spx-br"
     ]
   },
   {
@@ -43865,6 +44131,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "spx-br"
+    ],
+    "asked": [
       "spx-br"
     ]
   },
@@ -43874,6 +44143,9 @@
     "confidence": "low",
     "candidates": [
       "spx-br"
+    ],
+    "asked": [
+      "spx-br"
     ]
   },
   {
@@ -43882,6 +44154,9 @@
     "confidence": "low",
     "candidates": [
       "spx-br"
+    ],
+    "asked": [
+      "spx-br"
     ]
   },
   {
@@ -43889,6 +44164,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "spx-br"
+    ],
+    "asked": [
       "spx-br"
     ]
   },
