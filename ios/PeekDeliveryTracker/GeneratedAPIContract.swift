@@ -465,6 +465,54 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let yalidine = CarrierID(rawValue: "yalidine")
     static let zheldor = CarrierID(rawValue: "zheldor")
     static let zrExpress = CarrierID(rawValue: "zr-express")
+    static let aeropost = CarrierID(rawValue: "aeropost")
+    static let aksExpress = CarrierID(rawValue: "aks-express")
+    static let algeriePoste = CarrierID(rawValue: "algerie-poste")
+    static let aymakan = CarrierID(rawValue: "aymakan")
+    static let azerpost = CarrierID(rawValue: "azerpost")
+    static let bestExpressVn = CarrierID(rawValue: "best-express-vn")
+    static let cityExpressRs = CarrierID(rawValue: "city-express-rs")
+    static let cseRussia = CarrierID(rawValue: "cse-russia")
+    static let dohrnTransfer = CarrierID(rawValue: "dohrn-transfer")
+    static let emsVietnam = CarrierID(rawValue: "ems-vietnam")
+    static let ethiopianPost = CarrierID(rawValue: "ethiopian-post")
+    static let euroexpressBa = CarrierID(rawValue: "euroexpress-ba")
+    static let followmont = CarrierID(rawValue: "followmont")
+    static let ghanaPost = CarrierID(rawValue: "ghana-post")
+    static let groupeGuilbault = CarrierID(rawValue: "groupe-guilbault")
+    static let haypost = CarrierID(rawValue: "haypost")
+    static let hiTrans = CarrierID(rawValue: "hi-trans")
+    static let jordanPost = CarrierID(rawValue: "jordan-post")
+    static let laPosteTunisienne = CarrierID(rawValue: "la-poste-tunisienne")
+    static let libanpost = CarrierID(rawValue: "libanpost")
+    static let mauritiusPost = CarrierID(rawValue: "mauritius-post")
+    static let mylerz = CarrierID(rawValue: "mylerz")
+    static let ncsCourier = CarrierID(rawValue: "ncs-courier")
+    static let nhatTin = CarrierID(rawValue: "nhat-tin")
+    static let nimExpress = CarrierID(rawValue: "nim-express")
+    static let northline = CarrierID(rawValue: "northline")
+    static let ozonLogistics = CarrierID(rawValue: "ozon-logistics")
+    static let pargo = CarrierID(rawValue: "pargo")
+    static let pbt = CarrierID(rawValue: "pbt")
+    static let polarisTransport = CarrierID(rawValue: "polaris-transport")
+    static let postaKenya = CarrierID(rawValue: "posta-kenya")
+    static let postaplus = CarrierID(rawValue: "postaplus")
+    static let quiqup = CarrierID(rawValue: "quiqup")
+    static let roadie = CarrierID(rawValue: "roadie")
+    static let rpxIndonesia = CarrierID(rawValue: "rpx-indonesia")
+    static let saee = CarrierID(rawValue: "saee")
+    static let scgExpress = CarrierID(rawValue: "scg-express")
+    static let skynetSa = CarrierID(rawValue: "skynet-sa")
+    static let spxID = CarrierID(rawValue: "spx-id")
+    static let spxMy = CarrierID(rawValue: "spx-my")
+    static let spxTh = CarrierID(rawValue: "spx-th")
+    static let spxTw = CarrierID(rawValue: "spx-tw")
+    static let spxVn = CarrierID(rawValue: "spx-vn")
+    static let tanzaniaPosts = CarrierID(rawValue: "tanzania-posts")
+    static let tntIt = CarrierID(rawValue: "tnt-it")
+    static let tstCfExpress = CarrierID(rawValue: "tst-cf-express")
+    static let uzbekistanPost = CarrierID(rawValue: "uzbekistan-post")
+    static let zajil = CarrierID(rawValue: "zajil")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -895,6 +943,54 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .yalidine,
         .zheldor,
         .zrExpress,
+        .aeropost,
+        .aksExpress,
+        .algeriePoste,
+        .aymakan,
+        .azerpost,
+        .bestExpressVn,
+        .cityExpressRs,
+        .cseRussia,
+        .dohrnTransfer,
+        .emsVietnam,
+        .ethiopianPost,
+        .euroexpressBa,
+        .followmont,
+        .ghanaPost,
+        .groupeGuilbault,
+        .haypost,
+        .hiTrans,
+        .jordanPost,
+        .laPosteTunisienne,
+        .libanpost,
+        .mauritiusPost,
+        .mylerz,
+        .ncsCourier,
+        .nhatTin,
+        .nimExpress,
+        .northline,
+        .ozonLogistics,
+        .pargo,
+        .pbt,
+        .polarisTransport,
+        .postaKenya,
+        .postaplus,
+        .quiqup,
+        .roadie,
+        .rpxIndonesia,
+        .saee,
+        .scgExpress,
+        .skynetSa,
+        .spxID,
+        .spxMy,
+        .spxTh,
+        .spxTw,
+        .spxVn,
+        .tanzaniaPosts,
+        .tntIt,
+        .tstCfExpress,
+        .uzbekistanPost,
+        .zajil,
     ]
 
     init(from decoder: Decoder) throws {

@@ -10207,7 +10207,7 @@
       "timezone": "Europe/Moscow",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "dellin"
       },
       "trackingUrlTemplate": "https://www.dellin.ru/tracker/orders/{trackingNumber}/",
       "linkRules": [
@@ -10867,7 +10867,12 @@
           ]
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^IM\\d{14}$",
+          "confidence": "low"
+        }
+      ],
       "trackingSearchUrl": "https://www.imile.com/en/track"
     },
     "interrapidisimo": {
@@ -13131,8 +13136,7 @@
       "aliases": [
         "Vietnam Post",
         "Vietnam Post Corporation",
-        "Bưu điện Việt Nam",
-        "VNPost EMS"
+        "Bưu điện Việt Nam"
       ],
       "countries": [
         "VN"
@@ -14405,7 +14409,7 @@
         "AM",
         "UA"
       ],
-      "color": "#c00000",
+      "color": "#b81c22",
       "selectable": true,
       "timezone": "Asia/Shanghai",
       "tracking": {
@@ -14540,7 +14544,7 @@
       "countries": [
         "BD"
       ],
-      "color": "#b31a1a",
+      "color": "#ce0000",
       "selectable": true,
       "timezone": "Asia/Dhaka",
       "tracking": {
@@ -14827,7 +14831,7 @@
       "countries": [
         "BD"
       ],
-      "color": "#347b31",
+      "color": "#602d90",
       "selectable": true,
       "timezone": "Asia/Dhaka",
       "tracking": {
@@ -15035,7 +15039,7 @@
       "countries": [
         "KR"
       ],
-      "color": "#f36523",
+      "color": "#e36808",
       "selectable": true,
       "timezone": "Asia/Seoul",
       "tracking": {
@@ -15161,7 +15165,7 @@
       "countries": [
         "KR"
       ],
-      "color": "#0083cd",
+      "color": "#003c83",
       "selectable": true,
       "timezone": "Asia/Seoul",
       "tracking": {
@@ -15275,7 +15279,7 @@
         "TH",
         "HK"
       ],
-      "color": "#394892",
+      "color": "#0a1f5c",
       "selectable": true,
       "timezone": "Asia/Singapore",
       "tracking": {
@@ -15342,7 +15346,7 @@
       "countries": [
         "TW"
       ],
-      "color": "#f4772b",
+      "color": "#ec6900",
       "selectable": true,
       "timezone": "Asia/Taipei",
       "tracking": {
@@ -15463,7 +15467,7 @@
       "countries": [
         "KR"
       ],
-      "color": "#1b6eb4",
+      "color": "#04378c",
       "selectable": true,
       "timezone": "Asia/Seoul",
       "tracking": {
@@ -15596,7 +15600,7 @@
       "countries": [
         "PK"
       ],
-      "color": "#ff6b35",
+      "color": "#f26522",
       "selectable": true,
       "timezone": "Asia/Karachi",
       "tracking": {
@@ -15697,7 +15701,7 @@
       "countries": [
         "NP"
       ],
-      "color": "#0447af",
+      "color": "#f6c63e",
       "selectable": true,
       "timezone": "Asia/Kathmandu",
       "tracking": {
@@ -15717,7 +15721,7 @@
       "countries": [
         "PK"
       ],
-      "color": "#be0101",
+      "color": "#ed1b24",
       "selectable": true,
       "timezone": "Asia/Karachi",
       "tracking": {
@@ -16022,7 +16026,7 @@
       "countries": [
         "LK"
       ],
-      "color": "#e81820",
+      "color": "#24408f",
       "selectable": true,
       "timezone": "Asia/Colombo",
       "tracking": {
@@ -16081,7 +16085,7 @@
         "TH",
         "AU"
       ],
-      "color": "#009d96",
+      "color": "#00474f",
       "selectable": true,
       "timezone": "Asia/Singapore",
       "tracking": {
@@ -16161,7 +16165,7 @@
       "countries": [
         "ID"
       ],
-      "color": "#862880",
+      "color": "#ee6825",
       "selectable": true,
       "timezone": "Asia/Jakarta",
       "tracking": {
@@ -16278,7 +16282,7 @@
       "countries": [
         "TW"
       ],
-      "color": "#ff6000",
+      "color": "#00734d",
       "selectable": true,
       "timezone": "Asia/Taipei",
       "tracking": {
@@ -16447,7 +16451,7 @@
       "countries": [
         "LK"
       ],
-      "color": "#c01838",
+      "color": "#cf1839",
       "selectable": true,
       "timezone": "Asia/Colombo",
       "tracking": {
@@ -16467,7 +16471,7 @@
       "countries": [
         "IN"
       ],
-      "color": "#de200b",
+      "color": "#c7262f",
       "selectable": true,
       "timezone": "Asia/Kolkata",
       "tracking": {
@@ -16541,7 +16545,7 @@
       "countries": [
         "BD"
       ],
-      "color": "#d9802e",
+      "color": "#0b4c9f",
       "selectable": true,
       "timezone": "Asia/Dhaka",
       "tracking": {
@@ -16643,7 +16647,8 @@
       "timezone": "Asia/Karachi",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "tcs-pakistan",
+        "recognitionRank": 968
       },
       "trackingUrlTemplate": "https://www.tcsexpress.com/track/{trackingNumber}",
       "linkRules": [
@@ -16668,7 +16673,7 @@
       "countries": [
         "ID"
       ],
-      "color": "#105cef",
+      "color": "#0033ab",
       "selectable": true,
       "timezone": "Asia/Jakarta",
       "tracking": {
@@ -16696,7 +16701,7 @@
       "countries": [
         "IN"
       ],
-      "color": "#fac11c",
+      "color": "#f4791f",
       "selectable": true,
       "timezone": "Asia/Kolkata",
       "tracking": {
@@ -16732,7 +16737,7 @@
         "HK",
         "TW"
       ],
-      "color": "#0b5fff",
+      "color": "#0084ca",
       "selectable": true,
       "timezone": "Asia/Singapore",
       "tracking": {
@@ -16974,7 +16979,7 @@
       "countries": [
         "DZ"
       ],
-      "color": "#fec30f",
+      "color": "#ffcb05",
       "selectable": true,
       "timezone": "Africa/Algiers",
       "tracking": {
@@ -17004,6 +17009,1753 @@
         }
       ],
       "trackingSearchUrl": "https://www.zrexpress.net/suivi"
+    },
+    "aeropost": {
+      "displayName": "Aeropost",
+      "aliases": [
+        "Aeropost Costa Rica"
+      ],
+      "countries": [
+        "CR",
+        "SV",
+        "GT",
+        "HN",
+        "BB",
+        "VG",
+        "CW",
+        "JM",
+        "TT",
+        "CL",
+        "CO",
+        "PE"
+      ],
+      "color": "#0b3e9d",
+      "selectable": true,
+      "timezone": "America/Costa_Rica",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://aeropost.com/en/tracking/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "aeropost.com",
+            "www.aeropost.com"
+          ],
+          "path": "^/(?:[A-Za-z]{3}/)?(?:en|es)/tracking/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "tracking.aeropost.com"
+          ],
+          "path": "^/([A-Za-z0-9]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^CR\\d{10}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://aeropost.com/en/tracking"
+    },
+    "aks-express": {
+      "displayName": "AKS Express Kurir",
+      "aliases": [
+        "AKS",
+        "AKS Express",
+        "AKS Kurir",
+        "AKS Express Kurir d.o.o."
+      ],
+      "countries": [
+        "RS"
+      ],
+      "color": "#2b0299",
+      "selectable": true,
+      "timezone": "Europe/Belgrade",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.aks.rs/pracenje-posiljke/"
+    },
+    "algerie-poste": {
+      "displayName": "Algérie Poste",
+      "aliases": [
+        "Algeria Post",
+        "Algerie Poste",
+        "EMS Champion Post Algérie",
+        "EMS Champion Post Algeria"
+      ],
+      "countries": [
+        "DZ"
+      ],
+      "color": "#213f98",
+      "selectable": true,
+      "timezone": "Africa/Algiers",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://ems.dz/track/index.php?icd={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "ems.dz",
+            "www.ems.dz"
+          ],
+          "pathPattern": "^/track/index\\.php$",
+          "params": [
+            "icd"
+          ]
+        },
+        {
+          "domains": [
+            "track.ems.dz"
+          ],
+          "pathPattern": "^/track\\.php$",
+          "params": [
+            "icd"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^E[CD]\\d{11}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.ems.dz/"
+    },
+    "aymakan": {
+      "displayName": "AyMakan",
+      "aliases": [
+        "Aymakan",
+        "أي مكان"
+      ],
+      "countries": [
+        "SA"
+      ],
+      "color": "#feca07",
+      "selectable": true,
+      "timezone": "Asia/Riyadh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://aymakan.com/tracking/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "aymakan.com",
+            "www.aymakan.com"
+          ],
+          "path": "^/(?:ar/|en/)?tracking/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "aymakan.com.sa",
+            "www.aymakan.com.sa"
+          ],
+          "path": "^/(?:ar|en)/tracking/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^AY\\d{9,11}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://aymakan.com/tracking"
+    },
+    "azerpost": {
+      "displayName": "Azerpost",
+      "aliases": [
+        "Azerpoçt",
+        "Azərpoçt",
+        "Азерпочта",
+        "Azerbaijan Post"
+      ],
+      "countries": [
+        "AZ"
+      ],
+      "color": "#034c7d",
+      "selectable": true,
+      "timezone": "Asia/Baku",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.azerpost.az/az/xidmetler/gonderislerin-izlenmesi?package_id={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "azerpost.az",
+            "www.azerpost.az"
+          ],
+          "pathPattern": "^/(?:az/xidmetler/gonderislerin-izlenmesi|en/services/tracking-of-shipments|ru/uslugi/otslezivanie-otpravlenii)/?$",
+          "params": [
+            "package_id"
+          ]
+        },
+        {
+          "domains": [
+            "azerpost.az",
+            "www.azerpost.az"
+          ],
+          "path": "^/(?:az|en)/tracking/([A-Za-z]{2}\\d{9}[A-Za-z]{2})/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.azerpost.az/az/xidmetler/gonderislerin-izlenmesi"
+    },
+    "best-express-vn": {
+      "displayName": "BEST Express Vietnam",
+      "aliases": [
+        "BEST Express Việt Nam",
+        "BEST Inc. Vietnam",
+        "BEST Express VN"
+      ],
+      "countries": [
+        "VN"
+      ],
+      "color": "#022344",
+      "selectable": true,
+      "timezone": "Asia/Ho_Chi_Minh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.best-inc.vn/track?bills={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "best-inc.vn",
+            "www.best-inc.vn"
+          ],
+          "pathPattern": "^/track/?$",
+          "params": [
+            "bills",
+            "waybill"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.best-inc.vn/track"
+    },
+    "city-express-rs": {
+      "displayName": "City Express",
+      "aliases": [
+        "City Express d.o.o.",
+        "City Express Serbia",
+        "CITY EXPRESS DOO"
+      ],
+      "countries": [
+        "RS"
+      ],
+      "color": "#f58220",
+      "selectable": true,
+      "timezone": "Europe/Belgrade",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^68800[125]\\d{8}(?:\\d{2})?$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.cityexpress.rs/pracenje-posiljke"
+    },
+    "cse-russia": {
+      "displayName": "CSE",
+      "aliases": [
+        "КСЭ",
+        "Курьер Сервис Экспресс",
+        "Courier Service Express",
+        "Курьерская служба КСЭ"
+      ],
+      "countries": [
+        "RU"
+      ],
+      "color": "#f47920",
+      "selectable": true,
+      "timezone": "Europe/Moscow",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.cse.ru/mow/track/?numbers={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "cse.ru",
+            "www.cse.ru"
+          ],
+          "pathPattern": "^/[a-z]{3}/track/?$",
+          "params": [
+            "numbers"
+          ]
+        },
+        {
+          "domains": [
+            "cse.ru",
+            "www.cse.ru",
+            "old.cse.ru"
+          ],
+          "pathPattern": "^/track\\.php$",
+          "params": [
+            "number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.cse.ru/mow/track/"
+    },
+    "dohrn-transfer": {
+      "displayName": "Dohrn Transfer",
+      "aliases": [
+        "Dohrn",
+        "Dohrn Transfer Company"
+      ],
+      "countries": [
+        "US"
+      ],
+      "color": "#ee3631",
+      "selectable": true,
+      "timezone": "America/Chicago",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm?wpro={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "facts.dohrn.com",
+            "www.dohrn.com"
+          ],
+          "pathPattern": "^/scripts/cgiip\\.exe/protraceext\\.htm$",
+          "params": [
+            "wpro"
+          ]
+        },
+        {
+          "domains": [
+            "facts.dohrn.com"
+          ],
+          "pathPattern": "^/scripts/cgiip\\.exe/protracexml(?:\\.htm)?$",
+          "params": [
+            "pronum"
+          ]
+        },
+        {
+          "domains": [
+            "facts.dohrn.com"
+          ],
+          "pathPattern": "^/scripts/cgiip\\.exe/shipmenttrace\\.htm$",
+          "params": [
+            "referencenumber"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm"
+    },
+    "ems-vietnam": {
+      "displayName": "EMS Vietnam",
+      "aliases": [
+        "EMS Việt Nam",
+        "Tổng công ty Chuyển phát nhanh Bưu điện",
+        "Tổng công ty EMS",
+        "VNPost EMS"
+      ],
+      "countries": [
+        "VN"
+      ],
+      "color": "#0050a0",
+      "selectable": true,
+      "timezone": "Asia/Ho_Chi_Minh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://ems.com.vn/tra-cuu/tra-cuu-buu-gui?code={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "ems.com.vn",
+            "www.ems.com.vn"
+          ],
+          "pathPattern": "^/tra-cuu/tra-cuu-buu-gui/?$",
+          "params": [
+            "code"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.ems.com.vn/tra-cuu/tra-cuu-buu-gui"
+    },
+    "ethiopian-post": {
+      "displayName": "Ethiopian Postal Service",
+      "aliases": [
+        "Ethiopost",
+        "Ethiopian Post",
+        "Ethiopia Post"
+      ],
+      "countries": [
+        "ET"
+      ],
+      "color": "#f8ac19",
+      "selectable": true,
+      "timezone": "Africa/Addis_Ababa",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://domestictrack.ethio.post/PostGlobal/WebTrack/Track.aspx"
+    },
+    "euroexpress-ba": {
+      "displayName": "EuroExpress",
+      "aliases": [
+        "EuroExpress brza pošta",
+        "Euro Express",
+        "EuroExpress d.o.o."
+      ],
+      "countries": [
+        "BA"
+      ],
+      "color": "#da212e",
+      "selectable": true,
+      "timezone": "Europe/Sarajevo",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.euroexpress.ba/pracenje-posiljke/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "euroexpress.ba"
+          ],
+          "path": "^/pracenje-posiljke/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.euroexpress.ba/pracenje-posiljke"
+    },
+    "followmont": {
+      "displayName": "Followmont Transport",
+      "aliases": [
+        "Followmont",
+        "Followmont Transport Pty Ltd"
+      ],
+      "countries": [
+        "AU"
+      ],
+      "color": "#022160",
+      "selectable": true,
+      "timezone": "Australia/Brisbane",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.followmont.com.au/?page=fmt_template&fmt_template=track-trace&track-trace=track-trace-start-unsecured-user&consignmentNumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.followmont.com.au",
+            "followmont.com.au"
+          ],
+          "pathPattern": "^/$",
+          "params": [
+            "consignmentNumber"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.followmont.com.au/"
+    },
+    "ghana-post": {
+      "displayName": "Ghana Post",
+      "aliases": [
+        "GhanaPost"
+      ],
+      "countries": [
+        "GH"
+      ],
+      "color": "#f57500",
+      "selectable": true,
+      "timezone": "Africa/Accra",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://epstools.ghanapost.com.gh/tracklocal.php"
+    },
+    "groupe-guilbault": {
+      "displayName": "Groupe Guilbault",
+      "aliases": [
+        "Guilbault"
+      ],
+      "countries": [
+        "CA"
+      ],
+      "color": "#c32d30",
+      "selectable": true,
+      "timezone": "America/Toronto",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://grguweb.tmwcloud.com/trace/external.msw"
+    },
+    "haypost": {
+      "displayName": "HayPost",
+      "aliases": [
+        "Haypost",
+        "Հայփոստ",
+        "Armenia Post"
+      ],
+      "countries": [
+        "AM"
+      ],
+      "color": "#0063bd",
+      "selectable": true,
+      "timezone": "Asia/Yerevan",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.haypost.am/track-trace#{trackingNumber}",
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.haypost.am/en/track-trace"
+    },
+    "hi-trans": {
+      "displayName": "Hi-Trans Express",
+      "aliases": [
+        "Hi-Trans",
+        "Hi Trans Express",
+        "Hi-Trans Express Pty Ltd",
+        "HiTrans"
+      ],
+      "countries": [
+        "AU"
+      ],
+      "color": "#c82027",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://online.hi-trans.com.au/Connotes/ShowConsignmentSummary.aspx?Number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "online.hi-trans.com.au"
+          ],
+          "pathPattern": "^/Connotes/ShowConsignmentSummary\\.aspx$",
+          "params": [
+            "Number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.hi-trans.com.au/"
+    },
+    "jordan-post": {
+      "displayName": "Jordan Post",
+      "aliases": [
+        "البريد الأردني"
+      ],
+      "countries": [
+        "JO"
+      ],
+      "color": "#a42035",
+      "selectable": true,
+      "timezone": "Asia/Amman",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://212.35.69.84/JordanWebTrack/Result.aspx?itemid={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "212.35.69.84"
+          ],
+          "pathPattern": "^/JordanWebTrack/Result\\.aspx$",
+          "params": [
+            "itemid"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://212.35.69.84/NewWebTrack/WebTrack_Submit.aspx"
+    },
+    "la-poste-tunisienne": {
+      "displayName": "La Poste Tunisienne",
+      "aliases": [
+        "Tunisia Post",
+        "Poste Tunisienne",
+        "Rapid-Poste",
+        "Rapid Poste",
+        "البريد التونسي"
+      ],
+      "countries": [
+        "TN"
+      ],
+      "color": "#fa891c",
+      "selectable": true,
+      "timezone": "Africa/Tunis",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "www.rapidposte.poste.tn",
+            "rapidposte.poste.tn",
+            "www.e-suivi.poste.tn"
+          ],
+          "pathPattern": "^/(?:new/)?(?:fr|an|ar)/Item_Events\\.asp$",
+          "params": [
+            "ItemId"
+          ]
+        }
+      ],
+      "detectionRules": []
+    },
+    "libanpost": {
+      "displayName": "LibanPost",
+      "aliases": [
+        "Liban Post",
+        "ليبان بوست"
+      ],
+      "countries": [
+        "LB"
+      ],
+      "color": "#006db7",
+      "selectable": true,
+      "timezone": "Asia/Beirut",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.libanpost.com/english/tools-support/track-and-trace?sn={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.libanpost.com",
+            "libanpost.com"
+          ],
+          "pathPattern": "^/(?:english|arabic)/tools-support/track-and-trace/?$",
+          "params": [
+            "sn"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.libanpost.com/english/tools-support/track-and-trace"
+    },
+    "mauritius-post": {
+      "displayName": "Mauritius Post",
+      "aliases": [
+        "Mauritius Post Ltd"
+      ],
+      "countries": [
+        "MU"
+      ],
+      "color": "#00539b",
+      "selectable": true,
+      "timezone": "Indian/Mauritius",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.mauritiuspost.mu/track-trace/?tracking_code={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.mauritiuspost.mu",
+            "mauritiuspost.mu"
+          ],
+          "pathPattern": "^/track-trace/?$",
+          "params": [
+            "tracking_code"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.mauritiuspost.mu/track-trace/"
+    },
+    "mylerz": {
+      "displayName": "Mylerz",
+      "aliases": [
+        "MYLERZ"
+      ],
+      "countries": [
+        "EG",
+        "TN",
+        "MA",
+        "DZ",
+        "JO"
+      ],
+      "color": "#fb4f14",
+      "selectable": true,
+      "timezone": "Africa/Cairo",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://mylerz.net/track/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "mylerz.net"
+          ],
+          "path": "^/(?:track|trackShipment|track-details)/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://mylerz.net/track"
+    },
+    "ncs-courier": {
+      "displayName": "NCS Kurir",
+      "aliases": [
+        "NCS",
+        "PT Nusantara Card Semesta",
+        "Nusantara Card Semesta"
+      ],
+      "countries": [
+        "ID"
+      ],
+      "color": "#e32222",
+      "selectable": true,
+      "timezone": "Asia/Jakarta",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://ncskurir.com/ncskurir/track?awb={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "ncskurir.com",
+            "www.ncskurir.com"
+          ],
+          "pathPattern": "^/ncskurir/track/?$",
+          "params": [
+            "awb"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://ncskurir.com/ncskurir/track"
+    },
+    "nhat-tin": {
+      "displayName": "Nhat Tin Logistics",
+      "aliases": [
+        "Nhất Tín Logistics",
+        "Nhất Tín",
+        "NTL",
+        "Nhat Tin Express"
+      ],
+      "countries": [
+        "VN"
+      ],
+      "color": "#fdd800",
+      "selectable": true,
+      "timezone": "Asia/Ho_Chi_Minh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://ntlogistics.vn/tra-van-don.html?bill={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "ntlogistics.vn",
+            "www.ntlogistics.vn"
+          ],
+          "pathPattern": "^/tra-van-don(?:\\.html)?/?$",
+          "params": [
+            "bill"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^CP\\d{8}R?$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://ntlogistics.vn/tra-van-don.html"
+    },
+    "nim-express": {
+      "displayName": "Nim Express",
+      "aliases": [
+        "NIMEXPRESS",
+        "นิ่มเอ็กซ์เพรส"
+      ],
+      "countries": [
+        "TH"
+      ],
+      "color": "#0967b3",
+      "selectable": true,
+      "timezone": "Asia/Bangkok",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.nimexpress.com/web/p/tracking?h_i={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "nimexpress.com",
+            "www.nimexpress.com"
+          ],
+          "pathPattern": "^/web/p/tracking/?$",
+          "params": [
+            "h_i",
+            "i"
+          ]
+        }
+      ],
+      "detectionRules": []
+    },
+    "northline": {
+      "displayName": "Northline",
+      "aliases": [
+        "Northline Transport",
+        "Northline Pty Ltd"
+      ],
+      "countries": [
+        "AU"
+      ],
+      "color": "#e3173e",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://track.northline.com.au/status/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "track.northline.com.au"
+          ],
+          "path": "^/status/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://track.northline.com.au/"
+    },
+    "ozon-logistics": {
+      "displayName": "Ozon",
+      "aliases": [
+        "Ozon Rocket",
+        "OZON Rocket Доставка",
+        "Ozon Доставка",
+        "Ozon Dostavka"
+      ],
+      "countries": [
+        "RU",
+        "BY",
+        "KZ"
+      ],
+      "color": "#005bff",
+      "selectable": true,
+      "timezone": "Europe/Moscow",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://tracking.ozon.ru/?track={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.ozon.ru"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "track"
+          ]
+        },
+        {
+          "domains": [
+            "rocket.ozon.ru"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "SearchId"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^(?:\\d{13}|\\d{15})$",
+          "confidence": "high",
+          "rawPattern": "^(?:\\d{8}|\\d{10})-\\d{4}-\\d$"
+        },
+        {
+          "pattern": "^PL\\d{6}[0-9A-Z]+$",
+          "confidence": "high",
+          "rawPattern": "^PL-\\d{6}-[0-9A-Z]+(?:-[0-9A-Z]+)*$"
+        }
+      ],
+      "trackingSearchUrl": "https://tracking.ozon.ru/"
+    },
+    "pargo": {
+      "displayName": "Pargo",
+      "aliases": [
+        "Pargo Points",
+        "myPargo"
+      ],
+      "countries": [
+        "ZA"
+      ],
+      "color": "#fff200",
+      "selectable": true,
+      "timezone": "Africa/Johannesburg",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "pargo.co.za"
+          ],
+          "pathPattern": "^/track-trace/?$",
+          "params": [
+            "code",
+            "track-trace"
+          ]
+        },
+        {
+          "domains": [
+            "pargo.co.za"
+          ],
+          "pathPattern": "^/scripts/track_and_trace\\.php$",
+          "params": [
+            "trackingCode"
+          ]
+        },
+        {
+          "domains": [
+            "api.pargo.co.za"
+          ],
+          "pathPattern": "^/track-trace\\.php$",
+          "params": [
+            "waybill"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^PAR\\d{10}$",
+          "confidence": "high"
+        }
+      ]
+    },
+    "pbt": {
+      "displayName": "PBT",
+      "aliases": [
+        "PBT Couriers",
+        "PBT Express Freight Network",
+        "PBT Transport",
+        "PBT Group",
+        "PBTrack"
+      ],
+      "countries": [
+        "NZ"
+      ],
+      "color": "#008fbe",
+      "selectable": true,
+      "timezone": "Pacific/Auckland",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.pbt.nz/tracking-result/?consignmentNumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.pbt.nz",
+            "pbt.nz"
+          ],
+          "pathPattern": "^/tracking-result/?$",
+          "params": [
+            "consignmentNumber",
+            "consignmentnumber"
+          ]
+        },
+        {
+          "domains": [
+            "www.pbt.com",
+            "pbt.com",
+            "www.pbt.co.nz",
+            "pbt.co.nz"
+          ],
+          "pathPattern": "^/(?:track|nick)/results\\.cfm$",
+          "params": [
+            "ticketNo"
+          ]
+        },
+        {
+          "domains": [
+            "www.pbt.co.nz",
+            "pbt.co.nz"
+          ],
+          "pathPattern": "^/landing\\.aspx$",
+          "params": [
+            "track"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.pbt.nz/"
+    },
+    "polaris-transport": {
+      "displayName": "Polaris Transportation Group",
+      "aliases": [
+        "Polaris Transportation",
+        "Polaris Transport",
+        "Polaris"
+      ],
+      "countries": [
+        "CA",
+        "US"
+      ],
+      "color": "#004c8c",
+      "selectable": true,
+      "timezone": "America/Toronto",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://polaristransport.com/en/trace-polaris.php?pro={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "polaristransport.com",
+            "www.polaristransport.com"
+          ],
+          "pathPattern": "^/(?:en|fr)/(?:trace-polaris|quick-trace-shipments)\\.php$",
+          "params": [
+            "pro"
+          ]
+        },
+        {
+          "domains": [
+            "customer.polaristransport.com"
+          ],
+          "pathPattern": "^/trace/external_bill_viewer\\.msw$",
+          "params": [
+            "search_value"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^P\\d{7}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://polaristransport.com/en/trace-polaris.php"
+    },
+    "posta-kenya": {
+      "displayName": "Posta Kenya",
+      "aliases": [
+        "Postal Corporation of Kenya",
+        "PCK",
+        "Kenya Post"
+      ],
+      "countries": [
+        "KE"
+      ],
+      "color": "#ed1c24",
+      "selectable": true,
+      "timezone": "Africa/Nairobi",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://postglobal.posta.co.ke/postglobaltrack/Track.aspx"
+    },
+    "postaplus": {
+      "displayName": "PostaPlus",
+      "aliases": [
+        "Posta Plus",
+        "Postaplus",
+        "Pplus"
+      ],
+      "countries": [
+        "KW",
+        "AE",
+        "BH"
+      ],
+      "color": "#ea7c25",
+      "selectable": true,
+      "timezone": "Asia/Kuwait",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.postaplus.com/?trackid={trackingNumber}&trackby=awb",
+      "linkRules": [
+        {
+          "domains": [
+            "www.postaplus.com",
+            "postaplus.com"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "trackid"
+          ]
+        },
+        {
+          "domains": [
+            "www.postaplus.com",
+            "postaplus.com"
+          ],
+          "pathPattern": "^/Customer/ShipmentDetails\\.aspx$",
+          "params": [
+            "sno"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.postaplus.com/"
+    },
+    "quiqup": {
+      "displayName": "Quiqup",
+      "countries": [
+        "AE"
+      ],
+      "color": "#6c65f7",
+      "selectable": true,
+      "timezone": "Asia/Dubai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://track-parcel.quiqup.com/"
+    },
+    "roadie": {
+      "displayName": "Roadie",
+      "aliases": [
+        "Roadie, a UPS Company",
+        "Roadie Inc."
+      ],
+      "countries": [
+        "US"
+      ],
+      "color": "#76cccd",
+      "selectable": true,
+      "timezone": "America/New_York",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://track.roadie.com/id/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "track.roadie.com"
+          ],
+          "path": "^/(?:[^/]+/)?id/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "track.roadie.com"
+          ],
+          "path": "^/track/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "track.roadie.com"
+          ],
+          "pathPattern": "^/(?:[^/]+/)?track/?$",
+          "params": [
+            "tracking_number"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^1R[0-9A-Z]{26}$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^1R[0-9A-F]{14}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://track.roadie.com/"
+    },
+    "rpx-indonesia": {
+      "displayName": "RPX",
+      "aliases": [
+        "RPX Indonesia",
+        "RPX Kiriman Express"
+      ],
+      "countries": [
+        "ID"
+      ],
+      "color": "#c9a73d",
+      "selectable": true,
+      "timezone": "Asia/Jakarta",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "rpx.co.id",
+            "www.rpx.co.id"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "tracking_number[]"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://rpx.co.id/tracking"
+    },
+    "saee": {
+      "displayName": "Saee",
+      "aliases": [
+        "SAEE",
+        "ساعي"
+      ],
+      "countries": [
+        "SA"
+      ],
+      "color": "#f8941d",
+      "selectable": true,
+      "timezone": "Asia/Riyadh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.saee.sa/en/track-your-shipment?waybill={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.saee.sa",
+            "saee.sa"
+          ],
+          "pathPattern": "^/en/track-your-shipment/?$",
+          "params": [
+            "waybill"
+          ]
+        },
+        {
+          "domains": [
+            "www.saee.sa",
+            "saee.sa"
+          ],
+          "pathPattern": "^/trackingpage/?$",
+          "params": [
+            "trackingnum"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^OS\\d{8}KS$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://www.saee.sa/en/track-your-shipment"
+    },
+    "scg-express": {
+      "displayName": "SCG Express",
+      "aliases": [
+        "SCG EXPRESS",
+        "เอสซีจี เอ็กซ์เพรส",
+        "SCG JWD Express",
+        "SCG Yamato Express"
+      ],
+      "countries": [
+        "TH"
+      ],
+      "color": "#ed1c06",
+      "selectable": true,
+      "timezone": "Asia/Bangkok",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.scgexpress.co.th/tracking/detail/{trackingNumber}/",
+      "linkRules": [
+        {
+          "domains": [
+            "scgexpress.co.th",
+            "www.scgexpress.co.th"
+          ],
+          "path": "^/tracking/detail/(\\d{12})/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^1100\\d{8}$",
+          "confidence": "low",
+          "checksum": "mod7"
+        }
+      ],
+      "trackingSearchUrl": "https://www.scgexpress.co.th/tracking/"
+    },
+    "skynet-sa": {
+      "displayName": "SkyNet South Africa",
+      "aliases": [
+        "SkyNet SA",
+        "SkyNet Worldwide Express South Africa"
+      ],
+      "countries": [
+        "ZA"
+      ],
+      "color": "#fe0000",
+      "selectable": true,
+      "timezone": "Africa/Johannesburg",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://web.skynet.co.za:5002/T?R={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "web.skynet.co.za"
+          ],
+          "pathPattern": "^/T/?$",
+          "params": [
+            "R"
+          ]
+        },
+        {
+          "domains": [
+            "www.skynet.co.za",
+            "skynet.co.za"
+          ],
+          "pathPattern": "^/tracking2/tracking\\.aspx$",
+          "params": [
+            "wb"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://web.skynet.co.za:5002/T"
+    },
+    "spx-id": {
+      "displayName": "SPX Express Indonesia",
+      "aliases": [
+        "Shopee Express Indonesia",
+        "Shopee Xpress Indonesia",
+        "SPX Indonesia"
+      ],
+      "countries": [
+        "ID"
+      ],
+      "color": "#ee4d2d",
+      "selectable": true,
+      "timezone": "Asia/Jakarta",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://spx.co.id/track?{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "spx.co.id"
+          ],
+          "pathPattern": "^/(?:m/)?track/?$",
+          "query": "^(SPXID\\d{11}[0-9A-Z]|ID\\d{12}[0-9A-Z]?)$"
+        },
+        {
+          "domains": [
+            "spx.co.id"
+          ],
+          "path": "^/detail/(SPXID\\d{11}[0-9A-Z]|ID\\d{12}[0-9A-Z]?)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^SPXID\\d{11}[0-9A-Z]$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^ID\\d{12}[0-9A-Z]?$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://spx.co.id/track"
+    },
+    "spx-my": {
+      "displayName": "SPX Express Malaysia",
+      "aliases": [
+        "Shopee Express Malaysia",
+        "Shopee Xpress Malaysia",
+        "SPX Malaysia"
+      ],
+      "countries": [
+        "MY"
+      ],
+      "color": "#ee4d2d",
+      "selectable": true,
+      "timezone": "Asia/Kuala_Lumpur",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://spx.com.my/track?{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "spx.com.my"
+          ],
+          "pathPattern": "^/(?:m/)?track/?$",
+          "query": "^(SPXMY\\d{11}[0-9A-Z]|MY\\d{12}[0-9A-Z])$"
+        },
+        {
+          "domains": [
+            "spx.com.my"
+          ],
+          "path": "^/detail/(SPXMY\\d{11}[0-9A-Z]|MY\\d{12}[0-9A-Z])/?$"
+        },
+        {
+          "domains": [
+            "spx.com.my"
+          ],
+          "pathPattern": "^/en/tracking/?$",
+          "params": [
+            "tracking_no"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^SPXMY\\d{11}[0-9A-Z]$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^MY\\d{12}[0-9A-Z]$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://spx.com.my/track"
+    },
+    "spx-th": {
+      "displayName": "SPX Express Thailand",
+      "aliases": [
+        "Shopee Express Thailand",
+        "Shopee Xpress Thailand",
+        "SPX Thailand"
+      ],
+      "countries": [
+        "TH"
+      ],
+      "color": "#ee4d2d",
+      "selectable": true,
+      "timezone": "Asia/Bangkok",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://spx.co.th/track?{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "spx.co.th"
+          ],
+          "pathPattern": "^/(?:m/)?track/?$",
+          "query": "^(SPXTH\\d{11}[0-9A-Z]|TH\\d{12}[0-9A-Z]?)$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^SPXTH\\d{11}[0-9A-Z]$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^TH\\d{12}[0-9A-Z]?$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://spx.co.th/track"
+    },
+    "spx-tw": {
+      "displayName": "SPX Express Taiwan",
+      "aliases": [
+        "Shopee Express Taiwan",
+        "Shopee Xpress Taiwan",
+        "SPX Taiwan",
+        "蝦皮店到店"
+      ],
+      "countries": [
+        "TW"
+      ],
+      "color": "#ee4d2d",
+      "selectable": true,
+      "timezone": "Asia/Taipei",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "spx.tw"
+          ],
+          "path": "^/detail/(TW\\d{12}[0-9A-Z])/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^TW\\d{12}[0-9A-Z]$",
+          "confidence": "low"
+        }
+      ]
+    },
+    "spx-vn": {
+      "displayName": "SPX Express Vietnam",
+      "aliases": [
+        "Shopee Express Vietnam",
+        "Shopee Xpress Vietnam",
+        "SPX Vietnam"
+      ],
+      "countries": [
+        "VN"
+      ],
+      "color": "#ee4d2d",
+      "selectable": true,
+      "timezone": "Asia/Ho_Chi_Minh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://spx.vn/track?{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "spx.vn"
+          ],
+          "pathPattern": "^/(?:m/)?track/?$",
+          "query": "^(SPXVN\\d{11}[0-9A-Z]|VN\\d{12}[0-9A-Z])$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^SPXVN\\d{11}[0-9A-Z]$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^VN\\d{12}[0-9A-Z]$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://spx.vn/track"
+    },
+    "tanzania-posts": {
+      "displayName": "Tanzania Posts Corporation",
+      "aliases": [
+        "Tanzania Post",
+        "Tanzania Posts",
+        "Posta Tanzania",
+        "TPC"
+      ],
+      "countries": [
+        "TZ"
+      ],
+      "color": "#c31f26",
+      "selectable": true,
+      "timezone": "Africa/Dar_es_Salaam",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.posta.co.tz"
+          ],
+          "pathPattern": "^/index\\.php/Tracking/dashboard_tracking_information/?$",
+          "params": [
+            "id"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://tracking.posta.co.tz/index.php/Tracking/tracker"
+    },
+    "tnt-it": {
+      "displayName": "TNT Italy",
+      "aliases": [
+        "TNT Italia"
+      ],
+      "countries": [
+        "IT"
+      ],
+      "color": "#ff6600",
+      "selectable": true,
+      "timezone": "Europe/Rome",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "tnt-it",
+        "recognitionRank": 645
+      },
+      "trackingUrlTemplate": "https://www.tnt.it/tracking/getTrack.html?wt=1&consigNos={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tnt.it"
+          ],
+          "pathPattern": "^/tracking/getTrack\\.html$",
+          "params": [
+            "consigNos"
+          ],
+          "ownNumbersOnly": true
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^[A-Z]{2}\\d{8}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.tnt.it/tracking/Tracking.do"
+    },
+    "tst-cf-express": {
+      "displayName": "TST-CF Express",
+      "aliases": [
+        "TST-CF",
+        "TST Overland Express",
+        "Canadian Freightways",
+        "TST Solutions"
+      ],
+      "countries": [
+        "CA",
+        "US"
+      ],
+      "color": "#0050a0",
+      "selectable": true,
+      "timezone": "America/Toronto",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.tst-cfexpress.com/tracing/by-url?lang=e&PRO={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tst-cfexpress.com"
+          ],
+          "pathPattern": "^/tracing/by-url/?$",
+          "params": [
+            "PRO"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://m.tst-cfexpress.com/tracing"
+    },
+    "uzbekistan-post": {
+      "displayName": "Uzbekistan Post",
+      "aliases": [
+        "O‘zbekiston pochtasi",
+        "O'zbekiston pochtasi",
+        "UzPost",
+        "Uzbekiston Pochtasi"
+      ],
+      "countries": [
+        "UZ"
+      ],
+      "color": "#0d47a1",
+      "selectable": true,
+      "timezone": "Asia/Tashkent",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://uz.post/ru/tracking/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "uz.post",
+            "www.uz.post"
+          ],
+          "path": "^/(?:(?:ru|uz)/)?tracking/([A-Za-z]{2}\\d{9}[A-Za-z]{2})/?$"
+        },
+        {
+          "domains": [
+            "uz.post",
+            "www.uz.post"
+          ],
+          "pathPattern": "^/(?:(?:ru|uz)/)?tracking/?$",
+          "params": [
+            "search"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://uz.post/ru/tracking"
+    },
+    "zajil": {
+      "displayName": "Zajil Express",
+      "aliases": [
+        "Zajil",
+        "Zajil Express Company",
+        "زاجل",
+        "شركة زاجل"
+      ],
+      "countries": [
+        "SA"
+      ],
+      "color": "#ffc20e",
+      "selectable": true,
+      "timezone": "Asia/Riyadh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://zajil-express.com/track?tracking_id={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "zajil-express.com"
+          ],
+          "pathPattern": "^/(?:ar/)?track/?$",
+          "params": [
+            "tracking_id"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://zajil-express.com/track"
     }
   },
   "servers": [
@@ -19908,7 +21660,55 @@
           "xde-logistics",
           "yalidine",
           "zheldor",
-          "zr-express"
+          "zr-express",
+          "aeropost",
+          "aks-express",
+          "algerie-poste",
+          "aymakan",
+          "azerpost",
+          "best-express-vn",
+          "city-express-rs",
+          "cse-russia",
+          "dohrn-transfer",
+          "ems-vietnam",
+          "ethiopian-post",
+          "euroexpress-ba",
+          "followmont",
+          "ghana-post",
+          "groupe-guilbault",
+          "haypost",
+          "hi-trans",
+          "jordan-post",
+          "la-poste-tunisienne",
+          "libanpost",
+          "mauritius-post",
+          "mylerz",
+          "ncs-courier",
+          "nhat-tin",
+          "nim-express",
+          "northline",
+          "ozon-logistics",
+          "pargo",
+          "pbt",
+          "polaris-transport",
+          "posta-kenya",
+          "postaplus",
+          "quiqup",
+          "roadie",
+          "rpx-indonesia",
+          "saee",
+          "scg-express",
+          "skynet-sa",
+          "spx-id",
+          "spx-my",
+          "spx-th",
+          "spx-tw",
+          "spx-vn",
+          "tanzania-posts",
+          "tnt-it",
+          "tst-cf-express",
+          "uzbekistan-post",
+          "zajil"
         ]
       },
       "Stage": {
