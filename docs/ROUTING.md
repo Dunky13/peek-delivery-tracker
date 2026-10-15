@@ -136,7 +136,8 @@ An adapter whose answer has only local clocks or an undated status summary keeps
 evidence while a universal provider dates the timeline. It is asked again 6 h later,
 not on every check. When detection names that carrier for an unknown parcel's number and
 its answer shows movement, a provider's progress in the same check files the parcel under
-it, as one added with that carrier would be. Without such a provider answer the parcel
+it, as one added with that carrier would be, even when the provider also names the platform
+the parcel went through (MailAmericas with Cainiao). Without such a provider answer the parcel
 stays unknown.
 
 The filed carrier's partial answer, its status without scans or only its newest scans
