@@ -10829,7 +10829,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "imile"
     },
     "trackingUrlTemplate": "https://www.imile.com/en/track?waybillNo={trackingNumber}",
     "linkRules": [
