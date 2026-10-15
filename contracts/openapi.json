@@ -14089,7 +14089,7 @@
       "timezone": "Asia/Kolkata",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "tci-express"
       },
       "trackingUrlTemplate": "https://www.tciexpress.in/track-your-shipment?trackshipment={trackingNumber}&dwb=dwb",
       "linkRules": [
@@ -14314,8 +14314,7 @@
         },
         {
           "pattern": "^(?:AE|EG|GH|KE|KZ|MA|MU|MV|NG|PK|RE|RW|SA|TR|UG|ZA|ZM)\\d{9}[ER]$",
-          "confidence": "low",
-          "preferred": true
+          "confidence": "high"
         }
       ],
       "trackingSearchUrl": "https://www.speedaf.com/cn-en/send-parcel"
