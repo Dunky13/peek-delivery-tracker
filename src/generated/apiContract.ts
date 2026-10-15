@@ -10880,9 +10880,10 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "interrapidisimo",
+      "recognitionRank": 969
     },
-    "trackingUrlTemplate": "https://interrapidisimo.com/sigue-tu-envio/?guia={trackingNumber}",
+    "trackingUrlTemplate": "https://siguetuenvio.interrapidisimo.com/{trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -12371,7 +12372,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "servientrega",
+      "recognitionRank": 979
     },
     "trackingUrlTemplate": "https://www.servientrega.com/wps/portal/rastreo-envio/detalle?id={trackingNumber}&tipo=0",
     "linkRules": [
