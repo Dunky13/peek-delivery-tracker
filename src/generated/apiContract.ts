@@ -8985,7 +8985,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anteraja",
+      "recognitionRank": 835
     },
     "trackingUrlTemplate": "https://anteraja.id/tracking/{trackingNumber}",
     "linkRules": [
@@ -8996,7 +8997,12 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/(?:id/|en/)?tracking/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^(?:1000|1100)\\d{10}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://anteraja.id/id/tracking"
   },
   "apc-postal-logistics": {
@@ -9654,7 +9660,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chunghwa-post"
     },
     "linkRules": [
       {
@@ -9667,7 +9673,8 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [],
+    "trackingSearchUrl": "https://postserv.post.gov.tw/pstmail/main_mail.html"
   },
   "citylink-express": {
     "displayName": "City-Link Express",
