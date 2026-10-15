@@ -607,6 +607,44 @@
     ]
   },
   {
+    "input": "00058678403",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "00059562228",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "postlogistics",
+      "gls-ch",
+      "gls-fr",
+      "gls-de",
+      "dhl-ecommerce-pl"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "postlogistics",
+      "dhl-ecommerce-pl"
+    ]
+  },
+  {
     "input": "00073215400717808731",
     "carrier": "unknown",
     "confidence": "low",
@@ -996,6 +1034,34 @@
   },
   {
     "input": "00312345670000000016",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "swiss-post-cargo",
+      "usps",
+      "nz-post"
+    ],
+    "asked": [
+      "swiss-post-cargo",
+      "nz-post"
+    ]
+  },
+  {
+    "input": "00340339886190788395",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "swiss-post-cargo",
+      "usps",
+      "nz-post"
+    ],
+    "asked": [
+      "swiss-post-cargo",
+      "nz-post"
+    ]
+  },
+  {
+    "input": "00340339886198671231",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -18899,6 +18965,32 @@
     ]
   },
   {
+    "input": "300754738235",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "gls-ch",
+      "mondial-relay",
+      "gls-fr",
+      "colis-prive",
+      "gls-de",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "gls-fr",
+      "gls-de",
+      "gls-ch",
+      "brt",
+      "colis-prive"
+    ]
+  },
+  {
     "input": "300894504105",
     "carrier": "unknown",
     "confidence": "low",
@@ -21299,6 +21391,30 @@
       "lbc-express"
     ],
     "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
+    "input": "365140731024",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "purolator",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "purolator",
       "brt",
       "colis-prive",
       "sto",
@@ -26392,6 +26508,28 @@
     ]
   },
   {
+    "input": "522718670636",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "52594815954",
     "carrier": "unknown",
     "confidence": "low",
@@ -28120,6 +28258,12 @@
     ]
   },
   {
+    "input": "602117582",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "6026547346434",
     "carrier": "unknown",
     "confidence": "low",
@@ -28201,6 +28345,12 @@
       "sto",
       "j-and-t"
     ]
+  },
+  {
+    "input": "603943866",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "604080907",
@@ -46007,6 +46157,9 @@
     "confidence": "low",
     "candidates": [
       "dhl-freight"
+    ],
+    "asked": [
+      "dhl-freight"
     ]
   },
   {
@@ -46015,6 +46168,9 @@
     "confidence": "low",
     "candidates": [
       "dhl-freight"
+    ],
+    "asked": [
+      "dhl-freight"
     ]
   },
   {
@@ -46022,6 +46178,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dhl-freight"
+    ],
+    "asked": [
       "dhl-freight"
     ]
   },
@@ -51060,6 +51219,28 @@
   },
   {
     "input": "QLR22183032U",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "QUL-DL-9194640",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "QUL-DL-9201168",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [

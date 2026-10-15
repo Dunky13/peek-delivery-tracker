@@ -9764,7 +9764,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cj-logistics",
+      "recognitionRank": 977
     },
     "trackingUrlTemplate": "https://www.cjlogistics.com/ko/tool/parcel/newTracking?gnbInvcNo={trackingNumber}",
     "linkRules": [
@@ -9775,6 +9776,24 @@ export const CARRIER_CAPABILITIES = {
         "pathPattern": "^/ko/tool/parcel/(?:tracking|newTracking)$",
         "params": [
           "gnbInvcNo"
+        ]
+      },
+      {
+        "domains": [
+          "trace.cjlogistics.com"
+        ],
+        "pathPattern": "^/next/tracking\\.html$",
+        "params": [
+          "wblNo"
+        ]
+      },
+      {
+        "domains": [
+          "trace.cjlogistics.com"
+        ],
+        "pathPattern": "^/web/(?:detail|info)\\.jsp$",
+        "params": [
+          "slipno"
         ]
       },
       {
@@ -10240,7 +10259,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dhl-freight",
+      "recognitionRank": 437
     },
     "trackingUrlTemplate": "https://activetracing.dhl.com/DatPublic/datSelection.do?autoSearch=true&search=consignmentId&l=DE&a={trackingNumber}",
     "linkRules": [
