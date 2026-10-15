@@ -170,3 +170,7 @@
 
 .detail__input-needed { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 14px; }
 .detail__input-needed p { margin: 0; }
+
+/* A carrier waiting on the reader: the flag under the status, its words under the card. */
+.detail__flag { margin-top: 10px; }
+.detail__carrier-says { margin: 12px 24px 0; }

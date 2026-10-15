@@ -13,6 +13,7 @@ import { Icon } from './Icon';
 import { CardRoute, NextUpEngraving, useParcelRoute } from './ParcelMap';
 import { ParcelStamp } from './ParcelStamp';
 import { bindSwipeRow, type SwipeRow } from '../lib/swipeRow';
+import { Glyph } from '../peek/parcel/glyphs';
 
 export function ParcelCard({ parcel, onOpen, onArchive, notice, variant = 'regular', arrived = false }: {
   parcel: ParcelWithEvents;
@@ -39,10 +40,12 @@ export function ParcelCard({ parcel, onOpen, onArchive, notice, variant = 'regul
   const hero = variant === 'hero';
   // Next up draws its route across the card; every other card carries it small, at its end.
   const { placed, route } = useParcelRoute(parcel, languageTag);
-  // Carrier-reported stages already say what needs attention in the status line.
-  const carrierIssue = ['customs', 'ready_for_pickup', 'failed_attempt', 'exception'].includes(current?.stage ?? '');
+  // Customs and a pickup say all they need in the status line; after a missed delivery or a problem, the carrier waits on the reader.
+  const carrierIssue = ['customs', 'ready_for_pickup'].includes(current?.stage ?? '');
+  const actionNeeded = ['failed_attempt', 'exception'].includes(current?.stage ?? '');
   const flag = (notice && !carrierIssue ? notice : null) ?? (parcel.syncStatus === 'error' ? t('attention.sync_error') : null);
-  const flagChip = flag && <span className="parcel-card__notice"><Icon name={parcel.syncStatus === 'error' ? 'refresh' : 'clock'} />{flag}</span>;
+  const flagIcon = notice && actionNeeded ? <Glyph name="warning" /> : <Icon name={parcel.syncStatus === 'error' ? 'refresh' : 'clock'} />;
+  const flagChip = flag && <span className="parcel-card__notice">{flagIcon}{flag}</span>;
   const row = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
   const tray = useRef<HTMLDivElement>(null);

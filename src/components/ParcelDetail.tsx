@@ -55,6 +55,7 @@ import { createAccountFeedback, createAccountShare, demoAccountShare } from '../
 import { FeedbackOverlays, FeedbackQuestion, useParcelFeedback } from '../peek/parcel/Feedback';
 import { scanIdentity } from '../peek/parcel/feedbackModel';
 import { parcelFeedbackNotes } from '../peek/parcel/feedbackNotes';
+import { Glyph } from '../peek/parcel/glyphs';
 import { AccountShareSheet } from '../peek/parcel/ShareSheet';
 import { useDeliveryEmail, useNotificationPreferences } from '../store/notificationPreferences';
 import { EmailOffer } from './EmailOffer';
@@ -121,6 +122,8 @@ export function ParcelDetail({
   const current = currentEvent(parcel.events);
   // While the parcel waits, its pickup point gets a card; afterwards it is a plain fact.
   const waitingAt = current?.stage === 'ready_for_pickup' ? pickupPoint(parcel.pickupPoint) : null;
+  // After a missed delivery or a problem, the carrier waits on the reader: the page says so and quotes it.
+  const carrierWaits = !parcel.archivedAt && (current?.stage === 'failed_attempt' || current?.stage === 'exception') ? current : null;
   const pickupFact = waitingAt ? undefined : parcel.pickupPoint?.trim();
   const { placed, route } = useParcelRoute(parcel, languageTag);
   const [mapOpen, setMapOpen] = useState(false);
@@ -560,6 +563,7 @@ export function ParcelDetail({
           </p>
         )}
         <p className="detail__state">{statusLabel}</p>
+        {carrierWaits && <p className="parcel-card__notice detail__flag"><Glyph name="warning" />{t(carrierWaits.stage === 'failed_attempt' ? 'attention.failed_attempt' : 'attention.exception')}</p>}
         {(completionDate || estimate) && (
           <p className="detail__arrival">
             {completionDate
@@ -570,6 +574,10 @@ export function ParcelDetail({
         <div className="detail__progress"><ProgressTrack stage={current?.stage ?? null} /></div>
       </section>
       {waitingAt && <PickupPointCard point={waitingAt} />}
+      {carrierWaits?.description.trim() && <div className="peekp-note peekp-note--paper detail__carrier-says" role="note">
+        <span className="peekp-note__icon" aria-hidden="true"><Glyph name="info" /></span>
+        <div><strong>{t('link.carrierSays', { carrier: carrier.name })}</strong><blockquote>{carrierWaits.description.trim()}</blockquote></div>
+      </div>}
       {delivered && apiAuth && accountEmail && <EmailOffer apiAuth={apiAuth} email={accountEmail} />}
       <section className="detail__information">
         {(pickupFact || parcel.receiverName || parcel.dimensionsText || (Number.isFinite(parcel.weightKg) && parcel.weightKg! > 0)) && (

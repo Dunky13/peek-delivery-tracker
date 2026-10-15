@@ -1841,6 +1841,40 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
+  it('flags a missed delivery on its card, under its status', async () => {
+    using clock = vi.spyOn(Date, 'now');
+    clock.mockReturnValue(new Date('2026-07-20T12:00:00Z').getTime());
+    const parcel: ParcelWithEvents = {
+      id: 'pkg-missed',
+      trackingNumber: '123456789',
+      label: 'Desk lamp',
+      carrier: 'tnt',
+      createdAt: '2026-07-10T10:00:00Z',
+      syncStatus: 'ok',
+      events: [{
+        id: 'event-missed',
+        parcelId: 'pkg-missed',
+        stage: 'failed_attempt',
+        description: 'Receiver not home. We are waiting for them to get in contact with us.',
+        occurredAt: '2026-07-20T09:00:00Z',
+      }],
+    };
+    const repo: ParcelRepo = {
+      mode: 'api',
+      list: vi.fn().mockResolvedValue([parcel]),
+      add: vi.fn(),
+      rename: vi.fn(),
+      remove: vi.fn(),
+      refresh: vi.fn().mockResolvedValue([parcel]),
+    };
+    renderApp(repo);
+
+    const card = await within(await screen.findByRole('region', { name: 'Needs attention' }))
+      .findByRole('button', { name: /Desk lamp — Delivery attempted\. Check the carrier’s next steps/ });
+    expect(within(card).getByText('Delivery attempted')).toHaveClass('parcel-card__state');
+    expect(within(card).getByText('Check the carrier’s next steps')).toHaveClass('parcel-card__notice');
+  });
+
   it('keeps a quiet parcel as a card with its last status and a flag', async () => {
     using clock = vi.spyOn(Date, 'now');
     clock.mockReturnValue(new Date('2026-07-20T12:00:00Z').getTime());

@@ -379,6 +379,10 @@ struct ParcelDetailView: View {
                 }
                 .foregroundStyle(branding.ink)
                 .fixedSize(horizontal: false, vertical: true)
+                if let waits = carrierWaits(parcel) {
+                    ParcelFlag(text: localizer.text(waits.stage == .failedAttempt ? "attention.failed_attempt" : "attention.exception"),
+                               symbol: "exclamationmark.triangle")
+                }
                 ExperimentalJourneyRail(stage: parcel.currentStage, tint: branding.ink.opacity(0.45), compact: true)
             }
             .padding(18)
@@ -409,6 +413,9 @@ struct ParcelDetailView: View {
             let waitingAt = parcel.currentStage == .readyForPickup ? PickupPoint(parcel.carrierData?.pickupPoint) : nil
             if let waitingAt {
                 pickupPointCard(waitingAt, identity: branding)
+            }
+            if let words = carrierWaits(parcel)?.description.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty {
+                carrierSaysNote(words, carrier: carrier.displayName)
             }
             shipmentIdentity(parcel, links: trackingLinks, tint: branding.ink)
             if let details = parcel.carrierData {
@@ -473,6 +480,31 @@ struct ParcelDetailView: View {
     }
 
     /// Where the parcel waits for collection, with a way to get there.
+    /// After a missed delivery or a problem, the carrier waits on the reader: the page says so and quotes it.
+    private func carrierWaits(_ parcel: Parcel) -> TrackingEvent? {
+        guard !parcel.isArchived, let event = parcel.currentEvent, [.failedAttempt, .exception].contains(event.stage) else { return nil }
+        return event
+    }
+
+    private func carrierSaysNote(_ words: String, carrier: String) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "info.circle")
+                .font(.system(size: 17))
+                .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(localizer.text("link.carrierSays", ["carrier": carrier])).font(.footnote.weight(.semibold))
+                Text(verbatim: "“\(words)”").font(.footnote).foregroundStyle(.secondary)
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.vertical, 14)
+        .padding(.horizontal, 16)
+        .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(Color.secondary.opacity(0.3)))
+        .accessibilityElement(children: .combine)
+    }
+
     private func pickupPointCard(_ point: PickupPoint, identity: CarrierVisualIdentity) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 12) {

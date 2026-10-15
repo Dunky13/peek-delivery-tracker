@@ -69,6 +69,30 @@ describe('shipment details', () => {
     expect(screen.queryByText('Pickup point')).not.toBeInTheDocument();
   });
 
+  it.each([
+    ['failed_attempt', 'Check the carrier’s next steps'],
+    ['exception', 'The carrier reported a problem'],
+  ] as const)('flags a carrier waiting on the reader after %s and quotes it', (stage, flag) => {
+    const events = [{ id: stage, parcelId: 'parcel', stage, description: ' Receiver not home. Please call us. ', occurredAt: '2026-09-11T12:00:00Z' }];
+    const view = show({ events });
+    expect(screen.getByText(flag)).toHaveClass('detail__flag');
+    const note = screen.getByRole('note');
+    expect(note).toHaveTextContent('What Heppner says');
+    expect(note.querySelector('blockquote')).toHaveTextContent(/^Receiver not home\. Please call us\.$/);
+    view.unmount();
+
+    // An archived parcel waits on nobody.
+    show({ events, archivedAt: '2026-09-12T12:00:00Z' });
+    expect(screen.queryByText(flag)).not.toBeInTheDocument();
+    expect(screen.queryByText('What Heppner says')).not.toBeInTheDocument();
+  });
+
+  it('keeps the flag and the carrier\'s words off a parcel on its way', () => {
+    show({ events: [{ id: 'moving', parcelId: 'parcel', stage: 'in_transit', description: 'Sorted', occurredAt: '2026-09-11T12:00:00Z' }] });
+    expect(document.querySelector('.detail__flag')).toBeNull();
+    expect(screen.queryByText('What Heppner says')).not.toBeInTheDocument();
+  });
+
   it('shows a waiting parcel\'s pickup point as a card and a collected one as a fact', async () => {
     const at = (stage: 'ready_for_pickup' | 'delivered') => [{ id: stage, parcelId: 'parcel', stage, description: 'Scan', occurredAt: '2026-09-11T12:00:00Z' }];
     const writeText = vi.fn().mockResolvedValue(undefined);

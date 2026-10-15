@@ -1202,11 +1202,15 @@ private struct ExperimentalParcelPassCard: View {
     private var past: Bool { !arrived && (parcel.currentStage?.isFinal == true || parcel.isArchived) }
     /// The words under the top row keep clear of the route.
     private var clearance: CGFloat { placed ? CardRoute.clearance : 0 }
-    /// Carrier-reported stages already say what needs attention in the status line.
+    /// Customs and a pickup say all they need in the status line; after a missed delivery or a problem, the carrier waits on the reader.
     private var flag: String? {
-        let carrierIssue = [TrackingStage.customs, .readyForPickup, .failedAttempt, .exception].contains { $0 == parcel.currentStage }
+        let carrierIssue = [TrackingStage.customs, .readyForPickup].contains { $0 == parcel.currentStage }
         if let notice, !carrierIssue { return notice }
         return parcel.syncStatus == .error ? localizer.text("attention.sync_error") : nil
+    }
+    private var flagSymbol: String {
+        if notice != nil, parcel.currentStage == .failedAttempt || parcel.currentStage == .exception { return "exclamationmark.triangle" }
+        return parcel.syncStatus == .error ? "arrow.clockwise" : "clock"
     }
 
     var body: some View {
@@ -1258,7 +1262,7 @@ private struct ExperimentalParcelPassCard: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 if let flag {
-                    ParcelFlag(text: flag, symbol: parcel.syncStatus == .error ? "arrow.clockwise" : "clock")
+                    ParcelFlag(text: flag, symbol: flagSymbol)
                         .padding(.top, 4)
                 }
             }
@@ -1299,7 +1303,7 @@ private struct ExperimentalParcelPassCard: View {
 }
 
 /// A problem stays on the parcel's own card instead of replacing it.
-private struct ParcelFlag: View {
+struct ParcelFlag: View {
     let text: String
     let symbol: String
 
