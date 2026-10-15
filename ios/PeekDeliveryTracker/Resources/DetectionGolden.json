@@ -48428,6 +48428,7 @@
       "intl-post"
     ],
     "asked": [
+      "israel-post",
       "chronopost"
     ]
   },
@@ -51236,6 +51237,7 @@
       "intl-post"
     ],
     "asked": [
+      "israel-post",
       "chronopost"
     ]
   },
@@ -51288,6 +51290,7 @@
       "intl-post"
     ],
     "asked": [
+      "israel-post",
       "chronopost"
     ]
   },
@@ -57580,6 +57583,7 @@
       "intl-post"
     ],
     "asked": [
+      "israel-post",
       "chronopost"
     ]
   },
@@ -57591,6 +57595,7 @@
       "intl-post"
     ],
     "asked": [
+      "israel-post",
       "chronopost"
     ]
   },
@@ -58668,6 +58673,14 @@
     "confidence": "high",
     "candidates": [
       "gdex"
+    ]
+  },
+  {
+    "input": "MY9900000001US",
+    "carrier": "mayiyinfu",
+    "confidence": "high",
+    "candidates": [
+      "mayiyinfu"
     ]
   },
   {
@@ -62835,6 +62848,7 @@
       "intl-post"
     ],
     "asked": [
+      "israel-post",
       "chronopost"
     ]
   },
@@ -62954,6 +62968,7 @@
       "intl-post"
     ],
     "asked": [
+      "israel-post",
       "chronopost"
     ]
   },
@@ -63064,6 +63079,7 @@
       "intl-post"
     ],
     "asked": [
+      "israel-post",
       "chronopost"
     ]
   },

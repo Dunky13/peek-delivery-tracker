@@ -10941,7 +10941,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jerusalem",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "israel-post",
+      "recognitionRank": 81
     },
     "trackingUrlTemplate": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D?OpenForm&itemcode={trackingNumber}",
     "linkRules": [
@@ -10970,6 +10971,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^\\d{11}IL$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}IL$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D"
@@ -19337,6 +19344,45 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://zoom.red/tracking-de-envios-personas/"
+  },
+  "mayiyinfu": {
+    "displayName": "Mayi Yinfu",
+    "aliases": [
+      "Mayiyinfu",
+      "MYYF",
+      "蚂蚁银服",
+      "螞蟻銀服",
+      "广东蚂蚁银服国际物流有限公司",
+      "Mayi Yinfu International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#000000",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "mayiyinfu.com.cn",
+          "www.mayiyinfu.com.cn"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^MY\\d{10}US$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -19865,7 +19911,8 @@ export const CARRIER_IDS = [
   "tufesa",
   "via-cargo",
   "yimidida",
-  "zoom-ve"
+  "zoom-ve",
+  "mayiyinfu"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
