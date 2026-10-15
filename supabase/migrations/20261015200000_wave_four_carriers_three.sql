@@ -1,4 +1,4 @@
--- Accept seventeen carriers from Universal Parcel Scraper 0.175.0 that only aggregators named
+-- Accept seventeen carriers from Universal Parcel Scraper 0.176.0 that only aggregators named
 -- before: couriers and posts in Colombia, Paraguay, Mexico, Peru, Argentina, Guatemala,
 -- Brazil, Jamaica, Ecuador, Chile, Venezuela and China. They ask for no postcode or tracking
 -- URL.
