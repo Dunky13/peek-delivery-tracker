@@ -55,6 +55,9 @@ Key server modules:
 - `eventPlaces.ts` serves a parcel's timeline (see [Data lifecycle](#data-lifecycle))
   and uses the scraper's place resolver to put each scan on the map,
   when the API returns a parcel, telling it the parcel's destination and carriers ([README](https://github.com/plhery/universal-parcel-scraper/blob/main/places/README.md)).
+  It also passes each scan's stage and time, so paperwork filed where the parcel is not,
+  such as a customs clearance at the destination's office while the parcel is still
+  abroad, gets no place. The timeline keeps the scan's text, and the map skips it.
   Lines between recorded stops are solid; approximate areas have dotted markers.
   On the web the route is drawn as one stroke, from its first place to the parcel's, and
   the way still to go shows once the stroke has arrived.

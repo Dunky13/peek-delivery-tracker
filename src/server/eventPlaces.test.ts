@@ -71,6 +71,23 @@ describe('withEventPlaces', () => {
     expect(elsewhere).not.toHaveProperty('point');
   });
 
+  it('keeps a customs clearance filed at the destination off the map, and its text in the timeline', () => {
+    const hongKong = 'HONG KONG - HONG KONG SAR, CHINA';
+    const row = {
+      id: 'parcel',
+      carrier: 'dhl-express',
+      tracking_events: [
+        event('1', hongKong, '2026-01-05T11:47:00+00:00'),
+        // Cleared in Basel while the parcel is still sorted in Hong Kong.
+        { ...event('2', 'BASEL - SWITZERLAND', '2026-01-05T15:53:00+00:00'), stage: 'customs' },
+        event('3', hongKong, '2026-01-05T16:18:00+00:00'),
+      ],
+    };
+    const located = (withEventPlaces(row) as { tracking_events: { location: string; place: places.EventPlace | null }[] }).tracking_events;
+    expect(located.map((scan) => scan.place?.country ?? null)).toEqual(['HK', null, 'HK']);
+    expect(located[1].location).toBe('BASEL - SWITZERLAND');
+  });
+
   it('leaves packages without scans untouched', () => {
     const row = { id: 'parcel', carrier: 'swiss-post', tracking_events: [] };
     expect(withEventPlaces(row)).toBe(row);

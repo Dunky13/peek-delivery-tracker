@@ -84,6 +84,9 @@ export function withEventPlaces(row: JsonObject): JsonObject {
       // Their countries and their own hubs. The carrier delivering now says more than the one the parcel was added with.
       carriers: [carrierData.active_tracking_carrier, row.carrier].filter((carrier): carrier is string => typeof carrier === 'string'),
       points: ordered.map((event) => eventPoint(event.point)),
+      // Paperwork filed where the parcel is not, such as customs at the destination's office, gets no place; the scan keeps its text.
+      stages: ordered.map((event) => typeof event.stage === 'string' ? event.stage : null),
+      times: ordered.map((event) => typeof event.occurred_at === 'string' ? event.occurred_at : null),
     });
     const byEvent = new Map(ordered.map((event, index) => [event, places[index]]));
     return {

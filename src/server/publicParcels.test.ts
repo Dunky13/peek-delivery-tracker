@@ -345,8 +345,8 @@ describe('a gift on its way', () => {
     },
     {
       name: 'the origin is the earliest located scan, even one that is left out',
-      events: () => journey(scan('registered', 'Shenzhen, CN'), scan('accepted', null), scan('in_transit', 'Liège, BE'), scan('in_transit', 'Zürich, CH')),
-      shown: [blurredIn('CN', 'China', 'accepted'), kept('in_transit', 'Liège, BE', 'city Liège'), kept('in_transit', 'Zürich, CH', 'city Zürich')],
+      events: () => journey(scan('registered', 'Warsaw, PL'), scan('accepted', null), scan('in_transit', 'Liège, BE'), scan('in_transit', 'Zürich, CH')),
+      shown: [blurredIn('PL', 'Poland', 'accepted'), kept('in_transit', 'Liège, BE', 'city Liège'), kept('in_transit', 'Zürich, CH', 'city Zürich')],
     },
     {
       name: 'a scan without a place counts as the origin until the parcel is seen elsewhere',
@@ -410,7 +410,7 @@ describe('a gift on its way', () => {
     // Neither the sender, the number, the name, the origin's towns nor the carrier's wording for them.
     const text = JSON.stringify(answer);
     for (const secret of ['Example Shop', 'Sneakers', 'TESTGIFT23456789', 'TESTDELIVERYLEG01', 'TESTORIGINLEG0001', 'Example Kiosk',
-      '30 × 20', 'weight_kg', 'Hamburg', 'Leipzig', 'Shenzhen', 'Bern', 'Depot 12', 'Held at the sender', 'registered', '"point"']) {
+      '30 × 20', 'weight_kg', 'Hamburg', 'Leipzig', 'Warsaw', 'Bern', 'Depot 12', 'Held at the sender', 'registered', '"point"']) {
       if (!onTheWay?.includes(secret)) expect(text).not.toContain(secret);
     }
     expect(answer.link).toMatchObject({ role: 'viewer', gift: true, numberShown: false, canKeep: false });
