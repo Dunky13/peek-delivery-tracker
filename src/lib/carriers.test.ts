@@ -1443,9 +1443,12 @@ describe('carrier detection', () => {
   });
 
   it('yto — YTO Express', () => {
-    // OSS EXAMPLE fixture, D + 11 digits (not asserted real).
+    // ARCHIVED LOOKUP on YTO's own tracker, YT + 13 digits.
+    // Source: https://web.archive.org/web/20260209054112/https://www.yto.net.cn/ytoExpress/waybill/waybillDetail/?mailNo=YT7601991621171
+    expect(detectCarrier('YT7601991621171')).toBe('yto');
+    // OSS EXAMPLE fixture, D + 11 digits (not asserted real); the layout is only suggested.
     // Source: https://gist.github.com/zxp/e83a4a1b7294a5ed6207
-    expect(detectCarrier('D00015070907')).toBe('yto');
+    expect(detectCarrierMatch('D00015070907').candidates).toContain('yto');
     expectDirectTracking('yto');
   });
 
