@@ -10516,7 +10516,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gati",
+      "recognitionRank": 43
     },
     "linkRules": [
       {
@@ -12406,7 +12407,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shadowfax",
+      "recognitionRank": 595
     },
     "trackingUrlTemplate": "https://tracker.shadowfax.in/#/awb/{trackingNumber}",
     "linkRules": [
@@ -12914,10 +12916,35 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Sao_Paulo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "total-express",
+      "recognitionRank": 975
     },
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "totalconecta.totalexpress.com.br"
+        ],
+        "path": "^/rastreamento/rastreamento/encomendas/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "totalconecta.totalexpress.com.br"
+        ],
+        "pathPattern": "^/rastreamento/?$",
+        "params": [
+          "codigo"
+        ],
+        "ownNumbersOnly": true
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:TX[A-Z]{2}|AMZB)\\d{9}TX$",
+        "confidence": "high"
+      }
+    ],
+    "trackingUrlTemplate": "https://totalconecta.totalexpress.com.br/rastreamento?codigo={trackingNumber}",
+    "trackingSearchUrl": "https://totalconecta.totalexpress.com.br/rastreamento"
   },
   "trackon": {
     "displayName": "Trackon Couriers",
