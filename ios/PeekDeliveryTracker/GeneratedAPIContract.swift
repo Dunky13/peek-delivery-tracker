@@ -513,6 +513,23 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let tstCfExpress = CarrierID(rawValue: "tst-cf-express")
     static let uzbekistanPost = CarrierID(rawValue: "uzbekistan-post")
     static let zajil = CarrierID(rawValue: "zajil")
+    static let fourSeventyTwo = CarrierID(rawValue: "4-72")
+    static let aexParaguay = CarrierID(rawValue: "aex-paraguay")
+    static let ampm = CarrierID(rawValue: "ampm")
+    static let chazki = CarrierID(rawValue: "chazki")
+    static let cruzDelSur = CarrierID(rawValue: "cruz-del-sur")
+    static let forzaDelivery = CarrierID(rawValue: "forza-delivery")
+    static let guatex = CarrierID(rawValue: "guatex")
+    static let jAndTBr = CarrierID(rawValue: "j-and-t-br")
+    static let jAndTMx = CarrierID(rawValue: "j-and-t-mx")
+    static let jamaicaPost = CarrierID(rawValue: "jamaica-post")
+    static let laarCourier = CarrierID(rawValue: "laar-courier")
+    static let pullmanCargo = CarrierID(rawValue: "pullman-cargo")
+    static let tealca = CarrierID(rawValue: "tealca")
+    static let tufesa = CarrierID(rawValue: "tufesa")
+    static let viaCargo = CarrierID(rawValue: "via-cargo")
+    static let yimidida = CarrierID(rawValue: "yimidida")
+    static let zoomVe = CarrierID(rawValue: "zoom-ve")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -991,6 +1008,23 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .tstCfExpress,
         .uzbekistanPost,
         .zajil,
+        .fourSeventyTwo,
+        .aexParaguay,
+        .ampm,
+        .chazki,
+        .cruzDelSur,
+        .forzaDelivery,
+        .guatex,
+        .jAndTBr,
+        .jAndTMx,
+        .jamaicaPost,
+        .laarCourier,
+        .pullmanCargo,
+        .tealca,
+        .tufesa,
+        .viaCargo,
+        .yimidida,
+        .zoomVe,
     ]
 
     init(from decoder: Decoder) throws {
