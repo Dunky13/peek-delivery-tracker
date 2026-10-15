@@ -25,8 +25,12 @@ const names = (query: string, preferred?: CarrierId[]) => search(query, preferre
 describe('carrier search', () => {
   it('finds a name by its start, then by a later word', () => {
     expect(names('dpd').slice(0, 2)).toEqual(['DPD France', 'DPD Germany']);
-    expect(names('post').slice(0, 3)).toEqual(['Post Haste', 'POST Luxembourg', 'Poșta Moldovei']);
-    expect(names('post')).toContain('Swiss Post');
+    const post = names('post');
+    const starting = post.filter((name) => foldForSearch(name).startsWith('post'));
+    expect(post.slice(0, starting.length)).toEqual(starting);
+    expect(starting.slice(0, 2)).toEqual(['Post Haste', 'POST Luxembourg']);
+    expect(starting).toContain('Poșta Moldovei');
+    expect(post.slice(starting.length)).toContain('Swiss Post');
   });
 
   it('ignores case, accents and punctuation', () => {
