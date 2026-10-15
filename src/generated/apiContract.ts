@@ -16576,7 +16576,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "t-cat",
+      "recognitionRank": 966
     },
     "trackingUrlTemplate": "https://www.t-cat.com.tw/Inquire/TraceDetail.aspx?BillID={trackingNumber}",
     "linkRules": [
