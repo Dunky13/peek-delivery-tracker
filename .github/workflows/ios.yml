@@ -61,4 +61,5 @@ jobs:
           xcodebuild -project ios/PeekDeliveryTracker.xcodeproj
           -scheme PeekDeliveryTracker
           -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=latest'
+          -collect-test-diagnostics never
           CODE_SIGNING_ALLOWED=NO test
