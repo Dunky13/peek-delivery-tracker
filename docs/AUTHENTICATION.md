@@ -198,8 +198,8 @@ soon as Apple refuses it ([OBSERVABILITY.md](OBSERVABILITY.md)).
 
 Both platforms show Google first, then Apple, at the same height, corner radius and title
 size. iOS uses Apple's own button and sizes Google's title to match it. The web draws a
-custom Apple button with Apple's proportions: the title is 43% of the button's height, and
-the logo is the one Apple's web button uses. Google's "G" is its official artwork, in
+custom Apple button with Apple's proportions: the title is 43% of the button's height (less
+on a screen too narrow for it on one line), and the logo is the one Apple's web button uses. Google's "G" is its official artwork, in
 `public/icons/` and the iPhone asset catalog.
 
 Apple asks apps to revoke its tokens when an account is deleted. Before the iPhone app

@@ -15,6 +15,8 @@
 .auth-flow--card .auth-flow__heading > p { font-size: 12px; margin-bottom: 23px; }
 .auth-flow--card .auth-flow__methods { gap: 9px; }
 .auth-flow--card .auth-flow__methods > .button { min-height: 48px; font-size: 13px; border-radius: 13px; }
+/* Apple's custom button keeps its title at 43% of the button height; Google's matches it. */
+.auth-flow--card .auth-flow__methods > :is(.auth-flow__google, .auth-flow__apple) { font-size: min(20.5px, (100cqi - 74px) / 11); }
 .auth-flow--card .auth-flow__form input { min-width: 0; width: 100%; }
 .auth-flow--card .auth-flow__privacy { margin: 18px 0 0; }
 .auth-flow--card .auth-flow__privacy > svg { width: 12px; }
