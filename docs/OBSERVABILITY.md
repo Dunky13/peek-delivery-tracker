@@ -203,7 +203,17 @@ where answer <> 'right' and reviewed_at is null
 order by created_at desc;
 ```
 
-Set `reviewed_at`, and `review_note` with the outcome, once an answer is handled.
+The hourly review ([ops/review/signals.sql](../ops/review/signals.sql)) lists the answers
+other than right given in its window, or completed there with a note, with the number's
+shape and a lane, and counts the window's answers by kind. Once an answer is handled or
+routed, set `reviewed_at`, and `review_note` with the outcome. A note can hold personal
+details, so a review note says what was off in other words:
+
+```sql
+update public.parcel_feedback
+set reviewed_at = now(), review_note = 'WHY'
+where id = 'ID';
+```
 
 ## DPD app sessions
 
@@ -329,8 +339,9 @@ anomalies and health incidents.
 [ops/review/signals.sql](../ops/review/signals.sql) is the hourly review of every queue. For
 a window of hours (1 by default, 24 for the daily review) it lists routing signals, sync
 anomalies, new unmapped wording, new open support cases, health incidents notified or still
-failing, and the unfinished parcels a provider tracks, grouped by type, carrier and
-provider, with `why` they stay with it. It only reads, and shows a number as its shape (`MY + 10 digits + US`, from
+failing, the unfinished parcels a provider tracks, grouped by type, carrier and
+provider, with `why` they stay with it, and readers' answers that something is off. It
+only reads, and shows a number as its shape (`MY + 10 digits + US`, from
 `private.tracking_number_pattern`):
 
 ```sh
@@ -340,12 +351,14 @@ psql "$DATABASE_URL" -v hours=1 -f ops/review/signals.sql
 Each row names the lane that acts on it:
 
 - **carriers**: an unknown or ambiguous number format, a detection rule that missed, a
-  carrier missing from the catalog;
+  carrier missing from the catalog, a reader's answer about a parcel with no carrier or the
+  wrong one;
 - **adapters**: a carrier without an adapter, a failing adapter or provider, an adapter that
-  refuses a number its carrier issues or answers it only in part, wording no map reads;
+  refuses a number its carrier issues or answers it only in part, wording no map reads, a
+  reader's answer that a carrier's status, steps, times or places are off;
 - **delivery-tracker**: the app's routing, such as parcels left with a provider although
-  their carrier's adapter answers other parcels and was not asked for them, or a check whose
-  worker died.
+  their carrier's adapter answers other parcels and was not asked for them, a check whose
+  worker died, or a reader's answer that gives no reason.
 
 A parcel a provider tracks can also be **dormant**, not checked for 24 h because nobody
 follows it any more, or need **none**: its carrier answers and the provider's fuller history

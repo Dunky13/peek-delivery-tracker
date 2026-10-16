@@ -1,7 +1,8 @@
--- What the review queues learnt in the last hours, grouped by type, carrier and provider,
--- each with the lane that acts on it: carriers (number formats, detection, the catalog),
--- adapters (no adapter, a failing one, unmapped wording) or delivery-tracker (the app's
--- routing). Numbers appear only as their shape. Read-only; see docs/OBSERVABILITY.md.
+-- What the review queues learnt and readers reported in the last hours, grouped by type,
+-- carrier and provider, each with the lane that acts on it: carriers (number formats,
+-- detection, the catalog), adapters (no adapter, a failing one, unmapped wording) or
+-- delivery-tracker (the app's routing). Numbers appear only as their shape. Read-only; see
+-- docs/OBSERVABILITY.md.
 --
 --   psql "$DATABASE_URL" -v hours=1 -f ops/review/signals.sql
 \set ON_ERROR_STOP on
@@ -129,3 +130,31 @@ select l.carrier, l.target as could_take, l.provider,
 from lanes l
 group by 1, 2, 3, 4, 5
 order by parcels desc, could_take, provider;
+
+\echo '== Reader feedback: answers other than right, given or completed with a note in the window, not reviewed'
+\echo '   carriers: no carrier found, or the wrong one; adapters: the carrier''s status, steps, times or places;'
+\echo '   delivery-tracker: no reason given. Set reviewed_at and review_note by id (docs/OBSERVABILITY.md)'
+select format('%s right, %s wrong, %s found elsewhere', count(*) filter (where answer = 'right'),
+         count(*) filter (where answer = 'wrong'), count(*) filter (where answer = 'found_elsewhere')) as counts
+from public.parcel_feedback
+where created_at >= :since \gset feedback_
+\echo '   answers given in the window:' :feedback_counts
+-- A reader's words can quote a number or name a person: a note is only counted, a carrier's
+-- name has its runs of eight letters and digits or more with a digit masked, and a tracking
+-- page shows its host alone.
+select f.id, to_char(f.created_at, 'YYYY-MM-DD HH24:MI') as given, f.carrier, f.answer,
+       coalesce(nullif(array_to_string(f.reasons, ','), ''), '-') as reasons,
+       case when f.note is null then 'no' else 'yes' end as note,
+       coalesce(left(regexp_replace(f.carrier_name, '\m(?=[[:alnum:]]*[0-9])[[:alnum:]]{8,}\M', '<number>', 'g'), 60),
+         lower(substring(f.tracking_page
+           from '^(?:[[:alpha:]][[:alnum:]+.-]*://)?(?:[^/?#@[:space:]]*@)?([[:alnum:]-]+(?:\.[[:alnum:]-]+)+)(?:[:/?#]|$)')),
+         case when f.tracking_page is not null then '<page>' end, '-') as named,
+       private.tracking_number_pattern(f.tracking_number) as pattern,
+       case when f.answer = 'found_elsewhere' or 'carrier' = any(f.reasons) or f.carrier in ('unknown', 'intl-post')
+              then 'carriers'
+            when f.reasons && array['arrived', 'status', 'steps', 'time_place'] then 'adapters'
+            else 'delivery-tracker' end as lane
+from public.parcel_feedback f
+-- A note can follow its reason within the hour: updated_at shows it again once it has.
+where f.answer <> 'right' and f.reviewed_at is null and f.updated_at >= :since
+order by f.created_at desc;
