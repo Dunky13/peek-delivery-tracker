@@ -60,81 +60,46 @@ through the Supabase callback, so their consoles don't name the app's host as a 
 
 ## OpenID Connect
 
-Use an existing identity provider, such as Authentik or Keycloak, for sign-in and
-enrollment. Supabase creates the corresponding Peek account on first sign-in when
-sign-ups are enabled and continues to manage sessions and per-user data access.
-Provider enrollment, password recovery and MFA follow that provider's policies.
+An identity provider such as Authentik or Keycloak can be a sign-in method, or the only
+one. Supabase creates the Peek account on first sign-in and keeps the session; enrollment,
+password recovery and MFA are the provider's.
 
-Register an enabled custom OIDC provider through the
-[Supabase Auth admin API](https://supabase.com/docs/guides/self-hosting/self-hosted-custom-oauth-providers).
-Use Supabase Auth v2.196.0 or later. Supply its issuer, client ID, client secret and
-`openid`, `profile`, `email` scopes there. Keep client secrets and admin credentials
-on the server. Peek only needs the public identifier, such as `custom:authentik`,
-and the name to display.
+Register the provider with the
+[Supabase Auth admin API](https://supabase.com/docs/guides/self-hosting/self-hosted-custom-oauth-providers)
+(Auth v2.196.0 or later): issuer, client ID, client secret and the `openid profile email`
+scopes. The secret stays in Supabase; Peek only needs the provider's `custom:` identifier
+and the name on the button. In the identity provider, allow the redirect
+`https://supabase.example.com/auth/v1/callback`.
 
-For Authentik, create an application and a confidential
-[OAuth2/OIDC provider](https://docs.goauthentik.io/add-secure-apps/providers/oauth2/create-oauth2-provider/).
-Use the issuer from its discovery document, normally
-`https://auth.example.com/application/o/peek/`. Configure a signing key and permit
-this exact redirect URI:
+Supabase Auth checks two things:
 
-```text
-https://supabase.example.com/auth/v1/callback
-```
+- The provider's discovery, token and key endpoints are HTTPS and resolve to a public
+  address. A provider only reachable on the LAN is refused.
+- The signed ID token carries `sub`, `email` and `email_verified: true`. Email from the
+  userinfo endpoint alone is not enough; in Authentik, turn on **Include claims in
+  id_token**.
 
-The Auth service must be able to reach the provider's discovery, token and key
-endpoints over HTTPS. Supabase Auth v2.197.0 rejects provider URLs resolving to
-loopback, private or link-local addresses, including split-DNS names that resolve
-to a LAN IP. A LAN-only identity provider therefore needs an endpoint compatible
-with Supabase's URL policy; this client configuration does not bypass that policy.
-Set `API_EXTERNAL_URL` to `https://supabase.example.com/auth/v1`, or set
-`GOTRUE_CUSTOM_OAUTH_EXTERNAL_URL` to that value if the existing deployment uses a
-different base URL. Keep nonce verification enabled. Include a stable `sub`,
-`email` and `email_verified: true` in the signed ID token; returning email only
-from the userinfo endpoint is insufficient for Supabase Auth v2.197.0. In
-Authentik, include the profile/email scope mappings and enable **Include claims
-in id_token**. Only assert verified email when the provider has established its
-ownership. With auto-confirm disabled, Supabase rejects an unverified email with
-`provider_email_needs_verification`; resolve ownership in the identity provider.
-Peek also requires confirmed email ownership for email-based invitations.
-
-To use OIDC alone, build the web app with:
+Web build values:
 
 ```dotenv
-NEXT_PUBLIC_AUTH_GOOGLE_ENABLED=false
-NEXT_PUBLIC_AUTH_APPLE_ENABLED=false
-NEXT_PUBLIC_AUTH_EMAIL_OTP_ENABLED=false
 NEXT_PUBLIC_AUTH_OIDC_PROVIDER=custom:authentik
 NEXT_PUBLIC_AUTH_OIDC_NAME=Authentik
 ```
 
-<img src="images/oidc-sign-in.png" width="390" alt="Peek sign-in with only Continue with Authentik, without email controls" />
-
-Set both OIDC values or leave both blank to disable the method. The provider
-identifier must match the enabled Supabase provider. These are build values:
-rebuild the web app after changing them, including Docker build arguments or CI
-repository variables when using those deployment paths.
-
-For the iPhone app, set these in `ios/Configuration/Local.xcconfig` and rebuild:
+iPhone values, in `ios/Configuration/Local.xcconfig`:
 
 ```text
-SDT_GOOGLE_AUTH_ENABLED = NO
-SDT_APPLE_AUTH_ENABLED = NO
-SDT_EMAIL_OTP_ENABLED = NO
 SDT_OIDC_PROVIDER = custom:authentik
 SDT_OIDC_NAME = Authentik
 ```
 
-Keep `peekdeliverytracker://auth-callback` in Supabase's redirect allow list.
-It is the return from Supabase to the iPhone app; Authentik still returns to the
-HTTPS Supabase callback above. The app uses its existing browser sign-in and PKCE
-flow, then stores the Supabase session in Keychain.
+Set both or neither. With the other methods switched off, the sign-in page shows only the
+provider:
 
-For OIDC-only deployments, also disable unused providers in Supabase Auth,
-including `GOTRUE_EXTERNAL_EMAIL_ENABLED=false`, and leave SMTP unset. Email parcel
-notifications still require SMTP if you choose to enable them. Test first sign-in,
-repeat sign-in, cancellation, sign-out and returning to a requested parcel on each
-client before opening access to users.
+<img src="images/oidc-sign-in.png" width="390" alt="Peek sign-in with only Continue with Authentik" />
+
+An OIDC-only deployment needs no SMTP for sign-in: also set
+`GOTRUE_EXTERNAL_EMAIL_ENABLED=false`. Parcel emails still need SMTP.
 
 ## Email codes
 

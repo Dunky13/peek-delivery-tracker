@@ -726,9 +726,10 @@ struct SignInView: View {
             catch AuthenticationError.oauthCancelled { }
             catch is CancellationError { }
             catch {
-                errorMessage = provider == "oidc"
+                let message = localizer.errorMessage(error)
+                errorMessage = provider == "oidc" && message == localizer.text("error.generic")
                     ? localizer.text("auth.oidcFailed", ["provider": session.configuration.oidcName])
-                    : localizer.errorMessage(error)
+                    : message
             }
             working = false
             activeProvider = nil
