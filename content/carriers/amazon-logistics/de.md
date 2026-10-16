@@ -69,7 +69,7 @@ Holst du es nicht ab, geht es an Amazon zurück.
 
 **Nicht zustellbar.** Gründe sind etwa eine falsche oder veraltete Adresse, gescheiterte Zustellversuche, ein unleserliches Etikett, Qualitätsprobleme oder ein Hund, der den Fahrer gefährdet. Die Erstattung verfolgst du unter „Meine Bestellungen“. Hast du vier Wochen nach dem voraussichtlichen Lieferdatum noch keine Bestätigung der Rücksendung, schau dort nach deinen Möglichkeiten. Erneut senden kann Amazon eine Bestellung nicht: Du bestellst neu.
 
-**Marketplace-Verkäufer.** Wende dich zuerst an den Verkäufer. Bist du mit seiner Lösung nicht zufrieden oder antwortet er nicht innerhalb von 48 Stunden, gibt es die A-bis-Z-Garantie.
+**Marketplace-Verkäufer.** Wende dich zuerst an den Verkäufer. Bist du mit seiner Lösung nicht zufrieden oder antwortet er nicht innerhalb von 48 Stunden, gibt es die A-bis-Z-Garantie. Wer welche Bestellung verschickt und welche Fristen gelten: [Amazon-Bestellung verfolgen](guide:amazon-orders).
 
 **Paket eines anderen Shops.** Bringt Amazon ein Paket für einen anderen Händler ([Amazon Shipping](carrier:amazon-shipping), verfolgt auf track.amazon), sagt der Support von Amazon Shipping: Bei Verlust oder Schaden wende dich an den Absender.
 

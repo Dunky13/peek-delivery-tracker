@@ -61,7 +61,7 @@ Alcuni pacchi SpeedPAK sono tracciati solo per una parte del viaggio. Orange Con
 
 ## Tracking SpeedPAK fermo o pacco non arrivato
 
-**Nessun aggiornamento.** Orange Connex chiede a chi compra di contattare il venditore per verificare che abbia spedito, e di scrivergli se non c'è movimento da più di cinque giorni. Vedi anche [perché il tracking non si aggiorna](guide:tracking-not-updating).
+**Nessun aggiornamento.** Orange Connex chiede a chi compra di contattare il venditore per verificare che abbia spedito, e di scrivergli se non c'è movimento da più di cinque giorni. Vedi anche [perché il tracking non si aggiorna](guide:tracking-not-updating). Le scadenze di eBay sono in [tracciare un ordine eBay](guide:ebay-orders).
 
 **In ritardo o perso.** eBay.it: «Dalla data di consegna prevista, hai 30 giorni di tempo per informare il venditore di non aver ricevuto l'oggetto.» Il venditore ha poi 3 giorni lavorativi per aggiornarti sulla consegna; se non risponde o non risolve, puoi chiedere a eBay di intervenire.
 

@@ -654,6 +654,47 @@ function Resale() {
   </>;
 }
 
+function Auction() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* A parcel, its label printed, about to set off. */}
+    <Box x={56} y={128} width={150} height={120}>
+      <g transform="rotate(-4 75 70)">
+        <Sheet x={26} y={42} width={100} height={64} rx={8}>
+          <path d="M14 12v28m4-28v28m5-28v28m3-28v28m6-28v28m3-28v28m5-28v28m4-28v28m3-28v28m6-28v28m3-28v28m5-28v28m4-28v28m3-28v28m6-28v28m4-28v28" stroke={ink} strokeWidth="2" />
+          <rect x="14" y="46" width="72" height="8" rx="4" fill="var(--blue)" />
+        </Sheet>
+      </g>
+    </Box>
+    {/* The route it takes: a flight, then a van. */}
+    <path d="M214 120C280 30 410 30 440 190" stroke="var(--blue)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <g transform="translate(330 56) rotate(90) scale(.8)" fill="var(--blue)">
+      <path d="M0-26c3.3 0 5.3 4 5.3 10v12l24.7 14.7v6.6L5.3 9.9v14l8 6v4L0 30.6l-13.3 3.3v-4l8-6v-14L-30 17.3v-6.6L-5.3-4v-12c0-6 2-10 5.3-10Z" />
+    </g>
+    <Truck x={404} y={199} tone="blue" scale={2.6} />
+    <Pip x={286} ground={262} width={130} mood="wait" side={1} />
+  </>;
+}
+
+function Handmade() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* A parcel tied with string, a stamp on it. */}
+    <Box x={70} y={118} width={170} height={130}>
+      <path d="M0 74H170M100 31V130" stroke="var(--rose)" strokeWidth="4" />
+      <path d="M100 74c-14-16-34-16-30-4 3 9 18 7 30 4Zm0 0c14-16 34-16 30-4-3 9-18 7-30 4Z" stroke="var(--rose)" strokeWidth="4" strokeLinejoin="round" />
+      <g transform="translate(18 44)">
+        <rect width="44" height="52" rx="2" fill={paper} />
+        <rect x="6" y="6" width="32" height="40" rx="2" fill="var(--rose-soft)" />
+        <path d="m13 34 9-14 9 14z" fill="var(--rose)" />
+      </g>
+    </Box>
+    {/* The post van that takes it. */}
+    <Truck x={300} y={191} tone="rose" scale={3} />
+    <Pip x={520} ground={262} width={170} mood="eager" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -663,6 +704,8 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-from-china': { tone: 'blue', draw: FromChina },
   'amazon-orders': { tone: 'orange', draw: Marketplace },
   'vinted-orders': { tone: 'green', draw: Resale },
+  'ebay-orders': { tone: 'blue', draw: Auction },
+  'etsy-orders': { tone: 'rose', draw: Handmade },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

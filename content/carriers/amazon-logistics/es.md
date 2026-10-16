@@ -62,7 +62,7 @@ Algunas entregas necesitan que haya alguien: las que llevan una contraseña temp
 
 **No se ha podido entregar.** Una dirección incorrecta, los intentos fallidos, un rechazo, una etiqueta ilegible, daños o un perro pueden hacer que vuelva. Si el producto lo vendió y envió Amazon, Amazon.es suele devolver el dinero en 7 días laborables. No puede volver a enviar el pedido: haz uno nuevo.
 
-**Vendedores externos.** Contacta primero con el vendedor. Si no responde o no te convence su respuesta en 48 horas, puedes recurrir a la Garantía de la A a la Z.
+**Vendedores externos.** Contacta primero con el vendedor. Si no responde o no te convence su respuesta en 48 horas, puedes recurrir a la Garantía de la A a la Z. Quién envía cada tipo de pedido y los plazos: [seguir un pedido de Amazon](guide:amazon-orders).
 
 **Paquete de otra tienda.** Si Amazon llevó un paquete por encargo de otro vendedor ([Amazon Shipping](carrier:amazon-shipping), con seguimiento en track.amazon.es), el soporte de Amazon Shipping te pide que contactes con el remitente si se ha perdido o ha llegado dañado.
 

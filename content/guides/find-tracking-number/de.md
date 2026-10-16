@@ -35,6 +35,8 @@ Die Mail ist da, aber welche Nummer ist die richtige? Füge einfach die ganze Ma
 
 Keine Nummer zu sehen? Vielleicht gibt es noch keine oder überhaupt keine. Temu schreibt: „Die Bearbeitung durch das Lager kann 1-3 Werktage in Anspruch nehmen.“ Laut Amazon.de sind „Großbriefe der Deutschen Post und internationale Standardlieferungen“ nicht verfolgbar. Und bei eBay siehst du eine Nummer nur, wenn der Verkäufer einen Versandservice mit Sendungsverfolgung nutzt und die Nummer bei eBay hochlädt. Auf den österreichischen und Schweizer Seiten der Shops können die Menünamen leicht abweichen.
 
+Wer für welchen Shop zustellt und was du tust, wenn das Tracking stockt: [Amazon](guide:amazon-orders), [eBay](guide:ebay-orders), [Etsy](guide:etsy-orders) und [Vinted](guide:vinted-orders).
+
 Bei AliExpress oder einem anderen Shop in China bestellt? Lies, wie du ein [Paket aus China verfolgst](guide:tracking-from-china). Für Pakete von [Cainiao](carrier:cainiao) und [YunExpress](carrier:yunexpress) gibt es eigene Seiten, die auch zeigen, wo die Nummer steht.
 
 ### Auf der Benachrichtigungskarte

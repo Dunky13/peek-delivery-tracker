@@ -34,6 +34,8 @@ Tu as l'e-mail, mais tu ne sais pas quel numéro est le bon ? Colle l'e-mail en 
 
 Pas de numéro ? Il n'y en a peut-être pas encore, ou pas du tout. Amazon prévient que « certaines expéditions, comme les expéditions internationales standard, ne sont pas traçables ». Chez un vendeur tiers sur Amazon, comme sur eBay, le suivi n'apparaît que si l'envoi est suivi et que le vendeur a transmis le numéro.
 
+Qui livre pour chaque boutique, et que faire quand le suivi ne bouge plus : [Amazon](guide:amazon-orders), [eBay](guide:ebay-orders), [Etsy](guide:etsy-orders) et [Vinted](guide:vinted-orders).
+
 Commande passée sur AliExpress, Temu ou Shein ? Lis notre guide sur [le suivi d'un colis venant de Chine](guide:tracking-from-china). Sur AliExpress, la page de [Cainiao](carrier:cainiao) te dit où le numéro apparaît dans ta commande.
 
 ### Sur l'avis de passage

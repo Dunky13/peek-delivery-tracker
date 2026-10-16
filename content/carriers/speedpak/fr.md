@@ -61,7 +61,7 @@ Certains colis SpeedPAK ne sont suivis qu'une partie du trajet. Orange Connex in
 
 ## Suivi SpeedPAK bloqué ou colis pas reçu
 
-**Pas de mise à jour.** Orange Connex demande aux acheteurs de contacter le vendeur pour vérifier qu'il a bien expédié l'objet, et de le contacter aussi quand le colis n'a plus bougé depuis plus de cinq jours. Voir aussi [pourquoi un suivi de colis ne bouge plus](guide:tracking-not-updating).
+**Pas de mise à jour.** Orange Connex demande aux acheteurs de contacter le vendeur pour vérifier qu'il a bien expédié l'objet, et de le contacter aussi quand le colis n'a plus bougé depuis plus de cinq jours. Voir aussi [pourquoi un suivi de colis ne bouge plus](guide:tracking-not-updating). Les délais d'eBay sont dans [suivre une commande eBay](guide:ebay-orders).
 
 **En retard ou perdu.** Sur eBay.fr, tu as « 30 jours à partir de la date de livraison estimée » pour signaler au vendeur que l'objet n'est pas arrivé. Le vendeur a « 3 jours ouvrables » pour répondre, et eBay écrit : « S'il n'a pas trouvé de solution après 3 jours ouvrables, nous pouvons intervenir. »
 

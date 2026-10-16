@@ -24,7 +24,7 @@ Dos cosas que se confunden con facilidad:
 - **El enlace de seguimiento.** El enlace de la conversación a la página de seguimiento lleva a una dirección como `vintedgo.com/es/tracking/1700000000000001`. Ese enlace es la señal más clara de que el paquete va con Vinted Go.
 - **El código de recogida.** No es el número de seguimiento. Llega cuando el paquete ya está listo, por correo electrónico a la dirección de tu cuenta de Vinted y a veces por SMS, y siempre empieza por una letra mayúscula.
 
-¿No encuentras ningún número? Mira [cómo localizar un paquete sin número de seguimiento](guide:find-tracking-number).
+¿No encuentras ningún número? Mira [cómo localizar un paquete sin número de seguimiento](guide:find-tracking-number). ¿Va con otra empresa? [El seguimiento de Vinted](guide:vinted-orders) repasa todas las que usa Vinted.
 
 ## Estados del seguimiento de Vinted Go
 

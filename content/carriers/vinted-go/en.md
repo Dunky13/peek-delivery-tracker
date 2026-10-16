@@ -24,7 +24,7 @@ Two things are easy to mix up:
 - **The tracking link.** The tracking button leads to a page such as `vintedgo.com/en/tracking/1700000000000001`. That link is the surest sign the parcel is Vinted Go's.
 - **The pick-up code.** It isn't the tracking number: it arrives by email (and possibly SMS) when the parcel is ready, and always begins with a capital letter.
 
-Can't find the number at all? See [how to find your tracking number](guide:find-tracking-number).
+Can't find the number at all? See [how to find your tracking number](guide:find-tracking-number). Sent with another carrier? [Vinted tracking](guide:vinted-orders) covers each one Vinted uses.
 
 ## Vinted Go tracking statuses explained
 

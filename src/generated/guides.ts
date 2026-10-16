@@ -42,9 +42,19 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Amazon order tracking: Amazon, sellers and carriers"
     },
     {
+      "id": "ebay-orders",
+      "slug": "ebay-tracking",
+      "title": "eBay tracking: sellers' carriers, numbers and delays"
+    },
+    {
       "id": "vinted-orders",
       "slug": "vinted-tracking",
       "title": "Vinted tracking: carriers, numbers and delays"
+    },
+    {
+      "id": "etsy-orders",
+      "slug": "etsy-order-tracking",
+      "title": "Etsy tracking: where your order is and who delivers it"
     },
     {
       "id": "find-tracking-number",
@@ -139,9 +149,19 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Amazon-Sendungsverfolgung: Amazon, Verkäufer, Zusteller"
     },
     {
+      "id": "ebay-orders",
+      "slug": "ebay-sendungsverfolgung",
+      "title": "eBay Sendungsverfolgung: Versand, Nummern und Verzögerungen"
+    },
+    {
       "id": "vinted-orders",
       "slug": "vinted-sendungsverfolgung",
       "title": "Vinted Sendungsverfolgung: Versand, Nummern, Verspätung"
+    },
+    {
+      "id": "etsy-orders",
+      "slug": "etsy-sendungsverfolgung",
+      "title": "Etsy-Sendungsverfolgung: wo deine Bestellung ist"
     },
     {
       "id": "find-tracking-number",
@@ -236,9 +256,19 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Amazon\u00a0: Amazon, vendeurs, transporteurs"
     },
     {
+      "id": "ebay-orders",
+      "slug": "suivi-colis-ebay",
+      "title": "Suivi de colis eBay\u00a0: transporteurs, numéros et retards"
+    },
+    {
       "id": "vinted-orders",
       "slug": "suivi-colis-vinted",
       "title": "Suivi de colis Vinted\u00a0: transporteurs, numéros et retards"
+    },
+    {
+      "id": "etsy-orders",
+      "slug": "suivi-commande-etsy",
+      "title": "Suivi Etsy\u00a0: où est ta commande et qui la livre"
     },
     {
       "id": "find-tracking-number",
@@ -333,9 +363,19 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Tracciare un ordine Amazon: Amazon, venditori e corrieri"
     },
     {
+      "id": "ebay-orders",
+      "slug": "tracciare-ordine-ebay",
+      "title": "Tracciare un ordine eBay: corrieri, codici e ritardi"
+    },
+    {
       "id": "vinted-orders",
       "slug": "tracciamento-pacco-vinted",
       "title": "Tracciare un pacco Vinted: corrieri, codici e ritardi"
+    },
+    {
+      "id": "etsy-orders",
+      "slug": "tracciamento-ordine-etsy",
+      "title": "Tracciamento Etsy: dov'è il tuo ordine e chi lo consegna"
     },
     {
       "id": "find-tracking-number",
@@ -430,9 +470,19 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de pedidos Amazon: vendedores y transportistas"
     },
     {
+      "id": "ebay-orders",
+      "slug": "seguimiento-pedido-ebay",
+      "title": "Seguimiento de pedidos de eBay: transportistas y retrasos"
+    },
+    {
       "id": "vinted-orders",
       "slug": "seguimiento-envio-vinted",
       "title": "Seguimiento de envío Vinted: empresas, números y retrasos"
+    },
+    {
+      "id": "etsy-orders",
+      "slug": "seguimiento-pedido-etsy",
+      "title": "Seguimiento de Etsy: dónde está tu pedido y quién lo entrega"
     },
     {
       "id": "find-tracking-number",
@@ -527,9 +577,19 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguir encomendas da Amazon: vendedores e transportadoras"
     },
     {
+      "id": "ebay-orders",
+      "slug": "seguir-encomenda-ebay",
+      "title": "Seguir encomendas do eBay: transportadoras e atrasos"
+    },
+    {
       "id": "vinted-orders",
       "slug": "seguimento-encomenda-vinted",
       "title": "Seguir encomenda Vinted: transportadoras, números e atrasos"
+    },
+    {
+      "id": "etsy-orders",
+      "slug": "seguimento-encomenda-etsy",
+      "title": "Seguimento Etsy: onde está a tua encomenda e quem a entrega"
     },
     {
       "id": "find-tracking-number",
@@ -624,9 +684,19 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Śledzenie zamówienia Amazon: Amazon, sprzedawcy, przewoźnicy"
     },
     {
+      "id": "ebay-orders",
+      "slug": "sledzenie-zamowienia-ebay",
+      "title": "Śledzenie zamówienia z eBay: przewoźnicy i opóźnienia"
+    },
+    {
       "id": "vinted-orders",
       "slug": "sledzenie-paczki-vinted",
       "title": "Śledzenie paczki z Vinted: przewoźnicy, numery, opóźnienia"
+    },
+    {
+      "id": "etsy-orders",
+      "slug": "sledzenie-zamowienia-etsy",
+      "title": "Śledzenie Etsy: gdzie jest zamówienie i kto je dostarcza"
     },
     {
       "id": "find-tracking-number",

@@ -59,7 +59,7 @@ Zasady samej dostawy Amazon Logistics opisują strony Amazona dla krajów, w kt�
 
 **Dostawa niemożliwa.** Powodem bywa zły adres, nieudane próby, odmowa przyjęcia, nieczytelna etykieta, uszkodzenie czy pies. Paczka wraca do Amazona, a Amazon.pl zwraca pieniądze zazwyczaj w ciągu 72 godzin. Amazon nie wyśle zamówienia ponownie: złóż nowe.
 
-**Sprzedawcy z Marketplace.** Najpierw napisz do sprzedawcy. Jeśli nie odpowie w ciągu dwóch dni roboczych albo odpowiedź Cię nie zadowoli, możesz skorzystać z gwarancji od A do Z.
+**Sprzedawcy z Marketplace.** Najpierw napisz do sprzedawcy. Jeśli nie odpowie w ciągu dwóch dni roboczych albo odpowiedź Cię nie zadowoli, możesz skorzystać z gwarancji od A do Z. Kto wysyła jakie zamówienie i jakie są terminy: [śledzenie zamówienia z Amazona](guide:amazon-orders).
 
 **Paczka z innego sklepu.** Jeśli Amazon wiózł paczkę dla innego sprzedawcy (Amazon Shipping, śledzenie na stronach track.amazon), pomoc Amazon Shipping przy zgubionej lub uszkodzonej paczce odsyła do nadawcy.
 

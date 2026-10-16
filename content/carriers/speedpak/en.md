@@ -61,7 +61,7 @@ Some SpeedPAK parcels are tracked only part of the way. Orange Connex says that 
 
 ## SpeedPAK tracking not updating or parcel missing
 
-**No update.** Orange Connex tells buyers to contact the seller to check the item has been dispatched, and to contact the seller "if there has been no movement for more than five days". See also [why tracking stops updating](guide:tracking-not-updating).
+**No update.** Orange Connex tells buyers to contact the seller to check the item has been dispatched, and to contact the seller "if there has been no movement for more than five days". See also [why tracking stops updating](guide:tracking-not-updating). eBay's own deadlines are in [tracking an eBay order](guide:ebay-orders).
 
 **Late or lost.** eBay UK gives you up to 30 calendar days after the estimated delivery date to report that an item hasn't arrived. The seller "should respond within 3 business days"; if they don't, or don't solve it, you can ask eBay to step in, within 21 business days of opening the request. eBay says refunds are typically available within 3 to 5 business days.
 

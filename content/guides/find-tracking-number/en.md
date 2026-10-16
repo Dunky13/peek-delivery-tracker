@@ -36,6 +36,8 @@ Found the email but can't tell which number is which? Paste the whole thing into
 
 No number there? There may be none yet, or none at all. Temu asks you to allow "1-3 business days for warehouse processing" first. Amazon warns that "standard international deliveries" might not be trackable, and eBay shows a number only if the seller used a tracked service and uploaded it.
 
+Who delivers for each shop, and what to do when its tracking stalls: [Amazon](guide:amazon-orders), [eBay](guide:ebay-orders), [Etsy](guide:etsy-orders) and [Vinted](guide:vinted-orders).
+
 Ordered from AliExpress or another shop in China? See [tracking a parcel from China](guide:tracking-from-china). On AliExpress, the number is under **My Orders** → the order → **Tracking**, and [Cainiao's page](carrier:cainiao) shows what it looks like.
 
 ### On a missed-delivery card

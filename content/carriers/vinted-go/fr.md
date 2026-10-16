@@ -24,7 +24,7 @@ Deux choses à ne pas confondre :
 - **Le lien de suivi.** Dans la conversation, le lien vers la page de suivi du transporteur a la forme `vintedgo.com/fr/tracking/1700000000000001`. S'il mène à vintedgo.com, ton colis voyage avec Vinted Go.
 - **Le code de retrait.** Ce n'est pas le numéro de suivi. Il arrive quand le colis est prêt, par e-mail à l'adresse de ton compte Vinted et parfois par SMS, et il commence toujours par une majuscule.
 
-Tu ne trouves pas le numéro du tout ? Voir [où trouver son numéro de suivi](guide:find-tracking-number).
+Tu ne trouves pas le numéro du tout ? Voir [où trouver son numéro de suivi](guide:find-tracking-number). Envoyé avec un autre transporteur ? [Le suivi Vinted](guide:vinted-orders) les passe tous en revue.
 
 ## Vinted Go suivi colis : ce que veulent dire les statuts
 

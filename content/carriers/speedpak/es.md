@@ -61,7 +61,7 @@ Algunos paquetes SpeedPAK solo se siguen una parte del camino. Orange Connex dic
 
 ## Seguimiento de SpeedPAK que no se actualiza o paquete perdido
 
-**Sin novedades.** Orange Connex pide a los compradores que contacten con el vendedor para comprobar que ha enviado el artículo, y que lo hagan también si el paquete lleva más de cinco días sin moverse. Mira también [por qué el seguimiento no se actualiza](guide:tracking-not-updating).
+**Sin novedades.** Orange Connex pide a los compradores que contacten con el vendedor para comprobar que ha enviado el artículo, y que lo hagan también si el paquete lleva más de cinco días sin moverse. Mira también [por qué el seguimiento no se actualiza](guide:tracking-not-updating). Los plazos de eBay están en [seguir un pedido de eBay](guide:ebay-orders).
 
 **Retrasado o perdido.** eBay España te da un plazo de 30 días desde la fecha de entrega prevista para avisar de que el artículo no ha llegado. Después, el vendedor dispone de 3 días laborables para responder; si no lo hace o no lo soluciona, puedes pedir ayuda a eBay.
 

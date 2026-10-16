@@ -24,7 +24,7 @@ Há duas coisas fáceis de confundir:
 - **O link de acompanhamento.** O botão da Vinted leva a uma página como `vintedgo.com/pt/tracking/1700000000000001`. Esse link é o sinal mais seguro de que a encomenda é da Vinted Go.
 - **O código de levantamento.** Não é o código de acompanhamento. Chega quando a encomenda está pronta, por e-mail para o endereço da tua conta Vinted e talvez por SMS, e começa sempre por uma letra maiúscula.
 
-Não encontras código nenhum? Vê [onde encontrar o número de seguimento da encomenda](guide:find-tracking-number).
+Não encontras código nenhum? Vê [onde encontrar o número de seguimento da encomenda](guide:find-tracking-number). Vai com outra transportadora? [O seguimento na Vinted](guide:vinted-orders) passa por todas as que a Vinted usa.
 
 ## Vinted Go rastreio: o que quer dizer cada estado
 

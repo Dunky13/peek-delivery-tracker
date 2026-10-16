@@ -62,7 +62,7 @@ Quando serve che qualcuno ci sia (verifica dell'età, codice monouso o consegna 
 
 **Non consegnabile.** Indirizzo sbagliato, tentativi falliti, rifiuto, etichetta illeggibile, danni o un cane possono rimandarlo indietro. Amazon.it rimborsa entro 7 giorni lavorativi. Non può rispedire l'ordine: devi farne uno nuovo.
 
-**Venditori terzi.** Scrivi prima al venditore. Se non ti risponde entro 48 ore, o la risposta non ti basta, puoi chiedere la Garanzia dalla A alla Z.
+**Venditori terzi.** Scrivi prima al venditore. Se non ti risponde entro 48 ore, o la risposta non ti basta, puoi chiedere la Garanzia dalla A alla Z. Chi spedisce ogni tipo di ordine e le scadenze: [tracciare un ordine Amazon](guide:amazon-orders).
 
 **Pacchi di altri negozi.** Se Amazon ha trasportato un pacco per un altro negozio ([Amazon Shipping](carrier:amazon-shipping), con tracking su track.amazon.it), l'assistenza di Amazon Shipping dice di rivolgersi al mittente per un pacco perso o danneggiato.
 

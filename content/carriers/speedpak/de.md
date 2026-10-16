@@ -61,7 +61,7 @@ Manche SpeedPAK-Pakete werden nur bis zur Hälfte verfolgt. Orange Connex schrei
 
 ## SpeedPAK Paket nicht angekommen: was du tun kannst
 
-**Kein Update.** Orange Connex bittet Käufer, beim Verkäufer nachzufragen, ob der Artikel verschickt wurde, und sich an ihn zu wenden, „wenn seit mehr als fünf Tagen keine Bewegung stattgefunden hat“. Warum ein Tracking stehen bleibt, erklärt [Sendungsverfolgung aktualisiert sich nicht](guide:tracking-not-updating).
+**Kein Update.** Orange Connex bittet Käufer, beim Verkäufer nachzufragen, ob der Artikel verschickt wurde, und sich an ihn zu wenden, „wenn seit mehr als fünf Tagen keine Bewegung stattgefunden hat“. Warum ein Tracking stehen bleibt, erklärt [Sendungsverfolgung aktualisiert sich nicht](guide:tracking-not-updating). Die Fristen von eBay stehen in [eBay-Bestellung verfolgen](guide:ebay-orders).
 
 **Verspätet oder verloren.** Laut eBay.de hast du 30 Tage ab dem geschätzten Lieferdatum, um dem Verkäufer zu melden, dass der Artikel nicht angekommen ist. Der Verkäufer hat 3 Werktage, um zu antworten. Tut er das nicht oder löst er das Problem nicht, kannst du eBay einschalten, bis maximal 21 Werktage, nachdem du ihm die Anfrage gesendet hast. Eine Rückerstattung kommt laut eBay meist in 3 bis 5 Werktagen.
 

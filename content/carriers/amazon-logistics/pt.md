@@ -62,7 +62,7 @@ Quando alguém tem de estar presente (uma palavra-passe temporária, uma verific
 
 **Não pode ser entregue.** Uma morada errada ou incompleta, várias tentativas falhadas, uma recusa, uma etiqueta ilegível, danos ou um cão podem fazê-la voltar. Para produtos vendidos e enviados pela Amazon, o reembolso costuma chegar no prazo de sete dias úteis. A Amazon não reenvia pedidos: fazes um novo.
 
-**Vendedores externos.** Fala primeiro com o vendedor. Se a solução não te satisfizer ou ele não responder em 48 horas, recorre à Garantia de A a Z.
+**Vendedores externos.** Fala primeiro com o vendedor. Se a solução não te satisfizer ou ele não responder em 48 horas, recorre à Garantia de A a Z. Quem envia cada tipo de pedido e os prazos: [seguir uma encomenda da Amazon](guide:amazon-orders).
 
 **Encomenda de outra loja.** Se a Amazon levou a encomenda por conta de outro vendedor (Amazon Shipping, com seguimento em track.amazon.es), o apoio da Amazon Shipping só trata desses envios e pede que, para perdas ou danos, contactes o remetente.
 
