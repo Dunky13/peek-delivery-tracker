@@ -12743,7 +12743,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "south-african-post-office",
+      "recognitionRank": 933
     },
     "trackingUrlTemplate": "https://trackingnew.postoffice.co.za/?ParcelId={trackingNumber}",
     "linkRules": [
@@ -12767,7 +12768,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}ZA$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://trackingnew.postoffice.co.za/"
   },
   "southeastern-freight-lines": {
@@ -12929,7 +12937,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "team-global-express",
+      "recognitionRank": 932
     },
     "trackingUrlTemplate": "https://www.myteamge.com/?externalSearchQuery={trackingNumber}",
     "linkRules": [
