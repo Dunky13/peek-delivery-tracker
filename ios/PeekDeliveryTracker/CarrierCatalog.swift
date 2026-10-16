@@ -121,14 +121,18 @@ struct CarrierDefinition: Codable, Sendable {
     struct LinkRule: Codable, Sendable {
         let domains: [String]
         let params: [String]?
+        /// Captures the number from the whole query, for portals without named parameters.
+        var query: String? = nil
         let path: String?
         let pathPattern: String?
         let fragment: String?
         let detectFromNumber: Bool?
+        /// Names the carrier only for a number its own rules offer; another number is detected on its own.
+        var ownNumbersOnly: Bool? = nil
         let keepsCapabilityURL: Bool?
 
         enum CodingKeys: String, CodingKey {
-            case domains, params, path, pathPattern, fragment, detectFromNumber
+            case domains, params, query, path, pathPattern, fragment, detectFromNumber, ownNumbersOnly
             case keepsCapabilityURL = "keepsCapabilityUrl"
         }
     }
@@ -154,6 +158,8 @@ struct CarrierDefinition: Codable, Sendable {
     let timezone: String
     let tracking: Tracking
     let trackingURLTemplate: String?
+    /// The carrier's page for typing a number in, linked when a parcel link hides the number.
+    var trackingSearchURL: String? = nil
     let linkRules: [LinkRule]
     let detectionRules: [DetectionRule]
 
@@ -161,6 +167,7 @@ struct CarrierDefinition: Codable, Sendable {
         case displayName, displayNames, aliases, countries, trackingSiteName, color, selectable, timezone, tracking
         case linkRules, detectionRules
         case trackingURLTemplate = "trackingUrlTemplate"
+        case trackingSearchURL = "trackingSearchUrl"
     }
 }
 
@@ -289,8 +296,22 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
     typealias Loader = @Sendable (URLRequest) async throws -> (Data, URLResponse)
 
     private struct Contract: Codable {
-        let carriers: [String: CarrierDefinition]
+        var carriers: [String: CarrierDefinition]
+        /// Carriers this build cannot read, such as one asking for an input it does not know.
+        var unreadable: Set<String> = []
         enum CodingKeys: String, CodingKey { case carriers = "x-carriers" }
+
+        init(from decoder: Decoder) throws {
+            let entries = try decoder.container(keyedBy: CodingKeys.self).decode([String: Entry].self, forKey: .carriers)
+            carriers = entries.compactMapValues(\.definition)
+            unreadable = Set(entries.filter { $0.value.definition == nil }.keys)
+        }
+
+        /// One carrier, which a newer catalog may write in a way this build cannot read.
+        private struct Entry: Decodable {
+            let definition: CarrierDefinition?
+            init(from decoder: Decoder) throws { definition = try? CarrierDefinition(from: decoder) }
+        }
     }
 
     private struct CacheRecord: Codable {
@@ -320,7 +341,9 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
     private static let expressions = NSCache<NSString, NSRegularExpression>()
 
     private static let refreshInterval: TimeInterval = 15 * 60
-    private static let maximumResponseBytes = 512 * 1_024
+    /// Far above the catalog, which grows with each scraper release: a larger answer is
+    /// refused and the app keeps the catalog it has.
+    static let maximumResponseBytes = 4 * 1_024 * 1_024
     private static let defaultLoader: Loader = { request in
         try await URLSession.shared.data(for: request)
     }
@@ -388,7 +411,11 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
             guard response.statusCode == 200,
                   data.count <= Self.maximumResponseBytes else { return .failed }
 
-            let contract = try JSONDecoder().decode(Contract.self, from: data)
+            var contract = try JSONDecoder().decode(Contract.self, from: data)
+            // A carrier this build cannot read keeps the definition it has; the others refresh.
+            for key in contract.unreadable {
+                contract.carriers[key] = definitions[CarrierID(rawValue: key)]
+            }
             let refreshed = try Self.validatedDefinitions(contract)
             let etag = response.value(forHTTPHeaderField: "ETag")
             definitions = refreshed
@@ -423,7 +450,7 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
     static let maximumRecognitions = 5
     /// Brands with several catalog networks ("DPD" is `dpd` and `dpd-fr`), as in
     /// Universal Parcel Scraper's catalog networks.
-    private static let networkBrands = ["dhl", "dpd", "gls", "hermes"]
+    private static let networkBrands = ["dhl", "dpd", "gls", "hermes", "evri", "gofo"]
 
     static func networkBrand(_ carrier: CarrierID) -> String? {
         networkBrands.first { carrier.rawValue == $0 || carrier.rawValue.hasPrefix("\($0)-") }
@@ -656,30 +683,40 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
                         $0.caseInsensitiveCompare(item.name) == .orderedSame
                     } == true
                 }?.value
+                let bareQueryValue = firstMatch.rule.query.flatMap {
+                    Self.capture(components.query ?? "", pattern: $0, caseInsensitive: true)
+                }
                 var pathValue: String?
                 if let path = firstMatch.rule.path {
-                    pathValue = Self.capture(components.path, pattern: path)
+                    pathValue = Self.capture(components.path, pattern: path, caseInsensitive: true)
                 }
                 let fragmentValue = firstMatch.rule.fragment.flatMap {
                     Self.capture(components.fragment ?? "", pattern: $0, caseInsensitive: true)
                 }
-                let candidate = (queryValue ?? pathValue ?? fragmentValue ?? "")
+                let candidate = (queryValue ?? bareQueryValue ?? pathValue ?? fragmentValue ?? "")
                     .split(whereSeparator: { $0 == "," || $0 == "|" }).first.map(String.init) ?? ""
                 if valid(candidate) {
                     let detected = detect(candidate)
-                    if firstMatch.rule.detectFromNumber == true, detected.confidence == .high {
-                        return makeMatch(candidate, source: .link)
-                    }
                     let suggested = matchingRules.filter { detected.candidates.contains($0.carrier) }
                     let uniqueSuggestions = Set(suggested.map { $0.carrier })
+                    if firstMatch.rule.detectFromNumber == true,
+                       detected.confidence == .high || (detected.confidence == .low && uniqueSuggestions.count > 1) {
+                        return makeMatch(candidate, source: .link)
+                    }
                     let selected = detected.confidence == .high
                         ? matchingRules.first(where: { $0.carrier == detected.carrier }) ?? firstMatch
                         : (uniqueSuggestions.count == 1 ? suggested[0] : firstMatch)
+                    if selected.rule.ownNumbersOnly == true, !detected.candidates.contains(selected.carrier) {
+                        return makeMatch(candidate, source: .link)
+                    }
+                    // A host that is also the number's carrier's own page, as Royal Mail's is Parcelforce's, names that carrier.
+                    let carrier = detected.confidence == .high && coversTrackingPage(selected.rule, of: detected.carrier)
+                        ? detected.carrier : selected.carrier
                     return TrackingInputMatch(
                         trackingNumber: candidate,
-                        carrier: selected.carrier,
+                        carrier: carrier,
                         confidence: .high,
-                        candidates: [selected.carrier],
+                        candidates: [carrier],
                         trackingURL: selected.rule.keepsCapabilityURL == true ? cleaned : nil,
                         source: .link
                     )
@@ -717,6 +754,15 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         return links + followedTrackingLinks(for: delivery, language: language).filter { $0.carrier == named.carrier }.map {
             ParcelTrackingLink(carrier: $0.carrier, name: $0.name, url: $0.url, role: .waiting)
         }
+    }
+
+    /// Where a link that hides the number leads: the carrier's page for typing one in, or nowhere.
+    func searchLink(for parcel: Parcel, language: AppLanguage) -> ParcelTrackingLink? {
+        let carrier = parcel.activeTrackingCarrier
+        let definition = info(for: carrier, language: language)
+        guard let raw = definition.trackingSearchURL,
+              let url = localizedURL(raw, carrier: carrier, language: language) else { return nil }
+        return ParcelTrackingLink(carrier: carrier, name: definition.trackingSiteName ?? definition.displayName, url: url, role: .active)
     }
 
     private func followedTrackingLinks(for parcel: Parcel, language: AppLanguage) -> [ParcelTrackingLink] {
@@ -826,6 +872,14 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
             }
         }
         return nil
+    }
+
+    /// The rule's link covers the host of the carrier's own tracking page.
+    private func coversTrackingPage(_ rule: CarrierDefinition.LinkRule, of carrier: CarrierID) -> Bool {
+        guard let template = definitions[carrier]?.trackingURLTemplate,
+              let host = URLComponents(string: template.replacingOccurrences(of: "{trackingNumber}", with: ""))?
+                .host?.lowercased() else { return false }
+        return rule.domains.contains { host == $0 || host.hasSuffix(".\($0)") }
     }
 
     private func makeMatch(_ number: String, source: TrackingInputMatch.Source) -> TrackingInputMatch {
@@ -1396,7 +1450,7 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
     private static func defaultCacheURL() -> URL? {
         FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?
             .appending(path: "delivery-tracker", directoryHint: .isDirectory)
-            .appending(path: "carrier-catalog-v4.json")
+            .appending(path: "carrier-catalog-v5.json")
     }
 
     private static let emptyMatch = TrackingInputMatch(

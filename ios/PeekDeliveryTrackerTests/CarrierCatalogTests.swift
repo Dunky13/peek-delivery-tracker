@@ -1281,6 +1281,9 @@ final class CarrierCatalogTests: XCTestCase {
             cached.requirements(for: futureCarrier, trackingNumber: "FX12345678").map(\.isOptional),
             [true]
         )
+        // And the fields a newer build reads.
+        XCTAssertEqual(cached.info(for: futureCarrier).trackingSearchURL, "https://tracking.future.example/")
+        XCTAssertEqual(cached.parse("https://tracking.future.example/?FX12345678").trackingNumber, "FX12345678")
         let cachedResult = await cached.refresh(
             from: URL(string: "https://delivery.example")!,
             force: true
@@ -1328,6 +1331,65 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(original.info(for: .amazonLogistics).displayName, "Amazon Logistics")
     }
 
+    @MainActor
+    func testACarrierThisBuildCannotReadKeepsItsDefinitionWhileTheOthersRefresh() async throws {
+        let catalog = try CarrierCatalog(
+            data: Self.bundledCatalogData,
+            loader: { request in (Self.unreadableCarrierCatalogData, Self.response(for: request, status: 200)) }
+        )
+        let bundledName = catalog.info(for: .dpd).displayName
+
+        let result = await catalog.refresh(from: URL(string: "https://delivery.example")!, force: true)
+        XCTAssertEqual(result, .updated)
+        XCTAssertEqual(catalog.info(for: CarrierID(rawValue: "future-express")).displayName, "Future Express")
+        // DPD now asks for an input this build does not know.
+        XCTAssertEqual(catalog.info(for: .dpd).displayName, bundledName)
+    }
+
+    /// The server sends the bundled catalog without indentation. It must stay far below the
+    /// limit, or every refresh fails and the app keeps the catalog it has.
+    func testTheCatalogStaysFarBelowTheRefreshLimit() throws {
+        let compact = try JSONSerialization.data(withJSONObject: JSONSerialization.jsonObject(with: Self.bundledCatalogData))
+        XCTAssertLessThan(compact.count, CarrierCatalog.maximumResponseBytes / 4)
+    }
+
+    /// Link rules read as in the shared engine's `parseTrackingInput`.
+    func testLinkRulesReadAsInTheSharedEngine() throws {
+        let links = try CarrierCatalog(data: Self.linkRulesCatalogData)
+        let bare = CarrierID(rawValue: "bare-post"), market = CarrierID(rawValue: "market-one")
+        let page = CarrierID(rawValue: "page-post"), portal = CarrierID(rawValue: "portal-post")
+
+        // A portal that puts the number alone in the query.
+        let query = links.parse("https://bare.example/track?BP12345678")
+        XCTAssertEqual(query.trackingNumber, "BP12345678")
+        XCTAssertEqual(query.carrier, bare)
+
+        // A marketplace link names its own carrier only for that carrier's numbers.
+        XCTAssertEqual(links.parse("https://market.example/track?numer=MO12345678").carrier, market)
+        XCTAssertEqual(links.parse("https://market.example/track?numer=BP12345678").carrier, bare)
+
+        // A host that is also the number's carrier's own page names that carrier.
+        XCTAssertEqual(links.parse("https://portal.example/t/PP123456789").carrier, page)
+        XCTAssertEqual(links.parse("https://portal.example/T/QQ123456789").carrier, portal)
+
+        // A link that defers to the number keeps two carriers the number fits for the user.
+        let shared = links.parse("https://net.example/?id=N1234567890")
+        XCTAssertEqual(shared.carrier, .unknown)
+        XCTAssertEqual(shared.confidence, .low)
+        XCTAssertEqual(Set(shared.candidates), [CarrierID(rawValue: "net-a"), CarrierID(rawValue: "net-b")])
+    }
+
+    func testAHiddenNumberLinksToTheCarriersSearchPage() throws {
+        var parcel = Parcel(
+            id: UUID(), trackingNumber: "", label: "Parcel", carrier: .swissPost,
+            createdAt: "2026-09-07T13:00:00Z", syncStatus: .ok, notificationsMuted: false
+        )
+        let link = try XCTUnwrap(catalog.searchLink(for: parcel, language: .fr))
+        XCTAssertEqual(link.url.absoluteString, "https://www.post.ch/de/empfangen/sendung-verfolgen?lang=fr")
+        parcel.carrier = .amazonLogistics
+        XCTAssertNil(catalog.searchLink(for: parcel, language: .fr))
+    }
+
     private static var bundledCatalogData: Data {
         get throws {
             let url = try XCTUnwrap(
@@ -1361,9 +1423,13 @@ final class CarrierCatalogTests: XCTestCase {
             }]
           },
           "trackingUrlTemplate": "https://tracking.future.example/{trackingNumber}",
+          "trackingSearchUrl": "https://tracking.future.example/",
           "linkRules": [{
             "domains": ["tracking.future.example"],
             "path": "^/([^/?#]+)$"
+          }, {
+            "domains": ["tracking.future.example"],
+            "query": "^(FX\\\\d{8})$"
           }],
           "detectionRules": [{
             "pattern": "^FX\\\\d{8}$",
@@ -1447,6 +1513,85 @@ final class CarrierCatalogTests: XCTestCase {
           "tracking": { "mode": "automatic", "adapter": "plain-post", "recognitionRank": 1 },
           "linkRules": [],
           "detectionRules": [{ "pattern": "^\\d{11,12}$", "confidence": "low" }]
+        },
+        "unknown": {
+          "displayName": "Carrier", "color": "#8e8e93", "selectable": false, "timezone": "UTC",
+          "tracking": { "mode": "link-only", "adapter": null },
+          "linkRules": [],
+          "detectionRules": []
+        }
+      }
+    }
+    """#.utf8)
+
+    /// A newer catalog in which one carrier asks for an input this build does not know.
+    private static let unreadableCarrierCatalogData = Data(#"""
+    {
+      "x-carriers": {
+        "future-express": {
+          "displayName": "Future Express", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "future-express" },
+          "linkRules": [],
+          "detectionRules": [{ "pattern": "^FX\\d{8}$", "confidence": "high" }]
+        },
+        "dpd": {
+          "displayName": "DPD Renamed", "color": "#dc0032", "selectable": true, "timezone": "Europe/Zurich",
+          "tracking": { "mode": "automatic", "adapter": "dpd", "requirements": [{
+            "field": "recipientPhone", "validator": "phone", "label": "Phone", "type": "text"
+          }] },
+          "linkRules": [],
+          "detectionRules": []
+        },
+        "unknown": {
+          "displayName": "Carrier", "color": "#8e8e93", "selectable": false, "timezone": "UTC",
+          "tracking": { "mode": "link-only", "adapter": null },
+          "linkRules": [],
+          "detectionRules": []
+        }
+      }
+    }
+    """#.utf8)
+
+    private static let linkRulesCatalogData = Data(#"""
+    {
+      "x-carriers": {
+        "bare-post": {
+          "displayName": "Bare Post", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "bare-post" },
+          "linkRules": [{ "domains": ["bare.example"], "query": "^(BP\\d{8})$" }],
+          "detectionRules": [{ "pattern": "^BP\\d{8}$", "confidence": "high" }]
+        },
+        "market-one": {
+          "displayName": "Market One", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "market-one" },
+          "linkRules": [{ "domains": ["market.example"], "params": ["numer"], "ownNumbersOnly": true }],
+          "detectionRules": [{ "pattern": "^MO\\d{8}$", "confidence": "high" }]
+        },
+        "page-post": {
+          "displayName": "Page Post", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "page-post" },
+          "trackingUrlTemplate": "https://track.portal.example/{trackingNumber}",
+          "linkRules": [],
+          "detectionRules": [{ "pattern": "^PP\\d{9}$", "confidence": "high" }]
+        },
+        "portal-post": {
+          "displayName": "Portal Post", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "portal-post" },
+          "trackingUrlTemplate": "https://portal.example/t/{trackingNumber}",
+          "linkRules": [{ "domains": ["portal.example"], "path": "^/t/([^/]+)$" }],
+          "detectionRules": [{ "pattern": "^QQ\\d{9}$", "confidence": "high" }]
+        },
+        "net-a": {
+          "displayName": "Net A", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "net-a" },
+          "linkRules": [{ "domains": ["net.example"], "params": ["id"], "detectFromNumber": true }],
+          "detectionRules": [{ "pattern": "^N\\d{10}$", "confidence": "low" }]
+        },
+        "net-b": {
+          "displayName": "Net B", "color": "#123456", "selectable": true, "timezone": "UTC",
+          "tracking": { "mode": "automatic", "adapter": "net-b" },
+          "linkRules": [{ "domains": ["net.example"], "params": ["id"], "detectFromNumber": true }],
+          "detectionRules": [{ "pattern": "^N\\d{10}$", "confidence": "low" }]
         },
         "unknown": {
           "displayName": "Carrier", "color": "#8e8e93", "selectable": false, "timezone": "UTC",

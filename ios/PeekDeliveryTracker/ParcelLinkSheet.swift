@@ -775,9 +775,12 @@ private struct SharedParcelNumber: View {
 
     var body: some View {
         if let hint {
-            // A hidden number cannot be copied or looked up.
-            row(title: localizer.text("detail.trackingNumber"), number: hint.masked)
-                .accessibilityElement(children: .combine)
+            // A hidden number cannot be copied; the carrier's page takes one typed in.
+            VStack(alignment: .leading, spacing: 0) {
+                row(title: localizer.text("detail.trackingNumber"), number: hint.masked)
+                    .accessibilityElement(children: .combine)
+                carrierLinks(catalog.searchLink(for: parcel, language: localizer.language).map { [$0] } ?? [], own: true)
+            }
         } else if !parcel.trackingNumber.isEmpty {
             let numbers = parcel.trackingNumbers
             let pages = ParcelTrackingLink.byNumber(catalog.trackingLinks(for: parcel, language: localizer.language), numbers: numbers)

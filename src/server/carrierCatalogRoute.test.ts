@@ -23,6 +23,8 @@ describe('public carrier catalog route', () => {
       'x-carriers': Record<string, { displayName: string; tracking: { requirements?: { field: string }[] } }>;
     };
     expect(body.version).toBe(`sha256-${etag?.slice(1, -1)}`);
+    // The iPhone app refuses a catalog over 4 MiB (CarrierCatalog.maximumResponseBytes).
+    expect(Buffer.byteLength(JSON.stringify(body))).toBeLessThan(2 * 1024 * 1024);
     expect(body['x-carriers']['amazon-logistics']?.displayName).toBe('Amazon Logistics');
     expect(body['x-carriers']['india-post']?.displayName).toBe('India Post');
     expect(body['x-carriers'].unknown).toBeDefined();
