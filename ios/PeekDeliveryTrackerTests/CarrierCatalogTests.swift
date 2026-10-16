@@ -941,7 +941,7 @@ final class CarrierCatalogTests: XCTestCase {
     }
 
     /// Constructed twelve-digit numbers: the Identcode weighs 4 and 9 from the left. Passing it
-    /// suggests DHL, which is never selected, listed first or asked.
+    /// suggests DHL, which is never selected or listed first, and recognition asks it first.
     func testTheIdentcodeCheckSuggestsDHLWithoutSelectingIt() {
         for number in ["123456789016", "000000000000"] {
             XCTAssertTrue(CarrierCatalog.isValidDhlIdentcode(number), number)
@@ -955,7 +955,7 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(passing.confidence, .low)
         XCTAssertTrue(passing.candidates.contains(.dhl))
         XCTAssertFalse(passing.preferred.contains(.dhl))
-        XCTAssertFalse(catalog.recognitionCandidates(for: "123456789016").contains(.dhl))
+        XCTAssertEqual(catalog.recognitionCandidates(for: "123456789016").first, .dhl)
         let failing = catalog.detect("123456789015")
         XCTAssertFalse(failing.candidates.contains(.dhl))
         XCTAssertFalse(failing.candidates.isEmpty)
@@ -967,7 +967,7 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(catalog.recognitionCandidates(for: "300000000004").first, .purolator)
         XCTAssertFalse(catalog.recognitionCandidates(for: "300000000005").contains(.purolator))
         // Hermes's check digit passes; DPD's networks are only more popular.
-        XCTAssertEqual(catalog.recognitionCandidates(for: "12345678901231"), [.hermesDe, .dpd, .dpdDe, .seur, .brt])
+        XCTAssertEqual(catalog.recognitionCandidates(for: "12345678901231"), [.hermesDe, .dpdBe, .dpd, .dpdDe, .seur])
     }
 
     func testUspsPackageChecksumsIgnoreRoutingAndRejectAmbiguousSplits() {
