@@ -3406,7 +3406,10 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CN"
     ],
-    "trackingSearchUrl": "https://track.4px.com/"
+    "trackingSearchUrl": "https://track.4px.com/",
+    "aliases": [
+      "4PX Express"
+    ]
   },
   "blue-dart": {
     "displayName": "Blue Dart",
