@@ -344,7 +344,9 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   filed under it, counts as not asked: a probe drops an answer on local clocks. A parcel
   filed under no carrier is also queued when its detected or named carrier, or else a
   carrier its recognition would ask, has no wait left, asked before or not: a release can
-  teach an adapter a number, and a rate limit or outage passes. One still in its cooldown is
+  teach an adapter a number, and a rate limit or outage passes. A carrier whose adapter
+  refuses the number by its own check, which sends nothing, is passed over until a release
+  whose adapter takes it. One still in its cooldown is
   queued by the first scheduled run after the cooldown ends. These checks wait behind every other job, a lookup's own
   check too. Only parcels filed under no carrier, or showing a provider's history, are
   looked at. A lookup nobody follows any more gets this one check.

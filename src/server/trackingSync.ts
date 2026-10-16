@@ -44,7 +44,7 @@ import { isRecord, type JsonObject } from './types';
 import { UniversalTracker } from 'universal-parcel-scraper/node';
 import type { UniversalSource } from 'universal-parcel-scraper';
 import { answeredWithoutHistory, catalogRules, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
-import { REDETECTION_WINDOW_MS, rerouteCarrier } from './redetection';
+import { REDETECTION_WINDOW_MS, rerouteAskable } from './redetection';
 import { upuHistory } from './upuHistory';
 import { UNSEEN_HOURLY_MS, unseenFor } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
@@ -830,7 +830,7 @@ export class TrackingSyncService {
       if (!redetections.listed) {
         const candidates = await this.client.listRedetectionCandidates(new Date(now - REDETECTION_WINDOW_MS), rules);
         for (const parcel of candidates) {
-          if (!rerouteCarrier(parcel, rules, now)) continue;
+          if (!await rerouteAskable(parcel, rules, now)) continue;
           const dueAt = trackingSyncDueAt(parcel);
           if (dueAt === Infinity) continue;
           if (redetections.waiting.size >= MAX_REDETECTIONS) left += 1;

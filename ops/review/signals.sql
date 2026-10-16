@@ -81,7 +81,8 @@ with direct as (
   where started_at >= now() - interval '30 days' and outcome in ('updated', 'unchanged')
     and source_carrier is not null and source_carrier not in ('unknown', 'intl-post')
 ), parcels as (
-  -- The summary names a carrier once one answers; routing keeps a provider's naming before that.
+  -- The summary names the carrier that answered or, from a provider's answer, the one the provider
+  -- names; routing keeps a provider's naming unless that carrier's adapter refuses the number.
   select p.carrier, coalesce(nullif(p.carrier_data->>'discovered_carrier', ''),
            nullif(p.carrier_data->'routing'->>'discovered_carrier', ''), d.carrier, p.carrier) as target,
          nullif(p.carrier_data->>'discovered_carrier', '') as named,

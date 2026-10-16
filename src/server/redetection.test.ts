@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { rerouteCarrier } from './redetection';
+import { rerouteAskable, rerouteCarrier } from './redetection';
 import { catalogRules } from './trackingRouting';
 import type { JsonObject } from './types';
 
@@ -83,4 +83,20 @@ it.each<[string, JsonObject, JsonObject]>([
   ['whose carrier is confirmed', {}, { routing: { confirmed_carrier: 'ups' } }],
 ])('leaves alone a parcel %s', (_name, values, data) => {
   expect(rerouteCarrier(parcel(values, data))).toBeNull();
+});
+
+it('passes over a carrier whose adapter refuses the number, until a release whose adapter may take it', async () => {
+  const refuses = (refusing: string[]) => async (carrier: string) => refusing.includes(carrier);
+  // A provider's name the check could not ask, and nothing else to ask.
+  const named = parcel({ tracking_number: UNCLAIMED }, { reported_carriers: ['UPS'] });
+  expect(await rerouteAskable(named, 'newer', Date.now(), refuses(['ups']))).toBeNull();
+  expect(await rerouteAskable(named, 'newer', Date.now(), refuses([]))).toBe('ups');
+  // The next carrier the check would ask instead.
+  const now = Date.parse('2026-09-10T12:00:00Z');
+  const unseen = parcel({ tracking_number: '1234567891', current_stage: 'pending' }, { tracking_provider: undefined });
+  expect(await rerouteAskable(unseen, 'newer', now, refuses(['dhl-express']))).toBe('relais-colis');
+  // The adapters' own checks, which send nothing: DPD France's takes no 18 digits.
+  const dpd = parcel({ tracking_number: '123456789012345678' }, { reported_carriers: ['DPD France'] });
+  expect(rerouteCarrier(dpd, 'newer', now)).toBe('dpd-fr');
+  expect(await rerouteAskable(dpd, 'newer', now)).not.toBe('dpd-fr');
 });

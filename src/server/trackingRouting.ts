@@ -303,8 +303,9 @@ export class TrackingRouter {
     let localHistory: JsonObject | undefined;
     // The filed carrier's status alone, or part of its history, while providers are asked for the rest.
     let partialDirect: { value: RoutedResult; carrier: string } | undefined;
-    // Carriers asked in this check whose own answer for the number moved but had only local clocks.
-    const localAnswers = new Set<string>();
+    // Carriers asked in this check whose own answer for the number moved but had only
+    // local clocks, with the local history each answer brought.
+    const localAnswers = new Map<string, JsonObject | undefined>();
     const universalNumber = metadata.original_carrier && metadata.active_tracking_carrier
       && typeof metadata.active_tracking_number === 'string' ? metadata.active_tracking_number : number;
     // The owner's answer to a provider's postcode request, for this number only.
@@ -423,10 +424,13 @@ export class TrackingRouter {
       // parcel under it, where a parcel added today would start, and links stay
       // with that carrier.
       const answered = unnamed && hasRoutingProgress(value.result)
-        ? [...localAnswers].find((carrier) => detectionNames(number, carrier))
+        ? [...localAnswers.keys()].find((carrier) => detectionNames(number, carrier))
           ?? (providerNamed && localAnswers.has(providerNamed) ? providerNamed : undefined)
         : undefined;
       const named = answered ?? providerNamed;
+      // Filed under the carrier that answered, the parcel keeps that carrier's history,
+      // not one another candidate brought first.
+      const history = answered ? localAnswers.get(answered) : localHistory;
       if (named) {
         state.configured_carrier = named;
         // A provider naming several legs may settle on none (17FEIA, and a DPD the catalog
@@ -436,7 +440,7 @@ export class TrackingRouter {
         value.correction = { carrier: named, trackingUrl: null, postcode: null };
       }
       return { ...value, result: { ...value.result, routing: state,
-        ...(localHistory ? { direct_local_history: localHistory } : {}),
+        ...(history ? { direct_local_history: history } : {}),
         ...(answered ? { carrier_answered: true, discovered_carrier: answered } : {}),
         ...(directCarrier(provider) ? { active_tracking_carrier: value.sourceCarrierId } : {}),
         ...(swap ? { auto_changed_from: declared, auto_changed_to: provider, auto_changed_at: now().toISOString() } : {}),
@@ -523,7 +527,7 @@ export class TrackingRouter {
           // The carrier detection or a provider names, answering for this very
           // number, can still file an unknown parcel once a provider dates the
           // parcel's progress. Its newest scan has no instant to hold against the watermark.
-          if (candidate && moved && value.sourceCarrierId === carrier && !earlierLeg(carrier, value)) localAnswers.add(carrier);
+          if (candidate && moved && value.sourceCarrierId === carrier && !earlierLeg(carrier, value)) localAnswers.set(carrier, capturedHistory);
           return null;
         }
         if (candidate && !moved) return null;

@@ -1493,6 +1493,19 @@ describe('persistent tracking routing', () => {
       expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
     });
 
+    it('keeps the local history of the carrier it takes, not of one asked before it', async () => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal, recognize } = setup();
+      // The hint saved by an earlier check is asked first; recognition then finds STO, the provider's carrier.
+      recognize.mockImplementation(async (asked: string) => ({ known: asked === 'sto' }));
+      direct.mockImplementation(async (_parcel, asked: string) => local(asked));
+      universal.mockResolvedValue({ ...history(), discovered_carrier: 'sto', reported_carriers: ['STO Express'] });
+      const result = await router.fetch(filed({ discovered_carrier: '17feia' }, { tracking_number: '123456789012' }), false);
+      expect(direct.mock.calls.map(([, carrier]) => carrier)).toEqual(['17feia', 'sto']);
+      expect(result).toMatchObject({ correction: { carrier: 'sto' },
+        result: { carrier_answered: true, direct_local_history: { carrier: 'sto' } } });
+    });
+
     it('does not replace a carrier already confirmed for the number', async () => {
       fixedPlan('Ship24', '17TRACK');
       const { router, direct, universal } = setup();
