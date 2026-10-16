@@ -79,10 +79,16 @@ former. Server settings are in [DEPLOYMENT.md](../docs/DEPLOYMENT.md).
 
 - Each of the three targets carries a `PrivacyInfo.xcprivacy`. The app's lists the data
   [PRIVACY.md](../PRIVACY.md) describes; change the two together.
-- The App Store doesn't take Google sign-in without Sign in with Apple. Ship with
-  `SDT_GOOGLE_AUTH_ENABLED = NO` until `SDT_APPLE_AUTH_ENABLED` is on.
-- The app and its extensions share one version: `MARKETING_VERSION` and
-  `CURRENT_PROJECT_VERSION` in the project.
+- The App Store doesn't take Google sign-in without Sign in with Apple: set
+  `SDT_APPLE_AUTH_ENABLED = YES` in `Local.xcconfig` along with Google.
+- The app and its extensions share one version, `MARKETING_VERSION` in the project.
+- `scripts/upload-ios-app.sh` archives Release and uploads it to App Store Connect with an
+  API key: `ASC_KEY_ID`, `ASC_ISSUER_ID`, and the `.p8` in
+  `~/.appstoreconnect/private_keys/`. `--export` only writes the signed `.ipa`. The build
+  number is the commit count. It needs a production `Local.xcconfig`, a clean `ios/`, the
+  App Group on the three identifiers and the app record in App Store Connect.
+- The listing, review notes and privacy answers are in
+  [docs/app-store](../docs/app-store/README.md).
 
 ## Notifications and widgets
 
