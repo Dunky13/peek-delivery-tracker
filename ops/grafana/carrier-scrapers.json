@@ -1,13 +1,13 @@
 {
   "title": "Peek — Carrier scrapers",
   "uid": "delivery-tracker-carriers",
-  "description": "Carrier lookups, steps, refreshes and status mapping from the app's Prometheus metrics. See docs/OBSERVABILITY.md.",
+  "description": "Starts with the carrier goals, from the app database's metrics schema (PostgreSQL): the errors readers see, the tracking quality and the reliance on universal trackers. Then the scrapers' lookups, steps, refreshes and status mapping, from the app's Prometheus metrics. See docs/OBSERVABILITY.md.",
   "tags": ["peek"],
   "schemaVersion": 39,
   "editable": true,
   "graphTooltip": 1,
   "refresh": "5m",
-  "time": {"from": "now-24h", "to": "now"},
+  "time": {"from": "now-14d", "to": "now"},
   "timepicker": {},
   "timezone": "browser",
   "annotations": {
@@ -32,6 +32,36 @@
         "useValueForTime": true,
         "titleFormat": "App restarted",
         "textFormat": "A deploy or restart; counters start again"
+      },
+      {
+        "name": "Scraper releases",
+        "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+        "enable": true,
+        "hide": false,
+        "iconColor": "blue",
+        "target": {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "Anno",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "table",
+          "rawSql": "select time, 'Scraper ' || scraper as text, 'scraper' as tags\nfrom metrics.releases\nwhere scraper_changed and $__timeFilter(time)\norder by time"
+        }
+      },
+      {
+        "name": "Peek releases",
+        "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+        "enable": false,
+        "hide": false,
+        "iconColor": "purple",
+        "target": {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "Anno",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "table",
+          "rawSql": "select time, 'Peek ' || app as text, 'peek' as tags\nfrom metrics.releases\nwhere not scraper_changed and $__timeFilter(time)\norder by time"
+        }
       }
     ]
   },
@@ -42,6 +72,18 @@
         "label": "Data source",
         "type": "datasource",
         "query": "prometheus",
+        "current": {},
+        "hide": 0,
+        "refresh": 1,
+        "regex": "",
+        "includeAll": false,
+        "multi": false
+      },
+      {
+        "name": "metrics",
+        "label": "Metrics data source",
+        "type": "datasource",
+        "query": "grafana-postgresql-datasource",
         "current": {},
         "hide": 0,
         "refresh": 1,
@@ -94,12 +136,754 @@
   },
   "panels": [
     {
+      "type": "row",
+      "id": 33,
+      "title": "Goals",
+      "collapsed": false,
+      "gridPos": {"x": 0, "y": 0, "w": 24, "h": 1},
+      "panels": []
+    },
+    {
+      "type": "stat",
+      "id": 34,
+      "title": "Parcels answered directly",
+      "description": "Share of the parcels being tracked with a scan whose latest answer came from a carrier's adapter: their own carrier's, or another carrier's after a handoff. A universal provider answered the rest. The figure is the latest count; the line shows each UTC day's end.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 0, "y": 1, "w": 4, "h": 5},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * (parcels_own_adapter + parcels_other_adapter) / nullif(parcels, 0) as \"Parcels answered directly\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "noValue": "None",
+          "color": {"mode": "thresholds"},
+          "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]}
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "wideLayout": true
+      }
+    },
+    {
+      "type": "stat",
+      "id": 35,
+      "title": "Checks answered directly",
+      "description": "Share of the checks that answered (updated or unchanged) that a carrier's adapter served: the parcel's carrier, or the carrier it was handed to. A universal provider served the rest. The figure is today so far (UTC); the line shows each day.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 4, "y": 1, "w": 4, "h": 5},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * direct_checks / nullif(answered_checks, 0) as \"Checks answered directly\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "noValue": "None",
+          "color": {"mode": "thresholds"},
+          "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]}
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "wideLayout": true
+      }
+    },
+    {
+      "type": "stat",
+      "id": 36,
+      "title": "Checks that failed",
+      "description": "Share of the checks that ended in error or were abandoned, out of those that ended updated, unchanged, waiting, error or abandoned. The figure is today so far (UTC); the line shows each day.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 8, "y": 1, "w": 4, "h": 5},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * failed_checks / nullif(checks, 0) as \"Checks that failed\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "noValue": "None",
+          "color": {"mode": "thresholds"},
+          "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]}
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "wideLayout": true
+      }
+    },
+    {
+      "type": "stat",
+      "id": 37,
+      "title": "Stale parcels",
+      "description": "Share of the followed parcels being tracked with a scan that had no answered check in the 24 h before. Followed: parcels of accounts, and parcels without one that had a check in those 24 h. The figure is the latest count; the line shows each UTC day's end.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 12, "y": 1, "w": 4, "h": 5},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * stale_parcels / nullif(followed_parcels, 0) as \"Stale parcels\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "noValue": "None",
+          "color": {"mode": "thresholds"},
+          "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]}
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "wideLayout": true
+      }
+    },
+    {
+      "type": "stat",
+      "id": 38,
+      "title": "Readers who say it's right",
+      "description": "Readers' answers over the past 7 days that say the parcel is right, as a share of all their answers, and how many answers there were. Few answers make the share swing. The figure is the latest count; the line shows each UTC day's end.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 16, "y": 1, "w": 4, "h": 5},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * feedback_right_7d / nullif(feedback_7d, 0) as \"Right\",\n  feedback_7d as \"Answers\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "noValue": "None",
+          "color": {"mode": "thresholds"},
+          "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]}
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Answers"},
+            "properties": [{"id": "unit", "value": "none"}, {"id": "decimals", "value": 0}]
+          }
+        ]
+      },
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "wideLayout": true
+      }
+    },
+    {
+      "type": "stat",
+      "id": 39,
+      "title": "Gap held by the top carriers",
+      "description": "Unfinished parcels with a scan whose latest answer came from a universal provider, and followed ones that went 24 h without an answer or whose checks fail, counted now; and the share of them the 5, 10 and 20 carriers with the most hold. A high share means fixing a few carriers closes most of the gap.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 20, "y": 1, "w": 4, "h": 5},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "table",
+          "rawSql": "select max(cumulative_percent) filter (where rank <= 5) as \"Top 5\",\n  max(cumulative_percent) filter (where rank <= 10) as \"Top 10\",\n  max(cumulative_percent) filter (where rank <= 20) as \"Top 20\",\n  sum(parcels) as \"Parcels in the gap\"\nfrom metrics.carrier_gaps"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "noValue": "0",
+          "color": {"mode": "thresholds"},
+          "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]}
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byRegexp", "options": "Top .*"},
+            "properties": [
+              {"id": "unit", "value": "percent"},
+              {"id": "decimals", "value": 1},
+              {"id": "noValue", "value": "None"}
+            ]
+          }
+        ]
+      },
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "wideLayout": true
+      }
+    },
+    {
+      "type": "timeseries",
+      "id": 40,
+      "title": "Who answered unfinished parcels last",
+      "description": "Parcels being tracked with a scan at each UTC day's end, by who served their latest answered check: their own carrier's adapter, another carrier's (a handoff, or a carrier found for the number), or a universal provider. Unnamed provider: older checks did not record which one.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 0, "y": 6, "w": 12, "h": 9},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  parcels_own_adapter as \"Own carrier's adapter\",\n  parcels_other_adapter as \"Another carrier's adapter\",\n  parcels_parcelsapp as \"ParcelsApp\",\n  parcels_17track as \"17TRACK\",\n  parcels_ship24 as \"Ship24\",\n  parcels_postal_ninja as \"Postal Ninja\",\n  parcels_upu as \"UPU\",\n  parcels_other_provider as \"Unnamed provider\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "showPoints": "never",
+            "spanNulls": true,
+            "axisSoftMin": 0,
+            "stacking": {"mode": "normal", "group": "A"},
+            "barAlignment": 1
+          },
+          "color": {"mode": "fixed", "fixedColor": "#3987e5"}
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Own carrier's adapter"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "#008300"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Another carrier's adapter"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "#1baf7a"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "ParcelsApp"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "#d95926"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "17TRACK"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "#9085e9"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Ship24"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "#c98500"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Postal Ninja"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "#d55181"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "UPU"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "#6250d6"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Unnamed provider"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "#898781"}}]
+          }
+        ]
+      },
+      "options": {
+        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      }
+    },
+    {
+      "type": "timeseries",
+      "id": 41,
+      "title": "Direct share, failures and staleness",
+      "description": "Each UTC day. Left axis: the share of parcels being tracked, and of answered checks, that a carrier's adapter answered. Right axis: the share of checks that failed, and of followed parcels with no answer for 24 h. Dashed lines count checks; solid lines count parcels.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 12, "y": 6, "w": 12, "h": 9},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * (parcels_own_adapter + parcels_other_adapter) / nullif(parcels, 0) as \"Parcels answered directly\",\n  100.0 * direct_checks / nullif(answered_checks, 0) as \"Checks answered directly\",\n  100.0 * failed_checks / nullif(checks, 0) as \"Checks that failed\",\n  100.0 * stale_parcels / nullif(followed_parcels, 0) as \"Stale parcels\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "showPoints": "auto",
+            "spanNulls": true,
+            "axisSoftMin": 0
+          },
+          "color": {"mode": "fixed", "fixedColor": "#3987e5"}
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Parcels answered directly"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#3987e5"}},
+              {"id": "max", "value": 100},
+              {"id": "custom.axisLabel", "value": "Answered directly"}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Checks answered directly"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#3987e5"}},
+              {"id": "max", "value": 100},
+              {"id": "custom.axisLabel", "value": "Answered directly"},
+              {"id": "custom.lineStyle", "value": {"fill": "dash", "dash": [10, 10]}}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Checks that failed"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#d95926"}},
+              {"id": "custom.axisPlacement", "value": "right"},
+              {"id": "custom.axisLabel", "value": "Failed or stale"},
+              {"id": "custom.lineStyle", "value": {"fill": "dash", "dash": [10, 10]}}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Stale parcels"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#199e70"}},
+              {"id": "custom.axisPlacement", "value": "right"},
+              {"id": "custom.axisLabel", "value": "Failed or stale"}
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      }
+    },
+    {
+      "type": "timeseries",
+      "id": 42,
+      "title": "Answered directly and failed, hourly",
+      "description": "Each hour, from Prometheus: the share of answered refreshes that a carrier's adapter served (left axis), and the share of all refreshes that ended in error (right axis). Hourly, to see a release land; the counters restart with each deploy. The carrier filter applies.",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"x": 0, "y": 15, "w": 12, "h": 9},
+      "interval": "1h",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "refId": "A",
+          "expr": "sum(increase(carrier_refresh_total{carrier=~\"$carrier\", served_by=~\"adapter|other_adapter\", outcome=~\"updated|unchanged\"}[1h])) / sum(increase(carrier_refresh_total{carrier=~\"$carrier\", outcome=~\"updated|unchanged\"}[1h]))",
+          "legendFormat": "Answered directly",
+          "range": true
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "refId": "B",
+          "expr": "(sum(increase(carrier_refresh_total{carrier=~\"$carrier\", outcome=\"error\"}[1h])) or vector(0)) / sum(increase(carrier_refresh_total{carrier=~\"$carrier\"}[1h]))",
+          "legendFormat": "Failed",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "decimals": 1,
+          "min": 0,
+          "color": {"mode": "fixed", "fixedColor": "#3987e5"},
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "showPoints": "auto",
+            "spanNulls": false,
+            "axisSoftMin": 0
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Answered directly"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#3987e5"}},
+              {"id": "max", "value": 1},
+              {"id": "custom.axisLabel", "value": "Answered directly"}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Failed"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#d95926"}},
+              {"id": "custom.axisPlacement", "value": "right"},
+              {"id": "custom.axisLabel", "value": "Failed"}
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      }
+    },
+    {
+      "type": "table",
+      "id": 43,
+      "title": "Where the gap is",
+      "description": "Unfinished parcels with a scan whose latest answer came from a universal provider, and followed ones that went 24 h without an answer or whose checks fail, counted now: by the carrier that could take them, why it does not, and the lane where the fix belongs. Carriers with the most come first; Cumulative is the share of all such parcels that the carriers up to this rank hold.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 12, "y": 15, "w": 12, "h": 18},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "table",
+          "rawSql": "select rank, carrier, reason, lane, parcels, carrier_parcels, cumulative_percent\nfrom metrics.carrier_gaps\norder by rank, parcels desc, reason"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "renameByName": {
+              "rank": "#",
+              "carrier": "Carrier",
+              "reason": "Reason",
+              "lane": "Lane",
+              "parcels": "Parcels",
+              "carrier_parcels": "Carrier total",
+              "cumulative_percent": "Cumulative"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "#"},
+            "properties": [{"id": "custom.width", "value": 50}, {"id": "decimals", "value": 0}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Carrier"},
+            "properties": [
+              {"id": "custom.width", "value": 160},
+              {
+                "id": "mappings",
+                "value": [{"type": "value", "options": {"unknown": {"text": "(no carrier known)", "index": 0}}}]
+              }
+            ]
+          },
+          {"matcher": {"id": "byName", "options": "Reason"}, "properties": [{"id": "custom.width", "value": 180}]},
+          {"matcher": {"id": "byName", "options": "Lane"}, "properties": [{"id": "custom.width", "value": 130}]},
+          {
+            "matcher": {"id": "byName", "options": "Parcels"},
+            "properties": [{"id": "custom.width", "value": 80}, {"id": "decimals", "value": 0}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Carrier total"},
+            "properties": [{"id": "custom.width", "value": 110}, {"id": "decimals", "value": 0}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Cumulative"},
+            "properties": [{"id": "unit", "value": "percent"}, {"id": "decimals", "value": 1}]
+          }
+        ]
+      },
+      "options": {"showHeader": true, "cellHeight": "sm", "footer": {"show": false}}
+    },
+    {
+      "type": "timeseries",
+      "id": 44,
+      "title": "Readers who say it's right, 7 days",
+      "description": "At each UTC day's end: the share of readers' answers in the 7 days before that say the parcel is right (line, left axis), and how many answers there were (bars, right axis).",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 0, "y": 24, "w": 12, "h": 9},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * feedback_right_7d / nullif(feedback_7d, 0) as \"Right\",\n  feedback_7d as \"Answers\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "showPoints": "auto",
+            "spanNulls": true,
+            "axisSoftMin": 0
+          },
+          "color": {"mode": "fixed", "fixedColor": "#3987e5"}
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Right"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#3987e5"}},
+              {"id": "max", "value": 100},
+              {"id": "custom.axisLabel", "value": "Right"}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Answers"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#898781"}},
+              {"id": "unit", "value": "short"},
+              {"id": "decimals", "value": 0},
+              {"id": "custom.axisPlacement", "value": "right"},
+              {"id": "custom.axisLabel", "value": "Answers"},
+              {"id": "custom.drawStyle", "value": "bars"},
+              {"id": "custom.fillOpacity", "value": 40},
+              {"id": "custom.lineWidth", "value": 1},
+              {"id": "custom.barAlignment", "value": 0}
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      }
+    },
+    {
+      "type": "row",
+      "id": 45,
+      "title": "Tracking quality",
+      "collapsed": false,
+      "gridPos": {"x": 0, "y": 33, "w": 24, "h": 1},
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "id": 46,
+      "title": "Scans no map read",
+      "description": "Of the scans stored each UTC day that record where their stage came from: the share no carrier map or wording rule read (Unmapped), and the share a wording rule read instead of a carrier map. Bars, on the right axis: wordings first collected as unmapped that day.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 0, "y": 34, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * scans_unmapped / nullif(scans, 0) as \"Unmapped\",\n  100.0 * scans_by_wording / nullif(scans, 0) as \"Read by wording\",\n  new_unmapped_wordings as \"New unmapped wordings\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "showPoints": "auto",
+            "spanNulls": true,
+            "axisSoftMin": 0
+          },
+          "color": {"mode": "fixed", "fixedColor": "#3987e5"}
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Unmapped"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#d95926"}},
+              {"id": "custom.axisLabel", "value": "Scans"}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Read by wording"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#3987e5"}},
+              {"id": "custom.axisLabel", "value": "Scans"}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "New unmapped wordings"},
+            "properties": [
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "#898781"}},
+              {"id": "unit", "value": "short"},
+              {"id": "decimals", "value": 0},
+              {"id": "custom.axisPlacement", "value": "right"},
+              {"id": "custom.axisLabel", "value": "New wordings"},
+              {"id": "custom.drawStyle", "value": "bars"},
+              {"id": "custom.fillOpacity", "value": 40},
+              {"id": "custom.lineWidth", "value": 1},
+              {"id": "custom.barAlignment", "value": 0}
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      }
+    },
+    {
+      "type": "timeseries",
+      "id": 47,
+      "title": "Checks with an anomaly",
+      "description": "Share of the checks each UTC day that carry at least one anomaly code, out of those that ended updated, unchanged, waiting, error or abandoned. The Sync anomalies table below names the codes.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 8, "y": 34, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  100.0 * anomalous_checks / nullif(checks, 0) as \"Checks with an anomaly\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "showPoints": "auto",
+            "spanNulls": true,
+            "axisSoftMin": 0
+          },
+          "color": {"mode": "fixed", "fixedColor": "#3987e5"}
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {"showLegend": false, "displayMode": "list", "placement": "bottom"},
+        "tooltip": {"mode": "single", "sort": "none"}
+      }
+    },
+    {
+      "type": "timeseries",
+      "id": 48,
+      "title": "Parcels showing a provider's copy",
+      "description": "Parcels being tracked with a scan that show a universal provider's copy of a carrier's scan: the same stage at the same second, or the same wording a whole number of quarter hours up to 14 h away. Counted live only, so days recorded after the fact are empty.",
+      "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+      "gridPos": {"x": 16, "y": 34, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "grafana-postgresql-datasource", "uid": "${metrics}"},
+          "refId": "A",
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "time_series",
+          "rawSql": "select (day::timestamp at time zone 'UTC') as time,\n  copied_parcels as \"Parcels showing a copy\"\nfrom metrics.goals_daily\nwhere $__timeFilter(day)\norder by 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 0,
+            "showPoints": "always",
+            "spanNulls": false,
+            "axisSoftMin": 0
+          },
+          "color": {"mode": "fixed", "fixedColor": "#3987e5"}
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {"showLegend": false, "displayMode": "list", "placement": "bottom"},
+        "tooltip": {"mode": "single", "sort": "none"}
+      }
+    },
+    {
+      "type": "row",
+      "id": 49,
+      "title": "Scrapers at a glance",
+      "collapsed": false,
+      "gridPos": {"x": 0, "y": 42, "w": 24, "h": 1},
+      "panels": []
+    },
+    {
       "type": "stat",
       "id": 1,
       "title": "Lookups",
       "description": "Carrier and provider lookups in the time range.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
+      "gridPos": {"x": 0, "y": 43, "w": 4, "h": 4},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -134,7 +918,7 @@
       "title": "Lookups lost",
       "description": "Share of lookups that failed after every step. Answers about the number (not found, no history yet, missing or invalid input) are not failures.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
+      "gridPos": {"x": 4, "y": 43, "w": 4, "h": 4},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -176,7 +960,7 @@
       "title": "Fallbacks",
       "description": "Recovery steps run after an earlier step failed.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
+      "gridPos": {"x": 8, "y": 43, "w": 4, "h": 4},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -211,7 +995,7 @@
       "title": "Refreshes",
       "description": "Parcel refreshes in the time range, whoever served them.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 12, "y": 0, "w": 4, "h": 4},
+      "gridPos": {"x": 12, "y": 43, "w": 4, "h": 4},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -246,7 +1030,7 @@
       "title": "Refresh errors",
       "description": "Share of refreshes that ended in error.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 16, "y": 0, "w": 4, "h": 4},
+      "gridPos": {"x": 16, "y": 43, "w": 4, "h": 4},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -288,7 +1072,7 @@
       "title": "Unmapped statuses",
       "description": "Share of persisted events whose stage neither the carrier's map nor the wording classifier decided.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 20, "y": 0, "w": 4, "h": 4},
+      "gridPos": {"x": 20, "y": 43, "w": 4, "h": 4},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -326,453 +1110,10 @@
     },
     {
       "type": "row",
-      "id": 7,
-      "title": "Lookups",
-      "collapsed": false,
-      "gridPos": {"x": 0, "y": 4, "w": 24, "h": 1},
-      "panels": []
-    },
-    {
-      "type": "timeseries",
-      "id": 8,
-      "title": "Successful lookups by serving step",
-      "description": "Which step produced the result, per hour. A step that never serves can be removed; a direct step that never serves means the direct path is dead.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 5, "w": 12, "h": 8},
-      "interval": "1h",
-      "targets": [
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "sum by (final_step) (increase(carrier_lookup_total{carrier=~\"$carrier\", outcome=\"ok\"}[1h]))",
-          "legendFormat": "{{final_step}}",
-          "range": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "decimals": 0,
-          "min": 0,
-          "color": {"mode": "palette-classic"},
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": -1,
-            "fillOpacity": 80,
-            "lineWidth": 1,
-            "showPoints": "never",
-            "stacking": {"mode": "normal", "group": "A"},
-            "axisSoftMin": 0
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {"id": "byName", "options": "direct"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "green"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "app"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "blue"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "page"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "light-blue"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "retry"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "yellow"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "trawl"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "orange"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "browser"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "purple"}}]
-          }
-        ]
-      },
-      "options": {
-        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
-        "tooltip": {"mode": "multi", "sort": "desc"}
-      }
-    },
-    {
-      "type": "timeseries",
-      "id": 9,
-      "title": "Lookup outcomes",
-      "description": "Every lookup by how it ended, per hour.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 12, "y": 5, "w": 12, "h": 8},
-      "interval": "1h",
-      "targets": [
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "sum by (outcome) (increase(carrier_lookup_total{carrier=~\"$carrier\"}[1h]))",
-          "legendFormat": "{{outcome}}",
-          "range": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "decimals": 0,
-          "min": 0,
-          "color": {"mode": "palette-classic"},
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": -1,
-            "fillOpacity": 80,
-            "lineWidth": 1,
-            "showPoints": "never",
-            "stacking": {"mode": "normal", "group": "A"},
-            "axisSoftMin": 0
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {"id": "byName", "options": "ok"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "green"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "not_found"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "blue"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "no_history"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "light-blue"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "input_required"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "light-purple"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "invalid_input"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "purple"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "transport"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "red"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "indeterminate"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "orange"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "challenge"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "dark-red"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "rate_limited"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "yellow"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "maintenance"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "text"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "schema"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "light-orange"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "budget"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "dark-yellow"}}]
-          },
-          {
-            "matcher": {"id": "byName", "options": "error"},
-            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "dark-orange"}}]
-          }
-        ]
-      },
-      "options": {
-        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
-        "tooltip": {"mode": "multi", "sort": "desc"}
-      }
-    },
-    {
-      "type": "timeseries",
-      "id": 10,
-      "title": "Lookups lost after every step",
-      "description": "Lookups that failed once every step was used, per hour, excluding answers about the number. Each one benches that adapter for the router's cooldown and sends the parcel to a universal provider.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 13, "w": 12, "h": 8},
-      "interval": "1h",
-      "targets": [
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "sum by (carrier, outcome) (increase(carrier_lookup_total{carrier=~\"$carrier\", outcome!~\"ok|not_found|no_history|input_required|invalid_input\"}[1h]))",
-          "legendFormat": "{{carrier}} {{outcome}}",
-          "range": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "decimals": 0,
-          "min": 0,
-          "color": {"mode": "palette-classic"},
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": -1,
-            "fillOpacity": 80,
-            "lineWidth": 1,
-            "showPoints": "never",
-            "stacking": {"mode": "normal", "group": "A"},
-            "axisSoftMin": 0
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
-        "tooltip": {"mode": "multi", "sort": "desc"}
-      }
-    },
-    {
-      "type": "timeseries",
-      "id": 11,
-      "title": "Lookups saved by a later step",
-      "description": "Successful lookups that needed more than one step attempt, per hour. For La Poste, final_step=retry with attempts 2, 3 or 4 is a 403 incident page recovered by the first, second or third retry; an attempts value that never appears is a retry that never helps.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 12, "y": 13, "w": 12, "h": 8},
-      "interval": "1h",
-      "targets": [
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "sum by (carrier, final_step, attempts) (increase(carrier_lookup_total{carrier=~\"$carrier\", outcome=\"ok\", attempts=~\"[2-9]\"}[1h]))",
-          "legendFormat": "{{carrier}} {{final_step}} after {{attempts}} attempts",
-          "range": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "decimals": 0,
-          "min": 0,
-          "color": {"mode": "palette-classic"},
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": -1,
-            "fillOpacity": 80,
-            "lineWidth": 1,
-            "showPoints": "never",
-            "stacking": {"mode": "normal", "group": "A"},
-            "axisSoftMin": 0
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
-        "tooltip": {"mode": "multi", "sort": "desc"}
-      }
-    },
-    {
-      "type": "row",
-      "id": 12,
-      "title": "Steps",
-      "collapsed": false,
-      "gridPos": {"x": 0, "y": 21, "w": 24, "h": 1},
-      "panels": []
-    },
-    {
-      "type": "timeseries",
-      "id": 13,
-      "title": "Step failures",
-      "description": "Failed step attempts by carrier, step and error class, per hour, including those a later step recovered. Answers about the number are left out.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 22, "w": 12, "h": 8},
-      "interval": "1h",
-      "targets": [
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "sum by (carrier, step, error_type) (increase(carrier_step_total{carrier=~\"$carrier\", outcome!~\"ok|not_found|no_history|input_required|invalid_input\"}[1h]))",
-          "legendFormat": "{{carrier}} {{step}} {{error_type}}",
-          "range": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "decimals": 0,
-          "min": 0,
-          "color": {"mode": "palette-classic"},
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": -1,
-            "fillOpacity": 80,
-            "lineWidth": 1,
-            "showPoints": "never",
-            "stacking": {"mode": "normal", "group": "A"},
-            "axisSoftMin": 0
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
-        "tooltip": {"mode": "multi", "sort": "desc"}
-      }
-    },
-    {
-      "type": "timeseries",
-      "id": 14,
-      "title": "Fallbacks",
-      "description": "Recovery steps run after an earlier step failed, per hour, by reason. A rising count with successful lookups means a hidden regression of the direct path.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 12, "y": 22, "w": 12, "h": 8},
-      "interval": "1h",
-      "targets": [
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "sum by (carrier, from_step, to_step, reason) (increase(carrier_fallback_total{carrier=~\"$carrier\"}[1h]))",
-          "legendFormat": "{{carrier}} {{from_step}}→{{to_step}} ({{reason}})",
-          "range": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "decimals": 0,
-          "min": 0,
-          "color": {"mode": "palette-classic"},
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": -1,
-            "fillOpacity": 80,
-            "lineWidth": 1,
-            "showPoints": "never",
-            "stacking": {"mode": "normal", "group": "A"},
-            "axisSoftMin": 0
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
-        "tooltip": {"mode": "multi", "sort": "desc"}
-      }
-    },
-    {
-      "type": "timeseries",
-      "id": 15,
-      "title": "Step p95 duration",
-      "description": "95th percentile of one step attempt's duration over the past hour. Few attempts make it coarse: the histogram's buckets stop at 0.1, 0.25, 0.5, 1, 2, 5, 10, 20, 30, 60 and 120 s.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 30, "w": 15, "h": 9},
-      "interval": "1h",
-      "targets": [
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "histogram_quantile(0.95, sum by (le, carrier, step) (rate(carrier_step_duration_seconds_bucket{carrier=~\"$carrier\"}[1h])))",
-          "legendFormat": "{{carrier}} {{step}}",
-          "range": true
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "s",
-          "min": 0,
-          "color": {"mode": "palette-classic"},
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 0,
-            "showPoints": "always",
-            "pointSize": 4,
-            "spanNulls": false
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "showLegend": true,
-          "displayMode": "table",
-          "placement": "right",
-          "calcs": ["max", "mean"],
-          "sortBy": "Max",
-          "sortDesc": true
-        },
-        "tooltip": {"mode": "multi", "sort": "desc"}
-      }
-    },
-    {
-      "type": "table",
-      "id": 16,
-      "title": "Direct-path success by carrier",
-      "description": "Share of direct step attempts that succeeded in the time range, worst first.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 15, "y": 30, "w": 9, "h": 9},
-      "targets": [
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "(sum by (carrier) (increase(carrier_step_total{carrier=~\"$carrier\", step=\"direct\", outcome=\"ok\"}[$__range])) or sum by (carrier) (increase(carrier_step_total{carrier=~\"$carrier\", step=\"direct\"}[$__range])) * 0) / (sum by (carrier) (increase(carrier_step_total{carrier=~\"$carrier\", step=\"direct\"}[$__range])) > 0)",
-          "instant": true,
-          "range": false,
-          "format": "table"
-        },
-        {
-          "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "B",
-          "expr": "round(sum by (carrier) (increase(carrier_step_total{carrier=~\"$carrier\", step=\"direct\"}[$__range])) > 0)",
-          "instant": true,
-          "range": false,
-          "format": "table"
-        }
-      ],
-      "transformations": [
-        {"id": "merge", "options": {}},
-        {
-          "id": "organize",
-          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value #A": "Success", "Value #B": "Attempts"}}
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
-        "overrides": [
-          {
-            "matcher": {"id": "byName", "options": "Success"},
-            "properties": [
-              {"id": "unit", "value": "percentunit"},
-              {"id": "decimals", "value": 0},
-              {"id": "custom.cellOptions", "value": {"type": "color-text"}},
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {"color": "red", "value": null},
-                    {"color": "orange", "value": 0.5},
-                    {"color": "green", "value": 0.9}
-                  ]
-                }
-              }
-            ]
-          },
-          {"matcher": {"id": "byName", "options": "Attempts"}, "properties": [{"id": "decimals", "value": 0}]}
-        ]
-      },
-      "options": {
-        "showHeader": true,
-        "cellHeight": "sm",
-        "sortBy": [{"displayName": "Success", "desc": false}],
-        "footer": {"show": false}
-      }
-    },
-    {
-      "type": "row",
       "id": 17,
       "title": "Refreshes",
       "collapsed": false,
-      "gridPos": {"x": 0, "y": 39, "w": 24, "h": 1},
+      "gridPos": {"x": 0, "y": 47, "w": 24, "h": 1},
       "panels": []
     },
     {
@@ -781,7 +1122,7 @@
       "title": "Refresh outcomes",
       "description": "Parcel refreshes per hour: updated (a new scan or stage), unchanged, waiting, error or superseded.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 40, "w": 12, "h": 8},
+      "gridPos": {"x": 0, "y": 48, "w": 12, "h": 8},
       "interval": "1h",
       "targets": [
         {
@@ -842,7 +1183,7 @@
       "title": "Who served refreshes",
       "description": "Updated and unchanged refreshes per hour by who answered: the carrier's adapter, another carrier's adapter, a universal provider, or nobody.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 12, "y": 40, "w": 12, "h": 8},
+      "gridPos": {"x": 12, "y": 48, "w": 12, "h": 8},
       "interval": "1h",
       "targets": [
         {
@@ -899,7 +1240,7 @@
       "title": "Refreshes served by a universal provider",
       "description": "Per configured carrier, in the time range. A carrier with its own adapter should stay near zero: every point above it is a direct failure followed by the router's cooldown. Universal-only carriers, such as unknown, read 100%.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 48, "w": 12, "h": 8},
+      "gridPos": {"x": 0, "y": 56, "w": 12, "h": 8},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -969,7 +1310,7 @@
       "title": "Silent carriers",
       "description": "Carriers with lookups in the last 7 days and none in the last 48 hours, whatever the time range or carrier filter. Silence isn't success: a carrier with active parcels and no lookups is worth a look.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 12, "y": 48, "w": 12, "h": 8},
+      "gridPos": {"x": 12, "y": 56, "w": 12, "h": 8},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -1005,10 +1346,123 @@
     },
     {
       "type": "row",
+      "id": 29,
+      "title": "Review signals",
+      "collapsed": false,
+      "gridPos": {"x": 0, "y": 64, "w": 24, "h": 1},
+      "panels": []
+    },
+    {
+      "type": "table",
+      "id": 30,
+      "title": "Routing signals",
+      "description": "What checks learnt that the catalog, detection or the adapters could act on, by signal, the parcel's carrier and the carrier the signal is about (uncatalogued: a name a provider gave). Postgres keeps each number in tracking_routing_signals for the hourly review.",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"x": 0, "y": 65, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "refId": "A",
+          "expr": "round(sum by (signal, carrier, subject) (increase(tracking_routing_signal_total{carrier=~\"$carrier\"}[$__range]))) > 0",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {"id": "merge", "options": {}},
+        {
+          "id": "organize",
+          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Signals"}}
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
+        "overrides": [{"matcher": {"id": "byName", "options": "Signals"}, "properties": [{"id": "decimals", "value": 0}]}]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [{"displayName": "Signals", "desc": true}],
+        "footer": {"show": false}
+      }
+    },
+    {
+      "type": "table",
+      "id": 31,
+      "title": "Sync anomalies",
+      "description": "Suspicious decisions of checks, by carrier and anomaly code. Each stays on its attempt in tracking_sync_attempts; none reaches Sentry.",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"x": 8, "y": 65, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "refId": "A",
+          "expr": "round(sum by (carrier, anomaly) (increase(tracking_sync_anomaly_total{carrier=~\"$carrier\"}[$__range]))) > 0",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {"id": "merge", "options": {}},
+        {
+          "id": "organize",
+          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Checks"}}
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
+        "overrides": [{"matcher": {"id": "byName", "options": "Checks"}, "properties": [{"id": "decimals", "value": 0}]}]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [{"displayName": "Checks", "desc": true}],
+        "footer": {"show": false}
+      }
+    },
+    {
+      "type": "table",
+      "id": 32,
+      "title": "Health incidents",
+      "description": "Refresh, provider and direct-tracking incidents that opened (or still fail six hours on) or recovered. Open ones are also Sentry issues; recoveries are not.",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"x": 16, "y": 65, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "refId": "A",
+          "expr": "round(sum by (kind, subject, state) (increase(tracking_health_incident_total[$__range]))) > 0",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {"id": "merge", "options": {}},
+        {
+          "id": "organize",
+          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Notifications"}}
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
+        "overrides": [{"matcher": {"id": "byName", "options": "Notifications"}, "properties": [{"id": "decimals", "value": 0}]}]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [{"displayName": "Notifications", "desc": true}],
+        "footer": {"show": false}
+      }
+    },
+    {
+      "type": "row",
       "id": 22,
       "title": "Statuses and detection",
       "collapsed": false,
-      "gridPos": {"x": 0, "y": 56, "w": 24, "h": 1},
+      "gridPos": {"x": 0, "y": 73, "w": 24, "h": 1},
       "panels": []
     },
     {
@@ -1017,7 +1471,7 @@
       "title": "Status mapping source by carrier",
       "description": "Persisted events in the time range by how their stage was decided: the carrier's map, the wording classifier, or neither. Unmapped events are new wording to review in tracking_status_observations.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 57, "w": 12, "h": 9},
+      "gridPos": {"x": 0, "y": 74, "w": 12, "h": 9},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -1110,7 +1564,7 @@
       "title": "Unmapped status share",
       "description": "Share of each carrier's events over the trailing 24 hours that no map or wording decided. Carriers with none are hidden. A rising line is new wording.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 12, "y": 57, "w": 12, "h": 9},
+      "gridPos": {"x": 12, "y": 74, "w": 12, "h": 9},
       "interval": "1h",
       "targets": [
         {
@@ -1148,7 +1602,7 @@
       "title": "Detection confidence",
       "description": "Tracking-number detections served to clients in the time range, by confidence.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 66, "w": 6, "h": 7},
+      "gridPos": {"x": 0, "y": 83, "w": 6, "h": 7},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -1188,7 +1642,7 @@
       "title": "Checksum rejections",
       "description": "Parcels a carrier's own lookup confirmed although detection had left that carrier out on a failed check digit, by carrier and rule id. A rule that keeps counting has a wrong check digit.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 6, "y": 66, "w": 6, "h": 7},
+      "gridPos": {"x": 6, "y": 83, "w": 6, "h": 7},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -1220,7 +1674,7 @@
       "title": "Provider postcode requests",
       "description": "Whether relaying a provider's postcode request pays off: asked, supplied, then each lookup made with it.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 12, "y": 66, "w": 6, "h": 7},
+      "gridPos": {"x": 12, "y": 83, "w": 6, "h": 7},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -1252,7 +1706,7 @@
       "title": "DPD app sessions",
       "description": "DPD app sessions taken up at start, and openings that ended opened or failed, by what began them. Openings by lookup or refused mean lookups waited for one.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 18, "y": 66, "w": 6, "h": 7},
+      "gridPos": {"x": 18, "y": 83, "w": 6, "h": 7},
       "targets": [
         {
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
@@ -1283,116 +1737,448 @@
     },
     {
       "type": "row",
-      "id": 29,
-      "title": "Review signals",
-      "collapsed": false,
-      "gridPos": {"x": 0, "y": 73, "w": 24, "h": 1},
-      "panels": []
+      "id": 7,
+      "title": "Lookups",
+      "collapsed": true,
+      "gridPos": {"x": 0, "y": 90, "w": 24, "h": 1},
+      "panels": [
+        {
+          "type": "timeseries",
+          "id": 8,
+          "title": "Successful lookups by serving step",
+          "description": "Which step produced the result, per hour. A step that never serves can be removed; a direct step that never serves means the direct path is dead.",
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "gridPos": {"x": 0, "y": 91, "w": 12, "h": 8},
+          "interval": "1h",
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "A",
+              "expr": "sum by (final_step) (increase(carrier_lookup_total{carrier=~\"$carrier\", outcome=\"ok\"}[1h]))",
+              "legendFormat": "{{final_step}}",
+              "range": true
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "decimals": 0,
+              "min": 0,
+              "color": {"mode": "palette-classic"},
+              "custom": {
+                "drawStyle": "bars",
+                "barAlignment": -1,
+                "fillOpacity": 80,
+                "lineWidth": 1,
+                "showPoints": "never",
+                "stacking": {"mode": "normal", "group": "A"},
+                "axisSoftMin": 0
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "direct"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "green"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "app"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "blue"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "page"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "light-blue"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "retry"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "yellow"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "trawl"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "orange"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "browser"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "purple"}}]
+              }
+            ]
+          },
+          "options": {
+            "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+            "tooltip": {"mode": "multi", "sort": "desc"}
+          }
+        },
+        {
+          "type": "timeseries",
+          "id": 9,
+          "title": "Lookup outcomes",
+          "description": "Every lookup by how it ended, per hour.",
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "gridPos": {"x": 12, "y": 91, "w": 12, "h": 8},
+          "interval": "1h",
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "A",
+              "expr": "sum by (outcome) (increase(carrier_lookup_total{carrier=~\"$carrier\"}[1h]))",
+              "legendFormat": "{{outcome}}",
+              "range": true
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "decimals": 0,
+              "min": 0,
+              "color": {"mode": "palette-classic"},
+              "custom": {
+                "drawStyle": "bars",
+                "barAlignment": -1,
+                "fillOpacity": 80,
+                "lineWidth": 1,
+                "showPoints": "never",
+                "stacking": {"mode": "normal", "group": "A"},
+                "axisSoftMin": 0
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "ok"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "green"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "not_found"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "blue"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "no_history"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "light-blue"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "input_required"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "light-purple"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "invalid_input"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "purple"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "transport"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "red"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "indeterminate"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "orange"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "challenge"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "dark-red"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "rate_limited"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "yellow"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "maintenance"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "text"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "schema"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "light-orange"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "budget"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "dark-yellow"}}]
+              },
+              {
+                "matcher": {"id": "byName", "options": "error"},
+                "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "dark-orange"}}]
+              }
+            ]
+          },
+          "options": {
+            "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+            "tooltip": {"mode": "multi", "sort": "desc"}
+          }
+        },
+        {
+          "type": "timeseries",
+          "id": 10,
+          "title": "Lookups lost after every step",
+          "description": "Lookups that failed once every step was used, per hour, excluding answers about the number. Each one benches that adapter for the router's cooldown and sends the parcel to a universal provider.",
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "gridPos": {"x": 0, "y": 99, "w": 12, "h": 8},
+          "interval": "1h",
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "A",
+              "expr": "sum by (carrier, outcome) (increase(carrier_lookup_total{carrier=~\"$carrier\", outcome!~\"ok|not_found|no_history|input_required|invalid_input\"}[1h]))",
+              "legendFormat": "{{carrier}} {{outcome}}",
+              "range": true
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "decimals": 0,
+              "min": 0,
+              "color": {"mode": "palette-classic"},
+              "custom": {
+                "drawStyle": "bars",
+                "barAlignment": -1,
+                "fillOpacity": 80,
+                "lineWidth": 1,
+                "showPoints": "never",
+                "stacking": {"mode": "normal", "group": "A"},
+                "axisSoftMin": 0
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+            "tooltip": {"mode": "multi", "sort": "desc"}
+          }
+        },
+        {
+          "type": "timeseries",
+          "id": 11,
+          "title": "Lookups saved by a later step",
+          "description": "Successful lookups that needed more than one step attempt, per hour. For La Poste, final_step=retry with attempts 2, 3 or 4 is a 403 incident page recovered by the first, second or third retry; an attempts value that never appears is a retry that never helps.",
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "gridPos": {"x": 12, "y": 99, "w": 12, "h": 8},
+          "interval": "1h",
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "A",
+              "expr": "sum by (carrier, final_step, attempts) (increase(carrier_lookup_total{carrier=~\"$carrier\", outcome=\"ok\", attempts=~\"[2-9]\"}[1h]))",
+              "legendFormat": "{{carrier}} {{final_step}} after {{attempts}} attempts",
+              "range": true
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "decimals": 0,
+              "min": 0,
+              "color": {"mode": "palette-classic"},
+              "custom": {
+                "drawStyle": "bars",
+                "barAlignment": -1,
+                "fillOpacity": 80,
+                "lineWidth": 1,
+                "showPoints": "never",
+                "stacking": {"mode": "normal", "group": "A"},
+                "axisSoftMin": 0
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+            "tooltip": {"mode": "multi", "sort": "desc"}
+          }
+        }
+      ]
     },
     {
-      "type": "table",
-      "id": 30,
-      "title": "Routing signals",
-      "description": "What checks learnt that the catalog, detection or the adapters could act on, by signal, the parcel's carrier and the carrier the signal is about (uncatalogued: a name a provider gave). Postgres keeps each number in tracking_routing_signals for the hourly review.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 0, "y": 74, "w": 8, "h": 8},
-      "targets": [
+      "type": "row",
+      "id": 12,
+      "title": "Steps",
+      "collapsed": true,
+      "gridPos": {"x": 0, "y": 91, "w": 24, "h": 1},
+      "panels": [
         {
+          "type": "timeseries",
+          "id": 13,
+          "title": "Step failures",
+          "description": "Failed step attempts by carrier, step and error class, per hour, including those a later step recovered. Answers about the number are left out.",
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "round(sum by (signal, carrier, subject) (increase(tracking_routing_signal_total{carrier=~\"$carrier\"}[$__range]))) > 0",
-          "instant": true,
-          "range": false,
-          "format": "table"
-        }
-      ],
-      "transformations": [
-        {"id": "merge", "options": {}},
+          "gridPos": {"x": 0, "y": 92, "w": 12, "h": 8},
+          "interval": "1h",
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "A",
+              "expr": "sum by (carrier, step, error_type) (increase(carrier_step_total{carrier=~\"$carrier\", outcome!~\"ok|not_found|no_history|input_required|invalid_input\"}[1h]))",
+              "legendFormat": "{{carrier}} {{step}} {{error_type}}",
+              "range": true
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "decimals": 0,
+              "min": 0,
+              "color": {"mode": "palette-classic"},
+              "custom": {
+                "drawStyle": "bars",
+                "barAlignment": -1,
+                "fillOpacity": 80,
+                "lineWidth": 1,
+                "showPoints": "never",
+                "stacking": {"mode": "normal", "group": "A"},
+                "axisSoftMin": 0
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+            "tooltip": {"mode": "multi", "sort": "desc"}
+          }
+        },
         {
-          "id": "organize",
-          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Signals"}}
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
-        "overrides": [{"matcher": {"id": "byName", "options": "Signals"}, "properties": [{"id": "decimals", "value": 0}]}]
-      },
-      "options": {
-        "showHeader": true,
-        "cellHeight": "sm",
-        "sortBy": [{"displayName": "Signals", "desc": true}],
-        "footer": {"show": false}
-      }
-    },
-    {
-      "type": "table",
-      "id": 31,
-      "title": "Sync anomalies",
-      "description": "Suspicious decisions of checks, by carrier and anomaly code. Each stays on its attempt in tracking_sync_attempts; none reaches Sentry.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 8, "y": 74, "w": 8, "h": 8},
-      "targets": [
-        {
+          "type": "timeseries",
+          "id": 14,
+          "title": "Fallbacks",
+          "description": "Recovery steps run after an earlier step failed, per hour, by reason. A rising count with successful lookups means a hidden regression of the direct path.",
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "round(sum by (carrier, anomaly) (increase(tracking_sync_anomaly_total{carrier=~\"$carrier\"}[$__range]))) > 0",
-          "instant": true,
-          "range": false,
-          "format": "table"
-        }
-      ],
-      "transformations": [
-        {"id": "merge", "options": {}},
+          "gridPos": {"x": 12, "y": 92, "w": 12, "h": 8},
+          "interval": "1h",
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "A",
+              "expr": "sum by (carrier, from_step, to_step, reason) (increase(carrier_fallback_total{carrier=~\"$carrier\"}[1h]))",
+              "legendFormat": "{{carrier}} {{from_step}}→{{to_step}} ({{reason}})",
+              "range": true
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "decimals": 0,
+              "min": 0,
+              "color": {"mode": "palette-classic"},
+              "custom": {
+                "drawStyle": "bars",
+                "barAlignment": -1,
+                "fillOpacity": 80,
+                "lineWidth": 1,
+                "showPoints": "never",
+                "stacking": {"mode": "normal", "group": "A"},
+                "axisSoftMin": 0
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {"showLegend": true, "displayMode": "list", "placement": "bottom"},
+            "tooltip": {"mode": "multi", "sort": "desc"}
+          }
+        },
         {
-          "id": "organize",
-          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Checks"}}
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
-        "overrides": [{"matcher": {"id": "byName", "options": "Checks"}, "properties": [{"id": "decimals", "value": 0}]}]
-      },
-      "options": {
-        "showHeader": true,
-        "cellHeight": "sm",
-        "sortBy": [{"displayName": "Checks", "desc": true}],
-        "footer": {"show": false}
-      }
-    },
-    {
-      "type": "table",
-      "id": 32,
-      "title": "Health incidents",
-      "description": "Refresh, provider and direct-tracking incidents that opened (or still fail six hours on) or recovered. Open ones are also Sentry issues; recoveries are not.",
-      "datasource": {"type": "prometheus", "uid": "${datasource}"},
-      "gridPos": {"x": 16, "y": 74, "w": 8, "h": 8},
-      "targets": [
-        {
+          "type": "timeseries",
+          "id": 15,
+          "title": "Step p95 duration",
+          "description": "95th percentile of one step attempt's duration over the past hour. Few attempts make it coarse: the histogram's buckets stop at 0.1, 0.25, 0.5, 1, 2, 5, 10, 20, 30, 60 and 120 s.",
           "datasource": {"type": "prometheus", "uid": "${datasource}"},
-          "refId": "A",
-          "expr": "round(sum by (kind, subject, state) (increase(tracking_health_incident_total[$__range]))) > 0",
-          "instant": true,
-          "range": false,
-          "format": "table"
-        }
-      ],
-      "transformations": [
-        {"id": "merge", "options": {}},
+          "gridPos": {"x": 0, "y": 100, "w": 15, "h": 9},
+          "interval": "1h",
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "A",
+              "expr": "histogram_quantile(0.95, sum by (le, carrier, step) (rate(carrier_step_duration_seconds_bucket{carrier=~\"$carrier\"}[1h])))",
+              "legendFormat": "{{carrier}} {{step}}",
+              "range": true
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "min": 0,
+              "color": {"mode": "palette-classic"},
+              "custom": {
+                "drawStyle": "line",
+                "lineWidth": 2,
+                "fillOpacity": 0,
+                "showPoints": "always",
+                "pointSize": 4,
+                "spanNulls": false
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "showLegend": true,
+              "displayMode": "table",
+              "placement": "right",
+              "calcs": ["max", "mean"],
+              "sortBy": "Max",
+              "sortDesc": true
+            },
+            "tooltip": {"mode": "multi", "sort": "desc"}
+          }
+        },
         {
-          "id": "organize",
-          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Notifications"}}
+          "type": "table",
+          "id": 16,
+          "title": "Direct-path success by carrier",
+          "description": "Share of direct step attempts that succeeded in the time range, worst first.",
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "gridPos": {"x": 15, "y": 100, "w": 9, "h": 9},
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "A",
+              "expr": "(sum by (carrier) (increase(carrier_step_total{carrier=~\"$carrier\", step=\"direct\", outcome=\"ok\"}[$__range])) or sum by (carrier) (increase(carrier_step_total{carrier=~\"$carrier\", step=\"direct\"}[$__range])) * 0) / (sum by (carrier) (increase(carrier_step_total{carrier=~\"$carrier\", step=\"direct\"}[$__range])) > 0)",
+              "instant": true,
+              "range": false,
+              "format": "table"
+            },
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "refId": "B",
+              "expr": "round(sum by (carrier) (increase(carrier_step_total{carrier=~\"$carrier\", step=\"direct\"}[$__range])) > 0)",
+              "instant": true,
+              "range": false,
+              "format": "table"
+            }
+          ],
+          "transformations": [
+            {"id": "merge", "options": {}},
+            {
+              "id": "organize",
+              "options": {"excludeByName": {"Time": true}, "renameByName": {"Value #A": "Success", "Value #B": "Attempts"}}
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "Success"},
+                "properties": [
+                  {"id": "unit", "value": "percentunit"},
+                  {"id": "decimals", "value": 0},
+                  {"id": "custom.cellOptions", "value": {"type": "color-text"}},
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {"color": "red", "value": null},
+                        {"color": "orange", "value": 0.5},
+                        {"color": "green", "value": 0.9}
+                      ]
+                    }
+                  }
+                ]
+              },
+              {"matcher": {"id": "byName", "options": "Attempts"}, "properties": [{"id": "decimals", "value": 0}]}
+            ]
+          },
+          "options": {
+            "showHeader": true,
+            "cellHeight": "sm",
+            "sortBy": [{"displayName": "Success", "desc": false}],
+            "footer": {"show": false}
+          }
         }
-      ],
-      "fieldConfig": {
-        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
-        "overrides": [{"matcher": {"id": "byName", "options": "Notifications"}, "properties": [{"id": "decimals", "value": 0}]}]
-      },
-      "options": {
-        "showHeader": true,
-        "cellHeight": "sm",
-        "sortBy": [{"displayName": "Notifications", "desc": true}],
-        "footer": {"show": false}
-      }
+      ]
     }
   ]
 }

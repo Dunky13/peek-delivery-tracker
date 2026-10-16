@@ -361,6 +361,7 @@ Each row names the lane that acts on it:
 - **adapters**: a carrier without an adapter, a failing adapter or provider, an adapter that
   refuses a number its carrier issues or answers it only in part, wording no map reads, a
   reader's answer that a carrier's status, steps, times or places are off;
+- **captcha**: an adapter stopped by a verification or captcha page;
 - **delivery-tracker**: the app's routing, such as parcels left with a provider although
   their carrier's adapter answers other parcels and was not asked for them, a check whose
   worker died, or a reader's answer that gives no reason.
@@ -377,6 +378,47 @@ update public.tracking_routing_signals
 set reviewed_at = now(), review_note = 'WHY'
 where signal = 'SIGNAL' and carrier = 'CARRIER_ID' and subject = 'SUBJECT' and reviewed_at is null;
 ```
+
+## Carrier goals
+
+The carrier dashboard starts with three goals: few errors a reader sees, good tracking, and
+parcels answered by their carrier's own tracking rather than a universal provider
+(ParcelsApp, 17TRACK, Ship24, Postal Ninja, UPU). `metrics.goals_daily` counts them per UTC
+day; `record_usage_metrics` rewrites today's row at most every ten minutes and yesterday's
+once more as of its end.
+
+- **Answered directly**: of the unfinished parcels with a scan (a check answered with a stage
+  other than pending), those whose latest answered check came from a carrier's adapter, theirs
+  or the one it was handed to; and the same share of the day's answered checks.
+- **Failed checks**: checks that ended `error` or `abandoned`.
+- **Stale parcels**: followed parcels without an answered check for 24 h. A parcel is followed
+  when it belongs to an account or had a check in the last 24 h; the others are not checked.
+  A parcel without a scan waits for its carrier and is never stale.
+- **Readers who say it's right**: right answers among the last 7 days' answers, with their count.
+- **Quality**: scans no map read or a wording rule read, new unmapped wording, checks with an
+  anomaly, and parcels showing a provider's copy of a carrier's scan (counted live only).
+
+The gap is the unfinished parcels whose latest answer came from a provider, and the followed
+ones that went 24 h without an answer or show an error. `metrics.carrier_gaps` ranks it by the
+carrier that could take each parcel, with the reason and the lane of the hourly review:
+`private.tracking_gaps` classifies the parcels for both. Annotations mark each scraper
+release, and each release of Peek alone (off by default), from `metrics.releases`.
+
+The week's goals and the ten carriers that hold most of the gap:
+
+```sql
+select day, round(100.0 * (parcels_own_adapter + parcels_other_adapter) / nullif(parcels, 0), 1) as direct,
+       round(100.0 * direct_checks / nullif(answered_checks, 0), 1) as direct_checks,
+       round(100.0 * failed_checks / nullif(checks, 0), 2) as failed,
+       round(100.0 * stale_parcels / nullif(followed_parcels, 0), 1) as stale,
+       round(100.0 * feedback_right_7d / nullif(feedback_7d, 0), 1) as right, feedback_7d as answers
+from metrics.goals_daily where day > current_date - 7 order by day;
+
+select rank, carrier, reason, lane, parcels, cumulative_percent
+from metrics.carrier_gaps where rank <= 10 order by rank, parcels desc;
+```
+
+The hourly review lists the gap's parcels with their number shapes.
 
 ## First-response queries
 
@@ -740,9 +782,10 @@ Useful questions:
   `_cap` means a daily allowance is too small for the traffic, and those emails are lost.
 
 [ops/grafana/carrier-scrapers.json](../ops/grafana/carrier-scrapers.json) is an importable
-Grafana dashboard with these panels; choose its Prometheus data source at the top. Its
-"Silent carriers" table lists carriers with lookups last week but none in two days: silence
-isn't success. Its "Review signals" row counts what the hourly review lists. The "Deploys" toggle marks app restarts, where the counters start again.
+Grafana dashboard with these panels, below the carrier goals; choose its Prometheus data
+source and the usage dashboard's PostgreSQL one at the top. Its "Silent carriers" table lists carriers with lookups last week but none in two
+days: silence isn't success. Its "Review signals" row counts what the hourly review lists.
+The "Deploys" toggle marks app restarts, where the counters start again.
 
 ## Usage dashboard
 

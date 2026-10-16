@@ -1,8 +1,8 @@
 -- What the review queues learnt and readers reported in the last hours, grouped by type,
 -- carrier and provider, each with the lane that acts on it: carriers (number formats,
--- detection, the catalog), adapters (no adapter, a failing one, unmapped wording) or
--- delivery-tracker (the app's routing). Numbers appear only as their shape. Read-only; see
--- docs/OBSERVABILITY.md.
+-- detection, the catalog), adapters (no adapter, a failing one, unmapped wording), captcha
+-- (a verification page stops an adapter) or delivery-tracker (the app's routing). Numbers
+-- appear only as their shape. Read-only; see docs/OBSERVABILITY.md.
 --
 --   psql "$DATABASE_URL" -v hours=1 -f ops/review/signals.sql
 \set ON_ERROR_STOP on
@@ -73,61 +73,16 @@ order by i.active desc, i.last_notified_at desc;
 
 \echo '== Unfinished parcels a provider tracks, by the carrier that could take them (new: added in the window)'
 \echo '   carriers: no carrier known; adapters: the adapter refuses, fails or half-answers the number, or gave no direct'
-\echo '   answer in 30 days; dormant: not checked for 24 h; none: the carrier answers and the provider history is kept;'
+\echo '   answer in 30 days; captcha: a verification or captcha page stops the adapter; dormant: not checked for 24 h;'
+\echo '   none: the carrier answers and the provider history is kept;'
 \echo '   delivery-tracker: its adapter answers other parcels and was not asked for these'
 \echo '   could_take: the carrier that answered or a provider names, else the one detection names for an unfiled parcel'
-with direct as (
-  select distinct source_carrier as carrier
-  from public.tracking_sync_attempts
-  where started_at >= now() - interval '30 days' and outcome in ('updated', 'unchanged')
-    and source_carrier is not null and source_carrier not in ('unknown', 'intl-post')
-), parcels as (
-  -- The summary names the carrier that answered or, from a provider's answer, the one the provider
-  -- names; routing keeps a provider's naming unless that carrier's adapter refuses the number.
-  select p.carrier, coalesce(nullif(p.carrier_data->>'discovered_carrier', ''),
-           nullif(p.carrier_data->'routing'->>'discovered_carrier', ''), d.carrier, p.carrier) as target,
-         nullif(p.carrier_data->>'discovered_carrier', '') as named,
-         p.carrier_data->>'tracking_provider' as provider, p.tracking_number, p.created_at, p.last_synced_at,
-         p.carrier_data->>'carrier_answered' = 'true' as answered, p.carrier_data->'routing' as routing
-  from public.packages p
-  -- An unfiled parcel's support case keeps what today's detection names for its number.
-  left join lateral (
-    select c.detection_carrier as carrier
-    from public.tracking_support_cases c
-    where c.tracking_number = p.tracking_number and p.carrier in ('unknown', 'intl-post')
-      and c.detection_confidence = 'high' and c.detection_carrier not in ('unknown', 'intl-post')
-    order by c.last_seen desc
-    limit 1
-  ) d on true
-  where p.carrier_data->>'tracking_provider' is not null and p.archived_at is null
-    and coalesce(p.current_stage, '') not in ('delivered', 'returned')
-), reasons as (
-  select p.*, p.routing->'failures'->p.target as failure
-  from parcels p
-), lanes as (
-  select r.*,
-         case when r.target in ('unknown', 'intl-post') then 'no carrier known'
-              when r.answered then 'carrier answered in part'
-              when r.failure->>'user_error' = 'carrier:invalid_input' then 'adapter refuses the number'
-              -- Routing forgets, unasked, a carrier the provider names whose adapter refuses the number.
-              when r.target = r.named and r.target is distinct from r.routing->>'discovered_carrier' then 'adapter refuses the number'
-              when r.failure is not null then 'adapter ' || coalesce(r.failure->>'kind', 'failed')
-              when r.target not in (select carrier from direct) then 'no direct answer in 30 days'
-              when r.routing->>'confirmed_carrier' = r.target then 'carrier answers, history kept'
-              when r.last_synced_at < now() - interval '24 hours' then 'not checked for 24 h'
-              else 'carrier not asked' end as why
-  from reasons r
-)
-select l.carrier, l.target as could_take, l.provider,
-       case when l.why = 'no carrier known' then 'carriers'
-            when l.why = 'carrier answers, history kept' then 'none'
-            when l.why = 'not checked for 24 h' then 'dormant'
-            when l.why = 'carrier not asked' then 'delivery-tracker'
-            else 'adapters' end as lane,
-       l.why,
-       count(*) filter (where l.created_at >= :since) as new, count(*) as parcels,
-       array_to_string((array_agg(distinct private.tracking_number_pattern(l.tracking_number)))[1:3], '; ') as patterns
-from lanes l
+-- private.tracking_gaps classifies them, as the carrier dashboard's goals count them.
+select carrier, could_take, provider, lane, why,
+       count(*) filter (where created_at >= :since) as new, count(*) as parcels,
+       array_to_string((array_agg(distinct private.tracking_number_pattern(tracking_number)))[1:3], '; ') as patterns
+from private.tracking_gaps
+where provider is not null
 group by 1, 2, 3, 4, 5
 order by parcels desc, could_take, provider;
 
