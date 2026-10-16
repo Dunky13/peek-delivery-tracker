@@ -21089,7 +21089,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "packlink",
+      "recognitionRank": 981
     },
     "linkRules": [],
     "detectionRules": [
@@ -21110,7 +21111,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Brussels",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-be",
+      "recognitionRank": 983
     },
     "trackingUrlTemplate": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
     "linkRules": [],
