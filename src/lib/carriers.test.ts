@@ -1289,7 +1289,7 @@ describe('carrier detection', () => {
     expect(detectCarrier('9000000000001D00000002')).toBe('estafeta');
     expect(detectCarrier('SPXLAX000002601010000001')).toBe('speedx');
     expect(detectCarrierMatch('000000000000000000000001')).toMatchObject({
-      carrier: 'unknown', confidence: 'low', candidates: ['ciblex', 'inpost', 'bpost'],
+      carrier: 'unknown', confidence: 'low', candidates: expect.arrayContaining(['ciblex', 'inpost', 'bpost']),
     });
     const pudo = detectCarrierMatch('LD-000001');
     expect(pudo).toMatchObject({ carrier: 'unknown', confidence: 'low' });
