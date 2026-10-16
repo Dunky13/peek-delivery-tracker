@@ -10370,7 +10370,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "egypt-post",
+      "recognitionRank": 944
     },
     "linkRules": [
       {
@@ -10388,6 +10389,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^(?:ENO|EXP|RCC)\\d{8}EG$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}EG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://egyptpost.gov.eg/en-us/home/"
