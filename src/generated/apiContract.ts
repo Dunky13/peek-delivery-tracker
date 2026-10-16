@@ -1637,7 +1637,8 @@ export const CARRIER_CAPABILITIES = {
           "inputMode": "text",
           "autoComplete": "postal-code"
         }
-      ]
+      ],
+      "recognitionRank": 675
     },
     "trackingUrlTemplate": "https://track.asendia.com/track/{trackingNumber}",
     "linkRules": [
@@ -8529,7 +8530,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "ppl"
+      "adapter": "ppl",
+      "recognitionRank": 608
     },
     "trackingUrlTemplate": "https://www.ppl.cz/vyhledat-zasilku?shipmentId={trackingNumber}",
     "linkRules": [
@@ -8543,7 +8545,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://www.ppl.cz/vyhledat-zasilku"
   },
   "slovak-parcel-service": {
@@ -21311,7 +21318,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "US"
     ],
-    "color": "#c9a84c",
+    "color": "#0062b7",
     "selectable": true,
     "timezone": "America/Chicago",
     "tracking": {
