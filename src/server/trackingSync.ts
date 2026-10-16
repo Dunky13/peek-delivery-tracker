@@ -1106,6 +1106,7 @@ export class TrackingSyncService {
       values: JsonObject,
       newEvents: JsonObject[] = [],
       deleteDescriptions: string[] = [],
+      deleteEventIds: string[] = [],
     ) => {
       context.signal?.throwIfAborted();
       if (consumeAddition) {
@@ -1114,8 +1115,8 @@ export class TrackingSyncService {
         values.carrier_data = data;
       }
       const applied = context.lease
-        ? await this.client.applyTrackingSync(parcel, values, newEvents, deleteDescriptions, context.lease)
-        : await this.client.applyTrackingSync(parcel, values, newEvents, deleteDescriptions);
+        ? await this.client.applyTrackingSync(parcel, values, newEvents, deleteDescriptions, deleteEventIds, context.lease)
+        : await this.client.applyTrackingSync(parcel, values, newEvents, deleteDescriptions, deleteEventIds);
       if (!applied) {
         throw new SupersededTrackingSync('Tracking configuration changed during the check');
       }
@@ -1475,6 +1476,8 @@ export class TrackingSyncService {
       }
       const eventsToPersist = keepSaved || (preserveSummary && (result.tracking_provider === 'UPU' || localOnlyFallback)) ? [] : events;
       const persistedIds = new Set(eventsToPersist.map((event) => String(event.provider_event_id)));
+      // The copies the carrier's scans absorbed go with the batch that holds those scans.
+      const absorbed = eventsToPersist.length > 0 ? [...shared.absorbed] : [];
       const persistedEvents = withIdentities(
         eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))), matches.reused, stored,
       );
@@ -1505,7 +1508,7 @@ export class TrackingSyncService {
         : !knownUpdate || fallbackWithoutProgress ? 'waiting' : news ? 'updated' : 'unchanged';
       operation = 'persist_package';
       await audit.step('persist_package', async () => {
-        await persist(values, persistedEvents, keepSaved ? [] : deleteDescriptions);
+        await persist(values, persistedEvents, keepSaved ? [] : deleteDescriptions, absorbed);
       }, () => ({
         outcome,
         selected_stage: selectedStage,
@@ -1521,6 +1524,7 @@ export class TrackingSyncService {
         events_new: eventsNew,
         identities_reused: [...matches.reused.keys()].filter((id) => persistedIds.has(id)).length,
         copies_skipped: [...matches.skipped.keys()].filter((id) => persistedIds.has(id)).length,
+        copies_absorbed: absorbed.length,
         atomic_with_package: true,
         ...reannounced,
       });

@@ -3584,7 +3584,7 @@ function eventStore() {
   let created = 0;
   const client = fakeClient();
   client.applyTrackingSync.mockImplementation(async (
-    parcel: JsonObject, values: JsonObject, events: JsonObject[] = [], descriptions: string[] = [],
+    parcel: JsonObject, values: JsonObject, events: JsonObject[] = [], descriptions: string[] = [], absorbed: string[] = [],
   ) => {
     const ids = events.map((event) => String(event.provider_event_id));
     if (new Set(ids).size !== ids.length) throw new Error('ON CONFLICT DO UPDATE command cannot affect row a second time');
@@ -3593,6 +3593,7 @@ function eventStore() {
       rows.set(id, { ...event, id: rows.get(id)?.id ?? `row-${++created}` });
     }
     for (const [id, row] of rows) if (descriptions.includes(String(row.description))) rows.delete(id);
+    for (const id of absorbed) if (!ids.includes(id)) rows.delete(id);
     await client.updatePackage(parcel.id, values);
     return true;
   });
@@ -4029,6 +4030,43 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(store.rows.size).toBe(4);
     expect(store.rows.get(copy(out))).toMatchObject({ id: copiedRow, occurred_at: '2026-01-04T12:59:03Z' });
     expect(store.rows.get(own(delivered))).toMatchObject({ occurred_at: '2026-01-04T21:58:30Z' });
+    expect(adapter.fetchUniversal).toHaveBeenCalledTimes(2);
+  });
+
+  it('absorbs every copy at a carrier scan\'s instant and keeps them out of later fallbacks', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    // One provider's two readings of GOFO's hub scan, on the right clock.
+    const readings: Scan[] = [{ time: '2026-01-03T13:15:42Z', description: 'Arrived at hub', stage: 'in_transit' },
+      { time: '2026-01-03T13:15:42Z', description: 'Arrived at the regional hub of the carrier', stage: 'pending' }];
+    const down = new Error('GOFO tracking endpoint is unavailable');
+    const adapter = {
+      fetch: vi.fn().mockRejectedValueOnce(down).mockResolvedValueOnce(result([hub])).mockRejectedValueOnce(down)
+        .mockResolvedValueOnce(result([hub])),
+      fetchUniversal: vi.fn().mockResolvedValue({ ...result(readings), tracking_provider: 'ParcelsApp' }),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    const sync = async (stage: string) => {
+      await service.syncPackage({ ...parcel, current_stage: stage, [STORED_EVENT_IDENTITIES]: store.identities() });
+      return ids(store.batch());
+    };
+    const [first, second] = readings.map((reading) => providerEventId('unknown', reading.time, '', reading.description));
+
+    expect(await sync('pending')).toEqual([first, second]);
+    const copiedRow = store.rows.get(first!)!.id;
+    // GOFO is back: its scan takes over the copy in its stage and absorbs the other.
+    expect(await sync('in_transit')).toEqual([first]);
+    expect((client.applyTrackingSync.mock.calls.at(-1) as unknown[] | undefined)?.[4]).toEqual([second]);
+    expect([...store.rows.values()]).toMatchObject([{ id: copiedRow, description: hub.description, location: 'Hub City, EX' }]);
+    // Down again: the provider rewords the row GOFO holds, and its other reading stays out.
+    expect(await sync('in_transit')).toEqual([first]);
+    expect(store.rows.size).toBe(1);
+    expect(await sync('in_transit')).toEqual([first]);
+    expect([...store.rows.values()]).toMatchObject([{ id: copiedRow, description: hub.description }]);
     expect(adapter.fetchUniversal).toHaveBeenCalledTimes(2);
   });
 

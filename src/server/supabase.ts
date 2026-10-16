@@ -1086,6 +1086,7 @@ export class SupabaseServiceClient extends SupabaseClient {
     values: JsonObject,
     events: JsonObject[] = [],
     deleteDescriptions: string[] = [],
+    deleteEventIds: string[] = [],
     lease?: { jobId: string; workerId: string },
   ): Promise<boolean> {
     if (typeof parcel.tracking_generation !== 'string') {
@@ -1101,6 +1102,7 @@ export class SupabaseServiceClient extends SupabaseClient {
         p_values: values,
         p_events: events,
         p_delete_descriptions: deleteDescriptions,
+        p_delete_event_ids: deleteEventIds,
       },
     }) === true;
   }

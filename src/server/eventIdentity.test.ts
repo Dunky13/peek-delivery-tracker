@@ -547,13 +547,14 @@ describe('scans a carrier and a universal provider both report', () => {
     const storedRow = (event: ReturnType<typeof scan>) => row(String(event.provider_event_id), event.occurred_at, event.description, event.stage);
     expect(pairs(sharedScans([own], [storedRow(copy)]).reused)).toEqual([['la-poste:deposited', 'unknown:deposited']]);
     expect(pairs(sharedScans([copy], [storedRow(own)]).skipped)).toEqual([['unknown:deposited', 'la-poste:deposited']]);
-    // Two classified stages that differ are two scans, and so are two new scans at the instant.
+    // Two classified stages that differ are two scans.
     expect(sharedScans([{ ...own, stage: 'in_transit' }], [storedRow({ ...copy, stage: 'registered' })]).reused.size).toBe(0);
-    expect(sharedScans([own, scan('la-poste:other', instant, 'Votre envoi est en transit', 'in_transit')], [storedRow(copy)]).reused.size)
-      .toBe(0);
+    // Two new scans at the instant: the copy is one of them, and the first takes it over.
+    expect(pairs(sharedScans([own, scan('la-poste:other', instant, 'Votre envoi est en transit', 'in_transit')], [storedRow(copy)]).reused))
+      .toEqual([['la-poste:deposited', 'unknown:deposited']]);
   });
 
-  it('takes over the one copy at an instant that words the scan under a heading, leaving another provider\'s wording', () => {
+  it('takes over the copy at an instant that words the scan under a heading, absorbing another provider\'s wording', () => {
     const instant = '2026-01-13T16:48:40Z';
     const stored = [
       row('unknown:cainiao', instant, 'Delivery attempt failure,Can\'t contact with customer', 'failed_attempt'),
@@ -561,10 +562,13 @@ describe('scans a carrier and a universal provider both report', () => {
     ];
     const shared = sharedScans([scan('ecoscooting:failed', instant, 'Your shipment delivery attempt failed [Recipient not at home]', 'failed_attempt')], stored);
     expect(pairs(shared.reused)).toEqual([['ecoscooting:failed', 'unknown:headed']]);
-    // A heading that is no sentence of its own, or other wording, is not the scan.
+    expect([...shared.absorbed]).toEqual(['unknown:cainiao']);
+    // A heading that is no sentence of its own, or other wording, is not the scan's: the first copy is taken over instead.
     for (const description of ['Attempt failed [Recipient not at home]', 'Second attempt. Your shipment delivery attempt failed']) {
-      expect(sharedScans([scan('ecoscooting:failed', instant, 'Your shipment delivery attempt failed [Recipient not at home]', 'failed_attempt')],
-        [row('unknown:x', instant, description, 'failed_attempt'), stored[0]!]).reused.size, description).toBe(0);
+      const other = sharedScans([scan('ecoscooting:failed', instant, 'Your shipment delivery attempt failed [Recipient not at home]', 'failed_attempt')],
+        [stored[0]!, row('unknown:x', instant, description, 'failed_attempt')]);
+      expect(pairs(other.reused), description).toEqual([['ecoscooting:failed', 'unknown:cainiao']]);
+      expect([...other.absorbed], description).toEqual(['unknown:x']);
     }
   });
 
@@ -663,6 +667,97 @@ describe('scans a carrier and a universal provider both report', () => {
       [observed]).skipped.size).toBe(0);
     expect(sharedScans([scan('unknown:dated', '2026-09-25T10:00:00Z', 'Delivered', 'delivered')],
       [observed]).skipped.size).toBe(0);
+  });
+});
+
+describe('every copy at a carrier scan\'s instant', () => {
+  const placed = <T extends object>(event: T, location: string) => ({ ...event, location });
+  const named = <T extends object>(event: T, provider: string) => ({ ...event, universal_provider: provider });
+
+  it('lets a lone scan take over one copy and absorb the others, two providers or one provider twice', () => {
+    // InPost: two providers' pending copies of one locker scan.
+    const instant = '2026-01-14T18:18:43.000Z';
+    const stored = [row('unknown:store', instant, 'Received at the local store', 'pending'),
+      named(row('unknown:stored', instant, 'Parcel Stored by Customer', 'pending'), 'Ship24')];
+    const lone = sharedScans([scan('inpost:sent', instant, 'Sent through Parcel Locker', 'accepted')], stored);
+    expect(pairs(lone.reused)).toEqual([['inpost:sent', 'unknown:store']]);
+    expect([...lone.absorbed]).toEqual(['unknown:stored']);
+    // Speedaf: one provider's three readings of one scan; the one in the same stage is taken over.
+    const at = '2026-01-14T09:19:55.000Z';
+    const three = sharedScans([scan('speedaf:received', at, 'Received in【Site】', 'in_transit')], [
+      named(row('unknown:leaving', at, 'Leaving customs', 'pending'), 'ParcelsApp'),
+      row('unknown:local', at, 'Received by local delivery company', 'in_transit'),
+      row('unknown:site', at, 'Received in Site', 'in_transit'),
+    ]);
+    expect(pairs(three.reused)).toEqual([['speedaf:received', 'unknown:local']]);
+    expect([...three.absorbed].sort()).toEqual(['unknown:leaving', 'unknown:site']);
+  });
+
+  it('absorbs the copies a carrier scan already stored left beside it', () => {
+    // Geodis: the carrier's scan is stored, and so are two copies a provider wrote first.
+    const instant = '2026-01-13T07:45:00.000Z';
+    const own = placed(scan('geodis-pl:inbound', instant, 'Inbound Scan From Driver to Terminal', 'in_transit'), 'EXAMPLE TOWN');
+    const shared = sharedScans([own], [row('geodis-pl:inbound', instant, own.description, 'in_transit'),
+      row('unknown:unloaded', instant, 'Shipment Unloaded in Collection Terminal', 'in_transit'),
+      placed(row('unknown:entrance', instant, 'Entrance to the terminal from the driver', 'in_transit'), 'EXAMPLE TOWN')]);
+    expect(shared.reused.size).toBe(0);
+    expect([...shared.absorbed].sort()).toEqual(['unknown:entrance', 'unknown:unloaded']);
+  });
+
+  it('keeps each of several carrier scans at one instant, and absorbs the copies of them', () => {
+    // FedEx: two scans of its own in one minute, and a provider's two copies.
+    const instant = '2026-01-08T19:52:00.000Z';
+    const scans = [placed(scan('fedex:departed', instant, 'Departed FedEx hub', 'in_transit'), 'EXAMPLE TOWN NL'),
+      placed(scan('fedex:way', instant, 'On the way', 'in_transit'), 'EXAMPLE TOWN NL')];
+    const copies = [placed(row('unknown:departed', instant, 'Departed FedEx Location', 'in_transit'), 'Example Town, GE, NL'),
+      placed(row('unknown:transit', instant, 'In Transit', 'in_transit'), 'Example Town, GE, NL')];
+    const stored = scans.map((event) => placed(row(String(event.provider_event_id), instant, event.description, 'in_transit'), event.location));
+    const healed = sharedScans(scans, [...stored, ...copies]);
+    expect([...healed.absorbed].sort()).toEqual(['unknown:departed', 'unknown:transit']);
+    expect(healed.reused.size).toBe(0);
+    // New, each scan takes over one copy.
+    const fresh = sharedScans(scans, copies);
+    expect(pairs(fresh.reused)).toEqual([['fedex:departed', 'unknown:departed'], ['fedex:way', 'unknown:transit']]);
+    expect(fresh.absorbed.size).toBe(0);
+  });
+
+  it('keeps a row from another place or in another classified stage, another instant, or one the batch writes', () => {
+    // Austrian Post: the provider adds a gateway in another town and calls the handover an acceptance.
+    const instant = '2026-01-16T01:15:00.000Z';
+    const scans = [placed(scan('austrian-post:consolidated', instant, 'Konsolidierung für Export', 'in_transit'), 'Example Hub'),
+      placed(scan('austrian-post:handed', instant, 'Übergabe an Kooperationspartner', 'in_transit'), 'Example Hub')];
+    const stored = [...scans.map((event) => placed(row(String(event.provider_event_id), instant, event.description, 'in_transit'), 'Example Hub')),
+      placed(row('unknown:gateway', instant, 'Departed from outbound gateway facility', 'in_transit'), 'Othertown, Austria'),
+      placed(row('unknown:handed', instant, 'Item handed over to subcontractor', 'accepted'), 'Example, Austria'),
+      placed(row('unknown:consolidated', instant, 'Transit unit consolidation', 'in_transit'), 'Example, Austria'),
+      row('unknown:later', '2026-01-16T01:16:00.000Z', 'Transit unit consolidation', 'in_transit')];
+    expect([...sharedScans(scans, stored).absorbed]).toEqual(['unknown:consolidated']);
+    // The provider's own row in this batch stays, and so does a copy of an observation or an unclassified scan.
+    expect(sharedScans([...scans, scan('unknown:consolidated', instant, 'Transit unit consolidation', 'in_transit')], stored).absorbed.size)
+      .toBe(0);
+    const claimed = (shared: ReturnType<typeof sharedScans>) => shared.reused.size + shared.absorbed.size;
+    expect(claimed(sharedScans([scans[0]!], [stored.at(-2)!]))).toBe(1);
+    const observed = { ...scans[0]!, raw_data: { observed_without_provider_timestamp: true } };
+    expect(claimed(sharedScans([observed], [stored.at(-2)!]))).toBe(0);
+    expect(claimed(sharedScans([{ ...scans[0]!, stage: undefined }], [stored.at(-2)!]))).toBe(0);
+  });
+
+  it('leaves out a provider\'s later copies of a scan a carrier holds, so absorbed copies do not come back', () => {
+    const instant = '2026-01-09T08:45:32.000Z';
+    const carrier = row('speedaf:accepted', instant, 'Guangzhou warehouse', 'accepted');
+    const copy = (id: string, description: string, stage: string) => named(scan(id, instant, description, stage), 'ParcelsApp');
+    const shared = sharedScans([copy('unknown:a', 'Arrived at departure transport hub', 'pending'),
+      copy('unknown:b', 'Guangzhou warehouse, International logistics', 'pending'),
+      copy('unknown:c', 'Departed', 'in_transit'), scan('unknown:d', instant, 'Unclassified')], [carrier]);
+    expect(pairs(shared.skipped)).toEqual([['unknown:a', 'speedaf:accepted'], ['unknown:b', 'speedaf:accepted']]);
+    // A row the carrier took over names no provider: the provider rewrites it, and its other copy stays out.
+    const takenOver = row('unknown:a', instant, 'Guangzhou warehouse', 'accepted');
+    const again = sharedScans([copy('unknown:a', 'Arrived at departure transport hub', 'pending'),
+      copy('unknown:b', 'Guangzhou warehouse, International logistics', 'pending')], [takenOver]);
+    expect(pairs(again.skipped)).toEqual([['unknown:b', 'unknown:a']]);
+    // Another provider's row is no carrier's.
+    expect(sharedScans([copy('unknown:b', 'Guangzhou warehouse, International logistics', 'pending'),
+      copy('unknown:e', 'Sorted', 'pending')], [named(takenOver, 'Ship24')]).skipped.size).toBe(0);
   });
 });
 

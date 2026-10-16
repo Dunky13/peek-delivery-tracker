@@ -210,7 +210,7 @@ describe('the audit of a check whose parcel was deleted', () => {
       .resolves.toMatchObject({ checked: 1, superseded: 1, errors: 0 });
     expect(adapter.fetch).toHaveBeenCalled();
     expect(client.applyTrackingSync).toHaveBeenCalledTimes(2);
-    expect(client.applyTrackingSync).toHaveBeenLastCalledWith(parcel, expect.objectContaining({ sync_status: 'error' }), [], [], lease);
+    expect(client.applyTrackingSync).toHaveBeenLastCalledWith(parcel, expect.objectContaining({ sync_status: 'error' }), [], [], [], lease);
     expect(client.completeSyncAttempt).toHaveBeenCalledExactlyOnceWith(
       expect.any(String), expect.objectContaining({ outcome: 'superseded' }), expect.any(Array),
     );

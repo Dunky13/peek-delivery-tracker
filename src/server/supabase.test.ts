@@ -40,13 +40,14 @@ describe('guarded tracking writes', () => {
     const request = vi.spyOn(client, 'request').mockResolvedValue(true);
     const parcel = { id: 'package-1', tracking_generation: 'generation-1' };
     const events = [{ stage: 'in_transit' }];
-    await expect(client.applyTrackingSync(parcel, { sync_status: 'ok' }, events, ['REPORTED']))
+    await expect(client.applyTrackingSync(parcel, { sync_status: 'ok' }, events, ['REPORTED'], ['unknown:copy']))
       .resolves.toBe(true);
     expect(request).toHaveBeenCalledExactlyOnceWith('/rest/v1/rpc/apply_tracking_sync', {
       method: 'POST',
       body: {
         p_package_id: 'package-1', p_tracking_generation: 'generation-1',
         p_values: { sync_status: 'ok' }, p_events: events, p_delete_descriptions: ['REPORTED'],
+        p_delete_event_ids: ['unknown:copy'],
       },
     });
     request.mockResolvedValue(false);

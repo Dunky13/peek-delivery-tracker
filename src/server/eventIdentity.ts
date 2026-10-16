@@ -29,7 +29,9 @@
  *   misread (Ship24 keeps GOFO's Pacific offset on Eastern clocks), sometimes
  *   in its own wording as well (ParcelsApp put Paack's scans two hours early). A universal copy of a stored scan is
  *   left out of the batch, and a carrier's scan takes over the universal copy
- *   stored while it was down (`sharedScans`).
+ *   stored while it was down (`sharedScans`). The other copies at its instant
+ *   are absorbed: the sync deletes them, and leaves out a provider's later
+ *   copy of a scan a carrier holds.
  * - A row only a universal provider has written names that provider
  *   (`UNIVERSAL_PROVIDER`), and follows the provider's clock when a scraper
  *   fix moves it. A carrier's scan writes the row without the name, so the
@@ -328,6 +330,20 @@ export interface SharedScans {
   skipped: Map<string, string>;
   /** The scans of `reused` and `skipped` whose row stands at another instant, beyond the minute: one source's clock is off. */
   shifted: Set<string>;
+  /** Stored universal copies of the carrier's scans at their instant that no scan takes over: deleted with the sync. */
+  absorbed: Set<string>;
+}
+
+/** A row written by a carrier: its prefix, or a universal row that names no provider, which a carrier's scan took over or an earlier release wrote. */
+function heldByCarrier(row: JsonObject): boolean {
+  const source = sourceOf(identity(row));
+  return source !== '' && source !== 'app' && (source !== UNIVERSAL || providerOf(row) === '');
+}
+
+/** The other source's copy of a classified scan at its instant: stages that agree and no conflicting place. */
+function copies(scan: JsonObject, row: JsonObject): boolean {
+  return instantOf(scan) === instantOf(row) && stageOf(scan) !== '' && stagesAgree(stageOf(row), stageOf(scan))
+    && !placesConflict(placeWords(scan), placeWords(row));
 }
 
 /**
@@ -363,6 +379,18 @@ export interface SharedScans {
  * its time. At the same instant a universal scan still rewrites its own row,
  * so a row DPD took over follows whichever source answered last.
  *
+ * At each instant of the batch's carrier scans, every other universal row with
+ * a stage that agrees with one of those classified scans, and no conflicting
+ * place, copies one of them: a provider that reads a scan twice (Speedaf's
+ * ParcelsApp rows), or two providers that each copied it (InPost). A scan
+ * that matched no row takes one over, in its own stage when one is, and the
+ * others are absorbed. Which of several scans at the instant takes which copy
+ * does not matter, as the scan rewrites the row; the carrier's own scans there
+ * stay apart (FedEx's departure and "On the way"). A universal scan that copies
+ * a row a carrier holds at its instant, by its prefix or because the row names
+ * no provider, is left out, so an absorbed copy does not come back with the
+ * provider's next answer.
+ *
  * A row that only the scan's universal provider has written follows that
  * provider's clock instead (a scraper fix that reads its scans in another
  * zone). A scan whose own row it is moves the row to the scan's instant,
@@ -376,7 +404,7 @@ export function sharedScans(
   stored: readonly JsonObject[],
   reused: ReadonlyMap<string, string> = new Map(),
 ): SharedScans {
-  const shared: SharedScans = { reused: new Map(), skipped: new Map(), shifted: new Set() };
+  const shared: SharedScans = { reused: new Map(), skipped: new Map(), shifted: new Set(), absorbed: new Set() };
   if (stored.length === 0) return shared;
   const storedById = new Map(stored.map((row) => [identity(row), row] as const));
   const taken = new Set([...events.map(identity), ...reused.values()]);
@@ -453,10 +481,41 @@ export function sharedScans(
     else shared.skipped.set(id, rowId);
     if (offset) shared.shifted.add(id);
   }
+  // Each copy at a carrier's instant goes: a scan that matched no row takes one over, and the others are absorbed.
+  const kept = new Set([...shared.reused.values(), ...shared.skipped.values()]);
+  const waiting = new Set(pending.map(identity));
+  const carrierScans = byInstant(events.filter((event) => (
+    !['', 'app', UNIVERSAL].includes(sourceOf(identity(event))) && !observedOnly(event)
+  )));
+  for (const [at, scans] of carrierScans) {
+    const copied = rows.filter((row) => (
+      instantOf(row) === at && sourceOf(identity(row)) === UNIVERSAL && !kept.has(identity(row))
+      && scans.some((scan) => copies(scan, row))
+    ));
+    for (const scan of scans) {
+      const id = identity(scan);
+      if (!waiting.has(id) || shared.reused.has(id)) continue;
+      const fit = copied.filter((row) => copies(scan, row));
+      const row = fit.find((candidate) => stageOf(candidate) === stageOf(scan)) ?? fit[0];
+      if (!row) continue;
+      shared.reused.set(id, identity(row));
+      copied.splice(copied.indexOf(row), 1);
+    }
+    for (const row of copied) shared.absorbed.add(identity(row));
+  }
+  // A copy of a scan a carrier holds stays out, so the copies it absorbed do not come back.
+  const held = stored.filter((row) => heldByCarrier(row) && !observedOnly(row));
+  const heldCopy = (event: JsonObject) => held.find((row) => copies(event, row));
+  for (const event of pending) {
+    const id = identity(event);
+    if (sourceOf(id) !== UNIVERSAL || shared.skipped.has(id) || shared.reused.has(id)) continue;
+    const twin = heldCopy(event);
+    if (twin) shared.skipped.set(id, identity(twin));
+  }
   // Moving its own row beside another row that holds the scan would store the scan twice.
   for (const event of moving) {
     const id = identity(event);
-    if (matchOf(event, !newAt.has(instantOf(event)))) shared.skipped.set(id, id);
+    if (matchOf(event, !newAt.has(instantOf(event))) || heldCopy(event)) shared.skipped.set(id, id);
     else shared.reused.set(id, id);
   }
   return shared;

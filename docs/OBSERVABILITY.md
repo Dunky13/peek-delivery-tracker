@@ -68,7 +68,8 @@ All tables and views here are service-role only.
   fills in, is not new. It is null for checks recorded before the column existed.
 - `tracking_sync_steps`: `selected`, `fetch`, `normalize`, `persist_events`,
   `persist_package`, `complete`, each with status and duration. `persist_events` has
-  `events_persisted`, the rows written, and `events_new`. When the check restaged stored
+  `events_persisted`, the rows written, `events_new`, and `copies_absorbed`, the universal
+  copies of the carrier's scans it deleted. When the check restaged stored
   scans into a delivery or pickup readiness to announce, it has `scans_reannounced`, the
   scans whose receipts it dropped, and `reannouncement_failed` when that failed (also
   reported to Sentry as `reopen_announcements`). A not-yet-announced number
