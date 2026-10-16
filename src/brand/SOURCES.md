@@ -287,6 +287,7 @@ and [`truck.json`](truck.json).
 | `mds-collivery` | [collivery.net](https://collivery.net/img/collivery.net-logo.svg) — logo SVG fill #00823D; the arrow is #D9262E |
 | `meest` | [meest.com](https://meest.com/assets/d246552d/img/icon/logo.svg) — logo.svg: `.st0{fill:#0061AF}` (blue), `.st1{fill:#E60033}` (red) |
 | `messenger-cz` | [messenger.cz](https://messenger.cz/assets/img/logo.svg) — logo SVG background fill #fedf05, lettering #161615 |
+| `metropolitan-warehouse` | [gomwd.com](https://sso.gomwd.com/ssf/img/metropolitan-hd.png) — logo PNG (the same logo heads gomwd.com): blue #0062b7 in METROPOLITAN and the M, orange #fb9517 in the W and tagline (approximate) |
 | `midland-transport` | [midlandtransport.com](https://www.midlandtransport.com/) — theme-color #009057 and header logo SVG fill #009057 |
 | `mrw` | [mrw.es](https://www.mrw.es/) |
 | `mylerz` | [mylerz.com](https://cdn.prod.website-files.com/651c198b3ea329eb422858f1/651c198b3ea329eb4228590e_logo.svg) — logo SVG fill #FB4F14 |
@@ -986,3 +987,4 @@ and [`truck.json`](truck.json).
 | `vimenpaq` | White burst of eight V arms, one red, on blue | [vimenpaq.do](https://www.vimenpaq.do/media/14236/isotipo-vimenpaq.png) — the isotipo, eight inward V arms with one red |
 | `vozovoz` | White slanted v on red | [vozovoz.ru](https://vozovoz.ru/favicon.png) — the v favicon, the first letter of the vozovoz wordmark |
 | `x-express-ba` | White X on orange, the X of the arrow emblem | [x-express.ba](https://www.x-express.ba/templates/cassiopeia/images/logo-x-express-brza-posta.webp) — the X emblem before the X EXPRESS wordmark |
+| `metropolitan-warehouse` | White diamond with a blue M over an orange W on blue | [gomwd.com](https://sso.gomwd.com/ssf/img/iconlogo.png) — site icon: blue M above an orange upturned M in a light diamond |

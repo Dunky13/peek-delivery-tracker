@@ -495,19 +495,19 @@
   "dpd": {
     "decal": "dpd"
   },
+  "dpd-be": {
+    "family": "dpd"
+  },
   "dpd-de": {
     "family": "dpd"
   },
   "dpd-fr": {
     "family": "dpd"
   },
-  "dpd-be": {
+  "dpd-ie": {
     "family": "dpd"
   },
   "dpd-nl": {
-    "family": "dpd"
-  },
-  "dpd-ie": {
     "family": "dpd"
   },
   "dpd-uk": {
@@ -1062,6 +1062,9 @@
   },
   "messenger-cz": {
     "decal": "messenger-cz"
+  },
+  "metropolitan-warehouse": {
+    "decal": "metropolitan-warehouse"
   },
   "midland-transport": {
     "decal": "midland-transport"

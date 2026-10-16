@@ -737,6 +737,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "mds-collivery": "mds-collivery",
   "meest": "meest",
   "messenger-cz": "messenger-cz",
+  "metropolitan-warehouse": "metropolitan-warehouse",
   "midland-transport": "midland-transport",
   "mng-kargo": "dhl",
   "mondial-relay": "mondial-relay",
@@ -9849,6 +9850,23 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M6.46 4.18L9.27 4.18L11 6.56L12.73 4.18L15.54 4.18L12.62 8.93L15.54 14.12L12.73 14.12L11 11.74L9.27 14.12L6.46 14.12L9.27 8.93Z",
         "fill": "accent"
+      }
+    ],
+    "metropolitan-warehouse": [
+      {
+        "type": "polygon",
+        "d": "M11 3.9L16.6 9.5L11 15.1L5.4 9.5Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M8.7 9.15L8.7 6.65L9.7 5.65L10.26 5.65L11 7.82L11.74 5.65L12.3 5.65L13.3 6.65L13.3 9.15L12.1 9.15L12.1 5.92L11 9.15L9.9 5.92L9.9 9.15Z",
+        "fill": "truck"
+      },
+      {
+        "type": "polygon",
+        "d": "M8.7 9.85L8.7 12.35L9.7 13.35L10.26 13.35L11 11.18L11.74 13.35L12.3 13.35L13.3 12.35L13.3 9.85L12.1 9.85L12.1 13.08L11 9.85L9.9 13.08L9.9 9.85Z",
+        "fill": "#fb9517"
       }
     ]
   }
