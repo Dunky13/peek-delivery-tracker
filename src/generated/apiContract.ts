@@ -2200,6 +2200,10 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       },
       {
+        "pattern": "^\\d{24}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}AT$",
         "confidence": "high",
         "checksum": "s10"
@@ -21051,6 +21055,36 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.x-express.ba/korisnicki-panel/pracenje-posiljke"
+  },
+  "packlink": {
+    "displayName": "Packlink",
+    "aliases": [
+      "Packlink PRO",
+      "Packlink Shipping"
+    ],
+    "countries": [
+      "ES",
+      "FR",
+      "IT",
+      "DE",
+      "PT",
+      "NL"
+    ],
+    "color": "#ff4f00",
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}20\\d{2}(?:COM|PRO)\\d{10}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.packlink.es/seguimiento-envios/"
   }
 } as const;
 
@@ -21628,7 +21662,8 @@ export const CARRIER_IDS = [
   "upaya",
   "vimenpaq",
   "vozovoz",
-  "x-express-ba"
+  "x-express-ba",
+  "packlink"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
