@@ -21301,6 +21301,32 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.dpd.com/nl/en/receiving/"
+  },
+  "metropolitan-warehouse": {
+    "displayName": "Metropolitan Warehouse & Delivery",
+    "aliases": [
+      "Metropolitan Warehouse and Delivery",
+      "MWD"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#c9a84c",
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "metropolitan-warehouse",
+      "recognitionRank": 8
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://www.gomwd.com/track-a-shipment"
   }
 } as const;
 
@@ -21884,7 +21910,8 @@ export const CARRIER_IDS = [
   "dpd-be",
   "js-express",
   "relaytech",
-  "dpd-nl"
+  "dpd-nl",
+  "metropolitan-warehouse"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
