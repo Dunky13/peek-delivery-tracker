@@ -1,11 +1,11 @@
 # French (fr-FR)
 
-The text uses a narrow no-break space before `:`, `;`, `?` and `!`, as the app does. The same text also fits fr-CA.
+The text uses a narrow no-break space before `:`, `;`, `?` and `!`, as the app does, except in the name: App Store Connect takes only plain spaces there. The same text also fits fr-CA.
 
 ## Name
 
 ```text
-Peek : suivi de colis
+Peek : suivi de colis
 ```
 
 (21 characters)
