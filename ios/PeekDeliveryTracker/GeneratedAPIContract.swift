@@ -532,6 +532,53 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let zoomVe = CarrierID(rawValue: "zoom-ve")
     static let mayiyinfu = CarrierID(rawValue: "mayiyinfu")
     static let cttyex = CarrierID(rawValue: "cttyex")
+    static let ameex = CarrierID(rawValue: "ameex")
+    static let amerijet = CarrierID(rawValue: "amerijet")
+    static let anousith = CarrierID(rawValue: "anousith")
+    static let apCargo = CarrierID(rawValue: "ap-cargo")
+    static let bookurier = CarrierID(rawValue: "bookurier")
+    static let botswanaPost = CarrierID(rawValue: "botswana-post")
+    static let btsUz = CarrierID(rawValue: "bts-uz")
+    static let budbee = CarrierID(rawValue: "budbee")
+    static let bussgods = CarrierID(rawValue: "bussgods")
+    static let campost = CarrierID(rawValue: "campost")
+    static let correosBolivia = CarrierID(rawValue: "correos-bolivia")
+    static let courierPlusNg = CarrierID(rawValue: "courier-plus-ng")
+    static let credifin = CarrierID(rawValue: "credifin")
+    static let daewooFastex = CarrierID(rawValue: "daewoo-fastex")
+    static let dpdZa = CarrierID(rawValue: "dpd-za")
+    static let easyMail = CarrierID(rawValue: "easy-mail")
+    static let evropat = CarrierID(rawValue: "evropat")
+    static let exlineKz = CarrierID(rawValue: "exline-kz")
+    static let fargoUz = CarrierID(rawValue: "fargo-uz")
+    static let fastfrate = CarrierID(rawValue: "fastfrate")
+    static let firstDeliveryTn = CarrierID(rawValue: "first-delivery-tn")
+    static let franchExpress = CarrierID(rawValue: "franch-express")
+    static let gelExpress = CarrierID(rawValue: "gel-express")
+    static let gobolt = CarrierID(rawValue: "gobolt")
+    static let gogoXpress = CarrierID(rawValue: "gogo-xpress")
+    static let horoz = CarrierID(rawValue: "horoz")
+    static let integralPack = CarrierID(rawValue: "integral-pack")
+    static let jeebly = CarrierID(rawValue: "jeebly")
+    static let kargoist = CarrierID(rawValue: "kargoist")
+    static let laPosteCi = CarrierID(rawValue: "la-poste-ci")
+    static let laPosteSenegal = CarrierID(rawValue: "la-poste-senegal")
+    static let mailplusAu = CarrierID(rawValue: "mailplus-au")
+    static let majorExpress = CarrierID(rawValue: "major-express")
+    static let mandae = CarrierID(rawValue: "mandae")
+    static let messengerCz = CarrierID(rawValue: "messenger-cz")
+    static let nordWheel = CarrierID(rawValue: "nord-wheel")
+    static let ocasa = CarrierID(rawValue: "ocasa")
+    static let optNc = CarrierID(rawValue: "opt-nc")
+    static let pmm = CarrierID(rawValue: "pmm")
+    static let ponyExpress = CarrierID(rawValue: "pony-express")
+    static let shipa = CarrierID(rawValue: "shipa")
+    static let shreeAnjani = CarrierID(rawValue: "shree-anjani")
+    static let uesUy = CarrierID(rawValue: "ues-uy")
+    static let upaya = CarrierID(rawValue: "upaya")
+    static let vimenpaq = CarrierID(rawValue: "vimenpaq")
+    static let vozovoz = CarrierID(rawValue: "vozovoz")
+    static let xExpressBa = CarrierID(rawValue: "x-express-ba")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -1029,6 +1076,53 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .zoomVe,
         .mayiyinfu,
         .cttyex,
+        .ameex,
+        .amerijet,
+        .anousith,
+        .apCargo,
+        .bookurier,
+        .botswanaPost,
+        .btsUz,
+        .budbee,
+        .bussgods,
+        .campost,
+        .correosBolivia,
+        .courierPlusNg,
+        .credifin,
+        .daewooFastex,
+        .dpdZa,
+        .easyMail,
+        .evropat,
+        .exlineKz,
+        .fargoUz,
+        .fastfrate,
+        .firstDeliveryTn,
+        .franchExpress,
+        .gelExpress,
+        .gobolt,
+        .gogoXpress,
+        .horoz,
+        .integralPack,
+        .jeebly,
+        .kargoist,
+        .laPosteCi,
+        .laPosteSenegal,
+        .mailplusAu,
+        .majorExpress,
+        .mandae,
+        .messengerCz,
+        .nordWheel,
+        .ocasa,
+        .optNc,
+        .pmm,
+        .ponyExpress,
+        .shipa,
+        .shreeAnjani,
+        .uesUy,
+        .upaya,
+        .vimenpaq,
+        .vozovoz,
+        .xExpressBa,
     ]
 
     init(from decoder: Decoder) throws {
