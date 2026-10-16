@@ -69,6 +69,12 @@
   "amazon-shipping": {
     "family": "amazon-logistics"
   },
+  "ameex": {
+    "decal": "ameex"
+  },
+  "amerijet": {
+    "decal": "amerijet"
+  },
   "ampm": {
     "decal": "ampm"
   },
@@ -81,8 +87,14 @@
   "anjun": {
     "decal": "anjun"
   },
+  "anousith": {
+    "decal": "anousith"
+  },
   "anteraja": {
     "decal": "anteraja"
+  },
+  "ap-cargo": {
+    "decal": "ap-cargo"
   },
   "apc-overnight": {
     "decal": "apc-overnight"
@@ -157,11 +169,17 @@
   "blueex": {
     "decal": "blueex"
   },
+  "bookurier": {
+    "decal": "bookurier"
+  },
   "border-express": {
     "decal": "border-express"
   },
   "bosta": {
     "decal": "bosta"
+  },
+  "botswana-post": {
+    "decal": "botswana-post"
   },
   "box-now": {
     "decal": "box-now"
@@ -175,6 +193,12 @@
   "brt": {
     "decal": "dpd"
   },
+  "bts-uz": {
+    "decal": "bts-uz"
+  },
+  "budbee": {
+    "decal": "budbee"
+  },
   "buffalo-ex": {
     "decal": "buffalo-ex"
   },
@@ -187,8 +211,14 @@
   "burd-delivery": {
     "decal": "burd-delivery"
   },
+  "bussgods": {
+    "decal": "bussgods"
+  },
   "c-chez-vous": {
     "decal": "c-chez-vous"
+  },
+  "campost": {
+    "decal": "campost"
   },
   "canada-post": {
     "decal": "canada-post",
@@ -302,6 +332,9 @@
   "correo-uruguayo": {
     "decal": "correo-uruguayo"
   },
+  "correos-bolivia": {
+    "decal": "correos-bolivia"
+  },
   "correos-chile": {
     "decal": "correos-chile"
   },
@@ -328,8 +361,14 @@
   "courier-it": {
     "decal": "courier-it"
   },
+  "courier-plus-ng": {
+    "decal": "courier-plus-ng"
+  },
   "couriersplease": {
     "decal": "couriersplease"
+  },
+  "credifin": {
+    "decal": "credifin"
   },
   "cruz-del-sur": {
     "decal": "cruz-del-sur"
@@ -360,6 +399,9 @@
   },
   "dachser": {
     "decal": "dachser"
+  },
+  "daewoo-fastex": {
+    "decal": "daewoo-fastex"
   },
   "danske-fragtmaend": {
     "decal": "danske-fragtmaend"
@@ -465,6 +507,9 @@
   "dpd-uk": {
     "family": "dpd"
   },
+  "dpd-za": {
+    "family": "dpd"
+  },
   "dropp": {
     "decal": "dropp"
   },
@@ -482,6 +527,9 @@
   },
   "early-bird": {
     "decal": "early-bird"
+  },
+  "easy-mail": {
+    "decal": "easy-mail"
   },
   "ecms-express": {
     "decal": "ecms-express"
@@ -566,6 +614,12 @@
   "evri-uk": {
     "family": "evri"
   },
+  "evropat": {
+    "decal": "evropat"
+  },
+  "exline-kz": {
+    "decal": "exline-kz"
+  },
   "express-one": {
     "decal": "express-one"
   },
@@ -575,11 +629,20 @@
   "fargo-courier": {
     "decal": "fargo-courier"
   },
+  "fargo-uz": {
+    "decal": "fargo-uz"
+  },
+  "fastfrate": {
+    "decal": "fastfrate"
+  },
   "fedex": {
     "palette": {
       "accent": "#ff6600"
     },
     "decal": "fedex"
+  },
+  "first-delivery-tn": {
+    "decal": "first-delivery-tn"
   },
   "flash-express": {
     "decal": "flash-express"
@@ -602,6 +665,9 @@
   "foxpost": {
     "decal": "foxpost"
   },
+  "franch-express": {
+    "decal": "franch-express"
+  },
   "fukuyama": {
     "decal": "fukuyama"
   },
@@ -621,6 +687,9 @@
       "edge": "#ff0001",
       "accent": "#0a2363"
     }
+  },
+  "gel-express": {
+    "decal": "gel-express"
   },
   "geniki-taxydromiki": {
     "decal": "geniki-taxydromiki"
@@ -670,8 +739,14 @@
   "go-express": {
     "decal": "go-express"
   },
+  "gobolt": {
+    "decal": "gobolt"
+  },
   "gofo": {
     "decal": "gofo"
+  },
+  "gogo-xpress": {
+    "decal": "gogo-xpress"
   },
   "groupe-guilbault": {
     "decal": "groupe-guilbault"
@@ -721,6 +796,9 @@
   "hongkong-post": {
     "decal": "hongkong-post"
   },
+  "horoz": {
+    "decal": "horoz"
+  },
   "hrvatska-posta": {
     "decal": "hrvatska-posta",
     "palette": {
@@ -763,6 +841,9 @@
   },
   "instabox": {
     "decal": "instabox"
+  },
+  "integral-pack": {
+    "decal": "integral-pack"
   },
   "intelcom": {
     "decal": "intelcom"
@@ -810,6 +891,9 @@
   "jd-logistics": {
     "decal": "jd-logistics"
   },
+  "jeebly": {
+    "decal": "jeebly"
+  },
   "jersey-post": {
     "decal": "jersey-post"
   },
@@ -833,6 +917,9 @@
   },
   "jrt": {
     "decal": "jrt"
+  },
+  "kargoist": {
+    "decal": "kargoist"
   },
   "kazpost": {
     "decal": "kazpost"
@@ -870,6 +957,12 @@
       "accent": "#003da5",
       "brand-light": "#003da5"
     }
+  },
+  "la-poste-ci": {
+    "decal": "la-poste-ci"
+  },
+  "la-poste-senegal": {
+    "decal": "la-poste-senegal"
   },
   "la-poste-tunisienne": {
     "decal": "la-poste-tunisienne"
@@ -928,11 +1021,20 @@
   "magyar-posta": {
     "decal": "magyar-posta"
   },
+  "mailplus-au": {
+    "decal": "mailplus-au"
+  },
   "mainfreight": {
     "decal": "mainfreight"
   },
+  "major-express": {
+    "decal": "major-express"
+  },
   "maltapost": {
     "decal": "maltapost"
+  },
+  "mandae": {
+    "decal": "mandae"
   },
   "maritime-ontario": {
     "decal": "maritime-ontario"
@@ -951,6 +1053,9 @@
   },
   "meest": {
     "decal": "meest"
+  },
+  "messenger-cz": {
+    "decal": "messenger-cz"
   },
   "midland-transport": {
     "decal": "midland-transport"
@@ -1004,6 +1109,9 @@
   "nippon-express": {
     "decal": "nippon-express"
   },
+  "nord-wheel": {
+    "decal": "nord-wheel"
+  },
   "northline": {
     "decal": "northline"
   },
@@ -1025,6 +1133,9 @@
   "oca": {
     "decal": "oca"
   },
+  "ocasa": {
+    "decal": "ocasa"
+  },
   "old-dominion": {
     "decal": "old-dominion"
   },
@@ -1041,6 +1152,9 @@
   },
   "ontrac": {
     "decal": "ontrac"
+  },
+  "opt-nc": {
+    "decal": "opt-nc"
   },
   "orlen-paczka": {
     "decal": "orlen-paczka"
@@ -1114,11 +1228,17 @@
   "planzer": {
     "decal": "planzer"
   },
+  "pmm": {
+    "decal": "pmm"
+  },
   "poczta-polska": {
     "decal": "poczta-polska"
   },
   "polaris-transport": {
     "decal": "polaris-transport"
+  },
+  "pony-express": {
+    "decal": "pony-express"
   },
   "pos-indonesia": {
     "decal": "pos-indonesia"
@@ -1320,12 +1440,18 @@
   "shadowfax": {
     "decal": "shadowfax"
   },
+  "shipa": {
+    "decal": "shipa"
+  },
   "shipup": {
     "decal": "shipup",
     "palette": {
       "accent": "#1e4530",
       "brand-light": "#1e4530"
     }
+  },
+  "shree-anjani": {
+    "decal": "shree-anjani"
   },
   "shree-maruti": {
     "decal": "shree-maruti"
@@ -1532,6 +1658,9 @@
   "ubi-smart-parcel": {
     "decal": "ubi-smart-parcel"
   },
+  "ues-uy": {
+    "decal": "ues-uy"
+  },
   "ukrposhta": {
     "palette": {
       "accent": "#0e2f4b",
@@ -1543,6 +1672,9 @@
     "decal": "uniuni"
   },
   "unknown": {},
+  "upaya": {
+    "decal": "upaya"
+  },
   "ups": {
     "palette": {
       "surface-light": "#ede3d5",
@@ -1583,6 +1715,9 @@
   "viettel-post": {
     "decal": "viettel-post"
   },
+  "vimenpaq": {
+    "decal": "vimenpaq"
+  },
   "vinted-go": {
     "decal": "vinted-go"
   },
@@ -1591,6 +1726,9 @@
     "palette": {
       "accent": "#f9a81a"
     }
+  },
+  "vozovoz": {
+    "decal": "vozovoz"
   },
   "vrl-logistics": {
     "decal": "vrl-logistics",
@@ -1614,6 +1752,9 @@
   },
   "winit": {
     "decal": "winit"
+  },
+  "x-express-ba": {
+    "decal": "x-express-ba"
   },
   "xde-logistics": {
     "decal": "xde-logistics"
