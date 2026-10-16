@@ -200,7 +200,9 @@ set stops the server at startup.
   never expire. Rotating that key invalidates the links of emails already sent; the switch
   in the app still works.
 - **Apple relay addresses** (`@privaterelay.appleid.com`, `@private.icloud.com`) are skipped until the sender is
-  registered with Apple's email relay and `EMAIL_APPLE_RELAY=true`.
+  registered with Apple's email relay and `EMAIL_APPLE_RELAY=true`. Register the From domain, which Apple
+  matches with the DKIM signature, and the provider's bounce domain (Resend's `send.<domain>`), which it
+  matches with SPF.
 
 ## Moving to another host
 
