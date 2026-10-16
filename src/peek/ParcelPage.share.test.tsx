@@ -59,6 +59,7 @@ beforeEach(() => {
   document.title = 'Peek — Universal Parcel Tracker';
 });
 afterEach(() => {
+  vi.useRealTimers();
   restoreAlertBrowser();
   forgetAllRecents();
   forgetAllLinkNotes();
@@ -421,7 +422,11 @@ describe('a gift', () => {
   });
 
   it('once delivered is unwrapped: it is here, with the note, who it is from and what is inside', async () => {
-    open(view({ owner: false, link: { gift: true }, events: arrived, parcel: { expectedDelivery: undefined } }), { hash: words });
+    // Delivered at noon, so it was today whenever the test runs, midnight included.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date(2026, 9, 14, 12, 0));
+    const events = [scan('registered', 50), scan('accepted', 30), scan('in_transit', 6), scan('out_for_delivery', 3), scan('delivered', 0)];
+    open(view({ owner: false, link: { gift: true }, events, parcel: { expectedDelivery: undefined } }), { hash: words });
     expect(await screen.findByRole('heading', { level: 1, name: 'It’s here' })).toBeVisible();
     const card = screen.getByRole('region', { name: 'It’s here' });
     expect(card).toHaveClass('peekp-card--gift', 'peekp-card--opened');
