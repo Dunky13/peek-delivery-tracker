@@ -74,16 +74,28 @@ order by i.active desc, i.last_notified_at desc;
 \echo '   carriers: no carrier known; adapters: the adapter refuses, fails or half-answers the number, or gave no direct'
 \echo '   answer in 30 days; dormant: not checked for 24 h; none: the carrier answers and the provider history is kept;'
 \echo '   delivery-tracker: its adapter answers other parcels and was not asked for these'
+\echo '   could_take: the carrier that answered or a provider names, else the one detection names for an unfiled parcel'
 with direct as (
   select distinct source_carrier as carrier
   from public.tracking_sync_attempts
   where started_at >= now() - interval '30 days' and outcome in ('updated', 'unchanged')
     and source_carrier is not null and source_carrier not in ('unknown', 'intl-post')
 ), parcels as (
-  select p.carrier, coalesce(nullif(p.carrier_data->>'discovered_carrier', ''), p.carrier) as target,
+  -- The summary names a carrier once one answers; routing keeps a provider's naming before that.
+  select p.carrier, coalesce(nullif(p.carrier_data->>'discovered_carrier', ''),
+           nullif(p.carrier_data->'routing'->>'discovered_carrier', ''), d.carrier, p.carrier) as target,
          p.carrier_data->>'tracking_provider' as provider, p.tracking_number, p.created_at, p.last_synced_at,
          p.carrier_data->>'carrier_answered' = 'true' as answered, p.carrier_data->'routing' as routing
   from public.packages p
+  -- An unfiled parcel's support case keeps what today's detection names for its number.
+  left join lateral (
+    select c.detection_carrier as carrier
+    from public.tracking_support_cases c
+    where c.tracking_number = p.tracking_number and p.carrier in ('unknown', 'intl-post')
+      and c.detection_confidence = 'high' and c.detection_carrier not in ('unknown', 'intl-post')
+    order by c.last_seen desc
+    limit 1
+  ) d on true
   where p.carrier_data->>'tracking_provider' is not null and p.archived_at is null
     and coalesce(p.current_stage, '') not in ('delivered', 'returned')
 ), reasons as (
