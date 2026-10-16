@@ -3,6 +3,7 @@ import { deferredTrackingFailure, trackingFailureCode } from './trackingFailure'
 import { CarrierError, inferStage, stageSource, resultStage, resultHasUpdate, CARRIER_DEFINITIONS, type CarrierId } from 'universal-parcel-scraper';
 export { classifyStage, inferStage, stageSource, resultStage, resultHasUpdate } from 'universal-parcel-scraper';
 import { AMAZON_ACCOUNT_MESSAGE, AMAZON_HISTORY_EXPIRED, requiresAmazonAccount } from '../lib/amazon';
+import { normalizeTrackingNumber } from '../lib/carriers';
 
 import { createHash } from 'node:crypto';
 import { DateTime } from 'luxon';
@@ -221,6 +222,18 @@ function deliveryWindowOpens(parcel: JsonObject): number | null {
   return zone !== 'UTC' && opens.isValid ? opens.toMillis() : null;
 }
 
+/**
+ * The start of the parcel's current hour, which opens at a minute of its own: the
+ * parcels checked hourly or less often are spread over the hour rather than all due at
+ * its start, so no run takes them all. Copies of one number open at the same minute
+ * and still share their lookups. Overnight runs start on the hour and check them all.
+ */
+function parcelHourStart(parcel: JsonObject, local: DateTime): DateTime {
+  const number = normalizeTrackingNumber(String(parcel.tracking_number ?? ''));
+  const minute = createHash('sha256').update(number).digest().readUInt32BE(0) % 60;
+  return local.minus({ minutes: minute }).startOf('hour').plus({ minutes: minute });
+}
+
 interface ScheduleContext {
   /**
    * Nobody is waiting for the parcel, so it is checked hourly, as an idle one is, even out for
@@ -249,19 +262,20 @@ function isScheduledTrackingSyncDue(
   const lastChecked = Date.parse(String(parcel.last_synced_at ?? ''));
   if (!Number.isFinite(lastChecked)) return true;
   const local = DateTime.fromJSDate(now, { zone: 'Europe/Zurich' });
+  const hourStart = parcelHourStart(parcel, local);
   // Archived, daily around the clock.
-  if (archived) return lastChecked < local.startOf('hour').minus({ hours: 23 }).toMillis();
+  if (archived) return lastChecked < hourStart.minus({ hours: 23 }).toMillis();
   // A lookup without an account that nobody opened in the last hour and that has no alert on:
   // every 3 hours by day, and not overnight, when nobody reads it. A number no carrier is known
   // for asks every provider in turn. Opening its link still queues a check at once.
   if (oneOff && unwatched) {
     return local.hour >= 8 && local.hour < 22
-      && lastChecked < local.startOf('hour').minus({ hours: UNWATCHED_ONE_OFF_HOURS - 1 }).toMillis();
+      && lastChecked < hourStart.minus({ hours: UNWATCHED_ONE_OFF_HOURS - 1 }).toMillis();
   }
   if (unseen !== null) {
     // Hourly, then every 6 h, then daily, around the clock.
     const hours = unseen < UNSEEN_HOURLY_MS ? 1 : unseen < UNSEEN_DAILY_AFTER_MS ? 6 : 24;
-    return lastChecked < local.startOf('hour').minus({ hours: hours - 1 }).toMillis();
+    return lastChecked < hourStart.minus({ hours: hours - 1 }).toMillis();
   }
   // Out for delivery, the news is the delivery. A carrier's own adapter is cheap and as fresh as
   // the carrier, so it is asked every 2 minutes, unless the carrier sets a longer interval of its
@@ -279,7 +293,7 @@ function isScheduledTrackingSyncDue(
   // Compare schedule windows so request duration does not skip the next tick.
   const windowStart = !idle && local.hour >= 8 && local.hour < 22
     ? local.startOf('minute').minus({ minutes: local.minute % intervalMinutes })
-    : local.startOf('hour');
+    : hourStart;
   return lastChecked < windowStart.toMillis();
 }
 
@@ -820,7 +834,7 @@ export class TrackingSyncService {
    * brought the number's detection rule, the name a provider gives or the carrier's
    * adapter, whose link nobody opens any more (redetection.ts). A parcel still in its
    * cooldown is queued by the first run after it ends. Returns how many checks were
-   * queued; they wait behind refreshes and the scheduled run.
+   * queued; they wait behind every other job, a lookup's check too.
    */
   async queueRedetections(signal?: AbortSignal): Promise<number> {
     const rules = catalogRules();
@@ -844,7 +858,7 @@ export class TrackingSyncService {
       }
       for (const [packageId, { userId, dueAt }] of redetections.waiting) {
         if (dueAt > now) continue;
-        await this.client.enqueueSyncJob({ packageId, userId });
+        await this.client.enqueueSyncJob({ packageId, userId, background: true });
         redetections.waiting.delete(packageId);
         queued += 1;
       }

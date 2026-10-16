@@ -199,11 +199,14 @@ describe('one-off parcels and their links', () => {
     await expect(client.enqueueSyncJob({ packageId: 'package-1' })).resolves.toEqual({ row: { id: 'job' }, queued: true });
     await client.enqueueSyncJob({ userId: 'owner-1', packageId: 'package-1' });
     await client.enqueueSyncJob({ scheduled: true });
+    await client.enqueueSyncJob({ userId: 'owner-1', packageId: 'package-2', background: true });
     const queued = request.mock.calls.map(([, options]) => options!.body as Record<string, unknown>);
     expect(queued[0]).toEqual({ user_id: null, package_id: 'package-1', kind: 'package', dedupe_key: 'package:package-1', priority: -20 });
     expect(queued[1]).toMatchObject({ user_id: 'owner-1', priority: 10 });
     expect(queued[2]).toMatchObject({ kind: 'scheduled', priority: -10 });
     expect(queued[0].priority).toBeLessThan(queued[2].priority as number);
+    // A re-check nobody asked for waits behind everything else, a lookup's check too.
+    expect(queued[3]).toMatchObject({ user_id: 'owner-1', priority: -30 });
     await expect(client.enqueueSyncJob({ userId: 'owner-1' })).rejects.toThrow('require a package');
     await expect(client.enqueueSyncJob({ scheduled: true, packageId: 'package-1' })).rejects.toThrow('cannot target');
   });

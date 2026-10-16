@@ -56,6 +56,9 @@ vi.mock('universal-parcel-scraper/app', async (importOriginal) => {
 
 afterEach(() => vi.restoreAllMocks());
 
+// A parcel's hour opens at a minute its number gives: on the hour for this one, at :48 for TEST1234.
+const ON_THE_HOUR = 'TEST0067';
+
 describe('dedicated carrier dispatch', () => {
   it('dispatches Royal Mail through its dedicated registry adapter', async () => {
     const universal = { fetch: vi.fn() };
@@ -1432,7 +1435,7 @@ describe('TrackingSyncService', () => {
     { name: 'an unwatched parcel', unwatched: true, stage: 'in_transit', time: '13:00:00', checked: 2 },
     { name: 'an unwatched parcel out for delivery', unwatched: true, stage: 'out_for_delivery', time: '10:02:00', checked: 0 },
   ])('checks $name at $time: $checked checks', async ({ unwatched, stage, time, checked }) => {
-    const parcel = { carrier: 'swiss-post', current_stage: stage, tracking_number: 'TEST1234',
+    const parcel = { carrier: 'swiss-post', current_stage: stage, tracking_number: ON_THE_HOUR,
       last_synced_at: '2026-09-09T10:00:15Z', sync_status: 'ok' };
     const client = fakeClient([{ ...parcel, id: 'owned', user_id: 'a' }]);
     client.listFollowedOneOffPackages.mockResolvedValue([{ ...parcel, id: 'one-off', user_id: null, one_off: true }]);
@@ -1446,6 +1449,24 @@ describe('TrackingSyncService', () => {
     expect(client.listFollowedOneOffPackages).toHaveBeenCalledExactlyOnceWith(new Date(now.getTime() - 86_400_000));
     // A manual refresh is never held back by it.
     if (!checked) await expect(service.syncPackage({ ...parcel, id: 'owned', user_id: 'a' })).resolves.toMatchObject({ checked: 1 });
+  });
+
+  it.each([
+    { time: '10:46:00', checked: [] },
+    { time: '10:48:00', checked: ['at :48', 'its copy'] },
+    { time: '11:00:00', checked: ['at :48', 'its copy', 'on the hour'] },
+  ])('by day, checks the idle parcels whose hour opened by $time: $checked', async ({ time, checked }) => {
+    // Parcels checked hourly are spread over the hour by their number, so no run takes them
+    // all; copies of one number open together and share their lookups.
+    const parcel = (id: string, number: string, last: string) => ({ id, user_id: 'a', carrier: 'swiss-post', current_stage: 'in_transit',
+      tracking_number: number, last_synced_at: `2026-09-09T${last}Z`, sync_status: 'ok' });
+    const client = fakeClient([parcel('on the hour', ON_THE_HOUR, '10:00:15'),
+      parcel('at :48', 'TEST1234', '09:48:15'), parcel('its copy', 'test 1234', '09:48:15')]);
+    client.listUnwatchedPackageIds.mockResolvedValue(['on the hour', 'at :48', 'its copy']);
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+      { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, null, () => new Date(`2026-09-09T${time}Z`));
+    await service.sync();
+    expect(client.startSyncAttempt.mock.calls.map(([, values]) => values.package_id).sort()).toEqual(checked.sort());
   });
 
   it.each([
@@ -1478,7 +1499,7 @@ describe('TrackingSyncService', () => {
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() }, null, () => now);
     await expect(service.queueRedetections()).resolves.toBe(2);
     expect(client.listRedetectionCandidates).toHaveBeenCalledExactlyOnceWith(new Date('2026-08-10T10:00:00Z'), catalogRules());
-    expect(client.enqueueSyncJob.mock.calls).toEqual([[{ packageId: 'owned', userId: 'a' }], [{ packageId: 'lookup', userId: null }]]);
+    expect(client.enqueueSyncJob.mock.calls).toEqual([[{ packageId: 'owned', userId: 'a', background: true }], [{ packageId: 'lookup', userId: null, background: true }]]);
     expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 2, waiting: 0, left: 0 });
     // The same catalog is not looked at twice.
     await expect(service.queueRedetections()).resolves.toBe(0);
@@ -1503,7 +1524,7 @@ describe('TrackingSyncService', () => {
     await expect(service.queueRedetections()).resolves.toBe(0);
     now = new Date('2026-09-09T10:30:00Z');
     await expect(service.queueRedetections()).resolves.toBe(1);
-    expect(client.enqueueSyncJob).toHaveBeenLastCalledWith({ packageId: 'deferred', userId: 'a' });
+    expect(client.enqueueSyncJob).toHaveBeenLastCalledWith({ packageId: 'deferred', userId: 'a', background: true });
     await expect(service.queueRedetections()).resolves.toBe(0);
     expect(client.listRedetectionCandidates).toHaveBeenCalledOnce();
     expect(client.enqueueSyncJob).toHaveBeenCalledTimes(50);
@@ -1647,7 +1668,7 @@ describe('TrackingSyncService', () => {
   }) => {
     // Put away while it waits at a pickup point, the parcel is checked daily for its collection.
     const parcel = {
-      id: 'archived', user_id: 'a', carrier: 'swiss-post', current_stage: 'ready_for_pickup', tracking_number: 'TEST1234',
+      id: 'archived', user_id: 'a', carrier: 'swiss-post', current_stage: 'ready_for_pickup', tracking_number: ON_THE_HOUR,
       created_at: created, archived_at: '2026-09-07T08:00:00Z', last_synced_at: last, sync_status: 'ok',
       carrier_data: { routing: { version: 1, configured_carrier: 'swiss-post', last_event_at: lastEvent,
         ...(nextCheck ? { next_check_at: nextCheck } : {}) } },

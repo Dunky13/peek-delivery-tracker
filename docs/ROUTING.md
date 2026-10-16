@@ -182,6 +182,11 @@ parcels followed without an account that nobody watches (below).
 | Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, around the clock; manual refresh still allowed |
 | Archived, with a new event in the last 30 days (from when it was added), and no alert on a link shared with someone | daily around the clock; manual refresh still allowed |
 
+A parcel checked hourly or less often has an hour of its own, opening at a minute its
+number gives, so by day those checks spread over the hour rather than all falling in its
+first runs; copies of one number open together and share their lookups. Overnight runs
+start on the hour and check them all.
+
 Cooldowns use the persisted `last_synced_at` and `sync_status`, so restarts and repeated
 Refresh taps don't bypass them. New or reconfigured parcels are checked at once. A scheduled
 run handles at most five due parcels per account, round-robin.
@@ -331,8 +336,9 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   for each one the new catalog points to a carrier it has not asked yet: the carrier its
   number is now detected as, the one a provider's saved carrier names now read as, or the
   filed carrier's new adapter. One still in its cooldown is queued by the first scheduled
-  run after the cooldown ends. Only parcels filed under no carrier, or showing a provider's
-  history, are looked at. A lookup nobody follows any more gets this one check.
+  run after the cooldown ends. These checks wait behind every other job, a lookup's own
+  check too. Only parcels filed under no carrier, or showing a provider's history, are
+  looked at. A lookup nobody follows any more gets this one check.
 
 ## Handoffs (two carriers)
 

@@ -1300,6 +1300,8 @@ export class SupabaseServiceClient extends SupabaseClient {
     userId?: string | null;
     packageId?: string | null;
     scheduled?: boolean;
+    /** A re-check nobody asked for, such as a scraper release's: it waits behind every other job. */
+    background?: boolean;
   }): Promise<{ row: JsonObject; queued: boolean }> {
     const scheduled = options.scheduled ?? false;
     let kind: string;
@@ -1318,7 +1320,7 @@ export class SupabaseServiceClient extends SupabaseClient {
       dedupeKey = `package:${options.packageId}`;
       // A one-off parcel has no owner. Its check waits behind every account's
       // refresh and the scheduled run, so lookups cannot starve accounts.
-      priority = options.userId ? 10 : -20;
+      priority = options.background ? -30 : options.userId ? 10 : -20;
     }
 
     const created = rows(await this.request('/rest/v1/sync_jobs?on_conflict=dedupe_key', {
