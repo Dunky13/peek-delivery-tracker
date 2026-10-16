@@ -223,7 +223,7 @@ it('does not ask carriers for selected shapes, formats without candidates or una
 
 // The scraper names the carriers asked about each shape; the route asks them all and returns the one that knows it.
 it.each([
-  ['12345678901242', 'brt'],
+  ['123456789012', 'brt'],
   ['12345678901243', 'seur'],
   ['9900002', 'seur'],
   ['1000000000000001', 'tnt'],
@@ -242,10 +242,11 @@ it.each([
   expect(asked()).toEqual(candidates);
 });
 
-it('keeps unrelated BRT and SEUR answers ambiguous', async () => {
-  recognize.mockImplementation(knows('brt', 'seur'));
-  expect(await (await request('06080000000084')).json()).toEqual({ trackingNumber: '06080000000084', carrier: 'unknown',
-    recognized: ['seur', 'brt'], asked: fourteen });
+it('keeps unrelated BRT and Colis Privé answers ambiguous', async () => {
+  const number = '123456789042';
+  recognize.mockImplementation(knows('brt', 'colis-prive'));
+  expect(await (await request(number)).json()).toEqual({ trackingNumber: number, carrier: 'unknown',
+    recognized: ['brt', 'colis-prive'], asked: recognitionAskedCarriers(number) });
 });
 
 it.each(['06080000000076', '12345678901234', '12345678909', '1234567890', '12345678'])('asks the carriers the Add sheets name for %s', async (number) => {
