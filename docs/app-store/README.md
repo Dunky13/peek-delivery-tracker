@@ -12,6 +12,9 @@ each language. `en.md` serves English (U.K.), the primary language, and English 
 Keywords are counted in bytes (an accented letter counts two) and can't name other
 companies. App Store Connect doesn't take What's New for the first version.
 
+Once the app record exists, `ASC_KEY_ID=… ASC_ISSUER_ID=… node scripts/app-store-listing.mjs`
+prints what it would set from `listing/` and this page; `--apply` sets it.
+
 ## App information
 
 - Bundle ID `com.plhery.PeekDeliveryTracker`; SKU `peek-ios`.
