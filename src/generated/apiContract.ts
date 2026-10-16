@@ -2575,6 +2575,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^(?:\\d{6}[A-Z]\\d{6}|3C\\d{4}[A-Z]\\d{6}|\\d{3}[A-Z]\\d{8}[A-Z])$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^F\\d{3}D\\d{8}$",
+        "confidence": "low"
       }
     ],
     "trackingUrlTemplate": "https://www.poste.it/cerca/index.html#/risultati-spedizioni/{trackingNumber}",
@@ -11417,7 +11421,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Pacific/Auckland",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mainfreight",
+      "recognitionRank": 923
     },
     "trackingUrlTemplate": "https://www.mainfreight.com/tracking?trackingnumber={trackingNumber}",
     "linkRules": [
@@ -12191,7 +12196,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "raben",
+      "recognitionRank": 924
     },
     "trackingUrlTemplate": "https://oftc.myraben.com/link/ShipmentInformation?ShipmentNumber={trackingNumber}&Language=EN",
     "linkRules": [
@@ -21175,6 +21181,58 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.dpd.com/be/en/receiving/track-trace/"
+  },
+  "js-express": {
+    "displayName": "JS Express",
+    "aliases": [
+      "JS EXP",
+      "急速国际",
+      "急创速供应链管理（苏州）有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#fe9b00",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^JSE[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.js-exp.com/index.php?catid=19"
+  },
+  "relaytech": {
+    "displayName": "Relay",
+    "aliases": [
+      "Relay Technology",
+      "Relay Tech",
+      "Relaytech"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "color": "#d6ec83",
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^RELR[A-Z0-9]{8}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://relaytech.co/track-order"
   }
 } as const;
 
@@ -21755,7 +21813,9 @@ export const CARRIER_IDS = [
   "vozovoz",
   "x-express-ba",
   "packlink",
-  "dpd-be"
+  "dpd-be",
+  "js-express",
+  "relaytech"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 

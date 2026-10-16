@@ -22763,6 +22763,30 @@
     ]
   },
   {
+    "input": "276574000140793",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "brt",
+      "yunda"
+    ],
+    "asked": [
+      "brt"
+    ]
+  },
+  {
+    "input": "276574000141025",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "brt",
+      "yunda"
+    ],
+    "asked": [
+      "brt"
+    ]
+  },
+  {
     "input": "276634000122953",
     "carrier": "unknown",
     "confidence": "low",
@@ -33525,6 +33549,18 @@
       "dpd",
       "dpd-de",
       "seur",
+      "brt"
+    ]
+  },
+  {
+    "input": "528234000006530",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "brt",
+      "yunda"
+    ],
+    "asked": [
       "brt"
     ]
   },
@@ -55809,6 +55845,17 @@
     ]
   },
   {
+    "input": "F100D00000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poste-italiane"
+    ],
+    "asked": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "F1163994",
     "carrier": "unknown",
     "confidence": "low",
@@ -58684,6 +58731,46 @@
     "confidence": "high",
     "candidates": [
       "jrt"
+    ]
+  },
+  {
+    "input": "JSEJA1143458320YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSEKI2871054068YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSELK1099980597YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSELO1674399416YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSEWU1847680080YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
     ]
   },
   {
@@ -65301,6 +65388,14 @@
     "confidence": "high",
     "candidates": [
       "pos-malaysia"
+    ]
+  },
+  {
+    "input": "RELRRKL7J17P",
+    "carrier": "relaytech",
+    "confidence": "high",
+    "candidates": [
+      "relaytech"
     ]
   },
   {
