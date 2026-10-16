@@ -2092,7 +2092,7 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       }
     ],
-    "trackingUrlTemplate": "https://inpost.pl/sledzenie-przesylek",
+    "trackingUrlTemplate": "https://inpost.pl/sledzenie-przesylek?number={trackingNumber}",
     "aliases": [
       "InPost Paczkomaty",
       "Paczkomaty",
