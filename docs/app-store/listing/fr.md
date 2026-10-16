@@ -31,7 +31,7 @@ Colle un numéro de suivi, un lien de transporteur ou tout un e-mail d’expédi
 ```text
 Où est mon colis ? Colle ce que tu as, Peek s’occupe du reste.
 
-Un numéro de suivi, un lien de transporteur ou tout un e-mail d’expédition : Peek repère le numéro et trouve lequel des plus de 500 transporteurs a ton colis. Tu peux aussi saisir le numéro, scanner le code-barres de l’étiquette ou le partager vers Peek depuis une autre app.
+Un numéro de suivi, un lien de transporteur ou tout un e-mail d’expédition : Peek repère le numéro et trouve lequel des plus de 3 500 transporteurs a ton colis. Tu peux aussi saisir le numéro, scanner le code-barres de l’étiquette ou le partager vers Peek depuis une autre app.
 
 Chaque colis a sa propre page : son trajet sur une carte, chaque scan et le jour de livraison prévu, quand le transporteur l’indique.
 

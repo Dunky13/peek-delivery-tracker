@@ -31,7 +31,7 @@ Pega un número de seguimiento, un enlace o un correo de envío entero. Peek enc
 ```text
 ¿Dónde está mi paquete? Pega lo que tengas y Peek lo averigua.
 
-Un número de seguimiento, un enlace del transportista o un correo de envío entero: Peek encuentra el número y descubre cuál de los más de 500 transportistas tiene el paquete. También puedes escribir el número, escanear el código de barras de la etiqueta o compartirlo con Peek desde otra app.
+Un número de seguimiento, un enlace del transportista o un correo de envío entero: Peek encuentra el número y descubre cuál de los más de 3500 transportistas tiene el paquete. También puedes escribir el número, escanear el código de barras de la etiqueta o compartirlo con Peek desde otra app.
 
 Cada paquete tiene su propia página: el trayecto en un mapa, cada escaneo y el día previsto de entrega, cuando el transportista lo indica.
 

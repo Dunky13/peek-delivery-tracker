@@ -29,7 +29,7 @@ Füge eine Sendungsnummer, einen Link oder eine ganze Versandmail ein. Peek find
 ```text
 Wo ist mein Paket? Füge ein, was du hast, und Peek findet es heraus.
 
-Eine Sendungsnummer, ein Link vom Paketdienst oder eine ganze Versandmail: Peek fischt die Nummer heraus und erkennt, welcher von über 500 Paketdiensten das Paket hat. Du kannst die Nummer auch eintippen, den Barcode auf dem Etikett scannen oder sie aus einer anderen App mit Peek teilen.
+Eine Sendungsnummer, ein Link vom Paketdienst oder eine ganze Versandmail: Peek fischt die Nummer heraus und erkennt, welcher von über 3500 Paketdiensten das Paket hat. Du kannst die Nummer auch eintippen, den Barcode auf dem Etikett scannen oder sie aus einer anderen App mit Peek teilen.
 
 Jedes Paket bekommt eine eigene Seite: die Reise auf einer Karte, jeden Scan und den voraussichtlichen Liefertag, wenn der Paketdienst einen nennt.
 

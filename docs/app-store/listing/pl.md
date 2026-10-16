@@ -29,7 +29,7 @@ Wklej numer przesyłki, link od przewoźnika albo cały e-mail o wysyłce. Peek 
 ```text
 Gdzie jest moja paczka? Wklej, co masz, a Peek to sprawdzi.
 
-Numer przesyłki, link od przewoźnika albo cały e-mail o wysyłce: Peek wyłowi numer i ustali, który z ponad 500 przewoźników ma Twoją paczkę. Możesz też wpisać numer, zeskanować kod kreskowy z etykiety albo udostępnić go Peekowi z innej aplikacji.
+Numer przesyłki, link od przewoźnika albo cały e-mail o wysyłce: Peek wyłowi numer i ustali, który z ponad 3500 przewoźników ma Twoją paczkę. Możesz też wpisać numer, zeskanować kod kreskowy z etykiety albo udostępnić go Peekowi z innej aplikacji.
 
 Każda paczka dostaje własną stronę: trasę na mapie, każdy skan i przewidywany dzień dostawy, jeśli przewoźnik go podaje.
 

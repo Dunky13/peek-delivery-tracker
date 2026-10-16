@@ -29,7 +29,7 @@ Incolla un numero, un link del corriere o un’intera e-mail di spedizione. Peek
 ```text
 Dov’è il mio pacco? Incolla quello che hai e Peek lo scopre.
 
-Un numero di tracciamento, un link del corriere o un’intera e-mail di spedizione: Peek trova il numero e capisce quale degli oltre 500 corrieri ha il pacco. Puoi anche digitare il numero, scansionare il codice a barre sull’etichetta o condividerlo con Peek da un’altra app.
+Un numero di tracciamento, un link del corriere o un’intera e-mail di spedizione: Peek trova il numero e capisce quale degli oltre 3.500 corrieri ha il pacco. Puoi anche digitare il numero, scansionare il codice a barre sull’etichetta o condividerlo con Peek da un’altra app.
 
 Ogni pacco ha una pagina tutta sua: il viaggio su una mappa, ogni scansione e il giorno di consegna previsto, quando il corriere lo indica.
 

@@ -36,7 +36,7 @@ Paste a tracking number, a carrier link or a whole shipping email. Peek finds th
 ```text
 Where’s my parcel? Paste what you have, and Peek finds out.
 
-A tracking number, a carrier link or a whole shipping email: Peek picks out the number and works out which of more than 500 carriers has the parcel. You can also type the number, scan the barcode on the label, or share it to Peek from another app.
+A tracking number, a carrier link or a whole shipping email: Peek picks out the number and works out which of more than 3,500 carriers has the parcel. You can also type the number, scan the barcode on the label, or share it to Peek from another app.
 
 Each parcel gets a page of its own: the journey on a map, every scan, and the day it should arrive when the carrier gives one.
 

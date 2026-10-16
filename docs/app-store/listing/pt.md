@@ -31,7 +31,7 @@ Cola um número, uma ligação ou um e-mail de envio inteiro. O Peek encontra a 
 ```text
 Onde está a minha encomenda? Cola o que tens e o Peek descobre.
 
-Um número de seguimento, uma ligação da transportadora ou um e-mail de envio inteiro: o Peek encontra o número e percebe qual das mais de 500 transportadoras tem a encomenda. Também podes escrever o número, ler o código de barras da etiqueta ou partilhá-lo com o Peek a partir de outra app.
+Um número de seguimento, uma ligação da transportadora ou um e-mail de envio inteiro: o Peek encontra o número e percebe qual das mais de 3500 transportadoras tem a encomenda. Também podes escrever o número, ler o código de barras da etiqueta ou partilhá-lo com o Peek a partir de outra app.
 
 Cada encomenda tem uma página só sua: a viagem num mapa, cada leitura e o dia previsto da entrega, quando a transportadora o indica.
 
