@@ -10,7 +10,7 @@ import { openParcelLink, parcelLinkPath, useParcelLinkRoute } from './route';
 import { SAMPLE_LINK_ID } from './sample';
 import { PeekSessionProvider, type PeekSession } from './session';
 
-type ViewTransitions = { startViewTransition?: (update: () => void) => unknown };
+type ViewTransitions = { startViewTransition?: (update: () => void) => { ready?: Promise<unknown> } | undefined };
 
 /**
  * What someone without an open deliveries app sees: the parcel page at
@@ -49,10 +49,12 @@ export function PeekRoot({ session, serverLinkId = null }: {
     const handOver = () => flushSync(show);
     const open = () => {
       const transitions = document as ViewTransitions;
-      const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      // A tab in the background has nothing to animate: the browser would skip the transition anyway.
+      const still = document.visibilityState === 'hidden' || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
       if (still || typeof transitions.startViewTransition !== 'function') handOver();
-      // Pip keeps one transition name across both views, so the browser moves it from the door into the page.
-      else transitions.startViewTransition(handOver);
+      // Pip keeps one transition name across both views, so the browser moves it from the door into the page. A
+      // transition the browser skips still runs the hand-over; only the animation is lost.
+      else void transitions.startViewTransition(handOver)?.ready?.catch(() => undefined);
     };
     // An answer that comes before the page's code waits for it. If the code cannot be fetched, the browser opens the
     // parcel's address itself.

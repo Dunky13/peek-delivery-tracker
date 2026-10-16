@@ -33,6 +33,7 @@ afterEach(() => {
   forgetAllRecents();
   vi.unstubAllGlobals();
   delete (document as { startViewTransition?: unknown }).startViewTransition;
+  delete (document as { visibilityState?: unknown }).visibilityState;
   history.replaceState(null, '', '/');
 });
 
@@ -137,13 +138,26 @@ describe('PeekRoot', () => {
   });
 
   it('lets the browser move Pip between the two views where it can', async () => {
-    const startViewTransition = vi.fn((update: () => void) => { update(); return {}; });
+    // A transition the browser skips, such as when the tab goes to the background, rejects its `ready`.
+    const skipped = () => Promise.reject(new DOMException('View transition was skipped', 'InvalidStateError'));
+    const startViewTransition = vi.fn((update: () => void) => { update(); return { ready: skipped() }; });
     Object.assign(document, { startViewTransition });
     render(<PeekRoot session={visitor} />);
     await track();
     await waitFor(() => expect(startViewTransition).toHaveBeenCalledOnce());
     // The update the browser runs has both the address and the page in place when it returns.
     expect(location.pathname).toBe(`/p/${LINK_ID}`);
+    expect(document.querySelector('.peekp-main')).toHaveAttribute('data-entrance', 'reveal');
+  });
+
+  it('skips the transition in a background tab, and still lands on the revealed page', async () => {
+    const startViewTransition = vi.fn();
+    Object.assign(document, { startViewTransition });
+    Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+    render(<PeekRoot session={visitor} />);
+    await track();
+    await waitFor(() => expect(location.pathname).toBe(`/p/${LINK_ID}`));
+    expect(startViewTransition).not.toHaveBeenCalled();
     expect(document.querySelector('.peekp-main')).toHaveAttribute('data-entrance', 'reveal');
   });
 
