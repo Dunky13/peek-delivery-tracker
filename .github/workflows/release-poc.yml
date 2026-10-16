@@ -5,6 +5,10 @@ on:
     paths:
       - desktop/**
       - scripts/release/**
+      - scripts/server-package*.mjs
+      - scripts/test-server-package.sh
+      - scripts/test-public-configuration.mjs
+      - packaging/server/**
       - .github/workflows/*release*.yml
       - .github/workflows/nightly.yml
       - package.json

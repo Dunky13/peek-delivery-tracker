@@ -35,17 +35,34 @@ export function installerNames(plan) {
   return ['mac-arm64.dmg', 'mac-x64.dmg', 'win-x64.exe', 'linux-x64.deb', 'linux-x64.AppImage'].map((suffix) => `${prefix}${suffix}`);
 }
 
+export const apkPublicKeyName = 'peek-server-apk.rsa.pub';
+
+export function serverPackageNames(plan) {
+  const identity = plan.channel === 'nightly' ? 'peek-server-nightly' : 'peek-server';
+  return [`${identity}-${plan.version}-linux-amd64.deb`, `${identity}-${plan.version}-linux-x86_64.apk`];
+}
+
+export function publicAssetNames(plan) {
+  return [...installerNames(plan), ...serverPackageNames(plan), apkPublicKeyName];
+}
+
 export const manifestSchema = z.object({
   schemaVersion: z.literal(1),
   status: z.literal('complete'),
   plan: planSchema,
   signed: z.boolean(),
-  files: z.array(fileSchema).length(5),
+  files: z.array(fileSchema).length(8),
   image: z.object({
     repository: imageRepositorySchema,
     digest: digestSchema,
     platforms: z.tuple([z.literal('linux/amd64'), z.literal('linux/arm64')]),
-    configuration: z.literal('instance-specific'),
+    configuration: z.literal('runtime-configured'),
+  }),
+  server: z.object({
+    runtime: z.literal('native'),
+    configuration: z.literal('runtime-configured'),
+    platforms: z.tuple([z.literal('debian13/amd64'), z.literal('alpine3.24/x86_64')]),
+    apkSigningKey: z.object({ name: z.literal(apkPublicKeyName), sha256: z.string().regex(/^[a-f0-9]{64}$/) }),
   }),
   validation: z.object({ runId: z.string().regex(/^\d+$/), sourceSha: shaSchema }),
 }).superRefine((manifest, context) => {
@@ -53,10 +70,13 @@ export const manifestSchema = z.object({
   if (plan.tag !== `v${plan.version}` || manifest.validation.sourceSha !== plan.sourceSha || manifest.validation.runId !== plan.runId || manifest.image.repository !== plan.imageRepository) {
     context.addIssue({ code: 'custom', message: 'Manifest source, run, image or tag identity mismatch' });
   }
-  for (const name of installerNames(plan)) {
+  for (const name of publicAssetNames(plan)) {
     if (manifest.files.filter((file) => file.name === name).length !== 1) {
-      context.addIssue({ code: 'custom', message: `Incomplete installer matrix: ${name}` });
+      context.addIssue({ code: 'custom', message: `Incomplete release artifact matrix: ${name}` });
     }
+  }
+  if (manifest.files.find((file) => file.name === apkPublicKeyName)?.sha256 !== manifest.server.apkSigningKey.sha256) {
+    context.addIssue({ code: 'custom', message: 'APK signing public key identity mismatch' });
   }
 });
 

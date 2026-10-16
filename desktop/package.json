@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "description": "Peek desktop client for your Peek server",
-  "author": "Peek contributors",
+  "author": {
+    "name": "Paul-Louis HERY",
+    "email": "paullouis.hery@gmail.com"
+  },
   "license": "Apache-2.0",
   "homepage": "https://github.com/plhery/peek-delivery-tracker",
   "type": "module",
@@ -16,9 +19,10 @@
     "start": "npm run build && node scripts/start.mjs",
     "package": "npm run build && electron-builder --config electron-builder.mjs --publish never",
     "test": "node --test src/*.test.ts",
-    "test:smoke": "npm run build && playwright test",
+    "test:smoke": "npm run prepare:electron && npm run build && playwright test",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --max-warnings=0"
+    "lint": "eslint . --max-warnings=0",
+    "prepare:electron": "install-electron"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

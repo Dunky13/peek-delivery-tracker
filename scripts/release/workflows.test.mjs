@@ -20,7 +20,7 @@ const workflowSchema = z.object({
     uses: z.string().optional(), if: z.string().optional(), permissions: permissions.optional(),
     secrets: z.string().optional(), with: z.record(z.string(), z.union([z.string(), z.boolean()])).optional(),
     needs: z.union([z.string(), z.array(z.string())]).optional(), steps: z.array(step).optional(),
-    strategy: z.object({ matrix: z.object({ include: z.array(z.object({ runner: z.string(), arch: z.string() })).optional() }) }).optional(),
+    strategy: z.object({ matrix: z.object({ include: z.array(z.object({ runner: z.string(), arch: z.string() })).optional(), format: z.array(z.enum(['deb', 'apk'])).optional() }) }).optional(),
   })),
 });
 const names = ['nightly', 'release', 'release-poc', 'release-build', 'release-publish'];
@@ -60,11 +60,11 @@ test('fork PRs can call build workflow without secrets or write-permission ceili
 
 test('candidate jobs pin the planner source and packaging waits for every full validation gate', () => {
   const build = workflows['release-build'];
-  for (const name of ['validation', 'migrations', 'browser', 'scan', 'desktop', 'image']) {
+  for (const name of ['validation', 'migrations', 'browser', 'scan', 'desktop', 'image', 'server']) {
     const checkout = build.jobs[name].steps.find((entry) => entry.uses?.startsWith('actions/checkout@'));
     assert.equal(checkout.with.ref, '${{ needs.plan.outputs.source_sha }}');
   }
-  for (const name of ['desktop', 'image']) assert.deepEqual(build.jobs[name].needs, ['plan', 'validation', 'migrations', 'browser', 'scan']);
+  for (const name of ['desktop', 'image', 'server']) assert.deepEqual(build.jobs[name].needs, ['plan', 'validation', 'migrations', 'browser', 'scan']);
   assert.equal(build.jobs.image.steps.find((entry) => entry.uses?.startsWith('docker/build-push-action@')).with.push, false);
 });
 
@@ -84,4 +84,21 @@ test('all external actions are immutable SHA pins and all checkouts discard cred
       }
     }
   }
+});
+
+
+test('native server DEB/APK are mandatory and APK keys arrive after the isolated build', () => {
+  const build = workflows['release-build'];
+  assert.deepEqual(build.jobs.server.strategy.matrix.format, ['deb', 'apk']);
+  assert.ok(build.jobs.collect.needs.includes('server'));
+  const steps = build.jobs.server.steps;
+  const compile = steps.findIndex((entry) => entry.run?.includes('native-server.sh build'));
+  const signing = steps.findIndex((entry) => entry.run?.includes('apk-key.mjs') && !entry.run.includes('clean'));
+  const cleanup = steps.find((entry) => entry.run?.includes('apk-key.mjs clean'));
+  assert.ok(compile >= 0 && signing > compile);
+  assert.match(cleanup.if, /always\(\)/);
+  assert.ok(steps.some((entry) => entry.run?.includes('native-server.sh smoke')));
+  assert.ok(build.jobs.validation.steps.some((entry) => entry.run === 'node scripts/test-public-configuration.mjs'));
+  const imageBuild = build.jobs.image.steps.find((entry) => entry.uses?.startsWith('docker/build-push-action@'));
+  assert.doesNotMatch(imageBuild.with['build-args'], /vars\.NEXT_PUBLIC/);
 });

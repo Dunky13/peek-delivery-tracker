@@ -1,7 +1,7 @@
 # Release POC
 
 The desktop app connects to a separately running HTTPS Peek server. GitHub Actions
-builds its installers and an instance-configured server image. This POC leaves public
+builds its installers, native server packages and a server image. This POC leaves public
 publication disabled until the repository owner opts in. It does not deploy the server,
 apply migrations or change the iPhone release process.
 
@@ -11,12 +11,19 @@ See [the desktop README](../desktop/README.md) for setup and client limitations.
 OAuth/SSO handoff is not implemented: provider-only instances are not supported by this
 client POC. Email-code sign-in uses the existing server flow.
 
+Server packages are separate from the desktop DEB: `peek-server` and
+`peek-server-nightly` run the web app, API and worker directly under systemd on
+Debian 13 amd64 or OpenRC on Alpine 3.24 x86_64. The Alpine `.apk` is a Linux package.
+The installed server does not require Docker. It still requires a separately managed
+Supabase backend, database migrations and HTTPS. See [native server setup](SERVER_PACKAGES.md).
+
 ## Validate without publishing
 
 Changes to the release tooling and desktop app run **Release POC validation** on pull
 requests. Fork contributions may need the repository owner to approve the workflow run.
 The workflow uses read-only permissions and does not receive inherited signing secrets.
-It produces explicitly unsigned installers and image archives as workflow artifacts.
+It produces nonpublishing candidates as workflow artifacts: unsigned desktop installers,
+native server packages and image archives. Validation APKs use a temporary test key.
 
 From the repository root, with its supported Node version:
 
@@ -76,6 +83,12 @@ and `APPLE_API_ISSUER` for notarization. `APPLE_API_KEY_CONTENT` is the `.p8` co
 the job writes it to a temporary file and removes it afterward. Missing required signing
 configuration must fail publication rather than silently produce unsigned releases.
 
+Alpine publication also requires `APK_SIGNING_KEY_CONTENT` and
+`APK_SIGNING_PUBLIC_KEY_CONTENT`, a matching RSA key pair. The release includes
+`peek-server-apk.rsa.pub` in its checksummed assets. Installers must establish trust in
+that key independently; they must not disable APK signature verification. Validation
+runs generate temporary keys and do not use the owner's signing key.
+
 `PEEK_RELEASE_IMAGE_REPOSITORY` chooses the GHCR owner/package without the `ghcr.io/`
 prefix. Its default is `<repository-owner>/<repository-name>-release-poc`, separate
 from the existing deployment image. Publication verification requires public package
@@ -83,10 +96,10 @@ visibility. If GHCR creates the package privately on its first push, make that p
 public and rerun the failed publication job with its original artifacts. Only publication
 jobs receive write permissions.
 
-The server image uses the public build configuration described in
-[Deployment](DEPLOYMENT.md). Public Supabase and auth values remain baked into this
-POC image; runtime values must match. A generic image configurable for any Supabase
-instance requires separate application work. Backend secrets must never be build inputs.
+Server packages and images receive instance settings at runtime. The server renders
+an allowlisted public configuration for the browser; backend secrets stay on the
+server. API/demo build mode remains a build choice. See [Deployment](DEPLOYMENT.md)
+for backend requirements. Backend secrets must never be build inputs.
 
 ## Owner acceptance and recovery
 
@@ -95,6 +108,10 @@ on every advertised desktop target. Use an isolated candidate server to check se
 restoration, sign-in/out, parcel navigation, challenge handling and connection recovery.
 Validate each OCI architecture with an isolated backend; the pipeline's synthetic
 process/browser checks do not establish database readiness or real-provider behavior.
+Validate native server install, service startup, upgrade and removal on each supported
+distribution, then in an unprivileged Proxmox container. Check configuration and data
+retention, HTTPS, backend readiness and Chromium tracking. A successful package test
+in a CI container does not establish Proxmox kernel or AppArmor compatibility.
 
 Check unchanged-source skipping, failed runs, conflicting versions and retries before
 enabling publication. A complete required matrix is assembled before a GitHub Release

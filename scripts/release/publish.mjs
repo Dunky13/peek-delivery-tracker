@@ -47,8 +47,9 @@ writeFileSync(join(directory, 'release-manifest.json'), `${JSON.stringify(manife
 const summary = [
   `Source: ${plan.sourceSha}`,
   `Channel: ${plan.channel}. Desktop is a client of a separately running Peek server.`,
-  `Instance-configured server image: ${plan.imageRepository}@${imageDigest}`,
-  'The image requires matching public Supabase build/runtime configuration and separately managed migrations.',
+  `Runtime-configured server image: ${plan.imageRepository}@${imageDigest}`,
+  'Native server DEB/APK packages run without Docker. Configure the Supabase backend and manage migrations separately.',
+  'The APK public key is included for verification; establish its expected fingerprint through the owner before trusting it.',
   'See release-manifest.json and SHA256SUMS for artifact identity. No production deployment is performed.',
 ].join('\n\n');
 if (!release) {

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createManifest, verifyMatrix } from './artifacts.mjs';
-import { compareVersions, installerNames, manifestSchema, parseJson, planRelease } from './model.mjs';
+import { compareVersions, manifestSchema, publicAssetNames, parseJson, planRelease, serverPackageNames } from './model.mjs';
 
 const source = 'a'.repeat(40);
 const otherSource = 'b'.repeat(40);
@@ -10,11 +10,11 @@ const input = {
   runNumber: 42, runId: '123456789', runAttempt: 1, repository: 'example/peek',
   imageRepository: 'ghcr.io/example/peek-release-poc', publish: false, manifests: [],
 };
-const names = ['peek-1.0.0-arm64.dmg', 'peek-1.0.0-x64.dmg', 'peek-1.0.0-x64.exe', 'peek-1.0.0-x64.deb', 'peek-1.0.0-x64.AppImage', 'image-amd64.tar', 'image-arm64.tar'];
+const names = ['peek-1.0.0-arm64.dmg', 'peek-1.0.0-x64.dmg', 'peek-1.0.0-x64.exe', 'peek-1.0.0-x64.deb', 'peek-1.0.0-x64.AppImage', 'peek-server-1.0.0-linux-amd64.deb', 'peek-server-1.0.0-linux-x86_64.apk', 'peek-server-apk.rsa.pub', 'image-amd64.tar', 'image-arm64.tar'];
 const files = names.map((name) => ({ name, sha256: 'a'.repeat(64), size: 123 }));
 function published(overrides = {}) {
   const plan = planRelease({ ...input, channel: 'stable', requestedVersion: '1.0.0', publish: true, ...overrides });
-  const installers = installerNames(plan).map((name) => ({ name, sha256: 'a'.repeat(64), size: 123 }));
+  const installers = publicAssetNames(plan).map((name) => ({ name, sha256: 'a'.repeat(64), size: 123 }));
   return createManifest(plan, installers, `sha256:${'b'.repeat(64)}`);
 }
 
@@ -104,9 +104,23 @@ test('artifact binding rejects substring versions, wrong channels and signed/uns
     (name) => name.replace('peek-desktop-', 'peek-desktop-nightly-'),
     (name) => name.replace('-mac-', '-UNSIGNED-mac-'),
   ]) {
-    assert.throws(() => manifestSchema.parse({ ...manifest, files: manifest.files.map((file) => ({ ...file, name: transform(file.name) })) }), /installer matrix/);
+    assert.throws(() => manifestSchema.parse({ ...manifest, files: manifest.files.map((file) => ({ ...file, name: transform(file.name) })) }), /artifact matrix/);
   }
   const candidates = [...manifest.files, ...files.filter((file) => file.name.endsWith('.tar'))];
   assert.doesNotThrow(() => verifyMatrix(candidates, manifest.plan));
   assert.throws(() => verifyMatrix(candidates.map((file) => ({ ...file, name: file.name.replace('-1.0.0-', '-11.0.0-') })), manifest.plan), /exactly identify/);
+});
+
+test('server packages are distinct mandatory assets for both channels and bind the APK key', () => {
+  for (const channel of ['stable', 'nightly']) {
+    const manifest = published({ channel });
+    const names = serverPackageNames(manifest.plan);
+    const prefix = channel === 'nightly' ? 'peek-server-nightly-' : 'peek-server-';
+    assert.ok(names.every((name) => name.startsWith(prefix)));
+    assert.ok(names[0].endsWith('-linux-amd64.deb'));
+    assert.ok(names[1].endsWith('-linux-x86_64.apk'));
+    assert.throws(() => manifestSchema.parse({ ...manifest, files: manifest.files.filter((file) => file.name !== names[0]) }));
+    assert.throws(() => manifestSchema.parse({ ...manifest, files: manifest.files.filter((file) => file.name !== names[1]) }));
+    assert.throws(() => manifestSchema.parse({ ...manifest, server: { ...manifest.server, apkSigningKey: { ...manifest.server.apkSigningKey, sha256: 'd'.repeat(64) } } }), /key identity/);
+  }
 });

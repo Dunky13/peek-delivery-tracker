@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { test } from 'node:test';
 import { createManifest } from './artifacts.mjs';
 import { isDraftPlaceholder, publishedManifests, tagSource, verifyPublishedImage, verifyStagedAssets } from './github.mjs';
-import { installerNames, planRelease } from './model.mjs';
+import { publicAssetNames, planRelease } from './model.mjs';
 
 const sha = 'a'.repeat(40);
 const digestOf = (text) => `sha256:${createHash('sha256').update(text).digest('hex')}`;
@@ -22,7 +22,7 @@ function fixture() {
   const digest = digestOf(index);
   content.set(`/manifests/${digest}`, index);
   const plan = planRelease({ channel: 'stable', sourceSha: sha, packageVersion: '1.0.0', requestedVersion: '1.0.0', runNumber: 1, runId: '123', runAttempt: 1, repository: 'example/peek', imageRepository: 'ghcr.io/example/peek-release-poc', publish: true, manifests: [] });
-  const files = installerNames(plan).map((name) => ({ name, sha256: 'b'.repeat(64), size: 123 }));
+  const files = publicAssetNames(plan).map((name) => ({ name, sha256: 'b'.repeat(64), size: 123 }));
   const manifest = createManifest(plan, files, digest);
   const release = { id: 1, tag_name: 'v1.0.0', target_commitish: sha, draft: false, prerelease: false, assets: [
     { id: 1, name: 'release-manifest.json', state: 'uploaded', size: 100, browser_download_url: 'https://github.com/example/peek/releases/download/v1.0.0/release-manifest.json' },
@@ -65,7 +65,7 @@ test('unrelated files cannot masquerade as a complete release', async (t) => {
   const data = fixture();
   data.manifest.files = data.manifest.files.map((file, index) => ({ ...file, name: `unrelated-${index}.bin` }));
   t.mock.method(globalThis, 'fetch', handler(data));
-  await assert.rejects(publishedManifests('example/peek', [data.release]), /installer matrix/);
+  await assert.rejects(publishedManifests('example/peek', [data.release]), /artifact matrix/);
 });
 
 test('moved or wrongly declared tags cannot advance the baseline', async (t) => {
