@@ -51,6 +51,13 @@ it('points an unknown parcel to the first carrier its check would ask again, ask
     'newer', now)).toBeNull();
 });
 
+it('asks an unknown parcel\'s detected carrier again once its wait is over, asked before or not', () => {
+  const now = Date.parse('2026-09-10T12:00:00Z');
+  const failed = (retry: string) => parcel({}, { routing: { failures: { ups: { kind: 'rate_limited', count: 1, retry_at: retry } } } });
+  expect(rerouteCarrier(failed('2026-09-10T11:00:00Z'), 'newer', now)).toBe('ups');
+  expect(rerouteCarrier(failed('2026-09-10T13:00:00Z'), 'newer', now)).toBeNull();
+});
+
 it('points a parcel a provider tracks back to its own carrier when that carrier was never asked', () => {
   const filed = { carrier: 'royal-mail', tracking_number: 'RR123456785GB' };
   expect(rerouteCarrier(parcel(filed))).toBe('royal-mail');
@@ -64,8 +71,8 @@ it.each<[string, JsonObject, JsonObject]>([
   ['delivered', { current_stage: 'delivered' }, {}],
   ['returned', { current_stage: 'returned' }, {}],
   ['corrected from another carrier', {}, { original_carrier: 'dhl' }],
-  ['whose carrier already failed', {}, { routing: { failures: { ups: { kind: 'not_found' } } } }],
-  ['whose carrier was probed', {}, { routing: { candidate_probes: { ups: { count: 1, retry_at: '2026-09-10T11:00:00Z' } } } }],
+  ['whose carrier failed and is waiting', {}, { routing: { failures: { ups: { kind: 'not_found', count: 1, retry_at: '2999-01-01T00:00:00Z' } } } }],
+  ['whose carrier was probed and is waiting', {}, { routing: { candidate_probes: { ups: { count: 1, retry_at: '2999-01-01T00:00:00Z' } } } }],
   ['whose carrier is confirmed', {}, { routing: { confirmed_carrier: 'ups' } }],
 ])('leaves alone a parcel %s', (_name, values, data) => {
   expect(rerouteCarrier(parcel(values, data))).toBeNull();

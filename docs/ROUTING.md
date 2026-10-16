@@ -339,8 +339,9 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   for each one the new catalog points to a carrier it has not asked yet: the carrier its
   number is now detected as, the one a provider's saved carrier names now read as, or the
   filed carrier's new adapter. A parcel filed under no carrier is also queued when its
-  recognition has a carrier to ask whose wait is over, asked before or not, since a release
-  can teach an adapter a number. One still in its cooldown is queued by the first scheduled
+  detected or named carrier, or else a carrier its recognition would ask, has no wait left,
+  asked before or not: a release can teach an adapter a number, and a rate limit or outage
+  passes. One still in its cooldown is queued by the first scheduled
   run after the cooldown ends. These checks wait behind every other job, a lookup's own
   check too. Only parcels filed under no carrier, or showing a provider's history, are
   looked at. A lookup nobody follows any more gets this one check.
