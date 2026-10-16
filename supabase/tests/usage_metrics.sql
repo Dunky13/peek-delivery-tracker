@@ -8,7 +8,8 @@ begin
       or not has_table_privilege('metrics_reader', 'metrics.active_accounts', 'SELECT')
       or not has_table_privilege('metrics_reader', 'metrics.live', 'SELECT')
       or not has_table_privilege('metrics_reader', 'metrics.open_parcels', 'SELECT')
-      or not has_table_privilege('metrics_reader', 'metrics.carriers', 'SELECT') then
+      or not has_table_privilege('metrics_reader', 'metrics.carriers', 'SELECT')
+      or not has_table_privilege('metrics_reader', 'metrics.health', 'SELECT') then
     raise exception 'Grafana cannot read the usage counts';
   end if;
   if has_table_privilege('metrics_reader', 'metrics.daily', 'INSERT')
@@ -16,6 +17,7 @@ begin
       or has_table_privilege('metrics_reader', 'public.packages', 'SELECT')
       or has_table_privilege('metrics_reader', 'public.account_activity', 'SELECT')
       or has_table_privilege('metrics_reader', 'auth.users', 'SELECT')
+      or has_table_privilege('metrics_reader', 'public.tracking_sync_attempts', 'SELECT')
       or has_function_privilege('metrics_reader', 'metrics.record_additions(date, date)', 'EXECUTE')
       or has_function_privilege('metrics_reader', 'public.record_usage_metrics()', 'EXECUTE') then
     raise exception 'Grafana can do more than read the usage counts';
@@ -122,11 +124,55 @@ begin
 end;
 $$;
 
+-- The alert rules' view counts the last three hours' checks, failures and the carriers they
+-- failed for, the time since a check finished, slow scheduled syncs and open incidents.
+do $$
+declare
+  parcel constant uuid := 'f3000000-0000-4000-8000-000000000003';
+  before metrics.health;
+  after metrics.health;
+begin
+  select * into strict before from metrics.health;
+  insert into public.packages (id, user_id, one_off, tracking_number, carrier)
+  values (parcel, null, true, 'HEALTH0001', 'unknown');
+  insert into public.tracking_sync_attempts (package_id, trigger, configured_carrier, outcome, started_at, completed_at)
+  values
+    (parcel, 'scheduled', 'health-a', 'error', now() - interval '61 minutes', now() - interval '60 minutes'),
+    (parcel, 'scheduled', 'health-b', 'error', now() - interval '61 minutes', now() - interval '60 minutes'),
+    (parcel, 'scheduled', 'health-b', 'updated', now() - interval '61 minutes', now() - interval '60 minutes'),
+    (parcel, 'package', 'health-b', 'superseded', now() - interval '61 minutes', now() - interval '60 minutes'),
+    (parcel, 'package', 'health-c', 'running', now() - interval '1 minute', null),
+    (parcel, 'scheduled', 'health-c', 'error', now() - interval '4 hours', now() - interval '4 hours');
+  insert into public.sync_jobs (kind, state, started_at, completed_at) values
+    ('scheduled', 'succeeded', now() - interval '20 minutes', now() - interval '20 minutes' + interval '400 seconds'),
+    ('scheduled', 'failed', now() - interval '3 hours', now() - interval '150 minutes'),
+    ('scheduled', 'running', now() - interval '30 minutes', null);
+  insert into public.tracking_health_incidents (kind, subject, active)
+  values ('provider', 'health-open', true), ('provider', 'health-closed', false);
+  select * into strict after from metrics.health;
+
+  if after.checks_3h <> before.checks_3h + 3 or after.failed_checks_3h <> before.failed_checks_3h + 2
+      or after.failed_carriers_3h <> before.failed_carriers_3h + 2 then
+    raise exception 'The last three hours'' finished checks were miscounted: % then %', before, after;
+  end if;
+  if after.seconds_since_check > 3600 then
+    raise exception 'The last finished check was missed: %', after;
+  end if;
+  if after.longest_scheduled_sync_2h < 400 or after.longest_scheduled_sync_2h >= 1800 then
+    raise exception 'The longest scheduled sync of the last two hours was missed: %', after;
+  end if;
+  if after.open_health_incidents <> before.open_health_incidents + 1 then
+    raise exception 'Open health incidents were miscounted: % then %', before, after;
+  end if;
+end;
+$$;
+
 -- Grafana's role reads through the views without reading the tables behind them.
 set local role metrics_reader;
 select accounts, active_day, parcels_open_account, link_alerts from metrics.live;
 select stage, account, lookup from metrics.open_parcels;
 select day, carrier, parcels from metrics.carriers where carrier = 'unknown' limit 1;
+select checks_3h, failed_carriers_3h, seconds_since_check, open_health_incidents from metrics.health;
 do $$
 begin
   perform 1 from public.packages;
