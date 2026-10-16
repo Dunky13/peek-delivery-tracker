@@ -37,7 +37,9 @@ group by 1, 2, 3, 4
 order by checks desc, carrier, anomaly;
 
 \echo '== Unmapped wording: first seen in the window'
-select carrier, coalesce(provider_code, '-') as code, left(description_normalized, 80) as wording,
+-- Wording can quote another number: runs of eight letters and digits or more with a digit are masked.
+select carrier, coalesce(provider_code, '-') as code,
+       left(regexp_replace(description_normalized, '\m(?=[[:alnum:]]*[0-9])[[:alnum:]]{8,}\M', '<number>', 'g'), 80) as wording,
        chosen_stage as read_as, 'adapters' as lane, count as sightings
 from public.tracking_status_observations
 where reviewed_at is null and first_seen >= :since
