@@ -4294,6 +4294,81 @@ describe('scans a carrier and a universal provider both report', () => {
   });
 });
 
+describe('a carrier a provider names, whose scans the provider copied in the wrong zone', () => {
+  type Scan = { time: string; description: string; stage: string };
+  // A synthetic number 4PX's adapter accepts and detection names no carrier for.
+  const parcel = { id: 'four-px-parcel', user_id: 'owner', carrier: 'unknown', tracking_number: 'TEST0000000000001HD' };
+  // 4PX gives each scan its own offset.
+  const scans: Scan[] = [
+    { time: '2026-01-05T08:55:00+02:00', description: 'Departed from the transit hub', stage: 'in_transit' },
+    { time: '2026-01-04T10:30:00+02:00', description: 'Released from customs', stage: 'in_transit' },
+    { time: '2026-01-03T04:18:58+08:00', description: 'Departed from the origin airport', stage: 'in_transit' },
+  ];
+  const result = (events: Scan[]): CarrierResult => ({ status: 'in_transit', current_stage: 'in_transit',
+    last_status_text: events[0]!.description, last_update: events[0]!.time, events });
+  // The provider's copies are eight hours late, the newest after the check.
+  const copies: CarrierResult = { ...result(scans.map((scan) => ({ ...scan,
+    time: new Date(Date.parse(scan.time) + 8 * 3_600_000).toISOString() }))),
+  tracking_provider: 'ParcelsApp', discovered_carrier: 'four-px', reported_carriers: ['4PX Express'] };
+  const setup = (fetch: (carrierId: string) => Promise<CarrierResult>) => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch, fetchUniversal: vi.fn().mockResolvedValue(copies) };
+    let now = new Date('2026-01-05T12:00:00Z');
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    const saved = () => store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject;
+    const sync = async (at: string, loaded: JsonObject = {}) => {
+      now = new Date(at);
+      await service.syncPackage({ ...parcel, current_stage: 'pending', ...loaded, [STORED_EVENT_IDENTITIES]: store.identities() });
+      return saved();
+    };
+    return { store, adapter, sync };
+  };
+
+  it('files the parcel under the carrier on the check whose provider names it', async () => {
+    const fetch = vi.fn<(carrierId: string) => Promise<CarrierResult>>().mockResolvedValue(result(scans));
+    const { store, sync } = setup(fetch);
+    const values = await sync('2026-01-05T12:00:00Z');
+    expect(fetch.mock.calls.map(([carrier]) => carrier)).toEqual(['four-px']);
+    expect(values).toMatchObject({ carrier: 'four-px', current_stage: 'in_transit',
+      carrier_data: { routing: { confirmed_carrier: 'four-px', last_event_at: '2026-01-05T06:55:00.000Z' } } });
+    expect(values.carrier_data).not.toHaveProperty('tracking_provider');
+    expect([...store.rows.values()].map((row) => row.occurred_at))
+      .toEqual(['2026-01-05T06:55:00Z', '2026-01-04T08:30:00Z', '2026-01-02T20:18:58Z']);
+  });
+
+  it('files it under the carrier once the carrier answers again, over the copies stored while it was down', async () => {
+    const fetch = vi.fn<(carrierId: string) => Promise<CarrierResult>>()
+      .mockRejectedValueOnce(new Error('4PX tracking is unavailable')).mockResolvedValue(result(scans));
+    const { store, adapter, sync } = setup(fetch);
+    const first = await sync('2026-01-05T12:00:00Z');
+    // The router caps the watermark at the time of the check.
+    expect(first).toMatchObject({ carrier_data: { tracking_provider: 'ParcelsApp',
+      routing: { discovered_carrier: 'four-px', last_event_at: '2026-01-05T12:00:00.000Z' } } });
+    const copied = new Map([...store.rows.values()].map((row) => [row.provider_event_id, row.id]));
+    expect(copied.size).toBe(3);
+    // The parcel was added after the carrier's newest scan: the app's row is no scan.
+    store.rows.set('app:pending', { id: 'added', provider_event_id: 'app:pending', stage: 'pending',
+      description: 'Tracking added', occurred_at: '2026-01-05T09:00:00.000Z' });
+
+    const values = await sync('2026-01-06T12:00:00Z', { current_stage: 'in_transit', carrier_data: first.carrier_data });
+    expect(fetch.mock.calls.map(([carrier]) => carrier)).toEqual(['four-px', 'four-px']);
+    expect(adapter.fetchUniversal).toHaveBeenCalledOnce();
+    expect(values).toMatchObject({ carrier: 'four-px',
+      carrier_data: { routing: { confirmed_carrier: 'four-px', last_event_at: '2026-01-05T06:55:00.000Z' } } });
+    expect(values.carrier_data).not.toHaveProperty('tracking_provider');
+    // The carrier's scans take the copies over at their own instants.
+    expect(store.rows.size).toBe(4);
+    expect([...copied].map(([id, row]) => store.rows.get(String(id))?.id === row)).toEqual([true, true, true]);
+    expect([...copied.keys()].map((id) => store.rows.get(String(id))?.occurred_at))
+      .toEqual(['2026-01-05T06:55:00Z', '2026-01-04T08:30:00Z', '2026-01-02T20:18:58Z']);
+  });
+});
+
 describe('the pickup point a parcel was collected from', () => {
   const POINT = 'Example Kiosk\nExample Street 1, 9999 Sampleville';
   const OTHER = 'Example Locker\nSample Road 2, 9999 Sampleville';

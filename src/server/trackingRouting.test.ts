@@ -29,7 +29,7 @@ const fixedPlan = (...sources: UniversalSource[]) => vi.spyOn(scraper, 'universa
 });
 const parcel = (overrides: JsonObject = {}): JsonObject => ({ id: 'parcel', carrier: 'unknown', tracking_number: 'TEST1234', ...overrides });
 const state = (extra: JsonObject = {}) => ({ version: 1, configured_carrier: 'unknown', failures: {}, probe_cursor: 0, discovery_cursor: 0, ...extra });
-function setup(now = time) {
+function setup(now = time, options: Partial<ConstructorParameters<typeof TrackingRouter>[0]> = {}) {
   const direct = vi.fn().mockResolvedValue(directValue());
   const universal = vi.fn().mockResolvedValue(history());
   const health = {
@@ -42,7 +42,7 @@ function setup(now = time) {
   // A provider's spacing is waited out instantly.
   const wait = vi.fn().mockResolvedValue(undefined);
   return { direct, universal, health, recognize, recognizeBrowser, wait,
-    router: new TrackingRouter({ direct, universal, health, recognize, recognizeBrowser, wait, now: () => now }) };
+    router: new TrackingRouter({ direct, universal, health, recognize, recognizeBrowser, wait, now: () => now, ...options }) };
 }
 beforeEach(() => vi.spyOn(monitoring, 'reportRoutingEvent').mockImplementation(() => undefined));
 afterEach(() => vi.restoreAllMocks());
@@ -410,6 +410,45 @@ describe('persistent tracking routing', () => {
     expect(result.correction).toBeUndefined();
     expect(result.result.tracking_provider).toBe('ParcelsApp');
     expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+  });
+  describe('a named carrier older than the parcel\'s newest scan', () => {
+    // The provider's copies of the carrier's scans, read hours late, set the watermark.
+    const named = (routing: JsonObject = {}) => parcel({ current_stage: 'in_transit', carrier_data: { routing: state({
+      discovered_carrier: 'ups', preferred_provider: 'ParcelsApp', last_event_at: '2026-09-10T11:00:00.000Z', ...routing }) } });
+    const older = () => ({ ...directValue(), result: history('2026-09-10T03:00:00Z') });
+
+    it('takes the carrier when the copies explain the watermark', async () => {
+      const withoutCopies = vi.fn().mockReturnValue(Date.parse('2026-09-10T03:00:00Z'));
+      const { router, direct, universal } = setup(time, { withoutCopies });
+      direct.mockResolvedValue(older());
+      const result = await router.fetch(named(), false);
+      expect(withoutCopies).toHaveBeenCalledExactlyOnceWith(Date.parse('2026-09-10T11:00:00Z'), expect.objectContaining({ sourceCarrierId: 'ups' }), undefined);
+      expect(result).toMatchObject({ sourceCarrierId: 'ups', correction: { carrier: 'ups' },
+        result: { routing: { confirmed_carrier: 'ups', last_event_at: '2026-09-10T03:00:00.000Z' } } });
+      expect(universal).not.toHaveBeenCalled();
+    });
+
+    it('keeps the provider when the copies leave a newer scan', async () => {
+      const withoutCopies = vi.fn().mockReturnValue(Date.parse('2026-09-10T05:00:00Z'));
+      const { router, direct } = setup(time, { withoutCopies });
+      direct.mockResolvedValue(older());
+      const result = await router.fetch(named(), false);
+      expect(result.correction).toBeUndefined();
+      expect(result.result.tracking_provider).toBe('ParcelsApp');
+      expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+    });
+
+    it('holds the carrier against the copies in the answer of the provider that names it', async () => {
+      const withoutCopies = vi.fn((watermark: number) => watermark > Date.parse('2026-09-10T11:00:00Z') ? Date.parse('2026-09-10T03:00:00Z') : watermark);
+      const { router, direct, universal } = setup(time, { withoutCopies });
+      const copies = { ...history('2026-09-10T11:30:00Z'), discovered_carrier: 'ups' };
+      universal.mockResolvedValue(copies);
+      direct.mockResolvedValue(older());
+      const result = await router.fetch(parcel({ current_stage: 'in_transit',
+        carrier_data: { routing: state({ last_event_at: '2026-09-10T11:00:00.000Z' }) } }), false);
+      expect(withoutCopies).toHaveBeenCalledExactlyOnceWith(Date.parse('2026-09-10T11:30:00Z'), expect.objectContaining({ sourceCarrierId: 'ups' }), expect.objectContaining({ tracking_provider: 'ParcelsApp', events: copies.events }));
+      expect(result).toMatchObject({ sourceCarrierId: 'ups', result: { routing: { confirmed_carrier: 'ups' } } });
+    });
   });
   it('does not repeat the failing selected scraper when the universal names it', async () => {
     const { router, direct, universal } = setup();

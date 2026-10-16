@@ -548,7 +548,8 @@ export function relayedScans(earlier: readonly JsonObject[], delivery: readonly 
  * claimed, so the copies explain the excess (the router caps a future-dated
  * copy at the time of the check); a time they do not explain stands. The batch
  * always counts, `stored` rows only with `withStored`, and `also` adds instants
- * the batch rows do not carry.
+ * the batch rows do not carry. The app's own rows ("Tracking added") are no
+ * scans: a parcel added after its newest scan keeps that scan's time.
  */
 export function withoutCopyDrift(
   time: number,
@@ -573,7 +574,9 @@ export function withoutCopyDrift(
     if (twin) claimed.push(instantOf(event));
     kept.push(instantOf(twin ?? event));
   }
-  if (options.withStored) for (const row of stored) kept.push(retimed.get(identity(row)) ?? instantOf(row));
+  if (options.withStored) {
+    for (const row of stored) if (sourceOf(identity(row)) !== 'app') kept.push(retimed.get(identity(row)) ?? instantOf(row));
+  }
   const newest = Math.max(...kept.filter(Number.isFinite));
   const claimedNewest = Math.max(...claimed.filter(Number.isFinite));
   return Number.isFinite(newest) && time > newest && time <= claimedNewest ? newest : time;

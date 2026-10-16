@@ -412,7 +412,11 @@ the sync when it checks whether a returned summary is older than the watermark. 
 copy of a stored scan counts at the stored scan's instant, and a row a scan takes over or
 moves at that scan's instant. A provider that misread the zone therefore cannot set the
 watermark hours ahead and make the carrier's own reply look older, and the watermark comes
-back once the provider's corrected answer moves its rows.
+back once the provider's corrected answer moves its rows. The router holds a carrier
+detection or a provider names to the same rule before taking it: its newest scan counts
+against the watermark less the copies of its own scans, stored or in the answer of the
+provider that names it. The app's "Tracking added" row is no scan, so a parcel added after
+its newest scan keeps that scan's time.
 
 When a scraper fix changes a stored scan's instant, a row only a universal provider wrote
 moves on that provider's next answer. Other rows need a data migration that repairs the

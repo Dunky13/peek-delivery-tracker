@@ -1194,6 +1194,7 @@ export class TrackingSyncService {
               checks.reuse<CarrierResult>(universalLookupKey(source, number, postcode, timezone, carrier)) } : {}),
             health: this.client, now: this.now,
             takePrefetchedUniversal: takePreflightHistory, preflightInputNeeded, refuses: refusesNumber,
+            withoutCopies: (watermark: number, value: RoutedResult, provider?: CarrierResult) => watermarkWithoutCopies(parcel, watermark, value, provider),
             ...(this.adapter.recognize ? { recognize: (carrier: string, number: string, context?: TrackingContext) =>
               once(recognitionKey('http', carrier, number), () => this.adapter.recognize!(carrier, number, context)) } : {}),
             ...(this.adapter.recognizeBrowser ? { recognizeBrowser: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) =>
@@ -1855,6 +1856,19 @@ function providerIdentification(
 function storedEventIdentities(parcel: JsonObject): JsonObject[] {
   const stored = parcel[STORED_EVENT_IDENTITIES];
   return Array.isArray(stored) ? stored.filter(isRecord) : [];
+}
+
+/**
+ * A routing watermark without what a universal provider's copies of a
+ * carrier's own scans, read in the wrong zone, add to it, matched as the sync
+ * matches them: in the stored rows and in `provider`'s answer of the same check.
+ */
+function watermarkWithoutCopies(parcel: JsonObject, watermark: number, value: RoutedResult, provider?: CarrierResult): number {
+  const events = buildEvents(parcel, value.result, value.sourceCarrierId);
+  const stored = storedEventIdentities(parcel);
+  const known = new Set(stored.map((row) => row.provider_event_id));
+  const rows = [...stored, ...(provider ? buildEvents(parcel, provider, 'unknown') : []).filter((row) => !known.has(row.provider_event_id))];
+  return withoutCopyDrift(watermark, events, rows, sharedScans(events, rows), { withStored: true });
 }
 
 /**

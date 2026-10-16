@@ -284,6 +284,12 @@ export class TrackingRouter {
     recognizeBrowser?: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) => Promise<Recognition>;
     /** Whether a carrier's adapter refuses the number as one it does not issue, without a request. */
     refuses?: (carrier: string, number: string) => Promise<boolean>;
+    /**
+     * The watermark without what a universal provider's copies of this
+     * answer's own scans, read in the wrong zone, add to it: the parcel's
+     * stored rows, and `provider`'s answer from this check.
+     */
+    withoutCopies?: (watermark: number, value: RoutedResult, provider?: CarrierResult) => number;
     now?: () => Date;
     /** Waits out a provider's spacing; tests replace the timer. */
     wait?: (ms: number, signal?: AbortSignal) => Promise<unknown>;
@@ -457,7 +463,15 @@ export class TrackingRouter {
       if (contacts > 0) state.consecutive_failures = Math.min(20, state.consecutive_failures + 1);
       throw new RoutingDeferred(state, stale && state.consecutive_failures >= 2, contacts);
     };
-    const tryDirect = async (carrier: string, candidate = false, terminalStage?: string, probe = false): Promise<RoutedResult | null> => {
+    // A candidate whose newest scan is older than the parcel's newest is no
+    // fresher source, unless the provider's copies of the candidate's own
+    // scans set that watermark on a misread clock (ParcelsApp reads 4PX's and
+    // Evri's local times as UTC). `provider` is the answer of this check.
+    const olderThanParcel = (value: RoutedResult, provider?: CarrierResult) => {
+      const watermark = millis(state.last_event_at);
+      return latest(value) < watermark && latest(value) < (this.options.withoutCopies?.(watermark, value, provider) ?? watermark);
+    };
+    const tryDirect = async (carrier: string, candidate = false, terminalStage?: string, probe = false, provider?: CarrierResult): Promise<RoutedResult | null> => {
       signal?.throwIfAborted();
       if (!directCarrier(carrier) || attemptedDirect.has(carrier)) return null;
       // Never borrow a postcode/capability from another carrier or guess missing
@@ -531,7 +545,7 @@ export class TrackingRouter {
           return null;
         }
         if (candidate && !moved) return null;
-        if (candidate && latest(value) < millis(state.last_event_at)) return null;
+        if (candidate && olderThanParcel(value, provider)) return null;
         if (terminalStage && ['delivered', 'returned'].includes(terminalStage)
           && value.result.current_stage !== terminalStage) return null;
         if (capturedHistory) localHistory = capturedHistory;
@@ -916,7 +930,7 @@ export class TrackingRouter {
           && millis(state.direct_retry_at) > now().getTime();
         state.last_event_at = withoutProgress ? watermark : iso(Math.max(millis(watermark), latest(value)));
         const direct = later ? null : await tryDirect(state.discovered_carrier, state.discovered_carrier !== declared,
-          value.result.current_stage ?? value.result.status).catch((error: unknown) => {
+          value.result.current_stage ?? value.result.status, false, value.result).catch((error: unknown) => {
           if (!(error instanceof RoutingDeferred)) throw error;
           return null;
         });
