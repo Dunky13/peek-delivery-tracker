@@ -6,7 +6,7 @@ What App Store Connect asks for Peek's iPhone app. Building and uploading is in
 ## Listing
 
 [`listing/`](listing) has the name, subtitle, promotional text, description and keywords for
-each language. `en.md` serves English (U.K.), the primary language, and English (U.S.);
+each language. `en.md` serves English (U.S.), the primary language, and English (U.K.);
 `es.md` is Spanish (Spain) and `pt.md` Portuguese (Portugal).
 
 Keywords are counted in bytes (an accented letter counts two) and can't name other

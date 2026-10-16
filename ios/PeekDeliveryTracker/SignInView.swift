@@ -532,11 +532,12 @@ struct SignInView: View {
     private var methods: some View {
         VStack(spacing: invitation == nil ? 9 : 12) {
             if session.configuration.appleAuthEnabled {
-                AppleAuthenticationButton(cornerRadius: invitation == nil ? 13 : 18) {
+                // Apple's own button, the size of the Google button below it.
+                AppleAuthenticationButton(cornerRadius: 13) {
                     run(provider: "apple") { try await session.signInWithApple() }
                 }
                 .id(colorScheme)
-                .frame(height: invitation == nil ? 48 : 56)
+                .frame(height: 48)
                 .overlay(alignment: .trailing) {
                     if activeProvider == "apple" {
                         ProgressView().tint(colorScheme == .dark ? .black : .white)
