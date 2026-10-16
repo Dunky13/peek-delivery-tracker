@@ -11185,10 +11185,18 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Almaty",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kazpost",
+      "recognitionRank": 931
     },
-    "trackingUrlTemplate": "https://post.kz/mail/search/track/{trackingNumber}/detail",
+    "trackingUrlTemplate": "https://post.kz/services/postal/{trackingNumber}",
     "linkRules": [
+      {
+        "domains": [
+          "post.kz",
+          "www.post.kz"
+        ],
+        "path": "^/services/postal/([A-Za-z]{2}\\d{9}[A-Za-z]{2})/?$"
+      },
       {
         "domains": [
           "post.kz",
@@ -11197,7 +11205,14 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/mail/search/track/([A-Za-z]{2}\\d{9}[A-Za-z]{2})(?:/detail)?/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}KZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://post.kz/"
   },
   "kex": {
