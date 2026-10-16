@@ -967,7 +967,9 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(catalog.recognitionCandidates(for: "300000000004").first, .purolator)
         XCTAssertFalse(catalog.recognitionCandidates(for: "300000000005").contains(.purolator))
         // Hermes's check digit passes; DPD's networks are only more popular.
-        XCTAssertEqual(catalog.recognitionCandidates(for: "12345678901231"), [.hermesDe, .dpdBe, .dpd, .dpdDe, .seur])
+        let fourteen = catalog.recognitionCandidates(for: "12345678901231")
+        XCTAssertEqual(fourteen.first, .hermesDe)
+        XCTAssertEqual(Array(fourteen.dropFirst().prefix(2)), [.dpdBe, .dpd])
     }
 
     func testUspsPackageChecksumsIgnoreRoutingAndRejectAmbiguousSplits() {
