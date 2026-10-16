@@ -321,6 +321,8 @@ export class SyncJobWorker {
         signal.throwIfAborted();
         summary = await this.service.sync({ ...context, trigger: 'scheduled' });
         signal.throwIfAborted();
+        // After a scraper release, parcels its new rules point elsewhere are checked once more.
+        if (await this.service.queueRedetections(signal) > 0) this.wake();
         archived = await this.service.client.archiveDeliveredBefore(
           new Date(Date.now() - AUTO_ARCHIVE_DAYS * 86_400_000),
         );

@@ -18,6 +18,7 @@ function setup() {
   const finish = vi.spyOn(client, 'finishSyncJob').mockResolvedValue();
   vi.spyOn(client, 'getPackage').mockResolvedValue({ id: 'parcel' });
   const service = new TrackingSyncService(client);
+  vi.spyOn(service, 'queueRedetections').mockResolvedValue(0);
   const state: BackgroundState = { workerHeartbeat: null, lastScheduledSync: null, nextScheduledSync: null,
     lastSummary: null, lastError: null, lastAutoArchived: 0 };
   return { client, claim, release, finish, service, worker: new SyncJobWorker(service, state) };

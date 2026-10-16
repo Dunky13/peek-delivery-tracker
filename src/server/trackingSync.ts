@@ -42,7 +42,8 @@ import {
 import { isRecord, type JsonObject } from './types';
 import { UniversalTracker } from 'universal-parcel-scraper/node';
 import type { UniversalSource } from 'universal-parcel-scraper';
-import { answeredWithoutHistory, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter } from './trackingRouting';
+import { answeredWithoutHistory, catalogRules, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter } from './trackingRouting';
+import { REDETECTION_WINDOW_MS, rerouteCarrier } from './redetection';
 import { upuHistory } from './upuHistory';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent } from './directLocalHistory';
@@ -56,6 +57,8 @@ const MAX_PACKAGES_PER_OWNER_PER_SYNC = 5;
 const MAX_ONE_OFF_PACKAGES_PER_SYNC = 10;
 /** A one-off parcel stays on the schedule this long after one of its links was last opened. */
 const ONE_OFF_FOLLOWED_MS = 24 * 60 * 60 * 1_000;
+/** A scheduled run queues at most this many checks of parcels the catalog's new rules point to another carrier. */
+const MAX_REDETECTIONS = 50;
 /** A parcel no notification can reach keeps the daytime cadence this long after its account's apps or one of its links were last opened; then it is checked hourly. */
 const WATCHED_AFTER_OPEN_MS = 60 * 60 * 1_000;
 const VALID_STAGES = new Set<string>(STAGES);
@@ -719,6 +722,8 @@ class SupersededTrackingSync extends Error {}
 export class TrackingSyncService {
   #tail: Promise<void> = Promise.resolve();
   #reportedObservationFailure = false;
+  /** The catalog rules whose redetections this process queued. */
+  #redetectedWith: string | null = null;
 
   constructor(
     readonly client: SupabaseServiceClient,
@@ -740,7 +745,13 @@ export class TrackingSyncService {
         unwatched: unwatched.has(String(parcel.id)), oneOff, sharedAlerts: shared.has(String(parcel.id)),
       });
       const accounts = fairSyncPackages(active.filter(due(false)));
-      const parcels = [...accounts, ...await this.followedOneOffPackages(due(true), now, context.signal)];
+      // Overnight, a lookup without an account that has no alert on and was not opened in the
+      // last hour waits for the morning: nobody reads it, and a number no carrier is known
+      // for asks every provider in turn. Opening its link still queues a check.
+      const hour = DateTime.fromJSDate(now, { zone: 'Europe/Zurich' }).hour;
+      const overnight = hour < 8 || hour >= 22;
+      const oneOffDue = (parcel: JsonObject) => !(overnight && unwatched.has(String(parcel.id))) && due(true)(parcel);
+      const parcels = [...accounts, ...await this.followedOneOffPackages(oneOffDue, now, context.signal)];
       // Copies of one number, in several accounts or followed without one, share their lookups.
       const lookups = new SharedLookups(parcels);
       let legs: Set<string> | null | undefined;
@@ -783,6 +794,34 @@ export class TrackingSyncService {
       await this.dispatchNotifications(summary, context.signal);
       return summary;
     });
+  }
+
+  /**
+   * Once per catalog: one check of each open parcel the catalog's rules point to a
+   * carrier its routing never asked, such as a lookup added before a scraper release
+   * brought the number's detection rule, the name a provider gives or the carrier's
+   * adapter, whose link nobody opens any more (redetection.ts). Returns how many
+   * checks were queued; they wait behind refreshes and the scheduled run.
+   */
+  async queueRedetections(signal?: AbortSignal): Promise<number> {
+    const rules = catalogRules();
+    if (this.#redetectedWith === rules) return 0;
+    let queued = 0;
+    try {
+      const candidates = await this.client.listRedetectionCandidates(new Date(this.now().getTime() - REDETECTION_WINDOW_MS), rules);
+      for (const parcel of candidates) {
+        if (queued >= MAX_REDETECTIONS) break;
+        if (!rerouteCarrier(parcel, rules)) continue;
+        await this.client.enqueueSyncJob({ packageId: String(parcel.id), userId: typeof parcel.user_id === 'string' ? parcel.user_id : null });
+        queued += 1;
+      }
+      this.#redetectedWith = rules;
+    } catch (error) {
+      signal?.throwIfAborted();
+      captureOperationalError(error, { component: 'tracking', operation: 'queue_redetections' });
+    }
+    if (queued > 0) logOperationalEvent('tracking_redetections_queued', { queued });
+    return queued;
   }
 
   /**

@@ -20,14 +20,15 @@ function scheduledRun() {
   const feedback = vi.spyOn(client, 'forgetOldParcelFeedback').mockResolvedValue(0);
   const usage = vi.spyOn(client, 'recordUsageMetrics').mockResolvedValue();
   const service = new TrackingSyncService(client);
-  vi.spyOn(service, 'sync').mockResolvedValue(emptySyncSummary());
+  const sync = vi.spyOn(service, 'sync').mockResolvedValue(emptySyncSummary());
+  const redetections = vi.spyOn(service, 'queueRedetections').mockResolvedValue(0);
   const state: BackgroundState = { workerHeartbeat: null, lastScheduledSync: null, nextScheduledSync: null,
     lastSummary: null, lastError: null, lastAutoArchived: 0 };
-  return { client, feedback, finish, state, usage, worker: new SyncJobWorker(service, state) };
+  return { client, feedback, finish, redetections, state, sync, usage, worker: new SyncJobWorker(service, state) };
 }
 
 it('forgets expired lookups, stopped links and finished alerts, and refreshes the usage gauges, after each scheduled sync', async () => {
-  const { client, finish, worker } = scheduledRun();
+  const { client, finish, redetections, sync, worker } = scheduledRun();
   const forget = vi.spyOn(client, 'forgetExpiredParcelLinks').mockResolvedValue({ links: 3, packages: 2, stopped: 4, alerts: 5 });
   vi.spyOn(client, 'publicLookupUsageSummary').mockResolvedValue({ buckets: 40, p50: 2, p90: 9, max: 15, detection: { buckets: 31, p50: 3, p90: 12, max: 60 } });
   const forgotten = vi.spyOn(metrics, 'recordParcelsForgotten');
@@ -37,6 +38,9 @@ it('forgets expired lookups, stopped links and finished alerts, and refreshes th
   worker.start();
   await vi.advanceTimersByTimeAsync(1);
   worker.stop();
+  // A new catalog's checks are queued once the run is over.
+  expect(redetections).toHaveBeenCalledOnce();
+  expect(sync.mock.invocationCallOrder[0]).toBeLessThan(redetections.mock.invocationCallOrder[0]);
   expect(forget).toHaveBeenCalledOnce();
   expect(forgotten.mock.calls).toEqual([
     ['expired', { links: 3, packages: 2, stopped: 4, alerts: 5 }],

@@ -1639,6 +1639,24 @@ describe('universal preflight and recipient input', () => {
     expect(result.result.routing).not.toHaveProperty('configured_carrier', 'china-post');
     expect(result.result.routing).not.toHaveProperty('discovered_carrier');
   });
+  it('asks no carrier a provider names when its adapter refuses the number', async () => {
+    const value = setup();
+    value.router.options.refuses = vi.fn(async (carrier: string) => carrier === 'poste-italiane');
+    value.universal.mockResolvedValue({ ...history(), discovered_carrier: 'poste-italiane', reported_carriers: ['Italy Post'] });
+    const result = await value.router.fetch(parcel({ carrier: 'intl-post', tracking_number: 'CW123456785IT' }), false);
+    expect(value.direct).not.toHaveBeenCalledWith(expect.anything(), 'poste-italiane');
+    expect(result.result.tracking_provider).toBeDefined();
+    expect(result.result.routing).not.toHaveProperty('discovered_carrier');
+    expect(result.result.routing).not.toHaveProperty('failures.poste-italiane');
+  });
+  it('files an unknown parcel under the journey owner a provider names among several carriers', async () => {
+    const value = setup();
+    value.universal.mockResolvedValue({ ...history(), discovered_carrier: 'mayiyinfu',
+      reported_carriers: ['DHLink', 'Mayiyinfu', 'Deutsche Post - DHL Paket'] });
+    const result = await value.router.fetch(parcel({ tracking_number: 'MY1234567890US' }), false);
+    expect(result.correction).toEqual({ carrier: 'mayiyinfu', trackingUrl: null, postcode: null });
+    expect(result.result.tracking_provider).toBeDefined();
+  });
   it.each(['unknown', 'ups'])('keeps provider history and changes only an unknown carrier: %s', async (carrier) => {
     const value = setup();
     value.direct.mockRejectedValue(new Error('carrier blocked'));

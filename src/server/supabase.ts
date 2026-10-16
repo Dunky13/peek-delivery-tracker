@@ -969,6 +969,24 @@ export class SupabaseServiceClient extends SupabaseClient {
   }
 
   /**
+   * The open, unarchived parcels added since `addedSince`, with or without an
+   * account, that were last routed with other catalog rules than `rules`, the
+   * newest first: what redetection.ts reads, without their events.
+   */
+  async listRedetectionCandidates(addedSince: Date, rules: string): Promise<JsonObject[]> {
+    const params = query([
+      ['select', 'id,user_id,tracking_number,carrier,current_stage,carrier_data'],
+      ['archived_at', 'is.null'],
+      ['current_stage', 'not.in.(delivered,returned)'],
+      ['created_at', `gte.${addedSince.toISOString()}`],
+      ['or', `(carrier_data->routing->>rules.is.null,carrier_data->routing->>rules.neq.${rules})`],
+      ['order', 'created_at.desc'],
+      ['limit', '500'],
+    ]);
+    return rows(await this.request(`/rest/v1/packages?${params}`));
+  }
+
+  /**
    * The open parcels nobody is waiting for: no notification can reach anyone
    * about them, and neither their account's apps nor one of their links were
    * opened since `openedSince`.

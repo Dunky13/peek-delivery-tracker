@@ -24,6 +24,16 @@ it.each<Partial<CarrierResult>>([
   expect(providerCarrier({ ...history, ...change }, '1234567891')).toBeUndefined();
 });
 
+it('uses the journey owner of several named carriers when the number points to it alone', () => {
+  const journey = { ...history, tracking_provider: 'ParcelsApp', discovered_carrier: 'mayiyinfu',
+    reported_carriers: ['DHLink', 'Mayiyinfu', 'Deutsche Post - DHL Paket', 'DHL Parcel Spain'] };
+  expect(providerCarrier(journey, 'MY1234567890US')).toBe('mayiyinfu');
+  // The provider settled on another leg, or the number fits several carriers' rules.
+  expect(providerCarrier({ ...journey, discovered_carrier: 'dhlink' }, 'MY1234567890US')).toBeUndefined();
+  expect(providerCarrier({ ...journey, discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express', 'Swiss Post'] }, '1234567891')).toBeUndefined();
+  expect(providerCarrier({ ...journey, discovered_carrier: undefined }, 'MY1234567890US')).toBeUndefined();
+});
+
 it('keeps a carrier requiring recipient input unresolved', () => {
   expect(providerCarrier({ ...history, discovered_carrier: 'gls-ch', reported_carriers: ['GLS Switzerland'] }, '12345678')).toBeUndefined();
 });

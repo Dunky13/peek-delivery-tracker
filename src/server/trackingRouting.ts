@@ -1,4 +1,5 @@
 import 'server-only';
+import { createHash } from 'node:crypto';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { trackingFailureCode, UNKNOWN_ITEM_REASONS } from './trackingFailure';
 
@@ -71,6 +72,21 @@ export interface RoutingState extends JsonObject {
   probe_cursor: number;
   discovery_cursor: number;
   failures: Record<string, Failure>;
+  /** The catalog rules of the scraper release that last routed the parcel (`catalogRules`). */
+  rules?: string;
+}
+
+let rules: string | undefined;
+/**
+ * What the catalog says about numbers and names, as a short digest: each
+ * carrier's detection rules, names and whether it has an adapter of its own.
+ * A scraper release that adds a rule, an alias or an adapter changes it.
+ */
+export function catalogRules(): string {
+  rules ??= createHash('sha256').update(JSON.stringify(Object.entries(CARRIER_DEFINITIONS).map(([id, definition]) => [id,
+    definition.displayName, definition.aliases, definition.detectionRules, definition.tracking.mode, definition.tracking.adapter])))
+    .digest('base64url').slice(0, 16);
+  return rules;
 }
 
 export function routingState(parcel: JsonObject): RoutingState {
@@ -277,6 +293,7 @@ export class TrackingRouter {
   async fetch(parcel: JsonObject, scheduled: boolean, signal?: AbortSignal, addition = false): Promise<RoutedResult> {
     const now = () => this.options.now?.() ?? new Date();
     const state = routingState(parcel);
+    state.rules = catalogRules();
     const previousFailures = state.consecutive_failures;
     const declared = String(parcel.carrier);
     const number = String(parcel.tracking_number ?? '');
@@ -860,10 +877,11 @@ export class TrackingRouter {
       if (!withoutProgress && !directCarrier(declared) && declared !== 'unknown' && declared !== 'intl-post' && !preferred) report('direct_support_opportunity', declared);
       state.preferred_provider = withoutProgress || chosen === 'UPU' ? preferred : chosen;
       state.preferred_number = state.preferred_provider ? universalNumber : undefined;
-      // Prefetched history skips the direct confirmation below, which forgets a
-      // carrier that refuses the number, but not the adapter's own number check.
-      const refused = prefetchedUniversal.has(chosen) && typeof value.result.discovered_carrier === 'string'
+      // A carrier whose adapter refuses the number as one it does not issue is no
+      // hint: asked, it would only refuse again. The check sends nothing.
+      const refused = typeof value.result.discovered_carrier === 'string'
         && await this.options.refuses?.(value.result.discovered_carrier, universalNumber);
+      if (refused && state.discovered_carrier === value.result.discovered_carrier) delete state.discovered_carrier;
       if (typeof value.result.discovered_carrier === 'string' && !refused) {
         state.discovered_carrier = value.result.discovered_carrier;
         if (directCarrier(state.discovered_carrier) && state.discovered_carrier !== state.confirmed_carrier) {

@@ -136,6 +136,18 @@ describe('one-off parcels and their links', () => {
     }
   });
 
+  it('lists the recent open parcels last routed with other catalog rules, without their events', async () => {
+    const client = service();
+    const request = vi.spyOn(client, 'request').mockResolvedValue([{ id: 'parcel' }]);
+    await expect(client.listRedetectionCandidates(new Date('2026-09-16T10:00:00Z'), 'rules-1')).resolves.toEqual([{ id: 'parcel' }]);
+    const sent = params(request.mock.calls[0][0]);
+    expect(sent.get('select')).toBe('id,user_id,tracking_number,carrier,current_stage,carrier_data');
+    expect(sent.get('archived_at')).toBe('is.null');
+    expect(sent.get('current_stage')).toBe('not.in.(delivered,returned)');
+    expect(sent.get('created_at')).toBe('gte.2026-09-16T10:00:00.000Z');
+    expect(sent.get('or')).toBe('(carrier_data->routing->>rules.is.null,carrier_data->routing->>rules.neq.rules-1)');
+  });
+
   it('lists the one-off parcels a scheduled run follows in the shape of the other candidates', async () => {
     const client = service();
     const request = vi.spyOn(client, 'request').mockResolvedValue([{ id: 'one-off', one_off: true }]);

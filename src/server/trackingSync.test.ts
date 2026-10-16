@@ -34,6 +34,7 @@ import {
 } from './trackingSync';
 import type { JsonObject } from './types';
 import * as observability from './observability';
+import { catalogRules } from './trackingRouting';
 import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
@@ -1440,6 +1441,56 @@ describe('TrackingSyncService', () => {
     expect(client.listFollowedOneOffPackages).toHaveBeenCalledExactlyOnceWith(new Date(now.getTime() - 86_400_000));
     // A manual refresh is never held back by it.
     if (!checked) await expect(service.syncPackage({ ...parcel, id: 'owned', user_id: 'a' })).resolves.toMatchObject({ checked: 1 });
+  });
+
+  it.each([
+    { time: '02:00:00', zurich: '04:00', checked: ['owned', 'opened'] },
+    { time: '20:00:00', zurich: '22:00', checked: ['owned', 'opened'] },
+    { time: '06:00:00', zurich: '08:00', checked: ['owned', 'opened', 'unopened'] },
+  ])('at $zurich in Zurich, checks $checked', async ({ time, checked }) => {
+    const parcel = { carrier: 'swiss-post', current_stage: 'in_transit', tracking_number: 'TEST1234',
+      last_synced_at: '2026-09-08T23:55:00Z', sync_status: 'ok' };
+    const client = fakeClient([{ ...parcel, id: 'owned', user_id: 'a' }]);
+    client.listFollowedOneOffPackages.mockResolvedValue(['opened', 'unopened'].map((id) => ({ ...parcel, id, user_id: null, one_off: true })));
+    // Overnight, a lookup without an account that nobody opened in the last hour waits for the morning.
+    client.listUnwatchedPackageIds.mockResolvedValue(['owned', 'unopened']);
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+      { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, null, () => new Date(`2026-09-09T${time}Z`));
+    await expect(service.sync()).resolves.toMatchObject({ checked: checked.length });
+    expect(client.startSyncAttempt.mock.calls.map(([, values]) => values.package_id)).toEqual(checked);
+  });
+
+  it('queues a check, once per catalog, for the recent parcels its rules now point to another carrier', async () => {
+    const parcel = (id: string, number: string) => ({ id, user_id: id === 'lookup' ? null : 'a', carrier: 'unknown', tracking_number: number,
+      current_stage: 'in_transit', carrier_data: { tracking_provider: 'ParcelsApp', routing: { version: 1, configured_carrier: 'unknown',
+        failures: {}, probe_cursor: 0, discovery_cursor: 0, rules: 'older' } } });
+    const client = { ...fakeClient(),
+      listRedetectionCandidates: vi.fn().mockResolvedValue([
+        parcel('owned', '1Z999AA10123456784'), parcel('lookup', '1Z999AA10123456784'), parcel('nowhere', 'TEST1234')]),
+      enqueueSyncJob: vi.fn().mockResolvedValue({ id: 'job' }) };
+    const logged = vi.spyOn(observability, 'logOperationalEvent');
+    const now = new Date('2026-09-09T10:00:00Z');
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() }, null, () => now);
+    await expect(service.queueRedetections()).resolves.toBe(2);
+    expect(client.listRedetectionCandidates).toHaveBeenCalledExactlyOnceWith(new Date('2026-08-10T10:00:00Z'), catalogRules());
+    expect(client.enqueueSyncJob.mock.calls).toEqual([[{ packageId: 'owned', userId: 'a' }], [{ packageId: 'lookup', userId: null }]]);
+    expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 2 });
+    // The same catalog is not looked at twice.
+    await expect(service.queueRedetections()).resolves.toBe(0);
+    expect(client.listRedetectionCandidates).toHaveBeenCalledOnce();
+  });
+
+  it('looks again after the next run when the recent parcels cannot be listed', async () => {
+    const report = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
+    const failure = new Error('database down');
+    const client = { ...fakeClient(), listRedetectionCandidates: vi.fn().mockRejectedValueOnce(failure).mockResolvedValue([]),
+      enqueueSyncJob: vi.fn() };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() }, null);
+    await expect(service.queueRedetections()).resolves.toBe(0);
+    expect(report).toHaveBeenCalledExactlyOnceWith(failure, { component: 'tracking', operation: 'queue_redetections' });
+    await expect(service.queueRedetections()).resolves.toBe(0);
+    expect(client.listRedetectionCandidates).toHaveBeenCalledTimes(2);
+    expect(client.enqueueSyncJob).not.toHaveBeenCalled();
   });
 
   it('keeps every parcel on the full cadence when the unwatched ones cannot be listed', async () => {

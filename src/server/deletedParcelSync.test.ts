@@ -32,6 +32,7 @@ function claimed(job: JsonObject) {
   const withdrawn = vi.spyOn(client, 'syncJobWithdrawn').mockResolvedValue(true);
   const service = new TrackingSyncService(client);
   const check = vi.spyOn(service, 'syncPackage').mockResolvedValue(superseded);
+  vi.spyOn(service, 'queueRedetections').mockResolvedValue(0);
   const state: BackgroundState = { workerHeartbeat: null, lastScheduledSync: null, nextScheduledSync: null,
     lastSummary: null, lastError: null, lastAutoArchived: 0 };
   const worker = new SyncJobWorker(service, state);

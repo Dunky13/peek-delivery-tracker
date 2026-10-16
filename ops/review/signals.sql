@@ -71,8 +71,9 @@ group by i.kind, i.subject, i.active, i.last_notified_at
 order by i.active desc, i.last_notified_at desc;
 
 \echo '== Unfinished parcels a provider tracks, by the carrier that could take them (new: added in the window)'
-\echo '   carriers: no carrier known; adapters: no direct answer for that carrier in 30 days;'
-\echo '   delivery-tracker: its adapter answers other parcels, so why these stay with a provider'
+\echo '   carriers: no carrier known; adapters: the adapter refuses, fails or half-answers the number, or gave no direct'
+\echo '   answer in 30 days; dormant: not checked for 24 h; none: the carrier answers and the provider history is kept;'
+\echo '   delivery-tracker: its adapter answers other parcels and was not asked for these'
 with direct as (
   select distinct source_carrier as carrier
   from public.tracking_sync_attempts
@@ -80,17 +81,35 @@ with direct as (
     and source_carrier is not null and source_carrier not in ('unknown', 'intl-post')
 ), parcels as (
   select p.carrier, coalesce(nullif(p.carrier_data->>'discovered_carrier', ''), p.carrier) as target,
-         p.carrier_data->>'tracking_provider' as provider, p.tracking_number, p.created_at
+         p.carrier_data->>'tracking_provider' as provider, p.tracking_number, p.created_at, p.last_synced_at,
+         p.carrier_data->>'carrier_answered' = 'true' as answered, p.carrier_data->'routing' as routing
   from public.packages p
   where p.carrier_data->>'tracking_provider' is not null and p.archived_at is null
     and coalesce(p.current_stage, '') not in ('delivered', 'returned')
+), reasons as (
+  select p.*, p.routing->'failures'->p.target as failure
+  from parcels p
+), lanes as (
+  select r.*,
+         case when r.target in ('unknown', 'intl-post') then 'no carrier known'
+              when r.answered then 'carrier answered in part'
+              when r.failure->>'user_error' = 'carrier:invalid_input' then 'adapter refuses the number'
+              when r.failure is not null then 'adapter ' || coalesce(r.failure->>'kind', 'failed')
+              when r.target not in (select carrier from direct) then 'no direct answer in 30 days'
+              when r.routing->>'confirmed_carrier' = r.target then 'carrier answers, history kept'
+              when r.last_synced_at < now() - interval '24 hours' then 'not checked for 24 h'
+              else 'carrier not asked' end as why
+  from reasons r
 )
-select p.carrier, p.target as could_take, p.provider,
-       case when p.target in ('unknown', 'intl-post') then 'carriers'
-            when p.target in (select carrier from direct) then 'delivery-tracker'
+select l.carrier, l.target as could_take, l.provider,
+       case when l.why = 'no carrier known' then 'carriers'
+            when l.why = 'carrier answers, history kept' then 'none'
+            when l.why = 'not checked for 24 h' then 'dormant'
+            when l.why = 'carrier not asked' then 'delivery-tracker'
             else 'adapters' end as lane,
-       count(*) filter (where p.created_at >= :since) as new, count(*) as parcels,
-       array_to_string((array_agg(distinct private.tracking_number_pattern(p.tracking_number)))[1:3], '; ') as patterns
-from parcels p
-group by 1, 2, 3, 4
+       l.why,
+       count(*) filter (where l.created_at >= :since) as new, count(*) as parcels,
+       array_to_string((array_agg(distinct private.tracking_number_pattern(l.tracking_number)))[1:3], '; ') as patterns
+from lanes l
+group by 1, 2, 3, 4, 5
 order by parcels desc, could_take, provider;

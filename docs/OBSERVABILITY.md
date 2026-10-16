@@ -109,6 +109,7 @@ another stage.
 | `provider_clock_offset` | One scan reached the parcel on two clocks a zone apart: a provider read it in the wrong zone, or a scraper fix moved the provider's clock and its rows followed ([ROUTING.md](ROUTING.md)) |
 | `progress_disappeared` | The carrier's own adapter or the provider its saved summary came from answers without progress; for a carrier without an adapter, exhausted providers return only thin answers and the routing failure threshold is reached. The saved state is kept and the check ends as an error. |
 | `fallback_without_progress` | A different fallback provider answers without progress for a carrier with its own adapter, or a thin answer for a carrier without one stays below the routing failure threshold. The saved state is kept and the check ends as waiting. |
+| `worker_abandoned_attempt` | The check was still running after 30 min, usually because its worker died, and was marked `abandoned` by the audit maintenance |
 
 A universal answer with progress resets the consecutive-check count, even when it has
 no new scan. Thin answers keep the previous provider preference and event watermark.
@@ -324,7 +325,7 @@ anomalies and health incidents.
 a window of hours (1 by default, 24 for the daily review) it lists routing signals, sync
 anomalies, new unmapped wording, new open support cases, health incidents notified or still
 failing, and the unfinished parcels a provider tracks, grouped by type, carrier and
-provider. It only reads, and shows a number as its shape (`MY + 10 digits + US`, from
+provider, with `why` they stay with it. It only reads, and shows a number as its shape (`MY + 10 digits + US`, from
 `private.tracking_number_pattern`):
 
 ```sh
@@ -335,10 +336,15 @@ Each row names the lane that acts on it:
 
 - **carriers**: an unknown or ambiguous number format, a detection rule that missed, a
   carrier missing from the catalog;
-- **adapters**: a carrier without an adapter, a failing adapter or provider, wording no map
-  reads;
+- **adapters**: a carrier without an adapter, a failing adapter or provider, an adapter that
+  refuses a number its carrier issues or answers it only in part, wording no map reads;
 - **delivery-tracker**: the app's routing, such as parcels left with a provider although
-  their carrier's adapter answers other parcels, or a check whose worker died.
+  their carrier's adapter answers other parcels and was not asked for them, or a check whose
+  worker died.
+
+A parcel a provider tracks can also be **dormant**, not checked for 24 h because nobody
+follows it any more, or need **none**: its carrier answers and the provider's fuller history
+is kept.
 
 Whatever its lane, a signal that comes from a wrong routing decision is a delivery-tracker
 fix. Mark a signal reviewed so that the next run leaves it out:
@@ -453,6 +459,9 @@ Key JSON events:
   refusal adds its `status`; `error_class` names any failure. It never has the number;
 - `carrier_recognition`: how many carriers the Add sheet's recognition asked, how many
   knew the number or failed, and what it settled on (a carrier, `choice` or `none`).
+- `tracking_redetections_queued`: how many parcels added in the last 30 days were queued for
+  a check because a scraper release's catalog now points them to a carrier they never asked
+  ([ROUTING.md](ROUTING.md));
 - `parcel_links_forgotten`: how many expired lookups, and parcels with them, a maintenance
   pass forgot, how many stopped links from accounts it purged and how many alerts of
   finished journeys it ended. `parcel_link_maintenance_failed` when it could not run.
