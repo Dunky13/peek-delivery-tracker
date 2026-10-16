@@ -8949,7 +8949,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anjun",
+      "recognitionRank": 954
     },
     "trackingUrlTemplate": "https://anjuntrack.com/trackQuery?t={trackingNumber}",
     "linkRules": [
@@ -8961,7 +8962,8 @@ export const CARRIER_CAPABILITIES = {
         "pathPattern": "^/trackQuery/?$",
         "params": [
           "t"
-        ]
+        ],
+        "ownNumbersOnly": true
       },
       {
         "domains": [
@@ -8971,10 +8973,26 @@ export const CARRIER_CAPABILITIES = {
         "pathPattern": "^/trajectory/?$",
         "params": [
           "orderNum"
-        ]
+        ],
+        "ownNumbersOnly": true
+      },
+      {
+        "domains": [
+          "anjunexpress.com"
+        ],
+        "pathPattern": "^/trackPackage/?$",
+        "params": [
+          "tracking"
+        ],
+        "ownNumbersOnly": true
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^AJ\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{9}$",
+        "confidence": "high"
+      }
+    ],
     "trackingSearchUrl": "https://anjuntrack.com/trajectory"
   },
   "anteraja": {
@@ -15592,7 +15610,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lion-parcel",
+      "recognitionRank": 952
     },
     "trackingUrlTemplate": "https://lionparcel.com/track/stt?q={trackingNumber}",
     "linkRules": [

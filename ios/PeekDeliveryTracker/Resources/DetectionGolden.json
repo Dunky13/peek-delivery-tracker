@@ -10297,6 +10297,22 @@
     ]
   },
   {
+    "input": "11LP1754978483422",
+    "carrier": "lion-parcel",
+    "confidence": "high",
+    "candidates": [
+      "lion-parcel"
+    ]
+  },
+  {
+    "input": "11LP1765256631774",
+    "carrier": "lion-parcel",
+    "confidence": "high",
+    "candidates": [
+      "lion-parcel"
+    ]
+  },
+  {
     "input": "11LP1769140544676",
     "carrier": "lion-parcel",
     "confidence": "high",
@@ -46154,14 +46170,43 @@
     ]
   },
   {
-    "input": "AJ260917112216701",
-    "carrier": "unknown",
-    "confidence": "low",
+    "input": "AJ251124103873801",
+    "carrier": "anjun",
+    "confidence": "high",
     "candidates": [
-      "colis-prive"
-    ],
-    "asked": [
-      "colis-prive"
+      "anjun"
+    ]
+  },
+  {
+    "input": "AJ260610165109201",
+    "carrier": "anjun",
+    "confidence": "high",
+    "candidates": [
+      "anjun"
+    ]
+  },
+  {
+    "input": "AJ260618108824401",
+    "carrier": "anjun",
+    "confidence": "high",
+    "candidates": [
+      "anjun"
+    ]
+  },
+  {
+    "input": "AJ260618128559501",
+    "carrier": "anjun",
+    "confidence": "high",
+    "candidates": [
+      "anjun"
+    ]
+  },
+  {
+    "input": "AJ260917112216701",
+    "carrier": "anjun",
+    "confidence": "high",
+    "candidates": [
+      "anjun"
     ]
   },
   {
