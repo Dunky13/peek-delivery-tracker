@@ -504,6 +504,9 @@
   "dpd-be": {
     "family": "dpd"
   },
+  "dpd-nl": {
+    "family": "dpd"
+  },
   "dpd-ie": {
     "family": "dpd"
   },
