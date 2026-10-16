@@ -2536,7 +2536,7 @@ export const CARRIER_CAPABILITIES = {
     "displayName": "Poste Italiane",
     "color": "#eedc00",
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
       "adapter": "poste-italiane",
@@ -3080,7 +3080,7 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       },
       {
-        "pattern": "^[A-Z]{2}\\d{2}CAA0[A-Z]\\d{9}$",
+        "pattern": "^[A-Z]{2}\\d{2}(?:CA|US)A0[A-Z]\\d{9}$",
         "confidence": "low"
       }
     ],
@@ -9168,7 +9168,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "averitt",
+      "recognitionRank": 921
     },
     "trackingUrlTemplate": "https://tools.averitt.com/servlet/rsoLTLtrack?Type=PN&Number={trackingNumber}",
     "linkRules": [
@@ -9615,7 +9616,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Detroit",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "central-transport"
     },
     "linkRules": [
       {
