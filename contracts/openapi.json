@@ -2559,6 +2559,10 @@
           "confidence": "high"
         },
         {
+          "pattern": "^JF\\d{11}$",
+          "confidence": "high"
+        },
+        {
           "pattern": "^CW\\d{9}IT$",
           "confidence": "high",
           "checksum": "s10"
@@ -2572,7 +2576,9 @@
       "aliases": [
         "Poste",
         "PosteDelivery",
-        "Crono"
+        "Crono",
+        "SDA",
+        "SDA Express Courier"
       ],
       "countries": [
         "IT"

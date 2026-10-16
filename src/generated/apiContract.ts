@@ -2554,6 +2554,10 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       },
       {
+        "pattern": "^JF\\d{11}$",
+        "confidence": "high"
+      },
+      {
         "pattern": "^CW\\d{9}IT$",
         "confidence": "high",
         "checksum": "s10"
@@ -2567,7 +2571,9 @@ export const CARRIER_CAPABILITIES = {
     "aliases": [
       "Poste",
       "PosteDelivery",
-      "Crono"
+      "Crono",
+      "SDA",
+      "SDA Express Courier"
     ],
     "countries": [
       "IT"
