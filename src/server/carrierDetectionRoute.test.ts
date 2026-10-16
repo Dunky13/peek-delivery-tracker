@@ -218,6 +218,8 @@ it('does not ask carriers for selected shapes, formats without candidates or una
   expect((await request('bad input!')).status).toBe(400);
   expect(await (await request('1Z999AA10123456784')).json()).toMatchObject({ carrier: 'ups' });
   expect(await (await request('ZZUNMATCHED0001')).json()).toMatchObject({ carrier: 'unknown' });
+  // SEUR reuses its seven-digit expedition numbers, so recognition never asks about one.
+  expect(recognitionAskedCarriers('9900002')).not.toContain('seur');
   expect(recognize).not.toHaveBeenCalled();
 });
 
@@ -225,7 +227,6 @@ it('does not ask carriers for selected shapes, formats without candidates or una
 it.each([
   ['123456789012', 'brt'],
   ['12345678901243', 'seur'],
-  ['9900002', 'seur'],
   ['1000000000000001', 'tnt'],
   // Correos Express is asked only when the GS1 check digit adds up.
   ['1000000000000007', 'correos-express'],
