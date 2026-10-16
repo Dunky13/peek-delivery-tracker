@@ -11,6 +11,7 @@ import {
   statusMapClosings,
 } from './reviewQueues';
 import { SupabaseError, type SupabaseServiceClient } from './supabase';
+import type { JsonObject } from './types';
 
 const scraper = `universal-parcel-scraper@${manifest.dependencies['universal-parcel-scraper']}`;
 const HANDED = "DPD's map leaves it unmapped on purpose: it moves the parcel in transit without a milestone of its own.";
@@ -52,6 +53,8 @@ function fakeClient(claims: Array<'claimed' | 'running' | 'done' | Error> = ['cl
     fixReplayedTrackingSupportCases: vi.fn().mockResolvedValue(1),
     // The ambiguous case's parcel is still on its way.
     trackingNumberStages: vi.fn(async (numbers: string[]) => new Map(numbers.map((number) => [number, ['in_transit']]))),
+    // No saved parcel for the numbers of unfiled cases.
+    trackingNumberParcels: vi.fn(async (): Promise<Map<string, JsonObject[]>> => new Map()),
     ignoreReplayedTrackingSupportCases: vi.fn(async (_version: string, cases: unknown[]) => cases.length),
     listOpenTrackingStatusObservations: vi.fn().mockResolvedValue(OPEN_OBSERVATIONS),
     closeTrackingStatusObservations: vi.fn(async (_version: string, closing: { keys: string[] }) => closing.keys.length),
@@ -121,6 +124,29 @@ describe('review queue replay', () => {
     expect(client.trackingNumberStages).toHaveBeenCalledExactlyOnceWith(['123456789012', '123456789023', '123456789001']);
     expect(client.ignoreReplayedTrackingSupportCases).toHaveBeenCalledExactlyOnceWith('v1', [{ id: 'case-delivered',
       note: 'Its parcel was delivered before fedex, one of the carriers its shape fits, confirmed the number directly: no check is left to confirm it.' }]);
+  });
+
+  it('ignores a case whose parcels are all one-off lookups that left the schedule before anyone answered', async () => {
+    const client = fakeClient();
+    const lookup = (values: JsonObject = {}): JsonObject => ({ one_off: true, carrier: 'unknown', current_stage: 'pending',
+      created_at: '2026-09-10T05:00:00Z', carrier_data: {}, ...values });
+    client.listOpenTrackingSupportCases.mockResolvedValue(['unseen', 'recent', 'account', 'answered', 'deleted'].map((name, index) => ({
+      id: `case-${name}`, tracking_number: `12345678900${index}`, configured_carrier: 'unknown', reasons: ['ambiguous_shape', 'recognition_unknown'],
+    })));
+    client.trackingNumberParcels.mockResolvedValue(new Map([
+      ['123456789000', [lookup(), lookup({ created_at: '2026-09-09T05:00:00Z', archived_at: '2026-09-09T06:00:00Z' })]],
+      // Still in the schedule: added less than 6 hours ago.
+      ['123456789001', [lookup({ created_at: '2026-09-10T07:00:00Z' })]],
+      // An account's parcel is still checked.
+      ['123456789002', [lookup(), lookup({ one_off: false })]],
+      ['123456789003', [lookup({ carrier_data: { routing: { version: 1, last_success_at: '2026-09-10T06:00:00Z' } } })]],
+    ]));
+    await expect(replayReviewQueues(client as unknown as SupabaseServiceClient, 'v1', new Date('2026-09-10T12:00:00Z')))
+      .resolves.toMatchObject({ cases_replayed: 5, cases_ignored: 1 });
+    expect(client.trackingNumberParcels).toHaveBeenCalledExactlyOnceWith(
+      ['123456789000', '123456789001', '123456789002', '123456789003', '123456789004']);
+    expect(client.ignoreReplayedTrackingSupportCases).toHaveBeenCalledExactlyOnceWith('v1', [{ id: 'case-unseen',
+      note: 'Every parcel with the number is a one-off lookup that left the schedule before any carrier or provider answered for it: no check is left to update the case.' }]);
   });
 
   it('fixes the resolved open cases once and records the outcome for the version', async () => {

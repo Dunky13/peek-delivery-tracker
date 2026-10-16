@@ -1262,6 +1262,22 @@ export class SupabaseServiceClient extends SupabaseClient {
     return stages;
   }
 
+  /** The saved parcels with these numbers, by number, as far as unseenLookup.ts reads them. */
+  async trackingNumberParcels(numbers: string[]): Promise<Map<string, JsonObject[]>> {
+    const parcels = new Map<string, JsonObject[]>();
+    for (let start = 0; start < numbers.length; start += 100) {
+      const page = numbers.slice(start, start + 100).map((number) => `"${number.replace(/["\\]/g, '')}"`);
+      const params = query({
+        select: 'tracking_number,one_off,carrier,current_stage,created_at,carrier_data', tracking_number: `in.(${page.join(',')})`,
+      });
+      for (const row of rows(await this.request(`/rest/v1/packages?${params}`))) {
+        const number = String(row.tracking_number);
+        parcels.set(number, [...parcels.get(number) ?? [], row]);
+      }
+    }
+    return parcels;
+  }
+
   /** Marks the replayed cases that need no change ignored, with their notes; answers how many. */
   async ignoreReplayedTrackingSupportCases(version: string, cases: Array<{ id: string; note: string }>): Promise<number> {
     let ignored = 0;

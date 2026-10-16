@@ -6,6 +6,7 @@ import { captureOperationalError, databaseUnavailable, errorType, logOperational
 import type { SupabaseServiceClient } from './supabase';
 import { trackingSupportContext } from './trackingSupport';
 import type { JsonObject } from './types';
+import { leftScheduleUnseen } from './unseenLookup';
 
 /** Long enough for one replay; a server that dies holding it is relieved after this. */
 const REPLAY_LEASE_SECONDS = 600;
@@ -65,6 +66,16 @@ export function finishedParcelNote(supportCase: JsonObject, stages: readonly str
   if (!stages?.length || !stages.every((stage) => FINISHED_STAGES.has(stage)) || !awaitsConfirmation(supportCase)) return null;
   return `Its parcel was ${stages.includes('delivered') ? 'delivered' : 'returned'} before ${String(supportCase.configured_carrier)}, `
     + 'one of the carriers its shape fits, confirmed the number directly: no check is left to confirm it.';
+}
+
+/**
+ * A case whose saved parcels are all one-off lookups that left the schedule before any
+ * carrier or provider answered for the number: no check is left to update it.
+ */
+export function unseenLookupNote(parcels: readonly JsonObject[] | undefined, now: Date): string | null {
+  if (!parcels?.length || !parcels.every((parcel) => leftScheduleUnseen(parcel, now))) return null;
+  return 'Every parcel with the number is a one-off lookup that left the schedule before any carrier or provider '
+    + 'answered for it: no check is left to update the case.';
 }
 
 /** Open status observations to close with one resolution and note. */
@@ -159,6 +170,7 @@ export interface ReviewReplaySummary extends JsonObject {
 export async function replayReviewQueues(
   client: SupabaseServiceClient,
   version: string,
+  now = new Date(),
 ): Promise<'running' | 'done' | ReviewReplaySummary> {
   const claim = await client.claimTrackingReviewRun(version, REPLAY_LEASE_SECONDS);
   if (claim !== 'claimed') return claim;
@@ -182,7 +194,17 @@ export async function replayReviewQueues(
     const note = finishedParcelNote(supportCase, stages.get(String(supportCase.tracking_number)));
     return note ? [{ id: String(supportCase.id), note }] : [];
   });
-  const ignored = finished.length ? await client.ignoreReplayedTrackingSupportCases(version, finished) : 0;
+  // Nor are lookups nobody answered for once they leave the schedule.
+  const settled = new Set([...resolvedIds, ...finished.map(({ id }) => id)]);
+  const unfiled = cases.filter((supportCase) => !settled.has(String(supportCase.id))
+    && ['unknown', 'intl-post', null, undefined].includes(supportCase.configured_carrier as string | null | undefined));
+  const parcels = unfiled.length ? await client.trackingNumberParcels(unfiled.map((supportCase) => String(supportCase.tracking_number))) : new Map();
+  const unseen = unfiled.flatMap((supportCase) => {
+    const note = unseenLookupNote(parcels.get(String(supportCase.tracking_number)), now);
+    return note ? [{ id: String(supportCase.id), note }] : [];
+  });
+  const closings = [...finished, ...unseen];
+  const ignored = closings.length ? await client.ignoreReplayedTrackingSupportCases(version, closings) : 0;
   const observations = await client.listOpenTrackingStatusObservations(MAX_REPLAYED_OBSERVATIONS);
   const closed = { mapped: 0, ignored: 0 };
   for (const closing of statusMapClosings(observations, { mapped: true, version })) {

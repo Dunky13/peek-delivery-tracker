@@ -46,6 +46,7 @@ import type { UniversalSource } from 'universal-parcel-scraper';
 import { answeredWithoutHistory, catalogRules, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { REDETECTION_WINDOW_MS, rerouteCarrier } from './redetection';
 import { upuHistory } from './upuHistory';
+import { UNSEEN_HOURLY_MS, unseenFor } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent } from './directLocalHistory';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
@@ -82,11 +83,6 @@ const IDLE_AFTER_MS = 48 * 60 * 60 * 1_000;
  */
 const EARLY_IDLE_AFTER_MS = 12 * 60 * 60 * 1_000;
 const NOT_YET_MOVING = new Set(['registered', 'accepted']);
-/**
- * A number nobody has seen yet is checked hourly for this long after it was
- * added, then every six hours. A one-off lookup then leaves the schedule.
- */
-const UNSEEN_HOURLY_MS = 6 * 60 * 60 * 1_000;
 /** After this long unseen, a number is checked daily. */
 const UNSEEN_DAILY_AFTER_MS = 48 * 60 * 60 * 1_000;
 /** By day, a lookup without an account that nobody watches is checked this often. */
@@ -181,21 +177,6 @@ function lastActivity(parcel: JsonObject): number | null {
   const times = [routingState(parcel).last_event_at, summaryTime, parcel.created_at]
     .map((value) => Date.parse(String(value ?? ''))).filter(Number.isFinite);
   return times.length ? Math.max(...times) : null;
-}
-
-/**
- * How long ago a parcel was added when no carrier or provider has answered
- * for its number yet: no carrier identified or recognised, no history and
- * nothing asked of the user. Null once one has.
- */
-function unseenFor(parcel: JsonObject, now: Date): number | null {
-  if (!['unknown', 'intl-post'].includes(String(parcel.carrier)) || String(parcel.current_stage ?? 'pending') !== 'pending') return null;
-  const data = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
-  const routing = routingState(parcel);
-  if (data.original_carrier || data.universal_input || routing.last_success_at || routing.last_event_at
-    || routing.confirmed_carrier || routing.discovered_carrier || routing.input_needed || routing.provider_input_needed) return null;
-  const added = Date.parse(String(parcel.created_at ?? ''));
-  return Number.isFinite(added) ? Math.max(0, now.getTime() - added) : 0;
 }
 
 /**
