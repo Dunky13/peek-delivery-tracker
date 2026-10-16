@@ -10904,7 +10904,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "imile"
+      "adapter": "imile",
+      "recognitionRank": 997
     },
     "trackingUrlTemplate": "https://www.imile.com/en/track?waybillNo={trackingNumber}",
     "linkRules": [
@@ -10922,6 +10923,10 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^IM\\d{14}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^6(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])2[4-9]\\d{6}$",
         "confidence": "low"
       }
     ],
