@@ -26,12 +26,12 @@ it('points an unknown parcel to a carrier a provider named, read with the curren
 });
 
 it('points a parcel filed under no carrier to a carrier without an adapter of its own', () => {
-  expect(rerouteCarrier(parcel({ tracking_number: 'MY1234567890US' }, { reported_carriers: ['Mayi Yinfu', 'DHL eCommerce'] })))
-    .toBe('mayiyinfu');
+  expect(rerouteCarrier(parcel({ tracking_number: 'JMX000000000001' }, { reported_carriers: ['J&T Express Mexico', 'Estafeta'] })))
+    .toBe('j-and-t-mx');
   // No provider has answered for it yet: its check asks them about that carrier.
-  expect(rerouteCarrier(parcel({ tracking_number: 'MY1234567890US' }, { tracking_provider: undefined }))).toBe('mayiyinfu');
+  expect(rerouteCarrier(parcel({ tracking_number: 'JMX000000000001' }, { tracking_provider: undefined }))).toBe('j-and-t-mx');
   // A parcel filed under a carrier keeps it.
-  expect(rerouteCarrier(parcel({ carrier: 'dhl', tracking_number: 'MY1234567890US' }, { routing: { failures: { dhl: { kind: 'not_found' } } } })))
+  expect(rerouteCarrier(parcel({ carrier: 'dhl', tracking_number: 'JMX000000000001' }, { routing: { failures: { dhl: { kind: 'not_found' } } } })))
     .toBeNull();
 });
 
