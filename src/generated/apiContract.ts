@@ -632,7 +632,8 @@ export const CARRIER_CAPABILITIES = {
     ],
     "aliases": [
       "DHL eCommerce Solutions",
-      "DHL Global Mail"
+      "DHL Global Mail",
+      "DHL eCommerce Global Mail"
     ],
     "countries": [
       "DE",
