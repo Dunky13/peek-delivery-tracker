@@ -111,6 +111,8 @@ describe('SignInScreen', () => {
     const user = userEvent.setup();
     render(<SignInScreen configured appleEnabled googleEnabled signInWithApple={signInWithApple}
       signInWithGoogle={signInWithGoogle} sendCode={vi.fn()} verifyCode={vi.fn()} />);
+    expect(screen.getAllByRole('button', { name: /^Continue with / }).map((button) => button.textContent))
+      .toEqual(['Continue with Google', 'Continue with Apple']);
     await user.click(screen.getByRole('button', { name: 'Continue with Apple' }));
     expect(screen.getByRole('button', { name: 'Opening Apple…' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Continue with Google' })).toBeDisabled();

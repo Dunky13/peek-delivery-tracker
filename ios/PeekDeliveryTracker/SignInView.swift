@@ -531,8 +531,35 @@ struct SignInView: View {
 
     private var methods: some View {
         VStack(spacing: invitation == nil ? 9 : 12) {
+            if session.configuration.googleAuthEnabled {
+                Button {
+                    run(provider: "google") { try await session.signInWithGoogle() }
+                } label: {
+                    HStack(spacing: 10) {
+                        Image("GoogleG")
+                            .frame(width: 20, height: 20)
+                            .accessibilityHidden(true)
+                        // The title size and weight of Apple's button below, which can't change its font.
+                        Text(activeProvider == "google" ? localizer.text("auth.googleOpening") : localizer.text("auth.google"))
+                            .font(.system(size: 18, weight: .medium))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                        if activeProvider == "google" { ProgressView().controlSize(.small) }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 12)
+                    .frame(minHeight: 48)
+                    .foregroundStyle(Brand.ink)
+                    .background(Brand.paper, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 13).stroke(Brand.separator.opacity(0.35), lineWidth: 0.75))
+                }
+                .buttonStyle(TactileButtonStyle())
+                .accessibilityIdentifier("auth.google")
+                .disabled(working)
+            }
             if session.configuration.appleAuthEnabled {
-                // Apple's own button, the size of the Google button below it.
+                // Apple's own button, the size of the Google button above it.
                 AppleAuthenticationButton(cornerRadius: 13) {
                     run(provider: "apple") { try await session.signInWithApple() }
                 }
@@ -546,30 +573,6 @@ struct SignInView: View {
                 }
                 .accessibilityLabel(localizer.text("auth.apple"))
                 .accessibilityIdentifier("auth.apple")
-                .disabled(working)
-            }
-            if session.configuration.googleAuthEnabled {
-                Button {
-                    run(provider: "google") { try await session.signInWithGoogle() }
-                } label: {
-                    HStack(spacing: 10) {
-                        GoogleSignInMark()
-                            .frame(width: 20, height: 20)
-                            .accessibilityHidden(true)
-                        Text(activeProvider == "google" ? localizer.text("auth.googleOpening") : localizer.text("auth.google"))
-                            .font(.subheadline.weight(.medium))
-                        if activeProvider == "google" { ProgressView().controlSize(.small) }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 12)
-                    .frame(minHeight: 48)
-                    .foregroundStyle(Brand.ink)
-                    .background(Brand.paper, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 13).stroke(Brand.separator.opacity(0.35), lineWidth: 0.75))
-                }
-                .buttonStyle(TactileButtonStyle())
-                .accessibilityIdentifier("auth.google")
                 .disabled(working)
             }
 
@@ -1284,14 +1287,6 @@ private struct ParcelStars: View, Animatable {
             }
         }
         .frame(width: 300, height: 310)
-    }
-}
-
-private struct GoogleSignInMark: View {
-    var body: some View {
-        Text("G")
-            .font(.system(size: 21, weight: .semibold))
-            .foregroundStyle(Color(red: 0.259, green: 0.522, blue: 0.957))
     }
 }
 

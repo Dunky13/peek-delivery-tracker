@@ -1,6 +1,7 @@
 import { userErrorKey, userErrorMessage } from '../lib/userMessages';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { useI18n } from '../i18n';
+import Image from 'next/image';
 
 export function SignInScreen({
   configured,
@@ -147,28 +148,19 @@ export function SignInScreen({
                 {t(working === 'oidc' ? 'auth.oidcOpening' : 'auth.oidc', { provider: oidcName })}
               </button>
             )}
-            {appleEnabled && signInWithApple && (
-              <button className="button auth-flow__apple" type="button" disabled={Boolean(working)} onClick={() => void startSocialSignIn('apple')}>
-                <svg aria-hidden="true" viewBox="0 0 24 24">
-                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.77 3.08.83 1.18-.24 2.31-.96 3.57-.87 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01ZM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z" />
-                </svg>
-                {working === 'apple' ? t('auth.appleOpening') : t('auth.apple')}
+            {googleEnabled && signInWithGoogle && (
+              <button className="button auth-flow__google" type="button" disabled={Boolean(working)} onClick={() => void startSocialSignIn('google')}>
+                <Image src="/icons/google-g.svg" alt="" width={22} height={22} unoptimized />
+                {working === 'google' ? t('auth.googleOpening') : t('auth.google')}
               </button>
             )}
-            {googleEnabled && signInWithGoogle && (
-              <button
-                className="button button--primary auth-flow__google"
-                type="button"
-                disabled={Boolean(working)}
-                onClick={() => void startSocialSignIn('google')}
-              >
-                <svg aria-hidden="true" viewBox="0 0 24 24">
-                  <path fill="#4285f4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.4a4.6 4.6 0 0 1-2 3v2.6h3.2c1.9-1.8 3-4.4 3-7.5Z" />
-                  <path fill="#34a853" d="M12 22c2.7 0 5-.9 6.6-2.3l-3.2-2.6c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.2H3.1v2.7A10 10 0 0 0 12 22Z" />
-                  <path fill="#fbbc05" d="M6.4 13.9a6 6 0 0 1 0-3.8V7.4H3.1a10 10 0 0 0 0 9.2l3.3-2.7Z" />
-                  <path fill="#ea4335" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.8A9.7 9.7 0 0 0 3.1 7.4l3.3 2.7c.8-2.4 3-4.2 5.6-4.2Z" />
+            {appleEnabled && signInWithApple && (
+              <button className="button auth-flow__apple" type="button" disabled={Boolean(working)} onClick={() => void startSocialSignIn('apple')}>
+                {/* Apple's logo as its own web button draws it. */}
+                <svg aria-hidden="true" viewBox="20.5 16 15 19">
+                  <path d="M28.2226562,20.3846154 C29.0546875,20.3846154 30.0976562,19.8048315 30.71875,19.0317864 C31.28125,18.3312142 31.6914062,17.352829 31.6914062,16.3744437 C31.6914062,16.2415766 31.6796875,16.1087095 31.65625,16 C30.7304687,16.0362365 29.6171875,16.640178 28.9492187,17.4494596 C28.421875,18.06548 27.9414062,19.0317864 27.9414062,20.0222505 C27.9414062,20.1671964 27.9648438,20.3121424 27.9765625,20.3604577 C28.0351562,20.3725366 28.1289062,20.3846154 28.2226562,20.3846154 Z M25.2929688,35 C26.4296875,35 26.9335938,34.214876 28.3515625,34.214876 C29.7929688,34.214876 30.109375,34.9758423 31.375,34.9758423 C32.6171875,34.9758423 33.4492188,33.792117 34.234375,32.6325493 C35.1132812,31.3038779 35.4765625,29.9993643 35.5,29.9389701 C35.4179688,29.9148125 33.0390625,28.9122695 33.0390625,26.0979021 C33.0390625,23.6579784 34.9140625,22.5588048 35.0195312,22.474253 C33.7773438,20.6382708 31.890625,20.5899555 31.375,20.5899555 C29.9804688,20.5899555 28.84375,21.4596313 28.1289062,21.4596313 C27.3554688,21.4596313 26.3359375,20.6382708 25.1289062,20.6382708 C22.8320312,20.6382708 20.5,22.5950413 20.5,26.2911634 C20.5,28.5861411 21.3671875,31.013986 22.4335938,32.5842339 C23.3476562,33.9129053 24.1445312,35 25.2929688,35 Z" />
                 </svg>
-                {working === 'google' ? t('auth.googleOpening') : t('auth.google')}
+                {working === 'apple' ? t('auth.appleOpening') : t('auth.apple')}
               </button>
             )}
             {socialEnabled && emailOtpEnabled && !emailVisible && (

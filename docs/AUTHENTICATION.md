@@ -178,8 +178,7 @@ membership, because a Personal Team can't enable the capability.
    your Supabase host as its domain and `https://supabase.example.com/auth/v1/callback` as
    its return URL. List it first in `GOTRUE_EXTERNAL_APPLE_CLIENT_ID`, and set
    `GOTRUE_EXTERNAL_APPLE_SECRET` to a client secret JWT signed with the key (Apple caps
-   its lifetime at six months, so renew it in time) and `GOTRUE_EXTERNAL_APPLE_REDIRECT_URI`
-   to the callback.
+   its lifetime at six months) and `GOTRUE_EXTERNAL_APPLE_REDIRECT_URI` to the callback.
 5. Register your email sender with Apple's private relay so Hide My Email addresses
    receive codes.
 6. Turn the buttons on:
@@ -191,6 +190,17 @@ membership, because a Personal Team can't enable the capability.
 The web uses Supabase OAuth with PKCE. iOS uses the native sheet (email scope only) and
 exchanges the identity token plus the original nonce with Supabase. Pending friend
 invitations survive the redirect.
+
+Production's web client secret lasts 180 days. A daily job on the host checks it with
+Apple and, 30 days before it expires, signs a new one with the key in the app server's
+environment and recreates `supabase-auth`. Grafana alerts 14 days before it expires or as
+soon as Apple refuses it ([OBSERVABILITY.md](OBSERVABILITY.md)).
+
+Both platforms show Google first, then Apple, at the same height, corner radius and title
+size. iOS uses Apple's own button and sizes Google's title to match it. The web draws a
+custom Apple button with Apple's proportions: the title is 43% of the button's height, and
+the logo is the one Apple's web button uses. Google's "G" is its official artwork, in
+`public/icons/` and the iPhone asset catalog.
 
 Apple asks apps to revoke its tokens when an account is deleted. Before the iPhone app
 deletes an account that has an Apple identity, it signs in with Apple again: that refreshes

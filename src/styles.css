@@ -487,10 +487,12 @@ button .carrier-mark__truck { width: 27px; height: 18px; flex-shrink: 0; stroke:
 .auth-flow__heading h1 { font-size: 34px; line-height: 1.12; font-weight: 650; letter-spacing: -1.3px; margin-bottom: 12px; }
 .auth-flow__heading > p { color: var(--ink-soft); font-size: 14px; margin-bottom: 28px; }
 .auth-flow__methods, .auth-flow__form { display: grid; gap: 12px; }
-.auth-flow__apple { background: light-dark(#000, #fff); color: light-dark(#fff, #000); min-height: 56px; }
-.auth-flow__apple svg { fill: currentColor; stroke: none; width: 24px; height: 24px; }
-.auth-flow__google { background: var(--paper); color: var(--ink); border-color: var(--line); gap: 12px; }
-.auth-flow__google svg { stroke: none; }
+/* Apple's proportions for a custom button: the title is 43% of its height, the logo as tall as the capitals. */
+.auth-flow__google, .auth-flow__apple { min-height: 50px; padding-block: 6px; gap: 10px; font-size: 21.5px; font-weight: 500; line-height: 1.15; }
+.auth-flow__google { background: var(--paper); color: var(--ink); border-color: var(--line); }
+.auth-flow__google img { width: 22px; height: 22px; }
+.auth-flow__apple { background: light-dark(#000, #fff); color: light-dark(#fff, #000); }
+.auth-flow__apple svg { fill: currentColor; stroke: none; width: auto; height: 15px; }
 .auth-flow__email-option { font-size: 13px; }
 .auth-flow__email-option svg { width: 18px; height: 18px; }
 .auth-flow__form label { font-size: 12px; font-weight: 600; margin-bottom: -4px; }

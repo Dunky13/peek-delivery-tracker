@@ -64,6 +64,17 @@
       "noDataState": "OK",
       "summary": "Five API requests or more failed with a server error in 15 minutes.",
       "description": "Sentry reports each server error but alerts only on a new or regressed issue, so a known error that starts repeating stays quiet there. Health checks and metric scrapes are left out. Find the requests with {app=\"delivery-tracker\", event=\"http_request\"} | json | status >= 500, then their request_id in Sentry; a 502 names the upstream failure behind it in error_cause."
+    },
+    {
+      "uid": "peek-apple-web-secret",
+      "title": "Peek Apple web sign-in secret",
+      "datasource": "prometheus",
+      "expr": "absent(peek_apple_web_client_secret_expiry_timestamp_seconds) or ((min(peek_apple_web_client_secret_expiry_timestamp_seconds) - time() < bool 1209600) + (1 - min(peek_apple_web_client_secret_accepted)))",
+      "for": "30m",
+      "severity": "warning",
+      "noDataState": "Alerting",
+      "summary": "Sign in with Apple on the website stops working within 14 days, or Apple already refuses its client secret.",
+      "description": "Apple accepts a web client secret for 6 months at most. A daily job on the production host checks the secret supabase-auth uses with Apple, publishes its expiry and the outcome (peek_apple_web_client_secret_expiry_timestamp_seconds, peek_apple_web_client_secret_accepted), and renews it 30 days before it expires, so this fires only once renewals have failed for two weeks or Apple refuses the secret. Run the job and read its journal (peek-apple-web-secret.service). It signs the secret with the Sign in with Apple key in the app's environment (APPLE_SIGN_IN_*); if Apple refuses it, check that key and the Services ID in the Apple Developer portal. Sign in with Apple in the iPhone app does not use this secret."
     }
   ]
 }

@@ -831,6 +831,11 @@ monitors). The rules cover what none of those show:
 - **Peek server errors**: 5 API requests or more answered a 5xx in 15 minutes, health checks
   and metric scrapes aside. Sentry alerts only on a new or regressed issue, not on a known
   one that starts repeating.
+- **Peek Apple web sign-in secret**: the client secret of Sign in with Apple on the web
+  expires within 14 days, or Apple refuses it. The host's daily job that renews it 30 days
+  ahead publishes `peek_apple_web_client_secret_expiry_timestamp_seconds` and
+  `peek_apple_web_client_secret_accepted`, so this means renewals keep failing
+  ([AUTHENTICATION.md](AUTHENTICATION.md)).
 
 Each threshold sits above what ordinary days reach. The database rules read
 `metrics.health` through the usage dashboard's data source: the last 3 hours' checks,
