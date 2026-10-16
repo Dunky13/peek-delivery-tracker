@@ -908,8 +908,9 @@ describe('TrackingSyncService', () => {
       carrier_data: { tracking_provider: 'Ship24', routing: { version: 1, configured_carrier: 'unknown', last_event_at: '2026-09-10T10:00:00.000Z' } } });
     expect(adapter.fetch).toHaveBeenCalledExactlyOnceWith('17feia', number, null, null);
     const saved = client.updatePackage.mock.calls.at(-1)![1];
+    // The database files a provider-tracked parcel only under the carrier routing settled on.
     expect(saved).toMatchObject({ carrier: '17feia', tracking_url: null, dpd_postcode: null, carrier_data: {
-      carrier_answered: true, routing: { configured_carrier: '17feia' },
+      carrier_answered: true, discovered_carrier: '17feia', routing: { configured_carrier: '17feia', discovered_carrier: '17feia' },
       direct_local_history: { carrier: '17feia', number, events: [expect.objectContaining({ local_time: '2026-09-10T09:00:00' })] },
     } });
     expect(saved.carrier_data.routing).not.toHaveProperty('confirmed_carrier');

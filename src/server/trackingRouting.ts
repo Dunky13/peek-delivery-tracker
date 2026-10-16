@@ -424,11 +424,15 @@ export class TrackingRouter {
         && state.failures[identified]?.user_error !== 'carrier:invalid_input' ? identified : undefined);
       if (named) {
         state.configured_carrier = named;
+        // A provider naming several legs may settle on none (17FEIA, and a DPD the catalog
+        // cannot place): the carrier that answered is the one routing settled on, which the
+        // database's guard requires of a parcel a provider's history files.
+        if (answered) state.discovered_carrier = answered;
         value.correction = { carrier: named, trackingUrl: null, postcode: null };
       }
       return { ...value, result: { ...value.result, routing: state,
         ...(localHistory ? { direct_local_history: localHistory } : {}),
-        ...(answered ? { carrier_answered: true } : {}),
+        ...(answered ? { carrier_answered: true, discovered_carrier: answered } : {}),
         ...(directCarrier(provider) ? { active_tracking_carrier: value.sourceCarrierId } : {}),
         ...(swap ? { auto_changed_from: declared, auto_changed_to: provider, auto_changed_at: now().toISOString() } : {}),
       } };

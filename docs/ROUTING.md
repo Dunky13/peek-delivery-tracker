@@ -147,7 +147,9 @@ adds scans or a different stage stays the source, as does one whose copy the par
 keep, and the carrier is asked again 6 h later, not on every check. When detection names that carrier for an unknown parcel's number and
 its answer shows movement, a provider's progress in the same check files the parcel under
 it, as one added with that carrier would be, even when the provider also names the platform
-the parcel went through (MailAmericas with Cainiao). Without such a provider answer the parcel
+the parcel went through (MailAmericas with Cainiao) or a carrier the catalog cannot place.
+That carrier is then the one routing settled on (`discovered_carrier`), as the database
+requires of a parcel filed from a provider's history. Without such a provider answer the parcel
 stays unknown.
 
 The filed carrier's partial answer, its status without scans or only its newest scans

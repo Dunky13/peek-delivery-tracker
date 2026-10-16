@@ -1425,7 +1425,8 @@ describe('persistent tracking routing', () => {
       const result = await router.fetch(filed(), false);
       expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier: '17feia' }), '17feia');
       expect(result).toMatchObject({ sourceCarrierId: 'unknown', correction: { carrier: '17feia', trackingUrl: null, postcode: null },
-        result: { tracking_provider: 'Ship24', carrier_answered: true, routing: { configured_carrier: '17feia' },
+        result: { tracking_provider: 'Ship24', carrier_answered: true, discovered_carrier: '17feia',
+          routing: { configured_carrier: '17feia', discovered_carrier: '17feia' },
           direct_local_history: { carrier: '17feia', number, events: [expect.objectContaining({ local_time: '2026-09-10T09:00:00' })] } } });
       expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
       expect(result.result).not.toHaveProperty('auto_changed_from');

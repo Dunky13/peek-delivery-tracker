@@ -36,6 +36,13 @@ begin
   exception when sqlstate '22023' then null;
   end;
   begin
+    -- The sync writer names the carrier that answered as the one routing settled on.
+    perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation,
+      correction #- '{carrier_data,discovered_carrier}' #- '{carrier_data,routing,discovered_carrier}', scans);
+    raise exception 'An answered carrier was filed without being the one routing settled on';
+  exception when sqlstate '22023' then null;
+  end;
+  begin
     perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation, correction);
     raise exception 'An answered carrier was filed without dated movement';
   exception when sqlstate '22023' then null;
