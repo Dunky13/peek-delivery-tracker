@@ -622,6 +622,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^0031\\d{27}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^ESUS\\d{9}$",
+        "confidence": "low"
       }
     ],
     "aliases": [
@@ -1660,6 +1664,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^AHOY[A-Z0-9]{8}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^ESUS\\d{9}$",
+        "confidence": "low"
       }
     ],
     "aliases": [
