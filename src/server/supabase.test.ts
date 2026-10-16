@@ -136,12 +136,22 @@ describe('one-off parcels and their links', () => {
     }
   });
 
+  it('reads when the last scheduled run finished', async () => {
+    const client = service();
+    const request = vi.spyOn(client, 'request').mockResolvedValueOnce([{ completed_at: '2026-09-16T10:00:00Z' }]).mockResolvedValueOnce([]);
+    await expect(client.lastScheduledRunFinishedAt()).resolves.toEqual(new Date('2026-09-16T10:00:00Z'));
+    await expect(client.lastScheduledRunFinishedAt()).resolves.toBeNull();
+    const sent = params(request.mock.calls[0][0]);
+    expect(Object.fromEntries(sent)).toEqual({ select: 'completed_at', kind: 'eq.scheduled', completed_at: 'not.is.null',
+      order: 'completed_at.desc', limit: '1' });
+  });
+
   it('lists the recent open parcels last routed with other catalog rules, without their events', async () => {
     const client = service();
     const request = vi.spyOn(client, 'request').mockResolvedValue([{ id: 'parcel' }]);
     await expect(client.listRedetectionCandidates(new Date('2026-09-16T10:00:00Z'), 'rules-1')).resolves.toEqual([{ id: 'parcel' }]);
     const sent = params(request.mock.calls[0][0]);
-    expect(sent.get('select')).toBe('id,user_id,tracking_number,carrier,current_stage,carrier_data');
+    expect(sent.get('select')).toBe('id,user_id,tracking_number,carrier,current_stage,last_synced_at,sync_status,sync_error,carrier_data');
     expect(sent.get('archived_at')).toBe('is.null');
     expect(sent.get('current_stage')).toBe('not.in.(delivered,returned)');
     expect(sent.get('created_at')).toBe('gte.2026-09-16T10:00:00.000Z');

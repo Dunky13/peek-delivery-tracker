@@ -240,6 +240,7 @@ describe('a failed enqueue of the scheduled sync', () => {
     started.push(runtime);
     // The worker and the scheduler have only set their timers: none has fired.
     vi.spyOn(runtime.client, 'claimSyncJob').mockResolvedValue(null);
+    vi.spyOn(runtime.client, 'lastScheduledRunFinishedAt').mockResolvedValue(null);
     const enqueue = vi.spyOn(runtime.client, 'enqueueSyncJob').mockRejectedValue(failure);
     return { runtime, enqueue, ...monitored };
   }
@@ -268,5 +269,45 @@ describe('a failed enqueue of the scheduled sync', () => {
     expect(report).toHaveBeenCalledExactlyOnceWith(failure, {
       component: 'sync-scheduler', operation: 'enqueue_scheduled_job', trigger: 'scheduled',
     });
+  });
+});
+
+describe('the scheduled sync at start', () => {
+  function starting(lastRun: () => Promise<Date | null>) {
+    vi.useFakeTimers({ now: new Date('2026-09-09T02:30:00Z') });
+    vi.stubEnv('SUPABASE_URL', 'https://database.example');
+    vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-service-key');
+    for (const unset of ['VAPID_PUBLIC_KEY', 'VAPID_PRIVATE_KEY', 'APNS_TEAM_ID', 'APNS_KEY_ID', 'APNS_PRIVATE_KEY',
+      'APNS_BUNDLE_ID', 'SMTP_HOST', 'SMTP_USER', 'SMTP_PASSWORD']) {
+      vi.stubEnv(unset, '');
+    }
+    monitor();
+    const runtime = startBackgroundServices();
+    if (!runtime) throw new Error('The background services did not start');
+    started.push(runtime);
+    vi.spyOn(runtime.client, 'claimSyncJob').mockResolvedValue(null);
+    vi.spyOn(runtime.client, 'lastScheduledRunFinishedAt').mockImplementation(lastRun);
+    const enqueue = vi.spyOn(runtime.client, 'enqueueSyncJob').mockResolvedValue({ row: {}, queued: true });
+    return { runtime, enqueue };
+  }
+
+  it('waits for the next run when one already finished in this window, such as after a deploy overnight', async () => {
+    // 04:30 in Zurich: overnight, the window is the hour.
+    const { runtime, enqueue } = starting(async () => new Date('2026-09-09T02:01:00Z'));
+    await vi.advanceTimersByTimeAsync(8_000);
+    expect(enqueue).not.toHaveBeenCalled();
+    expect(runtime.state.nextScheduledSync).toBe(Date.parse('2026-09-09T03:00:00Z') / 1_000);
+    await vi.advanceTimersByTimeAsync(30 * 60_000);
+    expect(enqueue).toHaveBeenCalledExactlyOnceWith({ scheduled: true });
+  });
+
+  it.each([
+    ['the last run finished in an earlier window', async () => new Date('2026-09-09T01:59:00Z')],
+    ['no run has finished', async () => null],
+    ['the last run cannot be read', async () => { throw unreachable(); }],
+  ])('runs at once when %s', async (_case, lastRun) => {
+    const { enqueue } = starting(lastRun);
+    await vi.advanceTimersByTimeAsync(8_000);
+    expect(enqueue).toHaveBeenCalledExactlyOnceWith({ scheduled: true });
   });
 });

@@ -2,7 +2,7 @@ import { carrierResult } from '../test/carrierResults';
 import { CarrierError } from 'universal-parcel-scraper';
 import { REGISTRY } from 'universal-parcel-scraper/node';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { idlePollDelay, secondsUntilNextSync, workerPollDelay } from './background';
+import { idlePollDelay, secondsUntilNextSync, syncWindowStart, workerPollDelay } from './background';
 import { deployedVersion } from './reviewQueues';
 import { normalizeCarrierResult, type CarrierResult } from 'universal-parcel-scraper';
 import { STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
@@ -370,6 +370,9 @@ describe('fair scheduling', () => {
     expect(secondsUntilNextSync(new Date('2026-07-15T07:04:00Z'))).toBe(120);
     expect(secondsUntilNextSync(new Date('2026-07-15T19:59:30Z'))).toBe(30);
     expect(secondsUntilNextSync(new Date('2026-07-15T20:00:00Z'))).toBe(3_600);
+    // The window a run belongs to opened at the last even minute by day, at the hour overnight.
+    expect(syncWindowStart(new Date('2026-07-15T07:03:30Z'))).toEqual(new Date('2026-07-15T07:02:00Z'));
+    expect(syncWindowStart(new Date('2026-07-15T20:30:00Z'))).toEqual(new Date('2026-07-15T20:00:00Z'));
     expect(secondsUntilNextSync(new Date('2026-07-15T20:15:00Z'))).toBe(2_700);
     expect(() => secondsUntilNextSync(new Date('invalid'))).toThrow('valid');
   });
@@ -1424,7 +1427,9 @@ describe('TrackingSyncService', () => {
     { name: 'a watched parcel', unwatched: false, stage: 'in_transit', time: '10:10:00', checked: 2 },
     { name: 'an unwatched parcel', unwatched: true, stage: 'in_transit', time: '10:10:00', checked: 0 },
     { name: 'an unwatched parcel', unwatched: true, stage: 'in_transit', time: '10:59:59', checked: 0 },
-    { name: 'an unwatched parcel', unwatched: true, stage: 'in_transit', time: '11:00:00', checked: 2 },
+    // The account's parcel hourly; the lookup without an account every 3 hours by day.
+    { name: 'an unwatched parcel', unwatched: true, stage: 'in_transit', time: '11:00:00', checked: 1 },
+    { name: 'an unwatched parcel', unwatched: true, stage: 'in_transit', time: '13:00:00', checked: 2 },
     { name: 'an unwatched parcel out for delivery', unwatched: true, stage: 'out_for_delivery', time: '10:02:00', checked: 0 },
   ])('checks $name at $time: $checked checks', async ({ unwatched, stage, time, checked }) => {
     const parcel = { carrier: 'swiss-post', current_stage: stage, tracking_number: 'TEST1234',
@@ -1474,10 +1479,34 @@ describe('TrackingSyncService', () => {
     await expect(service.queueRedetections()).resolves.toBe(2);
     expect(client.listRedetectionCandidates).toHaveBeenCalledExactlyOnceWith(new Date('2026-08-10T10:00:00Z'), catalogRules());
     expect(client.enqueueSyncJob.mock.calls).toEqual([[{ packageId: 'owned', userId: 'a' }], [{ packageId: 'lookup', userId: null }]]);
-    expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 2 });
+    expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 2, waiting: 0, left: 0 });
     // The same catalog is not looked at twice.
     await expect(service.queueRedetections()).resolves.toBe(0);
     expect(client.listRedetectionCandidates).toHaveBeenCalledOnce();
+  });
+
+  it('queues the check of a parcel in its cooldown once the cooldown ends, and counts what is left over', async () => {
+    const parcel = (id: string, routing: JsonObject = {}) => ({ id, user_id: 'a', carrier: 'unknown', tracking_number: '1Z999AA10123456784',
+      current_stage: 'in_transit', carrier_data: { tracking_provider: 'ParcelsApp', routing: { version: 1, configured_carrier: 'unknown',
+        failures: {}, probe_cursor: 0, discovery_cursor: 0, rules: 'older', ...routing } } });
+    const candidates = [parcel('deferred', { next_check_at: '2026-09-09T10:30:00Z' }),
+      ...Array.from({ length: 51 }, (_, index) => parcel(`due-${index}`))];
+    const client = { ...fakeClient(), listRedetectionCandidates: vi.fn().mockResolvedValue(candidates),
+      enqueueSyncJob: vi.fn().mockResolvedValue({ id: 'job' }) };
+    const logged = vi.spyOn(observability, 'logOperationalEvent');
+    let now = new Date('2026-09-09T10:00:00Z');
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() }, null, () => now);
+    // Fifty a catalog: the one in its cooldown and 49 others; two are left for the next catalog.
+    await expect(service.queueRedetections()).resolves.toBe(49);
+    expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 49, waiting: 1, left: 2 });
+    now = new Date('2026-09-09T10:20:00Z');
+    await expect(service.queueRedetections()).resolves.toBe(0);
+    now = new Date('2026-09-09T10:30:00Z');
+    await expect(service.queueRedetections()).resolves.toBe(1);
+    expect(client.enqueueSyncJob).toHaveBeenLastCalledWith({ packageId: 'deferred', userId: 'a' });
+    await expect(service.queueRedetections()).resolves.toBe(0);
+    expect(client.listRedetectionCandidates).toHaveBeenCalledOnce();
+    expect(client.enqueueSyncJob).toHaveBeenCalledTimes(50);
   });
 
   it('looks again after the next run when the recent parcels cannot be listed', async () => {

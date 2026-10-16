@@ -975,7 +975,7 @@ export class SupabaseServiceClient extends SupabaseClient {
    */
   async listRedetectionCandidates(addedSince: Date, rules: string): Promise<JsonObject[]> {
     const params = query([
-      ['select', 'id,user_id,tracking_number,carrier,current_stage,carrier_data'],
+      ['select', 'id,user_id,tracking_number,carrier,current_stage,last_synced_at,sync_status,sync_error,carrier_data'],
       ['archived_at', 'is.null'],
       ['current_stage', 'not.in.(delivered,returned)'],
       ['created_at', `gte.${addedSince.toISOString()}`],
@@ -1381,6 +1381,19 @@ export class SupabaseServiceClient extends SupabaseClient {
         p_result: options.result ?? null, p_error: options.error?.slice(0, 500) ?? null },
     });
     if (finished !== true) throw new SyncJobLeaseLost();
+  }
+
+  /** When the last scheduled run finished, however it ended; null when none has. */
+  async lastScheduledRunFinishedAt(): Promise<Date | null> {
+    const params = query([
+      ['select', 'completed_at'],
+      ['kind', 'eq.scheduled'],
+      ['completed_at', 'not.is.null'],
+      ['order', 'completed_at.desc'],
+      ['limit', '1'],
+    ]);
+    const finished = Date.parse(String(rows(await this.request(`/rest/v1/sync_jobs?${params}`, { timeoutMs: 3_000 }))[0]?.completed_at ?? ''));
+    return Number.isFinite(finished) ? new Date(finished) : null;
   }
 
   /**

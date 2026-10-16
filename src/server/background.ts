@@ -59,6 +59,15 @@ function initialState(): BackgroundState {
   };
 }
 
+/** When the schedule's current window opened: the last even minute by day, the hour overnight. */
+export function syncWindowStart(now = new Date()): Date {
+  const local = DateTime.fromJSDate(now, { zone: 'Europe/Zurich' });
+  const start = local.hour >= 8 && local.hour < 22
+    ? local.startOf('minute').minus({ minutes: local.minute % 2 })
+    : local.startOf('hour');
+  return start.toJSDate();
+}
+
 export function secondsUntilNextSync(now = new Date()): number {
   if (!Number.isFinite(now.getTime())) throw new TypeError('Sync clock must be valid');
   const local = DateTime.fromJSDate(now, { zone: 'Europe/Zurich' });
@@ -516,7 +525,7 @@ class ScheduledSync {
 
   start(): void {
     if (this.#stopped || this.#timer) return;
-    this.schedule(8_000);
+    this.schedule(8_000, true);
   }
 
   stop(): void {
@@ -525,17 +534,35 @@ class ScheduledSync {
     this.#timer = null;
   }
 
-  private schedule(delayMs: number): void {
+  private schedule(delayMs: number, starting = false): void {
     this.state.nextScheduledSync = (Date.now() + delayMs) / 1_000;
     this.#timer = setTimeout(() => {
       this.#timer = null;
-      void this.enqueueAndReschedule();
+      void this.enqueueAndReschedule(starting);
     }, delayMs);
     this.#timer.unref();
   }
 
-  private async enqueueAndReschedule(): Promise<void> {
+  /**
+   * Whether a scheduled run already finished in the schedule's current window. A
+   * start, such as a deploy's, then waits for the next one rather than adding a run.
+   * When it cannot be read, the start runs as before.
+   */
+  private async ranThisWindow(): Promise<boolean> {
+    try {
+      const finished = await this.client.lastScheduledRunFinishedAt();
+      return finished !== null && finished.getTime() >= syncWindowStart().getTime();
+    } catch {
+      return false;
+    }
+  }
+
+  private async enqueueAndReschedule(starting = false): Promise<void> {
     if (this.#stopped) return;
+    if (starting && await this.ranThisWindow()) {
+      if (!this.#stopped) this.schedule(secondsUntilNextSync() * 1_000);
+      return;
+    }
     try {
       await this.client.enqueueSyncJob({ scheduled: true });
       this.state.lastError = null;

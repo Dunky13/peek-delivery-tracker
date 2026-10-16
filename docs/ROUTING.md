@@ -178,6 +178,7 @@ parcels followed without an account that nobody watches (below).
 | Registered or accepted, no new event for 12 h (from when it was added) | hourly around the clock; manual refresh still allowed |
 | No new event for 48 h (from when it was added) | hourly around the clock; manual refresh still allowed |
 | Nobody waiting for it | hourly around the clock; manual refresh still allowed |
+| Followed without an account, no link opened for an hour and no alert on | every 3 h, not overnight; opening a link queues a check at once |
 | Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, around the clock; manual refresh still allowed |
 | Archived, with a new event in the last 30 days (from when it was added), and no alert on a link shared with someone | daily around the clock; manual refresh still allowed |
 
@@ -220,9 +221,9 @@ opened in the last 24 hours or has an alert on. Otherwise a parcel waits until a
 opened again; that read queues a check at once when the schedule would run one, and never
 more often than the schedule, however often the link is polled. One whose number nobody
 has seen 6 h after it was added leaves the schedule too; opening a link still queues a
-check at its cadence. Overnight, one whose links nobody opened in the last hour and that
-has no alert on waits for the morning: nobody reads it, and a number no carrier is known
-for asks every provider in turn. A scheduled run checks at most ten of them, after every
+check at its cadence. One whose links nobody opened in the last hour and that has no alert
+on is checked every 3 hours by day and waits for the morning overnight: nobody reads it,
+and a number no carrier is known for asks every provider in turn. A scheduled run checks at most ten of them, after every
 account's share, the least recently checked first. Their own checks queue behind every account's
 refresh and the scheduled run. A delivered or returned one is not checked.
 
@@ -329,7 +330,8 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   sent ([`redetection.ts`](../src/server/redetection.ts)). A check is queued, at most 50,
   for each one the new catalog points to a carrier it has not asked yet: the carrier its
   number is now detected as, the one a provider's saved carrier names now read as, or the
-  filed carrier's new adapter. Only parcels filed under no carrier, or showing a provider's
+  filed carrier's new adapter. One still in its cooldown is queued by the first scheduled
+  run after the cooldown ends. Only parcels filed under no carrier, or showing a provider's
   history, are looked at. A lookup nobody follows any more gets this one check.
 
 ## Handoffs (two carriers)

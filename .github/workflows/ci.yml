@@ -191,7 +191,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish the image
         if: env.PUBLISH == 'true'
-        run: docker push "$IMAGE"
+        # The registry sometimes loses a layer it has just accepted ("unknown blob"); one
+        # more push sends it again. Any other failure fails the step.
+        run: |
+          set -euo pipefail
+          if ! docker push "$IMAGE" 2>&1 | tee push.log; then
+            grep -q 'unknown blob' push.log || exit 1
+            docker push "$IMAGE"
+          fi
 
   # Runs only where an instance has set it up: DEPLOY_ENABLED and DEPLOY_URL as repository
   # variables, and the DEPLOY_SSH_* secrets. The iPhone app is tested in its own workflow.
