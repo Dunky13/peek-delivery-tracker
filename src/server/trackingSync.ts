@@ -43,7 +43,7 @@ import {
 import { isRecord, type JsonObject } from './types';
 import { UniversalTracker } from 'universal-parcel-scraper/node';
 import type { UniversalSource } from 'universal-parcel-scraper';
-import { answeredWithoutHistory, catalogRules, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter } from './trackingRouting';
+import { answeredWithoutHistory, catalogRules, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { REDETECTION_WINDOW_MS, rerouteCarrier } from './redetection';
 import { upuHistory } from './upuHistory';
 import { collectedPickupPoint } from './collectedPickupPoint';
@@ -832,7 +832,8 @@ export class TrackingSyncService {
    * Once per catalog: one check of each open parcel the catalog's rules point to a
    * carrier its routing never asked, such as a lookup added before a scraper release
    * brought the number's detection rule, the name a provider gives or the carrier's
-   * adapter, whose link nobody opens any more (redetection.ts). A parcel still in its
+   * adapter, whose link nobody opens any more, and of each unfiled one with a carrier
+   * to recognize it (redetection.ts). A parcel still in its
    * cooldown is queued by the first run after it ends. Returns how many checks were
    * queued; they wait behind every other job, a lookup's check too.
    */
@@ -848,7 +849,7 @@ export class TrackingSyncService {
       if (!redetections.listed) {
         const candidates = await this.client.listRedetectionCandidates(new Date(now - REDETECTION_WINDOW_MS), rules);
         for (const parcel of candidates) {
-          if (!rerouteCarrier(parcel, rules)) continue;
+          if (!rerouteCarrier(parcel, rules, now)) continue;
           const dueAt = trackingSyncDueAt(parcel);
           if (dueAt === Infinity) continue;
           if (redetections.waiting.size >= MAX_REDETECTIONS) left += 1;
@@ -1230,9 +1231,14 @@ export class TrackingSyncService {
         // The parcel's own carrier does not know it yet: fallback providers failing on the
         // same unannounced number is not an outage, and the routing state keeps their cooldowns.
         // Without a carrier to ask, every provider answering without history means the same.
-        // A provider resting on a rate limit was not asked, so it says nothing about the number.
+        // A provider resting on a rate limit was not asked, and a universal provider that failed
+        // (transport, challenge, unreadable answer) did not answer: neither says anything about
+        // the number. A carrier's own adapter failing does.
         const failures = error instanceof RoutingDeferred
-          ? Object.values(error.routing.failures).filter((failure) => failure.kind !== 'rate_limited') : [];
+          ? Object.entries(error.routing.failures).filter(([source, failure]) => failure.kind !== 'rate_limited'
+            && (directCarrier(source) || ['not_found', 'no_history', 'input_required'].includes(failure.kind)))
+            .map(([, failure]) => failure)
+          : [];
         const routingUnannounced = error instanceof RoutingDeferred
           && (Boolean(error.routing.provider_input_needed) || error.routing.failures[carrierId]?.kind === 'not_found'
             || (failures.length > 0 && failures.every((failure) => ['not_found', 'no_history', 'input_required'].includes(failure.kind))));
@@ -1486,19 +1492,27 @@ export class TrackingSyncService {
           ...(isRecord(values.carrier_data) ? values.carrier_data : previousData), direct_local_history: localHistory,
         };
       }
-      if (fetched.correction && !preserveSummary) {
-        values.carrier = fetched.correction.carrier;
-        values.tracking_url = fetched.correction.trackingUrl;
-        values.dpd_postcode = fetched.correction.postcode;
-      } else if (fetched.correction && isRecord(values.carrier_data) && isRecord(values.carrier_data.routing)) {
-        // A rejected/older summary must not advertise a swap that was not saved.
-        values.carrier_data.routing.configured_carrier = carrierId;
-      }
       const eventsToPersist = keepSaved || (preserveSummary && (result.tracking_provider === 'UPU' || localOnlyFallback)) ? [] : events;
       const persistedIds = new Set(eventsToPersist.map((event) => String(event.provider_event_id)));
       const persistedEvents = withIdentities(
         eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))), matches.reused, stored,
       );
+      // A provider naming an unknown parcel's carrier identifies the number, however old its
+      // copy of the history looks: the parcel is filed under it and keeps the newer summary.
+      const identifiedOnOlderCopy = preserveSummary && olderSnapshot && !keepSaved && !unprovenUpuSummary
+        && !unprovenLocalSummary && providerIdentification(parcel, result, fetched.correction, routing, persistedEvents, stored, this.now());
+      if (fetched.correction && (!preserveSummary || identifiedOnOlderCopy)) {
+        values.carrier = fetched.correction.carrier;
+        values.tracking_url = fetched.correction.trackingUrl;
+        values.dpd_postcode = fetched.correction.postcode;
+        if (identifiedOnOlderCopy && isRecord(values.carrier_data)) {
+          values.carrier_data = { ...values.carrier_data,
+            discovered_carrier: result.discovered_carrier, reported_carriers: result.reported_carriers };
+        }
+      } else if (fetched.correction && isRecord(values.carrier_data) && isRecord(values.carrier_data.routing)) {
+        // A rejected/older summary must not advertise a swap that was not saved.
+        values.carrier_data.routing.configured_carrier = carrierId;
+      }
       // A scan already stored is rewritten in place, which is no news.
       const storedIds = new Set(stored.map((event) => String(event.provider_event_id)));
       const eventsNew = persistedEvents.filter((event) => !storedIds.has(String(event.provider_event_id))).length;
@@ -1825,6 +1839,31 @@ export function restagedNews(
     return before !== undefined && before !== stage && RESTAGED_NEWS.has(stage) && !shown.has(stage)
       && Date.parse(String(event.occurred_at)) >= since ? [id] : [];
   });
+}
+
+const IDENTIFYING_PROVIDERS = new Set(['Ship24', 'ParcelsApp', '17TRACK', 'Postal Ninja']);
+
+/**
+ * Whether a correction files an unknown parcel under the carrier a provider names, as the
+ * database's guard accepts it beside a saved summary: the saved summary is a provider's, and
+ * this check brings movement, or the movement it keeps is a stored scan.
+ */
+function providerIdentification(
+  parcel: JsonObject, result: CarrierResult, correction: RoutedResult['correction'], routing: JsonObject | null,
+  events: readonly JsonObject[], stored: readonly JsonObject[], now: Date,
+): boolean {
+  const saved = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
+  const names = result.reported_carriers;
+  if (!correction || !routing || parcel.carrier !== 'unknown' || correction.trackingUrl !== null || correction.postcode !== null
+    || result.discovered_carrier !== correction.carrier || routing.discovered_carrier !== correction.carrier
+    || routing.preferred_number !== parcel.tracking_number || routing.confirmed_carrier != null
+    || (isRecord(saved.routing) && saved.routing.confirmed_carrier != null) || saved.original_carrier != null
+    || !IDENTIFYING_PROVIDERS.has(String(saved.tracking_provider))
+    || !Array.isArray(names) || names.length < 1 || names.length > 4 || names.some((name) => typeof name !== 'string')) return false;
+  const progress = (event: JsonObject) => !['pending', 'registered'].includes(String(event.stage)) && typeof event.occurred_at === 'string';
+  const watermark = Date.parse(String(routing.last_event_at ?? ''));
+  return events.some((event) => progress(event) && Date.parse(String(event.occurred_at)) <= now.getTime() + 3_600_000)
+    || stored.some((event) => progress(event) && Date.parse(String(event.occurred_at)) === watermark);
 }
 
 /** The stored event identities a sync loader embedded; none when the parcel came from elsewhere. */

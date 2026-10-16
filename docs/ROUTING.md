@@ -124,7 +124,8 @@ before its first scan, hence its shorter not-found wait. When a universal provid
 progress the parcel hasn't had yet and names a carrier that said not found, that carrier is
 asked again in the same check. A pending parcel whose failures are all not-found or
 `no_history` shows as waiting, not as an outage. A provider resting on a rate limit was
-not asked, so it leaves that answer as it is. When a failed direct adapter recovers, it
+not asked, and a universal provider that failed (transport, verification, an unreadable
+answer) did not answer, so neither changes that; a carrier's own adapter failing does. When a failed direct adapter recovers, it
 takes over from the universal provider again.
 
 When every source fails, the parcel keeps its last progress. The error chip appears only
@@ -249,7 +250,7 @@ Post 17TRACK route skip shadow checks.
 | Wrong carrier selected, right one supported | On failure, try the detected carrier, then a saved confirmed route, then the carriers that recognize the number, then universals. When a universal names a supported carrier, the router asks that carrier's adapter directly, unless it is the carrier already confirmed for the number and its retry time is still ahead. If the adapter refuses the number as one it does not issue (a failed check digit, or its own number validation, which sends nothing), the router forgets the name and does not ask it. A bare brand ("DPD Group") counts only when the number leaves one of the brand's catalog networks, by shape or a preferred rule such as a DPD depot range. It swaps only after that adapter returns real progress on the same number, at least as recent as what we have. The UI shows "Swapped automatically from X" for 12 h. |
 | Carrier needs a postcode or capability URL | Report `carrier_input_required` and continue with universals. Inputs are never borrowed from another carrier. An optional input (DPD's postcode) does not block a lookup; the lookup runs without it. |
 | Only one or two universals know the carrier | The carrier's order asks them first, and the one that answers is pinned. No fan-out on normal successful checks. |
-| Unknown carrier | Try one strong direct candidate if there is one, then the carriers that recognize the number, otherwise discover a universal. A number's shape stays a suggestion. One carrier explicitly named by universal dated movement, or among several the one the provider settled on when the number's own rules point to it alone, can identify an unknown parcel while the universal remains its source, unless its adapter refuses the number. History prefetched on Add skips direct confirmation but not that check. Replacing a selected carrier still needs direct confirmation. Once found, the carrier replaces it without the "Swapped automatically" notice, as it does an unknown postal carrier: no carrier was chosen. |
+| Unknown carrier | Try one strong direct candidate if there is one, then the carriers that recognize the number, otherwise discover a universal. A number's shape stays a suggestion. One carrier explicitly named by universal dated movement, or among several the one the provider settled on when the number's own rules point to it alone, can identify an unknown parcel while the universal remains its source, unless its adapter refuses the number. History prefetched on Add skips direct confirmation but not that check. A provider copy older than the parcel's saved summary still files it, and the newer summary stays. Replacing a selected carrier still needs direct confirmation. Once found, the carrier replaces it without the "Swapped automatically" notice, as it does an unknown postal carrier: no carrier was chosen. |
 | A universal returns another parcel | Numbers are reused and carriers' number spaces overlap. For a parcel filed under a specific carrier, a universal history counts as no history when every carrier it names is a different catalog carrier and its newest scan is more than 30 days older than the parcel. The next provider is asked. |
 | Everything fails | Keep progress, store the next check time, keep affinity until a replacement works. |
 | User switches to a worse carrier | Check the new choice first. If the previously confirmed route still works, restore it with the same notice, using the postcode or link saved with it. Choosing the confirmed carrier again replaces those with what the user entered, so a cleared postcode is not reused. If the earlier route doesn't track the number on that check, a new choice with its own adapter is asked first from then on. Generation fencing cancels in-flight work. |
@@ -337,7 +338,9 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   sent ([`redetection.ts`](../src/server/redetection.ts)). A check is queued, at most 50,
   for each one the new catalog points to a carrier it has not asked yet: the carrier its
   number is now detected as, the one a provider's saved carrier names now read as, or the
-  filed carrier's new adapter. One still in its cooldown is queued by the first scheduled
+  filed carrier's new adapter. A parcel filed under no carrier is also queued when its
+  recognition has a carrier to ask whose wait is over, asked before or not, since a release
+  can teach an adapter a number. One still in its cooldown is queued by the first scheduled
   run after the cooldown ends. These checks wait behind every other job, a lookup's own
   check too. Only parcels filed under no carrier, or showing a provider's history, are
   looked at. A lookup nobody follows any more gets this one check.

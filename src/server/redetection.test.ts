@@ -15,18 +15,40 @@ it('points an unknown parcel to the carrier its number is now detected as', () =
   expect(rerouteCarrier(parcel({}, { tracking_provider: undefined }))).toBe('ups');
 });
 
+// A synthetic number no rule claims and no carrier's recognition is asked about.
+const UNCLAIMED = 'ABCD0000000001CN';
+
 it('points an unknown parcel to a carrier a provider named, read with the current aliases', () => {
-  expect(rerouteCarrier(parcel({ tracking_number: 'TEST1234' }, { reported_carriers: ['UPS'] }))).toBe('ups');
+  expect(rerouteCarrier(parcel({ tracking_number: UNCLAIMED }, { reported_carriers: ['UPS'] }))).toBe('ups');
   // A hint the parcel already holds is asked on its next check anyway.
-  expect(rerouteCarrier(parcel({ tracking_number: 'TEST1234' },
+  expect(rerouteCarrier(parcel({ tracking_number: UNCLAIMED },
     { reported_carriers: ['UPS'], routing: { discovered_carrier: 'ups' } }))).toBeNull();
 });
 
-it('points a parcel a provider tracks to a carrier without an adapter of its own only when it is filed under none', () => {
+it('points a parcel filed under no carrier to a carrier without an adapter of its own', () => {
   expect(rerouteCarrier(parcel({ tracking_number: 'MY1234567890US' }, { reported_carriers: ['Mayi Yinfu', 'DHL eCommerce'] })))
     .toBe('mayiyinfu');
-  // Nothing but a provider can track it, and none has answered for it yet.
-  expect(rerouteCarrier(parcel({ tracking_number: 'MY1234567890US' }, { tracking_provider: undefined }))).toBeNull();
+  // No provider has answered for it yet: its check asks them about that carrier.
+  expect(rerouteCarrier(parcel({ tracking_number: 'MY1234567890US' }, { tracking_provider: undefined }))).toBe('mayiyinfu');
+  // A parcel filed under a carrier keeps it.
+  expect(rerouteCarrier(parcel({ carrier: 'dhl', tracking_number: 'MY1234567890US' }, { routing: { failures: { dhl: { kind: 'not_found' } } } })))
+    .toBeNull();
+});
+
+it('points an unknown parcel to the first carrier its check would ask again, asked before or not', () => {
+  const now = Date.parse('2026-09-10T12:00:00Z');
+  const probe = (retry: string) => ({ count: 3, retry_at: retry });
+  const unseen = (data: JsonObject) => parcel({ tracking_number: '1234567891', current_stage: 'pending' }, { tracking_provider: undefined, ...data });
+  expect(rerouteCarrier(unseen({}), 'newer', now)).toBe('dhl-express');
+  // A release may have taught its adapter the number since it was asked.
+  expect(rerouteCarrier(unseen({ routing: { candidate_probes: { 'dhl-express': probe('2026-09-10T08:00:00Z') } } }), 'newer', now))
+    .toBe('dhl-express');
+  // One still waiting is asked when its wait is over, and the next one now.
+  expect(rerouteCarrier(unseen({ routing: { candidate_probes: { 'dhl-express': probe('2026-09-10T18:00:00Z') } } }), 'newer', now))
+    .toBe('relais-colis');
+  // Not for a parcel filed under a carrier.
+  expect(rerouteCarrier(parcel({ carrier: 'dhl', tracking_number: '1234567891' }, { routing: { failures: { dhl: { kind: 'not_found' } } } }),
+    'newer', now)).toBeNull();
 });
 
 it('points a parcel a provider tracks back to its own carrier when that carrier was never asked', () => {

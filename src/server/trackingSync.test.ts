@@ -833,6 +833,38 @@ describe('TrackingSyncService', () => {
     expect(saved.carrier_data).not.toHaveProperty('auto_changed_from');
   });
 
+  it('files an unknown parcel under the carrier a provider names even when its copy looks older', async () => {
+    const sync = async (savedProvider: string) => {
+      const client = { ...fakeClient(),
+        acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
+        finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+      const adapter = { fetch: vi.fn().mockRejectedValue(new Error('carrier blocked')),
+        fetchUniversal: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-09-10T11:00:00Z',
+          discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express'],
+          events: [{ time: '2026-09-10T11:00:00Z', description: 'In transit', stage: 'in_transit' }] }) };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null,
+        () => new Date('2026-09-10T12:00:00Z'));
+      await service.syncPackage({ id: 'older-copy', carrier: 'unknown', tracking_number: '1234567891', current_stage: 'in_transit',
+        last_status_text: 'Arrived at the hub',
+        carrier_data: { tracking_provider: savedProvider, reported_carriers: ['DHL'],
+          routing: { version: 1, configured_carrier: 'unknown', last_event_at: '2026-09-10T11:30:00.000Z' } },
+        [STORED_EVENT_IDENTITIES]: [{ provider_event_id: 'unknown:saved', occurred_at: '2026-09-10T11:30:00.000Z',
+          stage: 'in_transit', description: 'Arrived at the hub' }] });
+      return client.updatePackage.mock.calls.at(-1)![1];
+    };
+    const filed = await sync('ParcelsApp');
+    expect(filed).toMatchObject({ carrier: 'dhl-express', tracking_url: null, dpd_postcode: null, carrier_data: {
+      tracking_provider: 'ParcelsApp', discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express'],
+      routing: { configured_carrier: 'dhl-express', discovered_carrier: 'dhl-express', last_event_at: '2026-09-10T11:30:00.000Z' } } });
+    // The newer saved summary stays.
+    expect(filed).not.toHaveProperty('last_status_text');
+    expect(filed).not.toHaveProperty('current_stage');
+    // The database files a parcel on a provider's word only beside a provider's summary.
+    const kept = await sync('UPU');
+    expect(kept).not.toHaveProperty('carrier');
+    expect(kept.carrier_data.routing.configured_carrier).toBe('unknown');
+  });
+
   it('atomically persists a verified correction and retains its timestamp on later syncs', async () => {
     const report = vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const client = fakeClient();
@@ -1493,7 +1525,9 @@ describe('TrackingSyncService', () => {
         failures: {}, probe_cursor: 0, discovery_cursor: 0, rules: 'older' } } });
     const client = { ...fakeClient(),
       listRedetectionCandidates: vi.fn().mockResolvedValue([
-        parcel('owned', '1Z999AA10123456784'), parcel('lookup', '1Z999AA10123456784'), parcel('nowhere', 'TEST1234')]),
+        parcel('owned', '1Z999AA10123456784'), parcel('lookup', '1Z999AA10123456784'),
+        // A synthetic number no rule claims and no carrier's recognition is asked about.
+        parcel('nowhere', 'ABCD0000000001CN')]),
       enqueueSyncJob: vi.fn().mockResolvedValue({ id: 'job' }) };
     const logged = vi.spyOn(observability, 'logOperationalEvent');
     const now = new Date('2026-09-09T10:00:00Z');
@@ -3113,6 +3147,31 @@ describe('TrackingSyncService', () => {
       carrier_data: { routing: { failures: { Ship24: { kind: 'not_found' }, ParcelsApp: { kind: 'rate_limited' } } } } });
     expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'unseen',
       expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: true })]));
+  });
+
+  it('keeps a number nobody has seen waiting while one provider fails without answering, not while its carrier does', async () => {
+    const sync = async (carrier: string, fetch: () => Promise<never>) => {
+      const client = { ...fakeClient(),
+        acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+        finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+      };
+      const adapter = { fetch: vi.fn(fetch), fetchUniversal: vi.fn(async (source: string) => {
+        throw source === '17TRACK' ? new Error('socket hang up') : new NotFoundError(source);
+      }) };
+      // The previous check already missed, so another missed check would show an error.
+      const parcel = { id: 'unseen', carrier, tracking_number: 'TEST1234', current_stage: 'pending',
+        carrier_data: { routing: { version: 1, configured_carrier: carrier, consecutive_failures: 1, probe_cursor: 0, discovery_cursor: 0 } } };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+      const counts = await service.syncPackage(parcel, { trigger: 'scheduled' });
+      return { counts, saved: client.updatePackage.mock.calls.at(-1)![1] };
+    };
+    const unseen = await sync('unknown', () => { throw new Error('not asked'); });
+    expect(unseen.counts).toMatchObject({ waiting: 1, errors: 0 });
+    expect(unseen.saved).toMatchObject({ sync_status: 'waiting', sync_error: null,
+      carrier_data: { routing: { failures: { Ship24: { kind: 'not_found' }, '17TRACK': { kind: 'transport' } } } } });
+    const carrierDown = await sync('dhl', async () => { throw new Error('socket hang up'); });
+    expect(carrierDown.counts).toMatchObject({ waiting: 0, errors: 1 });
+    expect(carrierDown.saved.carrier_data.routing.failures.dhl).toMatchObject({ kind: 'transport' });
   });
 
   it('keeps a parcel waiting while its carrier lists it without scans and no provider has history', async () => {

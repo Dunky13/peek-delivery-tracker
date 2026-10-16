@@ -57,4 +57,37 @@ begin
   end if;
 end;
 $$;
+
+-- A provider's older copy names the carrier: the parcel is filed under it and keeps the saved
+-- summary, whose movement is the stored scan at the watermark.
+do $$
+declare
+  parcel public.packages;
+  correction jsonb;
+begin
+  insert into public.packages(user_id, tracking_number, carrier, current_stage, carrier_data)
+  values ('10000000-0000-0000-0000-000000000001', 'CTTY0000000001CN', 'unknown', 'in_transit',
+    jsonb_build_object('tracking_provider', 'ParcelsApp', 'reported_carriers', jsonb_build_array('CTTY')))
+  returning * into parcel;
+  insert into public.tracking_events(package_id, provider_event_id, stage, description, occurred_at)
+  values (parcel.id, 'unknown:saved-scan', 'in_transit', 'Arrived at the hub', '2026-09-10T11:30:00Z');
+  correction := jsonb_build_object('carrier', 'cttyex', 'tracking_url', null, 'dpd_postcode', null,
+    'sync_status', 'ok', 'carrier_data', jsonb_build_object(
+      'tracking_provider', 'ParcelsApp', 'discovered_carrier', 'cttyex', 'reported_carriers', jsonb_build_array('CTTY'),
+      'routing', jsonb_build_object('version', 1, 'configured_carrier', 'cttyex', 'discovered_carrier', 'cttyex',
+        'preferred_number', parcel.tracking_number, 'last_event_at', '2026-09-10T11:30:00.000Z')));
+  begin
+    perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation,
+      jsonb_set(correction, '{carrier_data,routing,last_event_at}', '"2026-09-10T11:00:00.000Z"'));
+    raise exception 'Provider identity without a stored scan at its watermark was accepted';
+  exception when sqlstate '22023' then null;
+  end;
+  if not public.apply_tracking_sync(parcel.id, parcel.tracking_generation, correction) then
+    raise exception 'Provider identity on an older copy was not saved';
+  end if;
+  if not exists (select 1 from public.packages where id = parcel.id and carrier = 'cttyex' and current_stage = 'in_transit') then
+    raise exception 'Provider identity on an older copy changed the saved summary';
+  end if;
+end;
+$$;
 rollback;
