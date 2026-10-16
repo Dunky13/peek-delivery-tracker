@@ -21143,7 +21143,12 @@ export const CARRIER_CAPABILITIES = {
     },
     "trackingUrlTemplate": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
     "linkRules": [],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://www.dpd.com/be/en/receiving/track-trace/"
   }
 } as const;
