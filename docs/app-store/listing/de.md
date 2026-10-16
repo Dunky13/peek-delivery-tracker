@@ -3,73 +3,73 @@
 ## Name
 
 ```text
-Peek: Paketverfolgung
+Peek: Sendungsverfolgung
 ```
 
-(21 characters)
+(24 characters)
 
 ## Subtitle
 
 ```text
-Sendungsverfolgung ohne Konto
+3500+ Paketdienste, ohne Konto
 ```
 
-(29 characters)
+(30 characters)
 
 ## Promotional text
 
 ```text
-Füge eine Sendungsnummer, einen Link oder eine ganze Versandmail ein. Peek findet den Paketdienst und zeichnet die Reise auf einer Karte. Kein Konto nötig.
+Füge eine Sendungsnummer, einen Link oder eine ganze Versandmail ein. Peek findet den Paketdienst, zeichnet die Reise auf eine Karte und meldet sich, wenn sich etwas tut.
 ```
 
-(155 characters)
+(170 characters)
 
 ## Description
 
 ```text
-Wo ist mein Paket? Füge ein, was du hast, und Peek findet es heraus.
+Wo ist mein Paket?
 
-Eine Sendungsnummer, ein Link vom Paketdienst oder eine ganze Versandmail: Peek fischt die Nummer heraus und erkennt, welcher von über 3500 Paketdiensten das Paket hat. Du kannst die Nummer auch eintippen, den Barcode auf dem Etikett scannen oder sie aus einer anderen App mit Peek teilen.
+Füge eine Sendungsnummer, einen Link vom Paketdienst oder eine ganze Versandmail ein, oder scanne den Barcode auf dem Etikett. Peek findet heraus, welcher von über 3500 Paketdiensten das Paket hat, und zeigt seine Reise auf einer Karte, jeden Scan und den Tag, an dem es ankommen soll.
 
-Jedes Paket bekommt eine eigene Seite: die Reise auf einer Karte, jeden Scan und den voraussichtlichen Liefertag, wenn der Paketdienst einen nennt.
+Kein Konto nötig. Keine Werbung.
 
-Kein Konto nötig
-Pakete, die du ohne Konto verfolgst, bleiben auf diesem iPhone, und Peek vergisst jedes 30 Tage nach der Ankunft. Melde dich an, wenn du Mitteilungen möchtest oder deine Pakete auf dem iPhone und im Web zusammenhalten willst.
+ERFAHRE ICH, WENN SICH ETWAS TUT?
+Melde dich mit Apple, Google oder einem Code per E-Mail an, und Peek schickt dir Mitteilungen: bei jedem Scan, nur bei wichtigen Schritten oder nur am Liefertag. Auf Wunsch sagt dir auch eine E-Mail, dass das Paket angekommen ist.
 
-Erfahre ich, wenn sich etwas tut?
-Mit Konto schickt dir Peek Mitteilungen: bei jedem Scan, nur bei wichtigen Schritten oder nur am Liefertag. Ein Paket schaltest du mit einem Tipp stumm. Auf Wunsch schreibt dir Peek auch eine E-Mail, wenn ein Paket abholbereit oder zugestellt ist, aber nur, wenn du sie einschaltest.
+MEHR ALS EIN PAKET UNTERWEGS?
+Alle stehen in einer Liste. Was als Nächstes ankommt, steht ganz oben und reist auf seiner eigenen Karte. Mit einem Konto hast du dieselbe Liste auf deinem iPhone und im Web unter peektracker.com. Ein Widget zeigt deine nächste Lieferung auf dem Home-Bildschirm.
 
-Mehr als ein Paket unterwegs?
-Alle stehen in einer Liste, im Hintergrund aktualisiert. Durchsuche sie, filtere sie, archiviere, was angekommen ist. Ein Widget auf dem Home-Bildschirm zeigt deine nächste Lieferung und die Pakete in Zustellung.
+WARTET NOCH JEMAND DARAUF?
+Teile die Seite des Pakets per Link. Zum Öffnen braucht es weder App noch Konto. Verpacke es als Geschenk, und was drin ist, bleibt bis zur Zustellung eine Überraschung.
 
-Wartet noch jemand darauf?
-Teile den Link des Pakets. Wer ihn öffnet, sieht, wie weit es ist, und von der Sendungsnummer nur das Ende, außer du zeigst sie ganz. Verpacke es als Geschenk, dann bleibt bis zur Zustellung eine Überraschung, was drin ist und von wem es kommt.
+EIN REISEPASS VOLLER LIEFERUNGEN
+Mit einem Konto stempelt jede Zustellung deinen Reisepass. Vergleiche Reisepässe mit Freunden; deine Pakete bleiben privat.
 
-Ein Reisepass voller Lieferungen
-Jede Zustellung stempelt deinen Reisepass: zwölf Briefmarken zum Sammeln, deine Lieferzeiten und die Länder, in denen deine Pakete zum ersten Mal gescannt wurden. Mit Konto lädst du Freunde mit einem Einmal-Link ein und vergleichst eure Reisepässe. Sie sehen, wie viele Pakete bei dir angekommen sind, deine durchschnittliche Lieferzeit und deine Briefmarken, nie deine Pakete.
+3500+ PAKETDIENSTE
+DHL, Hermes, DPD, GLS, UPS, FedEx, Österreichische Post, Schweizerische Post, PostNL, La Poste, Royal Mail, InPost, China Post, Cainiao, YunExpress und Tausende weitere: nationale Postgesellschaften, Kurierdienste und die Zustelldienste großer Onlineshops.
 
-Privat und offen
-• Keine Werbung, und Peek verkauft keine Daten.
-• Peek zeichnet seine Karten selbst, also sieht kein Kartendienst, wohin deine Pakete reisen.
-• Anmelden mit Apple, Google oder einem Code per E-Mail. Kein Passwort, das du dir merken musst.
-• Lade deine Daten herunter oder lösche dein Konto in der App, wann immer du willst.
-• Open Source: Jede Zeile liegt auf GitHub unter Apache-2.0. Lies sie, füge einen Paketdienst hinzu oder betreibe dein eigenes Peek.
+AUSSERDEM IM PAKET
+• Ein Barcode-Scanner
+• Sendungsnummern und Tracking-Links aus Mail, Nachrichten oder Safari direkt mit Peek teilen
+• Helle und dunkle Darstellung
+• Deutsch, Englisch, Französisch, Italienisch, Spanisch, Portugiesisch und Polnisch
 
-Funktioniert mit DHL, Hermes, DPD, GLS, UPS, der Schweizerischen Post, der Österreichischen Post, Cainiao und Hunderten weiteren. Peek ist unabhängig und gehört zu keinem Paketdienst: Es zeigt, was deren eigene Sendungsverfolgung veröffentlicht.
+PRIVAT UND OPEN SOURCE
+Peek zeigt keine Werbung und verkauft keine Daten. Die Karten zeichnet Peek selbst, also sieht kein Kartendienst, wohin deine Pakete reisen. Ohne Konto wird ein Paket 30 Tage nach der Ankunft vergessen. Lade deine Daten herunter oder lösche dein Konto in der App, wann immer du willst. Jede Zeile Code liegt auf GitHub: github.com/plhery/peek-delivery-tracker
 
-Peek spricht Deutsch, Englisch, Französisch, Italienisch, Spanisch, Portugiesisch und Polnisch, im hellen und dunklen Modus.
+Peek ist unabhängig von den Paketdiensten, deren Sendungsverfolgung die App abfragt. Die Namen gehören den jeweiligen Inhabern.
 ```
 
 ## Keywords
 
 ```text
-paket,sendung,verfolgen,tracking,lieferung,versand,paketdienst,barcode,widget,zoll,wo,ist,mein
+paket,pakete,paketverfolgung,tracker,tracking,verfolgen,sendung,lieferung,post,versand,bestellung
 ```
 
-(94 bytes)
+(97 bytes)
 
 ## What's new
 
 ```text
-Die erste Version von Peek im App Store.
+Aktualisierungen für die Paketdienste und kleine Verbesserungen.
 ```

@@ -83,6 +83,7 @@
   "app.signInAgain": "Volver a iniciar sesión",
   "app.signInNeeded": "Vuelve a iniciar sesión para ver las novedades.",
   "app.tagline": "Seguimiento universal de paquetes",
+  "native.tagline": "Seguimiento de paquetes",
   "app.title": "Peek",
   "app.trackingBreak": "El servicio de seguimiento no está disponible ahora.",
   "app.tryAgain": "Reintentar",

@@ -83,6 +83,7 @@
   "app.signInAgain": "Sign in again",
   "app.signInNeeded": "Sign in again to see the latest updates.",
   "app.tagline": "Universal Parcel Tracker",
+  "native.tagline": "Parcel Tracker",
   "app.title": "Peek",
   "app.trackingBreak": "Peek can’t reach the tracking service right now.",
   "app.tryAgain": "Try again",

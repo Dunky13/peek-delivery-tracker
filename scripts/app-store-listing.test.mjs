@@ -4,12 +4,12 @@ import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { decodeJwt, decodeProtectedHeader } from 'jose';
 import {
-  BUNDLE_ID, checkLimits, createApi, loadListings, parseListing, reviewNotes, syncListing, tokenSigner,
+  BUNDLE_ID, checkLimits, checkWords, createApi, loadListings, parseListing, reviewNotes, syncListing, tokenSigner,
 } from './app-store-listing.mjs';
 
 const listings = loadListings();
 const notes = reviewNotes(readFileSync(new URL('../docs/app-store/README.md', import.meta.url), 'utf8'));
-const english = parseListing(readFileSync(new URL('../docs/app-store/listing/en.md', import.meta.url), 'utf8'), 'en.md');
+const english = parseListing(readFileSync(new URL('../docs/app-store/listing/en-GB.md', import.meta.url), 'utf8'), 'en-GB.md');
 const LOCALES = ['de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it', 'pl', 'pt-PT'];
 
 describe('the listing files', () => {
@@ -22,21 +22,31 @@ describe('the listing files', () => {
       assert.doesNotMatch(listing.keywords, /\s/, listing.locale);
     }
     assert.equal(english.name, 'Peek: Parcel Tracker');
-    assert.match(english.description, /^Where’s my parcel\?[\s\S]+light and dark\.$/);
+    assert.match(english.description, /^Where’s my parcel\?[\s\S]+Their names belong to their owners\.$/);
   });
 
-  it('serve the App Store locales: both English ones from en.md', () => {
+  it('serve the App Store locales: parcels in the U.K., packages in the U.S.', () => {
     assert.deepEqual(listings.map(listing => listing.locale), LOCALES);
     const [gb, us] = ['en-GB', 'en-US'].map(locale => listings.find(listing => listing.locale === locale));
-    assert.deepEqual({ ...gb, locale: 'en' }, { ...us, locale: 'en' });
     assert.deepEqual({ ...gb, locale: undefined }, { ...english, locale: undefined });
+    assert.equal(us.name, 'Peek: Package Tracker');
+    for (const field of ['promotionalText', 'description']) {
+      assert.doesNotMatch(gb[field], /package/i, `en-GB ${field}`);
+      assert.doesNotMatch(us[field], /parcel/i, `en-US ${field}`);
+    }
     assert.match(listings.find(listing => listing.locale === 'pt-PT').name, /encomendas/);
   });
 
+  it('use each word once across the name, subtitle and keywords', () => {
+    assert.throws(() => checkWords({ ...english, keywords: `parcel,${english.keywords}` }, 'en-GB.md'),
+      /^Error: en-GB\.md: "parcel" is repeated across the name, subtitle and keywords$/);
+    assert.throws(() => checkWords({ ...english, subtitle: 'Any Carrier, any courier' }, 'en-GB.md'), /"any" is repeated/);
+  });
+
   it('fail, naming the file and field, past App Store Connect limits', () => {
-    assert.throws(() => checkLimits({ ...english, subtitle: 'Package tracking without an account' }, 'en.md'),
-      /^Error: en\.md: Subtitle has 35 characters; App Store Connect takes up to 30$/);
-    assert.throws(() => checkLimits({ ...english, name: 'P' }, 'en.md'), /en\.md: Name has 1 characters/);
+    assert.throws(() => checkLimits({ ...english, subtitle: 'Package tracking without an account' }, 'en-GB.md'),
+      /^Error: en-GB\.md: Subtitle has 35 characters; App Store Connect takes up to 30$/);
+    assert.throws(() => checkLimits({ ...english, name: 'P' }, 'en-GB.md'), /en-GB\.md: Name has 1 characters/);
     // 95 characters, but each accented letter takes two bytes.
     const keywords = 'expédition,numéro,arrivée,étiquette,réception,dépôt,livré,colis,douane,où,mise,à,jour,été,prévu';
     assert.ok([...keywords].length <= 100);
@@ -118,7 +128,8 @@ describe('a dry run', () => {
       attributes: { name: english.name, subtitle: english.subtitle, privacyPolicyUrl: 'https://peektracker.com/privacy.html' } });
     assert.equal(body(usInfo).attributes.locale, 'en-US');
     assert.deepEqual(body(usInfo).relationships, { appInfo: { data: { type: 'appInfos', id: 'info-1' } } });
-    assert.deepEqual(body(writes[8]).relationships, { primaryCategory: { data: { type: 'appCategories', id: 'UTILITIES' } } });
+    assert.deepEqual(body(writes[8]).relationships, { primaryCategory: { data: { type: 'appCategories', id: 'UTILITIES' } },
+      secondaryCategory: { data: { type: 'appCategories', id: 'SHOPPING' } } });
     // Only the questions the declaration has, and not those it already answers None or No.
     assert.deepEqual(body(writes[9]).attributes, { violenceRealistic: 'NONE', gambling: false, messagingAndChat: false });
 
@@ -158,6 +169,24 @@ describe('a dry run', () => {
 });
 
 describe('--apply', () => {
+  it('creates the version first, then edits the app information it brings', async () => {
+    const [prepared] = routes['/v1/apps/app-1/appInfos'];
+    const liveInfo = { ...prepared, id: 'info-live', attributes: { state: 'READY_FOR_DISTRIBUTION' } };
+    const canned = { ...routes, '/v1/apps/app-1/appInfos': [liveInfo],
+      '/v1/apps/app-1/appStoreVersions': [version('version-1', '1.0', 'READY_FOR_DISTRIBUTION')],
+      '/v1/appStoreVersions/version-2/appStoreVersionLocalizations': [] };
+    const { api, calls } = fakeApi(canned, () => {
+      canned['/v1/apps/app-1/appInfos'] = [liveInfo, prepared];
+      return new Response('{"data":{"type":"appStoreVersions","id":"version-2"}}', { status: 201 });
+    });
+    const writes = await sync(api, { apply: true, versionString: '1.0.1' });
+    assert.equal(requests(writes)[0], 'POST /v1/appStoreVersions');
+    assert.ok(requests(writes).includes('PATCH /v1/appInfoLocalizations/info-en-gb'));
+    assert.ok(writes.filter(write => write.method === 'POST' && write.path === '/v1/appInfoLocalizations')
+      .every(write => write.body.data.relationships.appInfo.data.id === 'info-1'));
+    assert.ok(!calls.some(call => call.path.includes('info-live')), 'leaves the live app information alone');
+  });
+
   it('stops at the first write App Store Connect refuses, with its details', async () => {
     const refused = '{"errors":[{"status":"409","code":"ENTITY_ERROR","detail":"The name is already in use."}]}';
     const { api, calls } = fakeApi(routes, () => new Response(refused, { status: 409 }));

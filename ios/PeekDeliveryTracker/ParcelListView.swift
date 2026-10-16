@@ -119,7 +119,7 @@ struct DeliveriesFoot: View {
         VStack(spacing: 0) {
             HStack(spacing: 8) {
                 PeekMark(size: 18)
-                Text(verbatim: "\(localizer.text("app.title")) · \(localizer.text("app.tagline"))")
+                Text(verbatim: "\(localizer.text("app.title")) · \(localizer.text("native.tagline"))")
                     .multilineTextAlignment(.center)
             }
             .frame(minHeight: 44)

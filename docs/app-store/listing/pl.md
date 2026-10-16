@@ -11,65 +11,65 @@ Peek: śledzenie przesyłek
 ## Subtitle
 
 ```text
-Śledź paczki bez konta
+Każdy przewoźnik, bez konta
 ```
 
-(22 characters)
+(27 characters)
 
 ## Promotional text
 
 ```text
-Wklej numer przesyłki, link od przewoźnika albo cały e-mail o wysyłce. Peek znajdzie przewoźnika i narysuje trasę na mapie. Bez konta.
+Wklej numer przesyłki, link od przewoźnika albo cały e-mail o wysyłce. Peek znajdzie przewoźnika, narysuje trasę na mapie i powiadomi Cię, gdy paczka ruszy.
 ```
 
-(134 characters)
+(156 characters)
 
 ## Description
 
 ```text
-Gdzie jest moja paczka? Wklej, co masz, a Peek to sprawdzi.
+Gdzie jest moja paczka?
 
-Numer przesyłki, link od przewoźnika albo cały e-mail o wysyłce: Peek wyłowi numer i ustali, który z ponad 3500 przewoźników ma Twoją paczkę. Możesz też wpisać numer, zeskanować kod kreskowy z etykiety albo udostępnić go Peekowi z innej aplikacji.
+Wklej numer przesyłki, link od przewoźnika albo cały e-mail o wysyłce. Możesz też zeskanować kod kreskowy z etykiety. Peek ustali, który z ponad 3500 przewoźników ma paczkę, i pokaże jej trasę na mapie, każdy skan oraz dzień, w którym powinna dotrzeć.
 
-Każda paczka dostaje własną stronę: trasę na mapie, każdy skan i przewidywany dzień dostawy, jeśli przewoźnik go podaje.
+Bez konta. Bez reklam.
 
-Bez konta
-Paczki śledzone bez konta zostają na tym iPhonie, a Peek zapomina każdą z nich 30 dni po dotarciu. Zaloguj się, aby dostawać powiadomienia i trzymać paczki razem, na iPhonie i w przeglądarce.
+CZY DOWIEM SIĘ, GDY RUSZY?
+Zaloguj się przez Apple, Google albo kodem wysłanym e-mailem, a Peek Cię powiadomi: o każdym skanie, tylko o ważnych etapach albo tylko w dniu dostawy. E-mail może dać Ci znać, że paczka dotarła.
 
-Czy dowiem się, gdy ruszy?
-Gdy masz konto, Peek wyśle Ci powiadomienia: o każdym skanie, tylko o ważnych krokach albo tylko w dniu dostawy. Paczkę wyciszysz jednym stuknięciem. Peek może też wysłać Ci e-mail, gdy przesyłka będzie gotowa do odbioru lub zostanie dostarczona, tylko jeśli go włączysz.
+ŚLEDZISZ WIĘCEJ NIŻ JEDNĄ?
+Wszystkie trafiają na jedną listę: najbliższa jest na górze i podróżuje na swojej mapie. Z kontem masz tę samą listę na iPhonie i w przeglądarce, pod adresem peektracker.com. Widżet pokazuje najbliższą dostawę na ekranie początkowym.
 
-Śledzisz więcej niż jedną?
-Wszystkie mieszczą się na jednej liście, odświeżanej w tle. Przeszukuj je, filtruj i archiwizuj te, które już dotarły. Widżet na ekranie początkowym pokazuje najbliższą dostawę i przesyłki w doręczeniu.
+KTOŚ JESZCZE NA NIĄ CZEKA?
+Udostępnij link do strony paczki. Żeby ją otworzyć, nie trzeba aplikacji ani konta. Zapakuj ją na prezent, a to, co jest w środku, pozostanie niespodzianką aż do doręczenia.
 
-Ktoś jeszcze na nią czeka?
-Udostępnij link do paczki. Kto go otworzy, zobaczy, jak idzie dostawa, a numer przesyłki pozostanie w większości ukryty, chyba że zdecydujesz się go pokazać. Zapakuj ją jako prezent: co jest w środku i kto to wysłał, pozostanie niespodzianką aż do doręczenia.
+PASZPORT DOSTAW
+Z kontem każda dostawa zostawia znaczek w Twoim paszporcie. Porównuj paszporty ze znajomymi; Twoje paczki pozostają prywatne.
 
-Paszport dostaw
-Każda dostawa zostawia w Twoim paszporcie znaczek: dwanaście znaczków do zebrania, Twoje czasy dostaw i kraje, w których Twoje paczki zeskanowano po raz pierwszy. Z kontem zaprosisz znajomych jednorazowym linkiem i porównacie paszporty. Widzą, ile paczek do Ciebie dotarło, Twój średni czas dostawy i znaczki, nigdy Twoich paczek.
+PONAD 3500 PRZEWOŹNIKÓW
+InPost, Poczta Polska, DPD, DHL, GLS, UPS, FedEx, Packeta, Nova Poshta, Cainiao, China Post, YunExpress i tysiące innych: poczty narodowe, firmy kurierskie i przewoźnicy dużych platform zakupowych.
 
-Prywatnie i otwarcie
-• Bez reklam, a Peek nie sprzedaje danych.
-• Peek sam rysuje swoje mapy: żaden serwis z mapami nie widzi, którędy jadą Twoje paczki.
-• Zaloguj się przez Apple, Google albo kodem wysłanym e-mailem. Bez zapamiętywania hasła.
-• Pobierz swoje dane albo usuń konto w aplikacji, kiedy chcesz.
-• Open source: każda linijka kodu jest na GitHubie na licencji Apache-2.0. Przeczytaj kod, dodaj przewoźnika albo uruchom własnego Peeka.
+W PACZCE ZNAJDZIESZ TEŻ
+• Skaner kodów kreskowych
+• Udostępnianie numeru lub linku śledzenia z aplikacji Mail, Wiadomości albo Safari prosto do Peeka
+• Jasny i ciemny motyw
+• Polski, angielski, niemiecki, francuski, włoski, hiszpański i portugalski
 
-Obsługuje m.in. InPost, Pocztę Polską, DPD, DHL, ORLEN Paczkę, Packetę, UPS i Cainiao, a do tego setki innych przewoźników. Peek jest niezależny: nie jest powiązany z żadnym przewoźnikiem i pokazuje to, co publikuje ich własne śledzenie.
+PRYWATNIE I Z OTWARTYM KODEM
+Peek nie wyświetla reklam i nie sprzedaje danych. Sam rysuje swoje mapy: żaden serwis z mapami nie widzi, którędy jadą Twoje paczki. O paczce śledzonej bez konta zapomina 30 dni po jej doręczeniu. Pobierz swoje dane albo usuń konto w aplikacji, kiedy chcesz. Każda linijka kodu jest na GitHubie: github.com/plhery/peek-delivery-tracker
 
-Peek mówi po polsku, angielsku, niemiecku, francusku, włosku, hiszpańsku i portugalsku, w trybie jasnym i ciemnym.
+Peek jest niezależny od przewoźników, których dane odczytuje. Ich nazwy należą do odpowiednich właścicieli.
 ```
 
 ## Keywords
 
 ```text
-paczka,przesyłka,przesyłki,kurier,przewoźnik,dostawa,tracking,widget,odbiór,gdzie,jest,moja
+paczka,paczki,paczek,przesyłka,przesyłki,kurier,poczta,tracking,status,dostawa,zamówienie,mapa
 ```
 
-(95 bytes)
+(97 bytes)
 
 ## What's new
 
 ```text
-Pierwsza wersja Peeka w App Store.
+Aktualizacje przewoźników i drobne poprawki.
 ```

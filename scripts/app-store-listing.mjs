@@ -1,14 +1,15 @@
 // Fills in the iPhone app's App Store Connect listing from docs/app-store: each language's
-// name, subtitle, promotional text, description, keywords and links, the category, the age
+// name, subtitle, promotional text, description, keywords and links, the categories, the age
 // rating and the review notes. Dry run by default: prints the changes it would send.
 // --apply sends them and stops at the first one App Store Connect refuses. It never submits
 // for review, and leaves pricing, availability, App Privacy, screenshots and builds alone.
 //
 //   ASC_KEY_ID=… ASC_ISSUER_ID=… node scripts/app-store-listing.mjs [--apply]
-//     [--version=1.0] [--copyright="<year> <account holder>"]
+//     [--version=1.0.1] [--copyright="<year> <account holder>"]
 //
 // The key is read from ASC_KEY_PATH, or ~/.appstoreconnect/private_keys/AuthKey_<ASC_KEY_ID>.p8.
-// --version is the version to create when the app has none to edit.
+// --version is the version to create when the app has none to edit; by default the app's
+// MARKETING_VERSION.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import path from 'node:path';
@@ -20,7 +21,8 @@ export const BUNDLE_ID = 'com.plhery.PeekDeliveryTracker';
 const API = 'https://api.appstoreconnect.apple.com';
 const LISTING = new URL('../docs/app-store/listing/', import.meta.url);
 const README = new URL('../docs/app-store/README.md', import.meta.url);
-const CATEGORY = 'UTILITIES';
+const PROJECT = new URL('../ios/PeekDeliveryTracker.xcodeproj/project.pbxproj', import.meta.url);
+const CATEGORIES = { primaryCategory: 'UTILITIES', secondaryCategory: 'SHOPPING' };
 const URLS = {
   privacyPolicyUrl: 'https://peektracker.com/privacy.html',
   supportUrl: 'https://peektracker.com/support.html',
@@ -28,7 +30,8 @@ const URLS = {
 };
 
 /** The App Store locales each listing file serves. */
-export const LOCALES = { en: ['en-GB', 'en-US'], de: ['de-DE'], fr: ['fr-FR'], it: ['it'], es: ['es-ES'], pt: ['pt-PT'], pl: ['pl'] };
+export const LOCALES = { 'en-GB': ['en-GB'], 'en-US': ['en-US'], de: ['de-DE'], fr: ['fr-FR'], it: ['it'], es: ['es-ES'],
+  pt: ['pt-PT'], pl: ['pl'] };
 const HEADINGS = { name: 'Name', subtitle: 'Subtitle', promotionalText: 'Promotional text', description: 'Description',
   keywords: 'Keywords', whatsNew: "What's new" };
 const LIMITS = { name: [2, 30], subtitle: [0, 30], promotionalText: [0, 170], description: [0, 4000], whatsNew: [0, 4000] };
@@ -71,6 +74,17 @@ export function checkLimits(listing, file) {
   if (bytes > 100) throw new Error(`${file}: Keywords take ${bytes} bytes; App Store Connect takes up to 100`);
 }
 
+const words = text => text.toLocaleLowerCase().match(/[\p{L}\p{N}]+/gu) ?? [];
+
+/** Throws on a word used twice in the name, subtitle and keywords: the App Store searches them together. */
+export function checkWords(listing, file) {
+  const seen = new Set();
+  for (const word of [listing.name, listing.subtitle, listing.keywords].flatMap(words)) {
+    if (seen.has(word)) throw new Error(`${file}: "${word}" is repeated across the name, subtitle and keywords`);
+    seen.add(word);
+  }
+}
+
 /** Every locale's listing, checked. */
 export function loadListings(directory = LISTING) {
   return readdirSync(directory).filter(file => file.endsWith('.md')).sort().flatMap(file => {
@@ -78,6 +92,7 @@ export function loadListings(directory = LISTING) {
     if (!locales) throw new Error(`${file}: no App Store locale for it in LOCALES`);
     const listing = parseListing(readFileSync(new URL(file, directory), 'utf8'), file);
     checkLimits(listing, file);
+    checkWords(listing, file);
     return locales.map(locale => ({ locale, ...listing }));
   });
 }
@@ -138,7 +153,7 @@ export const editableAppInfo = appInfos => appInfos.find(editable) ?? appInfos.f
  * Brings the app's listing in App Store Connect in line with `listings` and `notes`. Reads
  * with GET; writes only with `apply`. Returns the writes, sent or planned.
  */
-export async function syncListing({ api, apply = false, listings, notes, versionString = '1.0', copyright, log = console.log }) {
+export async function syncListing({ api, apply = false, listings, notes, versionString, copyright, log = console.log }) {
   const writes = [];
   const write = async request => {
     if (!request) return null;
@@ -151,26 +166,6 @@ export async function syncListing({ api, apply = false, listings, notes, version
   const app = (await list(`/v1/apps?filter[bundleId]=${BUNDLE_ID}`)).find(item => item.attributes.bundleId === BUNDLE_ID);
   if (!app) throw new Error(`App Store Connect has no app ${BUNDLE_ID}. Create the app record first (docs/app-store/README.md).`);
 
-  const appInfo = editableAppInfo(await list(`/v1/apps/${app.id}/appInfos?include=primaryCategory`));
-  if (!appInfo) throw new Error('The app has no app information to edit.');
-  const infoLocalizations = byLocale(await list(`/v1/appInfos/${appInfo.id}/appInfoLocalizations?limit=200`));
-  for (const listing of listings) {
-    await write(upsert('appInfoLocalizations', infoLocalizations.get(listing.locale),
-      { locale: listing.locale, ...appInfoFields(listing) }, { appInfo: ref('appInfos', appInfo.id) }, listing.locale));
-  }
-  if (appInfo.relationships?.primaryCategory?.data?.id !== CATEGORY) {
-    await write({ method: 'PATCH', path: `/v1/appInfos/${appInfo.id}`, summary: `primaryCategory: ${CATEGORY}`,
-      body: { data: { type: 'appInfos', id: appInfo.id, relationships: { primaryCategory: ref('appCategories', CATEGORY) } } } });
-  }
-
-  const declaration = (await api('GET', `/v1/appInfos/${appInfo.id}/ageRatingDeclaration`)).data;
-  const answers = ageRatingAnswers(declaration.attributes);
-  if (answers) {
-    await write({ method: 'PATCH', path: `/v1/ageRatingDeclarations/${declaration.id}`,
-      summary: `age rating: ${Object.keys(answers).length} questions to None or No`,
-      body: { data: { type: 'ageRatingDeclarations', id: declaration.id, attributes: answers } } });
-  }
-
   const versions = await list(`/v1/apps/${app.id}/appStoreVersions?filter[platform]=IOS&limit=200`);
   const released = versions.some(live);
   const existing = versions.find(editable);
@@ -181,6 +176,31 @@ export async function syncListing({ api, apply = false, listings, notes, version
   // A dry run that creates the version has no id to read its localizations or review details.
   const versionId = existing?.id ?? written?.id;
   const version = ref('appStoreVersions', versionId);
+
+  // A new version brings app information to edit. A dry run that would create it compares with the live one.
+  const appInfos = await list(`/v1/apps/${app.id}/appInfos?include=primaryCategory,secondaryCategory`);
+  const appInfo = editableAppInfo(appInfos) ?? (!existing && !apply ? appInfos.at(-1) : null);
+  if (!appInfo) throw new Error('The app has no app information to edit.');
+  const infoLocalizations = byLocale(await list(`/v1/appInfos/${appInfo.id}/appInfoLocalizations?limit=200`));
+  for (const listing of listings) {
+    await write(upsert('appInfoLocalizations', infoLocalizations.get(listing.locale),
+      { locale: listing.locale, ...appInfoFields(listing) }, { appInfo: ref('appInfos', appInfo.id) }, listing.locale));
+  }
+  const categories = Object.entries(CATEGORIES).filter(([key, id]) => appInfo.relationships?.[key]?.data?.id !== id);
+  if (categories.length) {
+    await write({ method: 'PATCH', path: `/v1/appInfos/${appInfo.id}`,
+      summary: categories.map(([key, id]) => `${key}: ${id}`).join(', '),
+      body: { data: { type: 'appInfos', id: appInfo.id,
+        relationships: Object.fromEntries(categories.map(([key, id]) => [key, ref('appCategories', id)])) } } });
+  }
+
+  const declaration = (await api('GET', `/v1/appInfos/${appInfo.id}/ageRatingDeclaration`)).data;
+  const answers = ageRatingAnswers(declaration.attributes);
+  if (answers) {
+    await write({ method: 'PATCH', path: `/v1/ageRatingDeclarations/${declaration.id}`,
+      summary: `age rating: ${Object.keys(answers).length} questions to None or No`,
+      body: { data: { type: 'ageRatingDeclarations', id: declaration.id, attributes: answers } } });
+  }
 
   const versionLocalizations = byLocale(versionId
     ? await list(`/v1/appStoreVersions/${versionId}/appStoreVersionLocalizations?limit=200`) : []);
@@ -247,7 +267,7 @@ async function main() {
   const { values } = parseArgs({
     options: {
       apply: { type: 'boolean', default: false },
-      version: { type: 'string', default: '1.0' },
+      version: { type: 'string', default: readFileSync(PROJECT, 'utf8').match(/MARKETING_VERSION = ([\d.]+);/)[1] },
       copyright: { type: 'string' },
     },
   });

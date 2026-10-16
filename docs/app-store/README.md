@@ -6,19 +6,24 @@ What App Store Connect asks for Peek's iPhone app. Building and uploading is in
 ## Listing
 
 [`listing/`](listing) has the name, subtitle, promotional text, description and keywords for
-each language. `en.md` serves English (U.S.), the primary language, and English (U.K.);
-`es.md` is Spanish (Spain) and `pt.md` Portuguese (Portugal).
+each language. `en-US.md` is English (U.S.), the primary language, with U.S. spelling and
+“package”; `en-GB.md` is English (U.K.) with “parcel”. `es.md` is Spanish (Spain) and `pt.md`
+Portuguese (Portugal).
 
 Keywords are counted in bytes (an accented letter counts two) and can't name other
-companies. App Store Connect doesn't take What's New for the first version.
+companies. The App Store searches a language's name, subtitle and keywords together, so a
+word appears in only one of them. App Store Connect doesn't take What's New for the first
+version.
 
 Once the app record exists, `ASC_KEY_ID=… ASC_ISSUER_ID=… node scripts/app-store-listing.mjs`
-prints what it would set from `listing/` and this page; `--apply` sets it.
+prints what it would set from `listing/` and this page; `--apply` sets it. When no version is
+editable, it creates one, the project's `MARKETING_VERSION` unless `--version` says otherwise,
+and then edits the app information that comes with it.
 
 ## App information
 
 - Bundle ID `com.plhery.PeekDeliveryTracker`; SKU `peek-ios`.
-- Category: Utilities. No secondary category.
+- Category: Utilities; secondary category Shopping, for following online orders.
 - Content rights: the app shows third-party content (what carriers publish about a parcel,
   GeoNames and OpenStreetMap places), which it may show.
 - Age rating: answer No or None to every question. That gives 4+. Friends see each other's
@@ -68,7 +73,9 @@ A parcel of your own can follow the last line when submitting. Keep it out of th
 The app is iPhone-only. Take them in the demo, whose parcels are made up, on an iPhone 18 Pro
 Max simulator: a Debug build launched with `-sdt.native.experience.v1 demo
 -sdt.debug.storeScreenshots YES`, which leaves out the demo's top bar. 1320 × 2868 PNG
-without alpha, for the 6.9" display; App Store Connect scales them for smaller iPhones.
+without alpha, for the 6.9" display; App Store Connect scales them for smaller iPhones. The
+store frames put a headline in each language above them; the English (U.S.) frames say
+“package” where the English (U.K.) ones say “parcel”.
 
 ## First submission
 

@@ -11,65 +11,65 @@ Peek: tracciamento pacchi
 ## Subtitle
 
 ```text
-Segui spedizioni senza account
+Ogni corriere, senza account
 ```
 
-(30 characters)
+(28 characters)
 
 ## Promotional text
 
 ```text
-Incolla un numero, un link del corriere o un’intera e-mail di spedizione. Peek trova il corriere e disegna il viaggio su una mappa. Non serve un account.
+Incolla un numero di tracciamento, un link o un’intera e-mail di spedizione. Peek trova il corriere, disegna il viaggio su una mappa e ti avvisa quando il pacco si muove.
 ```
 
-(153 characters)
+(170 characters)
 
 ## Description
 
 ```text
-Dov’è il mio pacco? Incolla quello che hai e Peek lo scopre.
+Dov’è il mio pacco?
 
-Un numero di tracciamento, un link del corriere o un’intera e-mail di spedizione: Peek trova il numero e capisce quale degli oltre 3.500 corrieri ha il pacco. Puoi anche digitare il numero, scansionare il codice a barre sull’etichetta o condividerlo con Peek da un’altra app.
+Incolla un numero di tracciamento, un link del corriere o un’intera e-mail di spedizione, oppure scansiona il codice a barre sull’etichetta. Peek capisce quale degli oltre 3.500 corrieri ha il pacco e ne mostra il viaggio su una mappa, ogni scansione e il giorno in cui dovrebbe arrivare.
 
-Ogni pacco ha una pagina tutta sua: il viaggio su una mappa, ogni scansione e il giorno di consegna previsto, quando il corriere lo indica.
+Non serve un account. Niente pubblicità.
 
-Non serve un account
-I pacchi che segui senza account restano su questo iPhone, e Peek li dimentica 30 giorni dopo l’arrivo. Accedi per ricevere le notifiche e tenere insieme i tuoi pacchi, sull’iPhone e sul web.
+SAPRÒ QUANDO SI MUOVE?
+Accedi con Apple, Google o un codice via e-mail e Peek ti avvisa: a ogni scansione, solo nei passaggi importanti o solo il giorno di consegna. Un’e-mail può dirti che è arrivato.
 
-Saprò quando si muove?
-Con un account, Peek ti avvisa: a ogni scansione, solo nei passaggi importanti o solo il giorno di consegna. Silenzi un pacco con un tocco. Peek può anche mandarti un’e-mail quando un pacco è pronto per il ritiro o viene consegnato, solo se la attivi.
+NE SEGUI PIÙ DI UNO?
+Stanno tutti in una lista sola: in cima il prossimo ad arrivare, in viaggio sulla sua mappa. Con un account ritrovi la stessa lista sul tuo iPhone e sul web, su peektracker.com. Un widget mostra la prossima consegna nella schermata Home.
 
-Ne segui più di uno?
-Stanno tutti in una sola lista, aggiornata in background. Cercali, filtrali, archivia quelli arrivati. Un widget nella schermata Home mostra la prossima consegna e i pacchi in consegna.
+LO ASPETTA QUALCUN ALTRO?
+Condividi la pagina del pacco con un link: per aprirla non servono né app né account. Incartalo come regalo e quello che c’è dentro resta una sorpresa fino all’arrivo.
 
-Qualcun altro lo aspetta?
-Condividi il link del pacco. Chi lo apre vede a che punto è, con il numero di tracciamento quasi tutto nascosto, a meno che tu non scelga di mostrarlo. Incartalo come regalo: cosa c’è dentro e chi lo manda restano una sorpresa fino alla consegna.
+UN PASSAPORTO DI CONSEGNE
+Con un account, ogni consegna aggiunge un francobollo al tuo passaporto. Confronta i passaporti con gli amici; i tuoi pacchi restano privati.
 
-Un passaporto di consegne
-Ogni consegna timbra il tuo passaporto: dodici francobolli da collezionare, i tuoi tempi di consegna e i paesi in cui i tuoi pacchi sono stati scansionati per la prima volta. Con un account, invita gli amici con un link monouso e confrontate i passaporti. Vedono quanti pacchi ti sono arrivati, il tuo tempo medio e i tuoi francobolli, mai i tuoi pacchi.
+OLTRE 3.500 CORRIERI
+Poste Italiane, BRT, GLS, DHL, UPS, FedEx, DPD, InPost, La Posta Svizzera, Cainiao, China Post, YunExpress e migliaia di altri: poste nazionali, corrieri e servizi di consegna dei grandi negozi online.
 
-Privato e aperto
-• Niente pubblicità, e Peek non vende dati.
-• Peek disegna da sé le sue mappe: nessun servizio di mappe vede il viaggio dei tuoi pacchi.
-• Accedi con Apple, Google o un codice via e-mail. Nessuna password da ricordare.
-• Scarica i tuoi dati o elimina l’account dall’app, quando vuoi.
-• Open source: ogni riga è su GitHub con licenza Apache-2.0. Leggila, aggiungi un corriere o gestisci il tuo Peek.
+NELLA SCATOLA TROVI ANCHE
+• Uno scanner di codici a barre
+• Numeri e link di tracciamento condivisi da Mail, Messaggi o Safari direttamente in Peek
+• Tema chiaro e tema scuro
+• Italiano, inglese, tedesco, francese, spagnolo, portoghese e polacco
 
-Funziona con Poste Italiane, BRT, GLS, InPost, TNT, DHL, UPS, Cainiao e centinaia di altri. Peek è indipendente: non è legato a nessun corriere e mostra ciò che pubblica il loro tracciamento.
+PRIVATO E OPEN SOURCE
+Peek non mostra pubblicità e non vende dati. Disegna da sé le sue mappe: nessun servizio di mappe vede il viaggio dei tuoi pacchi. Senza account, un pacco viene dimenticato 30 giorni dopo l’arrivo. Scarica i tuoi dati o elimina l’account dall’app, quando vuoi. Ogni riga di codice è su GitHub: github.com/plhery/peek-delivery-tracker
 
-Peek parla italiano, inglese, tedesco, francese, spagnolo, portoghese e polacco, in modalità chiara e scura.
+Peek è indipendente dai corrieri che consulta. I loro nomi appartengono ai rispettivi proprietari.
 ```
 
 ## Keywords
 
 ```text
-pacco,traccia,spedizione,corriere,consegna,tracking,codice,barre,widget,ritiro,dogana,mappa,dove
+pacco,spedizione,spedizioni,tracking,traccia,tracciare,consegna,segui,ordine,poste,codice,mappa
 ```
 
-(96 bytes)
+(95 bytes)
 
 ## What's new
 
 ```text
-La prima versione di Peek sull’App Store.
+Aggiornamenti dei corrieri e piccole correzioni.
 ```

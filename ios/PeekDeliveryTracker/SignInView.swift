@@ -334,7 +334,7 @@ struct PeekLockup: View {
                     .font(.system(size: nameSize, weight: .bold))
                     .tracking(-0.4)
                     .foregroundStyle(Brand.ink)
-                Text(localizer.text("app.tagline"))
+                Text(localizer.text("native.tagline"))
                     .font(.system(size: taglineSize))
                     .foregroundStyle(Brand.inkSoft)
             }
