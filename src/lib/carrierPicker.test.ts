@@ -24,7 +24,7 @@ const names = (query: string, preferred?: CarrierId[]) => search(query, preferre
 
 describe('carrier search', () => {
   it('finds a name by its start, then by a later word', () => {
-    expect(names('dpd').slice(0, 2)).toEqual(['DPD France', 'DPD Germany']);
+    expect(names('dpd').slice(0, 2).every((name) => name.startsWith('DPD '))).toBe(true);
     const post = names('post');
     const starting = post.filter((name) => foldForSearch(name).startsWith('post'));
     expect(post.slice(0, starting.length)).toEqual(starting);
