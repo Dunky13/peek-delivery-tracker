@@ -52,8 +52,8 @@ begin
   end;
   begin
     perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation,
-      jsonb_set(correction, '{carrier_data,reported_carriers}', '["DHL Express","Swiss Post"]'), scans);
-    raise exception 'Conflicting provider identity was accepted';
+      jsonb_set(correction, '{carrier_data,reported_carriers}', '["DHL Express","Swiss Post","A","B","C"]'), scans);
+    raise exception 'Provider identity from more than four carriers was accepted';
   exception when sqlstate '22023' then null;
   end;
   insert into public.packages(user_id, tracking_number, carrier)

@@ -19,7 +19,8 @@ function ownsNumber(carrier: string, number: string): boolean {
  */
 export function providerCarrier(result: CarrierResult, number: string): ApiCarrierId | undefined {
   const names: unknown[] = Array.isArray(result.reported_carriers) ? result.reported_carriers : [];
-  if (result.tracking_provider === 'UPU' || !names.length || names.some((name) => typeof name !== 'string')) return undefined;
+  if (result.tracking_provider === 'UPU' || !names.length || names.length > 4
+    || names.some((name) => typeof name !== 'string')) return undefined;
   const discovered = typeof result.discovered_carrier === 'string' ? result.discovered_carrier : undefined;
   const carrier = names.length === 1 ? carrierIdFromName(String(names[0]))
     : discovered && ownsNumber(discovered, number) ? discovered : undefined;

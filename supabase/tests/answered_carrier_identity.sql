@@ -17,8 +17,9 @@ begin
       'routing', jsonb_build_object('version', 1, 'configured_carrier', 'mailamericas', 'discovered_carrier', 'mailamericas',
         'preferred_number', parcel.tracking_number, 'preferred_provider', 'ParcelsApp', 'last_event_at', now())));
   begin
-    perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation, correction, scans);
-    raise exception 'A provider journey named a carrier that did not answer';
+    perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation,
+      jsonb_set(correction, '{carrier_data,reported_carriers}', '["A","B","C","D","E"]'), scans);
+    raise exception 'A provider journey of more than four carriers was accepted';
   exception when sqlstate '22023' then null;
   end;
   correction := jsonb_set(correction, '{carrier_data,carrier_answered}', 'true');

@@ -32,6 +32,8 @@ it('uses the journey owner of several named carriers when the number points to i
   expect(providerCarrier({ ...journey, discovered_carrier: 'dhlink' }, 'MY1234567890US')).toBeUndefined();
   expect(providerCarrier({ ...journey, discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express', 'Swiss Post'] }, '1234567891')).toBeUndefined();
   expect(providerCarrier({ ...journey, discovered_carrier: undefined }, 'MY1234567890US')).toBeUndefined();
+  // More than four names is no journey the database files a parcel from.
+  expect(providerCarrier({ ...journey, reported_carriers: [...journey.reported_carriers, 'Cainiao'] }, 'MY1234567890US')).toBeUndefined();
 });
 
 it('keeps a carrier requiring recipient input unresolved', () => {
