@@ -12934,7 +12934,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tforce-freight",
+      "recognitionRank": 946
     },
     "trackingUrlTemplate": "https://www.tforcefreight.com/ltl/apps/Tracking?proNumbers={trackingNumber}",
     "linkRules": [
@@ -15856,7 +15857,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pathao-courier",
+      "recognitionRank": 945
     },
     "trackingUrlTemplate": "https://merchant.pathao.com/public-tracking?consignment_id={trackingNumber}",
     "linkRules": [
@@ -18286,7 +18288,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "rpx-indonesia",
+      "recognitionRank": 947
     },
     "linkRules": [
       {
