@@ -405,7 +405,8 @@ export const CARRIER_CAPABILITIES = {
     ],
     "aliases": [
       "Spring GDS",
-      "Mailing Technology"
+      "Mailing Technology",
+      "PostNL - Netherlands Post"
     ],
     "countries": [
       "NL"
@@ -2085,13 +2086,19 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^8YDR\\d{9}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^\\d{2}[A-Z]{3}\\d{7}A\\d{3}$",
+        "confidence": "low"
       }
     ],
     "trackingUrlTemplate": "https://inpost.pl/sledzenie-przesylek",
     "aliases": [
       "InPost Paczkomaty",
       "Paczkomaty",
-      "InPost Easy"
+      "InPost Easy",
+      "InPost UK",
+      "Yodel"
     ],
     "countries": [
       "PL",
@@ -2601,7 +2608,8 @@ export const CARRIER_CAPABILITIES = {
     "aliases": [
       "BRT Bartolini",
       "BRT Bartolini (Parcel ID)",
-      "BRT Bartolini (DPD)"
+      "BRT Bartolini (DPD)",
+      "myBRT.it"
     ]
   },
   "ecoscooting": {
