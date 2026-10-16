@@ -1357,7 +1357,7 @@ $$;
 
 reset role;
 insert into auth.sessions (id, user_id) select id, id from auth.users on conflict do nothing;
-set local role service_role;
+set role service_role;
 
 -- Delivery-day activities start only when a parcel goes out for delivery,
 -- continue through the per-activity update token, and end on a terminal event.
