@@ -21,7 +21,45 @@ describe('authConfigFromEnvironment', () => {
       googleEnabled: false,
       appleEnabled: false,
       emailOtpEnabled: true,
+      oidc: null,
     });
+  });
+
+  it('allows a sole custom provider and trims its identifier and label', () => {
+    expect(authConfigFromEnvironment({
+      supabaseUrl: 'https://project.supabase.co', supabasePublishableKey: 'publishable-key',
+      googleEnabled: 'false', appleEnabled: 'false', emailOtpEnabled: 'false',
+      oidcProvider: ' custom:authentik ', oidcName: ' Authentik ',
+    })).toMatchObject({ googleEnabled: false, appleEnabled: false, emailOtpEnabled: false,
+      oidc: { provider: 'custom:authentik', name: 'Authentik' } });
+  });
+
+  it('supports mixed providers and the maximum-length custom identifier', () => {
+    const provider = `custom:${'a'.repeat(43)}`;
+    expect(authConfigFromEnvironment({
+      supabaseUrl: 'https://project.supabase.co', supabasePublishableKey: 'publishable-key',
+      googleEnabled: 'true', appleEnabled: 'true', oidcProvider: provider, oidcName: 'Company sign-in',
+    })).toMatchObject({ googleEnabled: true, appleEnabled: true, emailOtpEnabled: true,
+      oidc: { provider, name: 'Company sign-in' } });
+  });
+
+  it('leaves whitespace-only OIDC values disabled', () => {
+    expect(authConfigFromEnvironment({
+      supabaseUrl: 'https://project.supabase.co', supabasePublishableKey: 'publishable-key',
+      oidcProvider: ' ', oidcName: ' ',
+    })?.oidc).toBeNull();
+  });
+
+  it('rejects partial and malformed custom provider configuration', () => {
+    for (const [oidcProvider, oidcName] of [
+      ['', 'Authentik'], ['custom:authentik', ''], ['google', 'Authentik'], ['custom:', 'Authentik'],
+      ['custom:Authentik', 'Authentik'], ['custom:bad_provider', 'Authentik'], ['custom:bad/provider', 'Authentik'],
+      [`custom:${'a'.repeat(44)}`, 'Authentik'],
+    ]) {
+      expect(authConfigFromEnvironment({
+        supabaseUrl: 'https://project.supabase.co', supabasePublishableKey: 'publishable-key', oidcProvider, oidcName,
+      })).toBeNull();
+    }
   });
 
   it('rejects malformed and credential-bearing Supabase origins', () => {

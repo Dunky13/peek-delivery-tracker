@@ -4,7 +4,7 @@ import type { GoTrueClient, Session } from '@supabase/auth-js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import contractFixture from '../contracts/fixtures/delivery-api.json';
 import { ApiApplication } from './ApiApplication';
-import { AuthProvider } from './auth/AuthContext';
+import { AuthProvider, type AuthConfig } from './auth/AuthContext';
 import { REQUESTED_PARCEL_STORAGE_KEY as NOTE_KEY } from './lib/requestedParcel';
 import './test/accountCode';
 import './test/parcelCode';
@@ -35,7 +35,7 @@ function authClient(session: Session | null = null) {
   return { client: { auth } as unknown as { auth: GoTrueClient }, auth };
 }
 
-const app = (client: { auth: GoTrueClient }) => render(<AuthProvider config={CONFIG} client={client}><ApiApplication /></AuthProvider>);
+const app = (client: { auth: GoTrueClient }, config: AuthConfig = CONFIG) => render(<AuthProvider config={config} client={client}><ApiApplication /></AuthProvider>);
 const door = () => screen.findByRole('heading', { level: 1, name: 'Where’s my parcel?' });
 const parcel = () => screen.findByRole('dialog', { name: 'Coffee beans' });
 
@@ -114,5 +114,27 @@ describe('a link to one of the account’s parcels, opened signed out', () => {
     expect(await screen.findByText('Coffee beans')).toBeVisible();
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(window.location.search).toBe('');
+  });
+
+  it('preserves a requested parcel through custom-provider sign-in and callback', async () => {
+    const config: AuthConfig = { ...CONFIG, googleEnabled: false, emailOtpEnabled: false,
+      oidc: { provider: 'custom:authentik', name: 'Authentik' } };
+    window.history.replaceState(null, '', PARCEL_LINK);
+    const visitor = authClient();
+    const user = userEvent.setup();
+    const before = app(visitor.client, config);
+    await door();
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
+    await user.click(await screen.findByRole('button', { name: 'Continue with Authentik' }));
+    expect(visitor.auth.signInWithOAuth).toHaveBeenCalledWith({
+      provider: 'custom:authentik', options: { redirectTo: window.location.origin },
+    });
+    expect(sessionStorage.getItem(NOTE_KEY)).toContain(packageRow.id);
+    before.unmount();
+    window.history.replaceState(null, '', '/');
+    app(authClient(SESSION).client, config);
+    expect(await parcel()).toBeVisible();
+    expect(sessionStorage.getItem(NOTE_KEY)).toBeNull();
+    expect(window.location.search).toBe(`?parcel=${packageRow.id}`);
   });
 });

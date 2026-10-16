@@ -129,7 +129,9 @@ The CI workflow builds the image while the tests run. To let it publish and depl
 in the repository:
 
 - the public build values as variables (`NEXT_PUBLIC_SUPABASE_URL`,
-  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and the `NEXT_PUBLIC_AUTH_*` switches). With
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and the `NEXT_PUBLIC_AUTH_*` settings,
+  including `NEXT_PUBLIC_AUTH_OIDC_PROVIDER` and `NEXT_PUBLIC_AUTH_OIDC_NAME` when
+  using [OIDC](AUTHENTICATION.md)). With
   them, a commit on `main` is published as `ghcr.io/<owner>/<repository>:<commit>`.
   `CONTAINER_IMAGE_REPOSITORY` can keep an existing `<owner>/<package>` path when the
   repository is renamed;

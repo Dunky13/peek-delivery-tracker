@@ -13,3 +13,7 @@ SDT_GOOGLE_AUTH_ENABLED = YES
 // Enable after configuring the Apple provider and signing with a paid Developer team.
 SDT_APPLE_AUTH_ENABLED = NO
 SDT_EMAIL_OTP_ENABLED = YES
+// Optional custom Supabase OAuth/OIDC provider. Set both values to enable it.
+SDT_OIDC_PROVIDER =
+SDT_OIDC_NAME =
+// Example: SDT_OIDC_PROVIDER = custom:authentik, SDT_OIDC_NAME = Authentik

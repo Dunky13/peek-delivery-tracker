@@ -3,7 +3,7 @@ import { act, render, renderHook, screen, waitFor } from '@testing-library/react
 import userEvent from '@testing-library/user-event';
 import type { GoTrueClient, Session } from '@supabase/auth-js';
 import { describe, expect, it, vi } from 'vitest';
-import { AuthProvider, useAuth } from './AuthContext';
+import { AuthProvider, useAuth, type AuthConfig } from './AuthContext';
 
 const SESSION = {
   access_token: 'access-token',
@@ -189,6 +189,39 @@ describe('AuthProvider', () => {
       </AuthProvider>,
     );
     expect(screen.getByText('unconfigured')).toBeInTheDocument();
+  });
+
+  it('uses the custom provider through the existing OAuth flow and forwards its session token', async () => {
+    const { client, auth } = authClient();
+    const config: AuthConfig = {
+      url: 'https://project.supabase.co', publishableKey: 'publishable-key',
+      googleEnabled: false, appleEnabled: false, emailOtpEnabled: false,
+      oidc: { provider: 'custom:authentik', name: 'Authentik' },
+    };
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => <AuthProvider config={config} client={client}>{children}</AuthProvider>,
+    });
+    await waitFor(() => expect(result.current.status).toBe('anonymous'));
+    await act(() => result.current.signInWithOidc());
+    expect(auth.signInWithOAuth).toHaveBeenCalledWith({
+      provider: 'custom:authentik', options: { redirectTo: window.location.origin },
+    });
+    const listener = auth.onAuthStateChange.mock.calls[0][0];
+    act(() => listener('SIGNED_IN', SESSION));
+    expect(result.current.status).toBe('authenticated');
+    expect(result.current.accessToken).toBe('access-token');
+    auth.getSession.mockResolvedValue({ data: { session: SESSION }, error: null });
+    await expect(result.current.getAccessToken()).resolves.toBe('access-token');
+  });
+
+  it('rejects an unconfigured custom sign-in without starting OAuth', async () => {
+    const { client, auth } = authClient();
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => <AuthProvider config={null} client={client}>{children}</AuthProvider>,
+    });
+    await waitFor(() => expect(result.current.status).toBe('anonymous'));
+    await expect(result.current.signInWithOidc()).rejects.toThrow('not configured');
+    expect(auth.signInWithOAuth).not.toHaveBeenCalled();
   });
 });
 

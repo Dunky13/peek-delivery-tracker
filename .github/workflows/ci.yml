@@ -160,6 +160,8 @@ jobs:
             NEXT_PUBLIC_AUTH_GOOGLE_ENABLED=${{ vars.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED || 'false' }}
             NEXT_PUBLIC_AUTH_APPLE_ENABLED=${{ vars.NEXT_PUBLIC_AUTH_APPLE_ENABLED || 'false' }}
             NEXT_PUBLIC_AUTH_EMAIL_OTP_ENABLED=${{ vars.NEXT_PUBLIC_AUTH_EMAIL_OTP_ENABLED || 'true' }}
+            NEXT_PUBLIC_AUTH_OIDC_PROVIDER=${{ vars.NEXT_PUBLIC_AUTH_OIDC_PROVIDER }}
+            NEXT_PUBLIC_AUTH_OIDC_NAME=${{ vars.NEXT_PUBLIC_AUTH_OIDC_NAME }}
             NEXT_PUBLIC_IOS_APP_URL=${{ vars.NEXT_PUBLIC_IOS_APP_URL }}
           # Only the layers of the final image are kept between runs: the system packages
           # stay byte-identical, so a deploy transfers little more than the application.

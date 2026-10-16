@@ -78,7 +78,7 @@ export function KeepSheet({ linkId, carrier, title, summary, email = false, meth
       </div>
       <p className="peekp-keepsheet__what">{what}</p>
       <SignInScreen {...methods} card title={t('link.keep.action')} subtitle={what}
-        signInWithGoogle={noted(methods.signInWithGoogle)} signInWithApple={noted(methods.signInWithApple)} verifyCode={noted(methods.verifyCode)!} />
+        signInWithGoogle={noted(methods.signInWithGoogle)} signInWithApple={noted(methods.signInWithApple)} signInWithOidc={noted(methods.signInWithOidc)} verifyCode={noted(methods.verifyCode)!} />
     </div>
   </div>, document.body);
 }

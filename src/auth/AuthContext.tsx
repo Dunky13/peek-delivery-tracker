@@ -18,6 +18,7 @@ import { rememberRequestedParcel } from '../lib/requestedParcel';
 import { browserStorage, clearApiCache } from '../store/apiRepo';
 import { holdsSignIn } from './savedSignIn';
 import { SessionStorage } from './sessionStorage';
+import type { OidcConfig } from './authConfig';
 
 export interface AuthConfig {
   url: string;
@@ -25,6 +26,7 @@ export interface AuthConfig {
   googleEnabled: boolean;
   appleEnabled: boolean;
   emailOtpEnabled: boolean;
+  oidc?: OidcConfig | null;
 }
 
 type AuthStatus = 'loading' | 'anonymous' | 'authenticated' | 'unconfigured';
@@ -37,8 +39,10 @@ interface AuthState {
   googleEnabled: boolean;
   appleEnabled: boolean;
   emailOtpEnabled: boolean;
+  oidcName: string | null;
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
+  signInWithOidc: () => Promise<void>;
   sendCode: (email: string) => Promise<void>;
   verifyCode: (email: string, code: string) => Promise<void>;
   getAccessToken: (refresh?: boolean) => Promise<string | null>;
@@ -79,7 +83,7 @@ async function configuredClient(config: AuthConfig, storage: SessionStorage | nu
   };
 }
 
-/** A page opened by a sign-in link or a Google/Apple return, which the SDK exchanges for a session. */
+/** A page opened by a sign-in link or an OAuth return, which the SDK exchanges for a session. */
 function signInRedirect(): boolean {
   return typeof window !== 'undefined' && (/[?&](code|error)=/.test(window.location.search)
     || /(access_token|error)=/.test(window.location.hash));
@@ -254,8 +258,8 @@ export function AuthProvider({
     return () => window.clearTimeout(timer);
   }, [client, locale, state.user]);
 
-  const signInWithProvider = useCallback(async (provider: 'google' | 'apple') => {
-    const event = provider === 'apple' ? 'sign-in-apple' : 'sign-in-google';
+  const signInWithProvider = useCallback(async (provider: 'google' | 'apple' | OidcConfig['provider']) => {
+    const event = provider === 'apple' ? 'sign-in-apple' : provider === 'google' ? 'sign-in-google' : 'sign-in-oidc';
     trackAction(event, 'started');
     const { auth } = client ?? await requestClient();
     await logout.current;
@@ -273,6 +277,10 @@ export function AuthProvider({
 
   const signInWithGoogle = useCallback(() => signInWithProvider('google'), [signInWithProvider]);
   const signInWithApple = useCallback(() => signInWithProvider('apple'), [signInWithProvider]);
+  const signInWithOidc = useCallback(() => {
+    if (!config?.oidc) return Promise.reject(new Error('OIDC authentication is not configured'));
+    return signInWithProvider(config.oidc.provider);
+  }, [config, signInWithProvider]);
 
   const verifyCode = useCallback(async (email: string, code: string) => {
     trackAction('sign-in-code-verify', 'started');
@@ -332,8 +340,10 @@ export function AuthProvider({
       googleEnabled: config?.googleEnabled ?? false,
       appleEnabled: config?.appleEnabled ?? false,
       emailOtpEnabled: config?.emailOtpEnabled ?? true,
+      oidcName: config?.oidc?.name ?? null,
       signInWithGoogle,
       signInWithApple,
+      signInWithOidc,
       sendCode,
       verifyCode,
       getAccessToken,
@@ -344,8 +354,10 @@ export function AuthProvider({
       config?.googleEnabled,
       config?.appleEnabled,
       config?.emailOtpEnabled,
+      config?.oidc,
       signInWithGoogle,
       signInWithApple,
+      signInWithOidc,
       sendCode,
       verifyCode,
       getAccessToken,

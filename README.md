@@ -130,7 +130,7 @@ the carrier checks and the notifications.
 - [Scraper package](docs/SCRAPER.md): what Peek takes from the scraper, and how it updates
 - [Routing](docs/ROUTING.md): where a refresh looks for a parcel's history
 - [Deployment](docs/DEPLOYMENT.md): hosting, upgrades, operations
-- [Authentication](docs/AUTHENTICATION.md): Google, Apple and email sign-in
+- [Authentication](docs/AUTHENTICATION.md): Google, Apple, email and custom OIDC sign-in
 - [Observability](docs/OBSERVABILITY.md): logs, audit tables, Sentry, metrics
 - [Friends](docs/FRIENDS.md): how passports are shared, and what never is
 - [Analytics](docs/ANALYTICS.md): optional usage analytics with Umami

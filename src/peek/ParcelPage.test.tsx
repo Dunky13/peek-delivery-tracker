@@ -619,6 +619,20 @@ describe('ParcelPage keeping', () => {
     sendCode: vi.fn(async () => undefined), verifyCode: vi.fn(async () => undefined),
   });
 
+  it('notes a parcel before leaving its Keep sheet for the custom provider', async () => {
+    const signInWithOidc = vi.fn(async () => undefined);
+    mocks.read.mockResolvedValue(testView());
+    const user = userEvent.setup();
+    open({ account: 'visitor', signIn: vi.fn(), signInWith: { ...methods(),
+      googleEnabled: false, appleEnabled: false, emailOtpEnabled: false,
+      oidcName: 'Authentik', signInWithOidc } });
+    await user.click(await screen.findByRole('button', { name: /Create an account/ }));
+    expect(pendingKeep()).toBeNull();
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Continue with Authentik' }));
+    expect(signInWithOidc).toHaveBeenCalledOnce();
+    expect(pendingKeep()).toBe(LINK_ID);
+  });
+
   it('leads a visitor to the sign-in step where signing in is its own step, noting the parcel', async () => {
     const signIn = vi.fn();
     mocks.read.mockResolvedValue(testView());

@@ -17,6 +17,8 @@ struct AppConfiguration: Sendable {
     let appGroupIdentifier: String
     /// Hosts the site answered on before. Their links still open here; nothing is sent to them.
     var linkHosts: [String] = []
+    var oidcProvider: String = ""
+    var oidcName: String = ""
 
     static let current: AppConfiguration = {
         let useAPI = value("SDTUseAPI").uppercased() == "YES"
@@ -33,7 +35,9 @@ struct AppConfiguration: Sendable {
             emailOTPEnabled: value("SDTEmailOTPEnabled").uppercased() != "NO",
             appGroupIdentifier: value("SDTAppGroupIdentifier").nonEmpty
                 ?? "group.com.plhery.PeekDeliveryTracker",
-            linkHosts: linkHosts(in: value("SDTLinkHosts"))
+            linkHosts: linkHosts(in: value("SDTLinkHosts")),
+            oidcProvider: value("SDTOIDCProvider"),
+            oidcName: value("SDTOIDCName")
         )
     }()
 
@@ -46,7 +50,17 @@ struct AppConfiguration: Sendable {
     }
 
     var authenticationConfigured: Bool {
-        supabaseURL != nil && !supabasePublishableKey.isEmpty
+        supabaseURL != nil && !supabasePublishableKey.isEmpty && oidcConfigurationValid
+    }
+
+    var oidcConfigurationValid: Bool {
+        if oidcProvider.isEmpty && oidcName.isEmpty { return true }
+        return OAuthFlow.validCustomProvider(oidcProvider)
+            && !oidcName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var oidcAuthEnabled: Bool {
+        oidcConfigurationValid && !oidcProvider.isEmpty
     }
 
     var privacyURL: URL {

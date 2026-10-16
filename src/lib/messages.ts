@@ -34,7 +34,7 @@ export function translateMessage(
   const pluralKey = `${baseKey}.${category}` as MessageKey;
   let message: string = category !== 'other' && pluralKey in messages ? messages[pluralKey] : messages[key];
   for (const [name, value] of Object.entries(variables ?? {})) {
-    message = message.replaceAll(`{{${name}}}`, String(value));
+    message = message.replaceAll(`{{${name}}}`, () => String(value));
   }
   return message;
 }

@@ -269,11 +269,17 @@ enum OAuthFlow {
         URL(string: "\(callbackScheme)://\(callbackHost)")!
     }
 
+    static func validCustomProvider(_ identifier: String) -> Bool {
+        identifier.count <= 50
+            && identifier.range(of: #"\Acustom:[a-z0-9:-]+\z"#, options: .regularExpression) != nil
+    }
+
     static func authorizationURL(
         baseURL: URL,
         provider: String,
         codeChallenge: String
     ) -> URL? {
+        guard provider == "google" || validCustomProvider(provider) else { return nil }
         guard var components = URLComponents(
             url: baseURL.appending(path: "auth/v1/authorize"),
             resolvingAgainstBaseURL: false

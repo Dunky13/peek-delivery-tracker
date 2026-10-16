@@ -329,6 +329,56 @@ final class AppRoutingTests: XCTestCase {
             from: URL(string: "peekdeliverytracker://auth-callback?code=")!
         ))
     }
+
+    func testCustomOIDCAuthorizationKeepsTheProviderAndPKCEInSeparateQueryItems() throws {
+        let url = try XCTUnwrap(OAuthFlow.authorizationURL(
+            baseURL: URL(string: "https://auth.example.com")!,
+            provider: "custom:authentik",
+            codeChallenge: "challenge+with&reserved=characters"
+        ))
+        let components = try XCTUnwrap(URLComponents(url: url, resolvingAgainstBaseURL: false))
+        let query = Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value) })
+        XCTAssertEqual(components.path, "/auth/v1/authorize")
+        XCTAssertEqual(query.count, 4)
+        XCTAssertEqual(query["provider"]!, "custom:authentik")
+        XCTAssertEqual(query["redirect_to"]!, "peekdeliverytracker://auth-callback")
+        XCTAssertEqual(query["code_challenge"]!, "challenge+with&reserved=characters")
+        XCTAssertEqual(query["code_challenge_method"]!, "s256")
+    }
+
+    func testCustomOIDCConfigurationIsOptionalAndCanBeTheOnlySignInMethod() {
+        var configuration = AppConfiguration(mode: .api,
+            apiBaseURL: URL(string: "https://peek.example.com")!,
+            supabaseURL: URL(string: "https://auth.example.com")!, supabasePublishableKey: "public-key",
+            googleAuthEnabled: false, appleAuthEnabled: false, emailOTPEnabled: false,
+            appGroupIdentifier: "oidc.test")
+        XCTAssertTrue(configuration.authenticationConfigured)
+        XCTAssertFalse(configuration.oidcAuthEnabled)
+
+        configuration.oidcProvider = "custom:authentik"
+        XCTAssertFalse(configuration.authenticationConfigured)
+        configuration.oidcName = "Authentik"
+        XCTAssertTrue(configuration.authenticationConfigured)
+        XCTAssertTrue(configuration.oidcAuthEnabled)
+
+        configuration.oidcProvider = ""
+        XCTAssertFalse(configuration.authenticationConfigured)
+        configuration.oidcProvider = "custom:authentik"
+        configuration.oidcName = " \n "
+        XCTAssertFalse(configuration.authenticationConfigured)
+    }
+
+    func testCustomOIDCRejectsInvalidIdentifiersBeforeOpeningAuthorization() {
+        for provider in ["custom:", "authentik", "custom:AuthEntik", "custom:a_b", "custom:a.b",
+                         "custom:a&redirect_to=https://evil.example", "custom:a\n", " custom:a",
+                         "custom:" + String(repeating: "a", count: 44)] {
+            XCTAssertFalse(OAuthFlow.validCustomProvider(provider), provider)
+            XCTAssertNil(OAuthFlow.authorizationURL(baseURL: URL(string: "https://auth.example.com")!,
+                                                    provider: provider, codeChallenge: "challenge"), provider)
+        }
+        XCTAssertTrue(OAuthFlow.validCustomProvider("custom:" + String(repeating: "a", count: 43)))
+        XCTAssertTrue(OAuthFlow.validCustomProvider("custom:my-provider:v2"))
+    }
 }
 
 final class ShareInboxTests: XCTestCase {
