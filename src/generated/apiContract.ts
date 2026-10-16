@@ -10754,7 +10754,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hepsijet",
+      "recognitionRank": 949
     },
     "linkRules": [
       {
@@ -10764,7 +10765,9 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/(?:coklu-)?gonderi-takibi/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [],
+    "trackingUrlTemplate": "https://www.hepsijet.com/gonderi-takibi/{trackingNumber}",
+    "trackingSearchUrl": "https://www.hepsijet.com/"
   },
   "hunter-express": {
     "displayName": "Hunter Express",
@@ -11972,7 +11975,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-romana",
+      "recognitionRank": 948
     },
     "trackingUrlTemplate": "https://www.posta-romana.ro/track-trace.html?awb={trackingNumber}",
     "linkRules": [
@@ -11986,7 +11990,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}RO$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.posta-romana.ro/track-trace.html"
   },
   "posta-shqiptare": {
@@ -13785,7 +13796,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bosta",
+      "recognitionRank": 951
     },
     "trackingUrlTemplate": "https://bosta.co/en-eg/tracking-shipments?shipment-number={trackingNumber}",
     "linkRules": [
