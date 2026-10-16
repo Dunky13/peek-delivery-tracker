@@ -37,7 +37,7 @@ Bez konta
 Paczki śledzone bez konta zostają na tym iPhonie, a Peek zapomina każdą z nich 30 dni po dotarciu. Zaloguj się, aby dostawać powiadomienia i trzymać paczki razem, na iPhonie i w przeglądarce.
 
 Czy dowiem się, gdy ruszy?
-Z kontem Peek wyśle Ci powiadomienia: o każdym skanie, tylko o ważnych krokach albo tylko w dniu dostawy. Paczkę wyciszysz jednym stuknięciem. Peek może też wysłać Ci e-mail, gdy przesyłka będzie gotowa do odbioru lub zostanie dostarczona, tylko jeśli go włączysz.
+Gdy masz konto, Peek wyśle Ci powiadomienia: o każdym skanie, tylko o ważnych krokach albo tylko w dniu dostawy. Paczkę wyciszysz jednym stuknięciem. Peek może też wysłać Ci e-mail, gdy przesyłka będzie gotowa do odbioru lub zostanie dostarczona, tylko jeśli go włączysz.
 
 Śledzisz więcej niż jedną?
 Wszystkie mieszczą się na jednej liście, odświeżanej w tle. Przeszukuj je, filtruj i archiwizuj te, które już dotarły. Widżet na ekranie początkowym pokazuje najbliższą dostawę i przesyłki w doręczeniu.
@@ -57,7 +57,7 @@ Prywatnie i otwarcie
 
 Obsługuje m.in. InPost, Pocztę Polską, DPD, DHL, ORLEN Paczkę, Packetę, UPS i Cainiao, a do tego setki innych przewoźników. Peek jest niezależny: nie jest powiązany z żadnym przewoźnikiem i pokazuje to, co publikuje ich własne śledzenie.
 
-Peek mówi po polsku, angielsku, niemiecku, francusku, włosku, hiszpańsku i portugalsku, w jasnym i ciemnym wyglądzie.
+Peek mówi po polsku, angielsku, niemiecku, francusku, włosku, hiszpańsku i portugalsku, w trybie jasnym i ciemnym.
 ```
 
 ## Keywords

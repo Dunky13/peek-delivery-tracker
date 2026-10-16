@@ -59,7 +59,7 @@ Privé et ouvert
 
 Fonctionne avec La Poste / Colissimo, Chronopost, Mondial Relay, Colis Privé, Relais Colis, DPD, UPS, DHL, Cainiao et des centaines d’autres. Peek est indépendant : il n’est lié à aucun transporteur et affiche ce que publie leur propre suivi.
 
-Peek parle français, anglais, allemand, italien, espagnol, portugais et polonais, en clair comme en sombre.
+Peek parle français, anglais, allemand, italien, espagnol, portugais et polonais, en mode clair ou sombre.
 ```
 
 ## Keywords

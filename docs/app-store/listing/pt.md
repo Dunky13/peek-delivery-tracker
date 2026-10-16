@@ -59,7 +59,7 @@ Privado e aberto
 
 Funciona com CTT, CTT Express, SEUR, MRW, NACEX, InPost, UPS, DHL, Cainiao e centenas de outras. O Peek é independente: não está ligado a nenhuma transportadora e mostra o que o seguimento de cada uma publica.
 
-O Peek fala português, inglês, alemão, francês, italiano, espanhol e polaco, em claro e em escuro.
+O Peek fala português, inglês, alemão, francês, italiano, espanhol e polaco, em modo claro e escuro.
 ```
 
 ## Keywords

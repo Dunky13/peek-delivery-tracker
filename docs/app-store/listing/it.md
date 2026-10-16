@@ -57,7 +57,7 @@ Privato e aperto
 
 Funziona con Poste Italiane, BRT, GLS, InPost, TNT, DHL, UPS, Cainiao e centinaia di altri. Peek è indipendente: non è legato a nessun corriere e mostra ciò che pubblica il loro tracciamento.
 
-Peek parla italiano, inglese, tedesco, francese, spagnolo, portoghese e polacco, in chiaro e in scuro.
+Peek parla italiano, inglese, tedesco, francese, spagnolo, portoghese e polacco, in modalità chiara e scura.
 ```
 
 ## Keywords
