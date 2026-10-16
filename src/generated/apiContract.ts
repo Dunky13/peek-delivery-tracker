@@ -171,7 +171,8 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "aliases": [
-      "Planzer Group"
+      "Planzer Group",
+      "Planzer Parcel"
     ],
     "countries": [
       "CH"
@@ -768,7 +769,9 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [],
     "aliases": [
       "Shipping with Amazon",
-      "SWA"
+      "SWA",
+      "Amazon Swiship",
+      "Swiship"
     ],
     "countries": [
       "FR",
@@ -2276,7 +2279,11 @@ export const CARRIER_CAPABILITIES = {
       "NO",
       "FI"
     ],
-    "trackingSearchUrl": "https://tracking.postnord.com/en/"
+    "trackingSearchUrl": "https://tracking.postnord.com/en/",
+    "aliases": [
+      "PostNord Danmark",
+      "PostNord Denmark"
+    ]
   },
   "posti": {
     "displayName": "Posti",
@@ -3528,7 +3535,10 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "NZ"
     ],
-    "trackingSearchUrl": "https://www.nzpost.co.nz/tools/tracking"
+    "trackingSearchUrl": "https://www.nzpost.co.nz/tools/tracking",
+    "aliases": [
+      "New Zealand Post"
+    ]
   },
   "singapore-post": {
     "displayName": "Singapore Post",
@@ -3896,7 +3906,10 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "KR"
     ],
-    "trackingSearchUrl": "https://trace.epost.go.kr/xtts/tt/epost/ems/ems_eng.jsp"
+    "trackingSearchUrl": "https://trace.epost.go.kr/xtts/tt/epost/ems/ems_eng.jsp",
+    "aliases": [
+      "South Korea Post"
+    ]
   },
   "thailand-post": {
     "displayName": "Thailand Post",
@@ -4274,7 +4287,12 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "PL"
     ],
-    "trackingSearchUrl": "https://emonitoring.poczta-polska.pl/?lang=en"
+    "trackingSearchUrl": "https://emonitoring.poczta-polska.pl/?lang=en",
+    "aliases": [
+      "Polish Post",
+      "Poland Post",
+      "Pocztex"
+    ]
   },
   "bring-posten": {
     "displayName": "Bring",
@@ -4343,7 +4361,8 @@ export const CARRIER_CAPABILITIES = {
     "trackingUrlTemplate": "https://sporing.bring.no/sporing/{trackingNumber}?lang=en",
     "aliases": [
       "Posten Norge",
-      "Posten Bring"
+      "Posten Bring",
+      "Norway Post"
     ],
     "countries": [
       "NO",
@@ -4504,7 +4523,10 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CN"
     ],
-    "trackingSearchUrl": "https://www.yw56.com.cn/en/"
+    "trackingSearchUrl": "https://www.yw56.com.cn/en/",
+    "aliases": [
+      "Yanwen Logistics"
+    ]
   },
   "the-courier-guy": {
     "displayName": "The Courier Guy",
@@ -4926,7 +4948,8 @@ export const CARRIER_CAPABILITIES = {
     "aliases": [
       "Intelcom",
       "Dragonfly",
-      "Dragonfly Shipping"
+      "Dragonfly Shipping",
+      "Intelcom Express"
     ],
     "countries": [
       "CA"
