@@ -44,8 +44,8 @@ describe('the listing files', () => {
     assert.throws(() => parseListing('## Name\n\n```text\nPeek\n```\n', 'xx.md'), /xx\.md: no ```text block under "## Subtitle"/);
   });
 
-  it('come with review notes that end where the tracking number goes', () => {
-    assert.match(notes, /^Peek follows parcels[\s\S]+A tracking number to try:$/);
+  it('come with review notes that end on the demo and real tracking numbers', () => {
+    assert.match(notes, /^Peek follows parcels[\s\S]+\nDemo mode: [^\n]+Any real tracking number also works\.$/);
   });
 });
 

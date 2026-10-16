@@ -49,7 +49,7 @@ Review notes, in English:
 ```text
 Peek follows parcels from more than 3,500 carriers. It is free and sells nothing.
 
-Without an account: paste or type a tracking number on the first screen (a current one is at the end of these notes). Peek finds the carrier and shows the parcel's journey. These parcels stay on the iPhone.
+Without an account: paste or type a tracking number on the first screen. Peek finds the carrier and shows the parcel's journey. These parcels stay on the iPhone.
 
 An account adds notifications, sync with the web app and Friends. Sign in with Apple creates one in a step, so no demo account is needed. Google and a one-time email code are also offered.
 
@@ -57,11 +57,10 @@ Deleting an account: Account, then Delete account, then type the account's email
 
 Anonymous lookups are checked with App Attest, or with a short Cloudflare Turnstile check when App Attest isn't available. Links to peektracker.com/p/ and /i/ open in the app.
 
-A tracking number to try:
+Demo mode: on the first screen, tap Sign in, then Explore the demo at the bottom. It shows every feature with made-up parcels and friends, without an account; the bar at the top leaves it. Any real tracking number also works.
 ```
 
-Add a parcel currently in transit after the last line when submitting. Keep it out of the
-repository.
+A parcel of your own can follow the last line when submitting. Keep it out of the repository.
 
 ## Screenshots
 

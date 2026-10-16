@@ -263,7 +263,7 @@ async function main() {
   const writes = await syncListing({ api, apply: values.apply, listings, notes, versionString: values.version, copyright: values.copyright });
   if (!writes.length) console.log('Nothing to change.');
   else console.log(values.apply ? `Sent ${writes.length} changes.` : `Dry run: ${writes.length} changes. Re-run with --apply to send them.`);
-  console.log('In App Store Connect, add the review contact details and a parcel in transit after the last line of the review notes.');
+  console.log('In App Store Connect, add the review contact details. A parcel of your own can follow the last line of the review notes.');
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
