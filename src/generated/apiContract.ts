@@ -12816,7 +12816,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "speedex",
+      "recognitionRank": 938
     },
     "trackingUrlTemplate": "https://www.speedex.gr/isapohi.asp?voucher_code={trackingNumber}",
     "linkRules": [
@@ -19458,7 +19459,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mayiyinfu"
     },
     "linkRules": [
       {
