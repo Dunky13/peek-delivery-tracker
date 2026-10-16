@@ -495,7 +495,9 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "dhl"
+      "adapter": "dhl",
+      "recognitionRank": 999,
+      "recognitionPattern": "^\\d{12}$"
     },
     "trackingUrlTemplate": "https://www.dhl.de/en/privatkunden/dhl-sendungsverfolgung.html?piececode={trackingNumber}",
     "linkRules": [
