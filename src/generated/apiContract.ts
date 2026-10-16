@@ -2383,6 +2383,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^\\d{7}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^20\\d{2}(?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{14}$",
+        "confidence": "low"
       }
     ],
     "trackingUrlTemplate": "https://www.seur.com/miseur/mis-envios?tracking={trackingNumber}",
@@ -4149,7 +4153,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "china-post"
+      "adapter": "china-post",
+      "recognitionRank": 905
     },
     "linkRules": [],
     "detectionRules": [
