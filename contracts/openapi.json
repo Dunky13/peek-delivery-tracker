@@ -4162,6 +4162,11 @@
           "pattern": "^[A-Z]{2}\\d{9}CN$",
           "confidence": "high",
           "checksum": "s10"
+        },
+        {
+          "pattern": "^ZS\\d{11}$",
+          "confidence": "low",
+          "preferred": true
         }
       ],
       "trackingUrlTemplate": "https://www.ems.com.cn/mailtracking/you_jian_cha_xun.html",
