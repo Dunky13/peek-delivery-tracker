@@ -26,6 +26,18 @@ final class CarrierCatalogTests: XCTestCase {
             "https://www.mondialrelay.fr/suivi-de-colis/?numeroExpedition=121234567801")
     }
 
+    func testInPostUKNumbersOpenInPostUK() throws {
+        func link(_ number: String) throws -> String {
+            let parcel = Parcel(id: UUID(), trackingNumber: number, label: "Example", carrier: .inpost,
+                createdAt: "2026-09-10T12:00:00Z", syncStatus: .ok, notificationsMuted: false)
+            return try XCTUnwrap(catalog.trackingLinks(for: parcel, language: .en).first).url.absoluteString
+        }
+        for number in ["JJD0002233564270287", "JD0002123456789012", "8YDR098765432", "00ABC0000001A001"] {
+            XCTAssertEqual(try link(number), "https://inpost.co.uk/tracking/result?parcel_code=\(number)")
+        }
+        XCTAssertTrue(try link("640000000000000000000001").hasPrefix("https://inpost.pl/sledzenie-przesylek"))
+    }
+
     func testCourierGuyProductTrackingLinks() throws {
         for (number, native) in [("LD000001", "LD-000001"), ("DD000001", "DD-000001")] {
             let parcel = Parcel(id: UUID(), trackingNumber: number, label: "Example", carrier: .theCourierGuy,

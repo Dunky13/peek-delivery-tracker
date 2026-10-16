@@ -1332,6 +1332,11 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
             linkNumber = "\(normalized[..<split])-\(normalized[split...])"
         }
         if carrier == .postlogistics { linkNumber = format(trackingNumber, carrier: carrier) }
+        // InPost's Polish page does not find Yodel's layouts; InPost UK's page does.
+        if carrier == .inpost,
+           normalized.range(of: "^(J?JD[0-9]{16}|8YDR[0-9]{9}|[0-9]{2}[A-Z]{3}[0-9]{7}A[0-9]{3})$", options: .regularExpression) != nil {
+            return "https://inpost.co.uk/tracking/result?parcel_code=\(urlEncode(normalized))"
+        }
         return template.replacingOccurrences(
             of: "{trackingNumber}",
             with: urlEncode(linkNumber)
