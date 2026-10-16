@@ -10926,6 +10926,10 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
+        "pattern": "^IM0601\\d{10}$",
+        "confidence": "high"
+      },
+      {
         "pattern": "^IM\\d{14}$",
         "confidence": "low"
       },
@@ -21085,6 +21089,23 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.packlink.es/seguimiento-envios/"
+  },
+  "dpd-be": {
+    "displayName": "DPD Belgium",
+    "countries": [
+      "BE"
+    ],
+    "color": "#dc0032",
+    "selectable": true,
+    "timezone": "Europe/Brussels",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.dpdgroup.com/be/mydpd/my-parcels/track?lang=en&parcelNumber={trackingNumber}",
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.dpd.com/be/en/receiving/track-trace/"
   }
 } as const;
 
@@ -21664,7 +21685,8 @@ export const CARRIER_IDS = [
   "vimenpaq",
   "vozovoz",
   "x-express-ba",
-  "packlink"
+  "packlink",
+  "dpd-be"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
