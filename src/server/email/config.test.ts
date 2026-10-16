@@ -99,6 +99,9 @@ describe('which accounts the server writes to', () => {
     expect(undeliverableAddress({ appleRelay: false }, relay.toUpperCase(), true)).toBe('relay_address');
     expect(undeliverableAddress({ appleRelay: true }, relay, true)).toBeNull();
     expect(undeliverableAddress({ appleRelay: true }, relay, false)).toBe('no_address');
+    // Apple issues new relay addresses on its iCloud host.
+    expect(undeliverableAddress({ appleRelay: false }, 'synthetic1234@private.icloud.com', true)).toBe('relay_address');
+    expect(undeliverableAddress({ appleRelay: false }, 'synthetic1234@icloud.com', true)).toBeNull();
     // Only that host: an address that merely mentions it is an ordinary one.
     expect(undeliverableAddress({ appleRelay: false }, 'privaterelay.appleid.com@example.com', true)).toBeNull();
   });

@@ -195,7 +195,7 @@ set stops the server at startup.
 - **Unsubscribe links** are signed with a key derived from `SUPABASE_SERVICE_ROLE_KEY` and
   never expire. Rotating that key invalidates the links of emails already sent; the switch
   in the app still works.
-- **Apple relay addresses** (`@privaterelay.appleid.com`) are skipped until the sender is
+- **Apple relay addresses** (`@privaterelay.appleid.com`, `@private.icloud.com`) are skipped until the sender is
   registered with Apple's email relay and `EMAIL_APPLE_RELAY=true`.
 
 ## Moving to another host

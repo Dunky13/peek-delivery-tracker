@@ -110,7 +110,7 @@ export function undeliverableAddress(
   confirmed: boolean,
 ): UndeliverableAddress | null {
   if (!email || !confirmed || !addressPattern.test(email)) return 'no_address';
-  if (!settings.appleRelay && /@privaterelay\.appleid\.com$/i.test(email)) return 'relay_address';
+  if (!settings.appleRelay && /@(privaterelay\.appleid|private\.icloud)\.com$/i.test(email)) return 'relay_address';
   return null;
 }
 
