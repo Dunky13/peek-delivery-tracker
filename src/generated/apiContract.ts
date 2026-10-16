@@ -14531,6 +14531,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^MMXQP\\d{9}[ENR]$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MH$",
+        "confidence": "low",
+        "checksum": "s10"
       }
     ],
     "trackingSearchUrl": "https://mailamericas.com/"
