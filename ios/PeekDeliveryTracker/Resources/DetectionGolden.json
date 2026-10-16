@@ -49574,6 +49574,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -49585,6 +49586,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -49719,6 +49721,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -49730,6 +49733,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -49741,6 +49745,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -51833,6 +51838,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -54492,6 +54498,17 @@
   },
   {
     "input": "EK119428108SA",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
+    "input": "EK120833010SA",
     "carrier": "intl-post",
     "confidence": "high",
     "candidates": [
@@ -59851,6 +59868,14 @@
     ]
   },
   {
+    "input": "LK902999828CN",
+    "carrier": "china-post",
+    "confidence": "high",
+    "candidates": [
+      "china-post"
+    ]
+  },
+  {
     "input": "LL-KRGABB",
     "carrier": "unknown",
     "confidence": "low",
@@ -63039,6 +63064,9 @@
     "confidence": "low",
     "candidates": [
       "pakistan-post"
+    ],
+    "asked": [
+      "pakistan-post"
     ]
   },
   {
@@ -63046,6 +63074,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "pakistan-post"
+    ],
+    "asked": [
       "pakistan-post"
     ]
   },
@@ -63222,6 +63253,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -65064,6 +65096,9 @@
     "confidence": "low",
     "candidates": [
       "pakistan-post"
+    ],
+    "asked": [
+      "pakistan-post"
     ]
   },
   {
@@ -65072,6 +65107,9 @@
     "confidence": "low",
     "candidates": [
       "pakistan-post"
+    ],
+    "asked": [
+      "pakistan-post"
     ]
   },
   {
@@ -65079,6 +65117,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "pakistan-post"
+    ],
+    "asked": [
       "pakistan-post"
     ]
   },
@@ -66157,6 +66198,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -66332,6 +66374,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -69799,6 +69842,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -69810,6 +69854,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },
@@ -71620,6 +71665,7 @@
       "intl-post"
     ],
     "asked": [
+      "belpost",
       "chronopost"
     ]
   },

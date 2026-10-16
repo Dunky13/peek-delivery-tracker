@@ -9256,7 +9256,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Minsk",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "belpost",
+      "recognitionRank": 929
     },
     "trackingUrlTemplate": "https://belpost.by/Otsleditotpravleniye?number={trackingNumber}",
     "linkRules": [
@@ -9271,7 +9272,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BY$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://belpost.by/Otsleditotpravleniye"
   },
   "best-transport": {
@@ -15832,7 +15840,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pakistan-post",
+      "recognitionRank": 928
     },
     "linkRules": [
       {
@@ -15852,7 +15861,8 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       }
     ],
-    "trackingSearchUrl": "https://ep.gov.pk/"
+    "trackingSearchUrl": "https://ep.gov.pk/",
+    "trackingUrlTemplate": "https://ep.gov.pk/emtts/EPTrack_Live.aspx?ArticleIDz={trackingNumber}"
   },
   "paperfly": {
     "displayName": "Paperfly",
