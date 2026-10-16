@@ -17209,7 +17209,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "aymakan",
+      "recognitionRank": 942
     },
     "trackingUrlTemplate": "https://aymakan.com/tracking/{trackingNumber}",
     "linkRules": [
