@@ -132,6 +132,8 @@ describe('review queue replay', () => {
       created_at: '2026-09-10T05:00:00Z', carrier_data: {}, ...values });
     client.listOpenTrackingSupportCases.mockResolvedValue(['unseen', 'recent', 'account', 'answered', 'deleted'].map((name, index) => ({
       id: `case-${name}`, tracking_number: `12345678900${index}`, configured_carrier: 'unknown', reasons: ['ambiguous_shape', 'recognition_unknown'],
+      // The deleted parcel's last check had an answer.
+      last_outcome: 'updated',
     })));
     client.trackingNumberParcels.mockResolvedValue(new Map([
       ['123456789000', [lookup(), lookup({ created_at: '2026-09-09T05:00:00Z', archived_at: '2026-09-09T06:00:00Z' })]],
@@ -147,6 +149,29 @@ describe('review queue replay', () => {
       ['123456789000', '123456789001', '123456789002', '123456789003', '123456789004']);
     expect(client.ignoreReplayedTrackingSupportCases).toHaveBeenCalledExactlyOnceWith('v1', [{ id: 'case-unseen',
       note: 'Every parcel with the number is a one-off lookup that left the schedule before any carrier or provider answered for it: no check is left to update the case.' }]);
+  });
+
+  it('ignores a case whose parcels are gone once a check of one got no answer, not one only detection saw', async () => {
+    const client = fakeClient();
+    const unfiled = (name: string, index: number, values: JsonObject): JsonObject => ({
+      id: `case-${name}`, tracking_number: `12345678900${index}`, configured_carrier: 'unknown', reasons: ['unknown_shape'], ...values,
+    });
+    client.listOpenTrackingSupportCases.mockResolvedValue([
+      unfiled('unanswered', 0, { last_outcome: 'waiting' }),
+      // The Add sheet's recognition alone saw it: detection could still learn the shape.
+      unfiled('detection', 1, { last_outcome: 'detection_unknown' }),
+      unfiled('answered', 2, { last_outcome: 'unchanged' }),
+      unfiled('verified', 3, { last_outcome: 'waiting', direct_verified_carrier: 'fedex' }),
+      // Its lookup is still followed.
+      unfiled('saved', 4, { last_outcome: 'waiting' }),
+    ]);
+    client.trackingNumberParcels.mockResolvedValue(new Map([
+      ['123456789004', [{ one_off: true, carrier: 'unknown', current_stage: 'pending', created_at: '2026-09-10T11:00:00Z', carrier_data: {} }]],
+    ]));
+    await expect(replayReviewQueues(client as unknown as SupabaseServiceClient, 'v1', new Date('2026-09-10T12:00:00Z')))
+      .resolves.toMatchObject({ cases_replayed: 5, cases_ignored: 1 });
+    expect(client.ignoreReplayedTrackingSupportCases).toHaveBeenCalledExactlyOnceWith('v1', [{ id: 'case-unanswered',
+      note: 'No parcel with the number is saved any more, and its last check got no answer for it: no check is left to update the case.' }]);
   });
 
   it('fixes the resolved open cases once and records the outcome for the version', async () => {

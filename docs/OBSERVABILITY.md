@@ -168,7 +168,9 @@ carriers and that carrier is one of them, is marked `ignored` once every saved p
 that number is delivered or returned: finished parcels are not checked again, so nothing
 is left to confirm it. So is a case whose saved parcels are all one-off lookups that left
 the schedule before any carrier or provider answered for the number
-([`unseenLookup.ts`](../src/server/unseenLookup.ts)): no check is left to update it.
+([`unseenLookup.ts`](../src/server/unseenLookup.ts)), or whose parcels are all gone and
+whose last check got no answer (`waiting`): no check is left to update it. A case only the
+Add sheet's recognition saw stays open, since detection could still learn its shape.
 `tracking_review_runs` keeps one row per version, so restarts and other servers do not
 replay it again; another server takes over a replay left unfinished for ten minutes.
 

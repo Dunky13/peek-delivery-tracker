@@ -69,11 +69,22 @@ export function finishedParcelNote(supportCase: JsonObject, stages: readonly str
 }
 
 /**
- * A case whose saved parcels are all one-off lookups that left the schedule before any
- * carrier or provider answered for the number: no check is left to update it.
+ * A case no check is left to update: its saved parcels are all one-off lookups that left
+ * the schedule before any carrier or provider answered for the number, or no parcel with
+ * the number is saved any more and the last check of one got no answer for it. A case
+ * only the Add sheet's recognition saw stays open: detection could still learn its shape.
  */
-export function unseenLookupNote(parcels: readonly JsonObject[] | undefined, now: Date): string | null {
-  if (!parcels?.length || !parcels.every((parcel) => leftScheduleUnseen(parcel, now))) return null;
+export function unseenLookupNote(
+  supportCase: JsonObject,
+  parcels: readonly JsonObject[] | undefined,
+  now: Date,
+): string | null {
+  if (!parcels?.length) {
+    if (supportCase.last_outcome !== 'waiting' || supportCase.direct_verified_carrier) return null;
+    return 'No parcel with the number is saved any more, and its last check got no answer for it: '
+      + 'no check is left to update the case.';
+  }
+  if (!parcels.every((parcel) => leftScheduleUnseen(parcel, now))) return null;
   return 'Every parcel with the number is a one-off lookup that left the schedule before any carrier or provider '
     + 'answered for it: no check is left to update the case.';
 }
@@ -194,13 +205,13 @@ export async function replayReviewQueues(
     const note = finishedParcelNote(supportCase, stages.get(String(supportCase.tracking_number)));
     return note ? [{ id: String(supportCase.id), note }] : [];
   });
-  // Nor are lookups nobody answered for once they leave the schedule.
+  // Nor are lookups nobody answered for once they leave the schedule, or once they are gone.
   const settled = new Set([...resolvedIds, ...finished.map(({ id }) => id)]);
   const unfiled = cases.filter((supportCase) => !settled.has(String(supportCase.id))
     && ['unknown', 'intl-post', null, undefined].includes(supportCase.configured_carrier as string | null | undefined));
   const parcels = unfiled.length ? await client.trackingNumberParcels(unfiled.map((supportCase) => String(supportCase.tracking_number))) : new Map();
   const unseen = unfiled.flatMap((supportCase) => {
-    const note = unseenLookupNote(parcels.get(String(supportCase.tracking_number)), now);
+    const note = unseenLookupNote(supportCase, parcels.get(String(supportCase.tracking_number)), now);
     return note ? [{ id: String(supportCase.id), note }] : [];
   });
   const closings = [...finished, ...unseen];

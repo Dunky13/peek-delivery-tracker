@@ -1240,7 +1240,7 @@ export class SupabaseServiceClient extends SupabaseClient {
   /** The open support cases, the most recently seen first. */
   async listOpenTrackingSupportCases(limit: number): Promise<JsonObject[]> {
     const params = query({
-      select: 'id,tracking_number,configured_carrier,direct_verified_carrier,reasons',
+      select: 'id,tracking_number,configured_carrier,direct_verified_carrier,reasons,last_outcome',
       fix_status: 'eq.open',
       order: 'last_seen.desc',
       limit: String(limit),
