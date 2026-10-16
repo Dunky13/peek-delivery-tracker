@@ -2367,7 +2367,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "seur",
-      "recognitionRank": 870
+      "recognitionRank": 870,
+      "recognitionPattern": "^(?:\\d{14}|\\d{21,22})$"
     },
     "linkRules": [
       {
@@ -4185,6 +4186,11 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^ZS\\d{11}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
+        "pattern": "^ZC\\d{11}$",
         "confidence": "low",
         "preferred": true
       }
@@ -12890,7 +12896,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "southeastern-freight-lines",
+      "recognitionRank": 919
     },
     "trackingUrlTemplate": "https://www.sefl.com/webconnect/tracing?Type=PN&RefNum1={trackingNumber}",
     "linkRules": [
