@@ -2052,7 +2052,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "evri",
-      "upstreamName": "Evri International"
+      "upstreamName": "Evri International",
+      "recognitionRank": 605
     },
     "linkRules": [],
     "detectionRules": [
@@ -4914,7 +4915,9 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "evri-uk"
+      "adapter": "evri-uk",
+      "recognitionRank": 615,
+      "recognitionPattern": "^(?:[HT][0-9A-Z]{5}|C00HHA)\\d{10}$"
     },
     "trackingUrlTemplate": "https://www.evri.com/track/parcel/{trackingNumber}/details",
     "linkRules": [
