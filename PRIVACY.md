@@ -1,6 +1,6 @@
 # Peek privacy notice
 
-Effective: 10 October 2026
+Effective: 16 October 2026
 
 Peek follows parcels, on the web and in its iPhone app. This notice says what
 the official service at peektracker.com processes to do that. Peek does not
@@ -9,8 +9,10 @@ sell personal data, serve advertising, or use advertising analytics.
 ## Data the service processes
 
 - Your email address, account ID, session metadata, authentication security
-  events, the language your apps use, and basic Google profile data when you
-  choose Google sign-in.
+  events, the language your apps use, basic Google profile data when you
+  choose Google sign-in, and Apple's identifier for you when you choose Sign in
+  with Apple. Apple shares only an email address, which can be a private relay
+  address that forwards to yours.
 - Parcel labels, tracking numbers, carrier selection, tracking history, status,
   timestamps, the operational location a carrier attaches to each scan — the
   city, region, country, and the postcode or name of the depot, parcel shop or
@@ -46,6 +48,11 @@ sell personal data, serve advertising, or use advertising analytics.
   address of the request that failed. They may retain request and response
   headers, addresses shortened to their path, and bounded excerpts of carriers'
   responses, including personal data present in them.
+- A review list of tracking numbers Peek could not follow well: a number no
+  carrier was found for or several carriers could own, including one you
+  checked without saving it, or a carrier Peek reaches only through a tracking
+  service. Each entry keeps the number, the carriers it was checked against and
+  how each check went, and no account. It is used to add and fix carriers.
 - When the web app's own code fails in your browser, a Sentry error report: the
   error's message and stack, the page's address without its query, its fragment
   or a parcel link's id, and your browser's user agent. It goes through the
@@ -65,8 +72,8 @@ safe and working. The delivery email rests on your consent.
 The app, its database and sign-in (self-hosted Supabase), its logs and its
 analytics run on a server rented from netcup GmbH, in Germany. Requests reach
 it through Cloudflare, which relays them and sees network metadata such as your
-IP address. Google provides Google sign-in. Resend delivers the service's
-emails, as described under "Emails".
+IP address. Google provides Google sign-in and Apple Sign in with Apple.
+Resend delivers the service's emails, as described under "Emails".
 
 Cloudflare Turnstile checks the browser or an in-app verification sheet when you start a new parcel lookup to
 prevent automated abuse. It processes browser and network signals; Peek sends
@@ -213,8 +220,8 @@ A lookup is forgotten 30 days after the parcel is delivered or returned, or
 90 days after its last news (a scan, or the link being opened), or at once
 when you ask from the device that made it. The parcel's data goes with its
 last link. If you sign in and keep the parcel, it becomes part of your account.
-Diagnostic logs and Sentry reports can retain its tracking number as described
-above.
+Diagnostic logs, Sentry reports and the review list can retain its tracking
+number as described above and under "Retention and control".
 
 ## Sharing a parcel and notifications for a link
 
@@ -308,16 +315,24 @@ acknowledgements may remain until account deletion or operational cleanup.
 Infrastructure backups and security logs may persist for the limited retention
 configured by their operator. The service's own logs are kept for 30 days and
 Sentry reports for up to 90 days; both can retain a tracking number after its
-parcel or account is deleted. The record of a delivery email goes with the
-account; Resend deletes its own copy after 30 days.
+parcel or account is deleted. The review list keeps a number after its parcel
+is deleted. Deleting the account deletes the list's entries for the numbers
+your parcels follow, unless someone else follows the same number too. What a check
+learnt about a number's carrier goes after 90 days without a new check; the
+rest of an entry, such as one for a number you checked without saving it, has
+no set end. The record of a delivery email goes with the account; Resend
+deletes its own copy after 30 days.
 
 Use **Download my data** in the account menu for a machine-readable export,
 including your Friends profile and connections. Use **Delete account** to
 permanently delete the Auth user and, with it, your parcels, tracking events,
 shared links, browser subscriptions, native device registrations, delivery
 acknowledgements, delivery email records, and your Friends profile, connections
-and invitations. Deletion cannot remove data already sent to a carrier or data
-a processor must retain for security or legal obligations.
+and invitations. If you use Sign in with Apple, the iPhone app asks you to
+sign in with Apple once more, and the service asks Apple to revoke Peek's
+access to your Apple ID before deleting your account. Deletion cannot remove
+data already sent to a carrier or data a processor must retain for security or
+legal obligations.
 
 The browser stores the Supabase session, application preferences, an offline
 application shell, and an account-scoped offline parcel snapshot. A language

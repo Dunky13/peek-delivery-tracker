@@ -137,9 +137,11 @@ Recognition reasons from the Add sheet, gap evidence, and sightings older than t
 latest still add to them, so a reason that no longer applies leaves with the next check.
 
 Cases and their bounded `tracking_support_observations` are service-role only. They
-survive parcel deletion and audit pruning. Repeating an audit write does not count the
-same check twice. Cases retain sightings, fallback counts, detection candidates, the
-last outcome and direct verification evidence.
+survive parcel deletion and audit pruning. Deleting an account deletes the cases of its
+parcels' numbers, unless another parcel, an account's or a lookup's, follows the same
+number. Repeating an audit write does not count the same check twice. Cases retain
+sightings, fallback counts, detection candidates, the last outcome and direct
+verification evidence.
 
 Unresolved detection requests also retain their normalized number in this backlog,
 including cached answers and choices between carriers, before any parcel is saved.
@@ -332,7 +334,8 @@ took effect.
 The routing signals marked in [ROUTING.md](ROUTING.md) are saved in
 `tracking_routing_signals` once their check completes: one row per signal, parcel carrier,
 subject and number, whose `count` grows with each check that reports it again. A row
-outlives its parcel and goes after 90 days unseen. `tracking_routing_signal_total` counts
+outlives its parcel and goes after 90 days unseen, or with the account, as support cases
+do. `tracking_routing_signal_total` counts
 them, and the "Review signals" row of the carrier dashboard shows them beside sync
 anomalies and health incidents.
 

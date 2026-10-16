@@ -201,13 +201,28 @@ end;
 $$;
 reset role;
 
+-- A deleted parcel leaves its case and signals for the review. Deleting the account takes
+-- those of the numbers its parcels follow, unless another account follows them too.
+insert into auth.users(id, email) values ('a7100000-0000-4000-8000-000000000008', 'support-other@example.invalid');
+insert into public.packages(id, user_id, tracking_number, carrier) values
+  ('a7100000-0000-4000-8000-000000000009', 'a7100000-0000-4000-8000-000000000008', 'GAPTEST5678', 'unknown'),
+  ('a7100000-0000-4000-8000-000000000010', 'a7100000-0000-4000-8000-000000000001', 'LEASECASE1234', 'unknown');
+insert into public.tracking_routing_signals(signal, carrier, subject, tracking_number, package_id) values
+  ('direct_support_opportunity', 'unknown', 'dpd', 'CASETEST1234', 'a7100000-0000-4000-8000-000000000002'),
+  ('direct_support_opportunity', 'unknown', 'dpd', 'GAPTEST5678', 'a7100000-0000-4000-8000-000000000003'),
+  ('direct_support_opportunity', 'unknown', 'dpd', 'LEASECASE1234', 'a7100000-0000-4000-8000-000000000010');
+delete from public.packages where id = 'a7100000-0000-4000-8000-000000000002';
 delete from auth.users where id = 'a7100000-0000-4000-8000-000000000001';
 do $$
 begin
   assert not exists(select 1 from public.tracking_sync_attempts where id in ('a7100000-0000-4000-8000-000000000005', 'a7100000-0000-4000-8000-000000000007'));
   assert exists(select 1 from public.tracking_support_cases where tracking_number = 'CASETEST1234' and fix_status = 'verified');
-  assert exists(select 1 from public.tracking_support_cases where tracking_number = 'GAPTEST5678' and fallback_count = 1);
   assert exists(select 1 from public.tracking_support_observations where observation_key = 'attempt:a7100000-0000-4000-8000-000000000005');
+  assert exists(select 1 from public.tracking_support_cases where tracking_number = 'GAPTEST5678' and fallback_count = 1);
+  assert not exists(select 1 from public.tracking_support_cases where tracking_number = 'LEASECASE1234');
+  assert not exists(select 1 from public.tracking_support_observations where observation_key = 'attempt:a7100000-0000-4000-8000-000000000007');
+  assert (select array_agg(tracking_number order by tracking_number) from public.tracking_routing_signals
+    where tracking_number in ('CASETEST1234', 'GAPTEST5678', 'LEASECASE1234')) = array['CASETEST1234', 'GAPTEST5678'];
 end;
 $$;
 rollback;

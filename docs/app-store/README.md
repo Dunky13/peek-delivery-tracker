@@ -39,8 +39,9 @@ and [PRIVACY.md](../../PRIVACY.md). Nothing is used for tracking.
 - Linked to the user, for app functionality: Email Address, Name (from Google sign-in), User
   ID, Device ID (the push token), Other User Content (tracking numbers, parcel names,
   postcodes, feedback), Other Data Types.
-- Not linked, for analytics: Coarse Location (the country of a request) and Product
-  Interaction.
+- Linked to the user, for app functionality and analytics: Coarse Location (each parcel's
+  country hint and postcode) and Product Interaction (when the apps last loaded the
+  parcels). What Umami collects of both is not linked.
 
 ## App Review
 
@@ -49,7 +50,7 @@ Review notes, in English:
 ```text
 Peek follows parcels from more than 3,500 carriers. It is free and sells nothing.
 
-Without an account: paste or type a tracking number on the first screen. Peek finds the carrier and shows the parcel's journey. These parcels stay on the iPhone.
+Without an account: paste or type a tracking number on the first screen. Peek finds the carrier and shows the parcel's journey. The server keeps these parcels without an account, and only that iPhone lists them.
 
 An account adds notifications, sync with the web app and Friends. Sign in with Apple creates one in a step, so no demo account is needed. Google and a one-time email code are also offered.
 
