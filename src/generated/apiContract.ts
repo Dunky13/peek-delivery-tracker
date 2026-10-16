@@ -21239,6 +21239,32 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://relaytech.co/track-order"
+  },
+  "dpd-nl": {
+    "displayName": "DPD Netherlands",
+    "aliases": [
+      "DPD Nederland"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "color": "#dc0032",
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "dpd-nl",
+      "recognitionRank": 972
+    },
+    "trackingUrlTemplate": "https://www.dpdgroup.com/nl/mydpd/my-parcels/search?lang=en&parcelNumber={trackingNumber}",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://www.dpd.com/nl/en/receiving/"
   }
 } as const;
 
@@ -21821,7 +21847,8 @@ export const CARRIER_IDS = [
   "packlink",
   "dpd-be",
   "js-express",
-  "relaytech"
+  "relaytech",
+  "dpd-nl"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
