@@ -4367,6 +4367,28 @@ describe('a carrier a provider names, whose scans the provider copied in the wro
     expect([...copied.keys()].map((id) => store.rows.get(String(id))?.occurred_at))
       .toEqual(['2026-01-05T06:55:00Z', '2026-01-04T08:30:00Z', '2026-01-02T20:18:58Z']);
   });
+
+  it('files it under the carrier when the provider corrected its copies on an earlier check', async () => {
+    const fetch = vi.fn<(carrierId: string) => Promise<CarrierResult>>()
+      .mockRejectedValueOnce(new Error('4PX tracking is unavailable'))
+      .mockRejectedValueOnce(new Error('4PX tracking is unavailable')).mockResolvedValue(result(scans));
+    const { store, adapter, sync } = setup(fetch);
+    // The parcel was added after the carrier's newest scan, just before its first check.
+    store.rows.set('app:pending', { id: 'added', provider_event_id: 'app:pending', stage: 'pending',
+      description: 'Tracking added', occurred_at: '2026-01-05T11:59:59.000Z' });
+    const first = await sync('2026-01-05T12:00:00Z');
+    adapter.fetchUniversal.mockResolvedValue({ ...result(scans), tracking_provider: 'ParcelsApp',
+      discovered_carrier: 'four-px', reported_carriers: ['4PX Express'] });
+    // The provider's copies come back at the carrier's instants: the watermark goes back to
+    // the newest scan, not to the time the parcel was added.
+    const second = await sync('2026-01-05T15:00:00Z', { current_stage: 'in_transit', carrier_data: first.carrier_data });
+    expect(second.carrier_data).toMatchObject({ routing: { last_event_at: '2026-01-05T06:55:00.000Z' } });
+
+    const third = await sync('2026-01-05T16:00:00Z', { current_stage: 'in_transit', carrier_data: second.carrier_data });
+    expect(fetch.mock.calls.map(([carrier]) => carrier)).toEqual(['four-px', 'four-px', 'four-px']);
+    expect(third).toMatchObject({ carrier: 'four-px', carrier_data: { routing: { confirmed_carrier: 'four-px' } } });
+    expect(third.carrier_data).not.toHaveProperty('tracking_provider');
+  });
 });
 
 describe('the pickup point a parcel was collected from', () => {
