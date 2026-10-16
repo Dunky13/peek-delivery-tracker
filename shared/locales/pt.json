@@ -445,6 +445,7 @@
   "native.auth.cancelled": "O início de sessão foi cancelado.",
   "native.auth.invalidResponse": "Não foi possível concluir o início de sessão. Tenta novamente.",
   "native.auth.missingSession": "Não foi possível iniciar sessão. Pede um novo código e tenta novamente.",
+  "native.auth.otherAppleAccount": "Inicia sessão com a Conta Apple que usas no Peek.",
   "native.auth.notConfigured": "O início de sessão não está disponível nesta versão.",
   "native.auth.requestFailed": "Não foi possível iniciar sessão. Tenta novamente.",
   "native.auth.saveSession": "Não foi possível guardar a sessão neste iPhone. Tenta novamente.",

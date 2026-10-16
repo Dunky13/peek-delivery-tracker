@@ -445,6 +445,7 @@
   "native.auth.cancelled": "Sign-in was cancelled.",
   "native.auth.invalidResponse": "Couldn’t complete sign-in. Please try again.",
   "native.auth.missingSession": "Couldn’t sign you in. Request a new code and try again.",
+  "native.auth.otherAppleAccount": "Sign in with the Apple Account you use for Peek.",
   "native.auth.notConfigured": "Sign-in is unavailable in this version.",
   "native.auth.requestFailed": "Couldn’t sign you in. Please try again.",
   "native.auth.saveSession": "Couldn’t save your sign-in on this iPhone. Please try again.",

@@ -445,6 +445,7 @@
   "native.auth.cancelled": "Die Anmeldung wurde abgebrochen.",
   "native.auth.invalidResponse": "Die Anmeldung konnte nicht abgeschlossen werden. Versuche es erneut.",
   "native.auth.missingSession": "Die Anmeldung hat nicht geklappt. Fordere einen neuen Code an.",
+  "native.auth.otherAppleAccount": "Melde dich mit dem Apple Account an, den du für Peek nutzt.",
   "native.auth.notConfigured": "Die Anmeldung ist in dieser Version nicht verfügbar.",
   "native.auth.requestFailed": "Die Anmeldung hat nicht geklappt. Versuche es erneut.",
   "native.auth.saveSession": "Deine Anmeldung konnte auf diesem iPhone nicht gespeichert werden. Versuche es erneut.",

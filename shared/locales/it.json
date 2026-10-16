@@ -445,6 +445,7 @@
   "native.auth.cancelled": "L’accesso è stato annullato.",
   "native.auth.invalidResponse": "Impossibile completare l’accesso. Riprova.",
   "native.auth.missingSession": "Accesso non riuscito. Richiedi un nuovo codice e riprova.",
+  "native.auth.otherAppleAccount": "Accedi con l’Account Apple che usi per Peek.",
   "native.auth.notConfigured": "L’accesso non è disponibile in questa versione.",
   "native.auth.requestFailed": "Accesso non riuscito. Riprova.",
   "native.auth.saveSession": "Impossibile salvare l’accesso su questo iPhone. Riprova.",

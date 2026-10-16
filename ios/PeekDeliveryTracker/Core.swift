@@ -216,6 +216,8 @@ final class Localizer: ObservableObject {
                 return text("native.auth.secureRequest")
             case .sessionSaveFailed:
                 return text("native.auth.saveSession")
+            case .otherAppleAccount:
+                return text("native.auth.otherAppleAccount")
             case .server(let message):
                 return serviceErrorMessage(message, fallback: "auth.verifyFailed")
             }

@@ -9,6 +9,22 @@ struct AuthUser: Codable, Equatable, Sendable {
     let id: UUID
     let email: String?
     let isAnonymous: Bool?
+    /// The ways the account signs in. Sessions saved before this was kept have none until they refresh.
+    var identities: [Identity]? = nil
+
+    struct Identity: Codable, Equatable, Sendable {
+        let provider: String
+        var identityData: IdentityData? = nil
+    }
+
+    struct IdentityData: Codable, Equatable, Sendable {
+        var sub: String? = nil
+    }
+
+    /// The Apple user IDs the account signs in with.
+    var appleSubjects: [String] {
+        (identities ?? []).filter { $0.provider == "apple" }.compactMap { $0.identityData?.sub }
+    }
 }
 
 struct AuthSession: Codable, Sendable {
@@ -58,10 +74,12 @@ enum AuthenticationError: LocalizedError {
     case requestFailed(Int)
     case secureRequestFailed
     case sessionSaveFailed
+    case otherAppleAccount
     case server(String)
 
     var errorDescription: String? {
         switch self {
+        case .otherAppleAccount: "This Apple Account doesn't sign in to this Peek account."
         case .notConfigured: "Authentication is not configured."
         case .invalidResponse: "The authentication service returned an invalid response."
         case .missingSession: "The sign-in code did not create a session."
@@ -245,14 +263,9 @@ final class SessionStore: ObservableObject {
         let nonce = try Self.randomVerifier()
         DeliveryAnalytics.shared.action("sign-in-apple", .started)
         do {
-            let token = try await appleSignIn.identityToken(nonce: AppleSignInNonce.digest(nonce))
+            let credential = try await appleSignIn.credential(nonce: AppleSignInNonce.digest(nonce))
             try checkGeneration(generation)
-            guard !token.isEmpty else { throw AuthenticationError.invalidResponse }
-            let result = try await authRequest(
-                path: "token?grant_type=id_token", method: "POST",
-                jsonObject: ["provider": "apple", "id_token": token, "nonce": nonce],
-                response: AuthSession.self
-            )
+            let result = try await appleSession(credential, nonce: nonce)
             try checkGeneration(generation)
             try accept(result)
             DeliveryAnalytics.shared.action("sign-in-apple", .success)
@@ -263,6 +276,36 @@ final class SessionStore: ObservableObject {
             DeliveryAnalytics.shared.action("sign-in-apple", .error)
             throw error
         }
+    }
+
+    /// Before an account that signs in with Apple is deleted, Apple asks for its tokens to be revoked.
+    /// Signing in with Apple again gives the server a code to revoke them with, and counts as the
+    /// recent sign-in the deletion needs. Returns nil for an account without Apple.
+    func reauthenticateWithAppleBeforeDeletion() async throws -> String? {
+        guard configuration.mode == .api, configuration.appleAuthEnabled, let current = user else { return nil }
+        if current.identities == nil { _ = try await accessToken(forceRefresh: true) }
+        guard let subjects = user?.appleSubjects, !subjects.isEmpty, user?.id == current.id else { return nil }
+        let generation = generation
+        let nonce = try Self.randomVerifier()
+        let credential = try await appleSignIn.credential(nonce: AppleSignInNonce.digest(nonce))
+        try checkGeneration(generation)
+        // Signing in with another Apple Account would open, or create, a different Peek account.
+        guard subjects.contains(credential.user) else { throw AuthenticationError.otherAppleAccount }
+        let result = try await appleSession(credential, nonce: nonce)
+        try checkGeneration(generation)
+        guard result.user.id == current.id else { throw AuthenticationError.otherAppleAccount }
+        try accept(result)
+        guard let code = credential.authorizationCode, !code.isEmpty else { throw AuthenticationError.invalidResponse }
+        return code
+    }
+
+    private func appleSession(_ credential: AppleSignInCredential, nonce: String) async throws -> AuthSession {
+        guard !credential.identityToken.isEmpty else { throw AuthenticationError.invalidResponse }
+        return try await authRequest(
+            path: "token?grant_type=id_token", method: "POST",
+            jsonObject: ["provider": "apple", "id_token": credential.identityToken, "nonce": nonce],
+            response: AuthSession.self
+        )
     }
 
     /// The sign-in email template reads the account language from user metadata.
@@ -460,17 +503,25 @@ enum AppleSignInNonce {
     }
 }
 
+struct AppleSignInCredential: Sendable {
+    let identityToken: String
+    /// Single use and valid for five minutes: the server trades it for tokens it can revoke.
+    let authorizationCode: String?
+    /// The Apple user ID, the `sub` of the identity token.
+    let user: String
+}
+
 @MainActor
 protocol AppleSignInAuthorizing {
-    func identityToken(nonce: String) async throws -> String
+    func credential(nonce: String) async throws -> AppleSignInCredential
 }
 
 @MainActor
 private final class AppleSignInAuthorization: NSObject, AppleSignInAuthorizing, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
     private var controller: ASAuthorizationController?
-    private var continuation: CheckedContinuation<String, Error>?
+    private var continuation: CheckedContinuation<AppleSignInCredential, Error>?
 
-    func identityToken(nonce: String) async throws -> String {
+    func credential(nonce: String) async throws -> AppleSignInCredential {
         guard continuation == nil else { throw AuthenticationError.invalidResponse }
         return try await withCheckedThrowingContinuation { continuation in
             self.continuation = continuation
@@ -491,7 +542,8 @@ private final class AppleSignInAuthorization: NSObject, AppleSignInAuthorizing, 
               let data = credential.identityToken, let token = String(data: data, encoding: .utf8), !token.isEmpty else {
             finish(.failure(AuthenticationError.invalidResponse)); return
         }
-        finish(.success(token))
+        let code = credential.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
+        finish(.success(AppleSignInCredential(identityToken: token, authorizationCode: code, user: credential.user)))
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
@@ -503,7 +555,7 @@ private final class AppleSignInAuthorization: NSObject, AppleSignInAuthorizing, 
         return scenes.flatMap(\.windows).first(where: \.isKeyWindow) ?? ASPresentationAnchor()
     }
 
-    private func finish(_ result: Result<String, Error>) {
+    private func finish(_ result: Result<AppleSignInCredential, Error>) {
         let pending = continuation
         continuation = nil
         controller = nil

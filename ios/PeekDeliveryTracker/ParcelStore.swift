@@ -711,13 +711,15 @@ final class ParcelStore: ObservableObject {
             await resetDemoData()
             return
         }
+        let appleAuthorizationCode = try await session.reauthenticateWithAppleBeforeDeletion()
+        try session.checkGeneration(generation)
         nativePushGeneration += 1
         deliveryLiveActivityGeneration += 1
         deliveryLiveActivityRegistrationRemovalPending = true
         stopDeliveryLiveActivityObservers()
         jobMonitoringTask?.cancel()
         pendingJobIDs.removeAll()
-        try await api.deleteAccount(confirmation: confirmation)
+        try await api.deleteAccount(confirmation: confirmation, appleAuthorizationCode: appleAuthorizationCode)
         try session.checkGeneration(generation)
         await endAllDeliveryLiveActivities()
         try session.checkGeneration(generation)

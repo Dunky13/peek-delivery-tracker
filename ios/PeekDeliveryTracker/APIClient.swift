@@ -376,11 +376,11 @@ final class DeliveryAPIClient {
         try await rawRequest("/api/account/export").0
     }
 
-    func deleteAccount(confirmation: String) async throws {
+    func deleteAccount(confirmation: String, appleAuthorizationCode: String? = nil) async throws {
         let _: OKResponse = try await request(
             "/api/account",
             method: "DELETE",
-            body: DeleteAccountRequest(confirmation: confirmation)
+            body: DeleteAccountRequest(confirmation: confirmation, appleAuthorizationCode: appleAuthorizationCode)
         )
     }
 

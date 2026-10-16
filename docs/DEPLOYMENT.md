@@ -79,9 +79,11 @@ optional:
   when unset).
 - APNs: `APNS_TEAM_ID`, `APNS_KEY_ID`, `APNS_PRIVATE_KEY` (the whole `.p8`) and
   `APNS_BUNDLE_ID`. The same key sends alerts and Live Activity pushes.
+- Sign in with Apple: `APPLE_SIGN_IN_*` revokes Apple's tokens when an iPhone account is
+  deleted ([AUTHENTICATION.md](AUTHENTICATION.md)).
 
-Partial VAPID or APNs configuration is rejected at startup. [`.env.example`](../.env.example)
-lists everything. Copy it to `.env`, set the Supabase values and
+Partial VAPID, APNs or Sign in with Apple configuration is rejected at startup.
+[`.env.example`](../.env.example) lists everything. Copy it to `.env`, set the Supabase values and
 `NEXT_PUBLIC_USE_API=true`, remove the optional services you don't use, and start the
 container:
 

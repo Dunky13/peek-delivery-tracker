@@ -445,6 +445,7 @@
   "native.auth.cancelled": "La connexion a été annulée.",
   "native.auth.invalidResponse": "Impossible de terminer la connexion. Réessaie.",
   "native.auth.missingSession": "La connexion a échoué. Demande un nouveau code et réessaie.",
+  "native.auth.otherAppleAccount": "Connecte-toi avec le compte Apple que tu utilises pour Peek.",
   "native.auth.notConfigured": "La connexion est indisponible dans cette version.",
   "native.auth.requestFailed": "La connexion a échoué. Réessaie.",
   "native.auth.saveSession": "Impossible d’enregistrer ta connexion sur cet iPhone. Réessaie.",

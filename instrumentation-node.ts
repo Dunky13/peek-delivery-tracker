@@ -9,6 +9,7 @@ import { installShutdownHandlers } from './src/server/shutdown';
 import { canonicalOrigin, siteHosts } from './src/server/siteHosts';
 import { turnstileSettings } from './src/server/lookupVerification';
 import { nativeAttestSettings } from './src/server/nativeVerification';
+import { appleSignInConfiguration } from './src/server/appleSignIn';
 
 // A malformed host setting must stop the deployment, not send visitors elsewhere.
 siteHosts();
@@ -16,6 +17,7 @@ siteHosts();
 emailSettings();
 turnstileSettings();
 nativeAttestSettings();
+appleSignInConfiguration();
 // Invalid server-side credentials are a deployment failure. Let initialization
 // fail so an orchestrator cannot mark a process healthy while tracking and
 // notification work is silently disabled.

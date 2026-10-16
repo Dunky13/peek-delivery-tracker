@@ -21118,6 +21118,7 @@ export interface ApiAccountExportResponse {
 
 export interface ApiDeleteAccountRequest {
   "confirmation": string;
+  "appleAuthorizationCode"?: string;
 }
 
 export const CARRIER_IDS = [

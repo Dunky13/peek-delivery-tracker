@@ -891,6 +891,18 @@ export class SupabaseClient {
       locale: typeof metadata.locale === 'string' ? metadata.locale : null,
     };
   }
+
+  /** The Apple user IDs an account signs in with, read with the service key. */
+  async appleSubjects(userId: string): Promise<string[]> {
+    const user = await this.request(`/auth/v1/admin/users/${encodeURIComponent(userId)}`);
+    if (!isRecord(user) || !Array.isArray(user.identities)) return [];
+    return user.identities.flatMap((identity) => {
+      if (!isRecord(identity) || identity.provider !== 'apple') return [];
+      const data = isRecord(identity.identity_data) ? identity.identity_data : {};
+      const subject = typeof data.sub === 'string' ? data.sub : identity.id;
+      return typeof subject === 'string' && subject ? [subject] : [];
+    });
+  }
 }
 
 export class SupabaseServiceClient extends SupabaseClient {

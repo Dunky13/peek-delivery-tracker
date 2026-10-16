@@ -1602,9 +1602,11 @@ private final class SessionTestURLProtocol: URLProtocol {
 @MainActor
 private final class StubAppleSignIn: AppleSignInAuthorizing {
     var nonces: [String] = []
-    var result: Result<String, Error> = .success("apple-identity-token")
+    var result: Result<AppleSignInCredential, Error> = .success(
+        AppleSignInCredential(identityToken: "apple-identity-token", authorizationCode: "apple-code", user: "apple-user")
+    )
     var beforeReturning: (() -> Void)?
-    func identityToken(nonce: String) async throws -> String {
+    func credential(nonce: String) async throws -> AppleSignInCredential {
         nonces.append(nonce)
         beforeReturning?()
         return try result.get()
@@ -1717,6 +1719,59 @@ final class SessionIsolationTests: XCTestCase {
         catch is CancellationError { }
         XCTAssertNil(session.user)
         XCTAssertNil(persistence.data)
+    }
+
+    @MainActor private func authorizeWithApple(_ session: SessionStore, id: UUID, appleUser: String = "apple-user") async throws {
+        let user = AuthUser(id: id, email: "private@privaterelay.appleid.com", isAnonymous: false,
+                            identities: [.init(provider: "apple", identityData: .init(sub: appleUser))])
+        respond(try JSONEncoder.deliveryTracker.encode(AuthSession(accessToken: "access", tokenType: "bearer", expiresIn: 3600,
+            expiresAt: Int(Date().timeIntervalSince1970) + 3600, refreshToken: "refresh", user: user)))
+        try await session.signInWithApple()
+    }
+
+    @MainActor func testDeletingAnAppleAccountSignsInWithAppleAgainForARevocationCode() async throws {
+        let transport = transport()
+        defer { transport.invalidateAndCancel() }
+        let apple = StubAppleSignIn()
+        let session = SessionStore(configuration: configuration, persistence: MemorySessionPersistence(), transport: transport, appleSignIn: apple)
+        defer { session.forceSignOut() }
+        let id = UUID()
+        try await authorizeWithApple(session, id: id)
+        let code = try await session.reauthenticateWithAppleBeforeDeletion()
+        XCTAssertEqual(code, "apple-code")
+        XCTAssertEqual(apple.nonces.count, 2)
+        XCTAssertEqual(session.user?.id, id)
+    }
+
+    @MainActor func testDeletionRefusesAnotherAppleAccountBeforeReachingTheServer() async throws {
+        let transport = transport()
+        defer { transport.invalidateAndCancel() }
+        let apple = StubAppleSignIn()
+        let session = SessionStore(configuration: configuration, persistence: MemorySessionPersistence(), transport: transport, appleSignIn: apple)
+        defer { session.forceSignOut() }
+        try await authorizeWithApple(session, id: UUID(), appleUser: "another-apple-user")
+        SessionTestURLProtocol.handler = { _, complete in
+            XCTFail("Another Apple Account reached the server")
+            complete(.failure(URLError(.cancelled)))
+        }
+        do { _ = try await session.reauthenticateWithAppleBeforeDeletion(); XCTFail("Expected a refusal") }
+        catch AuthenticationError.otherAppleAccount { }
+        XCTAssertNotNil(session.user)
+    }
+
+    @MainActor func testDeletingAnAccountWithoutAppleDoesNotAskForApple() async throws {
+        let transport = transport()
+        defer { transport.invalidateAndCancel() }
+        let apple = StubAppleSignIn()
+        let session = SessionStore(configuration: configuration, persistence: MemorySessionPersistence(), transport: transport, appleSignIn: apple)
+        defer { session.forceSignOut() }
+        let user = AuthUser(id: UUID(), email: "test@example.com", isAnonymous: false, identities: [.init(provider: "email")])
+        respond(try JSONEncoder.deliveryTracker.encode(AuthSession(accessToken: "access", tokenType: "bearer", expiresIn: 3600,
+            expiresAt: Int(Date().timeIntervalSince1970) + 3600, refreshToken: "refresh", user: user)))
+        try await session.verifyCode(email: "test@example.com", code: "123456")
+        let code = try await session.reauthenticateWithAppleBeforeDeletion()
+        XCTAssertNil(code)
+        XCTAssertTrue(apple.nonces.isEmpty)
     }
     @MainActor func testParcelStoreKeepsSessionAliveForDeferredDeliveryCleanup() async throws {
         let transport = transport()

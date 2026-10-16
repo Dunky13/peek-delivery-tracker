@@ -28,6 +28,7 @@ struct AccountExportResponse: Codable, Equatable, Hashable, Sendable {
 
 struct DeleteAccountRequest: Codable, Equatable, Hashable, Sendable {
     var confirmation: String
+    var appleAuthorizationCode: String? = nil
 }
 
 struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, Identifiable {

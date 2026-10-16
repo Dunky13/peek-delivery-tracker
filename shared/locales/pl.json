@@ -445,6 +445,7 @@
   "native.auth.cancelled": "Anulowano logowanie.",
   "native.auth.invalidResponse": "Nie udało się ukończyć logowania. Spróbuj ponownie.",
   "native.auth.missingSession": "Nie udało się zalogować. Poproś o nowy kod i spróbuj ponownie.",
+  "native.auth.otherAppleAccount": "Zaloguj się kontem Apple, którego używasz w Peek.",
   "native.auth.notConfigured": "Logowanie jest niedostępne w tej wersji.",
   "native.auth.requestFailed": "Nie udało się zalogować. Spróbuj ponownie.",
   "native.auth.saveSession": "Nie udało się zapisać sesji na tym iPhonie. Spróbuj ponownie.",

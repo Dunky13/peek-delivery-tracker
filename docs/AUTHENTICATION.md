@@ -121,21 +121,22 @@ Implemented on web and iOS, off until configured. It needs a paid Apple Develope
 membership, because a Personal Team can't enable the capability.
 
 1. Enable **Sign in with Apple** on the app ID `com.plhery.PeekDeliveryTracker` (or yours).
-2. Create a Services ID for the web (e.g. `com.plhery.PeekDeliveryTracker.web`). Register
-   your Supabase host as its domain and `https://supabase.example.com/auth/v1/callback` as
-   its return URL.
-3. Create a Sign in with Apple key and keep the `.p8` outside the repo. Generate the client
-   secret JWT from it. Apple caps its lifetime at six months, so renew it in time.
-4. Configure GoTrue. The Services ID must come first; the bundle ID is accepted as an
-   ID-token audience. Keep nonce verification on.
+2. Create a Sign in with Apple key and keep the `.p8` outside the repo. Give it to the app
+   server so it can revoke Apple's tokens when an account is deleted (below).
+3. Configure GoTrue. The iPhone app only needs the bundle ID as an ID-token audience. Keep
+   nonce verification on.
 
    ```env
    GOTRUE_EXTERNAL_APPLE_ENABLED=true
-   GOTRUE_EXTERNAL_APPLE_CLIENT_ID=com.plhery.PeekDeliveryTracker.web,com.plhery.PeekDeliveryTracker
-   GOTRUE_EXTERNAL_APPLE_SECRET=<server-only client secret JWT>
-   GOTRUE_EXTERNAL_APPLE_REDIRECT_URI=https://supabase.example.com/auth/v1/callback
+   GOTRUE_EXTERNAL_APPLE_CLIENT_ID=com.plhery.PeekDeliveryTracker
    ```
 
+4. For the web, also create a Services ID (e.g. `com.plhery.PeekDeliveryTracker.web`), with
+   your Supabase host as its domain and `https://supabase.example.com/auth/v1/callback` as
+   its return URL. List it first in `GOTRUE_EXTERNAL_APPLE_CLIENT_ID`, and set
+   `GOTRUE_EXTERNAL_APPLE_SECRET` to a client secret JWT signed with the key (Apple caps
+   its lifetime at six months, so renew it in time) and `GOTRUE_EXTERNAL_APPLE_REDIRECT_URI`
+   to the callback.
 5. Register your email sender with Apple's private relay so Hide My Email addresses
    receive codes.
 6. Turn the buttons on:
@@ -147,6 +148,23 @@ membership, because a Personal Team can't enable the capability.
 The web uses Supabase OAuth with PKCE. iOS uses the native sheet (email scope only) and
 exchanges the identity token plus the original nonce with Supabase. Pending friend
 invitations survive the redirect.
+
+Apple asks apps to revoke its tokens when an account is deleted. Before the iPhone app
+deletes an account that has an Apple identity, it signs in with Apple again: that refreshes
+the session for the ten-minute rule, and refuses another Apple Account. It sends the
+one-time authorization code with the deletion. The server trades the code for Apple's
+tokens and revokes them, then deletes the account; a failed revocation is logged as
+`apple_sign_in_revocation` and doesn't stop the deletion. The server needs the key for
+that:
+
+```env
+APPLE_SIGN_IN_TEAM_ID=ABCDE12345
+APPLE_SIGN_IN_KEY_ID=KEY1234567
+APPLE_SIGN_IN_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----
+APPLE_SIGN_IN_CLIENT_ID=com.plhery.PeekDeliveryTracker
+```
+
+An account deleted on the web isn't revoked with Apple: Supabase doesn't keep Apple's tokens.
 
 ## Sessions
 

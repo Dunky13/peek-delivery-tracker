@@ -23561,6 +23561,12 @@
           "confirmation": {
             "type": "string",
             "format": "email"
+          },
+          "appleAuthorizationCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "From signing in with Apple again just before deleting an account that uses it. The server revokes that Apple sign-in."
           }
         }
       },

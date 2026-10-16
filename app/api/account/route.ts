@@ -1,3 +1,4 @@
+import { revokeAppleSignIn } from '../../../src/server/appleSignIn';
 import { authenticator, SupabaseAuthError } from '../../../src/server/auth';
 import {
   apiRoute,
@@ -22,6 +23,11 @@ export const DELETE = apiRoute(async (context) => {
     || !user.email
     || confirmation.trim().toLocaleLowerCase('en-US') !== user.email.toLocaleLowerCase('en-US')
   ) throw new HttpError(400, 'Type your account email exactly to confirm deletion');
+  // The iPhone app signs in with Apple again before deleting an account that uses it.
+  const appleCode = payload.appleAuthorizationCode;
+  if (appleCode !== undefined && (typeof appleCode !== 'string' || !appleCode || appleCode.length > 4_096)) {
+    throw new HttpError(400, 'Invalid Apple authorization code');
+  }
   if (!context.token) {
     throw new HttpError(401, 'Sign in again before permanently deleting your account');
   }
@@ -45,6 +51,8 @@ export const DELETE = apiRoute(async (context) => {
   if (age < -60_000 || age > RECENT_AUTH_MAX_AGE_MS) {
     throw new HttpError(401, 'Sign in again before permanently deleting your account');
   }
-  await requireService(context).deleteAuthUser(freshUser.id);
+  const service = requireService(context);
+  await revokeAppleSignIn(appleCode, () => service.appleSubjects(freshUser.id));
+  await service.deleteAuthUser(freshUser.id);
   return json({ ok: true });
 }, { serviceRequired: true });
