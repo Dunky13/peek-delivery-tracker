@@ -2583,6 +2583,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^F\\d{3}D\\d{8}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^D\\d{5}[A-Z]\\d{6}$",
+        "confidence": "low"
       }
     ],
     "trackingUrlTemplate": "https://www.poste.it/cerca/index.html#/risultati-spedizioni/{trackingNumber}",
