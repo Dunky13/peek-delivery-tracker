@@ -23,16 +23,21 @@ Each carrier refresh leaves a trace in three places:
 1. **Logs**: one-line JSON describing the control flow, including the tracking number.
 2. **Postgres audit**: private rows with every step and the evidence behind each status
    decision.
-3. **Sentry**: groups failures and suspicious classifications. An opaque `attempt_id`
-   links each event back to Postgres.
+3. **Sentry**: groups the failures someone has to fix: crashes, outages and failing
+   adapters. An opaque `attempt_id` links each event back to Postgres.
+
+What a check learnt that the catalog, detection or the adapters could act on is no error:
+routing signals, sync anomalies, unmapped wording, support cases and health recoveries stay
+in Postgres and Prometheus, for the hourly review in [Review signals](#review-signals).
 
 Metrics (Sentry and Prometheus) cover latency and fallback use.
 
-**Privacy.** Logs and Sentry keep tracking numbers, original errors and upstream
-request/response details; Sentry reports only shorten addresses and leave out the failing
-request's body, query and client address (see "What Sentry reports keep" below). Both
-survive parcel deletion until retention expires. Restrict access and retention, and
-sanitize anything you share publicly.
+**Privacy.** Logs keep tracking numbers, original errors and upstream request/response
+details. Sentry reports keep the errors and details but name a parcel by the shape of its
+number (`MY + 10 digits + US`), shorten addresses and leave out the failing request's
+body, query and client address (see "What Sentry reports keep" below). Both survive parcel
+deletion until retention expires. Restrict access and retention, and sanitize anything
+you share publicly.
 
 Parcel link ids and owner keys are the exception, because holding one is enough to read
 or forget a parcel. Request logs name those routes without the id
@@ -97,16 +102,21 @@ another stage.
 | --- | --- |
 | `invalid_event_timestamp` | A provider timestamp couldn't be parsed |
 | `future_event_timestamp` | An event is over 1 h in the future, usually a local clock read in the wrong zone |
-| `observed_without_timestamp` | A synthetic observation was needed to change stage (recorded, not alerted) |
+| `observed_without_timestamp` | A synthetic observation was needed to change stage |
 | `terminal_stage_regression` | A delivered/returned parcel moved stage (`exception` excepted) |
 | `delivered_status_conflict` | The provider says delivered but the chosen stage doesn't |
-| `early_stage_regression` | A scan only announcing or accepting the parcel came after a later stage, which was kept (recorded, not alerted) |
-| `provider_clock_offset` | One scan reached the parcel on two clocks a zone apart: a provider read it in the wrong zone, or a scraper fix moved the provider's clock and its rows followed ([ROUTING.md](ROUTING.md)) (recorded, not alerted) |
+| `early_stage_regression` | A scan only announcing or accepting the parcel came after a later stage, which was kept |
+| `provider_clock_offset` | One scan reached the parcel on two clocks a zone apart: a provider read it in the wrong zone, or a scraper fix moved the provider's clock and its rows followed ([ROUTING.md](ROUTING.md)) |
 | `progress_disappeared` | The carrier's own adapter or the provider its saved summary came from answers without progress; for a carrier without an adapter, exhausted providers return only thin answers and the routing failure threshold is reached. The saved state is kept and the check ends as an error. |
-| `fallback_without_progress` | A different fallback provider answers without progress for a carrier with its own adapter, or a thin answer for a carrier without one stays below the routing failure threshold. The saved state is kept and the check ends as waiting (recorded, not alerted). |
+| `fallback_without_progress` | A different fallback provider answers without progress for a carrier with its own adapter, or a thin answer for a carrier without one stays below the routing failure threshold. The saved state is kept and the check ends as waiting. |
 
 A universal answer with progress resets the consecutive-check count, even when it has
 no new scan. Thin answers keep the previous provider preference and event watermark.
+
+Anomalies are review signals: each is kept on its attempt, logged as
+`tracking_sync_anomaly` and counted in `tracking_sync_anomaly_total`, and none opens a
+Sentry issue. A check that ends as an error still counts towards its carrier's refresh
+incident.
 
 ## Tracking support backlog
 
@@ -151,7 +161,11 @@ any carrier but counting the one that last tracked the number directly, and mark
 each case it finds no gap for, or that its parcel's latest check left without a reason:
 `fix_reference` names the
 version (the scraper release the app pins, plus the app commit in an image) and `notes`
-says why. A case whose configured carrier changed meanwhile stays open.
+says why. A case whose configured carrier changed meanwhile stays open. A case that only
+waits for its parcel's carrier to confirm the number, because the shape fits several
+carriers and that carrier is one of them, is marked `ignored` once every saved parcel with
+that number is delivered or returned: finished parcels are not checked again, so nothing
+is left to confirm it.
 `tracking_review_runs` keeps one row per version, so restarts and other servers do not
 replay it again; another server takes over a replay left unfinished for ten minutes.
 
@@ -297,6 +311,44 @@ where observation_key = 'OBSERVATION_KEY';
 A reviewed wording that keeps appearing keeps counting up, which shows whether the mapping
 took effect.
 
+## Review signals
+
+The routing signals marked in [ROUTING.md](ROUTING.md) are saved in
+`tracking_routing_signals` once their check completes: one row per signal, parcel carrier,
+subject and number, whose `count` grows with each check that reports it again. A row
+outlives its parcel and goes after 90 days unseen. `tracking_routing_signal_total` counts
+them, and the "Review signals" row of the carrier dashboard shows them beside sync
+anomalies and health incidents.
+
+[ops/review/signals.sql](../ops/review/signals.sql) is the hourly review of every queue. For
+a window of hours (1 by default, 24 for the daily review) it lists routing signals, sync
+anomalies, new unmapped wording, new open support cases, health incidents notified or still
+failing, and the unfinished parcels a provider tracks, grouped by type, carrier and
+provider. It only reads, and shows a number as its shape (`MY + 10 digits + US`, from
+`private.tracking_number_pattern`):
+
+```sh
+psql "$DATABASE_URL" -v hours=1 -f ops/review/signals.sql
+```
+
+Each row names the lane that acts on it:
+
+- **carriers**: an unknown or ambiguous number format, a detection rule that missed, a
+  carrier missing from the catalog;
+- **adapters**: a carrier without an adapter, a failing adapter or provider, wording no map
+  reads;
+- **delivery-tracker**: the app's routing, such as parcels left with a provider although
+  their carrier's adapter answers other parcels, or a check whose worker died.
+
+Whatever its lane, a signal that comes from a wrong routing decision is a delivery-tracker
+fix. Mark a signal reviewed so that the next run leaves it out:
+
+```sql
+update public.tracking_routing_signals
+set reviewed_at = now(), review_note = 'WHY'
+where signal = 'SIGNAL' and carrier = 'CARRIER_ID' and subject = 'SUBJECT' and reviewed_at is null;
+```
+
 ## First-response queries
 
 ```sql
@@ -358,6 +410,10 @@ Key JSON events:
   except a provider's `no_history` answer, which is info;
 - `tracking_sync_audit_write_failed`, `tracking_sync_audit_maintenance_failed`,
   `tracking_status_observation_write_failed`;
+- `tracking_sync_anomaly` (warning, by `attempt_id`): one per anomaly code of a check,
+  with the previous, reported and selected stage, the provider status and the event counts;
+- `tracking_health_incident`: a health incident opened, still fails six hours on (warning)
+  or recovered (info), with its `kind`, `subject`, `title`, `failures` and `attempts`;
 - `dpd_app_session`: the scraper took up a saved session at start (`outcome` `taken_up`,
   with `age_ms`, how long ago it opened), or an opening ended, `opened` or `failed`
   (warning, with `error_kind`). `trigger` says what began it: `start`, `retry` a quarter of
@@ -370,7 +426,7 @@ Key JSON events:
   `operation`, `load` or `save`, and `error_type`) when `dpd_app_sessions` could not be
   read or written; the scraper then carries on without it;
 - `review_queues_replayed`: the review queue replay of a `version`, with
-  `cases_replayed` and `cases_fixed` for the support backlog, and
+  `cases_replayed`, `cases_fixed` and `cases_ignored` for the support backlog, and
   `observations_replayed`, `observations_mapped` and `observations_ignored` for the
   unmapped wording. `review_queue_replay_failed` (error, with `error_type`) when it could
   not run; it is retried every five minutes;
@@ -426,14 +482,14 @@ new fields scalar and bounded.
 
 The SDK is enabled only when `SENTRY_DSN` is set. Default integrations are on and tracing is
 off by default. Reports keep original errors, their causes and custom fields; `beforeSend`
-and `beforeBreadcrumb` only take tracking numbers out (below). Sentry's own limits and
-project-side scrubbing still apply. Automatic lookups wrap each provider failure in an
-`AggregateError` so every cause is visible.
+and `beforeBreadcrumb` only shorten addresses and take tracking numbers out (below).
+Sentry's own limits and project-side scrubbing still apply. Automatic lookups wrap each
+provider failure in an `AggregateError` so every cause is visible.
 
 - **Titles**: messages are sent without a stack trace (`attachStacktrace: false`), so an
   issue is titled by its message rather than by a minified function name.
-- **Grouping**: by component, operation, carrier and error/anomaly type. `attempt_id`,
-  `job_id`, `request_id`, `tracking_number`, `upstream_status` and `database_code` are
+- **Grouping**: by component, operation, carrier and error type. `attempt_id`,
+  `job_id`, `request_id`, `number_pattern`, `upstream_status` and `database_code` are
   searchable tags.
 - **Source maps**: the server's stay in its image. The browser's are public, beside the
   scripts; see "Browser error reports" below.
@@ -449,8 +505,10 @@ project-side scrubbing still apply. Automatic lookups wrap each provider failure
 - **Alerts**: notify on new issues and regressions in `production`, and keep the Cron
   alerts. Avoid "more than 0 times in 5 minutes" rules: they fire on every failed check.
 - **Incidents**: carrier and provider outages open once, from thresholds computed in
-  Postgres. The recovery is a separate issue, so it never reopens or prolongs the outage's.
-  See [ops/sentry](../ops/sentry/README.md).
+  Postgres, and remind every six hours while they last. A recovery is only logged and
+  counted. See [ops/sentry](../ops/sentry/README.md).
+- **Review signals**: routing signals, sync anomalies and health recoveries open no issue;
+  see [Review signals](#review-signals).
 - **Input requirements**: requests for a postcode or other tracking input stay in logs
   and breadcrumbs without opening Sentry issues. Each lookup made with a postcode the
   owner supplied for a provider logs `provider_input_lookup` with its result.
@@ -469,7 +527,7 @@ project-side scrubbing still apply. Automatic lookups wrap each provider failure
   allowance every account shares is half used, and reports an error when it is used up:
   every account is then refused until the next hour (UTC). Many new accounts at their
   daily limit in `private.account_tracking_usage` point to accounts made for scraping.
-- **Routing searches**: see [ROUTING.md](ROUTING.md).
+- **Routing decisions**: see [ROUTING.md](ROUTING.md).
 
 ### Upstream HTTP diagnostics
 
@@ -489,8 +547,10 @@ Request IDs and excerpts don't affect grouping.
 
 ### What Sentry reports keep
 
-A report names its parcel by the `tracking_number` tag, and the operation context keeps the
-number too, so `tracking_number:<value>` finds a parcel's reports.
+A report names its parcel by the shape of its number, in the `number_pattern` tag and the
+operation context. The number itself is replaced by that shape wherever it appears in the
+report, in any case, and so is the number of any log line among its breadcrumbs. Find a
+parcel's reports through its `attempt_id` or `job_id`.
 
 - **Addresses** anywhere in a report or breadcrumb, the request's and the transaction's
   included, lose their query and fragment, which can hold keys. A path segment of six
@@ -593,6 +653,9 @@ or a carrier's tracking that does not know the item, is `no_history` rather than
 | `carrier_status_mapping_total` (carrier, stage_source) | Share of events mapped explicitly, by wording, or not at all |
 | `carrier_detection_total` (result) | Detection confidence served to clients |
 | `carrier_refresh_total` (carrier, served_by, outcome) | Who served each refresh: `adapter`, `other_adapter`, `provider` or `none`, and how it ended: `updated` (a new scan or stage), `unchanged`, `waiting`, `error` or `superseded` |
+| `tracking_routing_signal_total` (signal, carrier, subject) | Routing signals for the review: `subject` is the carrier the signal is about, `uncatalogued` for a name a provider gave |
+| `tracking_sync_anomaly_total` (carrier, anomaly) | Suspicious decisions of checks, by anomaly code |
+| `tracking_health_incident_total` (kind, subject, state) | Health incidents that opened or still fail six hours on (`open`), or `recovered` |
 | `carrier_checksum_rejection_total` (carrier, rule) | Parcels a carrier's own lookup first confirmed although detection had left that carrier out on a failed check digit. `rule` is the failing rule's id in the scraper's `carrier.json` |
 | `public_lookup_total` (outcome) | Lookups without an account: `created`, `reused` (the number was already stored), `limited_burst`, `limited_daily` (the client's day is used up), `limited_network` (its IPv6 /48's day), `limited_global` |
 | `public_detection_total` (outcome) | Detections without an account that needed a carrier's answer: `asked`, or refused first as `limited_burst`, `limited_daily` or `limited_global` |
@@ -643,7 +706,7 @@ Useful questions:
 [ops/grafana/carrier-scrapers.json](../ops/grafana/carrier-scrapers.json) is an importable
 Grafana dashboard with these panels; choose its Prometheus data source at the top. Its
 "Silent carriers" table lists carriers with lookups last week but none in two days: silence
-isn't success. The "Deploys" toggle marks app restarts, where the counters start again.
+isn't success. Its "Review signals" row counts what the hourly review lists. The "Deploys" toggle marks app restarts, where the counters start again.
 
 ## Usage dashboard
 
@@ -669,11 +732,11 @@ renewals instead of openings.
 
 ## Incident checklist
 
-1. Read the Sentry component, operation, carrier and error/anomaly type.
+1. Read the Sentry component, operation, carrier and error type, or the review row.
 2. Put the `attempt_id` into the attempt and step queries above.
 3. Find where it failed: fetch, normalize, event persistence or package persistence.
 4. For classification anomalies, compare provider status, reported and selected stage,
    `status_text` and the normalized events.
 5. Check nearby attempts for the same carrier: one odd shipment, or a provider change?
 6. After the fix, run the carrier's tests and one controlled refresh, then check the new
-   audit row and the Sentry recovery.
+   audit row and, for an outage, its `tracking_health_incident` recovery line.

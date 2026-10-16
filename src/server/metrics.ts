@@ -25,10 +25,12 @@ import { UNKNOWN_ITEM_REASONS } from './trackingFailure';
  * never by number, link, client or push endpoint. The delivery emails are
  * counted by how they ended and why: never by account, address or parcel.
  * A checksum rejection is counted by carrier and detection rule id only.
+ * Routing signals, sync anomalies and health incidents, which the review
+ * queues keep in Postgres, are counted by code and carrier or provider id only.
  */
 
 /** Bump when the series or their labels change, so a hot-reloaded copy does not reuse an older shape. */
-const RUNTIME_VERSION = 10;
+const RUNTIME_VERSION = 11;
 
 interface PrometheusRuntime {
   version: number;
@@ -54,6 +56,9 @@ interface PrometheusRuntime {
   providerInputTotal: Counter<'provider' | 'step'>;
   checksumRejectionTotal: Counter<'carrier' | 'rule'>;
   dpdAppSessionTotal: Counter<'outcome' | 'trigger'>;
+  routingSignalTotal: Counter<'signal' | 'carrier' | 'subject'>;
+  syncAnomalyTotal: Counter<'carrier' | 'anomaly'>;
+  healthIncidentTotal: Counter<'kind' | 'subject' | 'state'>;
   publicLookupClients: Gauge;
   publicLookupsPerClient: Gauge<'stat'>;
   publicDetectionClients: Gauge;
@@ -203,6 +208,24 @@ function createRuntime(): PrometheusRuntime {
       name: 'dpd_app_session_total',
       help: 'DPD app sessions taken up at start, and openings that ended opened or failed, by what began them (start, retry, refused, lookup).',
       labelNames: ['outcome', 'trigger'] as const,
+      registers: [registry],
+    }),
+    routingSignalTotal: new Counter({
+      name: 'tracking_routing_signal_total',
+      help: 'Routing signals for the review queues, by signal, the parcel\'s carrier and the carrier the signal is about (uncatalogued for a name a provider gave).',
+      labelNames: ['signal', 'carrier', 'subject'] as const,
+      registers: [registry],
+    }),
+    syncAnomalyTotal: new Counter({
+      name: 'tracking_sync_anomaly_total',
+      help: 'Suspicious decisions of tracking checks, by carrier and anomaly code.',
+      labelNames: ['carrier', 'anomaly'] as const,
+      registers: [registry],
+    }),
+    healthIncidentTotal: new Counter({
+      name: 'tracking_health_incident_total',
+      help: 'Health incidents of refreshes, providers and direct tracking that opened (or still fail six hours on) or recovered, by kind and subject.',
+      labelNames: ['kind', 'subject', 'state'] as const,
       registers: [registry],
     }),
     publicLookupClients: new Gauge({
@@ -449,6 +472,22 @@ export function recordChecksumRejection(carrier: string, rule: string): void {
 /** A DPD app session taken up at start, or an opening that ended, by what began it. */
 export function recordDpdAppSession(outcome: string, trigger: string): void {
   count(runtime.dpdAppSessionTotal, 'dpd_app_session_total', { outcome, trigger });
+}
+
+/** A routing signal. A carrier name a provider gave is no catalog id, so it is not a label. */
+export function recordRoutingSignal(signal: string, carrier: string, subject: string): void {
+  count(runtime.routingSignalTotal, 'tracking_routing_signal_total', {
+    signal, carrier, subject: signal === 'carrier_coverage_discovered' ? 'uncatalogued' : subject,
+  });
+}
+
+export function recordSyncAnomaly(carrier: string, anomaly: string): void {
+  count(runtime.syncAnomalyTotal, 'tracking_sync_anomaly_total', { carrier, anomaly });
+}
+
+/** A health incident's notification: `open` (opened, or failing six hours on) or `recovered`. */
+export function recordHealthIncident(kind: string, subject: string, state: string): void {
+  count(runtime.healthIncidentTotal, 'tracking_health_incident_total', { kind, subject, state });
 }
 
 interface UsageStats { buckets: number; p50: number; p90: number; max: number }

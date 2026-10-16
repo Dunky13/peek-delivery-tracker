@@ -2,6 +2,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import * as Sentry from '@sentry/node';
 import type { Event } from '@sentry/node';
 import { captureOperationalError, captureOverallAllowance, captureTrackingHealth, flushObservability, initObservability, reportRoutingEvent,
+  withTrackingAttempt, type RoutingSignal,
 } from './observability';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
@@ -30,6 +31,11 @@ vi.mock('@sentry/node', async (importOriginal) => {
     })),
   };
 });
+
+/** A report as text, without the source lines around its frames: this test's own lines name its numbers. */
+function withoutSource(event: Event): string {
+  return JSON.stringify(event, (key, value: unknown) => (['pre_context', 'context_line', 'post_context'].includes(key) ? undefined : value));
+}
 
 afterEach(async () => {
   await Sentry.close();
@@ -79,19 +85,22 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
   ]));
   expect(operational.contexts?.UniversalTrackingError).toHaveProperty('failures');
   expect(operational.tags).toMatchObject({
-    tracking_number: 'TEST1234',
+    number_pattern: '4 letters + 4 digits',
     route: '/api/packages/11111111-1111-1111-1111-111111111111?detail=full',
   });
-  expect(operational.contexts?.operation).toMatchObject({ trackingNumber: 'TEST1234' });
-  // Whatever else the report holds keeps its shape and the parcel's number.
-  expect(operational.extra?.carrier_payload).toEqual({ number: 'TEST1234' });
-  expect(operational.contexts?.carrier_response).toEqual({ number: 'TEST1234', status: 'waiting' });
+  expect(operational.tags).not.toHaveProperty('tracking_number');
+  expect(operational.contexts?.operation).toMatchObject({ numberPattern: '4 letters + 4 digits' });
+  expect(operational.contexts?.operation).not.toHaveProperty('trackingNumber');
+  // Whatever else the report holds keeps its shape, with the parcel's number in its place.
+  expect(operational.extra?.carrier_payload).toEqual({ number: '4 letters + 4 digits' });
+  expect(operational.contexts?.carrier_response).toEqual({ number: '4 letters + 4 digits', status: 'waiting' });
   expect(operational.user?.id).toBe('diagnostic-user');
   expect(operational.breadcrumbs).toEqual(expect.arrayContaining([
-    expect.objectContaining({ message: 'Looking up parcel TEST1234' }),
+    expect.objectContaining({ message: 'Looking up parcel 4 letters + 4 digits' }),
   ]));
+  expect(withoutSource(operational)).not.toContain('TEST1234');
 
-  // Text keeps its numbers; addresses are still cut down.
+  // A report about no parcel keeps its text; addresses are still cut down.
   const direct = captured.events.find((event) => event.message === 'Direct SDK diagnostic message')!;
   expect(direct.request?.url).toBe('https://delivery.example.test/api/packages/:id');
   expect(direct.transaction).toBe('parcel-detail');
@@ -122,7 +131,7 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
   ]);
   expect(repeats[1].fingerprint).toEqual(repeats[0].fingerprint);
   expect(repeats.map((event) => event.tags?.attempt_id).sort()).toEqual(['first', 'second']);
-  expect(repeats.map((event) => event.tags?.tracking_number).sort()).toEqual(['TEST-first', 'TEST-second']);
+  expect(repeats.map((event) => event.tags?.number_pattern).sort()).toEqual(['10 letters', '9 letters']);
   const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
   reportRoutingEvent('provider_failed', { carrier: 'dhl', provider: '17TRACK',
     category: 'rate_limited', trackingNumber: 'TEST-first', errorClass: 'UpstreamHttpError', error: new UpstreamHttpError('17TRACK', 429) });
@@ -136,37 +145,42 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
   expect(JSON.parse(String(log.mock.calls.at(-1)?.[0]))).toMatchObject({ event: 'tracking_routing', decision: 'fresher_provider_found',
     carrier: 'dhl', provider: 'ParcelsApp' });
   log.mockRestore();
-  reportRoutingEvent('carrier_auto_swapped', { carrier: 'dhl', provider: 'ups', trackingNumber: 'TEST-first' });
-  const swapLog = vi.spyOn(console, 'log').mockImplementation(() => undefined);
-  reportRoutingEvent('carrier_auto_swapped', { carrier: 'unknown', provider: 'gls', category: 'detected', trackingNumber: 'TEST-detected' });
-  // Detection already names the new carrier: the correction is a log line and a breadcrumb, not an issue.
-  expect(JSON.parse(String(swapLog.mock.calls.at(-1)?.[0]))).toMatchObject({ event: 'tracking_routing', decision: 'carrier_auto_swapped',
-    carrier: 'unknown', provider: 'gls', category: 'detected' });
-  swapLog.mockRestore();
-  reportRoutingEvent('provider_recovered', { carrier: 'dhl', provider: '17TRACK' });
-  reportRoutingEvent('carrier_coverage_discovered', { carrier: 'dhl', provider: 'Example Parcel Co' });
-  reportRoutingEvent('direct_support_opportunity', { carrier: 'fedex', provider: 'fedex' });
+  // Routing signals go to the check that reported them, for the review queues, and stay out of Sentry.
+  const signals: RoutingSignal[] = [];
+  withTrackingAttempt('attempt-signals', () => {
+    reportRoutingEvent('carrier_auto_swapped', { carrier: 'dhl', provider: 'ups', trackingNumber: 'TEST-first' });
+    const swapLog = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    reportRoutingEvent('carrier_auto_swapped', { carrier: 'unknown', provider: 'gls', category: 'detected', trackingNumber: 'TEST-detected' });
+    // Detection already names the new carrier: the correction is a log line and a breadcrumb, and no signal.
+    expect(JSON.parse(String(swapLog.mock.calls.at(-1)?.[0]))).toMatchObject({ event: 'tracking_routing', decision: 'carrier_auto_swapped',
+      carrier: 'unknown', provider: 'gls', category: 'detected' });
+    swapLog.mockRestore();
+    reportRoutingEvent('provider_recovered', { carrier: 'dhl', provider: '17TRACK' });
+    reportRoutingEvent('carrier_coverage_discovered', { carrier: 'dhl', provider: 'Example Parcel Co' });
+    reportRoutingEvent('carrier_mismatch_confirmed', { carrier: 'unknown', provider: 'gls' });
+    reportRoutingEvent('direct_support_opportunity', { carrier: 'fedex', provider: 'fedex' });
+  }, (signal) => signals.push(signal));
+  expect(signals).toEqual([
+    { signal: 'carrier_auto_swapped', carrier: 'dhl', subject: 'ups' },
+    { signal: 'carrier_coverage_discovered', carrier: 'dhl', subject: 'Example Parcel Co' },
+    { signal: 'carrier_mismatch_confirmed', carrier: 'unknown', subject: 'gls' },
+    { signal: 'direct_support_opportunity', carrier: 'fedex', subject: 'fedex' },
+  ]);
   await flushObservability();
-  const rateLimit = captured.events.find((event) => event.message === 'Tracking routing: provider_failed')!;
-  const swap = captured.events.find((event) => event.message === 'Tracking routing: carrier_auto_swapped')!;
-  expect(swap.level).toBe('info');
-  expect(swap.tags).toMatchObject({ carrier: 'dhl', provider: 'ups', tracking_number: 'TEST-first' });
+  expect(captured.events.filter((event) => event.message?.startsWith('Tracking routing:'))).toEqual([]);
+  // A failed coordination store is the one routing decision that opens an issue.
+  reportRoutingEvent('health_store_unavailable', { carrier: 'dhl', provider: 'tracking-health', trackingNumber: 'TEST-first' });
+  await flushObservability();
+  const storeDown = captured.events.find((event) => event.message === 'Tracking routing: health_store_unavailable')!;
+  expect(storeDown.level).toBe('warning');
+  expect(storeDown.tags).toMatchObject({ carrier: 'dhl', provider: 'tracking-health', number_pattern: '9 letters' });
   // With an exception attached, Sentry titles the issue after its top frame, not the message.
-  expect(swap.exception).toBeUndefined();
-  expect(rateLimit).toBeUndefined();
-  expect(captured.events.some((event) => event.message === 'Tracking routing: provider_recovered')).toBe(false);
-  expect(captured.events.some((event) => event.message === 'Tracking routing: fresher_provider_found')).toBe(false);
-  expect(swap.breadcrumbs).toEqual(expect.arrayContaining([
+  expect(storeDown.exception).toBeUndefined();
+  expect(storeDown.breadcrumbs).toEqual(expect.arrayContaining([
     expect.objectContaining({ category: 'tracking-routing', message: 'fresher_provider_found', data: { provider: 'ParcelsApp' } }),
-  ]));
-  // Routing reports only names the catalog does not know, so each is worth an issue.
-  const discovered = captured.events.find((event) => event.message === 'Tracking routing: carrier_coverage_discovered')!;
-  expect(discovered).toMatchObject({ level: 'warning', tags: { provider: 'Example Parcel Co' } });
-  expect(captured.events.filter((event) => event.message === 'Tracking routing: carrier_auto_swapped')).toHaveLength(1);
-  expect(discovered.breadcrumbs).toEqual(expect.arrayContaining([
     expect.objectContaining({ category: 'tracking-routing', message: 'carrier_auto_swapped', data: { provider: 'gls' } }),
+    expect.objectContaining({ category: 'tracking-routing', message: 'carrier_coverage_discovered', data: { provider: 'Example Parcel Co' } }),
   ]));
-  expect(captured.events.some((event) => event.message === 'Tracking routing: direct_support_opportunity')).toBe(true);
 
   const refusedBody = '<h1>Access Denied</h1><p>Reference #18.test.123; parcel 8U00000000000</p>';
   const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => new Response(refusedBody, {
@@ -187,7 +201,7 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
     component: 'tracking-sync', operation: 'fetch', carrier: 'la-poste',
   });
   reportRoutingEvent('provider_recovered', { carrier: 'la-poste', provider: 'la-poste' });
-  reportRoutingEvent('direct_support_opportunity', { carrier: 'la-poste', provider: 'la-poste' });
+  reportRoutingEvent('health_store_unavailable', { carrier: 'la-poste', provider: 'tracking-health' });
   await flushObservability();
   const retries = captured.events.filter((event) => event.message === 'Tracking routing: transport_fallback' && event.tags?.provider === 'la-poste');
   expect(retries).toHaveLength(0);
@@ -203,19 +217,19 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
   expect(incident.tags).toMatchObject({ component: 'tracking-health', incident_state: 'open' });
   expect(incident.contexts?.tracking_health?.next_steps).toContain('maintenance');
   expect(incident.fingerprint).toEqual(['delivery-tracker', 'tracking-health', 'direct', 'la-poste']);
-  // A recovery is its own issue: it neither reopens a resolved outage nor keeps it looking active.
-  const recoveryId = captureTrackingHealth({ id: 'test-recovery', kind: 'direct', subject: 'la-poste', state: 'recovered',
-    attempts: 3, failures: 0, window_hours: 24 });
+  // A recovery is a review signal, not an issue.
+  const before = captured.events.length;
+  expect(captureTrackingHealth({ id: 'test-recovery', kind: 'direct', subject: 'la-poste', state: 'recovered',
+    attempts: 3, failures: 0, window_hours: 24 })).toBeNull();
   await flushObservability();
-  const recovery = captured.events.find(event => event.event_id === recoveryId)!;
-  expect(recovery).toMatchObject({ message: 'Direct tracking recovered: la-poste', level: 'info',
-    fingerprint: ['delivery-tracker', 'tracking-health', 'direct', 'la-poste', 'recovered'] });
+  expect(captured.events).toHaveLength(before);
   // A later error-free routing event must not inherit the refusal's HTTP context,
   // and the recovery itself is only a breadcrumb on it rather than its own issue.
-  const opportunity = captured.events.find((event) => event.message === 'Tracking routing: direct_support_opportunity' && event.tags?.provider === 'la-poste')!;
-  expect(opportunity.contexts?.upstream_http).toBeUndefined();
-  expect(opportunity.tags?.upstream_body_read).toBeUndefined();
-  expect(opportunity.breadcrumbs?.some((crumb) => crumb.category === 'tracking-routing' && crumb.message === 'provider_recovered')).toBe(true);
+  const storeAfter = captured.events.filter((event) => event.message === 'Tracking routing: health_store_unavailable').at(-1)!;
+  expect(storeAfter.tags?.carrier).toBe('la-poste');
+  expect(storeAfter.contexts?.upstream_http).toBeUndefined();
+  expect(storeAfter.tags?.upstream_body_read).toBeUndefined();
+  expect(storeAfter.breadcrumbs?.some((crumb) => crumb.category === 'tracking-routing' && crumb.message === 'provider_recovered')).toBe(true);
 
   // An overall allowance without an account is one issue per allowance and state.
   const low = captureOverallAllowance('public', 'lookup', 'running_out', { used: 2_400, limit: 3_000 });
@@ -244,7 +258,7 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
   expect(accountsUsedUp.contexts?.account_allowance?.next_steps).toContain('ACCOUNT_LOOKUPS_PER_HOUR');
 });
 
-it('names a parcel by its tracking number and cuts addresses down in reports and breadcrumbs', async () => {
+it('names a parcel by the shape of its number and cuts addresses down in reports and breadcrumbs', async () => {
   vi.stubEnv('SENTRY_DSN', 'https://public@example.test/1');
   expect(initObservability()).toBe(true);
 
@@ -266,16 +280,20 @@ it('names a parcel by its tracking number and cuts addresses down in reports and
   });
   await flushObservability();
   const report = captured.events.find((event) => event.event_id === id)!;
-  expect(report.tags).toMatchObject({ tracking_number: 'TEST5678' });
-  expect(report.tags).not.toHaveProperty('tracking_hash');
-  expect(report.contexts?.operation).toMatchObject({ component: 'tracking-sync', carrier: 'example', trackingNumber: 'TEST5678' });
-  expect(report.exception?.values?.map((value) => value.value)).toContain('Lookup of TEST5678 failed');
-  // Addresses lose their query and number-like path segments; other text keeps the number.
+  expect(report.tags).toMatchObject({ number_pattern: '4 letters + 4 digits' });
+  expect(report.tags).not.toHaveProperty('tracking_number');
+  expect(report.contexts?.operation).toEqual(expect.objectContaining({ component: 'tracking-sync', carrier: 'example',
+    numberPattern: '4 letters + 4 digits' }));
+  expect(report.contexts?.operation).not.toHaveProperty('trackingNumber');
+  expect(report.exception?.values?.map((value) => value.value)).toContain('Lookup of 4 letters + 4 digits failed');
+  // Addresses lose their query and number-like path segments; other text loses the number, in any case.
   expect(report.contexts?.upstream_http).toMatchObject({ response_url: 'https://carrier.example/v1/track',
-    body_excerpt: '<p>No parcel test5678</p>', headers: { location: 'https://carrier.example/v1/parcels/:id' } });
+    body_excerpt: '<p>No parcel 4 letters + 4 digits</p>', headers: { location: 'https://carrier.example/v1/parcels/:id' } });
 
+  // Another parcel's log line names it by the shape of its number too.
   const logLine = report.breadcrumbs?.find((crumb) => crumb.category === 'console' && crumb.message?.includes('tracking_sync_started'));
-  expect(JSON.parse(logLine!.message!)).toMatchObject({ tracking_number: 'TEST9012', error_message: 'No parcel test9012' });
+  expect(JSON.parse(logLine!.message!)).toMatchObject({ tracking_number: '4 letters + 4 digits', error_message: 'No parcel 4 letters + 4 digits' });
+  expect(withoutSource(report)).not.toMatch(/test5678|test9012/i);
   expect(logLine!.data).toEqual({ logger: 'console' });
   const call = report.breadcrumbs?.find((crumb) => crumb.category === 'http' && crumb.data?.status_code === 404);
   expect(call!.data).toEqual({ url: 'https://carrier.example/v1/track/:id/events', 'http.method': 'GET', status_code: 404 });

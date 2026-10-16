@@ -424,29 +424,32 @@ guessed.
 If coordination fails, universal calls fail closed. A failed completion write never throws
 away data already retrieved.
 
-## Sentry searches
+## Routing decisions
 
-Routing events carry `component:tracking-routing` plus `operation`, `carrier`, `provider`
-and `failure_category`. They are grouped by decision, provider and category, not by
-parcel.
+Each routing decision is a `tracking_routing` log line with its `decision`, `carrier`,
+`provider`, `category` and the check's `attempt_id`, and a breadcrumb on any later Sentry
+report. Only `health_store_unavailable` opens a Sentry issue (`component:tracking-routing`,
+grouped by decision, provider and category). The four signals are what the catalog,
+detection or the adapters could act on: each check saves them for the hourly review in
+[OBSERVABILITY.md](OBSERVABILITY.md).
 
-| `operation:` | Meaning |
+| `decision` | Meaning |
 | --- | --- |
 | `transport_fallback` | A direct path needed browser/TRAWL recovery, even if it then succeeded |
-| `provider_failed` | A provider failed for a parcel: `category` `rate_limited` needs less traffic, `schema` parser work (logs and breadcrumbs only) |
+| `provider_failed` | A provider failed for a parcel: `category` `rate_limited` needs less traffic, `schema` parser work |
 | `all_providers_unavailable` | Uncovered parcel or broad outage |
-| `health_store_unavailable` | Migration or database coordination problem |
-| `carrier_auto_swapped` | A carrier correction was committed. When detection already names the new carrier for the number, or lists it first among the carriers to ask, the log line has `category` `detected` and no issue is opened |
-| `carrier_mismatch_confirmed` | A carrier that detection neither names nor lists first for the number tracks the parcel: detection rules could be improved |
-| `detected_carrier_confirmed` | The carrier detection names or lists first for the number tracks a parcel filed as unknown or under another carrier, such as one added before a detection rule existed (logs and breadcrumbs only) |
-| `candidate_probe_confirmed` | Carrier recognition found the carrier and it tracks the parcel (logs and breadcrumbs only) |
-| `foreign_history_rejected` | A universal returned an older parcel of another carrier for the number (logs and breadcrumbs only) |
-| `carrier_input_needed` | A recognized carrier needs the user's input (the GLS postcode); the parcel asks for it (logs and breadcrumbs only) |
-| `direct_support_opportunity` | Candidate for a dedicated adapter |
-| `carrier_coverage_discovered` | A provider named a carrier the catalog doesn't know |
-| `fresher_provider_found` | A shadow check found newer history at another provider and the parcel moved to it (logs and breadcrumbs only). Evidence to revisit the default order |
-| `coverage_contradicted` | A provider disagreed with the carrier's coverage results: `failure_category:history` when one that answered without history has the parcel, `no_history` when one with history does not while another has it (logs and breadcrumbs only). Evidence to rerun the coverage probe |
-| `provider_recovered` | Recovery signal (doesn't auto-resolve issues) |
+| `health_store_unavailable` | Migration or database coordination problem (Sentry issue) |
+| `carrier_auto_swapped` | A carrier correction was committed. A signal, unless detection already names the new carrier for the number or lists it first among the carriers to ask: then the line has `category` `detected` |
+| `carrier_mismatch_confirmed` | Signal: a carrier that detection neither names nor lists first for the number tracks the parcel, so detection rules could be improved |
+| `detected_carrier_confirmed` | The carrier detection names or lists first for the number tracks a parcel filed as unknown or under another carrier, such as one added before a detection rule existed |
+| `candidate_probe_confirmed` | Carrier recognition found the carrier and it tracks the parcel |
+| `foreign_history_rejected` | A universal returned an older parcel of another carrier for the number |
+| `carrier_input_needed` | A recognized carrier needs the user's input (the GLS postcode); the parcel asks for it |
+| `direct_support_opportunity` | Signal: a carrier without an adapter of its own is tracked through a provider, a candidate for an adapter |
+| `carrier_coverage_discovered` | Signal: a provider named a carrier the catalog doesn't know |
+| `fresher_provider_found` | A shadow check found newer history at another provider and the parcel moved to it. Evidence to revisit the default order |
+| `coverage_contradicted` | A provider disagreed with the carrier's coverage results: `category` `history` when one that answered without history has the parcel, `no_history` when one with history does not while another has it. Evidence to rerun the coverage probe |
+| `provider_recovered` | A provider answers again after failing |
 
 `carrier_coverage_discovered` fires once per parcel, only for names that are neither a
 catalog name/alias nor a known network of DHL, DPD, GLS or Hermes. The postal union's feed,

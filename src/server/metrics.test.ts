@@ -112,6 +112,19 @@ describe('prometheus carrier metrics', () => {
     expect(text).toContain('carrier_refresh_total{carrier="la-poste",served_by="none",outcome="error"} 1');
   });
 
+  it('counts review signals by code and catalog ids, never by a name a provider gave', async () => {
+    metrics.recordRoutingSignal('carrier_coverage_discovered', 'unknown', 'Example Parcel Co');
+    metrics.recordRoutingSignal('direct_support_opportunity', 'unknown', 'example-post');
+    metrics.recordSyncAnomaly('dpd', 'progress_disappeared');
+    metrics.recordHealthIncident('provider', '17TRACK', 'recovered');
+    const text = await scraped();
+    expect(text).toContain('tracking_routing_signal_total{signal="carrier_coverage_discovered",carrier="unknown",subject="uncatalogued"} 1');
+    expect(text).toContain('tracking_routing_signal_total{signal="direct_support_opportunity",carrier="unknown",subject="example-post"} 1');
+    expect(text).not.toContain('Example Parcel Co');
+    expect(text).toContain('tracking_sync_anomaly_total{carrier="dpd",anomaly="progress_disappeared"} 1');
+    expect(text).toContain('tracking_health_incident_total{kind="provider",subject="17TRACK",state="recovered"} 1');
+  });
+
   it('labels a lookup with the attempts it took, capped to keep the label set small', async () => {
     metrics.prometheusStepRecorder.lookup({ carrier: 'la-poste', finalStep: 'retry', outcome: 'ok', errorType: null, durationMs: 3200, attempts: 3 });
     metrics.prometheusStepRecorder.lookup({ carrier: 'la-poste', finalStep: 'retry', outcome: 'challenge', errorType: 'UpstreamHttpError', durationMs: 6000, attempts: 40 });

@@ -5,13 +5,14 @@ import {
   captureOperationalError,
   captureTrackingHealth,
   flushObservability,
-  captureSyncAnomaly,
   errorType,
   logOperationalEvent,
+  reportRoutingEvent,
   withTrackingAttempt,
+  type RoutingSignal,
 } from './observability';
-import { recordRefresh } from './metrics';
-import { observeTrackingHealth, type HealthSample } from './trackingHealth';
+import { recordHealthIncident, recordRefresh, recordRoutingSignal, recordSyncAnomaly } from './metrics';
+import { healthMessage, observeTrackingHealth, type HealthSample } from './trackingHealth';
 import { SupabaseError, type SupabaseServiceClient } from './supabase';
 import { isRecord, type JsonObject } from './types';
 import { trackingSupportContext } from './trackingSupport';
@@ -133,6 +134,16 @@ function safeDetails(details: JsonObject): JsonObject {
   );
 }
 
+/** A health incident's notification, as a log line and a count, whether or not Sentry has it. */
+function noteHealthIncident(incident: JsonObject): void {
+  const kind = String(incident.kind), subject = String(incident.subject), state = String(incident.state);
+  try { recordHealthIncident(kind, subject, state); } catch { /* metrics only */ }
+  logOperationalEvent('tracking_health_incident', {
+    kind, subject, state, title: healthMessage(incident).title,
+    failures: Number(incident.failures ?? 0), attempts: Number(incident.attempts ?? 0),
+  }, state === 'recovered' ? 'info' : 'warning');
+}
+
 export class TrackingSyncAudit {
   readonly attemptId = randomUUID();
   readonly #startedAt = performance.now();
@@ -141,6 +152,14 @@ export class TrackingSyncAudit {
   #reportedWriteFailure = false;
   #ended = false;
   readonly #healthSamples = new Map<string, HealthSample>();
+  /** Routing signals reported during the check, once each, saved when it completes. */
+  readonly #signals = new Map<string, RoutingSignal>();
+  readonly #signal = (signal: RoutingSignal): void => {
+    const key = `${signal.signal}\n${signal.carrier}\n${signal.subject}`;
+    if (this.#signals.has(key) || this.#signals.size >= 32) return;
+    this.#signals.set(key, { signal: signal.signal, carrier: signal.carrier.slice(0, 100), subject: signal.subject.slice(0, 100) });
+    try { recordRoutingSignal(signal.signal, signal.carrier, signal.subject); } catch { /* metrics only */ }
+  };
 
   constructor(
     readonly client: SupabaseServiceClient,
@@ -157,7 +176,12 @@ export class TrackingSyncAudit {
   }
 
   observeFetch<T>(operation: () => Promise<T>): Promise<T> {
-    return withTrackingAttempt(this.attemptId, () => observeTrackingHealth(this.#healthSamples, operation));
+    return withTrackingAttempt(this.attemptId, () => observeTrackingHealth(this.#healthSamples, operation), this.#signal);
+  }
+
+  /** A routing decision taken after the fetch, such as a carrier correction, for this check. */
+  reportRouting(code: string, context: Omit<Parameters<typeof reportRoutingEvent>[1], 'attemptId'>): void {
+    withTrackingAttempt(this.attemptId, () => reportRoutingEvent(code, { ...context, attemptId: this.attemptId }), this.#signal);
   }
 
   async start(): Promise<void> {
@@ -237,32 +261,26 @@ export class TrackingSyncAudit {
     });
   }
 
+  /**
+   * Anomalies are review signals, not errors: the attempt keeps their codes, and each
+   * is a log line and a count. None reaches Sentry.
+   */
   reportAnomalies(
     anomalies: SyncAnomalyCode[],
     completion: Omit<SyncAuditCompletion, 'outcome' | 'anomalyCodes' | 'error'>,
   ): void {
-    // Recorded with the attempt, not alerted: the sync handled each of these. A clock offset
-    // recurs on every check the copying provider answers.
-    const alertable = anomalies.filter((code) => (
-      code !== 'observed_without_timestamp' && code !== 'fallback_without_progress' && code !== 'early_stage_regression'
-      && code !== 'provider_clock_offset'
-    ));
-    for (const anomalyCode of alertable) {
-      captureSyncAnomaly(anomalyCode, {
-        component: 'tracking-sync',
-        operation: 'classify',
-        carrier: this.configuredCarrier,
-        trackingNumber: this.trackingNumber,
-        attemptId: this.attemptId,
-        jobId: this.context.jobId,
-        trigger: this.context.trigger,
-        previousStage: this.previousStage,
-        providerStatus: completion.providerStatus,
-        reportedStage: completion.reportedStage,
-        selectedStage: completion.selectedStage,
-        eventsReceived: completion.eventsReceived,
-        eventsNormalized: completion.eventsNormalized,
-      });
+    for (const anomalyCode of new Set(anomalies)) {
+      try { recordSyncAnomaly(this.configuredCarrier, anomalyCode); } catch { /* metrics only */ }
+      logOperationalEvent('tracking_sync_anomaly', {
+        ...this.logContext(),
+        anomaly_code: anomalyCode,
+        previous_stage: this.previousStage,
+        provider_status: completion.providerStatus ?? null,
+        reported_stage: completion.reportedStage ?? null,
+        selected_stage: completion.selectedStage ?? null,
+        events_received: completion.eventsReceived ?? null,
+        events_normalized: completion.eventsNormalized ?? null,
+      }, 'warning');
     }
   }
 
@@ -302,6 +320,11 @@ export class TrackingSyncAudit {
       );
       if (!completed) throw new Error('The tracking sync attempt was not running');
     });
+    if (this.#signals.size) {
+      await this.writeAudit('record_routing_signals', async () => {
+        await this.client.recordTrackingRoutingSignals(this.attemptId, this.packageId, this.trackingNumber, [...this.#signals.values()]);
+      });
+    }
     if (this.context.trigger === 'scheduled' && !this.context.signal?.aborted && completion.evaluateHealth !== false
       && ['updated', 'unchanged', 'waiting', 'error'].includes(completion.outcome)) {
       const failedFetch = this.#steps.some(step => step.step === 'fetch' && step.status === 'failed');
@@ -315,8 +338,13 @@ export class TrackingSyncAudit {
       }];
       await this.writeAudit('evaluate_health', async () => {
         const incidents = await this.client.recordTrackingHealth(this.attemptId, this.packageId, samples);
-        const ids = incidents.filter(incident => captureTrackingHealth(incident)).map(incident => String(incident.id));
-        if (ids.length && await flushObservability()) await this.client.ackTrackingHealth(ids);
+        for (const incident of incidents) noteHealthIncident(incident);
+        // A recovery is a review signal: Postgres keeps it once acknowledged, Sentry never sees it.
+        const recovered = incidents.filter(incident => incident.state === 'recovered');
+        const reported = incidents.filter(incident => incident.state !== 'recovered' && captureTrackingHealth(incident));
+        const ids = [...recovered, ...(reported.length && await flushObservability() ? reported : [])]
+          .map(incident => String(incident.id));
+        if (ids.length) await this.client.ackTrackingHealth(ids);
       });
     }
     logOperationalEvent('tracking_sync_completed', {

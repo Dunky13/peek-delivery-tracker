@@ -41,6 +41,32 @@ export function replaySupportCase(trackingNumber: string, configuredCarrier: str
   return `Replay found no gap: detection names ${String(context.detection_carrier)} with ${String(context.detection_confidence)} confidence.`;
 }
 
+/** Stages after which a parcel is no longer checked. */
+const FINISHED_STAGES = new Set(['delivered', 'returned']);
+
+/**
+ * Whether an open case only waits for its carrier to confirm the number: the shape
+ * fits several carriers, the parcel's carrier among them, and that carrier has not
+ * tracked the number directly. Only a later check can close such a case.
+ */
+export function awaitsConfirmation(supportCase: JsonObject): boolean {
+  const configured = typeof supportCase.configured_carrier === 'string' ? supportCase.configured_carrier : null;
+  if (!configured || configured === 'unknown' || configured === 'intl-post') return false;
+  const verified = typeof supportCase.direct_verified_carrier === 'string' ? supportCase.direct_verified_carrier : null;
+  const reasons = trackingSupportContext(String(supportCase.tracking_number ?? ''), configured, verified).reasons as string[];
+  return reasons.length === 1 && reasons[0] === 'ambiguous_shape';
+}
+
+/**
+ * A case that only waits for its carrier's confirmation, on a number whose saved
+ * parcels have all finished: no check is left to confirm it, so it needs no change.
+ */
+export function finishedParcelNote(supportCase: JsonObject, stages: readonly string[] | undefined): string | null {
+  if (!stages?.length || !stages.every((stage) => FINISHED_STAGES.has(stage)) || !awaitsConfirmation(supportCase)) return null;
+  return `Its parcel was ${stages.includes('delivered') ? 'delivered' : 'returned'} before ${String(supportCase.configured_carrier)}, `
+    + 'one of the carriers its shape fits, confirmed the number directly: no check is left to confirm it.';
+}
+
 /** Open status observations to close with one resolution and note. */
 export interface StatusObservationClosing {
   resolution: 'mapped' | 'ignored';
@@ -117,6 +143,7 @@ export function statusMapClosings(
 export interface ReviewReplaySummary extends JsonObject {
   cases_replayed: number;
   cases_fixed: number;
+  cases_ignored: number;
   observations_replayed: number;
   observations_mapped: number;
   observations_ignored: number;
@@ -147,13 +174,22 @@ export async function replayReviewQueues(
     return note ? [{ id: String(supportCase.id), configured_carrier: configuredCarrier, note }] : [];
   });
   const fixed = resolved.length ? await client.fixReplayedTrackingSupportCases(version, resolved) : 0;
+  // Finished parcels are not checked again, so a case waiting for a check would stay open for ever.
+  const resolvedIds = new Set(resolved.map(({ id }) => id));
+  const waiting = cases.filter((supportCase) => !resolvedIds.has(String(supportCase.id)) && awaitsConfirmation(supportCase));
+  const stages = waiting.length ? await client.trackingNumberStages(waiting.map((supportCase) => String(supportCase.tracking_number))) : new Map();
+  const finished = waiting.flatMap((supportCase) => {
+    const note = finishedParcelNote(supportCase, stages.get(String(supportCase.tracking_number)));
+    return note ? [{ id: String(supportCase.id), note }] : [];
+  });
+  const ignored = finished.length ? await client.ignoreReplayedTrackingSupportCases(version, finished) : 0;
   const observations = await client.listOpenTrackingStatusObservations(MAX_REPLAYED_OBSERVATIONS);
   const closed = { mapped: 0, ignored: 0 };
   for (const closing of statusMapClosings(observations, { mapped: true, version })) {
     closed[closing.resolution] += await client.closeTrackingStatusObservations(version, closing);
   }
   const summary = {
-    cases_replayed: cases.length, cases_fixed: fixed, observations_replayed: observations.length,
+    cases_replayed: cases.length, cases_fixed: fixed, cases_ignored: ignored, observations_replayed: observations.length,
     observations_mapped: closed.mapped, observations_ignored: closed.ignored,
   };
   await client.finishTrackingReviewRun(version, summary);

@@ -1428,9 +1428,9 @@ export class TrackingSyncService {
         outcome,
         selected_stage: selectedStage,
       }));
-      // A correction to the carrier detection names or asks first is expected: it is logged without an issue.
-      if (values.carrier) reportRoutingEvent('carrier_auto_swapped', {
-        carrier: carrierId, provider: String(values.carrier), trackingNumber: String(parcel.tracking_number ?? ''), attemptId: audit.attemptId,
+      // A correction to the carrier detection names or asks first is expected: it is logged and is no signal.
+      if (values.carrier) audit.reportRouting('carrier_auto_swapped', {
+        carrier: carrierId, provider: String(values.carrier), trackingNumber: String(parcel.tracking_number ?? ''),
         ...(detectionExpects(String(parcel.tracking_number ?? ''), String(values.carrier)) ? { category: 'detected' } : {}),
       });
       const reannounced = await this.reopenAnnouncements(parcel, restaged, context, audit);

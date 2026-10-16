@@ -7,15 +7,49 @@ import { healthMessage } from './trackingHealth';
 import type { JsonObject } from './types';
 import { UpstreamHttpError, type UpstreamHttpDiagnostics } from 'universal-parcel-scraper/node';
 
-/** The tracking check whose lookups are running, so their scrape and routing lines name its attempt. */
-const trackingAttempts = new AsyncLocalStorage<string>();
+/**
+ * What a check learnt that the catalog, detection or the adapters could act on.
+ * Product signals for the review queues, not errors: they are kept with the
+ * check's audit and counted, never reported to Sentry.
+ */
+export const ROUTING_SIGNALS = [
+  'carrier_coverage_discovered', 'carrier_auto_swapped', 'carrier_mismatch_confirmed', 'direct_support_opportunity',
+] as const;
+export type RoutingSignalCode = typeof ROUTING_SIGNALS[number];
 
-export function withTrackingAttempt<T>(attemptId: string, operation: () => T): T {
-  return trackingAttempts.run(attemptId, operation);
+/** `subject` is what the signal is about: a carrier a provider named, or a carrier id. */
+export interface RoutingSignal {
+  signal: RoutingSignalCode;
+  carrier: string;
+  subject: string;
+}
+
+interface TrackingAttempt {
+  id: string;
+  signal?: (signal: RoutingSignal) => void;
+}
+
+/** The tracking check whose lookups are running, so their scrape and routing lines name its attempt. */
+const trackingAttempts = new AsyncLocalStorage<TrackingAttempt>();
+
+/** `signal` receives the routing signals reported while the operation runs. */
+export function withTrackingAttempt<T>(attemptId: string, operation: () => T, signal?: (signal: RoutingSignal) => void): T {
+  return trackingAttempts.run({ id: attemptId, signal }, operation);
 }
 
 export function trackingAttemptId(): string | undefined {
-  return trackingAttempts.getStore();
+  return trackingAttempts.getStore()?.id;
+}
+
+/**
+ * A number's shape without the number, as reports show it: "MY + 10 digits + US".
+ * Runs of up to three letters stay, longer ones and every digit run are counted.
+ * `tracking_number_pattern` in Postgres gives the same answer.
+ */
+export function numberPattern(number: string): string {
+  const runs = number.toUpperCase().replace(/[^A-Z0-9]/g, '').match(/[0-9]+|[A-Z]+/g) ?? [];
+  return runs.map((run) => (/^[0-9]/.test(run) ? `${run.length} ${run.length === 1 ? 'digit' : 'digits'}`
+    : run.length <= 3 ? run : `${run.length} letters`)).join(' + ');
 }
 
 /**
@@ -195,7 +229,9 @@ function scrubValue<T>(value: T, scrub: (text: string) => string, ancestors = ne
  */
 export function scrubSentryEvent(event: ErrorEvent): ErrorEvent {
   const { sdkProcessingMetadata, ...rest } = event;
-  const scrubbed = scrubValue(rest, scrubText);
+  // The parcel the report is about: its number also gives way to its shape.
+  const number = typeof sdkProcessingMetadata?.trackingNumber === 'string' ? sdkProcessingMetadata.trackingNumber : '';
+  const scrubbed = scrubValue(rest, number.length >= 4 ? (text) => withoutNumber(scrubText(text), number) : scrubText);
   if (scrubbed.request) scrubbed.request = { ...scrubbed.request, data: undefined, query_string: undefined };
   if (scrubbed.transaction) {
     scrubbed.transaction = scrubbed.transaction.replace(/(^|\s)(\/\S*)/g, (_, space: string, path: string) => space + scrubPath(path));
@@ -211,7 +247,27 @@ export function scrubSentryBreadcrumb(breadcrumb: Breadcrumb): Breadcrumb {
   const data = breadcrumb.data && Object.fromEntries(Object.entries(breadcrumb.data)
     .filter(([key]) => !['arguments', 'http.query', 'http.fragment'].includes(key))
     .map(([key, value]) => [key, scrubValue(value, scrubText)]));
-  return { ...breadcrumb, ...(breadcrumb.message ? { message: scrubText(breadcrumb.message) } : {}), ...(data ? { data } : {}) };
+  return { ...breadcrumb, ...(breadcrumb.message ? { message: logLineWithoutNumber(scrubText(breadcrumb.message)) } : {}), ...(data ? { data } : {}) };
+}
+
+/** A log line, which names its parcel, keeps only the shape of the number in a report. */
+function logLineWithoutNumber(message: string): string {
+  if (!message.startsWith('{') || !message.includes('"tracking_number"')) return message;
+  try {
+    const line = JSON.parse(message) as Record<string, unknown>;
+    if (typeof line.tracking_number !== 'string') return message;
+    const number = line.tracking_number;
+    line.tracking_number = numberPattern(number);
+    return withoutNumber(JSON.stringify(line), number);
+  } catch {
+    return message;
+  }
+}
+
+/** The text with every occurrence of the number, in any case, replaced by its pattern. */
+function withoutNumber(text: string, number: string): string {
+  const pattern = numberPattern(number);
+  return text.replace(new RegExp(number.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), pattern);
 }
 
 export function initObservability(): boolean {
@@ -250,7 +306,15 @@ function applyContext(
   errorMetadata: OperationalErrorMetadata = {},
 ): void {
   applyUpstreamHttpContext(scope, errorMetadata);
-  scope.setContext('operation', { ...context });
+  // Reports name the parcel by the shape of its number and the attempt or job that
+  // checked it, never by the number: Sentry is a third party.
+  const { trackingNumber, ...operation } = context;
+  const number = trackingNumber?.trim() ?? '';
+  const pattern = number ? numberPattern(number) : '';
+  scope.setContext('operation', { ...operation, ...(pattern ? { numberPattern: pattern } : {}) });
+  // The number can still reach a report in an error message, a provider's answer or a
+  // breadcrumb: the last step replaces it there. SDK metadata is never sent.
+  if (number) scope.setSDKProcessingMetadata({ trackingNumber: number });
   const tags: Record<string, string | undefined> = {
     anomaly_code: boundedText(context.anomalyCode, 100),
     attempt_id: boundedText(context.attemptId, 100),
@@ -265,7 +329,7 @@ function applyContext(
     route: boundedText(context.route),
     route_type: boundedText(context.routeType, 100),
     trigger: boundedText(context.trigger, 100),
-    tracking_number: boundedText(context.trackingNumber, 40),
+    number_pattern: boundedText(pattern, 100),
     upstream_status: boundedText(errorMetadata.upstreamStatus, 3),
   };
   for (const [key, value] of Object.entries(tags)) {
@@ -321,26 +385,6 @@ export function captureOperationalError(
   return eventId;
 }
 
-export function captureSyncAnomaly(
-  anomalyCode: string,
-  context: Omit<OperationalContext, 'anomalyCode'>,
-): string | null {
-  if (!initObservability()) return null;
-  let eventId: string | null = null;
-  Sentry.withScope((scope) => {
-    applyContext(scope, { ...context, anomalyCode }, 'TrackingSyncAnomaly');
-    scope.setLevel('warning');
-    scope.setFingerprint([
-      'delivery-tracker',
-      'tracking-sync-anomaly',
-      context.carrier ?? 'none',
-      anomalyCode,
-    ]);
-    eventId = Sentry.captureMessage(`Tracking sync anomaly: ${anomalyCode}`);
-  });
-  return eventId;
-}
-
 function applyUpstreamHttpContext(scope: Sentry.Scope, metadata: OperationalErrorMetadata): void {
   scope.setContext('upstream_http', null);
   scope.setTag('upstream_content_type', undefined);
@@ -361,12 +405,26 @@ function warnsOf(code: string, category: string | undefined): boolean {
   return code === 'transport_fallback' || (code === 'provider_failed' && category !== 'no_history');
 }
 
-/** Fixed grouping plus bounded HTTP diagnostics, captured before fallback. */
+/**
+ * A correction to the carrier detection already names or asks first for the
+ * number is expected: it is no signal.
+ */
+function routingSignal(code: string, category: string | undefined): code is RoutingSignalCode {
+  return (ROUTING_SIGNALS as readonly string[]).includes(code) && !(code === 'carrier_auto_swapped' && category === 'detected');
+}
+
+/**
+ * Every routing decision is a log line and a breadcrumb. A routing signal also goes
+ * to the check that reported it; only a failed coordination store opens an issue.
+ */
 export function reportRoutingEvent(code: string, context: {
   carrier: string; provider: string; category?: string; trackingNumber?: string; errorClass?: string; error?: unknown;
   attemptId?: string;
 }): void {
   try {
+    if (routingSignal(code, context.category)) {
+      trackingAttempts.getStore()?.signal?.({ signal: code, carrier: context.carrier, subject: context.provider });
+    }
     const metadata = operationalErrorMetadata(context.error);
     logOperationalEvent('tracking_routing', {
       attempt_id: context.attemptId ?? trackingAttemptId(),
@@ -393,13 +451,10 @@ export function reportRoutingEvent(code: string, context: {
       if (metadata.providerCode !== undefined) scope.setTag('provider_code', metadata.providerCode);
       scope.setFingerprint(['delivery-tracker', 'tracking-routing', code,
         context.provider, context.category ?? 'none']);
-      const alert = ['carrier_mismatch_confirmed',
-        'direct_support_opportunity',
-        'health_store_unavailable', 'carrier_coverage_discovered'].includes(code);
-      scope.setLevel(alert ? 'warning' : 'info');
-      // Recoveries stay in logs and breadcrumbs: a Sentry issue per recovery is noise.
-      // So does a correction to the carrier detection already names for the number.
-      if (alert || (code === 'carrier_auto_swapped' && context.category !== 'detected')) {
+      scope.setLevel('warning');
+      // Failures for one parcel, recoveries and routing signals stay in logs and
+      // breadcrumbs; signals also go to the review queues.
+      if (code === 'health_store_unavailable') {
         const message = `Tracking routing: ${code}`;
         if (context.error !== undefined) {
           // Keep stack, causes and custom error fields even if recovery succeeds.
@@ -414,11 +469,13 @@ export function reportRoutingEvent(code: string, context: {
   }
 }
 
-/** Only durable threshold transitions reach Sentry; the event title states the impact. */
+/**
+ * An incident that opened, or still fails six hours on, reaches Sentry; the event
+ * title states the impact. A recovery is a review signal and stays out (null).
+ */
 export function captureTrackingHealth(incident: JsonObject): string | null {
-  if (!initObservability()) return null;
+  if (incident.state === 'recovered' || !initObservability()) return null;
   const message = healthMessage(incident);
-  const recovered = incident.state === 'recovered';
   let id: string | null = null;
   Sentry.withScope(scope => {
     scope.setTag('component', 'tracking-health');
@@ -428,11 +485,9 @@ export function captureTrackingHealth(incident: JsonObject): string | null {
     scope.setContext('tracking_health', { ...incident, impact: message.impact, next_steps: message.nextSteps,
       suppression: 'Repeated incident notifications are limited to one per six hours.',
       runbook: 'https://github.com/plhery/peek-delivery-tracker/blob/main/ops/sentry/README.md' });
-    // Opening and reminders are one issue; recovery is another, so that it neither
-    // reopens the outage once resolved nor keeps it looking active.
-    scope.setFingerprint(['delivery-tracker', 'tracking-health', String(incident.kind), String(incident.subject),
-      ...(recovered ? ['recovered'] : [])]);
-    scope.setLevel(recovered ? 'info' : incident.kind === 'refresh' ? 'error' : 'warning');
+    // Opening and reminders are one issue.
+    scope.setFingerprint(['delivery-tracker', 'tracking-health', String(incident.kind), String(incident.subject)]);
+    scope.setLevel(incident.kind === 'refresh' ? 'error' : 'warning');
     id = Sentry.captureMessage(message.title);
   });
   return id;

@@ -2575,7 +2575,8 @@ describe('TrackingSyncService', () => {
     ['is unavailable', 'knows less', unavailable, 'transport', withoutProgress, undefined],
     ['is unavailable', 'names no stage in wording no rule maps', unavailable, 'transport', unreadLabel, '2026-09-10T10:00:00.000Z'],
   ] as const)('keeps what is saved without an error when the carrier %s and a fallback %s', async (_carrier, _fallback, fetch, kind, answer, watermark) => {
-    const capture = vi.spyOn(observability, 'captureSyncAnomaly').mockReturnValue(null);
+    const logged = vi.spyOn(observability, 'logOperationalEvent').mockImplementation(() => undefined);
+    const capture = anomalyLogs(logged, 'progress_disappeared');
     const client = leasedClient();
     const adapter = { fetch: fetch(), fetchUniversal: vi.fn().mockResolvedValue(answer) };
     const parcel = {
@@ -2608,7 +2609,7 @@ describe('TrackingSyncService', () => {
       }) })]));
     expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'thin-fallback',
       expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: true })]));
-    expect(capture).not.toHaveBeenCalled();
+    expect(capture()).toEqual([]);
     // The scan that was kept out is no freshness watermark: the carrier's next reply, a scan before it, is not older.
     adapter.fetch.mockResolvedValue({ status: 'in_transit', last_status_text: 'In transit', last_update: '2026-09-10T11:00:00Z',
       events: [{ stage: 'in_transit', description: 'In transit', time: '2026-09-10T11:00:00Z' }] });
@@ -2621,7 +2622,8 @@ describe('TrackingSyncService', () => {
     ['the provider a saved summary came from', false],
     ['another provider, for a carrier without an adapter of its own,', true],
   ] as const)('reports two consecutive thin checks from %s and resets on recovery', async (_label, another) => {
-    const capture = vi.spyOn(observability, 'captureSyncAnomaly').mockReturnValue(null);
+    const logged = vi.spyOn(observability, 'logOperationalEvent').mockImplementation(() => undefined);
+    const capture = anomalyLogs(logged, 'progress_disappeared');
     const client = leasedClient();
     const adapter = { fetch: vi.fn(), fetchUniversal: vi.fn().mockResolvedValueOnce({ status: 'in_transit',
       current_stage: 'in_transit', last_status_text: 'In transit', last_update: '2026-09-10T11:00:00Z', events: [] }) };
@@ -2646,7 +2648,7 @@ describe('TrackingSyncService', () => {
         last_event_at: '2026-09-10T11:00:00.000Z' },
     } });
     expect(firstThin.current_stage).toBeUndefined();
-    expect(capture).not.toHaveBeenCalled();
+    expect(capture()).toEqual([]);
     now = new Date('2026-09-10T14:00:00Z');
     await expect(service.syncPackage({ ...parcel, ...saved, ...firstThin })).resolves.toMatchObject({ errors: 1, waiting: 0 });
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error',
@@ -2659,7 +2661,7 @@ describe('TrackingSyncService', () => {
     expect(secondThin.current_stage).toBeUndefined();
     expect(client.completeSyncAttempt).toHaveBeenLastCalledWith(expect.any(String),
       expect.objectContaining({ outcome: 'error', anomaly_codes: ['progress_disappeared'] }), expect.any(Array));
-    expect(capture).toHaveBeenCalledExactlyOnceWith('progress_disappeared', expect.objectContaining({ carrier: 'unknown' }));
+    expect(capture()).toEqual([expect.objectContaining({ carrier: 'unknown', anomaly_code: 'progress_disappeared' })]);
     adapter.fetchUniversal.mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'In transit',
       last_update: '2026-09-10T11:00:00Z', events: [] });
     now = new Date('2026-09-10T15:00:00Z');
@@ -2671,11 +2673,12 @@ describe('TrackingSyncService', () => {
     now = new Date('2026-09-10T16:00:00Z');
     await expect(service.syncPackage({ ...parcel, ...saved, ...recovered })).resolves.toMatchObject({ waiting: 1, errors: 0 });
     expect(client.updatePackage.mock.calls.at(-1)![1].carrier_data.routing.consecutive_failures).toBe(1);
-    expect(capture).toHaveBeenCalledTimes(1);
+    expect(capture()).toHaveLength(1);
   });
 
   it('keeps the overnight freshness window while thin answers accumulate missed checks', async () => {
-    const capture = vi.spyOn(observability, 'captureSyncAnomaly').mockReturnValue(null);
+    const logged = vi.spyOn(observability, 'logOperationalEvent').mockImplementation(() => undefined);
+    const capture = anomalyLogs(logged, 'progress_disappeared');
     const client = leasedClient();
     const adapter = { fetch: vi.fn(), fetchUniversal: vi.fn().mockResolvedValue(withoutProgress) };
     const parcel = { id: 'overnight-thin', carrier: 'unknown', tracking_number: 'TEST1234', current_stage: 'in_transit',
@@ -2688,13 +2691,13 @@ describe('TrackingSyncService', () => {
     expect(saved).toMatchObject({ sync_status: 'ok', sync_error: null, carrier_data: { routing: {
       consecutive_failures: 2, last_success_at: '2026-09-10T21:00:00Z',
     } } });
-    expect(capture).not.toHaveBeenCalled();
+    expect(capture()).toEqual([]);
     now = new Date('2026-09-11T00:00:00Z');
     await expect(service.syncPackage({ ...parcel, ...saved }, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 0, errors: 1 });
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error', carrier_data: { routing: {
       consecutive_failures: 3, last_success_at: '2026-09-10T21:00:00Z',
     } } });
-    expect(capture).toHaveBeenCalledExactlyOnceWith('progress_disappeared', expect.objectContaining({ carrier: 'unknown' }));
+    expect(capture()).toEqual([expect.objectContaining({ carrier: 'unknown', anomaly_code: 'progress_disappeared' })]);
     // The answer came without an error: its anomaly is the refresh incident's evidence.
     expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'overnight-thin',
       expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: false,
@@ -3402,6 +3405,13 @@ describe('tracking anomaly detection', () => {
     expect(detect('registered')).toEqual([]);
   });
 });
+
+/** The `tracking_sync_anomaly` log lines a spy saw for one anomaly code. */
+function anomalyLogs(logged: { mock: { calls: unknown[][] } }, code: string) {
+  return () => logged.mock.calls
+    .filter(([event, fields]) => event === 'tracking_sync_anomaly' && (fields as JsonObject).anomaly_code === code)
+    .map(([, fields]) => fields);
+}
 
 /**
  * tracking_events with the RPC's upsert: a stored identity updates its row in

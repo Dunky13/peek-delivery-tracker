@@ -1280,6 +1280,119 @@
         "sortBy": [{"displayName": "Sessions", "desc": true}],
         "footer": {"show": false}
       }
+    },
+    {
+      "type": "row",
+      "id": 29,
+      "title": "Review signals",
+      "collapsed": false,
+      "gridPos": {"x": 0, "y": 73, "w": 24, "h": 1},
+      "panels": []
+    },
+    {
+      "type": "table",
+      "id": 30,
+      "title": "Routing signals",
+      "description": "What checks learnt that the catalog, detection or the adapters could act on, by signal, the parcel's carrier and the carrier the signal is about (uncatalogued: a name a provider gave). Postgres keeps each number in tracking_routing_signals for the hourly review.",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"x": 0, "y": 74, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "refId": "A",
+          "expr": "round(sum by (signal, carrier, subject) (increase(tracking_routing_signal_total{carrier=~\"$carrier\"}[$__range]))) > 0",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {"id": "merge", "options": {}},
+        {
+          "id": "organize",
+          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Signals"}}
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
+        "overrides": [{"matcher": {"id": "byName", "options": "Signals"}, "properties": [{"id": "decimals", "value": 0}]}]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [{"displayName": "Signals", "desc": true}],
+        "footer": {"show": false}
+      }
+    },
+    {
+      "type": "table",
+      "id": 31,
+      "title": "Sync anomalies",
+      "description": "Suspicious decisions of checks, by carrier and anomaly code. Each stays on its attempt in tracking_sync_attempts; none reaches Sentry.",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"x": 8, "y": 74, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "refId": "A",
+          "expr": "round(sum by (carrier, anomaly) (increase(tracking_sync_anomaly_total{carrier=~\"$carrier\"}[$__range]))) > 0",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {"id": "merge", "options": {}},
+        {
+          "id": "organize",
+          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Checks"}}
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
+        "overrides": [{"matcher": {"id": "byName", "options": "Checks"}, "properties": [{"id": "decimals", "value": 0}]}]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [{"displayName": "Checks", "desc": true}],
+        "footer": {"show": false}
+      }
+    },
+    {
+      "type": "table",
+      "id": 32,
+      "title": "Health incidents",
+      "description": "Refresh, provider and direct-tracking incidents that opened (or still fail six hours on) or recovered. Open ones are also Sentry issues; recoveries are not.",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"x": 16, "y": 74, "w": 8, "h": 8},
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "refId": "A",
+          "expr": "round(sum by (kind, subject, state) (increase(tracking_health_incident_total[$__range]))) > 0",
+          "instant": true,
+          "range": false,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {"id": "merge", "options": {}},
+        {
+          "id": "organize",
+          "options": {"excludeByName": {"Time": true}, "renameByName": {"Value": "Notifications"}}
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"noValue": "None", "custom": {"align": "auto", "minWidth": 60, "cellOptions": {"type": "auto"}}},
+        "overrides": [{"matcher": {"id": "byName", "options": "Notifications"}, "properties": [{"id": "decimals", "value": 0}]}]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "sortBy": [{"displayName": "Notifications", "desc": true}],
+        "footer": {"show": false}
+      }
     }
   ]
 }

@@ -50,6 +50,9 @@ function fakeClient(claims: Array<'claimed' | 'running' | 'done' | Error> = ['cl
       { id: 'case-adapter', tracking_number: 'ZZTEST1234', configured_carrier: 'shipup' },
     ]),
     fixReplayedTrackingSupportCases: vi.fn().mockResolvedValue(1),
+    // The ambiguous case's parcel is still on its way.
+    trackingNumberStages: vi.fn(async (numbers: string[]) => new Map(numbers.map((number) => [number, ['in_transit']]))),
+    ignoreReplayedTrackingSupportCases: vi.fn(async (_version: string, cases: unknown[]) => cases.length),
     listOpenTrackingStatusObservations: vi.fn().mockResolvedValue(OPEN_OBSERVATIONS),
     closeTrackingStatusObservations: vi.fn(async (_version: string, closing: { keys: string[] }) => closing.keys.length),
     finishTrackingReviewRun: vi.fn().mockResolvedValue(undefined),
@@ -57,7 +60,7 @@ function fakeClient(claims: Array<'claimed' | 'running' | 'done' | Error> = ['cl
 }
 
 const SUMMARY = {
-  cases_replayed: 3, cases_fixed: 1, observations_replayed: 7, observations_mapped: 2, observations_ignored: 3,
+  cases_replayed: 3, cases_fixed: 1, cases_ignored: 0, observations_replayed: 7, observations_mapped: 2, observations_ignored: 3,
 };
 
 afterEach(() => {
@@ -98,6 +101,26 @@ describe('review queue replay', () => {
     expect(client.fixReplayedTrackingSupportCases).toHaveBeenCalledExactlyOnceWith('v1', [{
       id: 'case-settled', configured_carrier: 'fedex', note: 'Replay found no gap: the latest check of its parcel gave no reason.',
     }]);
+  });
+
+  it('ignores a case only its carrier could confirm once every parcel with the number has finished', async () => {
+    const client = fakeClient();
+    client.listOpenTrackingSupportCases.mockResolvedValue([
+      { id: 'case-delivered', tracking_number: '123456789012', configured_carrier: 'fedex', reasons: ['ambiguous_shape'] },
+      { id: 'case-saved-twice', tracking_number: '123456789023', configured_carrier: 'fedex', reasons: ['ambiguous_shape'] },
+      { id: 'case-deleted', tracking_number: '123456789001', configured_carrier: 'fedex', reasons: ['ambiguous_shape'] },
+      // Detection could still learn these: they stay open.
+      { id: 'case-unknown', tracking_number: '123456789012', configured_carrier: 'unknown', reasons: ['ambiguous_shape'] },
+      { id: 'case-adapter', tracking_number: 'ZZTEST1234', configured_carrier: 'shipup', reasons: ['unknown_shape', 'no_direct_adapter'] },
+    ]);
+    client.trackingNumberStages.mockResolvedValue(new Map([
+      ['123456789012', ['delivered']], ['123456789023', ['delivered', 'in_transit']],
+    ]));
+    await expect(replayReviewQueues(client as unknown as SupabaseServiceClient, 'v1'))
+      .resolves.toMatchObject({ cases_replayed: 5, cases_ignored: 1 });
+    expect(client.trackingNumberStages).toHaveBeenCalledExactlyOnceWith(['123456789012', '123456789023', '123456789001']);
+    expect(client.ignoreReplayedTrackingSupportCases).toHaveBeenCalledExactlyOnceWith('v1', [{ id: 'case-delivered',
+      note: 'Its parcel was delivered before fedex, one of the carriers its shape fits, confirmed the number directly: no check is left to confirm it.' }]);
   });
 
   it('fixes the resolved open cases once and records the outcome for the version', async () => {

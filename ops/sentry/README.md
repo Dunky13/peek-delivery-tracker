@@ -1,7 +1,7 @@
 # Tracking incidents
 
-Carrier and provider outages open a single Sentry issue, and their recovery opens another.
-Postgres (`record_tracking_health`) decides when, from scheduled refreshes only. Manual
+Carrier and provider outages open a single Sentry issue; their recovery is a review signal,
+logged and counted but not sent to Sentry. Postgres (`record_tracking_health`) decides when, from scheduled refreshes only. Manual
 refreshes, unsupported carriers and superseded work don't count. Samples last 24 hours and
 hold only provider ids, outcome categories, HTTP statuses and opaque ids. A sample's
 `http_status` is one a provider answered with; a carrier error the adapter raised on its
@@ -40,25 +40,27 @@ failures age out of the window; a new failure meanwhile reminds as usual.
 - A parcel whose own carrier says not-found stays `waiting` even if every fallback fails.
   The fallbacks can't know a parcel the carrier hasn't announced.
 - If a tier stops being probed (no parcels left), its incident closes once its last sample
-  ages out, **without** a recovery event. Resolve that Sentry issue by hand.
+  ages out, **without** a recovery line.
 
 ## Delivery
 
 Postgres serializes transitions. A repeated incident notifies at most once per 6 hours;
-recovery is sent at once. Events are delivered at least once (2-minute lease, acknowledged
-after the SDK flushes), and duplicates group under the same fingerprint.
+recovery at once. An opening or reminder is acknowledged once the SDK has flushed its event,
+so it is delivered at least once (2-minute lease), and duplicates group under the same
+fingerprint. A recovery is acknowledged at once.
 
 Events carry `component:tracking-health`, `incident_kind`, `incident_state` and `provider`
 tags, plus a `tracking_health` context with counts, impact, evidence and next steps.
-Opening and reminders share one issue per incident kind and provider. The recovery is an
-informational issue of its own (its fingerprint ends in `recovered`), so it neither reopens
-the outage's issue once resolved nor keeps it looking active. It doesn't resolve it either:
-resolve the outage's issue when the recovery arrives. The next outage of the same kind and
-provider then shows as a regression.
+Opening and reminders share one issue per incident kind and provider. Every notification,
+recoveries included, is also a `tracking_health_incident` log line and counts in
+`tracking_health_incident_total`, and the hourly review
+([ops/review/signals.sql](../review/signals.sql)) lists it. Resolve the outage's issue once
+its recovery shows there; the next outage of the same kind and provider then shows as a
+regression.
 
-**Alert rule:** match `component:tracking-health` at all levels, informational recoveries
-included. Don't add a frequency threshold, because Postgres already applied one. Keep
-infrastructure alerts in separate rules.
+**Alert rule:** match `component:tracking-health` at all levels. Don't add a frequency
+threshold, because Postgres already applied one. Keep infrastructure alerts in separate
+rules.
 
 If the health functions are missing, the audit reports an evaluation failure; saving
 shipments is never affected.

@@ -1130,6 +1130,17 @@ export class SupabaseServiceClient extends SupabaseClient {
     });
   }
 
+  /** A check's routing signals (observability.ts), kept for the review queues. */
+  async recordTrackingRoutingSignals(
+    attemptId: string, packageId: string, trackingNumber: string,
+    signals: ReadonlyArray<{ signal: string; carrier: string; subject: string }>,
+  ): Promise<void> {
+    await this.request('/rest/v1/rpc/record_tracking_routing_signals', {
+      method: 'POST', timeoutMs: 3_000,
+      body: { p_attempt_id: attemptId, p_package_id: packageId, p_tracking_number: trackingNumber, p_signals: signals },
+    });
+  }
+
   async ackTrackingHealth(ids: string[]): Promise<void> {
     await this.request('/rest/v1/rpc/ack_tracking_health', {
       method: 'POST', timeoutMs: 3_000, body: { p_ids: ids },
@@ -1217,6 +1228,33 @@ export class SupabaseServiceClient extends SupabaseClient {
       limit: String(limit),
     });
     return rows(await this.request(`/rest/v1/tracking_support_cases?${params}`));
+  }
+
+  /** The stages of the saved parcels with these numbers, by number: a number can be saved more than once. */
+  async trackingNumberStages(numbers: string[]): Promise<Map<string, string[]>> {
+    const stages = new Map<string, string[]>();
+    for (let start = 0; start < numbers.length; start += 100) {
+      const page = numbers.slice(start, start + 100).map((number) => `"${number.replace(/["\\]/g, '')}"`);
+      const params = query({ select: 'tracking_number,current_stage', tracking_number: `in.(${page.join(',')})` });
+      for (const row of rows(await this.request(`/rest/v1/packages?${params}`))) {
+        const number = String(row.tracking_number);
+        stages.set(number, [...stages.get(number) ?? [], String(row.current_stage)]);
+      }
+    }
+    return stages;
+  }
+
+  /** Marks the replayed cases that need no change ignored, with their notes; answers how many. */
+  async ignoreReplayedTrackingSupportCases(version: string, cases: Array<{ id: string; note: string }>): Promise<number> {
+    let ignored = 0;
+    for (const { id, note } of cases) {
+      const params = query({ id: `eq.${id}`, fix_status: 'eq.open' });
+      ignored += rows(await this.request(`/rest/v1/tracking_support_cases?${params}`, {
+        method: 'PATCH', prefer: 'return=representation',
+        body: { fix_status: 'ignored', fix_reference: version.slice(0, 500), notes: note.slice(0, 4000) },
+      })).length;
+    }
+    return ignored;
   }
 
   /** Marks fixed the replayed cases still open with the same configured carrier; answers how many. */

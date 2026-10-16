@@ -3,6 +3,7 @@ import {
   databaseUnavailable,
   errorType,
   logOperationalEvent,
+  numberPattern,
   operationalErrorMetadata,
   parseSampleRate,
   reportRoutingEvent,
@@ -60,6 +61,15 @@ describe('the check a line belongs to', () => {
     const lines = output.mock.calls.map(([line]) => JSON.parse(String(line)));
     expect(lines.map((line) => line.attempt_id)).toEqual(['first', 'second', undefined, 'third']);
     expect(trackingAttemptId()).toBeUndefined();
+  });
+});
+
+describe('a number in a report', () => {
+  it('keeps its shape: short letter runs as they are, longer ones and digits counted', () => {
+    expect(numberPattern('my1234567890us')).toBe('MY + 10 digits + US');
+    expect(numberPattern('JJD0003-9000 7')).toBe('JJD + 9 digits');
+    expect(numberPattern('ABCDEF7')).toBe('6 letters + 1 digit');
+    expect(numberPattern('')).toBe('');
   });
 });
 

@@ -2,17 +2,23 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { TrackingSyncAudit } from './trackingAudit';
 import { SupabaseServiceClient } from './supabase';
 import { trackingSupportEvidence } from './trackingSupport';
-import { logOperationalEvent } from './observability';
-import { recordRefresh } from './metrics';
+import { captureOperationalError, captureTrackingHealth, logOperationalEvent, reportRoutingEvent } from './observability';
+import { recordHealthIncident, recordRefresh, recordRoutingSignal, recordSyncAnomaly } from './metrics';
 
-vi.mock('./observability', () => ({
-  captureOperationalError: vi.fn(), captureTrackingHealth: vi.fn(), captureSyncAnomaly: vi.fn(),
-  flushObservability: vi.fn().mockResolvedValue(true), logOperationalEvent: vi.fn(), reportRoutingEvent: vi.fn(),
-  errorType: (error: unknown) => error instanceof Error ? error.name : 'Error',
+// Routing reports and the attempt they belong to stay real: signals travel through them.
+vi.mock('./observability', async (importOriginal) => ({
+  ...await importOriginal<typeof import('./observability')>(),
+  captureOperationalError: vi.fn(), captureTrackingHealth: vi.fn(),
+  flushObservability: vi.fn().mockResolvedValue(true), logOperationalEvent: vi.fn(),
 }));
-vi.mock('./metrics', () => ({ recordRefresh: vi.fn() }));
+vi.mock('./metrics', () => ({
+  recordRefresh: vi.fn(), recordRoutingSignal: vi.fn(), recordSyncAnomaly: vi.fn(), recordHealthIncident: vi.fn(),
+}));
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.clearAllMocks();
+});
 
 describe('tracking support audit persistence', () => {
   it('submits the original support context with a leased start and direct evidence with completion', async () => {
@@ -107,5 +113,71 @@ describe('a check that found nothing new', () => {
     expect(logOperationalEvent).toHaveBeenCalledWith('tracking_sync_completed',
       expect.objectContaining({ outcome: 'unchanged', events_normalized: 3, events_new: 0 }), 'info');
     expect(recordRefresh).toHaveBeenCalledWith('dpd', 'dpd', 'unchanged');
+  });
+});
+
+describe('review signals', () => {
+  it('saves the routing signals a check reported, once each, after the check itself', async () => {
+    const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true), recordTrackingRoutingSignals: vi.fn() };
+    const audit = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'unknown', 'pending', { trigger: 'package' });
+    await audit.observeFetch(async () => {
+      reportRoutingEvent('carrier_coverage_discovered', { carrier: 'unknown', provider: 'Example Parcel Co' });
+      reportRoutingEvent('carrier_coverage_discovered', { carrier: 'unknown', provider: 'Example Parcel Co' });
+      reportRoutingEvent('provider_failed', { carrier: 'unknown', provider: '17TRACK', category: 'rate_limited' });
+    });
+    // A correction detection expected is no signal.
+    audit.reportRouting('carrier_auto_swapped', { carrier: 'unknown', provider: 'gls', category: 'detected' });
+    audit.reportRouting('carrier_auto_swapped', { carrier: 'dhl', provider: 'ups', trackingNumber: 'TEST1234' });
+    // Outside a check, a signal has nowhere to go.
+    reportRoutingEvent('direct_support_opportunity', { carrier: 'fedex', provider: 'fedex' });
+    expect(client.recordTrackingRoutingSignals).not.toHaveBeenCalled();
+    await audit.finish({ outcome: 'updated', sourceCarrier: 'unknown' });
+    expect(client.recordTrackingRoutingSignals).toHaveBeenCalledExactlyOnceWith(audit.attemptId, 'synthetic-package', 'TEST1234', [
+      { signal: 'carrier_coverage_discovered', carrier: 'unknown', subject: 'Example Parcel Co' },
+      { signal: 'carrier_auto_swapped', carrier: 'dhl', subject: 'ups' },
+    ]);
+    expect(client.completeSyncAttempt.mock.invocationCallOrder[0])
+      .toBeLessThan(client.recordTrackingRoutingSignals.mock.invocationCallOrder[0]);
+    expect(vi.mocked(recordRoutingSignal).mock.calls).toEqual([
+      ['carrier_coverage_discovered', 'unknown', 'Example Parcel Co'], ['carrier_auto_swapped', 'dhl', 'ups'],
+    ]);
+  });
+
+  it('logs and counts each anomaly once, without an error report', () => {
+    const audit = new TrackingSyncAudit({} as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'dpd', 'in_transit', { trigger: 'scheduled' });
+    audit.reportAnomalies(['progress_disappeared', 'progress_disappeared'], { providerStatus: 'pending', eventsReceived: 0 });
+    expect(vi.mocked(logOperationalEvent).mock.calls.filter(([event]) => event === 'tracking_sync_anomaly')).toEqual([
+      ['tracking_sync_anomaly', expect.objectContaining({ anomaly_code: 'progress_disappeared', carrier: 'dpd',
+        previous_stage: 'in_transit', provider_status: 'pending', events_received: 0 }), 'warning'],
+    ]);
+    expect(recordSyncAnomaly).toHaveBeenCalledExactlyOnceWith('dpd', 'progress_disappeared');
+    expect(captureOperationalError).not.toHaveBeenCalled();
+  });
+
+  it('acknowledges a recovery without Sentry, and an outage once Sentry has it', async () => {
+    const recovered = { id: 'recovered-incident', kind: 'provider', subject: '17TRACK', state: 'recovered',
+      attempts: 5, failures: 0, window_hours: 24 };
+    const open = { id: 'open-incident', kind: 'direct', subject: 'dpd', state: 'open', attempts: 12, failures: 8, window_hours: 24 };
+    const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),
+      recordTrackingHealth: vi.fn().mockResolvedValue([recovered, open]), ackTrackingHealth: vi.fn() };
+    vi.mocked(captureTrackingHealth).mockReturnValue('synthetic-event');
+    const audit = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'dpd', 'in_transit', { trigger: 'scheduled' });
+    await audit.finish({ outcome: 'unchanged', sourceCarrier: 'dpd' });
+    expect(captureTrackingHealth).toHaveBeenCalledExactlyOnceWith(open);
+    expect(client.ackTrackingHealth).toHaveBeenCalledExactlyOnceWith(['recovered-incident', 'open-incident']);
+    expect(vi.mocked(recordHealthIncident).mock.calls).toEqual([['provider', '17TRACK', 'recovered'], ['direct', 'dpd', 'open']]);
+    expect(logOperationalEvent).toHaveBeenCalledWith('tracking_health_incident', expect.objectContaining({
+      kind: 'provider', subject: '17TRACK', state: 'recovered', title: 'Provider lookups recovered: 17TRACK' }), 'info');
+
+    // Without Sentry the outage waits for the next check; the recovery does not.
+    vi.mocked(captureTrackingHealth).mockReturnValue(null);
+    client.ackTrackingHealth.mockClear();
+    const next = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'dpd', 'in_transit', { trigger: 'scheduled' });
+    await next.finish({ outcome: 'unchanged', sourceCarrier: 'dpd' });
+    expect(client.ackTrackingHealth).toHaveBeenCalledExactlyOnceWith(['recovered-incident']);
   });
 });
