@@ -48,6 +48,29 @@ final class CarrierCatalogTests: XCTestCase {
         }
     }
 
+    func testLinksUseTheNumberEachCarriersPageFinds() throws {
+        func link(_ carrier: CarrierID, _ number: String) throws -> String {
+            let parcel = Parcel(id: UUID(), trackingNumber: number, label: "Example", carrier: carrier,
+                createdAt: "2026-09-10T12:00:00Z", syncStatus: .ok, notificationsMuted: false)
+            return try XCTUnwrap(catalog.trackingLinks(for: parcel, language: .en).first).url.absoluteString
+        }
+        XCTAssertEqual(try link(.cdl, "1234567890"), "https://apps.cdldelivers.com/Tracking-Page/track?id=123456789-0")
+        XCTAssertEqual(try link(.gofoFr, "PK12345678901234567890"),
+                       "https://www.gofo.com/fr/tracking-results/?id=PK-1234567890123456789-0")
+        XCTAssertEqual(try link(.ecoscooting, "ESP28001123400000000001"),
+                       "https://ecoscooting.com/tracking/CNESP28001123400000000001")
+        XCTAssertEqual(try link(.ninjaVan, "NVSGABCD12345678"), "https://www.ninjavan.co/en-sg/tracking?id=NVSGABCD12345678")
+        XCTAssertEqual(try link(.ninjaVan, "NJVTT12345678901"), "https://www.ninjaxpress.co/en-id/tracking?id=NJVTT12345678901")
+        XCTAssertEqual(try link(.ninjaVan, "NVMYSTAMP123456789"), "https://www.ninjavan.co/en-my/tracking?id=NVMYSTAMP123456789")
+    }
+
+    func testFindsANumberOnlyTheCatalogKnowsInAShippingMessage() {
+        let parsed = catalog.parse("Your order has shipped. Follow CDL12345678901 to see where it is.")
+        XCTAssertEqual(parsed.trackingNumber, "CDL12345678901")
+        XCTAssertEqual(parsed.carrier, .cdl)
+        XCTAssertEqual(parsed.source, .text)
+    }
+
     func testLinksFollowWorkingUniversalAndReturnToDirectOnRecovery() throws {
         var parcel = Parcel(id: UUID(), trackingNumber: "TEST1234", label: "Test", carrier: .dhl,
             createdAt: "2026-09-10T12:00:00Z", syncStatus: .ok, notificationsMuted: false)

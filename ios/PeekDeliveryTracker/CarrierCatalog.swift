@@ -865,6 +865,8 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
             "\\b[A-Z]{2}\\s*\\d(?:[\\s.-]?\\d){8}\\s*[A-Z]{2}\\b",
             "\\b(?:JJD|JVGL)[A-Z0-9]{8,}\\b",
             "\\b\\d(?:[\\s.-]?\\d){9,19}\\b",
+            // Let catalog rules claim other complete identifiers without copying their shapes here.
+            "\\b[A-Z0-9]{4,40}\\b",
         ]
         for pattern in patterns {
             for candidate in Self.matches(in: text, pattern: pattern, caseInsensitive: true) {
@@ -1371,8 +1373,22 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
     ) -> String? {
         if carrier == .amazonLogistics { return amazonOrdersURL(trackingNumber).absoluteString }
         if carrier == .amazonShipping { return amazonShippingURL(trackingNumber).absoluteString }
-        guard let template else { return nil }
         let normalized = normalize(trackingNumber)
+        // The country in these families chooses Ninja Van's lookup page, not the destination.
+        if carrier == .ninjaVan {
+            var country = "my"
+            if normalized.range(of: "^NJVTT[0-9]{11}$", options: .regularExpression) != nil {
+                country = "id"
+            } else if normalized.range(
+                of: "^(?:NL(SG|MY|ID|PH|TH|VN)[A-Z]{1,2}[0-9]{8,10}|NV(SG|MY|ID|PH|TH|VN)(?!STAMP[A-Z0-9]{9}$)[A-Z0-9]{8,20})$",
+                options: .regularExpression
+            ) != nil {
+                country = normalized.dropFirst(2).prefix(2).lowercased()
+            }
+            let host = country == "id" ? "www.ninjaxpress.co" : "www.ninjavan.co"
+            return "https://\(host)/en-\(country)/tracking?id=\(urlEncode(normalized))"
+        }
+        guard let template else { return nil }
         var linkNumber = trackingNumber
         if carrier == .mondialRelay, isValidMondialRelayBarcode(normalized) { linkNumber = String(normalized.prefix(12)) }
         if carrier == .cChezVous,
@@ -1386,6 +1402,21 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
             linkNumber = "\(normalized[..<split])-\(normalized[split...])"
         }
         if carrier == .postlogistics { linkNumber = format(trackingNumber, carrier: carrier) }
+        // CDL's page finds an order number only with the hyphen before its last digit.
+        if carrier == .cdl, normalized.range(of: "^[0-9]{10}$", options: .regularExpression) != nil {
+            linkNumber = "\(normalized.prefix(9))-\(normalized.suffix(1))"
+        }
+        // GOFO France's page keeps a shipper reference's hyphens.
+        if carrier == .gofoFr {
+            linkNumber = normalized.range(of: "^PK[0-9]{20}$", options: .regularExpression) != nil
+                ? "PK-\(normalized.dropFirst(2).dropLast())-\(normalized.suffix(1))"
+                : normalized
+        }
+        // Ecoscooting's page finds a Cainiao reference only with its CN.
+        if carrier == .ecoscooting,
+           normalized.range(of: "^(?:ESP[0-9]{5}1234[0-9]{11}|PRT[0-9]{7}1234[0-9]{9})$", options: .regularExpression) != nil {
+            linkNumber = "CN\(normalized)"
+        }
         // InPost's Polish page does not find Yodel's layouts; InPost UK's page does.
         if carrier == .inpost,
            normalized.range(of: "^(J?JD[0-9]{16}|8YDR[0-9]{9}|[0-9]{2}[A-Z]{3}[0-9]{7}A[0-9]{3})$", options: .regularExpression) != nil {
