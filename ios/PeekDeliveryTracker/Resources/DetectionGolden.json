@@ -21893,9 +21893,11 @@
   },
   {
     "input": "251015WE1ANOP9",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "carrier": "redx",
+    "confidence": "high",
+    "candidates": [
+      "redx"
+    ]
   },
   {
     "input": "2510862336",
@@ -59952,7 +59954,31 @@
     ]
   },
   {
+    "input": "JSEAK1923094425YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSEIZ2321541942YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
     "input": "JSEJA1143458320YQ",
+    "carrier": "js-express",
+    "confidence": "high",
+    "candidates": [
+      "js-express"
+    ]
+  },
+  {
+    "input": "JSEJN0797265639YQ",
     "carrier": "js-express",
     "confidence": "high",
     "candidates": [

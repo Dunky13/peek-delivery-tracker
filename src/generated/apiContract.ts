@@ -16351,7 +16351,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "redx",
+      "recognitionRank": 917
     },
     "trackingUrlTemplate": "https://redx.com.bd/track-global-parcel/?trackingId={trackingNumber}",
     "linkRules": [
@@ -16368,7 +16369,7 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^(?=(?:[^A-Z]*[A-Z]){4})2\\dA[1-9][0-9A-Z]{8,10}$",
+        "pattern": "^2\\d(?:A[1-9]|1[0-2])(?:A[1-9]|[12]\\d|3[01])(?:MO|TU|WE|TH|FR|SA|SU)[0-9A-Z]{4,6}$",
         "confidence": "high"
       }
     ],
@@ -16897,7 +16898,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tiki",
+      "recognitionRank": 918
     },
     "linkRules": [
       {
@@ -16908,7 +16910,9 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/id/track/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [],
+    "trackingUrlTemplate": "https://tiki.id/id/track/{trackingNumber}",
+    "trackingSearchUrl": "https://tiki.id/id/track"
   },
   "tirupati-courier": {
     "displayName": "Shree Tirupati Courier",
@@ -21253,7 +21257,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "js-express",
+      "recognitionRank": 916
     },
     "linkRules": [],
     "detectionRules": [
