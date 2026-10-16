@@ -30,7 +30,8 @@ What a check learnt that the catalog, detection or the adapters could act on is 
 routing signals, sync anomalies, unmapped wording, support cases and health recoveries stay
 in Postgres and Prometheus, for the hourly review in [Review signals](#review-signals).
 
-Metrics (Sentry and Prometheus) cover latency and fallback use.
+Metrics (Sentry and Prometheus) cover latency and fallback use. Sentry alerts on each new
+error; [Grafana alerts](#grafana-alerts) on what no single error shows.
 
 **Privacy.** Logs keep tracking numbers, original errors and upstream request/response
 details. Sentry reports keep the errors and details but name a parcel by the shape of its
@@ -743,6 +744,42 @@ the Supabase stack's network to reach the database.
 Days from before the schema existed were rebuilt from the rows stored then, so they miss
 the accounts and parcels deleted earlier, and their activity counts sign-ins and session
 renewals instead of openings.
+
+## Grafana alerts
+
+[ops/grafana/alerts.json](../ops/grafana/alerts.json) holds the alert rules Grafana
+evaluates every minute, in its "Peek alerts" folder. They notify through Grafana's default
+contact point. Sentry already reports each error, each carrier or provider health incident,
+and a scheduled sync that is missed, fails or passes its 10-minute limit (its cron
+monitors). The rules cover what none of those show:
+
+- **Peek unreachable**: Prometheus has not scraped `/api/metrics` for 5 minutes. A deploy
+  takes less.
+- **Peek checks failing across carriers**: in the last 3 hours, 10 checks or more failed,
+  5% of them or more, across 3 carriers or more; or 5 health incidents or more are open.
+  One carrier failing is its own Sentry incident. Several at once usually mean Peek's side:
+  the network, Chromium, the database or a provider many carriers share.
+- **Peek scheduled sync slow**: a scheduled sync that finished in the last 2 hours took
+  over 5 minutes, half its limit.
+- **Peek stopped checking parcels**: no check has finished for 30 minutes between 09:00 and
+  22:00 Zurich time, or for 2 hours otherwise, while Prometheus still reaches Peek. The
+  scheduled sync can run without checking anything.
+- **Peek server errors**: 5 API requests or more answered a 5xx in 15 minutes, health checks
+  and metric scrapes aside. Sentry alerts only on a new or regressed issue, not on a known
+  one that starts repeating.
+
+Each threshold sits above what ordinary days reach. The database rules read
+`metrics.health` through the usage dashboard's data source: the last 3 hours' checks,
+failures and the carriers they failed for, the time since a check last finished, the
+longest scheduled sync of the last 2 hours and the open health incidents, counted when read.
+
+Grafana does not take rules from CI. After changing the file, run
+`npm run grafana:alerts` to see what would change, then `npm run grafana:alerts -- --apply`.
+It reaches Grafana over ssh and runs curl inside its container, so the admin password stays
+there; it saves every alert rule and the notification policies on the host before replacing
+the group. `-- --status` shows how each rule last evaluated. Set `GRAFANA_SSH_HOST`,
+`GRAFANA_CONTAINER`, and the data source uids `GRAFANA_PROMETHEUS_UID`, `GRAFANA_LOKI_UID`
+and `GRAFANA_METRICS_UID`.
 
 ## Incident checklist
 
