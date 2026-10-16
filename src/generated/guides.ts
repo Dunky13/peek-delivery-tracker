@@ -37,6 +37,16 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Tracking a parcel from China: AliExpress, Temu and Shein"
     },
     {
+      "id": "amazon-orders",
+      "slug": "amazon-order-tracking",
+      "title": "Amazon order tracking: Amazon, sellers and carriers"
+    },
+    {
+      "id": "vinted-orders",
+      "slug": "vinted-tracking",
+      "title": "Vinted tracking: carriers, numbers and delays"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -122,6 +132,16 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "tracking-from-china",
       "slug": "paket-aus-china-verfolgen",
       "title": "Paket aus China verfolgen: AliExpress, Temu und Shein"
+    },
+    {
+      "id": "amazon-orders",
+      "slug": "amazon-sendungsverfolgung",
+      "title": "Amazon-Sendungsverfolgung: Amazon, Verkäufer, Zusteller"
+    },
+    {
+      "id": "vinted-orders",
+      "slug": "vinted-sendungsverfolgung",
+      "title": "Vinted Sendungsverfolgung: Versand, Nummern, Verspätung"
     },
     {
       "id": "find-tracking-number",
@@ -211,6 +231,16 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi d'un colis venant de Chine\u00a0: AliExpress, Temu, Shein"
     },
     {
+      "id": "amazon-orders",
+      "slug": "suivi-commande-amazon",
+      "title": "Suivi de commande Amazon\u00a0: Amazon, vendeurs, transporteurs"
+    },
+    {
+      "id": "vinted-orders",
+      "slug": "suivi-colis-vinted",
+      "title": "Suivi de colis Vinted\u00a0: transporteurs, numéros et retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -296,6 +326,16 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "tracking-from-china",
       "slug": "tracciare-pacco-dalla-cina",
       "title": "Tracciare un pacco dalla Cina: AliExpress, Temu e Shein"
+    },
+    {
+      "id": "amazon-orders",
+      "slug": "tracciamento-ordine-amazon",
+      "title": "Tracciare un ordine Amazon: Amazon, venditori e corrieri"
+    },
+    {
+      "id": "vinted-orders",
+      "slug": "tracciamento-pacco-vinted",
+      "title": "Tracciare un pacco Vinted: corrieri, codici e ritardi"
     },
     {
       "id": "find-tracking-number",
@@ -385,6 +425,16 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de paquetes de China: AliExpress, Temu y Shein"
     },
     {
+      "id": "amazon-orders",
+      "slug": "seguimiento-pedido-amazon",
+      "title": "Seguimiento de pedidos Amazon: vendedores y transportistas"
+    },
+    {
+      "id": "vinted-orders",
+      "slug": "seguimiento-envio-vinted",
+      "title": "Seguimiento de envío Vinted: empresas, números y retrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -472,6 +522,16 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Rastrear encomendas da China: AliExpress, Temu e Shein"
     },
     {
+      "id": "amazon-orders",
+      "slug": "seguimento-encomenda-amazon",
+      "title": "Seguir encomendas da Amazon: vendedores e transportadoras"
+    },
+    {
+      "id": "vinted-orders",
+      "slug": "seguimento-encomenda-vinted",
+      "title": "Seguir encomenda Vinted: transportadoras, números e atrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -557,6 +617,16 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "tracking-from-china",
       "slug": "sledzenie-paczki-z-chin",
       "title": "Śledzenie paczki z Chin: AliExpress, Temu, Shein"
+    },
+    {
+      "id": "amazon-orders",
+      "slug": "sledzenie-zamowienia-amazon",
+      "title": "Śledzenie zamówienia Amazon: Amazon, sprzedawcy, przewoźnicy"
+    },
+    {
+      "id": "vinted-orders",
+      "slug": "sledzenie-paczki-vinted",
+      "title": "Śledzenie paczki z Vinted: przewoźnicy, numery, opóźnienia"
     },
     {
       "id": "find-tracking-number",

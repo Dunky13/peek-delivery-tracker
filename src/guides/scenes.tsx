@@ -605,6 +605,55 @@ function DeliveryTimes() {
   </>;
 }
 
+function Marketplace() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* An order on a phone: the parcel, and how far it has come. */}
+    <Phone x={48} y={32} width={132} height={216}>
+      <Box x={32} y={40} width={68} height={50} />
+      <path d="M34 116V188" stroke="var(--orange)" strokeWidth="4" strokeLinecap="round" />
+      <Stop x={34} y={116} state="done" tone="orange" />
+      <Stop x={34} y={152} state="now" tone="orange" />
+      <Stop x={34} y={188} state="ahead" tone="orange" />
+      {[116, 152, 188].map((y) => <rect key={y} x="60" y={y - 5} width={y === 152 ? 54 : 40} height="9" rx="4.5" fill="var(--control)" />)}
+    </Phone>
+    {/* One van hands the parcel to the next. */}
+    <path d="M250 196C276 104 398 104 422 196" stroke="var(--orange)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <Truck x={206} y={199} tone="orange" scale={2.6} />
+    <Truck x={466} y={199} tone="blue" scale={2.6} flip />
+    <Box x={308} y={98} width={58} height={46} />
+    <Pip x={562} ground={262} width={150} mood="look" side={-1} />
+  </>;
+}
+
+function Resale() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The seller's phone: a parcel, its label ready. */}
+    <Phone x={34} y={50} width={112} height={190}>
+      <Box x={23} y={44} width={66} height={52}>
+        <rect x="12" y="24" width="42" height="16" rx="3" fill="var(--yellow)" />
+      </Box>
+      <rect x="20" y="114" width="72" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="20" y="132" width="50" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="20" y="152" width="72" height="20" rx="10" fill="var(--green)" />
+    </Phone>
+    {/* The buyer's phone: the parcel on its way. */}
+    <Phone x={494} y={50} width={112} height={190}>
+      <path d="M30 60V140" stroke="var(--green)" strokeWidth="4" strokeLinecap="round" />
+      <Stop x={30} y={60} state="done" tone="green" />
+      <Stop x={30} y={100} state="done" tone="green" />
+      <Stop x={30} y={140} state="now" tone="green" />
+      {[60, 100, 140].map((y) => <rect key={y} x="52" y={y - 4} width={y === 140 ? 42 : 34} height="8" rx="4" fill="var(--control)" />)}
+    </Phone>
+    {/* Between them, the van and the parcel it carries. */}
+    <path d="M156 112C250 40 390 40 484 112" stroke="var(--green)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <Box x={188} y={160} width={50} height={40} />
+    <Truck x={180} y={191} tone="green" scale={3} />
+    <Pip x={398} ground={262} width={150} mood="joy" />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -612,6 +661,8 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'delivered-not-received': { tone: 'orange', draw: Missing },
   customs: { tone: 'lilac', draw: Customs },
   'tracking-from-china': { tone: 'blue', draw: FromChina },
+  'amazon-orders': { tone: 'orange', draw: Marketplace },
+  'vinted-orders': { tone: 'green', draw: Resale },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },
