@@ -1901,7 +1901,7 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?!AS\\d{9}US$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -2548,6 +2548,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^2IMA\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^CW\\d{9}IT$",
+        "confidence": "high",
+        "checksum": "s10"
       },
       {
         "pattern": "^(?:\\d{6}[A-Z]\\d{6}|3C\\d{4}[A-Z]\\d{6}|\\d{3}[A-Z]\\d{8}[A-Z])$",
@@ -11486,7 +11491,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nippon-express",
+      "recognitionRank": 941
     },
     "trackingUrlTemplate": "https://lp-trace.nittsu.co.jp/web/webarpaa702.srv?LANG=JP&denpyoNo1={trackingNumber}",
     "linkRules": [
@@ -19479,7 +19485,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cttyex",
+      "recognitionRank": 953
     },
     "trackingUrlTemplate": "https://www.cttyvip888.com/index/tracknumber/track?nos={trackingNumber}",
     "linkRules": [
