@@ -65,9 +65,10 @@ repository.
 
 ## Screenshots
 
-The app is iPhone-only. Take them in the demo (the checked-in configuration), whose parcels
-are made up, on an iPhone 18 Pro Max simulator: 1320 × 2868 PNG without alpha. Resize the
-same images to 1206 × 2622 for the 6.3" class.
+The app is iPhone-only. Take them in the demo, whose parcels are made up, on an iPhone 18 Pro
+Max simulator: a Debug build launched with `-sdt.native.experience.v1 demo
+-sdt.debug.storeScreenshots YES`, which leaves out the demo's top bar. 1320 × 2868 PNG
+without alpha. Resize the same images to 1206 × 2622 for the 6.3" class.
 
 ## First submission
 

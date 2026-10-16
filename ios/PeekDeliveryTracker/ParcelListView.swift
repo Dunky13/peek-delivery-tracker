@@ -67,8 +67,16 @@ struct DemoModeBar: View {
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var localizer: Localizer
 
+    #if DEBUG
+    /// `-sdt.debug.storeScreenshots YES` leaves the bar out of the demo, for the App Store
+    /// screenshots.
+    private static var hidden: Bool { UserDefaults.standard.bool(forKey: "sdt.debug.storeScreenshots") }
+    #else
+    private static let hidden = false
+    #endif
+
     var body: some View {
-        if session.isDemo {
+        if session.isDemo, !Self.hidden {
             Button {
                 session.showWelcome()
             } label: {
