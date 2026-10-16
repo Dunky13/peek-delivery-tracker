@@ -138,11 +138,12 @@ Recognition reasons from the Add sheet, gap evidence, and sightings older than t
 latest still add to them, so a reason that no longer applies leaves with the next check.
 
 Cases and their bounded `tracking_support_observations` are service-role only. They
-survive parcel deletion and audit pruning. Deleting an account deletes the cases of its
-parcels' numbers, unless another parcel, an account's or a lookup's, follows the same
-number. Repeating an audit write does not count the same check twice. Cases retain
-sightings, fallback counts, detection candidates, the last outcome and direct
-verification evidence.
+survive parcel deletion and audit pruning. A case goes 10 days after no parcel, an
+account's or a lookup's, follows its number any more (its parcel or account was deleted, or
+the number was checked without being saved) and after its last check; a parcel following the
+number again stops the clock (`unfollowed_at`). Repeating an audit write does not count the
+same check twice. Cases retain sightings, fallback counts, detection candidates, the last
+outcome and direct verification evidence.
 
 Unresolved detection requests also retain their normalized number in this backlog,
 including cached answers and choices between carriers, before any parcel is saved.
@@ -335,8 +336,8 @@ took effect.
 The routing signals marked in [ROUTING.md](ROUTING.md) are saved in
 `tracking_routing_signals` once their check completes: one row per signal, parcel carrier,
 subject and number, whose `count` grows with each check that reports it again. A row
-outlives its parcel and goes after 90 days unseen, or with the account, as support cases
-do. `tracking_routing_signal_total` counts
+outlives its parcel and goes after 90 days unseen, or 10 days after no parcel follows its
+number, as support cases do. `tracking_routing_signal_total` counts
 them, and the "Review signals" row of the carrier dashboard shows them beside sync
 anomalies and health incidents.
 
@@ -495,6 +496,9 @@ Key JSON events:
   `parcel_feedback_total` counts it. It never has the number or the reader's words.
   `parcel_feedback_forgotten` says how many old `answers` a maintenance pass deleted, and
   `parcel_feedback_maintenance_failed` that it could not run.
+- `tracking_review_forgotten`: how many support `cases` and routing `signals` of numbers no
+  parcel follows a maintenance pass deleted. `tracking_review_maintenance_failed` when it
+  could not run.
 - `public_allowance`: an overall daily allowance without an account (`kind`: `lookup` or
   `detection`) is `running_out` at 80% or `used_up`, with `used` and `limit`.
   `account_allowance` says the same of the hourly allowance every account shares, at 50%.

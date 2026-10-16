@@ -396,6 +396,21 @@ export class SyncJobWorker {
           });
         }
         try {
+          // The review's cases and signals go 10 days after no parcel follows their number.
+          const forgotten = await this.service.client.forgetUnfollowedTrackingReview();
+          if (forgotten.cases > 0 || forgotten.signals > 0) logOperationalEvent('tracking_review_forgotten', forgotten);
+        } catch (maintenanceError) {
+          logOperationalEvent('tracking_review_maintenance_failed', {
+            error_type: errorType(maintenanceError),
+          }, 'error');
+          captureOperationalError(maintenanceError, {
+            component: 'tracking-review',
+            operation: 'maintenance',
+            jobId,
+            trigger: kind,
+          });
+        }
+        try {
           // The usage dashboard's counts for today, and the last additions of yesterday.
           await this.service.client.recordUsageMetrics();
         } catch (maintenanceError) {

@@ -315,13 +315,12 @@ acknowledgements may remain until account deletion or operational cleanup.
 Infrastructure backups and security logs may persist for the limited retention
 configured by their operator. The service's own logs are kept for 30 days and
 Sentry reports for up to 90 days; both can retain a tracking number after its
-parcel or account is deleted. The review list keeps a number after its parcel
-is deleted. Deleting the account deletes the list's entries for the numbers
-your parcels follow, unless someone else follows the same number too. What a check
-learnt about a number's carrier goes after 90 days without a new check; the
-rest of an entry, such as one for a number you checked without saving it, has
-no set end. The record of a delivery email goes with the account; Resend
-deletes its own copy after 30 days.
+parcel or account is deleted. An entry of the review list is kept up to 10
+days after no parcel follows its number any more, because the parcel or the
+account was deleted or you checked the number without saving it, then deleted.
+A new check of the number restarts the 10 days. What a check learnt about a
+number's carrier also goes after 90 days without a new check. The record of a
+delivery email goes with the account; Resend deletes its own copy after 30 days.
 
 Use **Download my data** in the account menu for a machine-readable export,
 including your Friends profile and connections. Use **Delete account** to

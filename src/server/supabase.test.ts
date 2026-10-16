@@ -283,6 +283,14 @@ describe('one-off parcels and their links', () => {
     expect(request.mock.calls[3]).toEqual(['/rest/v1/rpc/forget_old_parcel_feedback', { method: 'POST', body: {} }]);
   });
 
+  it('deletes the review entries of numbers no parcel follows any more through a function', async () => {
+    const client = service();
+    const request = vi.spyOn(client, 'request').mockResolvedValueOnce({ cases: 2, signals: 1 }).mockResolvedValueOnce(null);
+    await expect(client.forgetUnfollowedTrackingReview()).resolves.toEqual({ cases: 2, signals: 1 });
+    await expect(client.forgetUnfollowedTrackingReview()).resolves.toEqual({ cases: 0, signals: 0 });
+    expect(request).toHaveBeenCalledWith('/rest/v1/rpc/forget_unfollowed_tracking_review', { method: 'POST', body: {} });
+  });
+
   it('rewrites the usage counts through a function', async () => {
     const client = service();
     const request = vi.spyOn(client, 'request').mockResolvedValueOnce(null);

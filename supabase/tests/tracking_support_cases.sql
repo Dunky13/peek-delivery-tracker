@@ -201,8 +201,19 @@ end;
 $$;
 reset role;
 
--- A deleted parcel leaves its case and signals for the review. Deleting the account takes
--- those of the numbers its parcels follow, unless another account follows them too.
+-- A deleted parcel leaves its case and signals for the review. They go 10 days after no parcel
+-- follows their number and after their last check, whether the parcel or the account was
+-- deleted or the number was checked without being saved.
+do $$
+begin
+  assert not has_function_privilege('authenticated', 'public.forget_unfollowed_tracking_review()', 'execute');
+  assert not has_function_privilege('anon', 'public.forget_unfollowed_tracking_review()', 'execute');
+  assert has_function_privilege('service_role', 'public.forget_unfollowed_tracking_review()', 'execute');
+  -- Written for a number no parcel follows, a case starts its clock.
+  assert (select unfollowed_at is not null from public.tracking_support_cases where tracking_number = 'LEASECASE1234');
+  assert (select unfollowed_at is null from public.tracking_support_cases where tracking_number = 'CASETEST1234');
+end;
+$$;
 insert into auth.users(id, email) values ('a7100000-0000-4000-8000-000000000008', 'support-other@example.invalid');
 insert into public.packages(id, user_id, tracking_number, carrier) values
   ('a7100000-0000-4000-8000-000000000009', 'a7100000-0000-4000-8000-000000000008', 'GAPTEST5678', 'unknown'),
@@ -210,19 +221,60 @@ insert into public.packages(id, user_id, tracking_number, carrier) values
 insert into public.tracking_routing_signals(signal, carrier, subject, tracking_number, package_id) values
   ('direct_support_opportunity', 'unknown', 'dpd', 'CASETEST1234', 'a7100000-0000-4000-8000-000000000002'),
   ('direct_support_opportunity', 'unknown', 'dpd', 'GAPTEST5678', 'a7100000-0000-4000-8000-000000000003'),
-  ('direct_support_opportunity', 'unknown', 'dpd', 'LEASECASE1234', 'a7100000-0000-4000-8000-000000000010');
+  ('direct_support_opportunity', 'unknown', 'dpd', 'LEASECASE1234', 'a7100000-0000-4000-8000-000000000010'),
+  ('direct_support_opportunity', 'unknown', 'dpd', 'SIGNALONLY1234', null);
+do $$
+begin
+  -- A parcel following the number stops the clock.
+  assert (select unfollowed_at is null from public.tracking_support_cases where tracking_number = 'LEASECASE1234');
+  assert (select array_agg(tracking_number) from public.tracking_routing_signals where unfollowed_at is not null) = array['SIGNALONLY1234'];
+end;
+$$;
 delete from public.packages where id = 'a7100000-0000-4000-8000-000000000002';
 delete from auth.users where id = 'a7100000-0000-4000-8000-000000000001';
 do $$
 begin
   assert not exists(select 1 from public.tracking_sync_attempts where id in ('a7100000-0000-4000-8000-000000000005', 'a7100000-0000-4000-8000-000000000007'));
+  -- Nothing goes at once: the deleted parcel's number and the deleted account's start their
+  -- clock, and a number another account follows does not.
   assert exists(select 1 from public.tracking_support_cases where tracking_number = 'CASETEST1234' and fix_status = 'verified');
-  assert exists(select 1 from public.tracking_support_observations where observation_key = 'attempt:a7100000-0000-4000-8000-000000000005');
+  assert exists(select 1 from public.tracking_support_observations where observation_key = 'test:direct');
   assert exists(select 1 from public.tracking_support_cases where tracking_number = 'GAPTEST5678' and fallback_count = 1);
-  assert not exists(select 1 from public.tracking_support_cases where tracking_number = 'LEASECASE1234');
-  assert not exists(select 1 from public.tracking_support_observations where observation_key = 'attempt:a7100000-0000-4000-8000-000000000007');
+  assert exists(select 1 from public.tracking_support_observations where observation_key = 'attempt:a7100000-0000-4000-8000-000000000005');
+  assert exists(select 1 from public.tracking_support_observations where observation_key = 'attempt:a7100000-0000-4000-8000-000000000007');
+  assert (select array_agg(tracking_number order by tracking_number) from public.tracking_support_cases
+    where tracking_number in ('CASETEST1234', 'GAPTEST5678', 'LEASECASE1234') and unfollowed_at is not null)
+    = array['CASETEST1234', 'LEASECASE1234'];
   assert (select array_agg(tracking_number order by tracking_number) from public.tracking_routing_signals
-    where tracking_number in ('CASETEST1234', 'GAPTEST5678', 'LEASECASE1234')) = array['CASETEST1234', 'GAPTEST5678'];
+    where unfollowed_at is not null) = array['CASETEST1234', 'LEASECASE1234', 'SIGNALONLY1234'];
+  assert public.forget_unfollowed_tracking_review() = '{"cases": 0, "signals": 0}'::jsonb;
+end;
+$$;
+-- Ten days on, the entries go, except one checked since.
+update public.tracking_support_cases set first_seen = first_seen - interval '11 days',
+  last_seen = last_seen - interval '11 days', unfollowed_at = unfollowed_at - interval '11 days'
+where tracking_number in ('CASETEST1234', 'LEASECASE1234');
+update public.tracking_support_cases set last_seen = now() - interval '1 day' where tracking_number = 'LEASECASE1234';
+update public.tracking_routing_signals set first_seen = first_seen - interval '11 days',
+  last_seen = last_seen - interval '11 days', unfollowed_at = unfollowed_at - interval '11 days';
+do $$
+begin
+  assert public.forget_unfollowed_tracking_review() = '{"cases": 1, "signals": 3}'::jsonb;
+  assert not exists(select 1 from public.tracking_support_cases where tracking_number = 'CASETEST1234');
+  assert not exists(select 1 from public.tracking_support_observations where observation_key = 'test:direct');
+  assert exists(select 1 from public.tracking_support_observations where observation_key = 'attempt:a7100000-0000-4000-8000-000000000005');
+  assert (select array_agg(tracking_number order by tracking_number) from public.tracking_support_cases
+    where tracking_number in ('CASETEST1234', 'GAPTEST5678', 'LEASECASE1234')) = array['GAPTEST5678', 'LEASECASE1234'];
+  assert (select array_agg(tracking_number) from public.tracking_routing_signals) = array['GAPTEST5678'];
+end;
+$$;
+-- A parcel moved to another number starts the clock of the one it left.
+update public.packages set tracking_number = 'LEASECASE1234' where id = 'a7100000-0000-4000-8000-000000000009';
+do $$
+begin
+  assert (select unfollowed_at is not null from public.tracking_support_cases where tracking_number = 'GAPTEST5678');
+  assert (select unfollowed_at is null from public.tracking_support_cases where tracking_number = 'LEASECASE1234');
+  assert (select unfollowed_at is not null from public.tracking_routing_signals where tracking_number = 'GAPTEST5678');
 end;
 $$;
 rollback;

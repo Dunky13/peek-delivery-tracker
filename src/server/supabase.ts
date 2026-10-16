@@ -1702,6 +1702,16 @@ export class SupabaseServiceClient extends SupabaseClient {
     return Number(await this.request('/rest/v1/rpc/forget_old_parcel_feedback', { method: 'POST', body: {} }) ?? 0);
   }
 
+  /**
+   * Deletes the support cases and routing signals of numbers no parcel has followed for 10
+   * days, last checked 10 days ago. Returns how many of each.
+   */
+  async forgetUnfollowedTrackingReview(): Promise<{ cases: number; signals: number }> {
+    const result = await this.request('/rest/v1/rpc/forget_unfollowed_tracking_review', { method: 'POST', body: {} });
+    const counts = isRecord(result) ? result : {};
+    return { cases: Number(counts.cases ?? 0), signals: Number(counts.signals ?? 0) };
+  }
+
   /** Rewrites today's counts for the usage dashboard, and the additions of the day before. */
   async recordUsageMetrics(): Promise<void> {
     await this.request('/rest/v1/rpc/record_usage_metrics', { method: 'POST', body: {} });

@@ -18,13 +18,14 @@ function scheduledRun() {
   vi.spyOn(client, 'archiveDeliveredBefore').mockResolvedValue(0);
   vi.spyOn(client, 'maintainSyncAudit').mockResolvedValue({ abandoned: 0, purged: 0 });
   const feedback = vi.spyOn(client, 'forgetOldParcelFeedback').mockResolvedValue(0);
+  const review = vi.spyOn(client, 'forgetUnfollowedTrackingReview').mockResolvedValue({ cases: 0, signals: 0 });
   const usage = vi.spyOn(client, 'recordUsageMetrics').mockResolvedValue();
   const service = new TrackingSyncService(client);
   const sync = vi.spyOn(service, 'sync').mockResolvedValue(emptySyncSummary());
   const redetections = vi.spyOn(service, 'queueRedetections').mockResolvedValue(0);
   const state: BackgroundState = { workerHeartbeat: null, lastScheduledSync: null, nextScheduledSync: null,
     lastSummary: null, lastError: null, lastAutoArchived: 0 };
-  return { client, feedback, finish, redetections, state, sync, usage, worker: new SyncJobWorker(service, state) };
+  return { client, feedback, finish, redetections, review, state, sync, usage, worker: new SyncJobWorker(service, state) };
 }
 
 it('forgets expired lookups, stopped links and finished alerts, and refreshes the usage gauges, after each scheduled sync', async () => {
@@ -93,6 +94,36 @@ it('finishes the scheduled sync when deleting old answers fails, and reports it'
   worker.stop();
   expect(report).toHaveBeenCalledExactlyOnceWith(failure, expect.objectContaining({ component: 'parcel-feedback', operation: 'maintenance' }));
   expect(logged).not.toHaveBeenCalledWith('parcel_feedback_forgotten', expect.anything());
+  expect(finish).toHaveBeenCalledExactlyOnceWith('job', worker.workerId, { result: expect.anything() });
+  expect(state.lastError).toBeNull();
+});
+
+it('deletes the review entries of numbers no parcel has followed for 10 days, after each scheduled sync', async () => {
+  const { client, review, worker } = scheduledRun();
+  vi.spyOn(client, 'forgetExpiredParcelLinks').mockResolvedValue({ links: 0, packages: 0, stopped: 0, alerts: 0 });
+  vi.spyOn(client, 'publicLookupUsageSummary').mockResolvedValue({ buckets: 0, p50: 0, p90: 0, max: 0, detection: { buckets: 0, p50: 0, p90: 0, max: 0 } });
+  review.mockResolvedValue({ cases: 3, signals: 1 });
+  const logged = vi.spyOn(monitoring, 'logOperationalEvent');
+  worker.start();
+  await vi.advanceTimersByTimeAsync(1);
+  worker.stop();
+  expect(review).toHaveBeenCalledOnce();
+  expect(logged).toHaveBeenCalledWith('tracking_review_forgotten', { cases: 3, signals: 1 });
+});
+
+it('finishes the scheduled sync when deleting review entries fails, and reports it', async () => {
+  const { client, finish, review, state, worker } = scheduledRun();
+  vi.spyOn(client, 'forgetExpiredParcelLinks').mockResolvedValue({ links: 0, packages: 0, stopped: 0, alerts: 0 });
+  vi.spyOn(client, 'publicLookupUsageSummary').mockResolvedValue({ buckets: 0, p50: 0, p90: 0, max: 0, detection: { buckets: 0, p50: 0, p90: 0, max: 0 } });
+  const failure = new SupabaseError('database down', 503);
+  review.mockRejectedValue(failure);
+  const logged = vi.spyOn(monitoring, 'logOperationalEvent');
+  const report = vi.spyOn(monitoring, 'captureOperationalError').mockReturnValue(null);
+  worker.start();
+  await vi.advanceTimersByTimeAsync(1);
+  worker.stop();
+  expect(report).toHaveBeenCalledExactlyOnceWith(failure, expect.objectContaining({ component: 'tracking-review', operation: 'maintenance' }));
+  expect(logged).toHaveBeenCalledWith('tracking_review_maintenance_failed', { error_type: 'SupabaseError' }, 'error');
   expect(finish).toHaveBeenCalledExactlyOnceWith('job', worker.workerId, { result: expect.anything() });
   expect(state.lastError).toBeNull();
 });
