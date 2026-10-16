@@ -1405,7 +1405,7 @@ describe('persistent tracking routing', () => {
     });
   });
 
-  describe('an unknown parcel whose detected carrier answers with local clocks only', () => {
+  describe('an unknown parcel whose detected or named carrier answers with local clocks only', () => {
     // A synthetic number in 17FEIA's own shape: detection names the carrier with high confidence.
     const number = 'FEIXY0000000001YQ';
     const local = (carrier = '17feia'): RoutedResult => ({ sourceCarrierId: carrier, swissPostReady: null, handoffFallbackErrorType: null,
@@ -1474,6 +1474,23 @@ describe('persistent tracking routing', () => {
       expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier }), carrier);
       expect(result.correction).toBeUndefined();
       expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { configured_carrier: 'unknown' } });
+    });
+
+    it.each([
+      ['a provider named before', 'TEST1234', '17feia', '17FEIA', { discovered_carrier: '17feia' }],
+      ['recognition found', '123456789012', 'sto', 'STO Express', {}],
+    ])('takes a carrier %s once the provider dating the progress names it alone', async (_label, trackingNumber, carrier, name, routing) => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal, recognize } = setup();
+      recognize.mockImplementation(async (asked: string) => ({ known: asked === carrier }));
+      direct.mockImplementation(async (_parcel, asked: string) => local(asked));
+      universal.mockResolvedValue({ ...history(), discovered_carrier: carrier, reported_carriers: [name] });
+      const result = await router.fetch(filed(routing, { tracking_number: trackingNumber }), false);
+      expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier }), carrier);
+      expect(result).toMatchObject({ correction: { carrier, trackingUrl: null, postcode: null },
+        result: { tracking_provider: 'Ship24', carrier_answered: true, discovered_carrier: carrier,
+          routing: { configured_carrier: carrier, discovered_carrier: carrier }, direct_local_history: { carrier } } });
+      expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
     });
 
     it('does not replace a carrier already confirmed for the number', async () => {

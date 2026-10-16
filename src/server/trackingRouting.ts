@@ -303,8 +303,8 @@ export class TrackingRouter {
     let localHistory: JsonObject | undefined;
     // The filed carrier's status alone, or part of its history, while providers are asked for the rest.
     let partialDirect: { value: RoutedResult; carrier: string } | undefined;
-    // The carrier detection names for the number, when its own answer moved but had only local clocks.
-    let localCandidate: string | undefined;
+    // Carriers asked in this check whose own answer for the number moved but had only local clocks.
+    const localAnswers = new Set<string>();
     const universalNumber = metadata.original_carrier && metadata.active_tracking_carrier
       && typeof metadata.active_tracking_number === 'string' ? metadata.active_tracking_number : number;
     // The owner's answer to a provider's postcode request, for this number only.
@@ -416,12 +416,17 @@ export class TrackingRouter {
       // A provider can name an unknown parcel without pretending the carrier answered,
       // but not a carrier whose adapter refuses the number.
       const identified = unnamed ? providerCarrier(value.result, number) : undefined;
-      // The carrier detection names answered too, with local clocks only: a
-      // provider dating the progress files the parcel under it, where a parcel
-      // added today would start, and links stay with that carrier.
-      const answered = unnamed && hasRoutingProgress(value.result) ? localCandidate : undefined;
-      const named = answered ?? (identified && state.discovered_carrier === identified
-        && state.failures[identified]?.user_error !== 'carrier:invalid_input' ? identified : undefined);
+      const providerNamed = identified && state.discovered_carrier === identified
+        && state.failures[identified]?.user_error !== 'carrier:invalid_input' ? identified : undefined;
+      // The carrier detection names, or else the one this provider names, answered
+      // too, with local clocks only: a provider dating the progress files the
+      // parcel under it, where a parcel added today would start, and links stay
+      // with that carrier.
+      const answered = unnamed && hasRoutingProgress(value.result)
+        ? [...localAnswers].find((carrier) => detectionNames(number, carrier))
+          ?? (providerNamed && localAnswers.has(providerNamed) ? providerNamed : undefined)
+        : undefined;
+      const named = answered ?? providerNamed;
       if (named) {
         state.configured_carrier = named;
         // A provider naming several legs may settle on none (17FEIA, and a DPD the catalog
@@ -515,11 +520,10 @@ export class TrackingRouter {
             // but cannot replace history from the parcel's own carrier.
             localHistory = capturedHistory;
           }
-          // The carrier detection names, answering for this very number, can
-          // still file an unknown parcel once a provider dates the parcel's
-          // progress. Its newest scan has no instant to hold against the watermark.
-          if (candidate && moved && value.sourceCarrierId === carrier && detectionNames(number, carrier)
-            && !earlierLeg(carrier, value)) localCandidate = carrier;
+          // The carrier detection or a provider names, answering for this very
+          // number, can still file an unknown parcel once a provider dates the
+          // parcel's progress. Its newest scan has no instant to hold against the watermark.
+          if (candidate && moved && value.sourceCarrierId === carrier && !earlierLeg(carrier, value)) localAnswers.add(carrier);
           return null;
         }
         if (candidate && !moved) return null;

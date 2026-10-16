@@ -84,6 +84,7 @@ with direct as (
   -- The summary names a carrier once one answers; routing keeps a provider's naming before that.
   select p.carrier, coalesce(nullif(p.carrier_data->>'discovered_carrier', ''),
            nullif(p.carrier_data->'routing'->>'discovered_carrier', ''), d.carrier, p.carrier) as target,
+         nullif(p.carrier_data->>'discovered_carrier', '') as named,
          p.carrier_data->>'tracking_provider' as provider, p.tracking_number, p.created_at, p.last_synced_at,
          p.carrier_data->>'carrier_answered' = 'true' as answered, p.carrier_data->'routing' as routing
   from public.packages p
@@ -106,6 +107,8 @@ with direct as (
          case when r.target in ('unknown', 'intl-post') then 'no carrier known'
               when r.answered then 'carrier answered in part'
               when r.failure->>'user_error' = 'carrier:invalid_input' then 'adapter refuses the number'
+              -- Routing forgets, unasked, a carrier the provider names whose adapter refuses the number.
+              when r.target = r.named and r.target is distinct from r.routing->>'discovered_carrier' then 'adapter refuses the number'
               when r.failure is not null then 'adapter ' || coalesce(r.failure->>'kind', 'failed')
               when r.target not in (select carrier from direct) then 'no direct answer in 30 days'
               when r.routing->>'confirmed_carrier' = r.target then 'carrier answers, history kept'

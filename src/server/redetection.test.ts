@@ -66,6 +66,13 @@ it('points a parcel a provider tracks back to its own carrier when that carrier 
   expect(rerouteCarrier(parcel(filed, { tracking_provider: undefined }))).toBeNull();
 });
 
+it('points a parcel a provider tracks back to its own carrier when only recognition asked it before it was filed', () => {
+  const filed = { carrier: 'royal-mail', tracking_number: 'RR123456785GB' };
+  const probes = { candidate_probes: { 'royal-mail': { count: 1, retry_at: '2999-01-01T00:00:00Z' } } };
+  expect(rerouteCarrier(parcel(filed, { routing: probes }))).toBe('royal-mail');
+  expect(rerouteCarrier(parcel(filed, { routing: { ...probes, confirmed_carrier: 'royal-mail' } }))).toBeNull();
+});
+
 it.each<[string, JsonObject, JsonObject]>([
   ['routed with the current rules', {}, { routing: { rules: catalogRules() } }],
   ['delivered', { current_stage: 'delivered' }, {}],

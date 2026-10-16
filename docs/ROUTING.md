@@ -149,6 +149,8 @@ keep, and the carrier is asked again 6 h later, not on every check. When detecti
 its answer shows movement, a provider's progress in the same check files the parcel under
 it, as one added with that carrier would be, even when the provider also names the platform
 the parcel went through (MailAmericas with Cainiao) or a carrier the catalog cannot place.
+A carrier detection does not name does the same when that provider names it as the parcel's
+carrier, as under "Unknown carrier" below.
 That carrier is then the one routing settled on (`discovered_carrier`), as the database
 requires of a parcel filed from a provider's history. Without such a provider answer the parcel
 stays unknown.
@@ -338,11 +340,12 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   sent ([`redetection.ts`](../src/server/redetection.ts)). A check is queued, at most 50,
   for each one the new catalog points to a carrier it has not asked yet: the carrier its
   number is now detected as, the one a provider's saved carrier names now read as, or the
-  filed carrier's new adapter. A parcel filed under no carrier is also queued when its
-  detected or named carrier, or else a carrier its recognition would ask, has no wait left,
-  asked before or not: a release can teach an adapter a number, and a rate limit or outage
-  passes. One still in its cooldown is queued by the first scheduled
-  run after the cooldown ends. These checks wait behind every other job, a lookup's own
+  filed carrier's new adapter. A filed carrier only recognition asked, before the parcel was
+  filed under it, counts as not asked: a probe drops an answer on local clocks. A parcel
+  filed under no carrier is also queued when its detected or named carrier, or else a
+  carrier its recognition would ask, has no wait left, asked before or not: a release can
+  teach an adapter a number, and a rate limit or outage passes. One still in its cooldown is
+  queued by the first scheduled run after the cooldown ends. These checks wait behind every other job, a lookup's own
   check too. Only parcels filed under no carrier, or showing a provider's history, are
   looked at. A lookup nobody follows any more gets this one check.
 
