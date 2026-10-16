@@ -15023,7 +15023,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "energia-tk",
+      "recognitionRank": 927
     },
     "trackingUrlTemplate": "https://nrg-tk.pro/client/tracking/#{trackingNumber}",
     "linkRules": [
@@ -17439,7 +17440,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cse-russia",
+      "recognitionRank": 926
     },
     "trackingUrlTemplate": "https://www.cse.ru/mow/track/?numbers={trackingNumber}",
     "linkRules": [
