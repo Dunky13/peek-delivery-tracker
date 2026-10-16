@@ -9643,7 +9643,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ceva-logistics",
+      "recognitionRank": 925
     },
     "trackingUrlTemplate": "https://www.cevalogistics.com/en/ceva-trak?reference_query={trackingNumber}",
     "linkRules": [
