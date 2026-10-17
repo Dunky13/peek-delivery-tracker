@@ -37,7 +37,11 @@ if (typeof window !== 'undefined') Object.defineProperty(window, 'localStorage',
   value: new MemoryStorage(),
 });
 
-afterEach(() => {
+afterEach(async () => {
   cleanup();
-  if (typeof window !== 'undefined') window.localStorage.clear();
+  if (typeof window === 'undefined') return;
+  window.localStorage.clear();
+  // jsdom moves through history.back() two tasks later. A test that closes a
+  // parcel last would otherwise move the next test's address.
+  for (let task = 0; task < 2; task++) await new Promise((resolve) => setImmediate(resolve));
 });
