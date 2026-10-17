@@ -32,7 +32,7 @@ function isOwnRow(event: JsonObject): boolean {
  * scans or above a delivery. The stored row, the stage and alerts are not
  * affected.
  */
-function timeline(events: JsonObject[]): JsonObject[] {
+export function timeline(events: JsonObject[]): JsonObject[] {
   const time = (event: JsonObject) => Date.parse(String(event.occurred_at));
   const firstScan = Math.min(...events.filter((event) => !isOwnRow(event)).map(time).filter(Number.isFinite));
   return events.filter((event) => !isOwnRow(event) || !(firstScan <= time(event)));

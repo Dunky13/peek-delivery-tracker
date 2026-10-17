@@ -98,6 +98,14 @@ describe('what the service held when an answer arrived', () => {
     }
   });
 
+  it('leaves out Peek\'s own opening row once carrier scans reach back to it, as the timeline does', () => {
+    const added = { id: 'e0', package_id: packageId, stage: 'pending', description: 'Tracking added', location: null, occurred_at: '2026-10-02T09:00:00+00:00', provider_event_id: 'app:pending' };
+    const shown = shownParcel(storedPackage({ tracking_events: [added, ...storedPackage().tracking_events as JsonObject[]] }));
+    expect(shown.event_count).toBe(2);
+    expect((shown.events as JsonObject[]).map((event) => event.description)).toEqual(['Sorted', 'Handed over']);
+    expect(shownParcel(storedPackage({ tracking_events: [added] })).event_count).toBe(1);
+  });
+
   it('keeps the six newest scans of a long journey, each cut to size', () => {
     const events = Array.from({ length: 9 }, (_, index) => ({
       stage: 'in_transit', description: '🙂'.repeat(300), location: 'x'.repeat(300), occurred_at: `2026-10-0${index + 1}T10:00:00+00:00`,
