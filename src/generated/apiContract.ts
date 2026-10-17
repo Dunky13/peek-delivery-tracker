@@ -3145,6 +3145,10 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       },
       {
+        "pattern": "^[A-Z]{2}\\d{2}CAA0U\\d{9}$",
+        "confidence": "high"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{2}(?:CA|US)A0[A-Z]\\d{9}$",
         "confidence": "low"
       }
