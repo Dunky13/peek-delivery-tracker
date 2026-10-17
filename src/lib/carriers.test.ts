@@ -520,10 +520,8 @@ describe('carrier detection', () => {
     // https://www.ocu.org/reclamar/lista-reclamaciones-publicas/las-entregas-no-llegan-/a9ac02ca080289f896
     // https://www.ocu.org/reclamar/lista-reclamaciones-publicas/pedido-nunca-llega/571d0533088b8ba848
     for (const number of ['081730000038942441', '380030000066362966', '380030000066782505', '083030000063547779']) {
-      const match = detectCarrierMatch(number);
-      // The scraper release that names Ecoscooting for its postcode layout is not adopted yet.
-      expect([['unknown', 'low'], ['ecoscooting', 'high']]).toContainEqual([match.carrier, match.confidence]);
-      expect(match.candidates).toContain('ecoscooting');
+      // A Spanish postcode, four zeros and a counter names Ecoscooting.
+      expect(detectCarrierMatch(number)).toMatchObject({ carrier: 'ecoscooting', confidence: 'high' });
     }
     // Foreign postal identifier from a handoff report stays with its issuer.
     // Source: https://www.ocu.org/reclamar/lista-reclamaciones-publicas/paquete-extraviado-cq34377077/a9305cbaea4cb4fa5a
