@@ -153,6 +153,8 @@ O compromisso de entrega do AliExpress (Delivery Commitment) dá, nos artigos co
 
 Se aparece como entregue e não tens nada, vê [encomenda entregue mas não recebida](guide:delivered-not-received).
 
+Ecrãs, estados, créditos e reclamações da Temu: [rastrear uma encomenda da Temu](guide:temu-orders).
+
 :::sources
 - [Cainiao: Help centre (em inglês)](https://global.cainiao.com/helpDoc.htm) – estados, 11 e 12 dias, envio económico, correios locais
 - [Cainiao: Global express (em inglês)](https://www.cainiao.com/en/global-express.html) – prazos por linha

@@ -72,6 +72,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Allegro order tracking: carriers, numbers and disputes"
     },
     {
+      "id": "temu-orders",
+      "slug": "temu-order-tracking",
+      "title": "Temu order tracking: carriers, statuses and late parcels"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -202,6 +207,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "allegro-orders",
       "slug": "allegro-sendungsverfolgung",
       "title": "Allegro Sendungsverfolgung: Paketdienst, Nummer, Probleme"
+    },
+    {
+      "id": "temu-orders",
+      "slug": "temu-sendungsverfolgung",
+      "title": "Temu-Sendungsverfolgung: Paketdienst, Status, Verspätung"
     },
     {
       "id": "find-tracking-number",
@@ -336,6 +346,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Allegro\u00a0: transporteurs, numéro, retards"
     },
     {
+      "id": "temu-orders",
+      "slug": "suivi-commande-temu",
+      "title": "Suivi de commande Temu\u00a0: transporteurs, statuts, retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -466,6 +481,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "allegro-orders",
       "slug": "tracciare-ordine-allegro",
       "title": "Tracciare un ordine Allegro: corrieri, codici e ritardi"
+    },
+    {
+      "id": "temu-orders",
+      "slug": "tracciare-ordine-temu",
+      "title": "Tracciare un ordine Temu: codice, ritardi e rimborsi"
     },
     {
       "id": "find-tracking-number",
@@ -600,6 +620,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de pedidos de Allegro: transportistas y retrasos"
     },
     {
+      "id": "temu-orders",
+      "slug": "seguimiento-pedido-temu",
+      "title": "Seguimiento de pedidos Temu: número, retrasos y reembolsos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -732,6 +757,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguir encomendas do Allegro: transportadoras e atrasos"
     },
     {
+      "id": "temu-orders",
+      "slug": "rastrear-encomenda-temu",
+      "title": "Rastrear uma encomenda Temu: número, atrasos e reembolsos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -862,6 +892,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "allegro-orders",
       "slug": "sledzenie-przesylki-allegro",
       "title": "Śledzenie przesyłki Allegro: numer, przewoźnik, Dyskusja"
+    },
+    {
+      "id": "temu-orders",
+      "slug": "sledzenie-zamowienia-temu",
+      "title": "Śledzenie zamówienia Temu: numer, opóźnienia i zwroty"
     },
     {
       "id": "find-tracking-number",

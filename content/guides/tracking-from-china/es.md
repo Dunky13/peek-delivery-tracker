@@ -151,6 +151,8 @@ En los artículos que llevan en su ficha la etiqueta de entrega rápida, la gara
 
 Si pone entregado y no hay nada, mira [paquete entregado pero no recibido](guide:delivered-not-received).
 
+Pantallas, estados, créditos y reclamaciones de Temu: [seguimiento de pedidos de Temu](guide:temu-orders).
+
 :::sources
 - [Cainiao: Help centre (en inglés)](https://global.cainiao.com/helpDoc.htm) – estados, 11 y 12 días, seguimiento del envío económico
 - [Cainiao: textos de su web de seguimiento](https://lang.alicdn.com/mcms/global-track/0.0.10/global-track.json) – aviso en español sobre el envío económico

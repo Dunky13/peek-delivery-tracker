@@ -34,7 +34,7 @@ Na página de devoluções da loja e no e-mail que recebes quando entregas a enc
 | Amazon.es | As minhas devoluções › Ver o estado da devolução, ou o Centro de devoluções | Balcões da Celeritas, a partir de Portugal |
 | Zalando | Secção «Devoluções» da tua conta. O código vale 30 dias | Aparecem durante a devolução online |
 | Shein | Meus Pedidos › Devoluções › Registro de Devolução e Reembolso › Detalhes › «Salvar a Etiqueta» | GLS (código QR), InPost (código QR), CTT (código PIN) |
-| Temu | Pedes a devolução em «As suas encomendas» ou na página de devolução online | Não indicadas nas páginas públicas |
+| Temu | Pedes a devolução em «As suas encomendas» ou na página de devolução online | CTT, InPost ou DPD |
 
 As transportadoras também têm o seu seguimento: [CTT](carrier:ctt) e [InPost](carrier:inpost), por exemplo.
 
@@ -110,7 +110,7 @@ O seguimento e o talão são as tuas provas. Vai por ordem:
 - **Com um vendedor da Amazon.es** tens a Garantia de A a Z. Cobre um reembolso que não chega sete dias depois de a devolução ser entregue ao vendedor, e uma devolução com a etiqueta pré-paga do vendedor quando "o produto devolvido extraviou-se em trânsito, não pode ser entregue ou está a ser-lhe devolvido".
 - **Quem corre o risco.** A Amazon.es avisa que "os pacotes enviados sem seguimento podem não ser elegíveis para reembolsos do vendedor" nem da Garantia de A a Z. Com uma devolução com seguimento e o talão, a loja já não pode reter o reembolso à espera da encomenda: se resolveste o contrato, à lei basta a prova de que a enviaste.
 
-Para ir atrás de uma encomenda perdida: [encomenda perdida](guide:lost-parcel) e [entregue mas não recebida](guide:delivered-not-received). Uma encomenda que volta ao vendedor antes de chegar a ti é outro caso: [devolvida ao remetente](guide:returned-to-sender). Loja a loja: [encomendas da Amazon](guide:amazon-orders) e [Temu e Shein](guide:tracking-from-china).
+Para ir atrás de uma encomenda perdida: [encomenda perdida](guide:lost-parcel) e [entregue mas não recebida](guide:delivered-not-received). Uma encomenda que volta ao vendedor antes de chegar a ti é outro caso: [devolvida ao remetente](guide:returned-to-sender). Loja a loja: [encomendas da Amazon](guide:amazon-orders) e [Temu](guide:temu-orders); para a Shein, [encomendas da China](guide:tracking-from-china).
 
 ## Posso seguir a minha devolução no Peek?
 
@@ -130,6 +130,7 @@ O Peek vê o que a transportadora publica. Diz-te que a encomenda chegou ao cent
 - [Zalando: Como posso devolver um artigo de Parceiro da Zalando?](https://www.zalando.pt/faq/Returns-and-Refunds/how-do-i-return-a-zalando-partner-item.html) – devolução ao parceiro com a etiqueta incluída
 - [Shein: Política de devolução](https://pt.shein.com/Return-Policy-a-281.html) – etiqueta, transportadoras, custos, prazos do reembolso, moradas de devolução, livre resolução
 - [Temu: Política de devolução e reembolso](https://www.temu.com/pt/return-and-refund-policy.html) – livre resolução, 14 dias, primeira devolução grátis, 90 dias, reembolso reduzido
+- [Temu: Como é que envio os meus artigos para devolução?](https://www.temu.com/pt/support/c3/como-que-envio-os-meus-artigos-para-devolu-o-f-50-s-201.html) – CTT, InPost, DPD
 - [Diário da República: Decreto-Lei n.º 24/2014, versão consolidada](https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/2014-73222992) – arts. 10.º, 12.º e 13.º: 14 dias, retenção do reembolso, reembolso em dobro, custos de devolução
 - [Your Europe: Devoluções e direito de retratação](https://europa.eu/youreurope/citizens/consumers/shopping/returns/index_pt.htm) – 14 dias a contar da entrega, portes de devolução, compras a particulares
 :::

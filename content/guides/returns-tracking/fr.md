@@ -34,7 +34,7 @@ Dans ton compte chez la boutique et dans ses e-mails de retour. Tu vois le trans
 | Amazon (amazon.fr, amazon.com.be) | Vos retours, 3 derniers mois, Afficher l'état du retour. Sur amazon.com.be : Vos commandes, Voir le statut du retour/remboursement | France : bureau de poste, point Mondial Relay, borne de retour Amazon dans certains Monoprix. Depuis la Belgique, la Suisse ou le Luxembourg : étiquette prépayée, sans transporteur précisé |
 | Zalando (France, Belgique, Suisse) | « Retours », dans ton compte, avec le code QR | France : La Poste (code valable 10 jours) ou Mondial Relay (30 jours). Ailleurs, affiché pendant le retour en ligne. En Suisse, enlèvement à domicile possible |
 | Shein | Mes commandes, Retours, Enregistrement des retours et remboursements, Détails, Enregistrer l'étiquette | France : Mondial Relay, Colissimo, Chronopost, enlèvement FedEx. Belgique : bpost, GLS, Mondial Relay. Suisse : DPD, La Poste |
-| Temu | Vos commandes, Retours, Imprimer l'étiquette de retour. Le statut du remboursement est sur la page de détails de la commande | Suisse : Päckli Punkt. Pour la France et la Belgique, Temu n'en cite aucun |
+| Temu | Vos commandes, Retours, Imprimer l'étiquette de retour. Le statut du remboursement est sur la page de détails de la commande | France : Mondial Relay, Chronopost, DPD, La Poste, enlèvement UPS. Belgique : Homerr, Mondial Relay, DPD. Suisse : Päckli Punkt |
 
 Les transporteurs suivent le retour comme n'importe quel colis : [La Poste](carrier:la-poste) pour Colissimo, [Mondial Relay](carrier:mondial-relay), [Chronopost](carrier:chronopost), [FedEx](carrier:fedex), [bpost](carrier:bpost), [La Poste suisse](carrier:swiss-post) et [DPD Suisse](carrier:dpd-ch). Chez bpost, tu suis le retour dans Track & Trace ou l'app My bpost grâce au code-barres de ta preuve de dépôt. En Suisse, tu peux aussi faire enlever ton retour gratuitement à domicile avec la Post-App.
 
@@ -58,7 +58,7 @@ Le retour ne va pas toujours directement à la boutique. Shein prévient que ni 
 | Amazon.fr | Remboursement dans les 14 jours suivant ta demande de retour |
 | Zalando | Remboursement sous 14 jours après la remise au transporteur, trajet compris |
 | Shein | 5 à 7 jours de trajet, puis 5 à 7 jours de contrôle qualité à l'entrepôt |
-| Temu | Pas précisé. En Suisse, le colis doit être posté dans les 14 jours suivant ta demande, sinon le retour est annulé |
+| Temu | Pas précisé. Le colis doit être posté dans les 14 jours suivant ta demande ; en Suisse, sinon, le retour est annulé |
 
 Après le dépôt, Vos retours chez Amazon.fr indique la date prévue pour chaque statut. Le suivi ne bouge plus avant même d'arriver au centre de retours ? Voir [suivi de colis qui ne bouge plus](guide:tracking-not-updating).
 
@@ -105,7 +105,7 @@ Ton suivi et ta preuve de dépôt sont tes preuves. Procède dans cet ordre :
 - **Sache qui porte le risque.** En Belgique, si tu as utilisé l'étiquette du vendeur, il reste responsable d'un problème pendant le renvoi, sauf s'il prouve que tu en es responsable. Sans sa méthode de retour, la perte est pour toi. En France, ta preuve d'expédition suffit pour que le vendeur ne puisse plus différer ton remboursement.
 - **Sur Vinted,** c'est le vendeur qui signale un problème avec l'article retourné, et Vinted répond sous 48 heures.
 
-Pour chercher un colis qui manque : [colis perdu](guide:lost-parcel) et [colis livré mais non reçu](guide:delivered-not-received). Une livraison revenue chez le vendeur avant de t'atteindre, c'est un autre cas : [colis retourné à l'expéditeur](guide:returned-to-sender). Boutique par boutique : [commandes Amazon](guide:amazon-orders), [Temu et Shein](guide:tracking-from-china) et [Vinted](guide:vinted-orders).
+Pour chercher un colis qui manque : [colis perdu](guide:lost-parcel) et [colis livré mais non reçu](guide:delivered-not-received). Une livraison revenue chez le vendeur avant de t'atteindre, c'est un autre cas : [colis retourné à l'expéditeur](guide:returned-to-sender). Boutique par boutique : [commandes Amazon](guide:amazon-orders), [Temu](guide:temu-orders), [Shein et AliExpress](guide:tracking-from-china) et [Vinted](guide:vinted-orders).
 
 ## Puis-je suivre mon retour dans Peek ?
 
@@ -128,6 +128,8 @@ Peek voit ce que publie le transporteur. Il peut te dire que le colis est arriv�
 - [Shein Suisse : Politique de retour](https://ch.shein.com/fr/Return-Policy-a-281.html) – transporteurs en Suisse
 - [Temu France : Politique de retour et de remboursement](https://www.temu.com/fr/return-and-refund-policy.html) – 14 jours, report, 90 jours, vérification
 - [Temu Suisse : Politique de retour et de remboursement](https://www.temu.com/ch-fr/return-and-refund-policy.html) – Päckli Punkt, 14 jours, étiquette, adresse, remboursement anticipé, banque
+- [Temu France : Comment puis-je renvoyer mes articles ?](https://www.temu.com/fr/support/c3/comment-puis-je-renvoyer-mes-articles-f-50-s-201.html) – Mondial Relay, Chronopost, DPD, La Poste, UPS, 14 jours
+- [Temu Belgique : Comment puis-je renvoyer mes articles ?](https://www.temu.com/be-fr/support/c3/comment-puis-je-renvoyer-mes-articles-f-50-s-201.html) – Homerr, Mondial Relay, DPD
 - [Vinted : Politique de remboursement de Vinted](https://www.vinted.fr/help/465) – 2 jours, 5 jours ouvrés, frais de retour, remboursement
 - [Vinted : Que faire en cas de problèmes avec l'article retourné ?](https://www.vinted.fr/help/1476) – 2 jours, remboursement automatique, 48 heures
 - [La Poste : Où et comment déposer un Colissimo ?](https://aide.laposte.fr/contenu/ou-et-comment-deposer-un-colissimo) – preuve de dépôt au guichet et en consigne, numéro de suivi

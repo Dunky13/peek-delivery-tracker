@@ -35,7 +35,7 @@ In deinem Konto beim Shop und in seinen E-Mails zur Rücksendung. Welcher Paketd
 | Zalando (DE, AT, CH) | „Rücksendungen“ in deinem Konto, mit QR-Code und Etikett | Zeigt Zalando im Online-Rücksendeprozess |
 | Otto | Mein Konto. Das Etikett gibt es als QR-Code fürs Smartphone oder als PDF | Verkäufer OTTO: Hermes, rund 16.000 PaketShops, oder du gibst die Retoure dem Hermes-Boten mit |
 | Shein | Meine Bestellungen, Rücksendungen, Rückgabe- & Erstattungsprotokoll, Details, Etikett speichern | Deutschland: GLS, DPD, DHL, Hermes, FedEx-Abholung. Österreich: Hermes, DPD, Österreichische Post. Schweiz: DPD, Die Post |
-| Temu | Deine Bestellungen, Rücksendungen, Rücksende-Etikett drucken. Den Erstattungsstatus zeigt die Bestelldetailseite | Schweiz: Päckli Punkt. Für Deutschland und Österreich nennt Temu keinen |
+| Temu | Deine Bestellungen, Rücksendungen, Rücksende-Etikett drucken. Den Erstattungsstatus zeigt die Bestelldetailseite | Deutschland: DHL, GLS, UPS, DPD. Österreich: Österreichische Post. Schweiz: Schweizerische Post, Päckli Punkt |
 
 Bei den Paketdiensten verfolgst du die Retoure wie jedes andere Paket: [DHL](carrier:dhl) in der Post & DHL App, [Hermes](carrier:hermes-de) mit der Sendungs- oder Quittungsnummer, bis zu vier Stunden nach der Abgabe. Dazu kommen [DPD](carrier:dpd-de), [GLS](carrier:gls-de), [FedEx](carrier:fedex), [Österreichische Post](carrier:austrian-post), [Schweizerische Post](carrier:swiss-post), [DPD Schweiz](carrier:dpd-ch) und [DHL Express](carrier:dhl-express).
 
@@ -60,7 +60,7 @@ Oft geht die Retoure auch nicht direkt zum Shop. Shein warnt, weder die Absender
 | Zalando | Erstattung innerhalb von 14 Tagen nach der Übergabe an den Paketdienst, der Weg inklusive |
 | Otto | Gutschrift bis zu 14 Tage ab Rücksendedatum |
 | Shein | 5–7 Tage unterwegs, dann 5–7 Tage Qualitätskontrolle im Lager |
-| Temu | Nicht genannt. In der Schweiz muss das Paket innerhalb von 14 Tagen nach dem Antrag abgestempelt sein |
+| Temu | Nicht genannt. Abschicken musst du das Paket innerhalb von 14 Tagen nach dem Antrag |
 
 Amazon zeigt dir nach der Abgabe für jeden Status ein voraussichtliches Datum: `Eingeleitet`, `Abgabe`, `Erhalten`, `Erstattung veranlasst`, `Rückerstattung gutgeschrieben`. Bei Otto heißen die Schritte `Rücksendung angemeldet`, `Rücksendung unterwegs`, `Rücksendung wird geprüft` und `Rücksendung akzeptiert & gutgeschrieben`. Bewegt sich die Sendungsverfolgung schon vor dem Retourenzentrum tagelang nicht, hilft [Sendungsverfolgung wird nicht aktualisiert](guide:tracking-not-updating).
 
@@ -105,7 +105,7 @@ Deine Sendungsverfolgung und dein Beleg sind deine Beweise. So gehst du vor:
 - **Kenne das Risiko.** In Deutschland trägt nach einem Widerruf der Shop „die Gefahr der Rücksendung der Waren“. Geht die Retoure verloren, musst du aber nachweisen, dass du sie abgeschickt hast, sagt DHL, und das geht mit dem Einlieferungsbeleg. In Österreich darf der Shop die Erstattung nicht mehr verweigern, sobald du die Rücksendung nachweist.
 - **Bei Marketplace-Verkäufern auf Amazon** prüfen manche Verkäufer deine Rücksendeanfrage erst. Antwortet der Verkäufer nicht innerhalb von zwei Werktagen, kannst du einen Antrag auf die A-bis-z-Garantie stellen.
 
-Mehr zur Suche nach einem verschwundenen Paket: [Paket verloren](guide:lost-parcel) und [zugestellt, aber nicht erhalten](guide:delivered-not-received). Ging eine Lieferung an dich zurück an den Absender, bevor sie dich erreicht hat, ist das ein anderer Fall: [Paket zurück an Absender](guide:returned-to-sender). Shop für Shop: [Amazon-Bestellungen](guide:amazon-orders), [Temu und Shein](guide:tracking-from-china) und [Vinted](guide:vinted-orders).
+Mehr zur Suche nach einem verschwundenen Paket: [Paket verloren](guide:lost-parcel) und [zugestellt, aber nicht erhalten](guide:delivered-not-received). Ging eine Lieferung an dich zurück an den Absender, bevor sie dich erreicht hat, ist das ein anderer Fall: [Paket zurück an Absender](guide:returned-to-sender). Shop für Shop: [Amazon-Bestellungen](guide:amazon-orders), [Temu](guide:temu-orders), [Shein und AliExpress](guide:tracking-from-china) und [Vinted](guide:vinted-orders).
 
 ## Kann ich meine Retoure mit Peek verfolgen?
 
@@ -131,6 +131,9 @@ Peek sieht, was der Paketdienst veröffentlicht. Es zeigt dir, dass die Retoure 
 - [Shein Schweiz: Widerrufsrecht & Rückgaberichtlinie](https://ch.shein.com/Return-Policy-a-281.html) – Paketdienste in der Schweiz
 - [Temu Deutschland: Rückgabe- und Erstattungsbedingungen](https://www.temu.com/de/return-and-refund-policy.html) – 90 Tage, Prüfung, Kürzung
 - [Temu Schweiz: Rückgabe- und Erstattungsbedingungen](https://www.temu.com/ch/return-and-refund-policy.html) – Päckli Punkt, 14 Tage, Etikett, vorzeitige Rückerstattung, Bank
+- [Temu Deutschland: Wie kann ich meine Artikel zurückschicken?](https://www.temu.com/de/support/c3/wie-kann-ich-meine-artikel-zur-ckschicken-f-50-s-201.html) – DHL, GLS, UPS, DPD, 14 Tage
+- [Temu Österreich: Wie kann ich meine Artikel zurückschicken?](https://www.temu.com/at/support/c3/wie-kann-ich-meine-artikel-zur-ckschicken-f-50-s-201.html) – Österreichische Post
+- [Temu Schweiz: Wie kann ich meine Artikel zurückschicken?](https://www.temu.com/ch/support/c3/wie-kann-ich-meine-artikel-zur-ckschicken-f-50-s-201.html) – Schweizerische Post, Päckli Punkt
 - [DHL: Hilfe zur Retoure](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/versenden/retoure.html) – Verfolgung in der App, Einlieferungsbeleg als Nachweis
 - [DHL: Retouren versenden](https://www.dhl.de/retoure-verschicken) – QR-Code, Abgabestellen
 - [Hermes: Wo ist meine Hermes Retoure?](https://www.myhermes.de/service/fragen/retournieren/wo-ist-meine-retoure.html) – Sendungs- oder Quittungsnummer, vier Stunden, Händler

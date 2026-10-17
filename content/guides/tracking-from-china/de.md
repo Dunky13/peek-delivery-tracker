@@ -162,6 +162,8 @@ Bei gekennzeichneten Artikeln gibt es über das „Delivery Commitment“ von Al
 
 Steht „zugestellt“ in der Sendungsverfolgung, aber nichts ist angekommen? Dann hilft [Paket zugestellt, aber nicht erhalten](guide:delivered-not-received).
 
+Temus eigene Bildschirme, Status, Gutschriften und Reklamationen: [Temu-Sendungsverfolgung](guide:temu-orders).
+
 :::sources
 - [Cainiao: Help center](https://global.cainiao.com/helpDoc.htm) – Status, 11 und 12 Tage, Economy-Hinweis
 - [Cainiao: Global express](https://www.cainiao.com/en/global-express.html) – Lieferzeiten je Linie

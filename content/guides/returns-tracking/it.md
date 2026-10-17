@@ -34,7 +34,7 @@ Nella pagina dei resi del negozio e nell'email che ti arriva quando consegni il 
 | Amazon.it | Centro resi: «Gestisci i resi», «Vedi altri resi», «Controlla pacchetto» | Uffici Postali e Punti Poste, punti UPS, Punti assistenza DHL, ritiro a domicilio |
 | Zalando | Sezione «Resi» del tuo account. Il QR code vale 30 giorni | Li vedi durante il reso online. Ritiro a domicilio con Poste Italiane |
 | Shein | I miei ordini › Resi › Scheda resi e rimborsi › Dettagli, poi «Salva l'etichetta» | BRT, Poste Italiane, InPost (armadietto con codice PIN), FedEx (ritiro a domicilio) |
-| Temu | Chiedi il reso da «I tuoi ordini» o dalla pagina di reso online | Non indicati nelle pagine pubbliche |
+| Temu | Chiedi il reso da «I tuoi ordini» o dalla pagina di reso online | Poste Italiane o InPost, oppure ritiro con UPS |
 
 I corrieri hanno anche il loro tracciamento: [Poste Italiane](carrier:poste-italiane), [BRT](carrier:brt), [InPost](carrier:inpost), [UPS](carrier:ups) e [FedEx](carrier:fedex). Occhio ai locker: Zalando avverte che "i locker di Poste Italiane non supportano i QR code".
 
@@ -107,7 +107,7 @@ Il tracciamento e la ricevuta sono le tue prove. Procedi così:
 - **Con un venditore su Amazon.it** c'è la Garanzia dalla A alla Z. Copre un rimborso che non arriva 7 giorni dopo che il reso è stato consegnato al venditore, e un reso spedito con l'etichetta prepagata del venditore che si è perso, non è consegnabile o sta tornando da te.
 - **Chi rischia.** Amazon.it avverte che "i pacchi spediti senza tracciamento potrebbero non essere idonei per i rimborsi" del venditore o della Garanzia dalla A alla Z. Con un reso tracciato e la ricevuta, invece, il negozio non può più trattenere il rimborso aspettando il pacco: se hai esercitato il recesso, per la legge basta la prova che l'hai spedito.
 
-Per inseguire un pacco perso: [pacco smarrito](guide:lost-parcel) e [consegnato ma non ricevuto](guide:delivered-not-received). Un pacco che torna al venditore prima di arrivare a te è un altro caso: [pacco rispedito al mittente](guide:returned-to-sender). Negozio per negozio: [ordini Amazon](guide:amazon-orders) e [Temu e Shein](guide:tracking-from-china).
+Per inseguire un pacco perso: [pacco smarrito](guide:lost-parcel) e [consegnato ma non ricevuto](guide:delivered-not-received). Un pacco che torna al venditore prima di arrivare a te è un altro caso: [pacco rispedito al mittente](guide:returned-to-sender). Negozio per negozio: [ordini Amazon](guide:amazon-orders) e [Temu](guide:temu-orders); per Shein, [pacchi dalla Cina](guide:tracking-from-china).
 
 ## Posso tracciare il reso con Peek?
 
@@ -127,6 +127,7 @@ Peek vede quello che pubblica il corriere. Ti dice che il pacco è arrivato al c
 - [Zalando: Come posso restituire un articolo di un partner di Zalando?](https://www.zalando.it/faq/Returns-and-Refunds/how-do-i-return-a-zalando-partner-item.html) – reso al partner con l'etichetta inclusa
 - [Shein: Politica di Reso](https://it.shein.com/Return-Policy-a-281.html) – dove trovare l'etichetta, corrieri, costi, tempi del rimborso, indirizzi di reso, recesso
 - [Temu: Politica di Reso e Rimborso](https://www.temu.com/it/return-and-refund-policy.html) – recesso, rimborso entro 14 giorni, primo reso gratuito, 90 giorni, rimborso ridotto
+- [Temu: Come fare un reso](https://www.temu.com/it/support/c3/come-fare-un-reso-f-50-s-201.html) – Poste Italiane, InPost, ritiro UPS
 - [Normattiva: Codice del consumo, art. 56](https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2005-09-06;206~art56) – rimborso entro 14 giorni, trattenuto fino ai beni o alla prova di spedizione
 - [Normattiva: Codice del consumo, art. 57](https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2005-09-06;206~art57) – 14 giorni per rispedire, spese dirette di restituzione
 - [Your Europe: Restituzioni e diritto di recesso](https://europa.eu/youreurope/citizens/consumers/shopping/returns/index_it.htm) – 14 giorni dalla consegna, spese di reso, acquisti da privati

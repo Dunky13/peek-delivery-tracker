@@ -35,7 +35,7 @@ Na stronie zwrotów w sklepie i w mailu, który przychodzi po nadaniu paczki. Sk
 | Amazon.pl | Twoje zwroty › Wyświetl status zwrotu produktów/kosztów, albo Centrum zwrotów | Punkty DHL (z etykietą albo z kodem kreskowym), Paczkomaty InPost (kod, bez etykiety) |
 | Zalando | Zakładka „Zwroty” na koncie. Kod zwrotu jest ważny 30 dni | Widzisz ich w zwrocie online. „Użyj telefonu”: Paczkomat InPost albo punkt lub skrytka DPD |
 | Shein | Moje zamówienia › Zwroty › Rejestr zwrotów i refundacji › Szczegóły › „Zapisz etykietę” | InPost (kod PIN), Poczta Polska (etykieta), FedEx (odbiór) |
-| Temu | Zwrot zgłaszasz w „Twoje zamówienia” albo na Stronie Zwrotu Online | Nie podaje ich na stronach publicznych |
+| Temu | Zwrot zgłaszasz w „Twoje zamówienia” albo na Stronie Zwrotu Online | DPD, DHL lub InPost |
 
 Przewoźnicy mają też własne śledzenie: [InPost](carrier:inpost), [DPD](carrier:dpd-pl), [Poczta Polska](carrier:poczta-polska), [Allegro One](carrier:allegro-one) i [FedEx](carrier:fedex).
 
@@ -113,7 +113,7 @@ Używany, uszkodzony albo niekompletny produkt może być wart mniej. Allegro pi
 - **U sprzedawcy na Amazon.pl** działa Gwarancja od A do Z. Obejmuje zwrot pieniędzy, który nie przyszedł siedem dni po dostarczeniu zwrotu sprzedawcy, i zwrot na opłaconej etykiecie sprzedawcy, który "zaginął w transporcie, okazał się niemożliwy do dostarczenia lub został zwrócony do Ciebie".
 - **Kto ryzykuje.** "Jako nadawca paczki odpowiadasz za jej bezpieczny transport", pisze Allegro, więc dobrze ją zapakuj. Amazon.pl ostrzega, że "przesyłki zwrotne bez możliwości śledzenia mogą skutkować odmową zwrotu kosztów", i radzi sprawdzić, czy przewoźnik ubezpiecza zwrot na wartość produktu. Zwrot przez Allegro One jest chroniony do wartości przedmiotu. A gdy odstępujesz od umowy i masz dowód nadania, sklep nie może już wstrzymywać pieniędzy w oczekiwaniu na paczkę.
 
-Jak szukać zagubionej paczki: [zaginiona paczka](guide:lost-parcel) i [doręczona, ale nie dotarła](guide:delivered-not-received). Paczka, która wraca do sprzedawcy, zanim do Ciebie dotrze, to inna sprawa: [paczka wraca do nadawcy](guide:returned-to-sender). Sklep po sklepie: [zamówienia z Amazona](guide:amazon-orders) oraz [Temu i Shein](guide:tracking-from-china).
+Jak szukać zagubionej paczki: [zaginiona paczka](guide:lost-parcel) i [doręczona, ale nie dotarła](guide:delivered-not-received). Paczka, która wraca do sprzedawcy, zanim do Ciebie dotrze, to inna sprawa: [paczka wraca do nadawcy](guide:returned-to-sender). Sklep po sklepie: [zamówienia z Amazona](guide:amazon-orders) oraz [Temu](guide:temu-orders); o Shein: [paczki z Chin](guide:tracking-from-china).
 
 ## Czy mogę śledzić zwrot w Peek?
 
@@ -137,6 +137,7 @@ Peek widzi to, co publikuje przewoźnik. Pokaże, że paczka dotarła do centrum
 - [Zalando: Jak mogę zwrócić produkt partnerski Zalando?](https://www.zalando.pl/faq/Returns-and-Refunds/how-do-i-return-a-zalando-partner-item.html) – zwrot do Partnera z dołączoną etykietą
 - [Shein: Polityka Zwrotów](https://pl.shein.com/Return-Policy-a-281.html) – etykieta, przewoźnicy, koszty, czas zwrotu pieniędzy, adresy zwrotu, odstąpienie
 - [Temu: Polityka zwrotu produktów i zwrotu pieniędzy](https://www.temu.com/pl/return-and-refund-policy.html) – odstąpienie, 14 dni, darmowy pierwszy zwrot, 90 dni, pomniejszony zwrot
+- [Temu: Jak mogę odesłać moje zamówienie?](https://www.temu.com/pl/support/c3/jak-mog-odes-a-moje-zam-wienie-f-50-s-201.html) – DPD, DHL, InPost
 - [UOKiK: Odstąpienie od umowy, skutek](https://prawakonsumenta.uokik.gov.pl/prawo-odstapienia-od-umowy/skutek/) – zwrot pieniędzy w 14 dni, wstrzymanie do otrzymania rzeczy lub potwierdzenia odesłania, termin na odesłanie
 - [UOKiK: Odstąpienie od umowy, terminy](https://prawakonsumenta.uokik.gov.pl/prawo-odstapienia-od-umowy/terminy-odstapienie/) – 14 dni od otrzymania towaru
 - [UOKiK: Odstąpienie od umowy, koszty](https://prawakonsumenta.uokik.gov.pl/prawo-odstapienia-od-umowy/koszty/) – bezpośrednie koszty zwrotu

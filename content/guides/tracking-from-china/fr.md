@@ -153,6 +153,8 @@ Sur les articles qui portent l'étiquette de l'engagement de livraison d'AliExpr
 
 Si le suivi indique « livré » et que tu n'as rien reçu : [colis livré mais pas reçu](guide:delivered-not-received).
 
+Les écrans, statuts, crédits et réclamations propres à Temu : [suivre une commande Temu](guide:temu-orders).
+
 :::sources
 - [Cainiao : centre d'aide](https://global.cainiao.com/helpDoc.htm) – statuts en anglais et en français, 11 et 12 jours, livraison économique
 - [Cainiao : Global express (en anglais)](https://www.cainiao.com/en/global-express.html) – délais par ligne

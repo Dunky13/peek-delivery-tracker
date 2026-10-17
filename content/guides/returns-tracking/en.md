@@ -33,7 +33,7 @@ On the shop's returns page, and in its return emails. The shop offers its carrie
 | --- | --- | --- |
 | Amazon | Your Returns, Last 3 Months, or Return/Refund Status in the return email | UK: Evri, the Post Office, Amazon Lockers and Hub Counters. US: "over 8,000" drop-off locations. Amazon.co.uk orders sent back from Ireland: An Post |
 | Shein | My Orders, Returns, Return & Refund Record, Details | US: Happy Returns, USPS. UK: Evri, Royal Mail, InPost lockers. Ireland: An Post. Canada: Canada Post, Neighbour Express, FedEx. Australia: Hubbed, Australia Post |
-| Temu | Your Orders, Returns, Print return label. Refund status in the order details | US: Happy Returns, FedEx, USPS, UPS. Canada: Neighbour Express, Purolator, Canada Post, FedEx, UPS. Australia: PARCELPOINT, Australia Post |
+| Temu | Your Orders, Returns, Print return label. Refund status in the order details | US: Happy Returns, FedEx, USPS, UPS. Canada: Neighbour Express, Purolator, Canada Post, FedEx, UPS. Australia: PARCELPOINT, Australia Post. UK: Evri, Royal Mail, InPost. Ireland: An Post, drop2shop |
 | ASOS (UK, Australia) | My Account, My Returns. Guests only get it in the drop-off confirmation email | Shown when you create the return |
 | Zalando (Ireland) | Returns, in your account | Shown during the online return |
 
@@ -110,7 +110,7 @@ Your tracking and your receipt are your evidence. Go in this order:
 - **Let the right one claim.** With the shop's free label, the shop is the carrier's customer. "If your return was free, you'll need to ask your retailer to start an investigation on your behalf," says Evri. If you paid the postage, ask the carrier yourself.
 - **Know who bears the risk.** "Returned items are your responsibility until they reach us," says ASOS. Amazon.com's A-to-z Guarantee may not cover a lost return to a seller sent without tracking. In the UK, your proof of sending is enough to start the shop's 14-day refund deadline.
 
-More on chasing a missing parcel: [lost parcels](guide:lost-parcel) and [delivered but not received](guide:delivered-not-received). A delivery that bounced back to the seller before reaching you is a different case: [returned to sender](guide:returned-to-sender). Shop by shop, see [Amazon orders](guide:amazon-orders), [Temu and Shein](guide:tracking-from-china) and [Vinted orders](guide:vinted-orders).
+More on chasing a missing parcel: [lost parcels](guide:lost-parcel) and [delivered but not received](guide:delivered-not-received). A delivery that bounced back to the seller before reaching you is a different case: [returned to sender](guide:returned-to-sender). Shop by shop, see [Amazon orders](guide:amazon-orders), [Temu orders](guide:temu-orders), [Shein and AliExpress](guide:tracking-from-china) and [Vinted orders](guide:vinted-orders).
 
 ## Can I track my return in Peek?
 
@@ -142,6 +142,8 @@ Peek sees what the carrier publishes. It can tell you the parcel reached the ret
 - [Temu Canada: Return and Refund Policy](https://www.temu.com/ca/return-and-refund-policy.html) – Canadian carriers
 - [Temu Australia: Return and Refund Policy](https://www.temu.com/au/return-and-refund-policy.html) – Australian carriers
 - [Temu Ireland: Return and Refund Policy](https://www.temu.com/ie/return-and-refund-policy.html) – Irish refund rule
+- [Temu UK: How do I ship my items back?](https://www.temu.com/uk/support/c3/how-do-i-ship-my-items-back-f-50-s-201.html) – Evri, Royal Mail, InPost
+- [Temu Ireland: How do I ship my items back?](https://www.temu.com/ie/support/c3/how-do-i-ship-my-items-back-f-50-s-201.html) – An Post, drop2shop
 - [ASOS: Returns Policy](https://www.asos.com/customer-care/returns-refunds/what-is-your-returns-policy/) – 28 days, refund, risk in transit
 - [ASOS: How do I return something to you from the UK?](https://www.asos.com/customer-care/returns-refunds/how-do-i-return-something-to-you-from-the-uk/) – My Returns, timing, InPost proof of postage
 - [ASOS: Returns from Australia](https://www.asos.com/au/customer-care/returns-refunds/how-can-i-return-something-to-you-from-australia/) – Doncaster, timing, one number per parcel

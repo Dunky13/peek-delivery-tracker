@@ -159,6 +159,8 @@ AliExpress's Delivery Commitment adds a late-delivery coupon 48 hours after the 
 
 If it says delivered and nothing is there, follow [delivered but not received](guide:delivered-not-received).
 
+Temu's own screens, statuses, credits and claims: [Temu order tracking](guide:temu-orders).
+
 :::sources
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – statuses, 11 and 12 days, economy tracking
 - [Cainiao: Global express](https://www.cainiao.com/en/global-express.html) – delivery times by line

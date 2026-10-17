@@ -827,6 +827,23 @@ function OneBox() {
   </>;
 }
 
+function Haul() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The plane that brought them, and the way down. */}
+    <g transform="translate(150 74) rotate(90) scale(1.3)" fill="var(--ochre)">
+      <path d="M0-26c3.3 0 5.3 4 5.3 10v12l24.7 14.7v6.6L5.3 9.9v14l8 6v4L0 30.6l-13.3 3.3v-4l8-6v-14L-30 17.3v-6.6L-5.3-4v-12c0-6 2-10 5.3-10Z" />
+    </g>
+    <path d="M196 92C250 70 300 84 318 116" stroke="var(--ochre)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    {/* A stack of small parcels, and the van that takes them on. */}
+    <Box x={266} y={196} width={92} height={52} />
+    <Box x={278} y={154} width={66} height={42} />
+    <Box x={292} y={122} width={40} height={32} />
+    <Truck x={380} y={191} tone="ochre" scale={3} />
+    <Pip x={548} ground={262} width={140} mood="look" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -841,6 +858,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'second-hand-orders': { tone: 'lilac', draw: SecondHand },
   'zalando-orders': { tone: 'blue', draw: Fashion },
   'allegro-orders': { tone: 'orange', draw: OneBox },
+  'temu-orders': { tone: 'ochre', draw: Haul },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

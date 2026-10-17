@@ -35,7 +35,7 @@ En la página de devoluciones de la tienda y en el correo que te llega cuando en
 | El Corte Inglés | Mis compras › Gestiona tu compra › Devoluciones | Correos y Celeritas (pedidos de hasta 3 kg), recogida a domicilio |
 | Zalando | Sección «Devoluciones» de tu cuenta. El código vale 30 días | Lo eliges en la devolución online. Recogida a domicilio con SEUR |
 | Shein | Mis pedidos › Devoluciones › Registro de devoluciones y reembolsos › Detalles › «Guardar la etiqueta» | CTT (código QR), InPost (QR o etiqueta), GLS (QR), Correos (etiqueta), FedEx (recogida) |
-| Temu | Pides la devolución en «Sus pedidos» o en la página de devoluciones en línea | No los cita en sus páginas públicas |
+| Temu | Pides la devolución en «Sus pedidos» o en la página de devoluciones en línea | Correos, InPost, Cacesa/Celeritas o DPD |
 
 Los transportistas tienen su propio seguimiento: [Correos](carrier:correos-spain), [SEUR](carrier:seur), [GLS](carrier:gls-es) y [FedEx](carrier:fedex).
 
@@ -110,7 +110,7 @@ El seguimiento y el resguardo son tus pruebas. Ve por orden:
 - **Con un vendedor de Amazon.es** tienes la Garantía de la A a la Z. Cubre un reembolso que no llega siete días después de entregar la devolución al vendedor, y una devolución enviada con la etiqueta prepagada del vendedor que "se ha perdido durante el transporte, no se ha podido entregar o te la han devuelto".
 - **Quién corre el riesgo.** Amazon.es avisa de que "es posible que los paquetes enviados sin seguimiento no sean elegibles para recibir reembolsos" del vendedor ni de la Garantía de la A a la Z. Con una devolución con seguimiento y el resguardo, en cambio, la tienda ya no puede retener el reembolso esperando el paquete: si has desistido, a la ley le basta la prueba de que lo enviaste.
 
-Para perseguir un paquete perdido: [paquete perdido](guide:lost-parcel) y [entregado pero no recibido](guide:delivered-not-received). Un paquete que vuelve al vendedor antes de llegarte es otro caso: [devuelto al remitente](guide:returned-to-sender). Tienda por tienda: [pedidos de Amazon](guide:amazon-orders) y [Temu y Shein](guide:tracking-from-china).
+Para perseguir un paquete perdido: [paquete perdido](guide:lost-parcel) y [entregado pero no recibido](guide:delivered-not-received). Un paquete que vuelve al vendedor antes de llegarte es otro caso: [devuelto al remitente](guide:returned-to-sender). Tienda por tienda: [pedidos de Amazon](guide:amazon-orders) y [Temu](guide:temu-orders); para Shein, [paquetes de China](guide:tracking-from-china).
 
 ## ¿Puedo seguir mi devolución en Peek?
 
@@ -133,6 +133,7 @@ Peek ve lo que publica el transportista. Te dice que el paquete llegó al centro
 - [Zalando: ¿Cómo devuelvo un artículo de un Partner de Zalando?](https://www.zalando.es/faq/Returns-and-Refunds/how-do-i-return-a-zalando-partner-item.html) – devolución al Partner con la etiqueta adjunta
 - [Shein: Política de devolución](https://es.shein.com/Return-Policy-a-281.html) – etiqueta, transportistas, costes, plazos del reembolso, direcciones de devolución, desistimiento
 - [Temu: Política de devoluciones y reembolsos](https://www.temu.com/es/return-and-refund-policy.html) – desistimiento, 14 días, primera devolución gratis, 90 días, reembolso reducido
+- [Temu: ¿Cómo puedo enviar mis artículos de regreso?](https://www.temu.com/es/support/c3/c-mo-puedo-enviar-mis-art-culos-de-regreso-f-50-s-201.html) – Correos, InPost, Cacesa/Celeritas, DPD
 - [BOE: Ley General para la Defensa de los Consumidores y Usuarios, art. 107](https://www.boe.es/buscar/act.php?id=BOE-A-2007-20555#a107) – reembolso en 14 días, retención hasta los bienes o la prueba de devolución
 - [BOE: Ley General para la Defensa de los Consumidores y Usuarios, art. 108](https://www.boe.es/buscar/act.php?id=BOE-A-2007-20555#a108) – 14 días naturales para devolver, costes directos
 - [Your Europe: Devoluciones y derecho de desistimiento](https://europa.eu/youreurope/citizens/consumers/shopping/returns/index_es.htm) – 14 días desde la entrega, gastos de devolución, compras a particulares
