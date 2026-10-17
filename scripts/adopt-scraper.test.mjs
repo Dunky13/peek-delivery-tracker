@@ -8,6 +8,9 @@ import {
   compareVersions,
   continueCommand,
   databaseFacets,
+  declarationLine,
+  declaredChanges,
+  decideGate,
   diffDatabaseFacets,
   gateReport,
   installedRelease,
@@ -15,6 +18,7 @@ import {
   parseVersion,
   peerMismatches,
   pinnedVersion,
+  readMigrations,
   retry,
 } from './adopt-scraper.mjs';
 
@@ -300,6 +304,109 @@ describe('the database gate report', () => {
       gateReport({ from: '0.2.0', to: '0.2.1', changes: [], databaseReady: false }),
       'Universal Parcel Scraper 0.2.1 changes nothing the database enforces, compared with 0.2.0.',
     );
+  });
+});
+
+describe('migrations that already made a change', () => {
+  const postcodeEntry = 'dpd: dpdPostcode, validator swissPostcode, optional, pattern ^[0-9]{4}$';
+  const before = { version: '0.2.0', facets: databaseFacets(release()) };
+  const after = (() => {
+    const result = release();
+    result.catalog['example-post'] = { tracking: { mode: 'automatic', adapter: 'universal' }, detectionRules: [] };
+    result.catalog.dpd.tracking.requirements = [{ ...postcode, optional: true }];
+    return { version: '0.3.0', facets: databaseFacets(result) };
+  })();
+  const declare = (...lines) => lines.map((line) => `-- Database gate: ${line}`).join('\n');
+  const migration = (name, ...lines) => ({ name, sql: `${declare(...lines)}\nselect 1;\n` });
+  const allChanges = [
+    'carriers added example-post',
+    `inputs added ${postcodeEntry}`,
+    'inputs removed dpd: dpdPostcode, validator swissPostcode, required, pattern ^[0-9]{4}$',
+  ];
+  function ledger(missing = []) {
+    const asked = [];
+    return { asked, missingMigrations: async (names) => { asked.push(names); return names.filter((name) => missing.includes(name)); } };
+  }
+
+  it('lets a release through when applied migrations declare all it changes', async () => {
+    const { asked, missingMigrations } = ledger();
+    const { blocked, report } = await decideGate({
+      before,
+      after,
+      migrations: [migration('20261017100000_example_post', allChanges[0]), migration('20261017110000_optional_dpd', ...allChanges.slice(1))],
+      missingMigrations,
+    });
+    assert.equal(blocked, false);
+    assert.deepEqual(asked, [['20261017100000_example_post', '20261017110000_optional_dpd']]);
+    assert.match(report, /^### Universal Parcel Scraper 0\.3\.0 changes what the database enforces, as applied migrations declare/);
+    assert.match(report, /- added: `example-post`, applied by `20261017100000_example_post`/);
+    assert.match(report, /- removed: `dpd: dpdPostcode, validator swissPostcode, required, pattern \^\[0-9\]\{4\}\$`, applied by `20261017110000_optional_dpd`/);
+    assert.doesNotMatch(report, /Blocked|gh workflow run|```sql/);
+  });
+
+  it('blocks a change no applied migration declares', async () => {
+    const cases = {
+      'no migration declares it': [migration('20261017100000_example_post', allChanges[0])],
+      'it is declared the other way': [migration('20261017100000_example_post', allChanges[0], 'inputs removed ' + postcodeEntry, allChanges[2])],
+      'another pattern is declared': [migration('20261017100000_example_post', allChanges[0], allChanges[1].replace('{4}', '{5}'), allChanges[2])],
+      'a later migration undoes it': [
+        migration('20261017100000_example_post', ...allChanges),
+        migration('20261017120000_drop_example_post', 'carriers removed example-post'),
+      ],
+    };
+    for (const [why, migrations] of Object.entries(cases)) {
+      const { blocked, report } = await decideGate({ before, after, migrations, missingMigrations: ledger().missingMigrations });
+      assert.equal(blocked, true, why);
+      assert.match(report, /^### Blocked: Universal Parcel Scraper 0\.3\.0/, why);
+      assert.ok(report.includes('gh workflow run adopt-scraper.yml -f version=0.3.0 -f database_ready=true'), why);
+    }
+  });
+
+  it('blocks a change whose migration production has not applied, and names the lines to declare', async () => {
+    const { blocked, report } = await decideGate({
+      before,
+      after,
+      migrations: [migration('20261017100000_example_post', allChanges[0]), migration('20261017110000_optional_dpd', ...allChanges.slice(1))],
+      missingMigrations: ledger(['20261017110000_optional_dpd']).missingMigrations,
+    });
+    assert.equal(blocked, true);
+    assert.match(report, /- added: `example-post`, applied by `20261017100000_example_post`/);
+    assert.ok(report.includes(['```sql', ...allChanges.slice(1).map((line) => `-- Database gate: ${line}`), '```'].join('\n')));
+  });
+
+  it('asks production nothing when nothing is declared, nothing changed or the database is ready', async () => {
+    const { asked, missingMigrations } = ledger();
+    assert.equal((await decideGate({ before, after, migrations: [], missingMigrations })).blocked, true);
+    assert.equal((await decideGate({ before, after: before, migrations: [migration('20261017100000_example_post', ...allChanges)], missingMigrations })).blocked, false);
+    const ready = await decideGate({ before, after, migrations: [migration('20261017100000_example_post', ...allChanges)], missingMigrations, databaseReady: true });
+    assert.equal(ready.blocked, false);
+    assert.match(ready.report, /confirmed as applied/);
+    assert.deepEqual(asked, []);
+  });
+
+  it('fails when production cannot say which migrations it has', async () => {
+    await assert.rejects(decideGate({
+      before,
+      after,
+      migrations: [migration('20261017100000_example_post', ...allChanges)],
+      missingMigrations: async () => { throw new Error('The database answered 503'); },
+    }), /503/);
+  });
+
+  it('reads declaration lines and refuses one it does not understand', () => {
+    assert.deepEqual(declaredChanges([migration('20261017100000_example_post', allChanges[1])]), [
+      { migration: '20261017100000_example_post', facet: 'inputs', change: 'added', entry: postcodeEntry },
+    ]);
+    assert.equal(declarationLine({ facet: 'inputs', change: 'added', entry: postcodeEntry }), `-- Database gate: ${allChanges[1]}`);
+    for (const line of ['carrier added example-post', 'carriers adds example-post', 'carriers added ', 'carriers  added example-post']) {
+      assert.throws(() => declaredChanges([migration('20261017100000_example_post', line)]), /does not understand/, line);
+    }
+  });
+
+  it('understands the declarations in supabase/migrations', async () => {
+    const migrations = await readMigrations();
+    assert.deepEqual(migrations.map(({ name }) => name), [...migrations.map(({ name }) => name)].sort());
+    assert.ok(declaredChanges(migrations).some(({ migration: name }) => name === '20261017234500_gls_austria_postcode'));
   });
 });
 

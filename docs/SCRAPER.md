@@ -128,11 +128,26 @@ release changes one of these:
 - the stages;
 - the names of the universal providers.
 
-The run's summary lists each change with the constraints and functions that enforce it.
-Only the first run a release stops fails, which notifies; later runs stop at the same
-release without failing until the migration is in, and their summary links to that first
-run. Write the migration, apply it to production, then continue with the release the run
-named:
+A migration that makes one of these changes declares it, one line per change, in the form
+the run's summary gives:
+
+```sql
+-- Database gate: carriers added example-post
+-- Database gate: inputs added example-post: postcode, validator internationalPostcode, optional
+```
+
+A change passes once a migration that declares it is in production's ledger of applied
+migrations, which the gate reads with the publishable key, as the deployment does. For one
+change, the latest migration that names it decides. So a migration applied before the
+release lets the scheduled run adopt it. A line can be added to a migration after it is
+applied: it is a comment.
+
+The run's summary lists each change with the constraints and functions that enforce it and
+the migration that made it. Only the first run a release stops fails, which notifies; later
+runs stop at the same release without failing until the migration is in, and their summary
+links to that first run. Write the migration with the lines the summary gives and apply it
+to production: the next run adopts the release. To adopt it at once, continue with the
+release the run named:
 
 ```bash
 gh workflow run adopt-scraper.yml -f version=1.2.3 -f database_ready=true

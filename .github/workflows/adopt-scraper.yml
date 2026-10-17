@@ -145,13 +145,16 @@ jobs:
         run: npm install --save-exact --prefer-online "universal-parcel-scraper@$VERSION"
 
       # Before regenerating: the contract generator refuses a changed stage
-      # vocabulary without saying what the database needs. A release that waits
-      # for a migration (status 3) skips the rest; the gate job reports it.
+      # vocabulary without saying what the database needs. A change passes once
+      # a migration that declares it is in production's ledger. A release that
+      # waits for a migration (status 3) skips the rest; the gate job reports it.
       - name: Stop when the database must change first
         id: gate
         if: steps.target.outputs.adopt == 'true'
         env:
           DATABASE_READY: ${{ inputs.database_ready == true }}
+          SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
         run: |
           arguments=("$RUNNER_TEMP/scraper-before.json")
           if [ "$DATABASE_READY" = "true" ]; then arguments+=(--database-ready); fi

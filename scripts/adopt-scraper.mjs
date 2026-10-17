@@ -1,12 +1,13 @@
 // Adopts a Universal Parcel Scraper release, for .github/workflows/adopt-scraper.yml:
 // which version to move to, and what that version changes among the things the
-// database holds its own copy of. Every command also runs locally.
+// database holds its own copy of. Every command also runs locally; the gate asks
+// production's ledger of migrations through SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.
 //
 //   node scripts/adopt-scraper.mjs resolve [--version=1.2.3] [--database-ready]
 //   node scripts/adopt-scraper.mjs snapshot <file>        before installing the release
 //   node scripts/adopt-scraper.mjs gate <file> [--database-ready]   exits 3 when the release waits for a migration
 //   node scripts/adopt-scraper.mjs peers
-import { appendFile, readFile, writeFile } from 'node:fs/promises';
+import { appendFile, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
@@ -218,29 +219,102 @@ export function continueCommand(version) {
   return `gh workflow run adopt-scraper.yml -f version=${version} -f database_ready=true`;
 }
 
-/** The gate's report in Markdown. It blocks unless `databaseReady` or nothing changed. */
+// ---------------------------------------------------------------------------
+// Migrations that already made a change
+// ---------------------------------------------------------------------------
+
+const declarationPrefix = '-- Database gate: ';
+const declarationPattern = /^-- Database gate: (\S+) (added|removed) (\S.*)$/;
+
+/** The line a migration carries for each change it makes the database accept. */
+export function declarationLine({ facet, change, entry }) {
+  return `${declarationPrefix}${facet} ${change} ${entry}`;
+}
+
+/** The migrations in supabase/migrations, in the order they are applied. */
+export async function readMigrations(directory = path.join(root, 'supabase', 'migrations')) {
+  const names = (await readdir(directory)).filter((file) => file.endsWith('.sql')).sort();
+  return Promise.all(names.map(async (file) => ({
+    name: file.slice(0, -'.sql'.length),
+    sql: await readFile(path.join(directory, file), 'utf8'),
+  })));
+}
+
+/** The changes each migration declares, in the order of `migrations`. */
+export function declaredChanges(migrations) {
+  return migrations.flatMap(({ name, sql }) => sql.split('\n').filter((line) => line.startsWith(declarationPrefix))
+    .map((line) => {
+      const match = declarationPattern.exec(line.trimEnd());
+      if (!match || !Object.hasOwn(ENFORCED_BY, match[1])) {
+        throw new Error(`${name} has a database gate line the gate does not understand: ${line.slice(0, 200)}`);
+      }
+      return { migration: name, facet: match[1], change: match[2], entry: match[3] };
+    }));
+}
+
+/** The added and removed entries no migration has made yet. */
+export function pendingChanges(changes) {
+  return changes.flatMap(({ facet, added, removed, madeBy = {} }) => [
+    ...added.map((entry) => ({ facet, change: 'added', entry })),
+    ...removed.map((entry) => ({ facet, change: 'removed', entry })),
+  ].filter(({ entry }) => !madeBy[entry]));
+}
+
+/**
+ * Adds to each change `madeBy`: the migration that made each entry, when it declares
+ * the entry and production has applied it. For one entry, the latest migration that
+ * names it decides, so a migration that undoes a change takes it back.
+ * `missingMigrations(names)` answers which of them production lacks.
+ */
+export async function findMigrationsThatMadeChanges(changes, declarations, missingMigrations) {
+  const latest = new Map(declarations.map((declaration) => [`${declaration.facet}\n${declaration.entry}`, declaration]));
+  const declared = changes.map(({ facet, added, removed }) => Object.fromEntries([
+    ...added.map((entry) => [entry, 'added']),
+    ...removed.map((entry) => [entry, 'removed']),
+  ].flatMap(([entry, change]) => {
+    const declaration = latest.get(`${facet}\n${entry}`);
+    return declaration?.change === change ? [[entry, declaration.migration]] : [];
+  })));
+  const names = [...new Set(declared.flatMap(Object.values))].sort();
+  const missing = new Set(names.length > 0 ? await missingMigrations(names) : []);
+  return changes.map((change, index) => ({
+    ...change,
+    madeBy: Object.fromEntries(Object.entries(declared[index]).filter(([, migration]) => !missing.has(migration))),
+  }));
+}
+
+/**
+ * The gate's report in Markdown. It blocks unless `databaseReady` or every change was
+ * made by a migration production has applied (`madeBy`).
+ */
 export function gateReport({ from, to, changes, databaseReady }) {
   if (changes.length === 0) {
     return `Universal Parcel Scraper ${to} changes nothing the database enforces, compared with ${from}.`;
   }
   const code = (text) => `\`${text}\``;
-  const lines = [
-    databaseReady
-      ? `### Universal Parcel Scraper ${to} changes what the database enforces, confirmed as applied`
-      : `### Blocked: Universal Parcel Scraper ${to} changes what the database enforces`,
-    '',
-    `Compared with ${from}:`,
-  ];
-  for (const { facet, added, removed } of changes) {
+  const pending = databaseReady ? [] : pendingChanges(changes);
+  let title = `### Universal Parcel Scraper ${to} changes what the database enforces, as applied migrations declare`;
+  if (databaseReady) title = `### Universal Parcel Scraper ${to} changes what the database enforces, confirmed as applied`;
+  if (pending.length > 0) title = `### Blocked: Universal Parcel Scraper ${to} changes what the database enforces`;
+  const lines = [title, '', `Compared with ${from}:`];
+  for (const { facet, added, removed, madeBy = {} } of changes) {
+    const entry = (change, text) => `- ${change}: ${code(text)}${madeBy[text] ? `, applied by ${code(madeBy[text])}` : ''}`;
     lines.push('', `**${facetTitles[facet]}** (${ENFORCED_BY[facet].map(code).join(', ')})`, '');
-    lines.push(...added.map((entry) => `- added: ${code(entry)}`));
-    lines.push(...removed.map((entry) => `- removed: ${code(entry)}`));
+    lines.push(...added.map((text) => entry('added', text)));
+    lines.push(...removed.map((text) => entry('removed', text)));
     if (facetNotes[facet]) lines.push('', facetNotes[facet]);
   }
-  if (!databaseReady) {
+  if (pending.length > 0) {
     lines.push(
       '',
-      'Nothing was pushed. Apply the migration these changes need to the production database, then continue:',
+      'Nothing was pushed. Write the migration for the changes not applied yet, with these lines in it, and apply '
+        + 'it to the production database. The next run adopts the release:',
+      '',
+      '```sql',
+      ...pending.map(declarationLine),
+      '```',
+      '',
+      'Or adopt it at once, once the migration is applied:',
       '',
       '```bash',
       continueCommand(to),
@@ -248,6 +322,21 @@ export function gateReport({ from, to, changes, databaseReady }) {
     );
   }
   return lines.join('\n');
+}
+
+/**
+ * What the gate decides for a release: its report, and whether it waits for a
+ * migration. `databaseReady` vouches for every change without asking production.
+ */
+export async function decideGate({ before, after, migrations, missingMigrations, databaseReady = false }) {
+  let changes = diffDatabaseFacets(before.facets, after.facets);
+  if (changes.length > 0 && !databaseReady) {
+    changes = await findMigrationsThatMadeChanges(changes, declaredChanges(migrations), missingMigrations);
+  }
+  return {
+    blocked: !databaseReady && pendingChanges(changes).length > 0,
+    report: gateReport({ from: before.version, to: after.version, changes, databaseReady }),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -349,12 +438,42 @@ async function resolveTarget(requested, databaseReady) {
   }
 }
 
+/**
+ * Which of the named migrations production lacks, from its ledger of applied
+ * migrations. The names are public, so the publishable key may ask, as the deployment does.
+ */
+async function productionLacks(names) {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) {
+    throw new Error('SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY are required to ask production which migrations it has');
+  }
+  return retry(async () => {
+    const response = await fetch(`${url.replace(/\/+$/, '')}/rest/v1/rpc/missing_migrations`, {
+      method: 'POST',
+      headers: { apikey: key, 'content-type': 'application/json' },
+      body: JSON.stringify({ p_names: names }),
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!response.ok) throw new Error(`The database answered ${response.status} when asked which migrations it has`);
+    const missing = await response.json();
+    if (!Array.isArray(missing) || missing.some((name) => typeof name !== 'string')) {
+      throw new Error('The database answered something else than a list of migrations');
+    }
+    return missing;
+  }, { attempts: 3, pauseMs: 5_000 });
+}
+
 async function gate(snapshotFile, databaseReady) {
-  const before = await readJson(snapshotFile);
-  const after = await installedRelease();
-  const changes = diffDatabaseFacets(before.facets, after.facets);
-  await summarize(gateReport({ from: before.version, to: after.version, changes, databaseReady }));
-  if (changes.length > 0 && !databaseReady) process.exitCode = 3;
+  const { blocked, report } = await decideGate({
+    before: await readJson(snapshotFile),
+    after: await installedRelease(),
+    migrations: await readMigrations(),
+    missingMigrations: productionLacks,
+    databaseReady,
+  });
+  await summarize(report);
+  if (blocked) process.exitCode = 3;
 }
 
 async function checkPeers() {

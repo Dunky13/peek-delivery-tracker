@@ -2,6 +2,8 @@
 -- GLS Germany's adapter: the shape GLS Germany takes, optional, as for GLS Poland.
 -- The constraint is built on 20261017200000_dx_arrow_xl_postcode, the last that defined it, and
 -- the functions on 20261017233000_wave_seven_ninth_carriers, the last that defined them.
+--
+-- Database gate: inputs added gls-at: postcode, validator internationalPostcode, optional, pattern ^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \-][A-Za-z0-9]+)*$
 
 alter table public.packages
   drop constraint if exists packages_dpd_postcode_check,
