@@ -493,6 +493,8 @@ export class TrackingRouter {
         const value = await this.options.direct(lookupParcel, carrier);
         value.result = normalizeCarrierResult(value.result);
         if (!usable(value.result)) throw Object.assign(new Error('No confirmed shipment progress'), { status: 404 });
+        // It answers for the number, on local clocks too: a refusal an older release recorded no longer holds.
+        if (state.failures[carrier]?.user_error === 'carrier:invalid_input') delete state.failures[carrier];
         // An empty summary archive binds the fallback to this parcel without
         // creating a scan; earlier real scans survive when it is merged.
         const capturedHistory = hasUnresolvedDirectHistory(value.sourceCarrierId, value.result)

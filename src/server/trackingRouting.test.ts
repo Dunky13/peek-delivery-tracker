@@ -1517,6 +1517,9 @@ describe('persistent tracking routing', () => {
 
     it.each([
       ['a provider named before', 'TEST1234', '17feia', '17FEIA', { discovered_carrier: '17feia' }],
+      // An older release's adapter refused the number; today's answers it.
+      ['a provider named before, which refused the number then', 'TEST1234', '17feia', '17FEIA', { discovered_carrier: '17feia',
+        failures: { '17feia': { kind: 'schema', count: 5, retry_at: '2026-09-09T06:00:00Z', user_error: 'carrier:invalid_input' } } }],
       ['recognition found', '123456789012', 'sto', 'STO Express', {}],
     ])('takes a carrier %s once the provider dating the progress names it alone', async (_label, trackingNumber, carrier, name, routing) => {
       fixedPlan('Ship24', '17TRACK');
@@ -1530,6 +1533,7 @@ describe('persistent tracking routing', () => {
         result: { tracking_provider: 'Ship24', carrier_answered: true, discovered_carrier: carrier,
           routing: { configured_carrier: carrier, discovered_carrier: carrier }, direct_local_history: { carrier } } });
       expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+      expect(result.result.routing).not.toHaveProperty(['failures', carrier]);
     });
 
     it('keeps the local history of the carrier it takes, not of one asked before it', async () => {
