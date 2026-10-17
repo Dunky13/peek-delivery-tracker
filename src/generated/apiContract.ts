@@ -339,10 +339,16 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "hermes"
+      "adapter": "hermes",
+      "recognitionRank": 602
     },
     "linkRules": [],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d(?:00[1-9]|0[1-9]\\d|[12]\\d\\d|3[0-5]\\d|36[0-6])\\d{6}0000\\d{3}(?:\\d{2}){0,2}$",
+        "confidence": "low"
+      }
+    ],
     "trackingUrlTemplate": "https://myhes.de/",
     "aliases": [
       "HES",
@@ -629,6 +635,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^ESUS\\d{9}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^UU\\d{9}DE$",
+        "confidence": "low",
+        "checksum": "s10"
       }
     ],
     "aliases": [
@@ -2709,6 +2720,10 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
+        "pattern": "^(?!3232|44)(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
+        "confidence": "high"
+      },
+      {
         "pattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$",
         "confidence": "low",
         "preferred": true
@@ -2959,7 +2974,7 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ],
@@ -6507,7 +6522,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^1\\d{9}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://gls-group.com/ES/es/recibir-paquetes/seguimiento-envio/"
   },
   "gls-it": {
@@ -22128,7 +22148,19 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^09(?:5[5-9]|[67]\\d|8[0-8])\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
+        "pattern": "^09(?:5[5-9]|[67]\\d|8[0-8])\\d{10}[0-9A-Z]$",
+        "confidence": "low",
+        "checksum": "dpd",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://tracking.dpd.pt/track-and-trace"
   },
   "gls-pl": {
@@ -23896,6 +23928,26 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.uniteddeliveryservice.com/track/"
+  },
+  "tamdis": {
+    "displayName": "Tamdis",
+    "aliases": [
+      "Tamdis by JP",
+      "Transporte y Logística Tamdis"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "color": "#0c2d6b",
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": []
   }
 } as const;
 
@@ -24549,7 +24601,8 @@ export const CARRIER_IDS = [
   "estes-forwarding",
   "globalpost",
   "tforce-logistics",
-  "united-delivery-service"
+  "united-delivery-service",
+  "tamdis"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
