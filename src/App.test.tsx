@@ -886,7 +886,7 @@ describe('App', () => {
 
     await user.click(within(sheet).getByRole('button', { name: /^Detect automatically/ }));
     const carrier = within(carrierPicker()).getByRole('group', { name: 'All carriers' });
-    for (const name of [
+    const regional = [
       'DPD France',
       'Mondial Relay',
       'Relais Colis',
@@ -902,12 +902,18 @@ describe('App', () => {
       'Heppner',
       'Ciblex',
       'Paack',
-      "Asendia",
-    ]) {
-      expect(within(carrier).getByRole('option', { name })).toBeInTheDocument();
-    }
+      'Asendia',
+    ];
+    // One query for them all: a query per carrier named each of the ~580
+    // options again, which held this test near its time limit under load.
+    const names = new Map<Element, string>();
+    const offered = within(carrier).getAllByRole('option', {
+      name: (name, option) => { names.set(option!, name); return regional.includes(name); },
+    });
+    const offeredNames = offered.map((option) => names.get(option));
+    expect([...offeredNames].sort()).toEqual([...regional].sort());
 
-    await user.click(within(carrier).getByRole('option', { name: 'Mondial Relay' }));
+    await user.click(offered[offeredNames.indexOf('Mondial Relay')]);
     const postcode = within(sheet).getByLabelText(/delivery postcode/i);
     // Mondial Relay delivers across Europe and needs a postcode: it starts from the DPD parcel's.
     expect(postcode).toBeRequired();
