@@ -102,6 +102,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Fnac order tracking: carriers, delivery and problems"
     },
     {
+      "id": "el-corte-ingles-orders",
+      "slug": "el-corte-ingles-order-tracking",
+      "title": "El Corte Inglés order tracking: delivery and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -262,6 +267,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "fnac-orders",
       "slug": "fnac-bestellung-verfolgen",
       "title": "Fnac-Bestellung verfolgen: Paketdienste, Lieferung, Probleme"
+    },
+    {
+      "id": "el-corte-ingles-orders",
+      "slug": "el-corte-ingles-bestellung-verfolgen",
+      "title": "El-Corte-Inglés-Bestellung verfolgen: Lieferung, Probleme"
     },
     {
       "id": "find-tracking-number",
@@ -426,6 +436,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Fnac\u00a0: transporteurs, livraison, retards"
     },
     {
+      "id": "el-corte-ingles-orders",
+      "slug": "suivi-commande-el-corte-ingles",
+      "title": "Suivi de commande El Corte Inglés\u00a0: livraison et problèmes"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -586,6 +601,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "fnac-orders",
       "slug": "tracciare-ordine-fnac",
       "title": "Tracciare un ordine Fnac: corrieri, consegna e problemi"
+    },
+    {
+      "id": "el-corte-ingles-orders",
+      "slug": "tracciare-ordine-el-corte-ingles",
+      "title": "Tracciare un ordine El Corte Inglés: corrieri e problemi"
     },
     {
       "id": "find-tracking-number",
@@ -750,6 +770,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Pedidos de Fnac: seguimiento, transportistas y problemas"
     },
     {
+      "id": "el-corte-ingles-orders",
+      "slug": "seguimiento-pedido-el-corte-ingles",
+      "title": "Pedido de El Corte Inglés: seguimiento y entregas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -912,6 +937,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Encomendas Fnac: seguimento, transportadoras e problemas"
     },
     {
+      "id": "el-corte-ingles-orders",
+      "slug": "seguimento-encomenda-el-corte-ingles",
+      "title": "Encomendas El Corte Inglés: seguimento, entrega e problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -1072,6 +1102,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "fnac-orders",
       "slug": "sledzenie-zamowienia-fnac",
       "title": "Śledzenie zamówienia Fnac: przewoźnicy, dostawa, problemy"
+    },
+    {
+      "id": "el-corte-ingles-orders",
+      "slug": "sledzenie-zamowienia-el-corte-ingles",
+      "title": "Śledzenie zamówienia El Corte Inglés: dostawa i problemy"
     },
     {
       "id": "find-tracking-number",

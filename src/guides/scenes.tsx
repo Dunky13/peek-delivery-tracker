@@ -949,6 +949,27 @@ function Relay() {
   </>;
 }
 
+function Department() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The department store: its floors of windows, the striped awning and the door. */}
+    <rect x="40" y="52" width="210" height="196" fill="var(--green)" />
+    {[70, 112].map((y) => [58, 104, 150, 196].map((x) => <rect key={`${x}-${y}`} x={x} y={y} width="36" height="28" rx="3" fill={paper} opacity=".25" />))}
+    <path d="M30 150H260l-8 26H38Z" fill={paper} />
+    {Array.from({ length: 7 }, (_, index) => <path key={index} d={`M${46 + index * 30} 150h15l-1 26h-14Z`} fill="var(--green-soft)" />)}
+    <path d="M38 176h214" stroke="var(--green-soft)" strokeWidth="4" strokeLinecap="round" />
+    <rect x="114" y="190" width="62" height="58" rx="3" fill={paper} opacity=".3" />
+    <path d="M145 190v58" stroke="var(--green)" strokeWidth="3" />
+    <Truck x={262} y={184} tone="green" scale={3} />
+    {/* A box wrapped as a present, ribbon and bow. */}
+    <Box x={392} y={170} width={88} height={78}>
+      <path d="M44 0v78M0 40h88" stroke="var(--green)" strokeWidth="9" />
+    </Box>
+    <path d="M436 170c-22-22-34-4-20 2 6 3 14 0 20-2Zm0 0c22-22 34-4 20 2-6 3-14 0-20-2Z" fill="var(--green)" />
+    <Pip x={548} ground={262} width={130} mood="joy" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -969,6 +990,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'otto-orders': { tone: 'green', draw: Freight },
   'mediamarkt-orders': { tone: 'orange', draw: Showroom },
   'fnac-orders': { tone: 'ochre', draw: Relay },
+  'el-corte-ingles-orders': { tone: 'green', draw: Department },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },
