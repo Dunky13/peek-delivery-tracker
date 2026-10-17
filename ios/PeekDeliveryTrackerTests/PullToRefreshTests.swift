@@ -25,7 +25,7 @@ final class PullToRefreshTests: XCTestCase {
         XCTAssertEqual(model.distance, 60)
     }
 
-    func testResultAppearsOnlyAtTheEndAndClearsOnceSettled() async throws {
+    func testResultAppearsOnlyAtTheEndAndClearsOnceSettled() async {
         let model = PullToRefreshModel()
         model.begin(label: "Checking for updates…")
         XCTAssertEqual(model.phase, .refreshing)
@@ -44,14 +44,14 @@ final class PullToRefreshTests: XCTestCase {
         model.settle()
         XCTAssertEqual(model.phase, .settling)
         XCTAssertEqual(model.result, .succeeded, "the result fades out with the seal")
-        try await Task.sleep(for: .milliseconds(700))
+        await model.settleTask?.value
         XCTAssertEqual(model.phase, .idle)
         XCTAssertNil(model.result)
         XCTAssertNil(model.label)
         XCTAssertEqual(model.distance, 0)
     }
 
-    func testSealStaysHiddenUntilTheContentReturnsToTheTopAfterARefresh() async throws {
+    func testSealStaysHiddenUntilTheContentReturnsToTheTopAfterARefresh() async {
         let model = PullToRefreshModel()
         model.track(PullGeometry(overscroll: 0, inset: 164, height: 874))
         model.track(PullGeometry(overscroll: 180, inset: 164, height: 874))
@@ -60,7 +60,7 @@ final class PullToRefreshTests: XCTestCase {
         model.settle()
         // The finger still holds the content down when the refresh ends.
         model.track(PullGeometry(overscroll: 150, inset: 164, height: 874))
-        try await Task.sleep(for: .milliseconds(700))
+        await model.settleTask?.value
         XCTAssertEqual(model.phase, .idle)
         XCTAssertTrue(model.awaitingRest)
         model.track(PullGeometry(overscroll: 90, inset: 164, height: 874))
@@ -78,9 +78,10 @@ final class PullToRefreshTests: XCTestCase {
         model.finish(succeeded: false, label: "Couldn’t check. Try again.")
         XCTAssertEqual(model.result, .failed)
         model.settle()
+        let earlier = try XCTUnwrap(model.settleTask)
         model.begin(label: "Checking for updates…")
         XCTAssertNil(model.result)
-        try await Task.sleep(for: .milliseconds(700))
+        await earlier.value
         XCTAssertEqual(model.phase, .refreshing)
         XCTAssertEqual(model.label, "Checking for updates…")
         XCTAssertEqual(model.starts, 2)

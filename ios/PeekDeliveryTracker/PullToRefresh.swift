@@ -47,7 +47,8 @@ final class PullToRefreshModel {
     private(set) var awaitingRest = false
 
     @ObservationIgnored private var restingInset: CGFloat?
-    @ObservationIgnored private var settleTask: Task<Void, Never>?
+    /// The wait after a refresh before the seal returns to rest; tests await it.
+    @ObservationIgnored private(set) var settleTask: Task<Void, Never>?
 
     var progress: CGFloat { phase == .idle ? min(1, distance / threshold) : 1 }
 
