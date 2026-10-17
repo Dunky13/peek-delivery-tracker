@@ -922,6 +922,33 @@ function Showroom() {
   </>;
 }
 
+function Relay() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The pickup point: its awning, its sign and the step. */}
+    <rect x="44" y="104" width="164" height="144" fill="var(--ochre)" />
+    <rect x="34" y="88" width="184" height="24" rx="6" fill="var(--ochre)" />
+    <rect x="86" y="134" width="80" height="34" rx="8" fill={paper} />
+    <rect x="112" y="141" width="28" height="20" rx="3" fill={CARD.top} />
+    <rect x="123" y="141" width="6" height="6" fill={CARD.tape} />
+    <rect x="96" y="186" width="60" height="62" rx="3" fill={paper} opacity=".25" />
+    <rect x="80" y="240" width="92" height="10" rx="3" fill={soft} />
+    <Pip x={262} ground={262} width={116} mood="look" side={1} />
+    {/* What came: books, a game and the box they travelled in. */}
+    <Box x={330} y={168} width={92} height={80} />
+    {[['blue', 444, 212], ['rose', 450, 194], ['green', 440, 176]].map(([tone, x, y]) => <g key={tone}>
+      <rect x={x} y={y} width="96" height="18" rx="3" fill={`var(--${tone})`} />
+      <path d={`M${Number(x) + 10} ${Number(y) + 9}H${Number(x) + 86}`} stroke={paper} strokeWidth="2" opacity=".6" />
+    </g>)}
+    <rect x="452" y="230" width="96" height="18" rx="3" fill="var(--lilac)" />
+    <rect x="556" y="146" width="56" height="102" rx="5" fill="var(--lilac)" />
+    <rect x="564" y="164" width="40" height="24" rx="12" fill={paper} opacity=".85" />
+    <path d="M574 171v10m-5-5h10" stroke="var(--lilac)" strokeWidth="3" strokeLinecap="round" />
+    <circle cx="591" cy="173" r="2.6" fill="var(--lilac)" />
+    <circle cx="597" cy="180" r="2.6" fill="var(--lilac)" />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -941,6 +968,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'aliexpress-orders': { tone: 'lilac', draw: Countdown },
   'otto-orders': { tone: 'green', draw: Freight },
   'mediamarkt-orders': { tone: 'orange', draw: Showroom },
+  'fnac-orders': { tone: 'ochre', draw: Relay },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

@@ -97,6 +97,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "MediaMarkt order tracking: carriers, pickup and problems"
     },
     {
+      "id": "fnac-orders",
+      "slug": "fnac-order-tracking",
+      "title": "Fnac order tracking: carriers, delivery and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -252,6 +257,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "mediamarkt-orders",
       "slug": "mediamarkt-sendungsverfolgung",
       "title": "MediaMarkt Sendungsverfolgung: Wo ist meine Bestellung?"
+    },
+    {
+      "id": "fnac-orders",
+      "slug": "fnac-bestellung-verfolgen",
+      "title": "Fnac-Bestellung verfolgen: Paketdienste, Lieferung, Probleme"
     },
     {
       "id": "find-tracking-number",
@@ -411,6 +421,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande MediaMarkt\u00a0: transporteurs et retards"
     },
     {
+      "id": "fnac-orders",
+      "slug": "suivi-commande-fnac",
+      "title": "Suivi de commande Fnac\u00a0: transporteurs, livraison, retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -566,6 +581,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "mediamarkt-orders",
       "slug": "tracking-ordine-mediaworld-mediamarkt",
       "title": "Ordini MediaWorld (MediaMarkt): tracking e corrieri"
+    },
+    {
+      "id": "fnac-orders",
+      "slug": "tracciare-ordine-fnac",
+      "title": "Tracciare un ordine Fnac: corrieri, consegna e problemi"
     },
     {
       "id": "find-tracking-number",
@@ -725,6 +745,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Pedido de MediaMarkt: seguimiento y transportistas"
     },
     {
+      "id": "fnac-orders",
+      "slug": "seguimiento-pedido-fnac",
+      "title": "Pedidos de Fnac: seguimiento, transportistas y problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -882,6 +907,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Encomendas MediaMarkt e Darty: seguimento e entregas"
     },
     {
+      "id": "fnac-orders",
+      "slug": "seguimento-encomenda-fnac",
+      "title": "Encomendas Fnac: seguimento, transportadoras e problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -1037,6 +1067,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "mediamarkt-orders",
       "slug": "sledzenie-zamowienia-mediamarkt",
       "title": "Zamówienie z MediaMarkt: śledzenie i przewoźnicy"
+    },
+    {
+      "id": "fnac-orders",
+      "slug": "sledzenie-zamowienia-fnac",
+      "title": "Śledzenie zamówienia Fnac: przewoźnicy, dostawa, problemy"
     },
     {
       "id": "find-tracking-number",
