@@ -278,6 +278,9 @@ describe('scraper adoption validation', () => {
     assert.ok(workflow.includes('git commit --quiet -m "Adopt Universal Parcel Scraper $VERSION"'));
     // The schedule and a run by hand never wait for that check.
     assert.match(workflow, /\n    needs: due\n    if: >-\n      !cancelled\(\) && github\.repository == 'plhery\/peek-delivery-tracker'\n      && \(github\.event_name != 'workflow_run' \|\| needs\.due\.outputs\.due == 'true'\)\n/);
+    // Due is skipped then, and a skipped ancestor skips the push unless it says !cancelled().
+    const push = workflow.match(/\n  push:\n([\s\S]*?)\n    runs-on:/)?.[1] ?? '';
+    assert.match(push, /if: "!cancelled\(\) && needs\.adopt\.result == 'success' && needs\.adopt\.outputs\.adopt == 'true'"/);
   });
 
   it('fails once for a release that waits for a migration, not on every run', () => {
@@ -285,7 +288,7 @@ describe('scraper adoption validation', () => {
     const gate = workflow.match(/\n  gate:\n([\s\S]*?)\n  push:\n/)?.[1];
     assert.ok(gate, 'The gate job must sit between adopt and push.');
     assert.match(gate, /name: Database gate for \$\{\{ needs\.adopt\.outputs\.version \}\}/);
-    assert.match(gate, /if: needs\.adopt\.outputs\.blocked == 'true'/);
+    assert.match(gate, /if: "!cancelled\(\) && needs\.adopt\.outputs\.blocked == 'true'"/);
     assert.match(gate, /permissions:\n\s+actions: read\n/);
     assert.doesNotMatch(gate, /\bnpm\b|secrets\./);
   });

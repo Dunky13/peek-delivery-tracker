@@ -234,7 +234,8 @@ jobs:
   gate:
     name: Database gate for ${{ needs.adopt.outputs.version }}
     needs: adopt
-    if: needs.adopt.outputs.blocked == 'true'
+    # Due is skipped outside CI-started runs: without !cancelled() a skipped ancestor skips this job.
+    if: "!cancelled() && needs.adopt.outputs.blocked == 'true'"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -262,7 +263,8 @@ jobs:
   push:
     name: Push
     needs: adopt
-    if: needs.adopt.outputs.adopt == 'true'
+    # As for the gate, a skipped Due must not skip the push.
+    if: "!cancelled() && needs.adopt.result == 'success' && needs.adopt.outputs.adopt == 'true'"
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
