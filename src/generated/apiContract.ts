@@ -13860,7 +13860,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "jrt"
+      "adapter": "jrt",
+      "recognitionRank": 984
     },
     "linkRules": [
       {
@@ -13877,6 +13878,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^JRT\\d{10}MM$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^UP\\d{16}$",
+        "confidence": "low"
       }
     ]
   },
@@ -23271,7 +23276,21 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Vienna",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gls-de",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "optional": true,
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "Optional. GLS shows the scans only with the delivery postcode; without it, other sources are asked.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "trackingUrlTemplate": "https://gls-group.com/AT/de/paket-verfolgen/?match={trackingNumber}",
     "linkRules": [
@@ -23306,7 +23325,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Vienna",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hermes-at",
+      "recognitionRank": 876
     },
     "trackingUrlTemplate": "https://www.myhermes.at/sendungsverfolgung/trackingnummer/{trackingNumber}/",
     "linkRules": [
