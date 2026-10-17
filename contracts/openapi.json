@@ -2979,7 +2979,7 @@
           "checksum": "luhn"
         },
         {
-          "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM))[A-Z]{3}\\d{9}$",
+          "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
           "confidence": "high"
         }
       ],
@@ -20338,7 +20338,8 @@
       "timezone": "Africa/Johannesburg",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "dpd-za",
+        "recognitionRank": 883
       },
       "trackingUrlTemplate": "https://www.dpd.com/za/en/receiving-parcels/track-my-parcel/tracking-details/?{trackingNumber}",
       "linkRules": [
@@ -23957,6 +23958,455 @@
       },
       "linkRules": [],
       "detectionRules": []
+    },
+    "247express": {
+      "displayName": "247Express",
+      "aliases": [
+        "247 Express",
+        "Công ty Cổ phần Hai Bốn Bảy"
+      ],
+      "countries": [
+        "VN"
+      ],
+      "color": "#d92923",
+      "selectable": true,
+      "timezone": "Asia/Ho_Chi_Minh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://247express.vn/tra-cuu-van-don/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "247express.vn"
+          ],
+          "path": "^/tra-cuu-van-don/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://247express.vn/"
+    },
+    "ajex": {
+      "displayName": "AJEX",
+      "aliases": [
+        "AJEX Logistics Services",
+        "AJEX Logistic Services",
+        "AJ-EX"
+      ],
+      "countries": [
+        "SA",
+        "AE",
+        "BH"
+      ],
+      "color": "#ec171c",
+      "selectable": true,
+      "timezone": "Asia/Riyadh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://aj-ex.com/shipment-status/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "aj-ex.com",
+            "www.aj-ex.com"
+          ],
+          "path": "^/(?:ar/)?shipment-status/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "aj-ex.com",
+            "www.aj-ex.com"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "tracking_number"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^AJ[AS]\\d{12}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://aj-ex.com/shipment-tracking"
+    },
+    "exelot": {
+      "displayName": "Exelot",
+      "aliases": [
+        "אקסלוט"
+      ],
+      "countries": [
+        "IL",
+        "GB",
+        "US"
+      ],
+      "color": "#2e00ab",
+      "selectable": true,
+      "timezone": "Asia/Jerusalem",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://go.exelot.com/tracking?barcodes={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "go.exelot.com",
+            "myparcel.exelot.com"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "barcodes"
+          ]
+        },
+        {
+          "domains": [
+            "public.exelot.com"
+          ],
+          "path": "^/tracking/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^XLT\\d{9}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://www.exelot.com/"
+    },
+    "gtl-goto": {
+      "displayName": "GoTo Logistics",
+      "aliases": [
+        "GTL",
+        "GoTo Logistics (GTL)",
+        "PT Paket Anak Bangsa"
+      ],
+      "countries": [
+        "ID"
+      ],
+      "color": "#14922c",
+      "selectable": true,
+      "timezone": "Asia/Jakarta",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://gtl.id/tracking?tracking_number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "gtl.id",
+            "www.gtl.id"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "tracking_number"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^TKGTL[0-9A-Z]{11}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://gtl.id/tracking"
+    },
+    "kwick-box": {
+      "displayName": "KwickBox",
+      "aliases": [
+        "Kwick Box"
+      ],
+      "countries": [
+        "SA"
+      ],
+      "color": "#254b66",
+      "selectable": true,
+      "timezone": "Asia/Riyadh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.kwick-box.com/"
+    },
+    "labaih": {
+      "displayName": "LaBaih",
+      "aliases": [
+        "لبيه",
+        "MyLabaih"
+      ],
+      "countries": [
+        "SA"
+      ],
+      "color": "#ff8e00",
+      "selectable": true,
+      "timezone": "Asia/Riyadh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://track.mylabaih.com/track/?cn={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "track.mylabaih.com"
+          ],
+          "pathPattern": "^/track/?$",
+          "params": [
+            "cn"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://mylabaih.com/"
+    },
+    "paxel": {
+      "displayName": "Paxel",
+      "aliases": [
+        "Paxel Indonesia",
+        "PT Global Unggul Mandiri"
+      ],
+      "countries": [
+        "ID"
+      ],
+      "color": "#ff434f",
+      "selectable": true,
+      "timezone": "Asia/Jakarta",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://paxel.co/id/track-shipments?awb_req={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "paxel.co"
+          ],
+          "pathPattern": "^/(?:id|en)/track-shipments/?$",
+          "params": [
+            "awb_req"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^EM[0-9A-Z]{10}20\\d{7}[0-9A-Z]{6}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://paxel.co/en/track-shipments"
+    },
+    "pickupp": {
+      "displayName": "Pickupp",
+      "aliases": [
+        "Pickupp HK",
+        "Pickupp (HK)",
+        "Pickupp Hong Kong"
+      ],
+      "countries": [
+        "HK"
+      ],
+      "color": "#ef3b3b",
+      "selectable": true,
+      "timezone": "Asia/Hong_Kong",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://hk.pickupp.io/en/tracking?orderNumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "hk.pickupp.io"
+          ],
+          "pathPattern": "^/(?:en|zh)/tracking/?$",
+          "params": [
+            "orderNumber"
+          ]
+        },
+        {
+          "domains": [
+            "portal.hk.pickupp.io"
+          ],
+          "pathPattern": "^/(?:(?:en|zh)/)?tracking/?$",
+          "params": [
+            "orderNumber"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^PU\\d{12}HK$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://hk.pickupp.io/en/tracking"
+    },
+    "pickupp-sg": {
+      "displayName": "Pickupp Singapore",
+      "aliases": [
+        "Pickupp SG",
+        "Pickupp (SG)"
+      ],
+      "countries": [
+        "SG"
+      ],
+      "color": "#ef3b3b",
+      "selectable": true,
+      "timezone": "Asia/Singapore",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://sg.pickupp.io/tracking/?orderNumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "sg.pickupp.io"
+          ],
+          "pathPattern": "^/(?:en/)?tracking/?$",
+          "params": [
+            "orderNumber"
+          ]
+        },
+        {
+          "domains": [
+            "portal.sg.pickupp.io"
+          ],
+          "pathPattern": "^/(?:en/)?tracking/?$",
+          "params": [
+            "orderNumber"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^PU\\d{12}SG$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://sg.pickupp.io/en/tracking"
+    },
+    "shipblu": {
+      "displayName": "ShipBlu",
+      "aliases": [
+        "شيب بلو",
+        "ShipBlu Technology"
+      ],
+      "countries": [
+        "EG"
+      ],
+      "color": "#0a3266",
+      "selectable": true,
+      "timezone": "Africa/Cairo",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://go.shipblu.com/en/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "go.shipblu.com"
+          ],
+          "path": "^/(?:en|ar)/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://go.shipblu.com/en/"
+    },
+    "spx-sg": {
+      "displayName": "SPX Express Singapore",
+      "aliases": [
+        "Shopee Xpress Singapore",
+        "Shopee Express Singapore",
+        "SPX Singapore"
+      ],
+      "countries": [
+        "SG"
+      ],
+      "color": "#ee4d2d",
+      "selectable": true,
+      "timezone": "Asia/Singapore",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://spx.sg/track?{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "spx.sg"
+          ],
+          "pathPattern": "^/(?:m/)?track/?$",
+          "query": "^(SPXSG\\d{11}[0-9A-Z])$"
+        },
+        {
+          "domains": [
+            "spx.sg"
+          ],
+          "path": "^/detail/(SPXSG\\d{11}[0-9A-Z])/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^SPXSG\\d{11}[0-9A-Z]$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^SG\\d{12}[0-9A-Z]$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://spx.sg/track"
+    },
+    "starlinks": {
+      "displayName": "Starlinks",
+      "aliases": [
+        "StarLinks"
+      ],
+      "countries": [
+        "SA"
+      ],
+      "color": "#1f6a4a",
+      "selectable": true,
+      "timezone": "Asia/Riyadh",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://consignee.starlinks-me.com/tracking/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "consignee.starlinks-me.com"
+          ],
+          "path": "^/tracking/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "www.starlinks-me.com",
+            "starlinks-me.com"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "search"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^SL\\d{10}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.starlinks-me.com/tracking"
     }
   },
   "servers": [
@@ -27057,7 +27507,19 @@
           "globalpost",
           "tforce-logistics",
           "united-delivery-service",
-          "tamdis"
+          "tamdis",
+          "247express",
+          "ajex",
+          "exelot",
+          "gtl-goto",
+          "kwick-box",
+          "labaih",
+          "paxel",
+          "pickupp",
+          "pickupp-sg",
+          "shipblu",
+          "spx-sg",
+          "starlinks"
         ]
       },
       "Stage": {
