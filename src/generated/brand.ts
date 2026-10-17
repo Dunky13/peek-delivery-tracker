@@ -19,6 +19,7 @@ export const CARRIER_FAMILIES: Record<string, string> = {
   "dpd-fr": "dpd",
   "dpd-ie": "dpd",
   "dpd-nl": "dpd",
+  "dpd-pt": "dpd",
   "dpd-uk": "dpd",
   "dpd-za": "dpd",
   "evri-uk": "evri",
@@ -28,6 +29,7 @@ export const CARRIER_FAMILIES: Record<string, string> = {
   "gls-es": "gls",
   "gls-fr": "gls",
   "gls-it": "gls",
+  "gls-pl": "gls",
   "mng-kargo": "dhl",
   "postlogistics": "swiss-post",
   "swiss-post-cargo": "swiss-post"
@@ -263,6 +265,17 @@ export const CARRIER_PALETTES: Record<string, Partial<CarrierPalette>> = {
     "accent": "#ffcf00"
   },
   "gls-it": {
+    "surface-light": "#dfebfa",
+    "surface-dark": "#293e57",
+    "ink-light": "#355e8a",
+    "ink-dark": "#b7d1ee",
+    "brand-light": "#1634a7",
+    "brand-dark": "#abc7ff",
+    "truck": "#1634a7",
+    "edge": "#1634a7",
+    "accent": "#ffcf00"
+  },
+  "gls-pl": {
     "surface-light": "#dfebfa",
     "surface-dark": "#293e57",
     "ink-light": "#355e8a",
@@ -577,6 +590,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "dpd-fr": "dpd",
   "dpd-ie": "dpd",
   "dpd-nl": "dpd",
+  "dpd-pt": "dpd",
   "dpd-uk": "dpd",
   "dpd-za": "dpd",
   "dropp": "dropp",
@@ -643,6 +657,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "gls-es": "gls",
   "gls-fr": "gls",
   "gls-it": "gls",
+  "gls-pl": "gls",
   "go-express": "go-express",
   "gobolt": "gobolt",
   "gofo": "gofo",

@@ -74,6 +74,7 @@
     "dpd-fr": "dpd",
     "dpd-ie": "dpd",
     "dpd-nl": "dpd",
+    "dpd-pt": "dpd",
     "dpd-uk": "dpd",
     "dpd-za": "dpd",
     "evri-uk": "evri",
@@ -83,6 +84,7 @@
     "gls-es": "gls",
     "gls-fr": "gls",
     "gls-it": "gls",
+    "gls-pl": "gls",
     "mng-kargo": "dhl",
     "postlogistics": "swiss-post",
     "swiss-post-cargo": "swiss-post"
@@ -317,6 +319,17 @@
       "accent": "#ffcf00"
     },
     "gls-it": {
+      "surface-light": "#dfebfa",
+      "surface-dark": "#293e57",
+      "ink-light": "#355e8a",
+      "ink-dark": "#b7d1ee",
+      "brand-light": "#1634a7",
+      "brand-dark": "#abc7ff",
+      "truck": "#1634a7",
+      "edge": "#1634a7",
+      "accent": "#ffcf00"
+    },
+    "gls-pl": {
       "surface-light": "#dfebfa",
       "surface-dark": "#293e57",
       "ink-light": "#355e8a",
@@ -630,6 +643,7 @@
     "dpd-fr": "dpd",
     "dpd-ie": "dpd",
     "dpd-nl": "dpd",
+    "dpd-pt": "dpd",
     "dpd-uk": "dpd",
     "dpd-za": "dpd",
     "dropp": "dropp",
@@ -696,6 +710,7 @@
     "gls-es": "gls",
     "gls-fr": "gls",
     "gls-it": "gls",
+    "gls-pl": "gls",
     "go-express": "go-express",
     "gobolt": "gobolt",
     "gofo": "gofo",

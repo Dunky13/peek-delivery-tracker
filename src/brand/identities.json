@@ -522,6 +522,9 @@
   "dpd-nl": {
     "family": "dpd"
   },
+  "dpd-pt": {
+    "family": "dpd"
+  },
   "dpd-uk": {
     "family": "dpd"
   },
@@ -752,6 +755,9 @@
     "family": "gls"
   },
   "gls-it": {
+    "family": "gls"
+  },
+  "gls-pl": {
     "family": "gls"
   },
   "go-express": {
