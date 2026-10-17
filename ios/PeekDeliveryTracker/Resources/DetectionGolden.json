@@ -55433,6 +55433,18 @@
     ]
   },
   {
+    "input": "DL636643547BD",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "bangladesh-post",
+      "chronopost"
+    ]
+  },
+  {
     "input": "DLT6004412356",
     "carrier": "unknown",
     "confidence": "none",
@@ -56138,6 +56150,7 @@
       "intl-post"
     ],
     "asked": [
+      "bangladesh-post",
       "chronopost"
     ]
   },
@@ -56195,6 +56208,7 @@
       "intl-post"
     ],
     "asked": [
+      "bangladesh-post",
       "chronopost"
     ]
   },
@@ -56301,6 +56315,7 @@
       "intl-post"
     ],
     "asked": [
+      "bangladesh-post",
       "chronopost"
     ]
   },
@@ -69163,6 +69178,7 @@
       "intl-post"
     ],
     "asked": [
+      "bangladesh-post",
       "chronopost"
     ]
   },

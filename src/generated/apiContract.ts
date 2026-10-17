@@ -14771,10 +14771,29 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bangladesh-post",
+      "recognitionRank": 909
     },
-    "linkRules": [],
-    "detectionRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "report.dms.bdpost.gov.bd"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "v",
+          "V"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BD$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://ipsbd.bdpost.gov.bd/mail-tracking.html"
   },
   "blueex": {
