@@ -90,6 +90,9 @@ describe('carrier mark', () => {
     'kronos-express', 'm-one', 'pack-man', 'pannon-xp', 'phlpost', 'redur', 'torrestir',
     'afghan-post', 'corre', 'correos-nicaragua', 'kyrgyz-post', 'la-poste-burkina-faso', 'lao-post',
     'pitney-bowes',
+    'a1-post', 'direx', 'fermopoint', 'fg-delivery', 'go4', 'happy-post', 'hp-mostar', 'hr-parcel',
+    'intex-paketdienst', 'liccardi', 'logoix', 'nox', 'peddler', 'pigeon-express', 'posta-faroe', 'tusass',
+    'tws-express',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

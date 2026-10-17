@@ -22,6 +22,7 @@ and [`truck.json`](truck.json).
 | `5post` | [fivepost.ru](https://fivepost.ru/files/public/favicon/favicon.svg) — favicon SVG fill #64b441 with grey #575756 |
 | `99minutos` | [tracking.99minutos.com](https://tracking.99minutos.com/) — logo fills #85c440 (ring) and #323634 (99) |
 | `a-duie-pyle` | [aduiepyle.com](https://aduiepyle.com/) — site theme CSS #f27629 (most used colour); favicon swoosh #f58022 (approximate) |
+| `a1-post` | [a1post.bg](https://a1post.bg/) — theme-color meta and site CSS #fba512; logo SVG fill #fba511 |
 | `aaa-cooper` | [aaacooper.com](https://web.archive.org/web/2025/https://www.aaacooper.com/) — site CSS #113C77; app icon (act-favicon-192.png) navy-blue field around #06365c (approximate) |
 | `abf-freight` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:ABF_Freight_System_logo.svg) — fills #1e6630 (ABF) and #faca05 (bar) |
 | `acs-courier` | [acscourier.net](https://www.acscourier.net/lib/cms/img/logo.svg) — logo fills #e42229 (swoosh) and #1d1d1b (shadow) |
@@ -145,6 +146,7 @@ and [`truck.json`](truck.json).
 | `deprisa` | [deprisa.com (archived)](https://web.archive.org/web/2025/https://www.deprisa.com/assets/icons/LOGO.svg) — logo SVG fill #295191 (wordmark), #C2222C (triangle) |
 | `dhlink` | [dhlink.com](https://www.dhlink.com/static/img/tfx-logo.eaa9b6df.png) — logo pixels #143167 ('DH', 驼飞侠); 'LINK' and the line run #f7c96d to #e2793b (approximate) |
 | `direct-freight-express` | [directfreight.com.au](https://www.directfreight.com.au/images/dfelogo_desktop.svg) — logo SVG navy rgb(11.8%,26.7%,53.3%) #1e4488, orange #f16924 |
+| `direx` | [direx.bg](https://direx.bg/) — theme CSS --color-primary #6B4597; icon SVG fill #6b4598 |
 | `dohrn-transfer` | [dohrn.com](https://www.dohrn.com/) — site theme variable --primaryColor #ee3631; logo SVG red #ed3424 |
 | `domex` | [domex.lk](https://domex.lk/) — track button and header text #FFCD05; logo PNG yellow #ffca05 (approximate) |
 | `dropp` | [dropp.is](https://dropp.is/) — app theme primary #00007D; logo SVG fills #00007E and #0FF |
@@ -182,6 +184,8 @@ and [`truck.json`](truck.json).
 | `fargo-courier` | [fargocourier.co.ke](https://www.fargocourier.co.ke/wp-content/uploads/2024/02/fargo-courier-logo.png) — logo PNG green #0a4436 and gold #c79b46 (approximate); the theme CSS also uses #0a4436 |
 | `fargo-uz` | [fargo.uz](https://fargo.uz/) — theme-color #ed1f2b and favicon SVG wedge fill #ed1f2b |
 | `fastfrate` | [fastfrate.com](https://media.fastfrategroup.com/fastfrate-group/wp-content/uploads/sites/2/2026/07/28153231/FF-Group_Fastfrate-Logo.svg) — logo SVG fill #d70321 |
+| `fermopoint` | [fermopoint.it](https://www.fermopoint.it/) — logo f pixels #dc0032 (approximate) and site .btn-primary #dc0032 |
+| `fg-delivery` | [fgdelivery.it](https://fgdelivery.it/) — Elementor primary colour #393D78; logo PNG #393d78 (approximate) |
 | `first-delivery-tn` | [firstdeliverygroup.com](https://www.firstdeliverygroup.com/wp-content/uploads/2023/08/Logo_First-e1692977453756.png) — logo PNG palette green #51b045 |
 | `flash-express` | [flashexpress.co.th](https://www.flashexpress.co.th/) — site CSS #FFEA33 (132 uses); logo bolt #fcee20 |
 | `flash-express-ph` | [flashexpress.ph](https://www.flashexpress.ph/) — header background CSS rgb(255, 234, 51) #ffea33 |
@@ -203,6 +207,7 @@ and [`truck.json`](truck.json).
 | `ghn` | [ghn.vn](https://cdn.hstatic.net/themes/200000472237/1001423864/14/logo.png) — logo PNG dominant orange #ff5200 (approximate) |
 | `ghtk` | [ghtk.vn](https://ghtk.vn/assets/logo.svg) — logo SVG fill #01B53B |
 | `go-express` | [general-overnight.com](https://www.general-overnight.com/) (inline header logo fill #B9242B, CSS --bs-primary) |
+| `go4` | [go4.sk](https://www.go4.sk/) — site CSS #EF1F23 for the red 4 and accents; logo and vans black #111111 |
 | `gobolt` | [gobolt.com](https://www.gobolt.com/) — site CSS --e-global-color-primary #00282b, the wordmark colour of the primary logo; bolt #ffbd5d and #b27330 sampled from the logo PNG |
 | `gofo` | [gofo.com](https://www.gofo.com/us/) |
 | `gogo-xpress` | [gogoxpress.com](https://cdn.gogoxpress.com/brand_icons/gogo-xpress-logo.svg) — logo SVG fills #23a3dd (blue letters) and #c21f44 (red letters) |
@@ -212,6 +217,7 @@ and [`truck.json`](truck.json).
 | `gzyl` | [yunlianhouyun.com](http://yunlianhouyun.com/skin/logistics/css/style.css) — CSS --blue #4e79e1; every opaque logo pixel #4e79e1 |
 | `hanjin` | [hanjin.com](https://www.hanjin.com/attach/IMAGE/TopDesignMgr/LogoImgUpload/2025/1/ijmShJL6Y2PPN8tQ.PNG) — logo navy #051469 (approximate) |
 | `hapdong` | [hdexp.co.kr](https://hdexp.co.kr/) — CI page signature colour BLUE R4 G96 B175 (#0460af) |
+| `happy-post` | [happy-post.com](https://happy-post.com/wp-content/themes/vingtcinq/src/svg/logo-responsive.svg) — logo SVG gradient #FF8500 to #FF6518 |
 | `haypost` | [haypost.am](https://www.haypost.am/resources/images/hp_eng_logo.svg) — logo SVG fills #f94616/#fa4616 (Post and the mark) and #281e78 (Hay); the site's orange panels are #fa4616 |
 | `hct-logistics` | [hct.com.tw](https://www.hct.com.tw/CSS/default.css) — site CSS #004B97 (navigation and tab frame), between the badge gradient #007ac3 to #181878 |
 | `helthjem` | [helthjem.no](https://helthjem.no/next-assets/images/hh_logo.svg) — logo SVG fill #ffb202 (parcel front), #050505 (lid, side, name) |
@@ -220,6 +226,8 @@ and [`truck.json`](truck.json).
 | `hispapost` | [hispapost.es](https://www.hispapost.es/assets/img/hispapost-logo.svg) — logo SVG fill #00548b; theme-color #00548b |
 | `hongkong-post` | [hongkongpost.hk](https://www.hongkongpost.hk/en/home/index.html) |
 | `horoz` | [horoz.com.tr](https://www.horoz.com.tr/_assets/images/logo/horoz-logo-color.svg) — logo SVG fill #c31f3f |
+| `hp-mostar` | [post.ba](https://www.post.ba/) — site CSS --bs-post-main #ffed00; logo PNG yellow #fff200 (approximate) |
+| `hr-parcel` | [hrparcel.com](https://www.hrparcel.com/wp-content/uploads/2022/07/HR-PARCEL.svg) — logo SVG disc fill #FFD512; site buttons #ffd512 |
 | `hrvatska-posta` | [logo SVG](https://posiljka.posta.hr/assets/icons/hp-full-logo.svg) |
 | `hunter-express` | [hunterexpress.com.au](https://www.hunterexpress.com.au/wp-content/uploads/2025/05/NEW-Hunter-Logo-with-Slogan-scaled.jpg) — logo JPG wordmark orange #f7aa3a, oval blue #0053a1 (approximate) |
 | `hywl` | [szhywl.it.com](https://www.szhywl.it.com/assets/logo-huiyi.svg) — logo SVG fill and arc stroke #0b8f91 ('HUIYI LOGISTICS'), styles.css --teal #0b8f91 |
@@ -235,6 +243,7 @@ and [`truck.json`](truck.json).
 | `intereuropa` | [intereuropa.si](https://www.intereuropa.si/files/default/vsebina/logo-mobile.png) — mobile logo fill #1b5949 (approximate); main logo #02695a |
 | `internet-express` | [internetexpress.co.za](https://www.internetexpress.co.za/Content/img/IE_LOGOS_Circle.png) — logo PNG yellow #fae80b (approximate) |
 | `interrapidisimo` | [interrapidisimo.com](https://interrapidisimo.com/icon.svg) — icon fill #18191A, site CSS --secondary #18191a |
+| `intex-paketdienst` | [intex-paketdienst.de](https://www.intex-paketdienst.de/websitewp/wp-content/uploads/2025/01/Intex-Logo.png) — logo wordmark #023051 (approximate); site hero #072F40 |
 | `iran-post` | [tracking.post.ir](https://tracking.post.ir/) — #08317d, the background the tracker script paints behind its white logo (read by the spec curator; the host is unreachable from here); logo bird #fcd603 (approximate) |
 | `israel-post` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Israel_Postal_Company_logo_in_Hebrew.png) — logo PNG red #ca151d (approximate) |
 | `j-and-t` | [jtexpress.ph](https://www.jtexpress.ph/) |
@@ -278,11 +287,13 @@ and [`truck.json`](truck.json).
 | `latvijas-pasts` | [pasts.lv](https://pasts.lv/) — --color-header-logo #0C72BA; the mans.pasts.lv icon blue is #0072bb |
 | `leopards-courier` | [pk.leopardscourier.com](https://pk.leopardscourier.com/leopardcourier_dubai/css/custome.css) — site CSS #ffcb05 (105 uses); favicon is a yellow tile |
 | `libanpost` | [libanpost.com](https://www.libanpost.com/styles/css-EN?v=1510261716) — site CSS #006db7 (91 uses), also the logo wordmark blue; wing yellow #fed300 |
+| `liccardi` | [liccarditrasporti.com](https://www.liccarditrasporti.com/wp-content/uploads/2022/06/logo-sito.png) — logo PNG blue #014895 (approximate); site CSS #014895 |
 | `lietuvos-pastas` | [logo SVG](https://www.post.lt/themes/posttheme/images/logo.svg) |
 | `line-clear` | [lineclearexpress.com](https://lineclearexpress.com/my/public/assets/images/lineclearlogo.png) — logo PNG #3fc0f0 with navy #1d3a8f (approximate) |
 | `lion-parcel` | [lionparcel.com](https://stg-website-lionparcel.s3.ap-southeast-1.amazonaws.com/assets/logo/lp_logo_footer_new.svg) — logo SVG fill #ff0000 |
 | `logen` | [ilogen.com](https://www.ilogen.com/static/css/style.css) — site CSS main colour #ffa200; logo swoosh #61553e (footer_logo.png, approximate) |
 | `loggi` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Logologgi.png) — logo #00baff, also in loggi.com CSS (approximate) |
+| `logoix` | [logoix.com](https://www.logoix.com/favicon.svg) — favicon SVG fill #EA5B0C |
 | `loomis-express` | [loomisexpress.com](https://loomisexpress.com/loomship/wp-content/themes/canpar/dist/styles/main.css) — main.css: `--primary: #004B8E`, logo letters #004B8E, swoosh #D93835 |
 | `lotte-global` | [lotteglogis.com](https://www.lotteglogis.com/resources/css/common.css) — site CSS #da291c |
 | `lso` | [lso.com](https://cdn.prod.website-files.com/610bd2c21f6eaa53c3ceab9f/68d5ae2b04bd7cdb9aa4c71c_lso-color-white-font.svg) — top tab `fill="#0047BA"` |
@@ -318,6 +329,7 @@ and [`truck.json`](truck.json).
 | `nippon-express` | [nipponexpress.com](https://www.nipponexpress.com/themes/custom/nx_olivero/assets/img/logo_nittsu_we_find_the_way.svg) — NX logo green #8ec400 (Commons NX_logo.svg #8ec300) with navy #1a005d |
 | `nord-wheel` | [nordw.ru](https://nordw.ru/images/build/nordw-logo-new.svg) — header logo SVG fill #0c55ff (red #fe0002 for the slash and right arc) |
 | `northline` | [northline.com.au](https://www.northline.com.au/app/themes/northline/images/N-icon.png) — N icon black #000000, red #e51937 (approximate); theme-color #000000; logo SVG accent #e3173e |
+| `nox` | [nox.eu](https://www.nox.eu/_nuxt/logo.DMSz3kyv.svg) — logo SVG fill #FADB00 beside #111113 lettering |
 | `nz-couriers` | [nzcouriers.co.nz](https://assets-nzcouriers.ep-prod.freightways.co.nz/uploads/2022/12/nzc_logo.svg) — logo SVG fill #ffc900, outline #1a1818 |
 | `nz-post` | [nzpost.co.nz](https://www.nzpost.co.nz/) |
 | `oak-harbor` | [oakh.com](https://www.oakh.com/css/mainNav.css) — nav CSS navy #1e2251 (border and gradient start); leaf gold #fdbf38 sampled from the logo PNG (approximate) |
@@ -346,9 +358,11 @@ and [`truck.json`](truck.json).
 | `paxi` | [paxi.co.za](https://cdn.prod.website-files.com/632874eb357ffe9936d5498d/636a4b9640d40d161b81e109_PAXI_logo%5B93%5D.webp) — logo orange #fa751e and teal #005065 (approximate) |
 | `pbt` | [pbt.nz](https://www.pbt.nz/) — header and site blue #008fbe (most used colour of the stylesheet; logo SVG is white) |
 | `pecom` | [pecom.ru](https://upload.pecom.ru/svg/logo.svg) — logo SVG fills #242265, red #E4003E |
+| `peddler` | [peddler.express](https://www.peddler.express/) — site CSS --pd #34205A; icon PNG #34205a (approximate) |
 | `pelican-express` | [e-can.com.tw](https://www.e-can.com.tw/images/logo.png) — logo PNG blue #005ead (flat), beak #fcca0f |
 | `pfc-express` | [pfctrack.com](https://www.pfctrack.com/images/logo.png) — logo background #0e84d6 (approximate, JPEG) |
 | `phlpost` | [phlpost.gov.ph](https://phlpost.gov.ph/wp-content/uploads/2026/07/Phlpost_2012_logo.svg_.png) — logo red #9e0000 (POST), navy #001862, yellow #feac01 (approximate) |
+| `pigeon-express` | [pigeonexpress.com](https://pigeonexpress.com/_design/assets/images/logo.svg) — logo SVG fills #00327D and #FF8C12 |
 | `pilot-freight` | [delivers.maersk.com](https://delivers.maersk.com/tracking/) — site CSS #42b0d5 (Maersk blue) |
 | `pitney-bowes` | [pitneybowes.com](https://www.pitneybowes.com/etc.clientlibs/pitneybowes/clientlibs/clientlib-site/resources/images/SVG/logo-color.svg) — logo SVG monogram fill #3e53a4, also the site CSS primary |
 | `pitt-ohio` | [pittohio.com](https://pittohio.com/mypittohio/images/logo.png) — logo PNG red bar #ed1c24, letters #231f20 (approximate) |
@@ -360,6 +374,7 @@ and [`truck.json`](truck.json).
 | `pos-malaysia` | [pos.com.my](https://www.pos.com.my/) |
 | `post-haste` | [posthaste.co.nz](https://www.posthaste.co.nz/) — site Track button rgb(36,178,216) #24b2d8; logo itself is black #161616 with a silver fern |
 | `post-luxembourg` | [post.lu](https://cdn.post.lu/newpostlu/babel-theme/assets/images/logo-post.svg) — wordmark gradient #008736 to #1FA12E, yellow crescent gradient #F9BA00 to #FFEC00, blue #5EC4EC to #009CD1; the theme CSS names #008836 `--post-default-green-dark` |
+| `posta-faroe` | [posta.fo](https://dkxtfyil83pr6.cloudfront.net/images/logo_posta.svg) — logo SVG fills #006FB4 and #0063A1; site CSS --primary-colour #006fb9 |
 | `posta-kenya` | [posta.co.ke](https://posta.co.ke/wp-content/uploads/2021/02/logo-final-1.png) — logo PNG red #ed1c24 (approximate), site icon the same red |
 | `posta-moldovei` | [posta.md](https://posta.md/) — header SVG emblem fill #005BAA (circle) and #FFDF00 (horn) |
 | `posta-north-macedonia` | [posta.com.mk](https://www.posta.com.mk/wp-content/uploads/2016/03/logo-MK-legnato.png) — logo yellow #ffde21 (approximate) |
@@ -473,6 +488,8 @@ and [`truck.json`](truck.json).
 | `tsjy` | [tsjy56.com](https://www.tsjy56.com/public/imgs/logo_01.png) — logo pixels #4042e2 ('Tonse Supply Chain', blue half of the monogram), orange #ff6600 (approximate) |
 | `tst-cf-express` | [tst-cfexpress.com](https://www.tst-cfexpress.com/images/tst-cf-logo.gif) — logo GIF blue #0052a2, swoosh red #ee3942 (approximate) |
 | `tufesa` | [tufesapack.com](https://tufesapack.com/) — app bundle CSS #f05a28 (112 uses); header logo orange ~#ff5b22 (approximate) |
+| `tusass` | [tusass.gl](https://www.tusass.gl/allakkat/) — postal section hero background #26a8b2 (site CSS turquoise); the header and icon navy #14192E |
+| `tws-express` | [twsexpresscourier.it](https://twsexpresscourier.it/wp-content/uploads/2024/02/twsexpresscourier_logo_brand.svg) — logo SVG background #FFED00 |
 | `ubi-smart-parcel` | [ubismartparcel.com](https://www.ubismartparcel.com/) |
 | `ues-uy` | [ues.com.uy](https://www.ues.com.uy/img/new-logo-ues-color.svg) — logo SVG letter fill #00295C (also the site overlay rgba(0,41,92)); tag #F47521 |
 | `ukrposhta` | [ukrposhta.ua](https://www.ukrposhta.ua/en) |
@@ -1030,3 +1047,20 @@ and [`truck.json`](truck.json).
 | `la-poste-burkina-faso` | Yellow horse head inside a white ring on blue | [laposte.bf](https://laposte.bf/wp-content/uploads/2023/08/cropped-lapostebf_logo001.png) — header logo, the yellow horse head with a white ring |
 | `lao-post` | White map pin with a person, on a disc, on orange | [laopost.com.la](https://www.laopost.com.la/logo/logo_laopost_nav.svg) — header logo, the map pin with a person on a globe |
 | `pitney-bowes` | White ring around the pb monogram on blue | [pitneybowes.com](https://www.pitneybowes.com/etc.clientlibs/pitneybowes/clientlibs/clientlib-site/resources/images/SVG/logo-color.svg) — the circle symbol with the pb monogram |
+| `a1-post` | Black double-hook N on amber | [a1post.bg](https://a1post.bg/logo.svg) — header logo, amber mark of two hooked strokes forming an N beside black A1 POST |
+| `direx` | White globe in an orbit arrow on purple | [direx.bg](https://direx.bg/wp-content/uploads/2026/02/Logo_Planet_Direx.svg) — site icon, purple globe inside a ring that ends in an arrowhead |
+| `fermopoint` | White lowercase f on red | [fermopoint.it](https://www.fermopoint.it/content/images/logo/logo.png) — header wordmark fermopoint whose initial f is red |
+| `fg-delivery` | White map pin holding a navy parcel box on navy | [fgdelivery.it](https://fgdelivery.it/wp-content/uploads/2025/05/logo-fg-delivery.png) — header logo, navy map pin with a parcel box in a white circle |
+| `go4` | White go and red 4 on black | [go4.sk](https://www.go4.sk/web-templates/images/gif/go4-expresne-kurierske-sluzby-logo.gif) — logo, white go and red 4 in a black stamp, as on its black vans |
+| `happy-post` | White paper plane on orange | [happy-post.com](https://happy-post.com/wp-content/themes/vingtcinq/src/svg/logo-responsive.svg) — logo icon, white paper plane on an orange rounded diamond |
+| `hp-mostar` | White envelope over an outlined square in black on yellow | [post.ba](https://www.post.ba/images/logotip-hp-mostar.png) — header logo, black-outlined white envelope over a yellow square |
+| `hr-parcel` | Black italic HRP on yellow | [hrparcel.com](https://www.hrparcel.com/wp-content/uploads/2022/07/HR-PARCEL.svg) — logo, black italic HRP over a parcel cube in a yellow disc |
+| `intex-paketdienst` | Curved band of white and slate tiles on navy | [intex-paketdienst.de](https://www.intex-paketdienst.de/websitewp/wp-content/uploads/2025/06/cropped-favicon-180x180.jpg) — site icon, a curved band of square tiles as beside the INTEX wordmark |
+| `liccardi` | White swept L over green and red stripes on blue | [liccarditrasporti.com](https://www.liccarditrasporti.com/wp-content/uploads/2020/07/fav.png) — site icon, a swept blue and grey L over green, white and red stripes |
+| `logoix` | White X of four corner arrows on orange | [logoix.com](https://www.logoix.com/favicon.svg) — favicon, orange square of four arrows pointing to the corners |
+| `nox` | White and yellow split o between n and x on black | [nox.eu](https://www.nox.eu/_nuxt/logo.DMSz3kyv.svg) — logo, lowercase nox whose o is split into a dark and a yellow arc; the favicon is that o |
+| `peddler` | White lowercase p with a green dot on purple | [peddler.express](https://www.peddler.express/assets/peddler-pfp-mono.png) — app icon, white rounded p with a green dot on purple |
+| `pigeon-express` | White pigeon with an orange wing and letter on navy | [pigeonexpress.com](https://pigeonexpress.com/images/favicon/apple-icon-180x180.png) — app icon, white pigeon with an orange wing carrying an orange envelope on navy |
+| `posta-faroe` | White interlocked chevrons on blue | [posta.fo](https://dkxtfyil83pr6.cloudfront.net/images/logo_posta.svg) — header logo, Posta beside two interlocked chevrons |
+| `tusass` | Navy lowercase t on turquoise | [tusass.gl](https://www.tusass.gl/etc/icon-180.png) — site icon, a bold navy lowercase t with an angled top |
+| `tws-express` | Black hexagon with a yellow arrow on yellow | [twsexpresscourier.it](https://twsexpresscourier.it/wp-content/uploads/2024/02/twsexpresscourier_logo_brand.svg) — logo, black hexagonal box with a yellow arrow pointing to its corner |

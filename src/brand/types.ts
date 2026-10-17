@@ -104,7 +104,10 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'vimenpaq' | 'vozovoz' | 'x-express-ba' | 'metropolitan-warehouse' | 'citymail' | 'correos-cuba'
   | 'correos-el-salvador' | 'delnext' | 'hispapost' | 'intereuropa' | 'iran-post' | 'kronos-express'
   | 'm-one' | 'pack-man' | 'pannon-xp' | 'phlpost' | 'redur' | 'torrestir' | 'afghan-post' | 'corre'
-  | 'correos-nicaragua' | 'kyrgyz-post' | 'la-poste-burkina-faso' | 'lao-post' | 'pitney-bowes';
+  | 'correos-nicaragua' | 'kyrgyz-post' | 'la-poste-burkina-faso' | 'lao-post' | 'pitney-bowes'
+  | 'a1-post' | 'direx' | 'fermopoint' | 'fg-delivery' | 'go4' | 'happy-post' | 'hp-mostar'
+  | 'hr-parcel' | 'intex-paketdienst' | 'liccardi' | 'logoix' | 'nox' | 'peddler' | 'pigeon-express'
+  | 'posta-faroe' | 'tusass' | 'tws-express';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {
