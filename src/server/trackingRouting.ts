@@ -312,8 +312,8 @@ export class TrackingRouter {
     // The filed carrier's status alone, or part of its history, while providers are asked for the rest.
     let partialDirect: { value: RoutedResult; carrier: string } | undefined;
     // Carriers asked in this check whose own answer for the number moved but had only
-    // local clocks, with the local history each answer brought.
-    const localAnswers = new Map<string, JsonObject | undefined>();
+    // local clocks: the answer, the local history it brought, and how to confirm the carrier.
+    const localAnswers = new Map<string, { value: RoutedResult; history: JsonObject | undefined; confirm: () => void }>();
     const universalNumber = metadata.original_carrier && metadata.active_tracking_carrier
       && typeof metadata.active_tracking_number === 'string' ? metadata.active_tracking_number : number;
     // The owner's answer to a provider's postcode request, for this number only.
@@ -438,7 +438,7 @@ export class TrackingRouter {
       const named = answered ?? providerNamed;
       // Filed under the carrier that answered, the parcel keeps that carrier's history,
       // not one another candidate brought first.
-      const history = answered ? localAnswers.get(answered) : localHistory;
+      const history = answered ? localAnswers.get(answered)?.history : localHistory;
       if (named) {
         state.configured_carrier = named;
         // A provider naming several legs may settle on none (17FEIA, and a DPD the catalog
@@ -545,7 +545,9 @@ export class TrackingRouter {
           // The carrier detection or a provider names, answering for this very
           // number, can still file an unknown parcel once a provider dates the
           // parcel's progress. Its newest scan has no instant to hold against the watermark.
-          if (candidate && moved && value.sourceCarrierId === carrier && !earlierLeg(carrier, value)) localAnswers.set(carrier, capturedHistory);
+          if (candidate && moved && value.sourceCarrierId === carrier && !earlierLeg(carrier, value)) {
+            localAnswers.set(carrier, { value, history: capturedHistory, confirm });
+          }
           return null;
         }
         if (candidate && !moved) return null;
@@ -601,6 +603,26 @@ export class TrackingRouter {
     const keepLocal = ({ value, carrier }: { value: RoutedResult; carrier: string }) => {
       value.result = { ...value.result, direct_local_fallback: true };
       return persistResult(value, carrier);
+    };
+    // While no provider has progress for the parcel, a carrier's own answer that moved serves
+    // it, on local clocks too: the filed carrier's, or for an unknown parcel the one detection
+    // names or a provider named, which it is then filed under and confirmed for, as a probe's
+    // answer with dated scans would be. That carrier is asked first on the next check.
+    const ownLocalAnswer = (): RoutedResult | undefined => {
+      if (localDirectFallback) {
+        if (!hasRoutingProgress(localDirectFallback.value.result)) return undefined;
+        state.direct_retry_at = undefined;
+        return keepLocal(localDirectFallback);
+      }
+      if (declared !== 'unknown' || state.confirmed_carrier || metadata.original_carrier || universalNumber !== number) return undefined;
+      const carrier = [...localAnswers.keys()].find((answered) => detectionNames(number, answered))
+        ?? (state.discovered_carrier && localAnswers.has(state.discovered_carrier) ? state.discovered_carrier : undefined);
+      const answer = carrier ? localAnswers.get(carrier) : undefined;
+      if (!carrier || !answer) return undefined;
+      answer.confirm();
+      localHistory = answer.history;
+      state.direct_retry_at = undefined;
+      return keepLocal({ value: answer.value, carrier });
     };
     // A provider held exactly the scans and stage of that answer in the last 6 h.
     const copy = state.provider_copy;
@@ -951,6 +973,8 @@ export class TrackingRouter {
         }
         state.reported_carriers_seen = [...new Set([...seen, ...value.result.reported_carriers])].slice(-20);
       }
+      const own = hasRoutingProgress(value.result) ? undefined : ownLocalAnswer();
+      if (own) return own;
       // The carrier's own answer had no current instant, so this provider dates the
       // timeline. A provider holding just the carrier's scans and stage adds
       // nothing else: the carrier stays first on every check and shows when there
@@ -983,6 +1007,8 @@ export class TrackingRouter {
       return persistResult(partialDirect.value, partialDirect.carrier);
     }
     if (localDirectFallback) return keepLocal(localDirectFallback);
+    const own = ownLocalAnswer();
+    if (own) return own;
     state.discovery_cursor = (offset + Math.max(1, [...attemptedUniversal].filter((source) => rotation.includes(source)).length)) % Math.max(1, rotation.length);
     const deadlines = Object.entries(state.failures).filter(([provider]) => !awaitsInput(provider))
       .map(([, failure]) => millis(failure.retry_at)).filter((time) => time > now().getTime());

@@ -145,15 +145,19 @@ stage and the parcel shows that provider's history, scheduled checks keep the hi
 without asking the providers, for up to 6 h after the provider last matched it. A pending
 parcel is left out, since a local-clock answer would replace its summary. A provider that
 adds scans or a different stage stays the source, as does one whose copy the parcel didn't
-keep, and the carrier is asked again 6 h later, not on every check. When detection names that carrier for an unknown parcel's number and
+keep, and the carrier is asked again 6 h later, not on every check. While no provider has
+progress for the parcel, the carrier's answer serves it if it moved, and the carrier is asked
+first on the next check. When detection names that carrier for an unknown parcel's number and
 its answer shows movement, a provider's progress in the same check files the parcel under
 it, as one added with that carrier would be, even when the provider also names the platform
 the parcel went through (MailAmericas with Cainiao) or a carrier the catalog cannot place.
 A carrier detection does not name does the same when that provider names it as the parcel's
 carrier, as under "Unknown carrier" below.
 That carrier is then the one routing settled on (`discovered_carrier`), as the database
-requires of a parcel filed from a provider's history. Without such a provider answer the parcel
-stays unknown.
+requires of a parcel filed from a provider's history. While no provider has progress, the
+carrier's moving answer files the parcel under it and serves it, confirmed as a probe's dated
+answer would be, when detection names that carrier or a provider named it; one only
+recognition found leaves the parcel unknown.
 
 The filed carrier's partial answer, its status without scans or only its newest scans
 (`summary_only`, `history_truncated`), stands unless a provider holds a fuller history that is
