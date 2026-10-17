@@ -13410,7 +13410,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Lisbon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vasp-expresso",
+      "recognitionRank": 885
     },
     "trackingUrlTemplate": "https://www.vaspexpresso.pt/pt/geral/track-and-trace/?search={trackingNumber}",
     "linkRules": [
@@ -22595,7 +22596,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hr-parcel",
+      "recognitionRank": 887
     },
     "trackingUrlTemplate": "https://www.hrparcel.com/traccia-spedizioni/?barcode={trackingNumber}",
     "linkRules": [
@@ -22922,7 +22924,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tws-express",
+      "recognitionRank": 884
     },
     "trackingUrlTemplate": "https://www.mytws.it/tracking-status;ldv={trackingNumber}",
     "linkRules": [
