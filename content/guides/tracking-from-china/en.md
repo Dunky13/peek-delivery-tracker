@@ -120,7 +120,7 @@ It depends on the line you paid for. Cainiao counts calendar days; Shein counts 
 | Temu | 1–3 days to process, then a delivery time for each parcel once it ships; in the UK, Standard 6–13 business days, Express 4–7 |
 | Shein US | Standard: "77.1% are ≤ 7 business days" |
 | Shein UK | Standard 5–8 working days, Express 4–7 |
-| Shein Ireland | Standard 6–10 business days |
+| Shein Ireland | Standard 6–8 business days |
 | Shein Canada | A delivery window, shown as dates |
 | Shein Australia | Standard 5–9 business days, Express 3–7 |
 
@@ -153,13 +153,13 @@ Go in this order:
 | Temu | Contact customer service within 90 days of the order date | Same |
 | Shein | Within 45 days of the payment date | Within 30 days of the delivery date on the tracking page (45 in the US) |
 
-AliExpress's Delivery Commitment adds a late-delivery coupon 48 hours after the latest estimated date and a refund after a set number of days on labelled items, but not on cheap methods such as AliExpress Saver Shipping or Cainiao Super Economy. Shein and Temu make up for lateness too: Shein's On-Time Delivery gives 500 points in the US and Australia, 500 points or a £5 credit in the UK, and a CAD 5 credit in Canada; Temu issues a credit about 48 hours after the latest delivery date in your order details.
+AliExpress's Delivery Commitment adds a late-delivery coupon 48 hours after the latest estimated date and a refund after a set number of days on labelled items, but not on cheap methods such as AliExpress Saver Shipping or Cainiao Super Economy. Shein and Temu make up for lateness too: Shein's On-Time Delivery gives 500 points in the US, Ireland and Australia, 500 points or a £5 credit in the UK, and a CAD 5 credit in Canada; Temu issues a credit about 48 hours after the latest delivery date in your order details.
 
 > On AliExpress, confirming receipt starts your last 15 days to ask for a refund. Don't confirm until the parcel is in your hands.
 
 If it says delivered and nothing is there, follow [delivered but not received](guide:delivered-not-received).
 
-Temu's own screens, statuses, credits and claims: [Temu order tracking](guide:temu-orders).
+Each shop's own screens, statuses, credits and claims: [Temu order tracking](guide:temu-orders) and [Shein order tracking](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – statuses, 11 and 12 days, economy tracking
@@ -181,6 +181,7 @@ Temu's own screens, statuses, credits and claims: [Temu order tracking](guide:te
 - [Shein Europe: Shipping info](https://eur.shein.com/Shipping-Info-a-280.html) – times to Ireland
 - [Shein Canada: Shipping info](https://ca.shein.com/Shipping-Info-a-280.html) – delivery window, taxes at checkout, CAD 5 credit
 - [Shein Australia: Shipping info](https://au.shein.com/Shipping-Info-a-280.html) – times, no PO boxes
+- [Shein Europe: On-Time Delivery Service Terms and Conditions](https://eur.shein.com/on-time-delivery-terms-and-conditions-a-3491.html) – Ireland: 500 points
 - [Yanwen: Home](https://www.yw56.com.cn/) – UK and platform lines
 - [SF International: Service notices](https://www.sf-international.com/cn/sc) – 2026 holiday arrangements
 - [State Council of China: 2026 public holidays](https://www.news.cn/politics/20251104/88bcffd88ae249e58c699b8772548e3d/c.html) – Chinese New Year in February, National Day 1 to 7 October

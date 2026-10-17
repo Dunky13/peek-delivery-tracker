@@ -151,7 +151,7 @@ Se un ordine Shein arriva dopo la data prevista, la «Garanzia di consegna puntu
 
 Se risulta consegnato ma non hai ricevuto niente, segui la guida [pacco consegnato ma non ricevuto](guide:delivered-not-received).
 
-Schermate, stati, crediti e reclami di Temu: [tracciare un ordine Temu](guide:temu-orders).
+Schermate, stati, crediti e reclami di ogni negozio: [tracciare un ordine Temu](guide:temu-orders) e [tracciare un ordine Shein](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help centre (in inglese)](https://global.cainiao.com/helpDoc.htm) – stati, 11 e 12 giorni, tracking economy, ufficio postale

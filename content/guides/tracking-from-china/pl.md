@@ -148,7 +148,7 @@ AliExpress w ramach Delivery Commitment daje przy oznaczonych produktach kupon z
 
 Status mówi „doręczona”, a paczki nie ma? Zajrzyj do poradnika [paczka doręczona, a jej nie ma](guide:delivered-not-received).
 
-Ekrany, statusy, rekompensaty i reklamacje w Temu: [śledzenie zamówienia z Temu](guide:temu-orders).
+Ekrany, statusy, rekompensaty i reklamacje w każdym sklepie: [śledzenie zamówienia z Temu](guide:temu-orders) i [śledzenie zamówienia z Shein](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – statusy, 11 i 12 dni, śledzenie przy wysyłce ekonomicznej

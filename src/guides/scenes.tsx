@@ -844,6 +844,26 @@ function Haul() {
   </>;
 }
 
+function Mailer() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <Truck x={40} y={172} tone="rose" scale={4} />
+    <path d="M206 150C236 96 290 92 316 126" stroke="var(--rose)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    {/* A soft mailer bag with a scarf hanging out of it, and its size tag. */}
+    <rect x="292" y="128" width="164" height="120" rx="12" fill={paper} />
+    <path d="M292 152h164" stroke="var(--rose)" strokeWidth="3" strokeDasharray="8 7" opacity=".7" />
+    <path d="M320 118v104" stroke="var(--rose)" strokeWidth="24" strokeLinecap="round" />
+    <path d="M308 150h24M308 182h24" stroke={paper} strokeWidth="5" />
+    <path d="M312 234v12M320 234v14M328 234v12" stroke="var(--rose)" strokeWidth="3" strokeLinecap="round" />
+    <path d="M440 160c14 6 22 14 26 24" stroke={soft} strokeWidth="2.4" strokeLinecap="round" />
+    <g transform="rotate(-8 482 200)"><Sheet x={456} y={184} width={52} height={40} rx={8}>
+      <circle cx="10" cy="10" r="3.5" fill="var(--rose-soft)" />
+      <text x="28" y="31" textAnchor="middle" fontFamily={MONO} fontSize="20" fontWeight="700" fill={ink}>M</text>
+    </Sheet></g>
+    <Pip x={558} ground={262} width={136} mood="joy" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -859,6 +879,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'zalando-orders': { tone: 'blue', draw: Fashion },
   'allegro-orders': { tone: 'orange', draw: OneBox },
   'temu-orders': { tone: 'ochre', draw: Haul },
+  'shein-orders': { tone: 'rose', draw: Mailer },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

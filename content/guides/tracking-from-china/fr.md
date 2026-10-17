@@ -147,13 +147,13 @@ Dans cet ordre :
 | Temu | Contacte le service client dans les 90 jours suivant la date de commande | Idem |
 | Shein | Dans les 45 jours suivant la date de paiement | Dans les 30 jours suivant la date de livraison indiquée dans le suivi |
 
-Sur les articles qui portent l'étiquette de l'engagement de livraison d'AliExpress, tu as droit à un coupon en cas de retard, puis à un remboursement si le colis n'arrive pas dans un nombre de jours fixé, sauf avec les modes bon marché comme AliExpress Saver Shipping ou Cainiao Super Economy. Chez Shein, une commande qui n'arrive pas à la date prévue te vaut 200 points en France et en Belgique, 500 en Suisse.
+Sur les articles qui portent l'étiquette de l'engagement de livraison d'AliExpress, tu as droit à un coupon en cas de retard, puis à un remboursement si le colis n'arrive pas dans un nombre de jours fixé, sauf avec les modes bon marché comme AliExpress Saver Shipping ou Cainiao Super Economy. Chez Shein, une commande qui n'arrive pas à la date prévue te vaut 200 points en France, 500 en Suisse ; en Belgique, 200 selon fr.shein.com/be, 500 selon le site européen de Shein.
 
 > Sur AliExpress, confirmer la réception lance tes 15 derniers jours pour demander un remboursement. Ne confirme pas avant d'avoir le colis en main.
 
 Si le suivi indique « livré » et que tu n'as rien reçu : [colis livré mais pas reçu](guide:delivered-not-received).
 
-Les écrans, statuts, crédits et réclamations propres à Temu : [suivre une commande Temu](guide:temu-orders).
+Les écrans, statuts, crédits et réclamations propres à chaque boutique : [suivre une commande Temu](guide:temu-orders) et [suivre un colis Shein](guide:shein-orders).
 
 :::sources
 - [Cainiao : centre d'aide](https://global.cainiao.com/helpDoc.htm) – statuts en anglais et en français, 11 et 12 jours, livraison économique
@@ -172,6 +172,7 @@ Les écrans, statuts, crédits et réclamations propres à Temu : [suivre une co
 - [Shein France : Livraison](https://fr.shein.com/Shipping-Info-a-280.html) – délais, Entrepôt UE, Mondial Relay, délais de réclamation, points
 - [Shein Belgique : Livraison](https://fr.shein.com/be/Shipping-Info-a-280.html) – délais Belgique, Entrepôt UE
 - [Shein Suisse : Livraison](https://ch.shein.com/fr/Shipping-Info-a-280.html) – délais, entrepôts, réclamations, points
+- [Shein Europe (Belgique) : Garantie de livraison à temps](https://euqs.shein.com/faq/detail?id=138135&language=fr) – 500 points
 - [Yanwen : accueil (en chinois)](https://www.yw56.com.cn/) – lignes par transporteur et par plateforme
 - [SF International : avis de service (en chinois)](https://www.sf-international.com/cn/sc) – fêtes de 2026
 - [Conseil des affaires d'État chinois : jours fériés 2026 (en chinois)](https://www.news.cn/politics/20251104/88bcffd88ae249e58c699b8772548e3d/c.html) – Nouvel An chinois en février, fête nationale du 1er au 7 octobre

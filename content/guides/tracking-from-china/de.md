@@ -125,7 +125,7 @@ Das hängt von der Versandart ab, die du bezahlt hast. Cainiao zählt Kalenderta
 | Cainiao-Linien | Premium 5 bis 10 Tage in gefragte Länder wie Spanien oder die Niederlande. Standard 10 bis 18 Tage, nach Deutschland im besten Fall 7 Tage ab Abholung. Economy 20 bis 45 Tage |
 | Temu | 1 bis 3 Tage Bearbeitung, dann eine Lieferzeit pro Paket, sobald es verschickt ist |
 | Shein Deutschland | Ein Lieferzeitraum mit Datum. Für eine Standardbestellung Anfang Oktober 2026 waren es 11 bis 14 Kalendertage |
-| Shein Österreich | Standard 6 bis 10 Werktage, Abholung 6 bis 8 |
+| Shein Österreich | Standard 6 bis 9 Werktage, Abholung 6 bis 8 |
 | Shein Schweiz | Standard 6 bis 8 Werktage, Versand CHF 5.90 bei Bestellungen unter CHF 39.– |
 
 Für Weihnachtsgeschenke heißt das: früh bestellen. Mehr dazu unter [Weihnachtspost: letzter Termin](guide:christmas-posting-dates).
@@ -162,7 +162,7 @@ Bei gekennzeichneten Artikeln gibt es über das „Delivery Commitment“ von Al
 
 Steht „zugestellt“ in der Sendungsverfolgung, aber nichts ist angekommen? Dann hilft [Paket zugestellt, aber nicht erhalten](guide:delivered-not-received).
 
-Temus eigene Bildschirme, Status, Gutschriften und Reklamationen: [Temu-Sendungsverfolgung](guide:temu-orders).
+Bildschirme, Status, Gutschriften und Reklamationen der Shops selbst: [Temu-Sendungsverfolgung](guide:temu-orders) und [Shein-Paket verfolgen](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help center](https://global.cainiao.com/helpDoc.htm) – Status, 11 und 12 Tage, Economy-Hinweis
@@ -179,7 +179,7 @@ Temus eigene Bildschirme, Status, Gutschriften und Reklamationen: [Temu-Sendungs
 - [Temu Deutschland: Versandinformationen](https://www.temu.com/de/shipping-info.html) – lokale Lager ohne Mindestbestellwert
 - [Temu Österreich: Versandinformationen](https://www.temu.com/at/shipping-info.html) – lokale Lager ohne Mindestbestellwert
 - [Shein Deutschland: Versandinformation](https://de.shein.com/Shipping-Info-a-280.html) – Lieferzeitraum, verschiedene Lager, 45 und 30 Tage
-- [Shein Österreich: Versandinformation](https://at.shein.com/Shipping-Info-a-280.html) – 6 bis 10 Werktage, 45 und 30 Tage
+- [Shein Österreich: Versandinformation](https://at.shein.com/Shipping-Info-a-280.html) – 6 bis 9 Werktage, 45 und 30 Tage
 - [Shein Schweiz: Versandinformation](https://ch.shein.com/Shipping-Info-a-280.html) – 6 bis 8 Werktage, Economy ohne Tracking, 45 und 30 Tage
 - [Yanwen: Startseite](https://www.yw56.com.cn/) – Deutschland-DHL-Linie, Linien für Temu und AliExpress
 - [SF International: Hinweise](https://www.sf-international.com/cn/sc) – Feiertage 2026

@@ -77,6 +77,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Temu order tracking: carriers, statuses and late parcels"
     },
     {
+      "id": "shein-orders",
+      "slug": "shein-order-tracking",
+      "title": "Shein order tracking: carriers, statuses and delays"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -212,6 +217,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "temu-orders",
       "slug": "temu-sendungsverfolgung",
       "title": "Temu-Sendungsverfolgung: Paketdienst, Status, Verspätung"
+    },
+    {
+      "id": "shein-orders",
+      "slug": "shein-paket-verfolgen",
+      "title": "Shein-Paket verfolgen: Paketdienste, Status und Verspätung"
     },
     {
       "id": "find-tracking-number",
@@ -351,6 +361,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Temu\u00a0: transporteurs, statuts, retards"
     },
     {
+      "id": "shein-orders",
+      "slug": "suivi-colis-shein",
+      "title": "Suivi de commande Shein\u00a0: transporteurs, statuts et retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -486,6 +501,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "temu-orders",
       "slug": "tracciare-ordine-temu",
       "title": "Tracciare un ordine Temu: codice, ritardi e rimborsi"
+    },
+    {
+      "id": "shein-orders",
+      "slug": "tracciare-ordine-shein",
+      "title": "Tracciare un ordine Shein: corrieri, stati e ritardi"
     },
     {
       "id": "find-tracking-number",
@@ -625,6 +645,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de pedidos Temu: número, retrasos y reembolsos"
     },
     {
+      "id": "shein-orders",
+      "slug": "seguimiento-pedido-shein",
+      "title": "Seguimiento de pedidos Shein: empresas, estados y retrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -762,6 +787,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Rastrear uma encomenda Temu: número, atrasos e reembolsos"
     },
     {
+      "id": "shein-orders",
+      "slug": "rastrear-encomenda-shein",
+      "title": "Rastrear encomenda Shein: transportadoras, estados e atrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -897,6 +927,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "temu-orders",
       "slug": "sledzenie-zamowienia-temu",
       "title": "Śledzenie zamówienia Temu: numer, opóźnienia i zwroty"
+    },
+    {
+      "id": "shein-orders",
+      "slug": "sledzenie-zamowienia-shein",
+      "title": "Śledzenie zamówienia Shein: przewoźnik, statusy i opóźnienia"
     },
     {
       "id": "find-tracking-number",
