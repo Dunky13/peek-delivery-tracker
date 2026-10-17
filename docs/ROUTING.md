@@ -353,7 +353,8 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   number it refused under an older release, then a carrier never asked, then one asked again),
   50 at a time: the next batch goes once the last one's checks are done. One still in its
   cooldown is queued by the first scheduled run after the cooldown ends. These checks wait
-  behind every other job, a lookup's own check too. Only parcels filed under no carrier, or showing a provider's history, are
+  behind every other job, a lookup's own check too, and keep the scheduled cadence; they are
+  recorded with the `release` trigger. Asking for the parcel's check moves a queued one up. Only parcels filed under no carrier, or showing a provider's history, are
   looked at. A lookup nobody follows any more gets this one check.
 
 ## Handoffs (two carriers)

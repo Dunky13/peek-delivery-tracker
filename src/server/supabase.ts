@@ -905,6 +905,9 @@ export class SupabaseClient {
   }
 }
 
+/** The priority of a re-check nobody asked for, such as a scraper release's: it waits behind every other job. */
+export const BACKGROUND_SYNC_PRIORITY = -30;
+
 export class SupabaseServiceClient extends SupabaseClient {
   /**
    * Adds a parcel to an account, with the checks create_owned_package makes
@@ -1350,7 +1353,7 @@ export class SupabaseServiceClient extends SupabaseClient {
       dedupeKey = `package:${options.packageId}`;
       // A one-off parcel has no owner. Its check waits behind every account's
       // refresh and the scheduled run, so lookups cannot starve accounts.
-      priority = options.background ? -30 : options.userId ? 10 : -20;
+      priority = options.background ? BACKGROUND_SYNC_PRIORITY : options.userId ? 10 : -20;
     }
 
     const created = rows(await this.request('/rest/v1/sync_jobs?on_conflict=dedupe_key', {
@@ -1367,12 +1370,19 @@ export class SupabaseServiceClient extends SupabaseClient {
     if (created[0]) return { row: created[0], queued: true };
 
     const params = query({
-      select: 'id,user_id,package_id,kind,state,requested_at',
+      select: 'id,user_id,package_id,kind,state,priority,requested_at',
       dedupe_key: `eq.${dedupeKey}`,
       limit: '1',
     });
     const existing = rows(await this.request(`/rest/v1/sync_jobs?${params}`));
     if (!existing[0]) throw new SupabaseError('The durable sync job could not be queued');
+    // Asking for a check already queued behind others, such as a release's re-check, moves it up.
+    if (existing[0].state === 'queued' && Number(existing[0].priority) < priority) {
+      const raised = rows(await this.request(`/rest/v1/sync_jobs?${query({ id: `eq.${existing[0].id}`, state: 'eq.queued' })}`, {
+        method: 'PATCH', body: { priority }, prefer: 'return=representation',
+      }));
+      if (raised[0]) return { row: raised[0], queued: false };
+    }
     return { row: existing[0], queued: false };
   }
 

@@ -40,3 +40,20 @@ it.each([false, true])('renews a long-running job and stops writes after renewal
   await vi.advanceTimersByTimeAsync(60_000);
   expect(renew).toHaveBeenCalledTimes(calls);
 });
+
+it.each([[10, 'package'], [-20, 'package'], [-30, 'release']])('runs a parcel\'s job of priority %i as a %s check', async (priority, trigger) => {
+  vi.useFakeTimers();
+  const client = new SupabaseServiceClient('https://database.test', 'test');
+  const state: BackgroundState = { workerHeartbeat: null, lastScheduledSync: null, nextScheduledSync: null, lastSummary: null, lastError: null, lastAutoArchived: 0 };
+  vi.spyOn(client, 'claimSyncJob').mockResolvedValueOnce({ id: 'job', kind: 'package', package_id: 'package', priority }).mockResolvedValue(null);
+  vi.spyOn(client, 'getPackage').mockResolvedValue({ id: 'package' });
+  vi.spyOn(client, 'finishSyncJob').mockResolvedValue();
+  const service = new TrackingSyncService(client);
+  const check = vi.spyOn(service, 'syncPackage').mockResolvedValue({ checked: 1, updated: 0, unchanged: 1, waiting: 0, errors: 0, unsupported: 0,
+    superseded: 0, notifications_sent: 0, notification_errors: 0, subscriptions_expired: 0, emails_sent: 0, email_errors: 0 });
+  const worker = new SyncJobWorker(service, state);
+  worker.start();
+  await vi.advanceTimersByTimeAsync(1);
+  worker.stop();
+  expect(check.mock.calls[0][1]).toMatchObject({ trigger });
+});

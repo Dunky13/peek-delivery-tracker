@@ -34,7 +34,7 @@ import {
 } from './trackingSync';
 import type { JsonObject } from './types';
 import * as observability from './observability';
-import { catalogRules } from './trackingRouting';
+import { catalogRules, TrackingRouter } from './trackingRouting';
 import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
@@ -1517,6 +1517,16 @@ describe('TrackingSyncService', () => {
       { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, null, () => new Date(`2026-09-09T${time}Z`));
     await expect(service.sync()).resolves.toMatchObject({ checked: checked.length });
     expect(client.startSyncAttempt.mock.calls.map(([, values]) => values.package_id)).toEqual(checked);
+  });
+
+  it.each([['package', false], ['scheduled', true], ['release', true]] as const)('records a %s check, and keeps the scheduled cadence: %s', async (trigger, scheduled) => {
+    const route = vi.spyOn(TrackingRouter.prototype, 'fetch').mockRejectedValue(new Error('down'));
+    const client = fakeClient();
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn(), fetchUniversal: vi.fn() }, null,
+      () => new Date('2026-09-10T12:00:00Z'));
+    await service.syncPackage({ id: 'parcel', carrier: 'dhl', tracking_number: 'TEST1234', current_stage: 'in_transit' }, { trigger });
+    expect(route.mock.calls[0][1]).toBe(scheduled);
+    expect(client.startSyncAttempt.mock.calls[0][1]).toMatchObject({ trigger });
   });
 
   it('queues a check, once per catalog, for the recent parcels its rules now point to another carrier', async () => {

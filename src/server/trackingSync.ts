@@ -1193,6 +1193,7 @@ export class TrackingSyncService {
       const checks = lookups?.for(parcel);
       const subject = checks?.parcel ?? parcel;
       const once = <T>(key: readonly unknown[], lookup: () => Promise<T>) => checks ? checks.once(key, lookup) : lookup();
+      // Only a check someone asked for, or a lookup's, skips the scheduled cadence: a release's re-check keeps it.
       try {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
           ? await new TrackingRouter({
@@ -1209,7 +1210,7 @@ export class TrackingSyncService {
             ...(this.adapter.recognizeBrowser ? { recognizeBrowser: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) =>
               once(recognitionKey('browser', carrier, number), () => this.adapter.recognizeBrowser!(carrier, number, context, previousError)) } : {}),
             enablePostalNinja: process.env.TRACKING_ENABLE_POSTAL_NINJA === 'true',
-          }).fetch(subject, context.trigger === 'scheduled', context.signal, addition)
+          }).fetch(subject, context.trigger !== 'package', context.signal, addition)
           : await this.fetchResult(subject, carrierId, checks, context.trigger === 'package'));
       } catch (error) {
         if (carrierId === 'amazon-shipping' && error instanceof CarrierError && error.reason === 'history_expired') {

@@ -58,8 +58,9 @@ logged without its query, and its error reports leave the request out.
 
 All tables and views here are service-role only.
 
-- `tracking_sync_attempts`: one row per check. It holds the configured and actual carrier,
-  job and package, previous and selected stage, provider status, event counts, outcome,
+- `tracking_sync_attempts`: one row per check. It holds its `trigger` (`package` for a check
+  someone asked for or a lookup's, `scheduled`, `release` for a scraper release's re-check),
+  the configured and actual carrier, job and package, previous and selected stage, provider status, event counts, outcome,
   error class, anomaly codes and a bounded private `status_text`. A check that stored a
   scan for the first time, moved the parcel's stage or restaged a stored scan into news
   (see `scans_reannounced`) ends `updated`; one whose carrier answered with the progress

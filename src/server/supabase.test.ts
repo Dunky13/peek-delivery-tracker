@@ -221,6 +221,25 @@ describe('one-off parcels and their links', () => {
     await expect(client.enqueueSyncJob({ scheduled: true, packageId: 'package-1' })).rejects.toThrow('cannot target');
   });
 
+  it('moves a queued check up when someone asks for it, and leaves a running one alone', async () => {
+    const client = service();
+    const queued = { id: 'job', state: 'queued', priority: -30 };
+    const request = vi.spyOn(client, 'request').mockResolvedValueOnce([]).mockResolvedValueOnce([queued])
+      .mockResolvedValueOnce([{ ...queued, priority: 10 }]);
+    await expect(client.enqueueSyncJob({ userId: 'owner-1', packageId: 'package-1' }))
+      .resolves.toEqual({ row: { ...queued, priority: 10 }, queued: false });
+    const [path, options] = request.mock.calls[2];
+    expect(Object.fromEntries(params(path))).toEqual({ id: 'eq.job', state: 'eq.queued' });
+    expect(options).toMatchObject({ method: 'PATCH', body: { priority: 10 } });
+    request.mockReset().mockResolvedValueOnce([]).mockResolvedValueOnce([{ ...queued, state: 'running' }]);
+    await expect(client.enqueueSyncJob({ userId: 'owner-1', packageId: 'package-1' }))
+      .resolves.toEqual({ row: { ...queued, state: 'running' }, queued: false });
+    // A check queued in the background again leaves it where it is.
+    request.mockReset().mockResolvedValueOnce([]).mockResolvedValueOnce([queued]);
+    await client.enqueueSyncJob({ userId: 'owner-1', packageId: 'package-1', background: true });
+    expect(request).toHaveBeenCalledTimes(2);
+  });
+
   it('sends link ids and key hashes in request bodies, never in an address', async () => {
     const client = service();
     const user = new SupabaseUserClient('https://database.example', 'public-key', 'token');

@@ -17,7 +17,8 @@ import { SupabaseError, type SupabaseServiceClient } from './supabase';
 import { isRecord, type JsonObject } from './types';
 import { trackingSupportContext } from './trackingSupport';
 
-export type SyncTrigger = 'package' | 'scheduled';
+/** A check someone asked for (or a lookup's), a scheduled run's, or a scraper release's re-check. */
+export type SyncTrigger = 'package' | 'scheduled' | 'release';
 export type SyncStep =
   | 'selected'
   | 'fetch'
