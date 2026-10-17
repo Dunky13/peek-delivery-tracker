@@ -9540,7 +9540,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bulgarian-posts",
+      "recognitionRank": 915
     },
     "trackingUrlTemplate": "https://www.bgpost.bg/postal-services/track-package?itemid={trackingNumber}",
     "linkRules": [
@@ -9567,6 +9568,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^PS[0-9A-Z]{11}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://www.bgpost.bg/postal-services/track-package"
@@ -10094,7 +10101,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "courier-center",
+      "recognitionRank": 914
     },
     "trackingUrlTemplate": "https://www.courier.gr/track/result/?tracknr={trackingNumber}",
     "linkRules": [
