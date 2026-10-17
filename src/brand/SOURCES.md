@@ -81,6 +81,7 @@ and [`truck.json`](truck.json).
 | `bulgarian-posts` | [bgpost.bg](https://www.bgpost.bg/) — site theme primary/primaryYellow #FFD100; logo SVG fill #000016 |
 | `burd-delivery` | [burd.dk](https://cdn.prod.website-files.com/6891dc3d6aafe2063f669663/6895ce72d9d7d99df1cd9709_Burd_Logo_1.svg) — logo SVG fill #ec008c |
 | `bussgods` | [bussgods.se](https://bussgods.se/) — header, buttons and headings #183963 (Elementor global colour); logo SVG swoosh #f61821 |
+| `byhd` | [byhd56.com](http://www.byhd56.com/Files/Site/SiteLogo/c5dcc001-6d3d-47c7-b572-3a7b3a9bee76.png) — site logo PNG: blue #084282 (emblem C and wordmark), orange #df7017 (approximate); site CSS blue #084485 |
 | `campost` | [campost.cm](https://campost.cm/wp-content/uploads/elementor/css/post-17.css) — header background-color #FBD604, the logo yellow; bird navy #144082 is the site text colour |
 | `canada-post` | [brand cheat sheet (PDF)](https://www.canadapost-postescanada.ca/cpc/doc/en/our-company/media-centre/cpc-brand-cheat-sheet.pdf) |
 | `canpar` | [canpar.com](https://www.canpar.com/) (approximate) |
@@ -1064,3 +1065,4 @@ and [`truck.json`](truck.json).
 | `posta-faroe` | White interlocked chevrons on blue | [posta.fo](https://dkxtfyil83pr6.cloudfront.net/images/logo_posta.svg) — header logo, Posta beside two interlocked chevrons |
 | `tusass` | Navy lowercase t on turquoise | [tusass.gl](https://www.tusass.gl/etc/icon-180.png) — site icon, a bold navy lowercase t with an angled top |
 | `tws-express` | Black hexagon with a yellow arrow on yellow | [twsexpresscourier.it](https://twsexpresscourier.it/wp-content/uploads/2024/02/twsexpresscourier_logo_brand.svg) — logo, black hexagonal box with a yellow arrow pointing to its corner |
+| `byhd` | White and orange split roundel on blue: white C and lower stem, orange D and upper stems | [byhd56.com](http://www.byhd56.com/images/favicon.ico) — the round emblem in the site logo and favicon |

@@ -150,6 +150,7 @@ describe('carrier brand', () => {
       'a1-post', 'direx', 'fermopoint', 'fg-delivery', 'go4', 'happy-post', 'hp-mostar', 'hr-parcel',
       'intex-paketdienst', 'liccardi', 'logoix', 'nox', 'peddler', 'pigeon-express', 'posta-faroe', 'tusass',
       'tws-express',
+      'byhd',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

@@ -533,6 +533,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "bulgarian-posts": "bulgarian-posts",
   "burd-delivery": "burd-delivery",
   "bussgods": "bussgods",
+  "byhd": "byhd",
   "c-chez-vous": "c-chez-vous",
   "campost": "campost",
   "canada-post": "canada-post",
@@ -10760,6 +10761,28 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M8.53 9.31L15.81 6.72L11.03 12.47L11.03 9.31Z",
         "fill": "truck"
+      }
+    ],
+    "byhd": [
+      {
+        "type": "polygon",
+        "d": "M9.76 4.14L8.88 4.43L8.06 4.85L7.32 5.42L6.68 6.09L6.17 6.87L5.8 7.72L5.57 8.62L5.5 9.54L5.59 10.47L5.83 11.36L6.21 12.21L6.74 12.98L7.38 13.64L8.13 14.19L8.96 14.61L9.54 12.95L8.98 12.66L8.48 12.28L8.06 11.82L7.71 11.3L7.46 10.73L7.3 10.12L7.25 9.49L7.3 8.87L7.46 8.26L7.72 7.69L8.07 7.16L8.5 6.71L9 6.33Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M11.45 10.66L13.4 10.08L13.48 10.63L12.8 11.8L11.7 14.96L10.83 15L9.97 14.9Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M10.92 4L11.77 4.05L12.59 4.24L9.89 11.96L9.36 11.64L8.92 11.22L8.58 10.7Z",
+        "fill": "#df7017"
+      },
+      {
+        "type": "polygon",
+        "d": "M13.56 4.63L14.33 5.12L15 5.72L15.56 6.43L16 7.21L16.31 8.06L16.47 8.95L16.49 9.85L16.36 10.75L16.08 11.61L15.67 12.41L15.13 13.13L14.48 13.76L13.73 14.27L12.92 14.66L13.88 11.9L14.25 11.37L14.52 10.78L14.69 10.15L14.75 9.51L14.7 8.86L14.53 8.23L14.26 7.64L13.84 8.85L11.88 9.44Z",
+        "fill": "#df7017"
       }
     ]
   }
