@@ -37,8 +37,11 @@ export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now =
   const provider = typeof data.tracking_provider === 'string';
   if (routing.rules === rules || data.original_carrier || (!unfiled && !provider)
     || ['delivered', 'returned'].includes(String(parcel.current_stage))) return null;
-  const asked = (carrier: string) => carrier === routing.confirmed_carrier || Boolean(routing.failures[carrier])
-    || Boolean(routing.candidate_probes?.[carrier]);
+  // A carrier that refused the number under an older release counts as not asked:
+  // this release's adapter may take it (rerouteAskable checks).
+  const refusedBefore = (carrier: string) => routing.failures[carrier]?.user_error === 'carrier:invalid_input';
+  const asked = (carrier: string) => carrier === routing.confirmed_carrier
+    || (Boolean(routing.failures[carrier]) && !refusedBefore(carrier)) || Boolean(routing.candidate_probes?.[carrier]);
   const waiting = (carrier: string) => Date.parse(routing.candidate_probes?.[carrier]?.retry_at ?? '') > now
     || Date.parse(routing.failures[carrier]?.retry_at ?? '') > now;
   // A carrier with an adapter of its own that the parcel never asked, or an unfiled parcel
@@ -52,7 +55,7 @@ export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now =
   const names = Array.isArray(data.reported_carriers)
     ? data.reported_carriers.filter((name): name is string => typeof name === 'string') : [];
   const named = names.length ? universalCarrierHints(names, number).discovered_carrier : undefined;
-  if (named !== routing.discovered_carrier && leads(named)) return named;
+  if (leads(named) && (named !== routing.discovered_carrier || refusedBefore(named))) return named;
   if (unfiled) {
     const [first] = recognitionCandidates(number, { hint: routing.discovered_carrier,
       skip: (carrier) => waiting(carrier) || refused.has(carrier) });
@@ -65,7 +68,7 @@ export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now =
   const localAnswer = isRecord(data.direct_local_history) && data.direct_local_history.carrier === filed
     && !localClockCarrier(filed);
   return provider && !unfiled && directCarrier(filed) && !refused.has(filed)
-    && (localAnswer || (filed !== routing.confirmed_carrier && !routing.failures[filed])) ? filed : null;
+    && (localAnswer || (filed !== routing.confirmed_carrier && (!routing.failures[filed] || refusedBefore(filed)))) ? filed : null;
 }
 
 /**

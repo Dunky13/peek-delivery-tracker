@@ -348,7 +348,8 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   carrier its recognition would ask, has no wait left, asked before or not: a release can
   teach an adapter a number, and a rate limit or outage passes. A carrier whose adapter
   refuses the number by its own check, which sends nothing, is passed over until a release
-  whose adapter takes it. One still in its cooldown is
+  whose adapter takes it. One that refused the number under an older release counts as not
+  asked, the filed carrier and a provider's name the parcel already holds included. One still in its cooldown is
   queued by the first scheduled run after the cooldown ends. These checks wait behind every other job, a lookup's own
   check too. Only parcels filed under no carrier, or showing a provider's history, are
   looked at. A lookup nobody follows any more gets this one check.

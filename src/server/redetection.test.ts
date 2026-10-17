@@ -99,6 +99,21 @@ it.each<[string, JsonObject, JsonObject]>([
   expect(rerouteCarrier(parcel(values, data))).toBeNull();
 });
 
+it('points a parcel to a carrier that refused its number under an older release', async () => {
+  const now = Date.parse('2026-09-10T12:00:00Z');
+  const refusal = { kind: 'schema', count: 5, retry_at: '2026-09-09T06:00:00Z', user_error: 'carrier:invalid_input' };
+  // The provider's name the parcel already holds, which its next check would ask, but there is none.
+  const named = parcel({ tracking_number: UNCLAIMED }, { reported_carriers: ['UPS'],
+    routing: { discovered_carrier: 'ups', failures: { ups: refusal } } });
+  expect(rerouteCarrier(named, 'newer', now)).toBe('ups');
+  // The filed carrier, and the one detection names for a parcel filed under another.
+  expect(rerouteCarrier(parcel({ carrier: 'royal-mail', tracking_number: 'RR123456785GB' },
+    { routing: { failures: { 'royal-mail': refusal } } }), 'newer', now)).toBe('royal-mail');
+  expect(rerouteCarrier(parcel({ carrier: 'dhl' }, { routing: { failures: { ups: refusal } } }), 'newer', now)).toBe('ups');
+  // Today's adapter refuses it too.
+  expect(await rerouteAskable(named, 'newer', now, async () => true)).toBeNull();
+});
+
 it('passes over a carrier whose adapter refuses the number, until a release whose adapter may take it', async () => {
   const refuses = (refusing: string[]) => async (carrier: string) => refusing.includes(carrier);
   // A provider's name the check could not ask, and nothing else to ask.
