@@ -13708,6 +13708,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^XZG\\d{9}WL$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^YLUS\\d{10}$",
+        "confidence": "low"
       }
     ],
     "trackingSearchUrl": "https://www.dhlink.com/trackQuery"
