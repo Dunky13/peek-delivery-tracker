@@ -16120,8 +16120,21 @@ export const CARRIER_CAPABILITIES = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "linkRules": [],
-    "detectionRules": []
+    "linkRules": [
+      {
+        "domains": [
+          "pits.gpo.gov.np",
+          "202.166.194.38"
+        ],
+        "pathPattern": "^/Inquiry/InquiryIndexClient$",
+        "params": [
+          "ItemId"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingUrlTemplate": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient?ItemId={trackingNumber}",
+    "trackingSearchUrl": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient"
   },
   "pakistan-post": {
     "displayName": "Pakistan Post",
@@ -18080,7 +18093,9 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [],
+    "trackingUrlTemplate": "https://rapidposte.poste.tn/fr/Item_Events.asp?ItemId={trackingNumber}",
+    "trackingSearchUrl": "https://www.poste.tn/"
   },
   "libanpost": {
     "displayName": "LibanPost",
@@ -22489,7 +22504,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fg-delivery",
+      "recognitionRank": 879
     },
     "trackingUrlTemplate": "https://fgdelivery.it/tracciabilita/?barcode={trackingNumber}",
     "linkRules": [
@@ -22504,6 +22520,10 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^FGD\\d{22}$",
+        "confidence": "high"
+      },
       {
         "pattern": "^CNIT[A-Z]{2}\\d{8}FLM$",
         "confidence": "high"
@@ -23187,7 +23207,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fedex-pl",
+      "recognitionRank": 882
     },
     "trackingUrlTemplate": "https://fds2tracking.emea.fedex.com/#/preview?packages={trackingNumber}&trackingKey={trackingNumber}",
     "linkRules": [

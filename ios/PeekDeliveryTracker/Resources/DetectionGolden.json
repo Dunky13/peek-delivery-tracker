@@ -61789,6 +61789,17 @@
     ]
   },
   {
+    "input": "EE995454657TN",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "chronopost"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "EEUS026904543AE0",
     "carrier": "unknown",
     "confidence": "none",
@@ -63510,6 +63521,14 @@
     "confidence": "high",
     "candidates": [
       "17feia"
+    ]
+  },
+  {
+    "input": "FGD0009990000000001000101",
+    "carrier": "fg-delivery",
+    "confidence": "high",
+    "candidates": [
+      "fg-delivery"
     ]
   },
   {

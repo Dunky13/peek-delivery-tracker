@@ -16119,8 +16119,21 @@
         "mode": "automatic",
         "adapter": "universal"
       },
-      "linkRules": [],
-      "detectionRules": []
+      "linkRules": [
+        {
+          "domains": [
+            "pits.gpo.gov.np",
+            "202.166.194.38"
+          ],
+          "pathPattern": "^/Inquiry/InquiryIndexClient$",
+          "params": [
+            "ItemId"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingUrlTemplate": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient?ItemId={trackingNumber}",
+      "trackingSearchUrl": "https://pits.gpo.gov.np/Inquiry/InquiryIndexClient"
     },
     "pakistan-post": {
       "displayName": "Pakistan Post",
@@ -18079,7 +18092,9 @@
           ]
         }
       ],
-      "detectionRules": []
+      "detectionRules": [],
+      "trackingUrlTemplate": "https://rapidposte.poste.tn/fr/Item_Events.asp?ItemId={trackingNumber}",
+      "trackingSearchUrl": "https://www.poste.tn/"
     },
     "libanpost": {
       "displayName": "LibanPost",
@@ -22488,7 +22503,8 @@
       "timezone": "Europe/Rome",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "fg-delivery",
+        "recognitionRank": 879
       },
       "trackingUrlTemplate": "https://fgdelivery.it/tracciabilita/?barcode={trackingNumber}",
       "linkRules": [
@@ -22503,6 +22519,10 @@
         }
       ],
       "detectionRules": [
+        {
+          "pattern": "^FGD\\d{22}$",
+          "confidence": "high"
+        },
         {
           "pattern": "^CNIT[A-Z]{2}\\d{8}FLM$",
           "confidence": "high"
@@ -23186,7 +23206,8 @@
       "timezone": "Europe/Warsaw",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "fedex-pl",
+        "recognitionRank": 882
       },
       "trackingUrlTemplate": "https://fds2tracking.emea.fedex.com/#/preview?packages={trackingNumber}&trackingKey={trackingNumber}",
       "linkRules": [
