@@ -14146,7 +14146,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "envia-colombia",
+      "recognitionRank": 912
     },
     "trackingUrlTemplate": "https://envia.co/tracking?guia={trackingNumber}",
     "linkRules": [
@@ -14295,7 +14296,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skroutz-last-mile",
+      "recognitionRank": 913
     },
     "trackingUrlTemplate": "https://www.skroutzlastmile.gr/#{trackingNumber}",
     "linkRules": [
