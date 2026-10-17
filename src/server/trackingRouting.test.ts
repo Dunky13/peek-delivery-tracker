@@ -1146,7 +1146,7 @@ describe('persistent tracking routing', () => {
     expect(universalCarrierHints(['La Poste', 'Posti']).discovered_carrier).toBeUndefined();
     expect(universalCarrierHints(['https://private/token'])).toEqual({ reported_carriers: [] });
     expect(universalCarrierHints(['Chronopost France'])).toMatchObject({ discovered_carrier: 'chronopost' });
-    expect(universalCarrierHints(['Chronopost Portugal']).discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['Correos Chile']).discovered_carrier).toBeUndefined();
   });
   it('reports only carrier names the catalog does not know, once per parcel', async () => {
     const { router, universal } = setup();
