@@ -535,18 +535,29 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         carrier != .amazonShipping && (carrier == .amazonLogistics || isAmazonTrackingNumber(trackingNumber))
     }
 
-    static func amazonMarketplace(_ number: String) -> String {
+    // Amazon sends visitors from a European country without a store of its own to amazon.de
+    // (Iceland's to amazon.co.uk), so its parcels' orders are there.
+    private static let amazonStores = ["FR": "fr", "DE": "de", "AT": "de", "BE": "com.be", "UK": "co.uk", "GB": "co.uk",
+        "IT": "it", "ES": "es", "PT": "es", "NL": "nl", "IE": "ie", "PL": "pl", "SE": "se", "TR": "com.tr",
+        "CH": "de", "LI": "de", "LU": "de", "DK": "de", "NO": "de", "FI": "de", "CZ": "de", "HU": "de", "RO": "de",
+        "HR": "de", "SI": "de", "EE": "de", "LV": "de", "LT": "de", "GR": "de", "IS": "co.uk"]
+
+    /// The store whose order history holds the parcel. TBA names no country and amazon.ca orders
+    /// ship under it too, so the delivery country decides there, and when there is no number.
+    static func amazonMarketplace(_ number: String, country: String? = nil) -> String {
         let normalized = normalize(number)
-        // TBA names no country; its Canadian and Mexican siblings do.
+        let destination = (country ?? "").trimmingCharacters(in: .whitespaces).uppercased()
         if normalized.hasPrefix("TBC") { return "ca" }
         if normalized.hasPrefix("TBM") { return "com.mx" }
-        let domains = ["FR": "fr", "DE": "de", "AT": "de", "BE": "com.be", "UK": "co.uk", "GB": "co.uk",
-            "IT": "it", "ES": "es", "PT": "es", "NL": "nl", "IE": "ie", "PL": "pl", "SE": "se", "TR": "com.tr"]
-        return domains[String(normalized.prefix(2))] ?? "com"
+        if normalized.hasPrefix("TBA") { return destination == "CA" ? "ca" : "com" }
+        if normalized.isEmpty {
+            return ["CA": "ca", "MX": "com.mx"][destination] ?? amazonStores[destination] ?? "com"
+        }
+        return amazonStores[String(normalized.prefix(2))] ?? "com"
     }
 
-    static func amazonOrdersURL(_ number: String) -> URL {
-        URL(string: "https://www.amazon.\(amazonMarketplace(number))/gp/your-account/order-history")!
+    static func amazonOrdersURL(_ number: String, country: String? = nil) -> URL {
+        URL(string: "https://www.amazon.\(amazonMarketplace(number, country: country))/gp/your-account/order-history")!
     }
 
     static func amazonShippingURL(_ number: String) -> URL {
@@ -769,7 +780,8 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         if requiresAmazonAccount(parcel.carrier, trackingNumber: parcel.trackingNumber) {
             return [ParcelTrackingLink(carrier: .amazonLogistics,
                 name: info(for: .amazonLogistics, language: language).displayName,
-                url: Self.amazonOrdersURL(parcel.trackingNumber), role: .active)]
+                url: Self.amazonOrdersURL(parcel.trackingNumber, country: parcel.carrierData?.destinationCountry),
+                role: .active)]
         }
         let links = carrierTrackingLinks(for: parcel, language: language)
         let lookupNumber = parcel.carrierData?.originalCarrier != nil && parcel.carrierData?.activeTrackingCarrier != nil

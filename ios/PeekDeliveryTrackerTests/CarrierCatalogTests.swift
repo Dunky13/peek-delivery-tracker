@@ -545,6 +545,23 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(link.url.absoluteString, "https://www.amazon.fr/gp/your-account/order-history")
     }
 
+    func testAmazonOrdersOpenTheBuyersStore() throws {
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("CH0000000001").host, "www.amazon.de")
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("ch 000-0000001", country: "CA").host, "www.amazon.de")
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("IS0000000001").host, "www.amazon.co.uk")
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("SK0000000001").host, "www.amazon.com")
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("TBA000000000001", country: " ca ").host, "www.amazon.ca")
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("TBA000000000001", country: "FR").host, "www.amazon.com")
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("TBM000000000001", country: "CA").host, "www.amazon.com.mx")
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("", country: "CH").host, "www.amazon.de")
+        XCTAssertEqual(CarrierCatalog.amazonOrdersURL("", country: "CA").host, "www.amazon.ca")
+        var parcel = Parcel(id: UUID(), trackingNumber: "TBA000000000001", label: "Example", carrier: .amazonLogistics,
+            createdAt: "2026-09-10T12:00:00Z", syncStatus: .ok, notificationsMuted: false)
+        parcel.carrierData = CarrierData(destinationCountry: "CA")
+        let link = try XCTUnwrap(catalog.trackingLinks(for: parcel, language: .en).first)
+        XCTAssertEqual(link.url.host, "www.amazon.ca")
+    }
+
     func testDetectsInternationalAmazonAndKeepsConfirmedShippingDistinct() {
         for prefix in ["FR", "DE", "BE", "UK", "GB", "IT", "ES", "NL", "AT", "IE", "PL", "SE", "PT", "CH"] {
             let number = "\(prefix)0000000001"
