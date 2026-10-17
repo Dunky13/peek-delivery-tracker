@@ -267,6 +267,19 @@ describe('scraper adoption validation', () => {
     assert.doesNotMatch(workflow, /repository_dispatch|client_payload/);
   });
 
+  it('lets a CI run on main stand in for a late schedule, once the last adoption is 2 hours old', () => {
+    const triggers = workflow.match(/\non:\n([\s\S]*?)\n\S/)?.[1] ?? '';
+    assert.match(triggers, /\n  workflow_run:\n\s+workflows: \[CI\]\n\s+types: \[completed\]\n\s+branches: \[main\]/);
+    const due = workflow.match(/\n  due:\n([\s\S]*?)\n  adopt:\n/)?.[1];
+    assert.ok(due, 'The due job must come before the adopt job.');
+    assert.match(due, /if: github\.event_name == 'workflow_run' && github\.event\.workflow_run\.conclusion == 'success'/);
+    assert.match(due, /startswith\("Adopt Universal Parcel Scraper"\)/);
+    assert.match(due, /\[ "\$hour" -ge 6 \] && \[ "\$hour" -le 22 \] && \[ "\$age" -ge 7200 \]/);
+    assert.ok(workflow.includes('git commit --quiet -m "Adopt Universal Parcel Scraper $VERSION"'));
+    // The schedule and a run by hand never wait for that check.
+    assert.match(workflow, /\n    needs: due\n    if: >-\n      !cancelled\(\) && github\.repository == 'plhery\/peek-delivery-tracker'\n      && \(github\.event_name != 'workflow_run' \|\| needs\.due\.outputs\.due == 'true'\)\n/);
+  });
+
   it('fails once for a release that waits for a migration, not on every run', () => {
     assert.match(workflow, /if \[ "\$status" = 3 \]; then echo 'blocked=true' >> "\$GITHUB_OUTPUT"; else exit "\$status"; fi/);
     const gate = workflow.match(/\n  gate:\n([\s\S]*?)\n  push:\n/)?.[1];

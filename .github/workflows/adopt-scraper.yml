@@ -8,6 +8,12 @@ on:
   # every release published since the last run.
   schedule:
     - cron: '7 6-22/2 * * *'
+  # GitHub starts scheduled runs hours late or drops them. A CI run that ends on
+  # main also starts one, which adopts only once the last adoption is 2 hours old.
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
   # An urgent release, or one the database gate stopped.
   workflow_dispatch:
     inputs:
@@ -49,13 +55,38 @@ env:
     ios/PeekDeliveryTracker/Resources/ChecksumVectors.json
 
 jobs:
+  # A run that CI started adopts from 06:00 to 22:59 UTC, once the last
+  # adoption commit on main is 2 hours old.
+  due:
+    name: Due
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      due: ${{ steps.due.outputs.due }}
+    steps:
+      - name: Check the time since the last adoption
+        id: due
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          last=$(gh api "repos/$GITHUB_REPOSITORY/commits?sha=main&path=package-lock.json&per_page=30" \
+            --jq '[.[] | select(.commit.message | startswith("Adopt Universal Parcel Scraper"))][0].commit.committer.date // "1970-01-01T00:00:00Z"')
+          age=$(( $(date -u +%s) - $(date -u -d "$last" +%s) ))
+          hour=$(date -u +%-H)
+          echo "Last adoption $last, $((age / 60)) minutes ago."
+          if [ "$hour" -ge 6 ] && [ "$hour" -le 22 ] && [ "$age" -ge 7200 ]; then echo 'due=true' >> "$GITHUB_OUTPUT"; fi
+
   # Installs the release, prepares its generated files and runs the app's
   # typecheck and unit tests on them, without secrets or repository write
   # access. A release that breaks the app stops here instead of stopping every
   # deploy on main. CI still tests the final commit before deployment.
   adopt:
     name: Adopt
-    if: github.repository == 'plhery/peek-delivery-tracker'
+    needs: due
+    if: >-
+      !cancelled() && github.repository == 'plhery/peek-delivery-tracker'
+      && (github.event_name != 'workflow_run' || needs.due.outputs.due == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     outputs:
