@@ -33,7 +33,7 @@ begin
     end;
   end loop;
   begin
-    perform test_support.add_parcel('HC0000000099', 'Unknown carrier', 'pitney-bowes');
+    perform test_support.add_parcel('HC0000000099', 'Unknown carrier', 'unsupported-carrier');
     raise exception 'Unknown carrier was accepted';
   exception when sqlstate '22023' then null;
   end;
