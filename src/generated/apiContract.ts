@@ -3141,7 +3141,11 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingUrlTemplate": "https://track.landmarkglobal.com/?search={trackingNumber}",
-    "trackingSearchUrl": "https://track.landmarkglobal.com/"
+    "trackingSearchUrl": "https://track.landmarkglobal.com/",
+    "aliases": [
+      "IMX France",
+      "IMX Postal"
+    ]
   },
   "old-dominion": {
     "displayName": "Old Dominion",
@@ -6174,7 +6178,10 @@ export const CARRIER_CAPABILITIES = {
   "envialia": {
     "displayName": "Envialia",
     "aliases": [
-      "Envialia Urgente"
+      "Envialia Urgente",
+      "Ontime",
+      "Ontime Logística",
+      "Ontime Transportes y Logística"
     ],
     "countries": [
       "ES"
