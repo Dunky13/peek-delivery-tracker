@@ -1019,6 +1019,24 @@ function Tower() {
   </>;
 }
 
+function Appliance() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <Truck x={44} y={172} tone="rose" scale={4} />
+    <path d="M190 150C214 118 236 110 252 112" stroke="var(--rose)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    {/* A washing machine's box: its dials and its round door. */}
+    <Box x={262} y={110} width={136} height={138}>
+      <rect x="16" y="44" width="40" height="10" rx="3" fill={CARD.ink} opacity=".7" />
+      <circle cx="98" cy="49" r="5" fill={CARD.ink} opacity=".7" />
+      <circle cx="116" cy="49" r="5" fill={CARD.ink} opacity=".7" />
+      <circle cx="68" cy="96" r="30" stroke={CARD.ink} strokeWidth="6" />
+      <circle cx="68" cy="96" r="17" stroke={CARD.ink} strokeWidth="3" opacity=".6" />
+    </Box>
+    <Box x={414} y={190} width={68} height={58} />
+    <Pip x={330} ground={110} width={112} mood="joy" side={1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -1042,6 +1060,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'el-corte-ingles-orders': { tone: 'green', draw: Department },
   'cdiscount-orders': { tone: 'blue', draw: Megastore },
   'pccomponentes-orders': { tone: 'rose', draw: Tower },
+  'worten-orders': { tone: 'rose', draw: Appliance },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

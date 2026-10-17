@@ -117,6 +117,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "PcComponentes order tracking: delivery and problems"
     },
     {
+      "id": "worten-orders",
+      "slug": "worten-order-tracking",
+      "title": "Worten order tracking: delivery and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -292,6 +297,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "pccomponentes-orders",
       "slug": "pccomponentes-sendungsverfolgung",
       "title": "PcComponentes Sendungsverfolgung: Lieferung und Probleme"
+    },
+    {
+      "id": "worten-orders",
+      "slug": "worten-bestellung-verfolgen",
+      "title": "Worten-Bestellung verfolgen: Lieferung und Probleme"
     },
     {
       "id": "find-tracking-number",
@@ -471,6 +481,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande PcComponentes\u00a0: livraison et problèmes"
     },
     {
+      "id": "worten-orders",
+      "slug": "suivi-commande-worten",
+      "title": "Suivi de commande Worten\u00a0: livraison et problèmes"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -646,6 +661,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "pccomponentes-orders",
       "slug": "tracciare-ordine-pccomponentes",
       "title": "Tracciare un ordine PcComponentes: corrieri e problemi"
+    },
+    {
+      "id": "worten-orders",
+      "slug": "tracciare-ordine-worten",
+      "title": "Tracciare un ordine Worten: consegna e problemi"
     },
     {
       "id": "find-tracking-number",
@@ -825,6 +845,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Pedido de PcComponentes: seguimiento y entregas"
     },
     {
+      "id": "worten-orders",
+      "slug": "seguimiento-pedido-worten",
+      "title": "Pedidos Worten: seguimiento, entrega y problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -1002,6 +1027,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Encomendas PcComponentes: seguimento, entrega e problemas"
     },
     {
+      "id": "worten-orders",
+      "slug": "seguimento-encomenda-worten",
+      "title": "Encomendas Worten: seguimento, entrega e problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -1177,6 +1207,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "pccomponentes-orders",
       "slug": "sledzenie-zamowienia-pccomponentes",
       "title": "Śledzenie zamówienia PcComponentes: dostawa i problemy"
+    },
+    {
+      "id": "worten-orders",
+      "slug": "sledzenie-zamowienia-worten",
+      "title": "Śledzenie zamówienia Worten: dostawa i problemy"
     },
     {
       "id": "find-tracking-number",
