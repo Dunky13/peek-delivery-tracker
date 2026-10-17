@@ -993,6 +993,32 @@ function Megastore() {
   </>;
 }
 
+function Tower() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <Truck x={36} y={172} tone="rose" scale={4} />
+    {/* A computer tower's box and a monitor's, on a hand truck. */}
+    <Box x={262} y={82} width={76} height={154}>
+      <rect x="22" y="56" width="32" height="74" rx="4" stroke={CARD.ink} strokeWidth="4" />
+      <circle cx="38" cy="72" r="5" stroke={CARD.ink} strokeWidth="3" />
+    </Box>
+    <Box x={338} y={140} width={104} height={96}>
+      <rect x="20" y="36" width="64" height="38" rx="4" stroke={CARD.ink} strokeWidth="4" />
+      <path d="M44 82h16M52 74v8" stroke={CARD.ink} strokeWidth="4" strokeLinecap="round" />
+    </Box>
+    <path d="M248 66v170h206" stroke={ink} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M240 66h16" stroke={ink} strokeWidth="6" strokeLinecap="round" />
+    <circle cx="270" cy="242" r="12" fill={ink} />
+    <circle cx="270" cy="242" r="4.5" fill={paper} />
+    {/* The front door, open, and Pip waiting by it. */}
+    <rect x="500" y="88" width="100" height="160" fill="var(--rose)" opacity=".3" />
+    <rect x="516" y="104" width="68" height="144" rx="3" fill="#20251E" opacity=".55" />
+    <path d="M516 104l-28 12v132l28-6z" fill="var(--rose)" />
+    <circle cx="496" cy="182" r="3.5" fill={paper} />
+    <Pip x={548} ground={262} width={100} mood="eager" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -1015,6 +1041,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'fnac-orders': { tone: 'ochre', draw: Relay },
   'el-corte-ingles-orders': { tone: 'green', draw: Department },
   'cdiscount-orders': { tone: 'blue', draw: Megastore },
+  'pccomponentes-orders': { tone: 'rose', draw: Tower },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

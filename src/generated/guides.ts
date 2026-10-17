@@ -112,6 +112,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Cdiscount order tracking: carriers, delivery and problems"
     },
     {
+      "id": "pccomponentes-orders",
+      "slug": "pccomponentes-order-tracking",
+      "title": "PcComponentes order tracking: delivery and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -282,6 +287,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "cdiscount-orders",
       "slug": "cdiscount-bestellung-verfolgen",
       "title": "Cdiscount-Bestellung verfolgen: Lieferung und Probleme"
+    },
+    {
+      "id": "pccomponentes-orders",
+      "slug": "pccomponentes-sendungsverfolgung",
+      "title": "PcComponentes Sendungsverfolgung: Lieferung und Probleme"
     },
     {
       "id": "find-tracking-number",
@@ -456,6 +466,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Cdiscount\u00a0: livraison et retards"
     },
     {
+      "id": "pccomponentes-orders",
+      "slug": "suivi-commande-pccomponentes",
+      "title": "Suivi de commande PcComponentes\u00a0: livraison et problèmes"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -626,6 +641,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "cdiscount-orders",
       "slug": "tracciare-ordine-cdiscount",
       "title": "Ordini Cdiscount: tracciamento, consegna e problemi"
+    },
+    {
+      "id": "pccomponentes-orders",
+      "slug": "tracciare-ordine-pccomponentes",
+      "title": "Tracciare un ordine PcComponentes: corrieri e problemi"
     },
     {
       "id": "find-tracking-number",
@@ -800,6 +820,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Pedidos de Cdiscount: seguimiento, envíos y problemas"
     },
     {
+      "id": "pccomponentes-orders",
+      "slug": "seguimiento-pedido-pccomponentes",
+      "title": "Pedido de PcComponentes: seguimiento y entregas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -972,6 +997,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Encomendas Cdiscount: seguimento, entregas e problemas"
     },
     {
+      "id": "pccomponentes-orders",
+      "slug": "seguimento-encomenda-pccomponentes",
+      "title": "Encomendas PcComponentes: seguimento, entrega e problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -1142,6 +1172,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "cdiscount-orders",
       "slug": "sledzenie-zamowienia-cdiscount",
       "title": "Zamówienia z Cdiscount: śledzenie, dostawa i problemy"
+    },
+    {
+      "id": "pccomponentes-orders",
+      "slug": "sledzenie-zamowienia-pccomponentes",
+      "title": "Śledzenie zamówienia PcComponentes: dostawa i problemy"
     },
     {
       "id": "find-tracking-number",
