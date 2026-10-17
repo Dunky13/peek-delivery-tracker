@@ -6175,7 +6175,23 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dx",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "whenTrackingNumber": "^(?:[A-Z]\\d{7}|\\d{8})$",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery postcode",
+          "type": "text",
+          "placeholder": "SW1A 1AA",
+          "help": "DX Freight shows a consignment only with its delivery postcode. Without it, other sources are asked.",
+          "pattern": "^(?=.{3,8}$)(?=.*[0-9])[A-Za-z0-9]+(?: [A-Za-z0-9]+)*$",
+          "maxLength": 8,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "trackingUrlTemplate": "https://my.dxdelivery.com/query?tracking_number={trackingNumber}",
     "linkRules": [
@@ -9235,7 +9251,22 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "arrow-xl",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery postcode",
+          "type": "text",
+          "placeholder": "SW1A 1AA",
+          "help": "ArrowXL shows a delivery only with its delivery postcode. Without it, other sources are asked.",
+          "pattern": "^(?:[Gg][Ii][Rr]|[A-PR-UWYZa-pr-uwyz](?:[0-9][0-9A-HJKPSTUWa-hjkpstuw]?|[A-HK-Ya-hk-y][0-9][0-9ABEHMNPRVWXYabehmnprvwxy]?)) ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}$",
+          "maxLength": 8,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "linkRules": [
       {
@@ -21633,7 +21664,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Lisbon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "delnext",
+      "recognitionRank": 889
     },
     "trackingUrlTemplate": "https://www.delnext.com/PT/track_your_parcel?tracking_code={trackingNumber}",
     "linkRules": [
@@ -21923,7 +21955,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "redur",
+      "recognitionRank": 886
     },
     "linkRules": [
       {
@@ -21938,7 +21971,8 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://redur.es/track-trace/"
+    "trackingSearchUrl": "https://redur.es/track-trace/",
+    "trackingUrlTemplate": "https://redur.es/track-trace/?idioma=es&buscarpor=NTRACKING&valor={trackingNumber}"
   },
   "torrestir": {
     "displayName": "Torrestir",
@@ -22485,7 +22519,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "happy-post",
+      "recognitionRank": 888
     },
     "trackingUrlTemplate": "https://happy-post.com/fr/suivi/?id={trackingNumber}",
     "linkRules": [
@@ -23387,7 +23422,7 @@ export const CARRIER_CAPABILITIES = {
       "AU",
       "NZ"
     ],
-    "color": "#f2852d",
+    "color": "#f3852e",
     "selectable": true,
     "timezone": "Australia/Sydney",
     "tracking": {
@@ -23408,7 +23443,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AU"
     ],
-    "color": "#f3e127",
+    "color": "#0036a9",
     "selectable": true,
     "timezone": "Australia/Sydney",
     "tracking": {
@@ -23459,7 +23494,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AU"
     ],
-    "color": "#ff9800",
+    "color": "#ffcd00",
     "selectable": true,
     "timezone": "Australia/Sydney",
     "tracking": {
@@ -23672,6 +23707,192 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.tgroupspa.com/"
+  },
+  "best-overnite-express": {
+    "displayName": "Best Overnite Express",
+    "aliases": [
+      "Best Overnite"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#1e3b91",
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "tgif.bestovernite.com",
+          "www.bestovernite.com"
+        ],
+        "pathPattern": "^/cgi-bin/wbprotrk/?$",
+        "params": [
+          "wbfb"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.bestovernite.com/shipment-tracking/"
+  },
+  "estes-forwarding": {
+    "displayName": "Estes Forwarding Worldwide",
+    "aliases": [
+      "EFW",
+      "Estes Forwarding",
+      "EFW Track"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#024985",
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://efwtrack.com/track/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "efwtrack.com",
+          "www.efwtrack.com"
+        ],
+        "path": "^/track/([^/?#]+)(?:/\\d{5})?/?$"
+      },
+      {
+        "domains": [
+          "www.efwnow.com",
+          "efwnow.com"
+        ],
+        "pathPattern": "^/(?:track|my-efw)/?$",
+        "params": [
+          "txtInputNo"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://efwtrack.com/"
+  },
+  "globalpost": {
+    "displayName": "GlobalPost",
+    "aliases": [
+      "Go GlobalPost",
+      "GoGlobalPost",
+      "Global Post",
+      "Go Global Post",
+      "GlobalPost UK"
+    ],
+    "countries": [
+      "US",
+      "GB"
+    ],
+    "color": "#11003a",
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.goglobalpost.com/track-detail/?t={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.goglobalpost.com",
+          "goglobalpost.com"
+        ],
+        "pathPattern": "^/(?:track-detail|track)/?$",
+        "params": [
+          "t"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^GP[A-Z]{4}\\d{10}(?:US|GB)$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.goglobalpost.com/tracking/"
+  },
+  "tforce-logistics": {
+    "displayName": "TForce Logistics",
+    "aliases": [
+      "TForce Final Mile",
+      "TForce Final Mile Canada",
+      "Dynamex",
+      "Dynamex Canada",
+      "Dynamex U.S.",
+      "Hazen Final Mile"
+    ],
+    "countries": [
+      "CA",
+      "US"
+    ],
+    "color": "#054b8b",
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://direct.tfesg.com/finalmiletrack/Track?trackingNumber={trackingNumber}&brand=0",
+    "linkRules": [
+      {
+        "domains": [
+          "direct.tfesg.com"
+        ],
+        "pathPattern": "^/finalmiletrack/(?:Track|track/externalTracking\\.jsp)$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^TF(?:\\d{12,13}|1\\d{17})$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.tforcelogistics.com/"
+  },
+  "united-delivery-service": {
+    "displayName": "United Delivery Service",
+    "aliases": [
+      "UDS",
+      "United Delivery Service (UDS)"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#1e3a8a",
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.uniteddeliveryservice.com/track/barcode/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.uniteddeliveryservice.com",
+          "uniteddeliveryservice.com"
+        ],
+        "path": "^/track/barcode/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:\\d{2}UDS\\d{11}|APUDS\\d{8})$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.uniteddeliveryservice.com/track/"
   }
 } as const;
 
@@ -24320,7 +24541,12 @@ export const CARRIER_IDS = [
   "energo",
   "method",
   "sailpost",
-  "t-group"
+  "t-group",
+  "best-overnite-express",
+  "estes-forwarding",
+  "globalpost",
+  "tforce-logistics",
+  "united-delivery-service"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
