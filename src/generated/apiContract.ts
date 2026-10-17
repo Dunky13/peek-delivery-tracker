@@ -23787,7 +23787,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "US"
     ],
-    "color": "#024985",
+    "color": "#00345e",
     "selectable": true,
     "timezone": "America/New_York",
     "tracking": {
@@ -23908,7 +23908,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "US"
     ],
-    "color": "#1e3a8a",
+    "color": "#1e4691",
     "selectable": true,
     "timezone": "America/Chicago",
     "tracking": {
