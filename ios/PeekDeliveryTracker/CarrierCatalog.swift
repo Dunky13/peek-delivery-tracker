@@ -996,6 +996,7 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         case "pos-laju": isValidPosLajuConsignment(number)
         case "saia": isValidSaiaPro(number)
         case "magyar-posta": isValidMagyarPostaNumber(number)
+        case "poste-italiane": isValidPosteItalianeRegisteredNumber(number)
         default: nil
         }
     }
@@ -1072,6 +1073,19 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         let digits = value.dropFirst(5).compactMap(\.wholeNumberValue)
         let sum = digits[0..<7].enumerated().reduce(0) { $0 + $1.element * ($1.offset % 2 == 0 ? 3 : 1) }
         return sum % 10 == digits[7]
+    }
+
+    /// Poste Italiane's registered mail: eleven digits and a check digit. Eleven times the sum of
+    /// the digits in even places, plus the sum of those in odd places, gives a number whose digit
+    /// sum mod 10 is the last digit.
+    static func isValidPosteItalianeRegisteredNumber(_ value: String) -> Bool {
+        guard matches(value, pattern: "^[0-9]{12}$") else { return false }
+        let digits = value.compactMap(\.wholeNumberValue)
+        let sums = digits[0..<11].enumerated().reduce(into: (odd: 0, even: 0)) { sums, item in
+            if item.offset % 2 == 0 { sums.odd += item.element } else { sums.even += item.element }
+        }
+        let digitSum = String(11 * sums.even + sums.odd).compactMap(\.wholeNumberValue).reduce(0, +)
+        return digitSum % 10 == digits[11]
     }
 
     /// GS1 mod 10: counted from the check digit, the digits before it weigh 3, 1, 3, …

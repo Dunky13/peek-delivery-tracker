@@ -3,10 +3,10 @@ import XCTest
 
 final class CarrierCatalogTests: XCTestCase {
     func testDiscoveryIncludesBrowserCandidatesWithoutChangingHTTPRecognition() {
-        let http = catalog.recognitionCandidates(for: "000000000011")
+        let http = catalog.recognitionCandidates(for: "000000000103")
         XCTAssertTrue(http.contains(.colisPrive))
         XCTAssertFalse(http.contains(.fedex))
-        XCTAssertEqual(catalog.discoveryCandidates(for: "000000000011"), http + [.fedex])
+        XCTAssertEqual(catalog.discoveryCandidates(for: "000000000103"), http + [.fedex])
         XCTAssertEqual(catalog.recognitionCandidates(for: "33870000000000001", browser: true), [.dhlEcommerce])
         XCTAssertEqual(catalog.discoveryCandidates(for: "1Z999AA10123456784"), [])
     }
@@ -1160,6 +1160,24 @@ final class CarrierCatalogTests: XCTestCase {
         ] {
             XCTAssertFalse(CarrierCatalog.isValidMagyarPostaNumber(number), number)
             XCTAssertEqual(CarrierCatalog.checksumPasses("magyar-posta", number), false, number)
+        }
+    }
+
+    /// Made-up Poste Italiane registered-mail numbers: eleven times the digits in even places plus
+    /// those in odd places gives a total whose digit sum mod 10 is the last digit.
+    func testPosteItalianeRegisteredMailNumbersCheckTheirDigitSum() {
+        // 2 + 1 = 3; 11 × 9 + 9 + 1 = 109, whose digits sum to 10, so the check is 0 and not 9.
+        for number in ["200000000013", "990000000010", "990000001000", "000000000000"] {
+            XCTAssertTrue(CarrierCatalog.isValidPosteItalianeRegisteredNumber(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("poste-italiane", number), true, number)
+        }
+        for number in [
+            "200000000014", "990000000011", "990000001009",
+            // A digit short or over, a separator, a trailing newline and a non-ASCII digit.
+            "20000000001", "2000000000130", "20000000001-3", "200000000013\n", "\u{0662}00000000013",
+        ] {
+            XCTAssertFalse(CarrierCatalog.isValidPosteItalianeRegisteredNumber(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("poste-italiane", number), false, number)
         }
     }
 
