@@ -152,6 +152,8 @@ describe('carrier brand', () => {
       'tws-express',
       'byhd',
       'eurodis', 'parcelpoint', 'drop2shop', 'neighbour-express', 'packli-punkt', 'yilong-logistics',
+      'codexpress', 'designer-transport', 'direct-couriers', 'ewe', 'homexpress', 'postmedia-parcel-services',
+      'precision-deliveries', 'transport-rdl', 'energo', 't-group', 'method', 'sailpost',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

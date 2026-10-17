@@ -108,7 +108,9 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'a1-post' | 'direx' | 'fermopoint' | 'fg-delivery' | 'go4' | 'happy-post' | 'hp-mostar'
   | 'hr-parcel' | 'intex-paketdienst' | 'liccardi' | 'logoix' | 'nox' | 'peddler' | 'pigeon-express'
   | 'posta-faroe' | 'tusass' | 'tws-express' | 'byhd' | 'eurodis' | 'parcelpoint' | 'drop2shop'
-  | 'neighbour-express' | 'packli-punkt' | 'yilong-logistics';
+  | 'neighbour-express' | 'packli-punkt' | 'yilong-logistics' | 'codexpress' | 'designer-transport'
+  | 'direct-couriers' | 'ewe' | 'homexpress' | 'postmedia-parcel-services' | 'precision-deliveries'
+  | 'transport-rdl' | 'energo' | 't-group' | 'method' | 'sailpost';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

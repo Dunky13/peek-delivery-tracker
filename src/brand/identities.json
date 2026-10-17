@@ -325,6 +325,9 @@
   "cne": {
     "decal": "cne"
   },
+  "codexpress": {
+    "decal": "codexpress"
+  },
   "colis-prive": {
     "decal": "colis-prive"
   },
@@ -475,6 +478,9 @@
   "deprisa": {
     "decal": "deprisa"
   },
+  "designer-transport": {
+    "decal": "designer-transport"
+  },
   "dhl": {
     "palette": {
       "surface-light": "#f7e8aa",
@@ -512,6 +518,9 @@
   },
   "dhlink": {
     "decal": "dhlink"
+  },
+  "direct-couriers": {
+    "decal": "direct-couriers"
   },
   "direct-freight-express": {
     "decal": "direct-freight-express"
@@ -623,6 +632,9 @@
   "energia-tk": {
     "decal": "energia-tk"
   },
+  "energo": {
+    "decal": "energo"
+  },
   "envia-colombia": {
     "decal": "envia-colombia"
   },
@@ -667,6 +679,12 @@
   },
   "evropat": {
     "decal": "evropat"
+  },
+  "ewe": {
+    "decal": "ewe",
+    "palette": {
+      "accent": "#f3e127"
+    }
   },
   "exline-kz": {
     "decal": "exline-kz"
@@ -875,6 +893,12 @@
   },
   "hispapost": {
     "decal": "hispapost"
+  },
+  "homexpress": {
+    "decal": "homexpress",
+    "palette": {
+      "accent": "#00864c"
+    }
   },
   "hongkong-post": {
     "decal": "hongkong-post"
@@ -1182,6 +1206,9 @@
   "messenger-cz": {
     "decal": "messenger-cz"
   },
+  "method": {
+    "decal": "method"
+  },
   "metropolitan-warehouse": {
     "decal": "metropolitan-warehouse"
   },
@@ -1467,6 +1494,12 @@
   "postlogistics": {
     "family": "swiss-post"
   },
+  "postmedia-parcel-services": {
+    "decal": "postmedia-parcel-services",
+    "palette": {
+      "accent": "#000000"
+    }
+  },
   "postnord": {
     "decal": "postnord"
   },
@@ -1475,6 +1508,9 @@
   },
   "ppl": {
     "decal": "ppl"
+  },
+  "precision-deliveries": {
+    "decal": "precision-deliveries"
   },
   "professional-couriers": {
     "decal": "professional-couriers"
@@ -1560,6 +1596,12 @@
   },
   "saia": {
     "decal": "saia"
+  },
+  "sailpost": {
+    "decal": "sailpost",
+    "palette": {
+      "accent": "#000000"
+    }
   },
   "sameday": {
     "decal": "sameday"
@@ -1752,6 +1794,9 @@
   "t-cat": {
     "decal": "t-cat"
   },
+  "t-group": {
+    "decal": "t-group"
+  },
   "tanzania-posts": {
     "decal": "tanzania-posts"
   },
@@ -1817,6 +1862,9 @@
   },
   "trans-o-flex": {
     "decal": "trans-o-flex"
+  },
+  "transport-rdl": {
+    "decal": "transport-rdl"
   },
   "trendyol-express": {
     "decal": "trendyol-express"
