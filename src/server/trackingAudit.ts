@@ -118,6 +118,12 @@ export function providerFailureSummary(failures: unknown): string | null {
  * because its answer lost progress has no error, and one that every tier
  * deferred names no failing tier of its own.
  */
+/** Whether routing's failures hold the carrier's refusal of the number as one it does not issue. */
+function refusedNumber(failures: unknown, carrier: string): boolean {
+  const failure = isRecord(failures) ? failures[carrier] : undefined;
+  return isRecord(failure) && failure.user_error === 'carrier:invalid_input';
+}
+
 function refreshEvidence(completion: SyncAuditCompletion): JsonObject {
   const anomalies = [...new Set(completion.anomalyCodes ?? [])].join(',').slice(0, 200);
   const failures = providerFailureSummary(completion.providerFailures);
@@ -329,13 +335,17 @@ export class TrackingSyncAudit {
     if (this.context.trigger === 'scheduled' && !this.context.signal?.aborted && completion.evaluateHealth !== false
       && ['updated', 'unchanged', 'waiting', 'error'].includes(completion.outcome)) {
       const failedFetch = this.#steps.some(step => step.step === 'fetch' && step.status === 'failed');
-      const healthy = completion.outcome !== 'error' && !failedFetch;
+      // A number the carrier does not issue is the owner's to correct. Like a missing input, the
+      // refresh was answered, and it says nothing about the carrier's health.
+      const refused = completion.outcome === 'error' && refusedNumber(completion.providerFailures, this.configuredCarrier);
+      const healthy = refused || (completion.outcome !== 'error' && !failedFetch);
       const samples: JsonObject[] = [...this.#healthSamples.values(), {
         kind: 'refresh', subject: this.configuredCarrier, healthy,
         // The failing tier's own error class is better evidence than the attempt's summary.
-        details: { ...(values.error_type ? { error_type: values.error_type } : {}),
-          ...[...this.#healthSamples.values()].reverse().find(sample => !sample.healthy)?.details,
-          ...(healthy ? {} : refreshEvidence(completion)) },
+        details: refused ? { category: 'input_required', ...refreshEvidence(completion) }
+          : { ...(values.error_type ? { error_type: values.error_type } : {}),
+            ...[...this.#healthSamples.values()].reverse().find(sample => !sample.healthy)?.details,
+            ...(healthy ? {} : refreshEvidence(completion)) },
       }];
       await this.writeAudit('evaluate_health', async () => {
         const incidents = await this.client.recordTrackingHealth(this.attemptId, this.packageId, samples);

@@ -116,6 +116,28 @@ describe('a check that found nothing new', () => {
   });
 });
 
+describe('a check of a number its carrier does not issue', () => {
+  it('is an answer the owner must act on, not a failed refresh of the carrier', async () => {
+    const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),
+      recordTrackingHealth: vi.fn().mockResolvedValue([]), ackTrackingHealth: vi.fn() };
+    const audit = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'nacex', 'pending', { trigger: 'scheduled' });
+    const failures = { nacex: { kind: 'schema', count: 4, user_error: 'carrier:invalid_input' },
+      Ship24: { kind: 'not_found', count: 1, user_error: 'carrier:not_found' }, '17TRACK': { kind: 'rate_limited', count: 4 } };
+    await audit.finish({ outcome: 'error', sourceCarrier: 'nacex', providerFailures: failures });
+    expect(client.recordTrackingHealth).toHaveBeenCalledWith(audit.attemptId, 'synthetic-package', [{
+      kind: 'refresh', subject: 'nacex', healthy: true,
+      details: { category: 'input_required', provider_failures: 'nacex:schema,Ship24:not_found,17TRACK:rate_limited' },
+    }]);
+    // Another carrier's refusal leaves this one's failed refresh a failure.
+    const other = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'seur', 'pending', { trigger: 'scheduled' });
+    await other.finish({ outcome: 'error', sourceCarrier: 'seur', providerFailures: failures });
+    expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(other.attemptId, 'synthetic-package',
+      [expect.objectContaining({ kind: 'refresh', subject: 'seur', healthy: false })]);
+  });
+});
+
 describe('review signals', () => {
   it('saves the routing signals a check reported, once each, after the check itself', async () => {
     const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true), recordTrackingRoutingSignals: vi.fn() };
