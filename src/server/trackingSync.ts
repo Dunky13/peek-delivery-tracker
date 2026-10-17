@@ -31,7 +31,7 @@ import {
 } from './observability';
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
-import { STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
+import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
 import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, UNIVERSAL_PROVIDER, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   providerFailureSummary,
@@ -831,14 +831,20 @@ export class TrackingSyncService {
     let queued = 0;
     try {
       if (!redetections.listed) {
-        const candidates = await this.client.listRedetectionCandidates(new Date(now - REDETECTION_WINDOW_MS), rules);
         const leads: Array<{ packageId: string; userId: string | null; dueAt: number; rank: number }> = [];
-        for (const parcel of candidates) {
-          const lead = await rerouteAskable(parcel, rules, now);
-          if (!lead) continue;
-          const dueAt = trackingSyncDueAt(parcel);
-          if (dueAt === Infinity) continue;
-          leads.push({ packageId: String(parcel.id), userId: typeof parcel.user_id === 'string' ? parcel.user_id : null, dueAt, rank: lead.rank });
+        // Every page, however many parcels the catalog points elsewhere.
+        for (let before: string | undefined, more = true; more;) {
+          const candidates = await this.client.listRedetectionCandidates(new Date(now - REDETECTION_WINDOW_MS), rules, before);
+          for (const parcel of candidates) {
+            const lead = await rerouteAskable(parcel, rules, now);
+            if (!lead) continue;
+            const dueAt = trackingSyncDueAt(parcel);
+            if (dueAt === Infinity) continue;
+            leads.push({ packageId: String(parcel.id), userId: typeof parcel.user_id === 'string' ? parcel.user_id : null, dueAt, rank: lead.rank });
+          }
+          const last = candidates.at(-1)?.created_at;
+          more = candidates.length === REDETECTION_PAGE && typeof last === 'string';
+          before = String(last);
         }
         // Listed newest first; the sort keeps that order within a rank.
         redetections.waiting = leads.sort((a, b) => a.rank - b.rank)

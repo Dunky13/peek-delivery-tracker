@@ -1543,7 +1543,7 @@ describe('TrackingSyncService', () => {
     const now = new Date('2026-09-09T10:00:00Z');
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() }, null, () => now);
     await expect(service.queueRedetections()).resolves.toBe(2);
-    expect(client.listRedetectionCandidates).toHaveBeenCalledExactlyOnceWith(new Date('2026-08-10T10:00:00Z'), catalogRules());
+    expect(client.listRedetectionCandidates).toHaveBeenCalledExactlyOnceWith(new Date('2026-08-10T10:00:00Z'), catalogRules(), undefined);
     expect(client.enqueueSyncJob.mock.calls).toEqual([[{ packageId: 'owned', userId: 'a', background: true }], [{ packageId: 'lookup', userId: null, background: true }]]);
     expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 2, waiting: 0 });
     // The same catalog is not looked at twice.
@@ -1579,6 +1579,22 @@ describe('TrackingSyncService', () => {
     expect(queued().slice(50)).toEqual(['deferred', 'due-49', 'due-50', 'retry']);
     await expect(service.queueRedetections()).resolves.toBe(0);
     expect(client.listRedetectionCandidates).toHaveBeenCalledOnce();
+  });
+
+  it('lists every page of the parcels the catalog may point elsewhere', async () => {
+    const parcel = (id: string, created_at: string, stage = 'in_transit') => ({ id, user_id: 'a', carrier: 'unknown',
+      tracking_number: '1Z999AA10123456784', current_stage: stage, created_at, carrier_data: { tracking_provider: 'ParcelsApp',
+        routing: { version: 1, configured_carrier: 'unknown', failures: {}, probe_cursor: 0, discovery_cursor: 0, rules: 'older' } } });
+    // A full page of parcels it leaves alone, then the last page.
+    const full = Array.from({ length: 500 }, (_, index) => parcel(`left-${index}`, `2026-09-09T09:${String(index % 60).padStart(2, '0')}:00Z`, 'delivered'));
+    const client = { ...fakeClient(), packageSyncJobsPending: vi.fn().mockResolvedValue(false),
+      listRedetectionCandidates: vi.fn().mockResolvedValueOnce(full).mockResolvedValueOnce([parcel('older', '2026-09-01T08:00:00Z')]),
+      enqueueSyncJob: vi.fn().mockResolvedValue({ id: 'job' }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() }, null,
+      () => new Date('2026-09-09T10:00:00Z'));
+    await expect(service.queueRedetections()).resolves.toBe(1);
+    expect(client.listRedetectionCandidates.mock.calls.map(([, , before]) => before)).toEqual([undefined, full.at(-1)!.created_at]);
+    expect(client.enqueueSyncJob).toHaveBeenCalledExactlyOnceWith({ packageId: 'older', userId: 'a', background: true });
   });
 
   it('looks again after the next run when the recent parcels cannot be listed', async () => {
