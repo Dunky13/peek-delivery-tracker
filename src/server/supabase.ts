@@ -49,6 +49,15 @@ const SYNC_EVENT_IDENTITIES = `${STORED_EVENT_IDENTITIES}:tracking_events(provid
 const SCAN_RECEIPT_TABLES = ['push_deliveries', 'native_push_deliveries', 'parcel_link_alert_deliveries', 'live_activity_event_deliveries'];
 
 export class SupabaseError extends Error {
+  /**
+   * By name: the build's bundles each hold their own copy of this class, and
+   * the routes share the process's database client, which instrumentation's
+   * bundle usually builds. The errors it throws are that copy's.
+   */
+  static [Symbol.hasInstance](value: unknown): value is SupabaseError {
+    return value instanceof Error && value.name === 'SupabaseError';
+  }
+
   constructor(
     message: string,
     readonly status?: number,

@@ -1,9 +1,9 @@
 import { NextRequest } from 'next/server';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { GET } from '../../app/api/packages/route';
+import { GET, POST } from '../../app/api/packages/route';
 import { SupabaseAuthenticator } from './auth';
 import * as observability from './observability';
-import { SupabaseError, SupabaseUserClient } from './supabase';
+import { SupabaseError, SupabaseServiceClient, SupabaseUserClient } from './supabase';
 
 // Synthetic identifiers only.
 const userId = '55000000-0000-4000-a000-000000000001';
@@ -12,6 +12,14 @@ const parcel = { id: '55000000-0000-4000-a000-000000000002', tracking_number: 'T
 function list(query = '') {
   return GET(new NextRequest(`https://delivery.example/api/packages${query}`, {
     headers: { Authorization: 'Bearer list-test' },
+  }), { params: Promise.resolve({}) });
+}
+
+function add() {
+  return POST(new NextRequest('https://delivery.example/api/packages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer add-test' },
+    body: JSON.stringify({ trackingNumber: parcel.tracking_number, carrier: 'swiss-post' }),
   }), { params: Promise.resolve({}) });
 }
 
@@ -56,4 +64,23 @@ it('serves the carrier\'s scans without "Tracking added" once they reach back to
   const [served] = (await (await list()).json()).packages;
   expect(served.tracking_events).toEqual([expect.objectContaining({ id: 'delivered', place: null })]);
   expect(JSON.stringify(served)).not.toContain('provider_event_id');
+});
+
+it('answers 409 with the parcel when a second add of it races the first', async () => {
+  // The routes' database client may come from another bundle, with its own copy of the error class.
+  vi.resetModules();
+  const { SupabaseError: OtherCopy } = await import('./supabase');
+  expect(OtherCopy).not.toBe(SupabaseError);
+  vi.spyOn(SupabaseServiceClient.prototype, 'claimAccountTracking').mockResolvedValue({ allowed: true, scope: null, overallUsed: 1 });
+  vi.spyOn(SupabaseServiceClient.prototype, 'createAccountPackage')
+    .mockResolvedValueOnce(parcel.id)
+    .mockRejectedValueOnce(new OtherCopy('Supabase POST request failed (409)', 409, '23505'));
+  vi.spyOn(SupabaseServiceClient.prototype, 'updatePackage').mockResolvedValue(undefined);
+  vi.spyOn(SupabaseServiceClient.prototype, 'enqueueSyncJob').mockResolvedValue({ row: { id: 'job' }, queued: true });
+  vi.spyOn(SupabaseUserClient.prototype, 'getPackage').mockResolvedValue(parcel);
+  vi.spyOn(SupabaseUserClient.prototype, 'getPackageByTrackingNumber').mockResolvedValue(parcel);
+  const [first, second] = await Promise.all([add(), add()]);
+  expect(first.status).toBe(201);
+  expect(second.status).toBe(409);
+  expect(await second.json()).toEqual({ error: 'This tracking number is already in your delivery box', packageId: parcel.id });
 });
