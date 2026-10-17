@@ -110,7 +110,8 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'posta-faroe' | 'tusass' | 'tws-express' | 'byhd' | 'eurodis' | 'parcelpoint' | 'drop2shop'
   | 'neighbour-express' | 'packli-punkt' | 'yilong-logistics' | 'codexpress' | 'designer-transport'
   | 'direct-couriers' | 'ewe' | 'homexpress' | 'postmedia-parcel-services' | 'precision-deliveries'
-  | 'transport-rdl' | 'energo' | 't-group' | 'method' | 'sailpost';
+  | 'transport-rdl' | 'energo' | 't-group' | 'method' | 'sailpost' | 'tforce-logistics'
+  | 'globalpost' | 'united-delivery-service' | 'best-overnite-express' | 'estes-forwarding';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

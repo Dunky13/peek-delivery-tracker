@@ -61,6 +61,7 @@ and [`truck.json`](truck.json).
 | `barid-al-maghrib` | [barid.ma](https://www.barid.ma/bamb2cstorefront/fr/tracking/page) — site CSS primary #164c93 (17 uses); group logo blue around #004996 |
 | `belpost` | [belpost.by](https://belpost.by/manifest.json) — manifest and meta theme_color #005aa8 |
 | `best-express-vn` | [best-inc.vn](https://www.best-inc.vn/bundles/6b8a4b9ede52ad2fb33fd81ac1b5e24c.png) — logo PNG red #d80c18 (approximate); the site header, buttons and bands are red |
+| `best-overnite-express` | [bestovernite.com](https://www.bestovernite.com/wp-content/uploads/2022/06/logo.png) — logo PNG navy #1e3b91 and red #ea1c28 (approximate); the site's navy is #1b3999 |
 | `best-transport` | [besttransport.se](https://www.besttransport.se/) — CSS --primary-color #ef7d00; logo PNG #ef7d00 |
 | `better-trucks` | [bettertrucks.com](https://www.bettertrucks.com/hubfs/Better-Trucks%20(1)-1.png) — header logo PNG blue #218cee (approximate) |
 | `bex-express` | [bexexpress.rs](https://bexexpress.rs/) — most used site colour #468e42, matching the leaf in meta-logo.png |
@@ -179,6 +180,7 @@ and [`truck.json`](truck.json).
 | `equick` | [equick.cn](http://www.equick.cn/favicon.ico) — favicon background #a70707 (flat), site CSS #a70707 |
 | `estafeta` | [estafeta.com](https://www.estafeta.com/) |
 | `estes` | [estes-express.com](https://www.estes-express.com/application/themes/estes/images/estes-logo-main-yellow.svg) — logo fill #ffd200; the ball red #e91b2c sampled from the app icon PNG (approximate) |
+| `estes-forwarding` | [efwtrack.com](https://efwtrack.com/img/EFWLandingLogo@2x.f355ad0c.png) — logo PNG fill #00345e (approximate); efwnow.com sets its white logo on a #002856 header |
 | `ethiopian-post` | [ethio.post](https://ethio.post/wp-content/uploads/2024/09/cropped-Ethiopost-Logo-Reversed-Color-270x270.png) — icon PNG disc #f8ac19 (approximate) |
 | `eurodis` | [eurodis.com](https://eurodis.com/wp-content/themes/eurodis/layouts/images/logo.png) — header logo PNG, flat lid fill #0b418b (the same blue fills the 270 px site icon); site CSS main.css also uses #0b418b, with #00428c for links and headings |
 | `euroexpress-ba` | [euroexpress.ba](https://www.euroexpress.ba/static/css/main.48a626ff.chunk.css) — site CSS #da212e (42 uses); logo SVG red #db353d and blue #2f629c |
@@ -214,6 +216,7 @@ and [`truck.json`](truck.json).
 | `ghana-post` | [ghanapost.com.gh](https://www.ghanapost.com.gh/LOGO.png) — logo PNG orange #f7730f and navy #0c075b (approximate) |
 | `ghn` | [ghn.vn](https://cdn.hstatic.net/themes/200000472237/1001423864/14/logo.png) — logo PNG dominant orange #ff5200 (approximate) |
 | `ghtk` | [ghtk.vn](https://ghtk.vn/assets/logo.svg) — logo SVG fill #01B53B |
+| `globalpost` | [goglobalpost.com](https://www.goglobalpost.com/wp-content/uploads/2025/01/globalpostlogo.svg) — header logo SVG fill #11003A (icon square and wordmark); the site's deep-indigo preset and footer background are #11003A |
 | `go-express` | [general-overnight.com](https://www.general-overnight.com/) (inline header logo fill #B9242B, CSS --bs-primary) |
 | `go4` | [go4.sk](https://www.go4.sk/) — site CSS #EF1F23 for the red 4 and accents; logo and vans black #111111 |
 | `gobolt` | [gobolt.com](https://www.gobolt.com/) — site CSS --e-global-color-primary #00282b, the wordmark colour of the primary logo; bolt #ffbd5d and #b27330 sampled from the logo PNG |
@@ -488,6 +491,7 @@ and [`truck.json`](truck.json).
 | `tealca` | [tealca.com](https://www.tealca.com/wp-content/uploads/2021/06/001_LOGO_HEADER.svg) — logo SVG fill #00559e |
 | `team-global-express` | [teamglobalexp.com](https://teamglobalexp.com/image/layout_set_logo?img_id=5087020) — logo PNG #143200 (approximate), site CSS #143200 and wattle #cbff55 |
 | `tforce-freight` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:TForce_Freight_Logo.svg) — logo SVG fills #0053a1 (letters) and #e6403b (swoosh) |
+| `tforce-logistics` | [tforcelogistics.com](https://www.tforcelogistics.com/wp-content/uploads/2020/06/logo.png) — logo PNG letters #054b8b, arc #dc3b41; the stylesheet's most used colour and the Track button are #054b8b (approximate) |
 | `thailand-post` | [international.thailandpost.com](https://international.thailandpost.com/) |
 | `the-courier-guy` | [thecourierguy.co.za](https://www.thecourierguy.co.za/) (approximate) |
 | `thhy` | [51thhy.cn](http://www.51thhy.cn/static/upload/image/20250110/1736521739422556.png) — logo pixels #00a2e9 (approximate) |
@@ -511,6 +515,7 @@ and [`truck.json`](truck.json).
 | `ubi-smart-parcel` | [ubismartparcel.com](https://www.ubismartparcel.com/) |
 | `ues-uy` | [ues.com.uy](https://www.ues.com.uy/img/new-logo-ues-color.svg) — logo SVG letter fill #00295C (also the site overlay rgba(0,41,92)); tag #F47521 |
 | `ukrposhta` | [ukrposhta.ua](https://www.ukrposhta.ua/en) |
+| `united-delivery-service` | [uniteddeliveryservice.com](https://www.uniteddeliveryservice.com/img/logo/logo.png) — logo PNG blue #1e4691 and grey #cdcdcd (approximate); the main stylesheet uses #2752a2 |
 | `uniuni` | [uniuni.com](https://www.uniuni.com/) |
 | `upaya` | [upaya.com.np](https://upaya.com.np/) — tracking page CSS --ux-navy #003d87, also the logo PNG navy; orange #ff5527 (--ux-orange) |
 | `urbano` | [urbano.com.pe](https://www.urbano.com.pe/) — Nuxt bundle app bar and buttons #5c068c |
@@ -1102,3 +1107,8 @@ and [`truck.json`](truck.json).
 | `t-group` | White crescent around a navy italic T on orange | [tgroupspa.com](https://www.tgroupspa.com/wp-content/uploads/2025/07/favicon-2-1.png) — favicon: orange crescent around a blue italic T |
 | `method` | White M on dark green | [method-logistics.com](https://method-logistics.com/wp-content/uploads/favicon.png) — favicon: white M on dark green |
 | `sailpost` | Black sail swoosh crossed by two bars on yellow | [sailpost.it](https://www.sailpost.it/wp-content/themes/sailpost/img/logo_top.jpg) — logo symbol |
+| `tforce-logistics` | White heavy italic TF under a red arc on blue | [tforcelogistics.com](https://www.tforcelogistics.com/wp-content/uploads/2020/06/logo.png) — blue italic TForce with a red arc rising to the right above it |
+| `globalpost` | White G with an arrow bracket on deep indigo | [goglobalpost.com](https://www.goglobalpost.com/wp-content/uploads/2025/01/globalpostlogo.svg) — header logo: white G whose bar is a separate arrow bracket, in an indigo square |
+| `united-delivery-service` | White and grey italic UDS split by a diagonal on blue | [uniteddeliveryservice.com](https://www.uniteddeliveryservice.com/img/logo/logo.png) — heavy italic UDS, blue above a rising split line and grey below |
+| `best-overnite-express` | White BEST over a red brush swoosh on navy | [bestovernite.com](https://www.bestovernite.com/wp-content/uploads/2022/06/logo.png) — navy BEST / OVERNITE / EXPRESS over a red brush swoosh rising to the right |
+| `estes-forwarding` | Three white wing blades pointing left on navy | [efwtrack.com](https://efwtrack.com/img/EFWLandingLogo@2x.f355ad0c.png) — the wing of three curved blades left of the italic EFW |

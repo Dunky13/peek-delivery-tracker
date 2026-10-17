@@ -160,6 +160,9 @@
   "best-express-vn": {
     "decal": "best-express-vn"
   },
+  "best-overnite-express": {
+    "decal": "best-overnite-express"
+  },
   "best-transport": {
     "decal": "best-transport"
   },
@@ -656,6 +659,9 @@
       "accent": "#212121"
     }
   },
+  "estes-forwarding": {
+    "decal": "estes-forwarding"
+  },
   "ethiopian-post": {
     "decal": "ethiopian-post"
   },
@@ -786,6 +792,9 @@
   },
   "ghtk": {
     "decal": "ghtk"
+  },
+  "globalpost": {
+    "decal": "globalpost"
   },
   "gls-at": {
     "family": "gls"
@@ -1821,6 +1830,9 @@
   "tforce-freight": {
     "decal": "tforce-freight"
   },
+  "tforce-logistics": {
+    "decal": "tforce-logistics"
+  },
   "thailand-post": {
     "decal": "thailand-post"
   },
@@ -1902,6 +1914,9 @@
       "brand-light": "#0e2f4b"
     },
     "decal": "ukrposhta"
+  },
+  "united-delivery-service": {
+    "decal": "united-delivery-service"
   },
   "uniuni": {
     "decal": "uniuni"
