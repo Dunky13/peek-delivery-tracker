@@ -13,7 +13,7 @@ import {
 import { rememberedPostcode, type GivenPostcode } from '../../lib/postcodeMemory';
 import type { CarrierId } from '../../types';
 import type { CarrierAnswer, ParcelLookupInput } from '../linkModel';
-import { checkDigitTrouble, readText, type CheckDigitTrouble, type NumberInText, type Reading } from './reading';
+import { checkDigitTrouble, readText, type CheckDigitTrouble, type NumberInText, type OrderShop, type Reading } from './reading';
 
 /**
  * The front door's lookup, as a state and the events that move it. Nothing
@@ -114,8 +114,8 @@ export interface Survey {
   normalized: string;
   /** Say that the text holds no tracking number. */
   nothing: boolean;
-  /** Say that this is an Amazon order number. */
-  order: boolean;
+  /** Say that this is a shop's order number, and whose. */
+  order: OrderShop | null;
   /** Ask about the check digit. */
   typo: CheckDigitTrouble | null;
   onDevice: DeviceParcel | null;
@@ -152,7 +152,7 @@ export function survey(state: LookupState, device: readonly DeviceParcel[] = [],
   const calm = state.raised ? reading : readText(state.settled);
   const several = reading.numbers;
   const picked = several.find((number) => number.normalized === state.pick) ?? several[0];
-  const order = !picked && reading.order;
+  const order = picked ? null : reading.order;
   const match = picked?.match ?? (!order && reading.match.trackingNumber ? reading.match : null);
   const normalized = match ? normalizeTrackingNumber(match.trackingNumber) : '';
   const written = Boolean(state.text.trim());
@@ -216,7 +216,7 @@ export function survey(state: LookupState, device: readonly DeviceParcel[] = [],
           : missing ? 'input' : null;
 
   return {
-    reading, several, match, normalized, nothing, order: order && (state.raised || calm.order), typo, onDevice, amazon, account,
+    reading, several, match, normalized, nothing, order: order && (state.raised || calm.order) ? order : null, typo, onDevice, amazon, account,
     check, carrier, source, certain, fields, missing, input, remembered, ask, need,
   };
 }

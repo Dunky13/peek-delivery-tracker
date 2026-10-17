@@ -8,7 +8,7 @@ import type { LookupState, Survey } from './machine';
 export const DOOR_STOPS = {
   /** The text holds no tracking number. */
   nothing: 'door-no-number',
-  /** The text is an Amazon order number. */
+  /** The text is a shop's order number, whichever the shop. */
   order: 'door-order-number',
   /** A postal number whose check digit does not add up. */
   typo: 'door-check-digit',

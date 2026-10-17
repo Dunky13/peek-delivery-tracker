@@ -236,12 +236,18 @@ describe('input edge cases', () => {
 
   it('holds an Amazon order number back', () => {
     const typing = run([typed('302-4571983-2294617')]);
-    expect(survey(typing)).toMatchObject({ order: false, match: null, need: 'order' });
-    expect(survey(run([rested('302-4571983-2294617')], [], typing)).order).toBe(true);
+    expect(survey(typing)).toMatchObject({ order: null, match: null, need: 'order' });
+    expect(survey(run([rested('302-4571983-2294617')], [], typing)).order).toBe('amazon');
     const pressed = run([track], [], typing);
-    expect(survey(pressed)).toMatchObject({ order: true, nothing: false });
+    expect(survey(pressed)).toMatchObject({ order: 'amazon', nothing: false });
     expect(pressed.job).toBeNull();
     expect(run([pasted('302-4571983-2294617')]).job).toBeNull();
+  });
+
+  it('holds a Temu order number back, and says it is Temu’s', () => {
+    const state = run([pasted('PO-000-00000000000000000'), track]);
+    expect(survey(state)).toMatchObject({ order: 'temu', match: null, need: 'order', nothing: false });
+    expect(state.job).toBeNull();
   });
 });
 

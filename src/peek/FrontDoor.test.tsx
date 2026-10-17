@@ -315,6 +315,19 @@ describe('FrontDoor', () => {
     expect(mocks.detect).not.toHaveBeenCalled();
   });
 
+  it('recognises a Temu order number and says where its tracking numbers are, with no Amazon link', async () => {
+    const { user, field } = door();
+    await user.click(field);
+    await user.paste('PO-000-00000000000000000');
+    const note = screen.getByRole('note');
+    expect(note).toHaveTextContent('That looks like a Temu order number');
+    expect(note).toHaveTextContent('In Your orders, tap Track next to the order');
+    expect(within(note).queryByRole('link')).not.toBeInTheDocument();
+    await user.type(field, '{Enter}');
+    expect(mocks.lookup).not.toHaveBeenCalled();
+    expect(mocks.detect).not.toHaveBeenCalled();
+  });
+
   it('checks an Amazon number before looking it up, and sends account-only parcels to Amazon', async () => {
     mocks.detect.mockResolvedValueOnce({ trackingNumber: 'TBA123456789012', carrier: 'amazon-logistics', amazonShippingStatus: 'not-found' });
     const { user, field } = door();

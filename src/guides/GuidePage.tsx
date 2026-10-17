@@ -34,7 +34,11 @@ export function GuideText({ blocks, locale, t, links }: { blocks: readonly Block
   const checker: CheckerWords = {
     label: t('guides.checker.label'), placeholder: t('add.trackingPlaceholder'), action: t('sample.yours.action'), hint: t('guides.checker.hint'),
     certain: t('add.detectedCarrier'), maybe: t('guides.checker.maybe'), maybeNote: t('guides.checker.maybeNote'), none: t('guides.checker.none'),
-    typo: t('door.typo.check'), suggest: t('door.typo.suggest', { number: '{{number}}' }), orderTitle: t('door.order.title'), orderBody: t('door.order.body'),
+    typo: t('door.typo.check'), suggest: t('door.typo.suggest', { number: '{{number}}' }),
+    order: {
+      amazon: { title: t('door.order.amazon.title'), body: t('door.order.amazon.body') },
+      temu: { title: t('door.order.temu.title'), body: t('door.order.temu.body') },
+    },
   };
   return <>
     {/* The answer comes first, before the list of what else the page holds. */}

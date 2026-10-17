@@ -27,6 +27,8 @@ describe('reading the field', () => {
     expect(readText('Order confirmation').match.trackingNumber).toBe('');
     expect(uncertainNumberInText('Your registration is complete. Parcel number 1234567899')?.trackingNumber).toBe('1234567899');
     expect(uncertainNumberInText('Order 302-4571983-2294617')).toBeNull();
+    // Nor is the part of a Temu order number after its PO, which leaves the tracking number beside it alone.
+    expect(uncertainNumberInText('Track it with DHL: 1234567899 (order PO-000-12345678901234567)')?.trackingNumber).toBe('1234567899');
   });
 
   it('lists every certain number in a text once, in the order written, links included', () => {
@@ -44,12 +46,26 @@ describe('reading the field', () => {
   });
 
   it('tells an Amazon order number from a tracking number', () => {
-    expect(readText('302-4571983-2294617')).toMatchObject({ order: true });
-    expect(readText('Order #302-4571983-2294617 is confirmed').order).toBe(true);
-    expect(readText('D01-1234567-1234567').order).toBe(true);
-    expect(readText('30245719832294617').order).toBe(false);
+    expect(readText('302-4571983-2294617')).toMatchObject({ order: 'amazon' });
+    expect(readText('Order #302-4571983-2294617 is confirmed').order).toBe('amazon');
+    expect(readText('D01-1234567-1234567').order).toBe('amazon');
+    expect(readText('30245719832294617').order).toBeNull();
     // A real number beside the order number wins.
-    expect(readText('Order 302-4571983-2294617, tracking 1ZDEMO202600000001')).toMatchObject({ order: false, match: { carrier: 'ups' } });
+    expect(readText('Order 302-4571983-2294617, tracking 1ZDEMO202600000001')).toMatchObject({ order: null, match: { carrier: 'ups' } });
+  });
+
+  it('tells a Temu order number from a tracking number, however it is typed', () => {
+    for (const text of ['PO-000-00000000000000000', 'PO00000000000000000000', 'po-000-00000000000000000', 'PO 000 00000000000000000',
+      'Your Temu order confirmation (#PO-000-12345678901234567)', 'Order PO-000-12345678901234567\nThanks for shopping with us']) {
+      expect(readText(text).order, text).toBe('temu');
+    }
+    // A digit too many or too few, or no PO, is no Temu order number.
+    expect(readText('PO-000-000000000000000000').order).toBeNull();
+    expect(readText('000-00000000000000000').order).toBeNull();
+    expect(readText('XPO-000-00000000000000000').order).toBeNull();
+    // A carrier's number that starts with PO stays a tracking number: here Australia Post's, a digit short of Temu's.
+    expect(readText('PO0000000000000000000')).toMatchObject({ order: null, match: { carrier: 'australia-post', confidence: 'high' } });
+    expect(readText('Order PO-000-00000000000000000, tracking 1ZDEMO202600000001')).toMatchObject({ order: null, match: { carrier: 'ups' } });
   });
 
   it('sets a typed number in the label’s type, and prose as prose', () => {

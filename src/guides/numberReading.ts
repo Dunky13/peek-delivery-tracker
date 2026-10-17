@@ -1,6 +1,6 @@
 import type { CarrierId } from 'universal-parcel-scraper';
 import { carrierInfo } from '../lib/carriers';
-import { checkDigitTrouble, readText, type CheckDigitTrouble } from '../peek/lookup/reading';
+import { checkDigitTrouble, readText, type CheckDigitTrouble, type OrderShop } from '../peek/lookup/reading';
 
 /** A carrier a number's shape points to, by its id in the scraper's catalog. */
 export interface ShapeCarrier { id: string; name: string; color: string | null }
@@ -15,8 +15,8 @@ export interface CheckedNumber {
   typo: CheckDigitTrouble | null;
 }
 
-/** What the guide's checker shows for a text: its numbers, or that it is an order number instead. */
-export interface NumberCheck { numbers: CheckedNumber[]; order: boolean }
+/** What the guide's checker shows for a text: its numbers, or whose order number it is instead. */
+export interface NumberCheck { numbers: CheckedNumber[]; order: OrderShop | null }
 
 const named = (id: CarrierId): ShapeCarrier => {
   const info = carrierInfo(id);

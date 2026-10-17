@@ -190,9 +190,11 @@ export function LookupFeedback({ lookup, pointer, onSignIn, onPickCarrier, onSug
       <a className="door-note__action" href={amazonOrdersUrl(found.normalized)} target="_blank" rel="noopener noreferrer">{t('add.openAmazonOrders')}<Icon name="arrow" /></a>
     </DoorNote>}
 
-    {found.order && <DoorNote icon="receipt" tone="warm" title={t('door.order.title')} urgent={state.raised}>
-      <p>{t('door.order.body')}</p>
-      <a className="door-note__action" href={amazonOrdersUrl('')} target="_blank" rel="noopener noreferrer">{t('add.openAmazonOrders')}<Icon name="arrow" /></a>
+    {found.order && <DoorNote icon="receipt" tone="warm" title={t(`door.order.${found.order}.title`)} urgent={state.raised}>
+      <p>{t(`door.order.${found.order}.body`)}</p>
+      {/* Temu documents no address for its orders page: the note says where to tap instead. */}
+      {found.order === 'amazon'
+        && <a className="door-note__action" href={amazonOrdersUrl('')} target="_blank" rel="noopener noreferrer">{t('add.openAmazonOrders')}<Icon name="arrow" /></a>}
     </DoorNote>}
 
     {found.nothing && <section className="door-shapes" aria-labelledby="door-shapes-title">

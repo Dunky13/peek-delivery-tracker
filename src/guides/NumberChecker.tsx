@@ -6,6 +6,7 @@ import { carrierPath } from '../carriers/paths';
 import { CARRIER_LINKS } from '../generated/carriers';
 import { carrierHandoffLanding, writeCarrierHandoff } from '../lib/carrierHandoff';
 import type { Locale } from '../lib/locale';
+import type { OrderShop } from '../peek/lookup/reading';
 import type { CheckedNumber, NumberCheck, ShapeCarrier } from './numberReading';
 
 /** What the checker says, in the page's language. */
@@ -24,8 +25,8 @@ export interface CheckerWords {
   typo: string;
   /** Holds `{{number}}`. */
   suggest: string;
-  orderTitle: string;
-  orderBody: string;
+  /** What each shop's order number is, and where its tracking numbers are. */
+  order: Record<OrderShop, { title: string; body: string }>;
 }
 
 type Reader = typeof import('./numberReading');
@@ -85,7 +86,7 @@ export function NumberChecker({ locale, words }: { locale: Locale; words: Checke
     </div>
     <div className="number-checker__result" id="number-checker-result" aria-live="polite">
       {!shown ? <p className="carrier-tracker__note">{words.hint}</p>
-        : shown.order ? <p><strong>{words.orderTitle}</strong> {words.orderBody}</p>
+        : shown.order ? <p><strong>{words.order[shown.order].title}</strong> {words.order[shown.order].body}</p>
           : !shown.numbers.length ? <p>{words.none}</p>
             : <ul>{shown.numbers.map((number) => <li key={number.number}><Verdict number={number} locale={locale} words={words} /></li>)}</ul>}
     </div>

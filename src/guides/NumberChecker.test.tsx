@@ -86,7 +86,7 @@ describe('the number checker in a guide', () => {
     expect(result).toHaveTextContent(de['guides.checker.maybeNote']);
   });
 
-  it('says when no carrier writes numbers so, when a postal number’s check digit fails, and when it is an order number', async () => {
+  it('says when no carrier writes numbers so, when a postal number’s check digit fails, and whose order number it is', async () => {
     const user = userEvent.setup();
     page('en', en);
     const field = screen.getByRole('textbox', { name: 'Which carrier is this number?' });
@@ -100,7 +100,21 @@ describe('the number checker in a guide', () => {
     expect(result).toHaveTextContent(`${en['door.typo.check']} Did you mean RR123456785CH?`);
     await user.clear(field);
     await user.type(field, '123-1234567-1234567');
-    expect(await within(result).findByText(en['door.order.title'])).toBeVisible();
+    expect(await within(result).findByText(en['door.order.amazon.title'])).toBeVisible();
+    await user.clear(field);
+    await user.type(field, 'po00000000000000000000');
+    expect(await within(result).findByText(en['door.order.temu.title'])).toBeVisible();
+    expect(result).toHaveTextContent(en['door.order.temu.body']);
+  });
+
+  it('names Temu’s order number in the guide’s language', async () => {
+    const user = userEvent.setup();
+    page('fr', fr);
+    await user.type(screen.getByRole('textbox', { name: fr['guides.checker.label'] }), 'PO-000-00000000000000000');
+    const result = document.getElementById('number-checker-result')!;
+    expect(await within(result).findByText(fr['door.order.temu.title'])).toBeVisible();
+    // The body's colon keeps its no-break space, which the text matcher would fold.
+    expect(result.textContent).toContain(fr['door.order.temu.body']);
   });
 
   it('reads every number of a pasted message, each with its carrier', async () => {

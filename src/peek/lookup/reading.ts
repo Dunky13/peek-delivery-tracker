@@ -20,13 +20,28 @@ export interface Reading {
   match: TrackingInputMatch;
   /** Every number the text names with certainty, in the order written. Two or more make the visitor choose. */
   numbers: NumberInText[];
-  /** The text is an Amazon order number, which no carrier can track. */
-  order: boolean;
+  /** The shop whose order number the text is, which no carrier can track. */
+  order: OrderShop | null;
 }
 
+/** A shop whose order numbers the door tells from tracking numbers. */
+export type OrderShop = 'amazon' | 'temu';
+
 const LINK = /https?:\/\/[^\s<>"']+/gi;
-/** Amazon's order numbers: 3-7-7 digits, or D01-… for digital orders. */
-const ORDER_NUMBER = /(?:^|[^\w-])(?:\d{3}|D\d{2})-\d{7}-\d{7}(?![\w-])/i;
+const ORDER_NUMBERS: Record<OrderShop, RegExp> = {
+  /** 3-7-7 digits, or D01-… for digital orders. */
+  amazon: /(?:^|[^\w-])(?:\d{3}|D\d{2})-\d{7}-\d{7}(?![\w-])/i,
+  /** PO, 3 digits and 17: PO-000-00000000000000000, often typed without the hyphens. */
+  temu: /(?:^|[^\w-])PO[- ]?\d{3}[- ]?\d{17}(?![\w-])/i,
+};
+const SHOPS = Object.keys(ORDER_NUMBERS) as OrderShop[];
+
+/** The shop whose order number a text holds. */
+const orderShop = (text: string) => SHOPS.find((shop) => ORDER_NUMBERS[shop].test(text)) ?? null;
+
+const EVERY_ORDER_NUMBER = SHOPS.map((shop) => new RegExp(ORDER_NUMBERS[shop].source, 'gi'));
+/** A line without its order numbers, so that no part of one is read as a tracking number. */
+const withoutOrders = (line: string) => EVERY_ORDER_NUMBER.reduce((rest, order) => rest.replace(order, ' '), line);
 
 /**
  * Every tracking number in a text that one carrier claims with certainty,
@@ -78,13 +93,13 @@ const NUMBER_WORDS = /track|parcel|shipment|sendung|paket|suivi|colis|tracciamen
 export function uncertainNumberInText(text: string): TrackingInputMatch | null {
   const candidates = new Map<string, { match: TrackingInputMatch; introduced: boolean }>();
   for (const line of text.split(/\r?\n/)) {
-    const prose = line.replace(LINK, ' ');
+    const prose = withoutOrders(line.replace(LINK, ' '));
     for (const pattern of TRACKING_CANDIDATE_PATTERNS) {
       for (const hit of prose.matchAll(new RegExp(pattern.source, pattern.flags))) {
         const candidate = hit[0].trim();
         if (!/\d/.test(candidate)) continue;
         const detection = detectCarrierMatch(candidate);
-        if (detection.confidence !== 'low' || ORDER_NUMBER.test(candidate)) continue;
+        if (detection.confidence !== 'low') continue;
         const normalized = normalizeTrackingNumber(candidate);
         const known = candidates.get(normalized);
         candidates.set(normalized, {
@@ -102,14 +117,14 @@ export function uncertainNumberInText(text: string): TrackingInputMatch | null {
 // The same text is read several times on its way through an event and a render.
 const read = new Map<string, Reading>();
 
-/** Reads the field: the number the parser finds, the others beside it, and whether it is an order number instead. */
+/** Reads the field: the number the parser finds, the others beside it, and whose order number it is instead. */
 export function readText(text: string): Reading {
   const known = read.get(text);
   if (known) return known;
   const parsed = parseTrackingInput(text);
   const match = parsed.trackingNumber ? parsed : uncertainNumberInText(text) ?? parsed;
   const numbers = numbersInText(text);
-  const order = ORDER_NUMBER.test(match.trackingNumber || text) && match.confidence !== 'high';
+  const order = match.confidence === 'high' ? null : orderShop(match.trackingNumber || text);
   const reading: Reading = { match, numbers: numbers.length > 1 ? numbers : [], order };
   if (read.size >= 16) read.delete(read.keys().next().value!);
   read.set(text, reading);
