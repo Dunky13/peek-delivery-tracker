@@ -15555,7 +15555,7 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^ID[A-Z]\\d{12,13}$",
+        "pattern": "^ID(?!A\\d{12}$)[A-Z]\\d{12,13}$",
         "confidence": "high"
       }
     ],
@@ -18044,10 +18044,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Amman",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jordan-post",
+      "recognitionRank": 881
     },
-    "trackingUrlTemplate": "https://212.35.69.84/JordanWebTrack/Result.aspx?itemid={trackingNumber}",
+    "trackingUrlTemplate": "https://212.35.69.85/webtracking/IPSWeb_item_events.aspx?itemid={trackingNumber}&Submit=Submit",
     "linkRules": [
+      {
+        "domains": [
+          "212.35.69.85"
+        ],
+        "pathPattern": "^/webtracking/IPSWeb_item_events\\.aspx$",
+        "params": [
+          "itemid"
+        ]
+      },
       {
         "domains": [
           "212.35.69.84"
@@ -18058,7 +18068,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}JO$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://212.35.69.84/NewWebTrack/WebTrack_Submit.aspx"
   },
   "la-poste-tunisienne": {
@@ -23091,7 +23108,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Vienna",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-at",
+      "recognitionRank": 878
     },
     "trackingUrlTemplate": "https://www.mydpd.at/?f=parcel.load&p={trackingNumber}",
     "linkRules": [
@@ -23984,7 +24002,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "VN"
     ],
-    "color": "#d92923",
+    "color": "#ed1f24",
     "selectable": true,
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
@@ -24160,7 +24178,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "SA"
     ],
-    "color": "#ff8e00",
+    "color": "#f8931d",
     "selectable": true,
     "timezone": "Asia/Riyadh",
     "tracking": {
@@ -24191,7 +24209,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "ID"
     ],
-    "color": "#ff434f",
+    "color": "#5f51a1",
     "selectable": true,
     "timezone": "Asia/Jakarta",
     "tracking": {
@@ -24318,7 +24336,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "EG"
     ],
-    "color": "#0a3266",
+    "color": "#1c5bfe",
     "selectable": true,
     "timezone": "Africa/Cairo",
     "tracking": {
@@ -24390,7 +24408,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "SA"
     ],
-    "color": "#1f6a4a",
+    "color": "#0d714c",
     "selectable": true,
     "timezone": "Asia/Riyadh",
     "tracking": {
@@ -24634,6 +24652,122 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.straightship.com/"
+  },
+  "kyoungdong": {
+    "displayName": "Kyungdong Express",
+    "aliases": [
+      "경동택배",
+      "Kyoungdong Express",
+      "KYOUNGDONG",
+      "Kyungdong Parcel",
+      "KDEXP",
+      "경동물류",
+      "Kyungdong Logistics"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "color": "#141991",
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://kdexp.com/service/delivery/etc/delivery.do?barcode={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "kdexp.com",
+          "www.kdexp.com"
+        ],
+        "pathPattern": "^/service/delivery/(?:etc|ns)/delivery\\.do$",
+        "params": [
+          "barcode"
+        ]
+      },
+      {
+        "domains": [
+          "kdexp.com",
+          "www.kdexp.com"
+        ],
+        "pathPattern": "^/(?:basicNewDelivery|del_search)\\.kd$",
+        "params": [
+          "barcode"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://kdexp.com/index.do"
+  },
+  "sagawa-global": {
+    "displayName": "SGH Global Japan",
+    "aliases": [
+      "Sagawa Global",
+      "SGHグローバル・ジャパン",
+      "SGH Global Japan Co., Ltd.",
+      "SGX",
+      "Sagawa Global Express",
+      "佐川グローバルエクスプレス",
+      "Sagawa Global Logistics",
+      "佐川グローバルロジスティクス"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "color": "#3b499f",
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp?ENC=JPN&CAT=AWB&AWB={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.sagawa-sgx.com"
+        ],
+        "pathPattern": "^/sgx/trackeng\\.asp$",
+        "params": [
+          "AWB"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp"
+  },
+  "yc-delivery": {
+    "displayName": "YC Delivery",
+    "aliases": [
+      "YCお届け便",
+      "YC お届け便",
+      "yc-otodoke"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "color": "#004092",
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.e1.yc-otodoke.com/inquiry/?deliveryNumber={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "e1.yc-otodoke.com"
+        ],
+        "pathPattern": "^/inquiry/?$",
+        "params": [
+          "deliveryNumber"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.e1.yc-otodoke.com/inquiry/"
   }
 } as const;
 
@@ -25305,7 +25439,10 @@ export const CARRIER_IDS = [
   "apple-express",
   "fleetoptics",
   "lightning-express",
-  "straightship"
+  "straightship",
+  "kyoungdong",
+  "sagawa-global",
+  "yc-delivery"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
