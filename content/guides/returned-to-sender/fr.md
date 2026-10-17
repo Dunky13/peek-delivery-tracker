@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 « Retourné à l'expéditeur » veut dire que le transporteur n'a pas pu te remettre ton colis et le rapporte à celui qui l'a envoyé : adresse incomplète, colis refusé, délai de retrait dépassé ou frais de douane impayés. Une fois lancé, un retour va en pratique jusqu'au bout : seul l'expéditeur peut rappeler un colis, et seulement avant. Écris tout de suite au vendeur, et dis-lui par écrit si tu veux un nouvel envoi ou un remboursement.
 
+Tu as toi-même renvoyé un article à une boutique ? C'est un autre trajet : [suivre un retour et son remboursement](guide:returns-tracking).
+
 ## Pourquoi mon colis est-il retourné à l'expéditeur ?
 
 La raison est en général dans le dernier scan du suivi, et elle est notée sur le colis : l'expéditeur la connaît donc souvent avant toi.

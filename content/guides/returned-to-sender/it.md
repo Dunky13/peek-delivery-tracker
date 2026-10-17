@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 Un pacco rispedito al mittente è un pacco che il corriere non è riuscito a consegnarti e che sta riportando a chi l'ha spedito: per l'indirizzo, per un rifiuto, perché nessuno l'ha ritirato in tempo o perché c'erano spese da pagare. Quando il pacco ha preso la via del ritorno, di solito non si ferma più: DHL in Germania, per esempio, lo dice chiaramente. Scrivi subito al venditore e digli, per iscritto, se vuoi che te lo rispedisca o se vuoi il rimborso.
 
+Hai rispedito tu un articolo al negozio? È un altro percorso: [tracciare un reso e il rimborso](guide:returns-tracking).
+
 ## Perché un pacco torna al mittente?
 
 Il motivo di solito è nell'ultima scansione ed è scritto anche sul pacco, così spesso il mittente lo sa prima di te.

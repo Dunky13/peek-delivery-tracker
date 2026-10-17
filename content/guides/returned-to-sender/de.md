@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 „Zurück an Absender“ heißt: Der Paketdienst konnte dir das Paket nicht übergeben und schickt es an den Absender zurück. Meist liegt es an der Adresse, an einer verweigerten Annahme, an einer verpassten Abholfrist oder an unbezahlten Gebühren. Hat die Rücksendung einmal begonnen, lässt sie sich bei DHL nicht mehr stoppen. Schreib dem Shop deshalb sofort und sag ihm schriftlich, ob er das Paket neu schicken oder dir das Geld zurückgeben soll.
 
+Du hast selbst etwas an einen Shop zurückgeschickt? Das ist ein anderer Weg: [Retoure und Erstattung verfolgen](guide:returns-tracking).
+
 ## Warum geht mein Paket zurück an den Absender?
 
 Der Grund steht meist im letzten Scan und auf dem Paket selbst. Der Absender erfährt ihn deshalb oft vor dir.

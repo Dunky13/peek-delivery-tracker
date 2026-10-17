@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 „Zwrot do nadawcy” znaczy, że przewoźnik nie mógł Ci wydać paczki i wiezie ją z powrotem do tego, kto ją wysłał. Powodem bywa błędny adres, odmowa przyjęcia, minięty termin odbioru albo nieopłacone należności. Gdy paczka już jedzie z powrotem, nie zatrzymasz jej, a wcześniej może to zrobić zwykle tylko nadawca. Napisz od razu do sprzedawcy i powiedz na piśmie, czy chcesz ponownej wysyłki, czy zwrotu pieniędzy.
 
+Sam odsyłasz coś do sklepu? To inna droga: [śledzenie zwrotu i zwrotu pieniędzy](guide:returns-tracking).
+
 ## Dlaczego paczka wraca do nadawcy?
 
 Powód zwykle widać w ostatnim statusie i na samej paczce, więc nadawca często poznaje go przed Tobą.

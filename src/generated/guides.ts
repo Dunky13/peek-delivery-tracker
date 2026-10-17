@@ -107,6 +107,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Returned to sender: why it happens, stopping it, refunds"
     },
     {
+      "id": "returns-tracking",
+      "slug": "return-tracking",
+      "title": "Return tracking: where is my parcel and my refund?"
+    },
+    {
       "id": "missed-delivery",
       "slug": "missed-delivery",
       "title": "Missed delivery: what to do, redelivery and ID to collect"
@@ -217,6 +222,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "returned-to-sender",
       "slug": "paket-zurueck-an-absender",
       "title": "Paket zurück an Absender: Gründe, Kosten, Geld zurück"
+    },
+    {
+      "id": "returns-tracking",
+      "slug": "retoure-verfolgen",
+      "title": "Retoure verfolgen: Wo ist mein Paket, wann kommt mein Geld?"
     },
     {
       "id": "missed-delivery",
@@ -331,6 +341,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Colis retourné à l'expéditeur\u00a0: pourquoi et que faire"
     },
     {
+      "id": "returns-tracking",
+      "slug": "suivi-retour-colis",
+      "title": "Suivi de retour\u00a0: où est mon colis et mon remboursement\u202f?"
+    },
+    {
       "id": "missed-delivery",
       "slug": "avis-de-passage-que-faire",
       "title": "Avis de passage\u00a0: que faire et comment retirer ton colis"
@@ -441,6 +456,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "returned-to-sender",
       "slug": "pacco-rispedito-al-mittente",
       "title": "Pacco rispedito al mittente: perché, cosa fare, rimborso"
+    },
+    {
+      "id": "returns-tracking",
+      "slug": "tracciare-reso-rimborso",
+      "title": "Reso: dov'è il pacco e quando arriva il rimborso?"
     },
     {
       "id": "missed-delivery",
@@ -555,6 +575,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Paquete devuelto al remitente: qué significa y qué hacer"
     },
     {
+      "id": "returns-tracking",
+      "slug": "seguimiento-devolucion-reembolso",
+      "title": "Devolución: ¿dónde está mi paquete y mi reembolso?"
+    },
+    {
       "id": "missed-delivery",
       "slug": "intento-de-entrega-ausente",
       "title": "Intento de entrega ausente: qué hacer y cómo recogerlo"
@@ -667,6 +692,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Encomenda devolvida ao remetente: porquê e o que fazer"
     },
     {
+      "id": "returns-tracking",
+      "slug": "seguir-devolucao-reembolso",
+      "title": "Devolução: onde está a encomenda e o meu reembolso?"
+    },
+    {
       "id": "missed-delivery",
       "slug": "encomenda-nao-entregue",
       "title": "Encomenda não entregue: o que fazer se não estavas em casa"
@@ -777,6 +807,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "returned-to-sender",
       "slug": "paczka-wraca-do-nadawcy",
       "title": "Paczka wraca do nadawcy: dlaczego, co dalej, zwrot pieniędzy"
+    },
+    {
+      "id": "returns-tracking",
+      "slug": "sledzenie-zwrotu-paczki",
+      "title": "Śledzenie zwrotu: gdzie jest paczka i moje pieniądze?"
     },
     {
       "id": "missed-delivery",

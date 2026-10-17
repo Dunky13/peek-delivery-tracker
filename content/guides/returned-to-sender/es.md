@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 «Devuelto al remitente» significa que el transportista no ha podido entregarte el paquete y se lo lleva de vuelta a quien lo envió: por la dirección, porque lo rehusaste, porque no lo recogiste a tiempo o porque quedaron aduanas sin pagar. Cuando la devolución ya ha empezado, transportistas como DHL dicen que no se puede parar. Escribe hoy mismo al vendedor y dile por escrito si quieres que te lo vuelva a enviar o que te devuelva el dinero.
 
+¿Has devuelto tú algo a una tienda? Es otro camino: [seguir una devolución y su reembolso](guide:returns-tracking).
+
 ## ¿Por qué se devuelve un paquete al remitente?
 
 El motivo suele estar en el último escaneo. Además, el Reglamento postal obliga a los operadores postales a escribir la causa en el reverso del envío, así que el remitente a menudo se entera antes que tú.

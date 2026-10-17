@@ -727,6 +727,31 @@ function SecondHand() {
   </>;
 }
 
+function Return() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <Pip x={104} ground={262} width={140} mood="joy" side={1} />
+    {/* The drop-off receipt, kept until the refund comes. */}
+    <g transform="rotate(-6 236 166)">
+      <Sheet x={194} y={100} width={84} height={124} rx={8}>
+        <rect x="14" y="16" width="56" height="9" rx="4.5" fill="var(--control)" />
+        <rect x="14" y="34" width="40" height="9" rx="4.5" fill="var(--control)" />
+        <path d="M16 62v30m4-30v30m5-30v30m3-30v30m6-30v30m3-30v30m5-30v30m4-30v30m3-30v30m6-30v30m4-30v30" stroke={ink} strokeWidth="2" />
+        <rect x="14" y="102" width="56" height="9" rx="4.5" fill="var(--green)" />
+      </Sheet>
+    </g>
+    {/* The van takes the parcel back to the shop's warehouse. */}
+    <path d="M300 150C350 96 420 96 452 130" stroke="var(--green)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <Box x={318} y={170} width={44} height={34} />
+    <Truck x={306} y={199} tone="green" scale={2.6} />
+    <path d="M440 136 527 90l87 46Z" fill="var(--green)" />
+    <rect x="452" y="132" width="150" height="116" fill="var(--green)" />
+    <rect x="496" y="176" width="62" height="72" rx="3" fill={paper} opacity=".25" />
+    {[188, 200, 212, 224, 236].map((y) => <path key={y} d={`M500 ${y}H554`} stroke={paper} strokeWidth="2" opacity=".5" />)}
+    <path d="M512 150h24a9 9 0 0 1 0 18h-6m-18-18 6-6m-6 6 6 6" stroke={paper} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -748,6 +773,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'delivery-scam-texts': { tone: 'lilac', draw: Scam },
   'change-delivery-address': { tone: 'green', draw: ChangeAddress },
   'returned-to-sender': { tone: 'orange', draw: Returned },
+  'returns-tracking': { tone: 'green', draw: Return },
   'missed-delivery': { tone: 'ochre', draw: Missed },
   'delivery-times': { tone: 'blue', draw: DeliveryTimes },
 };

@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 "Returned to sender" means the carrier couldn't hand your parcel (or package) over and is taking it back to whoever sent it, because of the address, a refusal, a missed pickup deadline or unpaid charges. Once a return has started, carriers such as [Canada Post](carrier:canada-post) and DHL say they can't stop it. Message the seller straight away and say, in writing, whether you want it sent again or your money back.
 
+Sent something back to a shop yourself? That's a different journey: [tracking a return and your refund](guide:returns-tracking).
+
 ## Why was my parcel returned to sender?
 
 The reason is usually in the latest scan, and the carrier marks it on the parcel for the sender.

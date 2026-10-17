@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 «Devolvida ao remetente» quer dizer que a transportadora não te conseguiu entregar a encomenda e está a levá-la de volta a quem a enviou: por causa da morada, de uma recusa, de um prazo de levantamento que passou ou de um desalfandegamento por concluir. Depois de a devolução começar, os CTT dizem que não a podem cancelar. Escreve já à loja e diz-lhe, por escrito, se queres que volte a enviar a encomenda ou que te devolva o dinheiro.
 
+Foste tu a devolver um artigo a uma loja? É outro caminho: [seguir uma devolução e o reembolso](guide:returns-tracking).
+
 ## Porque é que a minha encomenda foi devolvida ao remetente?
 
 A razão costuma estar na última leitura do seguimento, e a transportadora marca-a na própria encomenda para quem a enviou.
