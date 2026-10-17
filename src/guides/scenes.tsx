@@ -695,6 +695,38 @@ function Handmade() {
   </>;
 }
 
+function SecondHand() {
+  // The drop-off code's dots, after its three corner squares.
+  const dots = [[54, 40], [62, 48], [54, 56], [62, 64], [38, 70], [46, 70], [70, 70], [54, 80], [70, 80], [78, 88], [62, 96], [86, 96]] as const;
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The seller's phone: the code a drop-off point scans. */}
+    <Phone x={40} y={40} width={120} height={200}>
+      {[[26, 36], [74, 36], [26, 84]].map(([x, y]) => <g key={`${x}-${y}`}>
+        <rect x={x} y={y} width="22" height="22" rx="4" fill={ink} />
+        <rect x={x + 4} y={y + 4} width="14" height="14" rx="2" fill={paper} />
+        <rect x={x + 8} y={y + 8} width="6" height="6" rx="1" fill={ink} />
+      </g>)}
+      {dots.map(([x, y]) => <rect key={`${x}-${y}`} x={x} y={y} width="7" height="7" rx="1.5" fill={ink} />)}
+      <rect x="22" y="128" width="76" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="22" y="146" width="52" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="22" y="166" width="76" height="20" rx="10" fill="var(--lilac)" />
+    </Phone>
+    {/* A parcel with a handwritten label, and the van that takes it on. */}
+    <path d="M168 104C290 20 450 20 516 132" stroke="var(--lilac)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <Box x={200} y={172} width={88} height={76}>
+      <g transform="rotate(-5 44 45)">
+        <Sheet x={12} y={26} width={64} height={38} rx={6}>
+          <path d="M10 13c5-5 8 3 13-1s8 3 13-1 7 2 10 0" stroke={ink} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M10 26c4-3 8 3 12-1s7 2 11-1" stroke={soft} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+        </Sheet>
+      </g>
+    </Box>
+    <Truck x={330} y={191} tone="lilac" scale={3} />
+    <Pip x={540} ground={262} width={150} mood="eager" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -706,6 +738,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'vinted-orders': { tone: 'green', draw: Resale },
   'ebay-orders': { tone: 'blue', draw: Auction },
   'etsy-orders': { tone: 'rose', draw: Handmade },
+  'second-hand-orders': { tone: 'lilac', draw: SecondHand },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

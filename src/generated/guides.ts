@@ -57,6 +57,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Etsy tracking: where your order is and who delivers it"
     },
     {
+      "id": "second-hand-orders",
+      "slug": "second-hand-tracking",
+      "title": "Tracking Depop, Mercari, Poshmark and Marketplace orders"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -162,6 +167,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "etsy-orders",
       "slug": "etsy-sendungsverfolgung",
       "title": "Etsy-Sendungsverfolgung: wo deine Bestellung ist"
+    },
+    {
+      "id": "second-hand-orders",
+      "slug": "kleinanzeigen-sendungsverfolgung",
+      "title": "Kleinanzeigen, willhaben, Ricardo, tutti: Sendung verfolgen"
     },
     {
       "id": "find-tracking-number",
@@ -271,6 +281,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi Etsy\u00a0: où est ta commande et qui la livre"
     },
     {
+      "id": "second-hand-orders",
+      "slug": "suivi-colis-leboncoin",
+      "title": "Leboncoin, 2ememain, Ricardo, anibis\u00a0: suivre ton colis"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -376,6 +391,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "etsy-orders",
       "slug": "tracciamento-ordine-etsy",
       "title": "Tracciamento Etsy: dov'è il tuo ordine e chi lo consegna"
+    },
+    {
+      "id": "second-hand-orders",
+      "slug": "tracciamento-pacco-subito",
+      "title": "Subito e TuttoSubito: come tracciare il pacco"
     },
     {
       "id": "find-tracking-number",
@@ -485,6 +505,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de Etsy: dónde está tu pedido y quién lo entrega"
     },
     {
+      "id": "second-hand-orders",
+      "slug": "seguimiento-envio-wallapop",
+      "title": "Wallapop Envíos y Milanuncios: seguir el paquete"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -592,6 +617,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimento Etsy: onde está a tua encomenda e quem a entrega"
     },
     {
+      "id": "second-hand-orders",
+      "slug": "seguimento-encomenda-olx",
+      "title": "OLX Portugal e Wallapop: seguir a encomenda"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -697,6 +727,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "etsy-orders",
       "slug": "sledzenie-zamowienia-etsy",
       "title": "Śledzenie Etsy: gdzie jest zamówienie i kto je dostarcza"
+    },
+    {
+      "id": "second-hand-orders",
+      "slug": "sledzenie-przesylki-olx",
+      "title": "Przesyłka OLX i Allegro Lokalnie: śledzenie paczki"
     },
     {
       "id": "find-tracking-number",
