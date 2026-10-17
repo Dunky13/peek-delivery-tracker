@@ -107,6 +107,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "El Corte Inglés order tracking: delivery and problems"
     },
     {
+      "id": "cdiscount-orders",
+      "slug": "cdiscount-order-tracking",
+      "title": "Cdiscount order tracking: carriers, delivery and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -272,6 +277,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "el-corte-ingles-orders",
       "slug": "el-corte-ingles-bestellung-verfolgen",
       "title": "El-Corte-Inglés-Bestellung verfolgen: Lieferung, Probleme"
+    },
+    {
+      "id": "cdiscount-orders",
+      "slug": "cdiscount-bestellung-verfolgen",
+      "title": "Cdiscount-Bestellung verfolgen: Lieferung und Probleme"
     },
     {
       "id": "find-tracking-number",
@@ -441,6 +451,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande El Corte Inglés\u00a0: livraison et problèmes"
     },
     {
+      "id": "cdiscount-orders",
+      "slug": "suivi-commande-cdiscount",
+      "title": "Suivi de commande Cdiscount\u00a0: livraison et retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -606,6 +621,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "el-corte-ingles-orders",
       "slug": "tracciare-ordine-el-corte-ingles",
       "title": "Tracciare un ordine El Corte Inglés: corrieri e problemi"
+    },
+    {
+      "id": "cdiscount-orders",
+      "slug": "tracciare-ordine-cdiscount",
+      "title": "Ordini Cdiscount: tracciamento, consegna e problemi"
     },
     {
       "id": "find-tracking-number",
@@ -775,6 +795,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Pedido de El Corte Inglés: seguimiento y entregas"
     },
     {
+      "id": "cdiscount-orders",
+      "slug": "seguimiento-pedido-cdiscount",
+      "title": "Pedidos de Cdiscount: seguimiento, envíos y problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -942,6 +967,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Encomendas El Corte Inglés: seguimento, entrega e problemas"
     },
     {
+      "id": "cdiscount-orders",
+      "slug": "seguimento-encomenda-cdiscount",
+      "title": "Encomendas Cdiscount: seguimento, entregas e problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -1107,6 +1137,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "el-corte-ingles-orders",
       "slug": "sledzenie-zamowienia-el-corte-ingles",
       "title": "Śledzenie zamówienia El Corte Inglés: dostawa i problemy"
+    },
+    {
+      "id": "cdiscount-orders",
+      "slug": "sledzenie-zamowienia-cdiscount",
+      "title": "Zamówienia z Cdiscount: śledzenie, dostawa i problemy"
     },
     {
       "id": "find-tracking-number",

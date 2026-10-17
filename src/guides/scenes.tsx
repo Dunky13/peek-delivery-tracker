@@ -970,6 +970,29 @@ function Department() {
   </>;
 }
 
+function Megastore() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* A bank of lockers; Pip looks out of the big one at the bottom. */}
+    <rect x="40" y="44" width="232" height="204" rx="12" fill="var(--blue)" />
+    {[[54, 58, 62, 54], [128, 58, 62, 54], [202, 58, 56, 54], [54, 124, 62, 54], [202, 124, 56, 54], [54, 190, 62, 46], [202, 190, 56, 46]].map(([x, y, width, height]) => <g key={`${x}-${y}`}>
+      <rect x={x} y={y} width={width} height={height} rx="5" fill={paper} opacity=".2" />
+      <circle cx={x + width - 10} cy={y + height / 2} r="3.5" fill={paper} opacity=".6" />
+    </g>)}
+    <rect x="128" y="124" width="62" height="112" rx="4" fill="#20251E" opacity=".55" />
+    <path d="M190 124l26-10v132l-26-10z" fill={paper} />
+    <Pip x={159} ground={236} width={58} mood="look" side={1} />
+    {/* Boxes of every size, as a big marketplace sends them. */}
+    <Box x={316} y={170} width={128} height={78} />
+    <Box x={334} y={110} width={88} height={60} />
+    <Box x={358} y={76} width={40} height={34} />
+    <Box x={452} y={196} width={70} height={52} />
+    <Box x={464} y={150} width={46} height={46} />
+    <Box x={530} y={222} width={54} height={26} />
+    <Box x={536} y={184} width={40} height={38} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -991,6 +1014,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'mediamarkt-orders': { tone: 'orange', draw: Showroom },
   'fnac-orders': { tone: 'ochre', draw: Relay },
   'el-corte-ingles-orders': { tone: 'green', draw: Department },
+  'cdiscount-orders': { tone: 'blue', draw: Megastore },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },
