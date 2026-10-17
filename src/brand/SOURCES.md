@@ -99,6 +99,7 @@ and [`truck.json`](truck.json).
 | `ciblex` | [ciblex.fr](https://www.ciblex.fr/) (sampled from the site icon) |
 | `city-express-rs` | [cityexpress.rs](https://www.cityexpress.rs/static/css/ce.min.css) — site CSS #f58220 (43 uses); logo #ef7e2d (approximate) |
 | `citylink-express` | [citylinkexpress.com](https://www.citylinkexpress.com/) — site CSS #00a551; logo wordmark #009b32 |
+| `citymail` | [citymail.se](https://www.citymail.se/wp-content/uploads/2026/02/logo-citymail.svg) — logo SVG fills #fc4c02 (frame) and #00b140 (letters); site palette #fc4c02 |
 | `citysprint` | [citysprint.co.uk](https://www.citysprint.co.uk/) — site CSS #002F64 (header, most used) |
 | `cj-logistics` | [cjlogistics.com](https://www.cjlogistics.com/static/pc/global/template/images/logo/logo_footer_ko.png) — logo petals red #ef151e, orange #ff9700, blue #006ecd (approximate) |
 | `cj-packet` | [cjpacket.com](https://www.cjpacket.com/) — site CSS #ff7700; header logo PNG #ff6702 (approximate) |
@@ -110,7 +111,9 @@ and [`truck.json`](truck.json).
 | `correo-uruguayo` | [correo.com.uy](https://www.correo.com.uy/home) — theme CSS #main-head background #00a7e6; logo sun #fad000 |
 | `correos-bolivia` | [trackingbo.correos.gob.bo](https://trackingbo.correos.gob.bo/css/landing-shared.css) — :root --brand-yellow #FECC36 (topbar, hero and footer background; www.correos.gob.bo header computes rgb(254,204,54)); envelope --brand-blue #20539A |
 | `correos-chile` | [correos.cl](https://www.correos.cl/) |
+| `correos-cuba` | [correos.cu](https://www.correos.cu/) — theme-color and site CSS #001ca8; logo blue #0b109f (approximate) |
 | `correos-de-mexico` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Correos_de_M%C3%A9xico.png) — bird about #ec007c, matching the catalog #ed007d; the [tracking infographic](https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Imagenes/Infografia.jpg) uses magenta panels (about #e00c74) (approximate) |
+| `correos-el-salvador` | [correos.gob.sv](https://www.correos.gob.sv/wp-content/uploads/2021/09/logo_dgces-e1638219667706.png) — logo bird #08416b (approximate); its boxes print the logo in this one navy |
 | `correos-express` | [correosexpress.com](https://www.correosexpress.com/) |
 | `correos-spain` | [correos.es](https://www.correos.es/) |
 | `courier-center` | [courier.gr](https://www.courier.gr/skin/frontend/cc/default/images/logos/logo.png) — logo PNG orange #f37029 (approximate) |
@@ -134,6 +137,7 @@ and [`truck.json`](truck.json).
 | `dayton-freight` | [daytonfreight.com](https://www.daytonfreight.com/) — inline logo SVG fills #1c3f94 and #f78f1e |
 | `delhivery` | [delhivery.com](https://www.delhivery.com/) |
 | `dellin` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Dellin_Logo.svg) — logo SVG symbol fill #FCAF17 |
+| `delnext` | [delnext.com](https://www.delnext.com/includes/templates/delnext/images/delnext_logotype.png) — logo D symbol #068dcf (approximate); site icon gradient #068dcf to #003b65 |
 | `deppon` | [deppon.com](https://ca.deppon.com.cn/ows/static/pc/new/logo.png) — logo PNG blue #004191 and yellow #fde600; favicon #003c8d/#ffe100 (approximate) |
 | `deprisa` | [deprisa.com (archived)](https://web.archive.org/web/2025/https://www.deprisa.com/assets/icons/LOGO.svg) — logo SVG fill #295191 (wordmark), #C2222C (triangle) |
 | `dhlink` | [dhlink.com](https://www.dhlink.com/static/img/tfx-logo.eaa9b6df.png) — logo pixels #143167 ('DH', 驼飞侠); 'LINK' and the line run #f7c96d to #e2793b (approximate) |
@@ -210,6 +214,7 @@ and [`truck.json`](truck.json).
 | `helthjem` | [helthjem.no](https://helthjem.no/next-assets/images/hh_logo.svg) — logo SVG fill #ffb202 (parcel front), #050505 (lid, side, name) |
 | `hepsijet` | [hepsijet.com](https://www.hepsijet.com/images/hepsijet.svg) — logo SVG fill #562898 for JET (archived copy; live site returns 403) |
 | `hi-trans` | [hi-trans.com.au](https://www.hi-trans.com.au/wp-content/uploads/2016/02/Hi-Trans_logo.png) — logo PNG chevron red #c82027, with highlight #ed1f24 (approximate) |
+| `hispapost` | [hispapost.es](https://www.hispapost.es/assets/img/hispapost-logo.svg) — logo SVG fill #00548b; theme-color #00548b |
 | `hongkong-post` | [hongkongpost.hk](https://www.hongkongpost.hk/en/home/index.html) |
 | `horoz` | [horoz.com.tr](https://www.horoz.com.tr/_assets/images/logo/horoz-logo-color.svg) — logo SVG fill #c31f3f |
 | `hrvatska-posta` | [logo SVG](https://posiljka.posta.hr/assets/icons/hp-full-logo.svg) |
@@ -224,8 +229,10 @@ and [`truck.json`](truck.json).
 | `instabox` | [favicon SVG](https://track.instabox.com/assets/icons/instabox-favicon.svg) — circle fill #FF3E3E |
 | `integral-pack` | [integralpack.com.ar](https://www.integralpack.com.ar/assets/img/logo.svg?v=2026-01-04) — logo SVG fills #004D9C and #FFC629 |
 | `intelcom` | [dragonflyshipping.ca](https://dragonflyshipping.ca/) (sampled from the site icon) |
+| `intereuropa` | [intereuropa.si](https://www.intereuropa.si/files/default/vsebina/logo-mobile.png) — mobile logo fill #1b5949 (approximate); main logo #02695a |
 | `internet-express` | [internetexpress.co.za](https://www.internetexpress.co.za/Content/img/IE_LOGOS_Circle.png) — logo PNG yellow #fae80b (approximate) |
 | `interrapidisimo` | [interrapidisimo.com](https://interrapidisimo.com/icon.svg) — icon fill #18191A, site CSS --secondary #18191a |
+| `iran-post` | [tracking.post.ir](https://tracking.post.ir/) — #08317d, the background the tracker script paints behind its white logo (read by the spec curator; the host is unreachable from here); logo bird #fcd603 (approximate) |
 | `israel-post` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Israel_Postal_Company_logo_in_Hebrew.png) — logo PNG red #ca151d (approximate) |
 | `j-and-t` | [jtexpress.ph](https://www.jtexpress.ph/) |
 | `j-and-t-br` | [jtexpress.com.br](https://www.jtexpress.com.br/css/app.13c40106.css) — site CSS #e60000 |
@@ -253,6 +260,7 @@ and [`truck.json`](truck.json).
 | `kit-tk` | [tk-kit.ru](https://tk-kit.ru/images/static/kit/icons/logo.svg) — logo SVG fills #0c54a0 (square and letters), #fff01e (disc), #f52d0e (dot) |
 | `kolay-gelsin` | [kolaygelsin.com](https://kolaygelsin.com/favicon.png) — favicon check mark #3aae2a (approximate) |
 | `korea-post` | [koreapost.go.kr](https://postman.koreapost.go.kr/kpost/subIndex/4263.do) (Pantone 485 C equivalent) |
+| `kronos-express` | [kronosexpress.com](https://www.kronosexpress.com/) — Elementor primary colour #24297a; logo PNG navy #2c2c83 and orange #ee7d00 (approximate) |
 | `ktd` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/190522.png) — icon pixels #01234d (approximate) |
 | `kuehne-nagel` | [kuehne-nagel.com](https://www.kuehne-nagel.com/) |
 | `kunyoung` | [kunyoung.com](http://www.kunyoung.com/css/style.css) — site CSS #04378c (most used), header logo navy #01378d (approximate) |
@@ -273,6 +281,7 @@ and [`truck.json`](truck.json).
 | `lotte-global` | [lotteglogis.com](https://www.lotteglogis.com/resources/css/common.css) — site CSS #da291c |
 | `lso` | [lso.com](https://cdn.prod.website-files.com/610bd2c21f6eaa53c3ceab9f/68d5ae2b04bd7cdb9aa4c71c_lso-color-white-font.svg) — top tab `fill="#0047BA"` |
 | `m-and-p` | [mulphilog.com](https://www.mulphilog.com/frontend/assets/images/logo.png) — logo PNG orange #f26522 (flat fill); site CSS uses #ff6b35 |
+| `m-one` | [m-one.rs](https://m-one.rs/) — site bg-primary #024da0; logo blue #034ea1 and red #ec1c24 (approximate) |
 | `madhur-courier` | [madhurcouriers.in](https://madhurcouriers.in/assets/images/logo.png) — logo PNG #e31e24 with navy #393185 (approximate) |
 | `magyar-posta` | [posta.hu](https://www.posta.hu/static/g/mp150_logo_fb.jpg) — sampled from the JPEG: wordmark #346631, horn #329822, crown #ca342e (approximate) |
 | `mailplus-au` | [mailplus.com.au](https://www.mailplus.com.au/) — header and accent CSS #025D7C; the branding logo square samples #085c76 and its yellow #ffe70a (approximate) |
@@ -317,9 +326,11 @@ and [`truck.json`](truck.json).
 | `osm-worldwide` | [osmworldwide.com](https://www.osmworldwide.com/) — theme CSS --global-palette1 #a2002b, the same as the OSM letters in the logo |
 | `overseas-express` | [overseas.hr](https://www.overseas.hr/) — theme-color #f58220; logo orange #ee7f01 (approximate) |
 | `ozon-logistics` | [ozon.ru](https://tracking.ozon.ru/) — CSS --action-primary #005bff on Ozon pages; Commons OZON logo SVG fill #005bff |
+| `pack-man` | [pack-man.gr](https://pack-man.gr/assets/img/favicon.svg) — favicon SVG fills #06377b and #fbd733; theme-color #06377b |
 | `packeta` | [packeta.com](https://www.packeta.com/) |
 | `pakistan-post` | [ep.gov.pk](https://ep.gov.pk/images/logo_post.png) — logo red #ed1b24 (approximate; the JPEG logo reads #ec1b24); site CSS uses #be0101 |
 | `palletways` | [palletways.com](https://www.palletways.com/wp-content/uploads/2020/02/New-logo-palletways-corporate.png) — logo green #74bf43 (approximate) |
+| `pannon-xp` | [mypxp.pannonxp.hu](https://mypxp.pannonxp.hu/style/pxpfutar-4.1.1.css) — CSS --pxp-color #f68121; logo orange #f58120 (approximate) |
 | `paperfly` | [paperfly.com.bd](https://paperfly.com.bd/wp-content/uploads/2022/09/Paperfly-Logo.svg) — logo SVG fill #00ADEE (lower plane #17479D) |
 | `paquetexpress` | [paquetexpress.com.mx](https://www.paquetexpress.com.mx/) — inline CSS --px-blue-logo #002a52 (header behind the white logo) |
 | `parcelforce` | [parcelforce.com](https://www.parcelforce.com/) |
@@ -331,6 +342,7 @@ and [`truck.json`](truck.json).
 | `pecom` | [pecom.ru](https://upload.pecom.ru/svg/logo.svg) — logo SVG fills #242265, red #E4003E |
 | `pelican-express` | [e-can.com.tw](https://www.e-can.com.tw/images/logo.png) — logo PNG blue #005ead (flat), beak #fcca0f |
 | `pfc-express` | [pfctrack.com](https://www.pfctrack.com/images/logo.png) — logo background #0e84d6 (approximate, JPEG) |
+| `phlpost` | [phlpost.gov.ph](https://phlpost.gov.ph/wp-content/uploads/2026/07/Phlpost_2012_logo.svg_.png) — logo red #9e0000 (POST), navy #001862, yellow #feac01 (approximate) |
 | `pilot-freight` | [delivers.maersk.com](https://delivers.maersk.com/tracking/) — site CSS #42b0d5 (Maersk blue) |
 | `pitt-ohio` | [pittohio.com](https://pittohio.com/mypittohio/images/logo.png) — logo PNG red bar #ed1c24, letters #231f20 (approximate) |
 | `pmm` | [pmm.com.mx](https://pmm.com.mx/assets/images/fav_pmm.svg) — favicon SVG fills #1e008d and #3dae2b |
@@ -366,6 +378,7 @@ and [`truck.json`](truck.json).
 | `raben` | [raben-group.com](https://www.raben-group.com/raben-logo.svg) — logo SVG fill #DF0020 |
 | `ram-hand-to-hand` | [ram.co.za](https://www.ram.co.za/) — header logo SVG fill #e51813 |
 | `redpack` | [redpack.com.mx](https://www.redpack.com.mx/) — red `#e2211c` and navy `#062f87` are the palette entries of the indexed logo PNG and of the favicon |
+| `redur` | [redur.es](https://redur.es/wp-content/themes/redur/assets/img/logo-redur-dark.svg) — logo SVG fill #0c4c49; site icon #0c4c49 |
 | `redx` | [redx.com.bd](https://redx.com.bd/images/redx-logo.svg) — logo SVG fill #EB2127; favicon #eb2127 |
 | `rl-carriers` | [rlcarriers.com](https://www.rlcarriers.com/) — the apple-touch icon's green R+L is `#006e51` (approximate), close to the catalog `#006647` |
 | `roadie` | [roadie.com](https://46302491.fs1.hubspotusercontent-na1.net/hubfs/46302491/Roadie%20Circle%20R%20Icon_COLOR.svg) — icon SVG fills #76cccd (disc) and #351c13 (R) |
@@ -444,6 +457,7 @@ and [`truck.json`](truck.json).
 | `tirupati-courier` | [shreetirupaticourier.net](https://www.shreetirupaticourier.net/images/logo-company1.png) — logo PNG #f4791f (approximate); favicon and site CSS #f47f22 |
 | `tnt` | [tnt.com](https://www.tnt.com/express/en_gb/site/home.html) |
 | `toptrans` | [toptrans.cz](https://www.toptrans.cz/_nuxt/logo.e9ca4bc8.svg) — logo SVG fill #005DAA, stripe #EE3124 |
+| `torrestir` | [torrestir.com](https://www.torrestir.com/wp-content/uploads/2018/11/cropped-Favicon-Torrestir-website-2-1-192x192.png) — site icon disc #417c47 and gold #ffc629 (approximate); site CSS #417d48 (135 uses) |
 | `total-express` | [totalexpress.com.br](https://web.archive.org/web/2025/https://www.totalexpress.com.br/themes/custom/total_express/logo.svg) — logo SVG fill #E11E25, swoosh #22315E |
 | `trackon` | [trackon.in](https://www.trackon.in/assets/images/trackon_logo.png) — logo PNG maroon #981e21 and orange #f27224 (approximate) |
 | `tracx-logis` | [tracxlogis.com](https://www.tracxlogis.com/image/home/logo_tracxlogis.svg) — logo SVG X fill #0084ca; app icon #2393d1 (approximate) |
@@ -988,3 +1002,17 @@ and [`truck.json`](truck.json).
 | `vozovoz` | White slanted v on red | [vozovoz.ru](https://vozovoz.ru/favicon.png) — the v favicon, the first letter of the vozovoz wordmark |
 | `x-express-ba` | White X on orange, the X of the arrow emblem | [x-express.ba](https://www.x-express.ba/templates/cassiopeia/images/logo-x-express-brza-posta.webp) — the X emblem before the X EXPRESS wordmark |
 | `metropolitan-warehouse` | White diamond with a blue M over an orange W on blue | [gomwd.com](https://sso.gomwd.com/ssf/img/iconlogo.png) — site icon: blue M above an orange upturned M in a light diamond |
+| `citymail` | White stacked-sheet frame with green CM on orange | [citymail.se](https://www.citymail.se/wp-content/uploads/2026/02/logo-citymail.svg) — header logo, orange frame of stacked sheets around green City Mail |
+| `correos-cuba` | White notched diamond with a C ring on blue | [correos.cu](https://www.correos.cu/wp-content/uploads/2015/05/cropped-logo-2-150x150.png) — site icon, blue diamond with a C cut by white arcs |
+| `correos-el-salvador` | Four-colour diamond frame around a navy bird on white, on navy | [correos.gob.sv](https://www.correos.gob.sv/wp-content/uploads/2021/09/logo_dgces-e1638219667706.png) — header logo, diamond in blue, magenta, yellow and green around a bird |
+| `delnext` | White folded D on blue | [delnext.com](https://www.delnext.com/images/homepage/favicon.png) — site icon, folded silver D on blue |
+| `hispapost` | White chevron on blue | [hispapost.es](https://www.hispapost.es/assets/img/favicon.svg) — site icon, blue chevron |
+| `intereuropa` | Green courier carrying a parcel on a white square, on green | [intereuropa.si](https://www.intereuropa.si/files/default/vsebina/logo-mobile.png) — mobile logo, framed courier with an e head carrying a box |
+| `iran-post` | Yellow line-drawn bird on navy | [fa.wikipedia.org](https://fa.wikipedia.org/wiki/%D9%BE%D8%B1%D9%88%D9%86%D8%AF%D9%87:Iran-Post-Logo.png) — Iran Post logo, yellow line bird over the blue company name |
+| `kronos-express` | White swallow with an orange swoosh on navy | [kronosexpress.com](https://www.kronosexpress.com/wp-content/uploads/2019/02/cropped-kronos_express_logo_RGBweb.png) — header logo symbol, navy swallow crossed by an orange swoosh |
+| `m-one` | Folded M in red and white on blue | [m-one.rs](https://m-one.rs/_nuxt/img/logo.c30c341.png) — header logo, folded M in red and blue beside ONE |
+| `pack-man` | Yellow stopwatch with a pie-slice hand on navy | [pack-man.gr](https://pack-man.gr/assets/img/favicon.svg) — site icon, yellow stopwatch with a navy dot and a yellow wedge |
+| `pannon-xp` | Two dark grey chevrons and a white arrow tail on orange | [mypxp.pannonxp.hu](https://mypxp.pannonxp.hu/img/pxp_logo_600x116.jpg) — logo symbol, orange and grey chevrons ending in an X tail |
+| `phlpost` | Yellow running courier holding up an envelope on red | [phlpost.gov.ph](https://phlpost.gov.ph/wp-content/uploads/2026/07/Phlpost_2012_logo.svg_.png) — header logo, yellow running courier with an envelope after PHLPOST |
+| `redur` | White italic R with an open slot on dark teal | [redur.es](https://redur.es/app/uploads/2021/05/FAVICON-300x300.png) — site icon, white italic R on dark teal |
+| `torrestir` | Gold roaring lion head with a flowing mane on green | [torrestir.com](https://www.torrestir.com/wp-content/uploads/2018/11/cropped-Favicon-Torrestir-website-2-1-192x192.png) — site icon, gold lion head on a green disc |

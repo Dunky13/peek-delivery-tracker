@@ -293,6 +293,9 @@
   "citylink-express": {
     "decal": "citylink-express"
   },
+  "citymail": {
+    "decal": "citymail"
+  },
   "citysprint": {
     "decal": "citysprint"
   },
@@ -338,8 +341,14 @@
   "correos-chile": {
     "decal": "correos-chile"
   },
+  "correos-cuba": {
+    "decal": "correos-cuba"
+  },
   "correos-de-mexico": {
     "decal": "correos-de-mexico"
+  },
+  "correos-el-salvador": {
+    "decal": "correos-el-salvador"
   },
   "correos-express": {
     "palette": {
@@ -435,6 +444,9 @@
       "edge": "#141414",
       "accent": "#fcaf17"
     }
+  },
+  "delnext": {
+    "decal": "delnext"
   },
   "deppon": {
     "decal": "deppon",
@@ -799,6 +811,9 @@
   "hi-trans": {
     "decal": "hi-trans"
   },
+  "hispapost": {
+    "decal": "hispapost"
+  },
   "hongkong-post": {
     "decal": "hongkong-post"
   },
@@ -854,6 +869,9 @@
   "intelcom": {
     "decal": "intelcom"
   },
+  "intereuropa": {
+    "decal": "intereuropa"
+  },
   "internet-express": {
     "decal": "internet-express",
     "palette": {
@@ -864,6 +882,9 @@
     "decal": "interrapidisimo"
   },
   "intl-post": {},
+  "iran-post": {
+    "decal": "iran-post"
+  },
   "israel-post": {
     "decal": "israel-post"
   },
@@ -948,6 +969,9 @@
   "korea-post": {
     "decal": "korea-post"
   },
+  "kronos-express": {
+    "decal": "kronos-express"
+  },
   "ktd": {
     "decal": "ktd"
   },
@@ -1020,6 +1044,9 @@
   },
   "m-and-p": {
     "decal": "m-and-p"
+  },
+  "m-one": {
+    "decal": "m-one"
   },
   "madhur-courier": {
     "decal": "madhur-courier"
@@ -1180,6 +1207,9 @@
   "paack": {
     "decal": "paack"
   },
+  "pack-man": {
+    "decal": "pack-man"
+  },
   "packeta": {
     "decal": "packeta"
   },
@@ -1188,6 +1218,9 @@
   },
   "palletways": {
     "decal": "palletways"
+  },
+  "pannon-xp": {
+    "decal": "pannon-xp"
   },
   "paperfly": {
     "decal": "paperfly"
@@ -1227,6 +1260,9 @@
   },
   "pfc-express": {
     "decal": "pfc-express"
+  },
+  "phlpost": {
+    "decal": "phlpost"
   },
   "pilot-freight": {
     "decal": "pilot-freight"
@@ -1361,6 +1397,9 @@
   },
   "redpack": {
     "decal": "redpack"
+  },
+  "redur": {
+    "decal": "redur"
   },
   "redx": {
     "decal": "redx"
@@ -1639,6 +1678,9 @@
   },
   "toptrans": {
     "decal": "toptrans"
+  },
+  "torrestir": {
+    "decal": "torrestir"
   },
   "total-express": {
     "decal": "total-express"

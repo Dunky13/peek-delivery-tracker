@@ -143,6 +143,8 @@ describe('carrier brand', () => {
       'opt-nc', 'pmm', 'pony-express', 'shipa', 'shree-anjani', 'ues-uy', 'upaya', 'vimenpaq', 'vozovoz',
       'x-express-ba',
       'metropolitan-warehouse',
+      'citymail', 'correos-cuba', 'correos-el-salvador', 'delnext', 'hispapost', 'intereuropa', 'iran-post',
+      'kronos-express', 'm-one', 'pack-man', 'pannon-xp', 'phlpost', 'redur', 'torrestir',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

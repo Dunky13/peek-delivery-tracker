@@ -101,7 +101,9 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'gogo-xpress' | 'horoz' | 'integral-pack' | 'jeebly' | 'kargoist' | 'la-poste-ci'
   | 'la-poste-senegal' | 'mailplus-au' | 'major-express' | 'mandae' | 'messenger-cz' | 'nord-wheel'
   | 'ocasa' | 'opt-nc' | 'pmm' | 'pony-express' | 'shipa' | 'shree-anjani' | 'ues-uy' | 'upaya'
-  | 'vimenpaq' | 'vozovoz' | 'x-express-ba' | 'metropolitan-warehouse';
+  | 'vimenpaq' | 'vozovoz' | 'x-express-ba' | 'metropolitan-warehouse' | 'citymail' | 'correos-cuba'
+  | 'correos-el-salvador' | 'delnext' | 'hispapost' | 'intereuropa' | 'iran-post' | 'kronos-express'
+  | 'm-one' | 'pack-man' | 'pannon-xp' | 'phlpost' | 'redur' | 'torrestir';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {
