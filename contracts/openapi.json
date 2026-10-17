@@ -21874,7 +21874,7 @@
       "countries": [
         "AF"
       ],
-      "color": "#115fa2",
+      "color": "#115ea4",
       "selectable": true,
       "timezone": "Asia/Kabul",
       "tracking": {
@@ -22176,6 +22176,618 @@
         }
       ],
       "trackingSearchUrl": "https://trackpb.shipment.co/track"
+    },
+    "a1-post": {
+      "displayName": "A1 POST",
+      "aliases": [
+        "A1 Post",
+        "A1Post",
+        "А1 Трейд ЕООД"
+      ],
+      "countries": [
+        "BG"
+      ],
+      "color": "#fba512",
+      "selectable": true,
+      "timezone": "Europe/Sofia",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://a1post.bg/track.php?t={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "a1post.bg",
+            "www.a1post.bg"
+          ],
+          "pathPattern": "^/track\\.php$",
+          "params": [
+            "t"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://a1post.bg/en/track/"
+    },
+    "direx": {
+      "displayName": "Direx",
+      "aliases": [
+        "Direx S.A.",
+        "Дайрекс"
+      ],
+      "countries": [
+        "BG"
+      ],
+      "color": "#6b4597",
+      "selectable": true,
+      "timezone": "Europe/Sofia",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://direx.bg/track/?code={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "direx.bg",
+            "www.direx.bg"
+          ],
+          "pathPattern": "^/(?:(?:en/)?track|prosledete-vashata-pratka|tr/gonderinizi-takip-ediniz)/?$",
+          "params": [
+            "code"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://direx.bg/track/"
+    },
+    "fermopoint": {
+      "displayName": "Fermopoint",
+      "aliases": [
+        "Fermo!Point",
+        "fermopoint",
+        "BRT-fermopoint"
+      ],
+      "countries": [
+        "IT"
+      ],
+      "color": "#dc0032",
+      "selectable": true,
+      "timezone": "Europe/Rome",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.fermopoint.it/prenotazione/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "fermopoint.it"
+          ],
+          "path": "^/(?:prenotazione|fermoticket)/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^[A-Z][A-Z0-9]{4}[A-Z]{2}\\d{6}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.fermopoint.it/traccia-un-ritiro"
+    },
+    "fg-delivery": {
+      "displayName": "FG Delivery",
+      "aliases": [
+        "Fulmine Group",
+        "Fulmine Group Servizi Notificazione",
+        "Fulmine"
+      ],
+      "countries": [
+        "IT"
+      ],
+      "color": "#393d78",
+      "selectable": true,
+      "timezone": "Europe/Rome",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://fgdelivery.it/tracciabilita/?barcode={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "fgdelivery.it"
+          ],
+          "pathPattern": "^/tracciabilita/?$",
+          "params": [
+            "barcode"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^CNIT[A-Z]{2}\\d{8}FLM$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://fgdelivery.it/tracciabilita/"
+    },
+    "go4": {
+      "displayName": "GO4",
+      "aliases": [
+        "Kuriér GO4",
+        "Kurier GO4",
+        "GO4, s.r.o."
+      ],
+      "countries": [
+        "SK"
+      ],
+      "color": "#ef1f23",
+      "selectable": true,
+      "timezone": "Europe/Bratislava",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://zona.go4.eu/status/?parcelId={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "zona.go4.eu"
+          ],
+          "pathPattern": "^/status/?$",
+          "params": [
+            "parcelId"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://zona.go4.eu/status/"
+    },
+    "happy-post": {
+      "displayName": "Happy-Post",
+      "aliases": [
+        "Happy Post"
+      ],
+      "countries": [
+        "FR",
+        "GB"
+      ],
+      "color": "#ff8500",
+      "selectable": true,
+      "timezone": "Europe/Paris",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://happy-post.com/fr/suivi/?id={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "happy-post.com"
+          ],
+          "pathPattern": "^/(?:fr/suivi|en/track)/?$",
+          "params": [
+            "id"
+          ]
+        },
+        {
+          "domains": [
+            "uk.happy-post.com"
+          ],
+          "pathPattern": "^/track/?$",
+          "params": [
+            "id"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://happy-post.com/fr/suivi/"
+    },
+    "hp-mostar": {
+      "displayName": "Hrvatska pošta Mostar",
+      "aliases": [
+        "HP Mostar",
+        "HP Hrvatska pošta Mostar",
+        "Hrvatska pošta d.o.o. Mostar",
+        "Hrvatska posta Mostar",
+        "Croatian Post Mostar"
+      ],
+      "countries": [
+        "BA"
+      ],
+      "color": "#ffed00",
+      "selectable": true,
+      "timezone": "Europe/Sarajevo",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.post.ba/servisi/pracenje-posiljke?tntnumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "post.ba"
+          ],
+          "pathPattern": "^/(?:servisi/pracenje-posiljke|services/track-and-trace)/?$",
+          "params": [
+            "tntnumber"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.post.ba/servisi/pracenje-posiljke"
+    },
+    "hr-parcel": {
+      "displayName": "HR Parcel",
+      "aliases": [
+        "HR-PARCEL",
+        "HRParcel",
+        "HR Parcel S.r.l."
+      ],
+      "countries": [
+        "IT"
+      ],
+      "color": "#FFD512",
+      "selectable": true,
+      "timezone": "Europe/Rome",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.hrparcel.com/traccia-spedizioni/?barcode={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "hrparcel.com"
+          ],
+          "pathPattern": "^/(?:traccia-spedizioni|en/tracking|it/tracking)/?$",
+          "params": [
+            "barcode"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.hrparcel.com/traccia-spedizioni/"
+    },
+    "intex-paketdienst": {
+      "displayName": "INTEX Paketdienst",
+      "aliases": [
+        "INTEX Paketdienst GmbH",
+        "Intex Paketdienst"
+      ],
+      "countries": [
+        "DE"
+      ],
+      "color": "#072F40",
+      "selectable": true,
+      "timezone": "Europe/Berlin",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.intex-paketdienst.de/sendungsstatus/index.php?sdnr={trackingNumber}&mid=1",
+      "linkRules": [
+        {
+          "domains": [
+            "intex-paketdienst.de"
+          ],
+          "pathPattern": "^/sendungsstatus/(?:index\\.php)?$",
+          "params": [
+            "sdnr"
+          ]
+        },
+        {
+          "domains": [
+            "intex-paketdienst.de"
+          ],
+          "pathPattern": "^/website/tracking\\.html$",
+          "params": [
+            "sdnr"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.intex-paketdienst.de/sendungsstatus/index.php"
+    },
+    "liccardi": {
+      "displayName": "Liccardi Express Courier",
+      "aliases": [
+        "Liccardi Trasporti",
+        "F.lli Liccardi S.r.l.",
+        "Liccardi Express"
+      ],
+      "countries": [
+        "IT"
+      ],
+      "color": "#014895",
+      "selectable": true,
+      "timezone": "Europe/Rome",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://my.liccarditrasporti.com/segui?ldv={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "my.liccarditrasporti.com"
+          ],
+          "pathPattern": "^/segui/?$",
+          "params": [
+            "ldv"
+          ]
+        }
+      ],
+      "detectionRules": []
+    },
+    "logoix": {
+      "displayName": "LogoiX",
+      "aliases": [
+        "LogoiX GmbH"
+      ],
+      "countries": [
+        "DE",
+        "AT"
+      ],
+      "color": "#ea5b0c",
+      "selectable": true,
+      "timezone": "Europe/Berlin",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.logoix.com/cgi-bin/tnt.pl?q={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.logoix.com",
+            "logoix.com",
+            "www2.logoix.com",
+            "mein.logoix.com"
+          ],
+          "pathPattern": "^/cgi-bin/tnt\\.pl$",
+          "params": [
+            "q"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^LIX\\d{10}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://www.logoix.com/cgi-bin/tnt.pl"
+    },
+    "nox": {
+      "displayName": "nox",
+      "aliases": [
+        "nox NachtExpress",
+        "NOX Nachtexpress",
+        "nox Germany",
+        "Innight Express",
+        "TNT Innight"
+      ],
+      "countries": [
+        "DE"
+      ],
+      "color": "#fadb00",
+      "selectable": true,
+      "timezone": "Europe/Berlin",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://trackandtrace.app.nox.express/scannungen/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "trackandtrace.app.nox.express"
+          ],
+          "path": "^/scannungen/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "tcs.app.nox.express",
+            "tcs-ords.app.nox.express"
+          ],
+          "pathPattern": "^/(?:ords|pls)/stcs/STCS_TRACK_AND_TRACE\\.Info$",
+          "params": [
+            "pBarcode"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^22000\\d{9}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{6}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://trackandtrace.app.nox.express/scannungen"
+    },
+    "peddler": {
+      "displayName": "Peddler",
+      "aliases": [
+        "Peddler Express",
+        "Peddler B.V."
+      ],
+      "countries": [
+        "NL"
+      ],
+      "color": "#34205A",
+      "selectable": true,
+      "timezone": "Europe/Amsterdam",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://track.pdlr.nl/trackntrace/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "track.pdlr.nl"
+          ],
+          "path": "^/trackntrace/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^P\\d{18}$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^NLEXP\\d{10}INTPED$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://track.pdlr.nl/"
+    },
+    "pigeon-express": {
+      "displayName": "Pigeon Express",
+      "aliases": [
+        "Пигеон Експрес",
+        "Пигеон експрес ЕООД"
+      ],
+      "countries": [
+        "BG"
+      ],
+      "color": "#00327d",
+      "selectable": true,
+      "timezone": "Europe/Sofia",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://track.pigeonexpress.com/?tracking_number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "track.pigeonexpress.com"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "tracking_number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://track.pigeonexpress.com/"
+    },
+    "posta-faroe": {
+      "displayName": "Posta (Faroe Islands)",
+      "aliases": [
+        "Posta",
+        "Postverk Føroya",
+        "Faroe Post",
+        "Faroe Islands Post",
+        "Posta Faroe Islands"
+      ],
+      "countries": [
+        "FO"
+      ],
+      "color": "#006fb9",
+      "selectable": true,
+      "timezone": "Atlantic/Faroe",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.posta.fo/en/private/send-receive/track-trace/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "posta.fo"
+          ],
+          "path": "^/(?:en|fo|da)/(?:private|business)/send-receive/track-trace/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "posta.fo"
+          ],
+          "pathPattern": "^/search/?$",
+          "params": [
+            "cc"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.posta.fo/en/private/send-receive/track-trace/"
+    },
+    "tusass": {
+      "displayName": "Tusass",
+      "aliases": [
+        "TELE-POST",
+        "Tele-Post",
+        "POST Greenland",
+        "TELE Greenland",
+        "Greenland Post"
+      ],
+      "countries": [
+        "GL"
+      ],
+      "color": "#26a8b2",
+      "selectable": true,
+      "timezone": "America/Nuuk",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.tusass.gl/en/track-and-trace/#{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tusass.gl"
+          ],
+          "pathPattern": "^/(?:en/|da/)?track-and-trace/?$",
+          "fragment": "^([A-Za-z0-9]{8,32})$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.tusass.gl/en/track-and-trace/"
+    },
+    "tws-express": {
+      "displayName": "TWS Express Courier",
+      "aliases": [
+        "T.W.S. Express Courier",
+        "TWS Express"
+      ],
+      "countries": [
+        "IT"
+      ],
+      "color": "#FFED00",
+      "selectable": true,
+      "timezone": "Europe/Rome",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.mytws.it/tracking-status;ldv={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "mytws.it"
+          ],
+          "path": "^/tracking-status;ldv=([^/?#;]+)$"
+        },
+        {
+          "domains": [
+            "twsexpresscourier.it"
+          ],
+          "pathPattern": "^/Ricerca\\.aspx$",
+          "params": [
+            "ldv"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^28\\d{4}[A-Z]\\d{6}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://twsexpresscourier.it/traccia-spedizione/"
     }
   },
   "servers": [
@@ -25229,7 +25841,24 @@
           "kyrgyz-post",
           "la-poste-burkina-faso",
           "lao-post",
-          "pitney-bowes"
+          "pitney-bowes",
+          "a1-post",
+          "direx",
+          "fermopoint",
+          "fg-delivery",
+          "go4",
+          "happy-post",
+          "hp-mostar",
+          "hr-parcel",
+          "intex-paketdienst",
+          "liccardi",
+          "logoix",
+          "nox",
+          "peddler",
+          "pigeon-express",
+          "posta-faroe",
+          "tusass",
+          "tws-express"
         ]
       },
       "Stage": {

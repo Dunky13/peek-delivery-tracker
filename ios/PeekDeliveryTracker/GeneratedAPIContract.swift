@@ -609,6 +609,23 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let laPosteBurkinaFaso = CarrierID(rawValue: "la-poste-burkina-faso")
     static let laoPost = CarrierID(rawValue: "lao-post")
     static let pitneyBowes = CarrierID(rawValue: "pitney-bowes")
+    static let a1Post = CarrierID(rawValue: "a1-post")
+    static let direx = CarrierID(rawValue: "direx")
+    static let fermopoint = CarrierID(rawValue: "fermopoint")
+    static let fgDelivery = CarrierID(rawValue: "fg-delivery")
+    static let go4 = CarrierID(rawValue: "go4")
+    static let happyPost = CarrierID(rawValue: "happy-post")
+    static let hpMostar = CarrierID(rawValue: "hp-mostar")
+    static let hrParcel = CarrierID(rawValue: "hr-parcel")
+    static let intexPaketdienst = CarrierID(rawValue: "intex-paketdienst")
+    static let liccardi = CarrierID(rawValue: "liccardi")
+    static let logoix = CarrierID(rawValue: "logoix")
+    static let nox = CarrierID(rawValue: "nox")
+    static let peddler = CarrierID(rawValue: "peddler")
+    static let pigeonExpress = CarrierID(rawValue: "pigeon-express")
+    static let postaFaroe = CarrierID(rawValue: "posta-faroe")
+    static let tusass = CarrierID(rawValue: "tusass")
+    static let twsExpress = CarrierID(rawValue: "tws-express")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -1182,6 +1199,23 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .laPosteBurkinaFaso,
         .laoPost,
         .pitneyBowes,
+        .a1Post,
+        .direx,
+        .fermopoint,
+        .fgDelivery,
+        .go4,
+        .happyPost,
+        .hpMostar,
+        .hrParcel,
+        .intexPaketdienst,
+        .liccardi,
+        .logoix,
+        .nox,
+        .peddler,
+        .pigeonExpress,
+        .postaFaroe,
+        .tusass,
+        .twsExpress,
     ]
 
     init(from decoder: Decoder) throws {
