@@ -3,6 +3,7 @@ import { recognitionCandidates } from 'universal-parcel-scraper';
 import { universalCarrierHints } from 'universal-parcel-scraper/app';
 import { detectCarrierMatch } from '../lib/carriers';
 import { AUTOMATIC_CARRIER_IDS } from './carriers';
+import { localClockCarrier } from './directLocalHistory';
 import { refusesNumber } from './numberRefusal';
 import { catalogRules, directCarrier, routingState } from './trackingRouting';
 import { isRecord, type JsonObject } from './types';
@@ -15,8 +16,9 @@ export const REDETECTION_WINDOW_MS = 30 * 24 * 60 * 60 * 1_000;
  * parcel was last routed with other rules and has not asked that carrier yet:
  * one added or last checked before a scraper release brought a detection rule,
  * a carrier name or an adapter, which nobody may check any more (a lookup
- * whose link nobody opens), or one filed under a carrier that only
- * recognition asked before. A parcel filed under no carrier gets its detected
+ * whose link nobody opens), one filed under a carrier that only
+ * recognition asked before, or one whose filed carrier answered on local
+ * clocks that the catalog now dates. A parcel filed under no carrier gets its detected
  * or named carrier, or else the first carrier its check's recognition would
  * ask, asked before or not, once that carrier's wait is over: a release may
  * have taught it the number, and its last answer may have been a passing
@@ -58,9 +60,12 @@ export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now =
   }
   // The filed carrier's own adapter, new since the provider took over, or one only
   // recognition asked before the parcel was filed under it: such a probe drops an
-  // answer on local clocks, which the filed carrier's own lookup keeps.
-  return provider && !unfiled && directCarrier(filed) && !refused.has(filed) && filed !== routing.confirmed_carrier
-    && !routing.failures[filed] ? filed : null;
+  // answer on local clocks, which the filed carrier's own lookup keeps. Or the filed
+  // carrier answered on local clocks, which the provider dated, and now dates its scans.
+  const localAnswer = isRecord(data.direct_local_history) && data.direct_local_history.carrier === filed
+    && !localClockCarrier(filed);
+  return provider && !unfiled && directCarrier(filed) && !refused.has(filed)
+    && (localAnswer || (filed !== routing.confirmed_carrier && !routing.failures[filed])) ? filed : null;
 }
 
 /**

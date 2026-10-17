@@ -13,6 +13,11 @@ function instant(value: unknown): boolean {
     && DateTime.fromISO(value, { setZone: true }).isValid;
 }
 
+/** Whether the catalog reads this carrier's own answers on local clocks. */
+export function localClockCarrier(carrier: string): boolean {
+  return CARRIERS.has(carrier);
+}
+
 /** These direct sources preserve incomplete dates separately from instants. */
 export function hasUnresolvedDirectHistory(carrier: string, result: CarrierResult): boolean {
   return CARRIERS.has(carrier) && Boolean(result.events?.some((event) => !instant(event.time)));

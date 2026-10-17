@@ -73,6 +73,20 @@ it('points a parcel a provider tracks back to its own carrier when only recognit
   expect(rerouteCarrier(parcel(filed, { routing: { ...probes, confirmed_carrier: 'royal-mail' } }))).toBeNull();
 });
 
+it('points a parcel a provider dates back to its own carrier once the catalog dates that carrier\'s scans', () => {
+  // Tianhui Hengyuan's scans are dated now; BRT's clocks are still local.
+  const answered = (carrier: string, tracking_number: string) => parcel({ carrier, tracking_number }, {
+    tracking_provider: '17TRACK', carrier_answered: true,
+    direct_local_history: { carrier, number: tracking_number, events: [] },
+    routing: { configured_carrier: carrier, confirmed_carrier: carrier, confirmed_number: tracking_number, preferred_provider: '17TRACK' },
+  });
+  expect(rerouteCarrier(answered('thhy', 'AT0000000001TH'))).toBe('thhy');
+  expect(rerouteCarrier(answered('brt', '000000000001'))).toBeNull();
+  // The carrier already answers it directly.
+  expect(rerouteCarrier(parcel({ carrier: 'thhy', tracking_number: 'AT0000000001TH' },
+    { tracking_provider: undefined, routing: { confirmed_carrier: 'thhy' } }))).toBeNull();
+});
+
 it.each<[string, JsonObject, JsonObject]>([
   ['routed with the current rules', {}, { routing: { rules: catalogRules() } }],
   ['delivered', { current_stage: 'delivered' }, {}],

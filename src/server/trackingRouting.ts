@@ -79,12 +79,14 @@ export interface RoutingState extends JsonObject {
 let rules: string | undefined;
 /**
  * What the catalog says about numbers and names, as a short digest: each
- * carrier's detection rules, names and whether it has an adapter of its own.
- * A scraper release that adds a rule, an alias or an adapter changes it.
+ * carrier's detection rules, names, whether it has an adapter of its own and
+ * whether that adapter's clocks are local. A scraper release that adds a rule,
+ * an alias or an adapter, or dates an adapter's scans, changes it.
  */
 export function catalogRules(): string {
   rules ??= createHash('sha256').update(JSON.stringify(Object.entries(CARRIER_DEFINITIONS).map(([id, definition]) => [id,
-    definition.displayName, definition.aliases, definition.detectionRules, definition.tracking.mode, definition.tracking.adapter])))
+    definition.displayName, definition.aliases, definition.detectionRules, definition.tracking.mode, definition.tracking.adapter,
+    definition.tracking.localClocks === true])))
     .digest('base64url').slice(0, 16);
   return rules;
 }
