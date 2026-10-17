@@ -1916,7 +1916,7 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -9829,7 +9829,13 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[CELR][A-Z]\\d{9}TW$",
+        "confidence": "high",
+        "checksum": "s10"
+      }
+    ],
     "trackingSearchUrl": "https://postserv.post.gov.tw/pstmail/main_mail.html"
   },
   "citylink-express": {
@@ -10408,6 +10414,7 @@ export const CARRIER_CAPABILITIES = {
       "DHL Freight GmbH",
       "DHL ActiveTracing",
       "DHL Active Tracing",
+      "DHL Freight Active Tracing",
       "DHL Frachtverfolgung"
     ],
     "countries": [
@@ -22455,7 +22462,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "DE"
     ],
-    "color": "#072F40",
+    "color": "#023051",
     "selectable": true,
     "timezone": "Europe/Berlin",
     "tracking": {
@@ -22682,7 +22689,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "FO"
     ],
-    "color": "#006fb9",
+    "color": "#006fb4",
     "selectable": true,
     "timezone": "Atlantic/Faroe",
     "tracking": {
