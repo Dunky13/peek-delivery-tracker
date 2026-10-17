@@ -54851,6 +54851,18 @@
     ]
   },
   {
+    "input": "CP913619066NG",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "nipost",
+      "chronopost"
+    ]
+  },
+  {
     "input": "CP916453493AR",
     "carrier": "intl-post",
     "confidence": "high",
@@ -60798,6 +60810,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "jhgj"
+    ],
+    "asked": [
       "jhgj"
     ]
   },
@@ -68718,6 +68733,18 @@
     ]
   },
   {
+    "input": "RL111117419NG",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "nipost",
+      "chronopost"
+    ]
+  },
+  {
     "input": "RL330279383MD",
     "carrier": "intl-post",
     "confidence": "high",
@@ -69272,6 +69299,18 @@
     ]
   },
   {
+    "input": "RR052768093NG",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "nipost",
+      "chronopost"
+    ]
+  },
+  {
     "input": "RR055762903NG",
     "carrier": "intl-post",
     "confidence": "high",
@@ -69279,6 +69318,7 @@
       "intl-post"
     ],
     "asked": [
+      "nipost",
       "chronopost"
     ]
   },
@@ -69302,6 +69342,7 @@
       "intl-post"
     ],
     "asked": [
+      "nipost",
       "chronopost"
     ]
   },
@@ -69313,6 +69354,7 @@
       "intl-post"
     ],
     "asked": [
+      "nipost",
       "chronopost"
     ]
   },
@@ -71741,6 +71783,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express"
+    ],
+    "asked": [
+      "flash-express"
     ]
   },
   {
@@ -71748,6 +71793,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "flash-express"
+    ],
+    "asked": [
       "flash-express"
     ]
   },
@@ -71757,6 +71805,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express"
+    ],
+    "asked": [
+      "flash-express"
     ]
   },
   {
@@ -71764,6 +71815,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "flash-express"
+    ],
+    "asked": [
       "flash-express"
     ]
   },
@@ -71781,6 +71835,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express"
+    ],
+    "asked": [
+      "flash-express"
     ]
   },
   {
@@ -71788,6 +71845,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "flash-express"
+    ],
+    "asked": [
       "flash-express"
     ]
   },
@@ -71797,6 +71857,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express"
+    ],
+    "asked": [
+      "flash-express"
     ]
   },
   {
@@ -71805,6 +71868,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express"
+    ],
+    "asked": [
+      "flash-express"
     ]
   },
   {
@@ -71812,6 +71878,20 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "flash-express"
+    ],
+    "asked": [
+      "flash-express"
+    ]
+  },
+  {
+    "input": "TH210895RYGD1A",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "flash-express"
+    ],
+    "asked": [
       "flash-express"
     ]
   },
@@ -71877,6 +71957,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express"
+    ],
+    "asked": [
+      "flash-express"
     ]
   },
   {
@@ -71885,6 +71968,20 @@
     "confidence": "low",
     "candidates": [
       "flash-express"
+    ],
+    "asked": [
+      "flash-express"
+    ]
+  },
+  {
+    "input": "TH37079591XP1A",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "flash-express"
+    ],
+    "asked": [
+      "flash-express"
     ]
   },
   {
@@ -71892,6 +71989,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "flash-express"
+    ],
+    "asked": [
       "flash-express"
     ]
   },

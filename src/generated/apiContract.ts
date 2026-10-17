@@ -3022,7 +3022,10 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "US"
     ],
-    "trackingSearchUrl": "https://www.ontrac.com/tracking/"
+    "trackingSearchUrl": "https://www.ontrac.com/tracking/",
+    "aliases": [
+      "LaserShip"
+    ]
   },
   "speedx": {
     "displayName": "SpeedX",
@@ -10575,7 +10578,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Bangkok",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "flash-express",
+      "recognitionRank": 525
     },
     "trackingUrlTemplate": "https://www.flashexpress.co.th/fle/tracking?se={trackingNumber}",
     "linkRules": [
@@ -11591,7 +11595,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Lagos",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nipost",
+      "recognitionRank": 908
     },
     "trackingUrlTemplate": "https://tracking.nipost.gov.ng/{trackingNumber}",
     "linkRules": [
@@ -11602,7 +11607,14 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/([A-Za-z0-9]{13,16})/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}NG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://tracking.nipost.gov.ng/"
   },
   "nippon-express": {
@@ -13675,7 +13687,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jhgj",
+      "recognitionRank": 907
     },
     "linkRules": [],
     "detectionRules": [
