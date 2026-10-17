@@ -40,7 +40,9 @@ Whichever one the seller chose. Etsy sells shipping labels only to sellers in th
 | Ireland | None | [An Post](carrier:an-post) |
 | China, Hong Kong | None | [Yanwen](carrier:yanwen), [YunExpress](carrier:yunexpress), [4PX](carrier:4px), and SF Express from China |
 
-If the seller used a carrier Etsy supports directly, a **Track Package** button sits next to the order. Otherwise the number appears only under **View Receipt**, and you track it on the carrier's own site. Parcels from China follow their own route: see [tracking a parcel from China](guide:tracking-from-china).
+If the seller used a carrier Etsy supports directly, a **Track Package** button sits next to the order. Otherwise the number appears only under **View Receipt**, and you track it on the carrier's own site.
+
+Since 1 July 2026, because of a new EU handling fee, Etsy has temporarily stopped selling USPS and Canada Post labels to Ireland and much of the rest of the EU. US sellers then use Global Postal Shipping or buy a label elsewhere. Parcels from China follow their own route: see [tracking a parcel from China](guide:tracking-from-china).
 
 ## What does an Etsy tracking number look like?
 
@@ -141,7 +143,7 @@ Yes, with the carrier's number. Paste it into [Peek](/): it recognises the posts
 - [Etsy: What is an Estimated Delivery Date?](https://help.etsy.com/hc/en-us/articles/360020601674-What-is-an-Estimated-Delivery-Date) – processing plus transit, example, 7 days for non-delivery
 - [Etsy: How to Set Processing Times and "Ship By" Dates](https://help.etsy.com/hc/en-us/articles/115015588087-How-to-Set-Processing-Times-Processing-Profiles-and-Ship-By-Dates) – processing time, made to order, ship by date on the receipt
 - [Etsy: How to Add Tracking and Complete an Order](https://help.etsy.com/hc/en-us/articles/115015774228-How-to-Add-Tracking-and-Complete-an-Order) – ship date up to 3 days ahead, first-scan emails, US tracking rule, 3 days to edit, extra packages, combined orders
-- [Etsy: How to Purchase Shipping Labels on Etsy](https://help.etsy.com/hc/en-us/articles/360001967188-How-to-Purchase-Shipping-Labels-on-Etsy) – label carriers, sellers in Canada, the UK and the US
+- [Etsy: How to Purchase Shipping Labels on Etsy](https://help.etsy.com/hc/en-us/articles/360001967188-How-to-Purchase-Shipping-Labels-on-Etsy) – label carriers, sellers in Canada, the UK and the US, paused EU destinations
 - [Etsy: FedEx Shipping Labels on Etsy](https://help.etsy.com/hc/en-us/articles/360000337447-FedEx-Shipping-Labels-on-Etsy) – US sellers
 - [Etsy: UPS Shipping Labels on Etsy](https://help.etsy.com/hc/en-us/articles/18309523715735-UPS-Shipping-Labels-on-Etsy) – US sellers, domestic only
 - [Etsy: Royal Mail Postage Labels on Etsy](https://help.etsy.com/hc/en-gb/articles/30907634892311-Royal-Mail-Postage-Labels-on-Etsy) – UK sellers
