@@ -9299,7 +9299,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Casablanca",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "barid-al-maghrib",
+      "recognitionRank": 901
     },
     "trackingUrlTemplate": "https://www.barid.ma/bamb2cstorefront/fr/tracking/getdetailentrytracking?code={trackingNumber}",
     "linkRules": [
@@ -9323,7 +9324,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MA$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.barid.ma/bamb2cstorefront/fr/tracking/page"
   },
   "belpost": {
@@ -15263,7 +15271,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "flash-express-ph",
+      "recognitionRank": 902
     },
     "trackingUrlTemplate": "https://www.flashexpress.ph/fle/tracking?se={trackingNumber}",
     "linkRules": [
@@ -17997,7 +18006,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mylerz",
+      "recognitionRank": 904
     },
     "trackingUrlTemplate": "https://mylerz.net/track/{trackingNumber}",
     "linkRules": [
@@ -18008,7 +18018,12 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/(?:track|trackShipment|track-details)/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^63\\d{12}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://mylerz.net/track"
   },
   "ncs-courier": {
@@ -21752,7 +21767,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "phlpost",
+      "recognitionRank": 903
     },
     "linkRules": [
       {
@@ -21765,7 +21781,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}PH$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://tracking.phlpost.gov.ph/"
   },
   "redur": {

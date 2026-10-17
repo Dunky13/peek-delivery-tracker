@@ -38645,14 +38645,15 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
-      "dpd-uk"
+      "dpd-uk",
+      "mylerz"
     ],
     "asked": [
       "dpd-be",
       "dpd",
       "dpd-nl",
       "dpd-de",
-      "seur"
+      "mylerz"
     ]
   },
   {
@@ -38670,14 +38671,15 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
-      "dpd-uk"
+      "dpd-uk",
+      "mylerz"
     ],
     "asked": [
       "dpd-be",
       "dpd",
       "dpd-nl",
       "dpd-de",
-      "seur"
+      "mylerz"
     ]
   },
   {
@@ -38696,7 +38698,8 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
-      "dpd-uk"
+      "dpd-uk",
+      "mylerz"
     ],
     "asked": [
       "hermes-de",
@@ -38737,14 +38740,15 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
-      "dpd-uk"
+      "dpd-uk",
+      "mylerz"
     ],
     "asked": [
       "dpd-be",
       "dpd",
       "dpd-nl",
       "dpd-de",
-      "seur"
+      "mylerz"
     ]
   },
   {
@@ -38826,7 +38830,8 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
-      "dpd-uk"
+      "dpd-uk",
+      "mylerz"
     ],
     "asked": [
       "hermes-de",
@@ -38932,14 +38937,15 @@
       "dpd-be",
       "dpd-de",
       "dpd-nl",
-      "dpd-uk"
+      "dpd-uk",
+      "mylerz"
     ],
     "asked": [
       "dpd-be",
       "dpd",
       "dpd-nl",
       "dpd-de",
-      "seur"
+      "mylerz"
     ]
   },
   {
@@ -54756,6 +54762,7 @@
       "intl-post"
     ],
     "asked": [
+      "phlpost",
       "chronopost"
     ]
   },
@@ -56285,6 +56292,14 @@
     ]
   },
   {
+    "input": "EA463657474CN",
+    "carrier": "china-post",
+    "confidence": "high",
+    "candidates": [
+      "china-post"
+    ]
+  },
+  {
     "input": "EAA23011108883814SG",
     "carrier": "unknown",
     "confidence": "none",
@@ -56909,6 +56924,7 @@
       "intl-post"
     ],
     "asked": [
+      "phlpost",
       "chronopost"
     ]
   },
@@ -62626,6 +62642,7 @@
       "intl-post"
     ],
     "asked": [
+      "barid-al-maghrib",
       "chronopost"
     ]
   },
@@ -66016,6 +66033,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express-ph"
+    ],
+    "asked": [
+      "flash-express-ph"
     ]
   },
   {
@@ -66052,6 +66072,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express-ph"
+    ],
+    "asked": [
+      "flash-express-ph"
     ]
   },
   {
@@ -66063,6 +66086,7 @@
       "flash-express-ph"
     ],
     "asked": [
+      "flash-express-ph",
       "colis-prive"
     ]
   },
@@ -66147,10 +66171,24 @@
     ]
   },
   {
+    "input": "P3224MZ3G86AE",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "flash-express-ph"
+    ],
+    "asked": [
+      "flash-express-ph"
+    ]
+  },
+  {
     "input": "P351778VS8ABT",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "flash-express-ph"
+    ],
+    "asked": [
       "flash-express-ph"
     ]
   },
@@ -66159,6 +66197,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "flash-express-ph"
+    ],
+    "asked": [
       "flash-express-ph"
     ]
   },
@@ -66190,6 +66231,9 @@
     "confidence": "low",
     "candidates": [
       "flash-express-ph"
+    ],
+    "asked": [
+      "flash-express-ph"
     ]
   },
   {
@@ -66208,6 +66252,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "flash-express-ph"
+    ],
+    "asked": [
       "flash-express-ph"
     ]
   },
@@ -69367,6 +69414,18 @@
     ]
   },
   {
+    "input": "RR081922489PH",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "phlpost",
+      "chronopost"
+    ]
+  },
+  {
     "input": "RR089892227SA",
     "carrier": "intl-post",
     "confidence": "high",
@@ -69385,6 +69444,7 @@
       "intl-post"
     ],
     "asked": [
+      "phlpost",
       "chronopost"
     ]
   },
@@ -69735,6 +69795,7 @@
       "intl-post"
     ],
     "asked": [
+      "barid-al-maghrib",
       "chronopost"
     ]
   },
@@ -69848,6 +69909,7 @@
       "intl-post"
     ],
     "asked": [
+      "barid-al-maghrib",
       "chronopost"
     ]
   },
@@ -72423,6 +72485,18 @@
     ]
   },
   {
+    "input": "UC093868096PH",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "phlpost",
+      "chronopost"
+    ]
+  },
+  {
     "input": "UC411964029GR",
     "carrier": "intl-post",
     "confidence": "high",
@@ -74910,6 +74984,7 @@
       "intl-post"
     ],
     "asked": [
+      "barid-al-maghrib",
       "chronopost"
     ]
   },
@@ -75239,6 +75314,7 @@
       "intl-post"
     ],
     "asked": [
+      "barid-al-maghrib",
       "chronopost"
     ]
   },
