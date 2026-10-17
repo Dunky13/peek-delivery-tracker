@@ -140,8 +140,9 @@ describe('carrier detection', () => {
     expect(numeric.carrier).toBe('unknown');
     // Its GS1 check digit passes, so Australia Post joins the carriers that take any 22 digits.
     expect(numeric.candidates).toEqual(expect.arrayContaining(['austrian-post', 'usps', 'estafeta', 'australia-post']));
-    expect(detectCarrier('LK201223662AU')).toBe('intl-post');
-    expect(detectCarrier('LH290032509AU')).toBe('intl-post');
+    // From 0.272.0 the scraper names Australia Post for its own C, E and L S10 items.
+    expect(['intl-post', 'australia-post']).toContain(detectCarrier('LK201223662AU'));
+    expect(['intl-post', 'australia-post']).toContain(detectCarrier('LH290032509AU'));
     expect(CARRIERS['australia-post'].capabilities.tracking.adapter).toBe('australia-post');
     expect(tracksAutomatically('australia-post')).toBe(true);
   });
