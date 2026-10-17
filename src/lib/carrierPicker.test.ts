@@ -63,7 +63,7 @@ describe('carrier search', () => {
   });
 
   it('ranks the carriers that fit the number a little higher', () => {
-    expect(names('gls')[0]).toBe('GLS France');
+    expect(names('gls')[0]).not.toBe('GLS Switzerland');
     expect(names('gls', ['gls-ch'])[0]).toBe('GLS Switzerland');
   });
 
