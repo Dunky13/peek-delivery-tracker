@@ -586,6 +586,20 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let relaytech = CarrierID(rawValue: "relaytech")
     static let dpdNl = CarrierID(rawValue: "dpd-nl")
     static let metropolitanWarehouse = CarrierID(rawValue: "metropolitan-warehouse")
+    static let citymail = CarrierID(rawValue: "citymail")
+    static let correosCuba = CarrierID(rawValue: "correos-cuba")
+    static let correosElSalvador = CarrierID(rawValue: "correos-el-salvador")
+    static let delnext = CarrierID(rawValue: "delnext")
+    static let hispapost = CarrierID(rawValue: "hispapost")
+    static let intereuropa = CarrierID(rawValue: "intereuropa")
+    static let iranPost = CarrierID(rawValue: "iran-post")
+    static let kronosExpress = CarrierID(rawValue: "kronos-express")
+    static let mOne = CarrierID(rawValue: "m-one")
+    static let packMan = CarrierID(rawValue: "pack-man")
+    static let pannonXp = CarrierID(rawValue: "pannon-xp")
+    static let phlpost = CarrierID(rawValue: "phlpost")
+    static let redur = CarrierID(rawValue: "redur")
+    static let torrestir = CarrierID(rawValue: "torrestir")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -1136,6 +1150,20 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .relaytech,
         .dpdNl,
         .metropolitanWarehouse,
+        .citymail,
+        .correosCuba,
+        .correosElSalvador,
+        .delnext,
+        .hispapost,
+        .intereuropa,
+        .iranPost,
+        .kronosExpress,
+        .mOne,
+        .packMan,
+        .pannonXp,
+        .phlpost,
+        .redur,
+        .torrestir,
     ]
 
     init(from decoder: Decoder) throws {

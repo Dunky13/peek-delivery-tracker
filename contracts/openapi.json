@@ -21361,6 +21361,438 @@
         }
       ],
       "trackingSearchUrl": "https://www.gomwd.com/track-a-shipment"
+    },
+    "citymail": {
+      "displayName": "CityMail",
+      "aliases": [
+        "CityMail Sweden AB",
+        "Citymail",
+        "Bring Citymail"
+      ],
+      "countries": [
+        "SE"
+      ],
+      "color": "#fc4c02",
+      "selectable": true,
+      "timezone": "Europe/Stockholm",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://tracking.citymail.se/?search={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.citymail.se"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "search"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^BCM[A-Z]{1,3}\\d{7,9}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://www.citymail.se/spara-paket/"
+    },
+    "correos-cuba": {
+      "displayName": "Correos de Cuba",
+      "aliases": [
+        "Empresa de Correos de Cuba",
+        "Cuba Post"
+      ],
+      "countries": [
+        "CU"
+      ],
+      "color": "#001ca8",
+      "selectable": true,
+      "timezone": "America/Havana",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.correos.cu/rastreador-de-envios/"
+    },
+    "correos-el-salvador": {
+      "displayName": "Correos de El Salvador",
+      "aliases": [
+        "Dirección General de Correos de El Salvador",
+        "Correos El Salvador",
+        "Correo El Salvador",
+        "El Salvador Post"
+      ],
+      "countries": [
+        "SV"
+      ],
+      "color": "#4375d9",
+      "selectable": true,
+      "timezone": "America/El_Salvador",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "www.correos.gob.sv"
+          ],
+          "path": "^/rastrear-paquete/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.correos.gob.sv/servicios/rastrear-paquete/"
+    },
+    "delnext": {
+      "displayName": "Delnext",
+      "countries": [
+        "PT",
+        "ES"
+      ],
+      "color": "#068dcf",
+      "selectable": true,
+      "timezone": "Europe/Lisbon",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.delnext.com/PT/track_your_parcel?tracking_code={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.delnext.com",
+            "delnext.com"
+          ],
+          "pathPattern": "^/[A-Z]{2}/track_your_parcel/?$",
+          "params": [
+            "tracking_code"
+          ]
+        },
+        {
+          "domains": [
+            "www.delnext.com",
+            "delnext.com"
+          ],
+          "path": "^/[A-Z]{2}/track_your_parcel/tracking_code/([A-Za-z0-9]+)(?:&reloaded=[A-Z]{2})?/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.delnext.com/PT/track_your_parcel"
+    },
+    "hispapost": {
+      "displayName": "Hispapost",
+      "aliases": [
+        "Hispapost S.A."
+      ],
+      "countries": [
+        "ES"
+      ],
+      "color": "#00548b",
+      "selectable": true,
+      "timezone": "Europe/Madrid",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://intranet.hispapost.es/tracking"
+    },
+    "intereuropa": {
+      "displayName": "Intereuropa",
+      "aliases": [
+        "Intereuropa d.d.",
+        "Intereuropa d.o.o.",
+        "InterEuropa",
+        "Intereuropa Group"
+      ],
+      "countries": [
+        "SI",
+        "HR",
+        "BA",
+        "RS"
+      ],
+      "color": "#1b5949",
+      "selectable": true,
+      "timezone": "Europe/Ljubljana",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.intereuropa.si/si/tracking?pg=tracking&code={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.intereuropa.si",
+            "intereuropa.si"
+          ],
+          "pathPattern": "^/si/tracking/?$",
+          "params": [
+            "code"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^NRSI\\d{9}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://orders.intereuropa.si/ietracking/"
+    },
+    "iran-post": {
+      "displayName": "Iran Post",
+      "aliases": [
+        "Islamic Republic of Iran Post Company",
+        "Iran Post Company",
+        "شرکت ملی پست جمهوری اسلامی ایران"
+      ],
+      "countries": [
+        "IR"
+      ],
+      "color": "#08317d",
+      "selectable": true,
+      "timezone": "Asia/Tehran",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://tracking.post.ir/?id={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.post.ir"
+          ],
+          "pathPattern": "^/(?:search\\.aspx)?$",
+          "params": [
+            "id"
+          ]
+        }
+      ],
+      "detectionRules": []
+    },
+    "kronos-express": {
+      "displayName": "Kronos Express",
+      "aliases": [
+        "Kronos Express Ltd",
+        "KronosExpress"
+      ],
+      "countries": [
+        "CY",
+        "GR"
+      ],
+      "color": "#24297a",
+      "selectable": true,
+      "timezone": "Asia/Nicosia",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx"
+    },
+    "m-one": {
+      "displayName": "M-ONE",
+      "aliases": [
+        "Milšped ONE",
+        "Milsped ONE",
+        "M ONE",
+        "MILŠPED ONE DOO"
+      ],
+      "countries": [
+        "RS"
+      ],
+      "color": "#024da0",
+      "selectable": true,
+      "timezone": "Europe/Belgrade",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://m-one.rs/en?{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "m-one.rs",
+            "www.m-one.rs"
+          ],
+          "pathPattern": "^/(?:en)?/?$",
+          "query": "^([A-Za-z0-9]+)$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://m-one.rs/en"
+    },
+    "pack-man": {
+      "displayName": "Pack-Man",
+      "aliases": [
+        "Pack-man Courier",
+        "Pack-Man Courier"
+      ],
+      "countries": [
+        "GR"
+      ],
+      "color": "#06377b",
+      "selectable": true,
+      "timezone": "Europe/Athens",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://pack-man.gr/anazitisi-apostolis.html?code={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "pack-man.gr"
+          ],
+          "pathPattern": "^/anazitisi-apostolis\\.html$",
+          "params": [
+            "code"
+          ]
+        },
+        {
+          "domains": [
+            "courier.pack-man.gr"
+          ],
+          "pathPattern": "^/pegasus/courier04/search00\\.php$",
+          "params": [
+            "r18p01"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://pack-man.gr/anazitisi-apostolis.html"
+    },
+    "pannon-xp": {
+      "displayName": "Pannon XP",
+      "aliases": [
+        "PXP Futár",
+        "PXP Futar",
+        "Pannon XP Kft."
+      ],
+      "countries": [
+        "HU"
+      ],
+      "color": "#f68121",
+      "selectable": true,
+      "timezone": "Europe/Budapest",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^35814\\d{19}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://mypxp.pannonxp.hu/csomagkovetes"
+    },
+    "phlpost": {
+      "displayName": "PHLPost",
+      "aliases": [
+        "Philippine Postal Corporation",
+        "PhilPost"
+      ],
+      "countries": [
+        "PH"
+      ],
+      "color": "#a6352d",
+      "selectable": true,
+      "timezone": "Asia/Manila",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.phlpost.gov.ph"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "TrackingNos"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://tracking.phlpost.gov.ph/"
+    },
+    "redur": {
+      "displayName": "Redur",
+      "aliases": [
+        "Redur Spain",
+        "Redur Portugal",
+        "Redur S.A."
+      ],
+      "countries": [
+        "ES",
+        "PT"
+      ],
+      "color": "#0c4c49",
+      "selectable": true,
+      "timezone": "Europe/Madrid",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "redur.es",
+            "www.redur.es"
+          ],
+          "pathPattern": "^/(?:(?:en|pt-pt)/)?track-trace/?$",
+          "params": [
+            "valor"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://redur.es/track-trace/"
+    },
+    "torrestir": {
+      "displayName": "Torrestir",
+      "aliases": [
+        "Torrestir SA"
+      ],
+      "countries": [
+        "PT",
+        "ES",
+        "DE"
+      ],
+      "color": "#003d2c",
+      "selectable": true,
+      "timezone": "Europe/Lisbon",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://tracking.torrestir.com/?id={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.torrestir.com"
+          ],
+          "pathPattern": "^/$",
+          "params": [
+            "id"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^M001\\d{4}[0-9A-Z]\\d{11}$",
+          "confidence": "high"
+        }
+      ]
     }
   },
   "servers": [
@@ -24391,7 +24823,21 @@
           "js-express",
           "relaytech",
           "dpd-nl",
-          "metropolitan-warehouse"
+          "metropolitan-warehouse",
+          "citymail",
+          "correos-cuba",
+          "correos-el-salvador",
+          "delnext",
+          "hispapost",
+          "intereuropa",
+          "iran-post",
+          "kronos-express",
+          "m-one",
+          "pack-man",
+          "pannon-xp",
+          "phlpost",
+          "redur",
+          "torrestir"
         ]
       },
       "Stage": {
