@@ -23977,7 +23977,7 @@
             }
           },
           "503": {
-            "description": "Unconfigured service health",
+            "description": "Not ready: shutting down, a stalled job worker, or an unavailable database",
             "content": {
               "application/json": {
                 "schema": {
@@ -27215,6 +27215,10 @@
         "properties": {
           "ok": {
             "type": "boolean"
+          },
+          "draining": {
+            "type": "boolean",
+            "description": "True when the server is shutting down; left out otherwise."
           }
         }
       },

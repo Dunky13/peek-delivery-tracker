@@ -102,7 +102,8 @@ credentials and don't follow redirects, so keep it reachable through any edge pr
 
 - Expose port `3000` behind HTTPS.
 - `GET /health` returns `{"ok": true}` when the database answers within 2.5 s and the
-  worker has polled or renewed a job in the last 120 s. Otherwise it returns 503.
+  worker has polled or renewed a job in the last 120 s. Otherwise it returns 503, with
+  `{"ok": false, "draining": true}` once the server is shutting down.
   `GET /health/live` checks the process only.
 - Set `TRUST_PROXY_HEADERS=true` only if a trusted proxy overwrites `CF-Connecting-IP`,
   `X-Real-IP` and `X-Forwarded-For`. Without it, every visitor without an account shares

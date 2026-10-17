@@ -518,7 +518,8 @@ Key JSON events:
 - `http_request` (by `request_id`, matching Sentry for server errors). A failed request
   carries `error_class`; a 502 that wraps an upstream failure also names that failure's
   class in `error_cause`. Health checks (`/health`, `/health/live`) and metric scrapes
-  (`/api/metrics`) are logged only when they fail;
+  (`/api/metrics`) are logged only when they fail. A 5xx is logged at `error`, except
+  `/health`'s 503 while the server shuts down, which is `info`;
 - `public_lookup` (by `request_id`): how a lookup without an account ended, as
   `public_lookup_total` counts it, or `failed` with the `reason`, the stage it stopped at:
   `input`, `verification` (the browser proof), `allowance`, `amazon` or `saving`. A

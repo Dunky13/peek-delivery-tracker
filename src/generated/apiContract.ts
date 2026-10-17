@@ -23802,6 +23802,7 @@ export interface ApiSyncSummary {
 
 export interface ApiHealthResponse {
   "ok": boolean;
+  "draining"?: boolean;
 }
 
 export interface ApiUpdatePushSubscriptionLocaleRequest {

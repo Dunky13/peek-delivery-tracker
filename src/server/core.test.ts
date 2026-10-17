@@ -5,6 +5,7 @@ import {
   apiRoute,
   clientNetwork,
   clientSite,
+  expectedFailure,
   HttpError,
   json,
   parseUuid,
@@ -122,6 +123,24 @@ describe('API request boundaries', () => {
     expect(response.headers.get('cache-control')).toBe('no-store');
     expect(response.headers.get('x-request-id')).toMatch(/^[0-9a-f]{32}$/);
     await expect(response.json()).resolves.toEqual({ ok: true });
+  });
+
+  it('logs a 5xx request at error unless its route marks the failure as expected', async () => {
+    const output = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const errors = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const options = { authenticated: false, loadService: false };
+    const send = (handler: () => Promise<Response>) => apiRoute(handler, options)(
+      new NextRequest('https://delivery.example/api/example'),
+      { params: Promise.resolve({}) },
+    );
+    await send(async () => expectedFailure(json({ ok: false }, 503)));
+    await send(async () => json({ ok: false }, 503));
+    await send(async () => { throw new Error('synthetic failure'); });
+    const requests = (calls: unknown[][]) => calls.map(([line]) => JSON.parse(String(line)))
+      .filter((line) => line.event === 'http_request')
+      .map((line) => [line.level, line.status]);
+    expect(requests(output.mock.calls)).toEqual([['info', 503]]);
+    expect(requests(errors.mock.calls)).toEqual([['error', 503], ['error', 500]]);
   });
 
   it('counts an IPv6 client as its /64 and every other address as itself', () => {

@@ -215,6 +215,17 @@ export function noContent(status = 204, headers?: HeadersInit): Response {
   });
 }
 
+const expectedFailures = new WeakSet<Response>();
+
+/**
+ * Marks a 5xx the route gives by design, such as /health's 503 while the
+ * server shuts down: its request line is logged at info, not error.
+ */
+export function expectedFailure(response: Response): Response {
+  expectedFailures.add(response);
+  return response;
+}
+
 function failure(error: unknown): Response {
   if (error instanceof HttpError) {
     return apiResponse(error.status, { error: error.message }, error.headers);
@@ -245,6 +256,7 @@ function logRequest(
   status: number,
   startedAt: number,
   error?: unknown,
+  expected = false,
 ): void {
   const payload: JsonObject = {
     request_id: requestId,
@@ -256,7 +268,7 @@ function logRequest(
   if (error) payload.error_class = error instanceof Error ? error.name : typeof error;
   // A 502 names the upstream failure behind it: a timeout, an HTTP status, a login.
   if (error instanceof HttpError && error.cause instanceof Error) payload.error_cause = error.cause.name;
-  logOperationalEvent('http_request', payload, status >= 500 ? 'error' : 'info');
+  logOperationalEvent('http_request', payload, status >= 500 && !expected ? 'error' : 'info');
 }
 
 export function apiRoute<Parameters extends RouteParameters = RouteParameters>(
@@ -387,7 +399,9 @@ export function apiRoute<Parameters extends RouteParameters = RouteParameters>(
       statusText: response.statusText,
       headers,
     });
-    if (!options.quiet || finalized.status >= 400) logRequest(request, requestId, finalized.status, startedAt, caught);
+    if (!options.quiet || finalized.status >= 400) {
+      logRequest(request, requestId, finalized.status, startedAt, caught, expectedFailures.has(response));
+    }
     if (caught && finalized.status >= 500) {
       captureOperationalError(caught, {
         component: 'api',

@@ -5,7 +5,7 @@ import { SupabaseServiceClient } from './supabase';
 import { GET, HEAD } from '../../app/health/route';
 import { GET as live } from '../../app/health/live/route';
 import { GET as scrape } from '../../app/api/metrics/route';
-import { deliveryServiceReady } from './readiness';
+import { deliveryServiceReadiness } from './readiness';
 
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); });
 function configure(age = 0) {
@@ -16,8 +16,11 @@ function configure(age = 0) {
 it('returns readiness only when the worker and database are available', async () => {
   configure();
   const probe = vi.spyOn(SupabaseServiceClient.prototype, 'probeReadiness').mockResolvedValue(true);
-  expect(await deliveryServiceReady()).toBe(true);
+  expect(await deliveryServiceReadiness()).toBe('ready');
+  probe.mockResolvedValue(false);
+  expect(await deliveryServiceReadiness()).toBe('database');
   probe.mockRejectedValue(new Error('private connection details'));
+  expect(await deliveryServiceReadiness()).toBe('database');
   const response = await GET(new NextRequest('https://delivery.test/health'), { params: Promise.resolve({}) });
   expect(response.status).toBe(503);
   expect(await response.json()).toEqual({ ok: false });
@@ -28,7 +31,7 @@ it('returns readiness only when the worker and database are available', async ()
 it('rejects a stalled worker even when configuration is valid', async () => {
   configure(121);
   const probe = vi.spyOn(SupabaseServiceClient.prototype, 'probeReadiness');
-  expect(await deliveryServiceReady()).toBe(false);
+  expect(await deliveryServiceReadiness()).toBe('worker');
   expect(probe).not.toHaveBeenCalled();
 });
 it('bounds the database probe and checks that PostgREST returned a row set', async () => {
@@ -39,12 +42,18 @@ it('bounds the database probe and checks that PostgREST returned a row set', asy
   request.mockResolvedValue(null);
   expect(await client.probeReadiness()).toBe(false);
 });
-it('fails readiness immediately during shutdown even with a fresh heartbeat', async () => {
+it('fails readiness immediately during shutdown even with a fresh heartbeat, and says so', async () => {
   configure();
   vi.mocked(background.backgroundState).mockReturnValue({ ...background.backgroundState()!, draining: true });
   const probe = vi.spyOn(SupabaseServiceClient.prototype, 'probeReadiness');
-  expect(await deliveryServiceReady()).toBe(false);
+  expect(await deliveryServiceReadiness()).toBe('draining');
   expect(probe).not.toHaveBeenCalled();
+  const response = await GET(new NextRequest('https://delivery.test/health'), { params: Promise.resolve({}) });
+  expect(response.status).toBe(503);
+  expect(await response.json()).toEqual({ ok: false, draining: true });
+  const head = await HEAD(new NextRequest('https://delivery.test/health'), { params: Promise.resolve({}) });
+  expect(head.status).toBe(503);
+  expect(await head.text()).toBe('');
 });
 it('exposes process liveness separately from unavailable dependencies', async () => {
   const response = await live(new NextRequest('https://delivery.test/health/live'), { params: Promise.resolve({}) });
@@ -71,4 +80,22 @@ it('logs a health check or a metrics scrape only when it fails', async () => {
   expect(requests()).toEqual(expect.arrayContaining([
     expect.objectContaining({ route: '/health', status: 503 }), expect.objectContaining({ route: '/api/metrics', status: 401 }),
   ]));
+});
+it('logs a health check that fails while the server shuts down at info, and any other failure at error', async () => {
+  const output = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+  const errors = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+  configure();
+  vi.spyOn(SupabaseServiceClient.prototype, 'probeReadiness').mockResolvedValue(false);
+  const lines = (calls: unknown[][]) => calls.map(([line]) => JSON.parse(String(line)))
+    .filter((line) => line.event === 'http_request');
+  expect((await GET(new NextRequest('https://delivery.test/health'), { params: Promise.resolve({}) })).status).toBe(503);
+  expect(lines(errors.mock.calls)).toEqual([expect.objectContaining({ level: 'error', route: '/health', status: 503 })]);
+  vi.mocked(background.backgroundState).mockReturnValue({ ...background.backgroundState()!, draining: true });
+  expect((await GET(new NextRequest('https://delivery.test/health'), { params: Promise.resolve({}) })).status).toBe(503);
+  expect((await HEAD(new NextRequest('https://delivery.test/health', { method: 'HEAD' }), { params: Promise.resolve({}) })).status).toBe(503);
+  expect(lines(errors.mock.calls)).toHaveLength(1);
+  expect(lines(output.mock.calls)).toEqual([
+    expect.objectContaining({ level: 'info', method: 'GET', route: '/health', status: 503 }),
+    expect.objectContaining({ level: 'info', method: 'HEAD', route: '/health', status: 503 }),
+  ]);
 });

@@ -1652,6 +1652,7 @@ struct SyncSummary: Codable, Equatable, Hashable, Sendable {
 
 struct HealthResponse: Codable, Equatable, Hashable, Sendable {
     var ok: Bool
+    var draining: Bool? = nil
 }
 
 struct UpdatePushSubscriptionLocaleRequest: Codable, Equatable, Hashable, Sendable {
