@@ -156,21 +156,25 @@ describe('review signals', () => {
     expect(captureOperationalError).not.toHaveBeenCalled();
   });
 
-  it('acknowledges a recovery without Sentry, and an outage once Sentry has it', async () => {
+  it('acknowledges a recovery or a closing without Sentry, and an outage once Sentry has it', async () => {
     const recovered = { id: 'recovered-incident', kind: 'provider', subject: '17TRACK', state: 'recovered',
       attempts: 5, failures: 0, window_hours: 24 };
     const open = { id: 'open-incident', kind: 'direct', subject: 'dpd', state: 'open', attempts: 12, failures: 8, window_hours: 24 };
+    const closed = { id: 'closed-incident', kind: 'direct', subject: 'gls', state: 'closed', attempts: 0, failures: 0, window_hours: 24 };
     const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),
-      recordTrackingHealth: vi.fn().mockResolvedValue([recovered, open]), ackTrackingHealth: vi.fn() };
+      recordTrackingHealth: vi.fn().mockResolvedValue([recovered, open, closed]), ackTrackingHealth: vi.fn() };
     vi.mocked(captureTrackingHealth).mockReturnValue('synthetic-event');
     const audit = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
       'synthetic-package', 'TEST1234', 'dpd', 'in_transit', { trigger: 'scheduled' });
     await audit.finish({ outcome: 'unchanged', sourceCarrier: 'dpd' });
     expect(captureTrackingHealth).toHaveBeenCalledExactlyOnceWith(open);
-    expect(client.ackTrackingHealth).toHaveBeenCalledExactlyOnceWith(['recovered-incident', 'open-incident']);
-    expect(vi.mocked(recordHealthIncident).mock.calls).toEqual([['provider', '17TRACK', 'recovered'], ['direct', 'dpd', 'open']]);
+    expect(client.ackTrackingHealth).toHaveBeenCalledExactlyOnceWith(['recovered-incident', 'closed-incident', 'open-incident']);
+    expect(vi.mocked(recordHealthIncident).mock.calls)
+      .toEqual([['provider', '17TRACK', 'recovered'], ['direct', 'dpd', 'open'], ['direct', 'gls', 'closed']]);
     expect(logOperationalEvent).toHaveBeenCalledWith('tracking_health_incident', expect.objectContaining({
       kind: 'provider', subject: '17TRACK', state: 'recovered', title: 'Provider lookups recovered: 17TRACK' }), 'info');
+    expect(logOperationalEvent).toHaveBeenCalledWith('tracking_health_incident', expect.objectContaining({
+      kind: 'direct', subject: 'gls', state: 'closed', title: 'Direct tracking closed without a recent check: gls' }), 'info');
 
     // Without Sentry the outage waits for the next check; the recovery does not.
     vi.mocked(captureTrackingHealth).mockReturnValue(null);
@@ -178,6 +182,6 @@ describe('review signals', () => {
     const next = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
       'synthetic-package', 'TEST1234', 'dpd', 'in_transit', { trigger: 'scheduled' });
     await next.finish({ outcome: 'unchanged', sourceCarrier: 'dpd' });
-    expect(client.ackTrackingHealth).toHaveBeenCalledExactlyOnceWith(['recovered-incident']);
+    expect(client.ackTrackingHealth).toHaveBeenCalledExactlyOnceWith(['recovered-incident', 'closed-incident']);
   });
 });

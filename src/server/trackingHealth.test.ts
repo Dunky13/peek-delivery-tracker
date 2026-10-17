@@ -121,6 +121,8 @@ describe('tracking health evidence', () => {
     expect(healthMessage({ subject: 'Ship24', evidence: { category: 'rate_limited', http_status: null } }).nextSteps).toContain('Retry-After');
     expect(healthMessage({ subject: 'dpd', evidence: { category: 'maintenance', http_status: null } }).nextSteps).toContain('maintenance');
     expect(healthMessage({ subject: 'ups', state: 'recovered' }).nextSteps).toContain('No action needed');
+    expect(healthMessage({ subject: 'ups', kind: 'refresh', state: 'closed' })).toMatchObject({
+      title: 'Shipment refreshes closed without a recent check: ups', nextSteps: expect.stringContaining('no recovery was observed') });
   });
 });
 

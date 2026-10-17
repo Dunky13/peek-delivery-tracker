@@ -224,7 +224,7 @@ function createRuntime(): PrometheusRuntime {
     }),
     healthIncidentTotal: new Counter({
       name: 'tracking_health_incident_total',
-      help: 'Health incidents of refreshes, providers and direct tracking that opened (or still fail six hours on) or recovered, by kind and subject.',
+      help: 'Health incidents of refreshes, providers and direct tracking that opened (or still fail six hours on), recovered or closed unobserved, by kind and subject.',
       labelNames: ['kind', 'subject', 'state'] as const,
       registers: [registry],
     }),
@@ -485,7 +485,7 @@ export function recordSyncAnomaly(carrier: string, anomaly: string): void {
   count(runtime.syncAnomalyTotal, 'tracking_sync_anomaly_total', { carrier, anomaly });
 }
 
-/** A health incident's notification: `open` (opened, or failing six hours on) or `recovered`. */
+/** A health incident's notification: `open` (opened, or failing six hours on), `recovered` or `closed` (no sample left). */
 export function recordHealthIncident(kind: string, subject: string, state: string): void {
   count(runtime.healthIncidentTotal, 'tracking_health_incident_total', { kind, subject, state });
 }

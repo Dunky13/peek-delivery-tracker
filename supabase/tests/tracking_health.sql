@@ -92,9 +92,19 @@ begin
   assert (select active from public.tracking_health_incidents where kind='direct' and subject='retired-tier'),
     'An incident with evidence inside the window must stay open';
   update public.tracking_health_samples set observed_at=now()-interval '25 hours' where subject='retired-tier';
-  assert pg_temp.health_sample('other-tier',true)='[]', 'An expired incident must close without a notification';
-  assert not (select active from public.tracking_health_incidents where kind='direct' and subject='retired-tier'),
-    'An incident whose evidence expired must close';
+  update public.tracking_health_incidents set last_notified_at=now()-interval '25 hours' where subject='retired-tier';
+  result := pg_temp.health_sample('other-tier',true);
+  assert jsonb_array_length(result)=1 and result->0->>'state'='closed' and result->0->>'kind'='direct'
+    and result->0->>'subject'='retired-tier', 'An expired incident must send a closed notice';
+  notice_id := (result->0->>'id')::uuid;
+  assert pg_temp.health_sample('other-tier',true)='[]', 'A closed notice must not be sent twice within its lease';
+  update public.tracking_health_incidents set lease_until=now()-interval '1 second' where subject='retired-tier';
+  result := pg_temp.health_sample('other-tier',true);
+  assert (result->0->>'id')::uuid=notice_id, 'A closed notice must be sent again until it is acknowledged';
+  perform public.ack_tracking_health(array[notice_id]);
+  assert (select not active and last_notified_at < now()-interval '24 hours'
+    from public.tracking_health_incidents where kind='direct' and subject='retired-tier'),
+    'An incident whose evidence expired must close, keeping its last notification time';
   -- A notice still waiting for delivery keeps its incident until it has been acknowledged.
   for i in 1..10 loop result := pg_temp.health_sample('unsent-tier',false,'direct'); end loop;
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
@@ -104,8 +114,7 @@ begin
   assert pg_temp.health_sample('other-tier',true)='[]';
   assert (select active and pending is not null from public.tracking_health_incidents where kind='direct' and subject='unsent-tier'),
     'A pending recovery notice must survive the sweep';
-  -- A tier still failing when traffic resumes opens a new incident.
-  update public.tracking_health_incidents set last_notified_at=now()-interval '7 hours' where subject='retired-tier';
+  -- A tier still failing when traffic resumes opens a new incident at once.
   for i in 1..10 loop result := pg_temp.health_sample('retired-tier',false,'direct'); end loop;
   assert result->0->>'state'='open', 'A closed incident must reopen on fresh failures';
   assert not has_function_privilege('authenticated','public.record_tracking_health(uuid,uuid,jsonb)','execute');

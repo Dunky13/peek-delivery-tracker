@@ -12,7 +12,7 @@ import {
   type RoutingSignal,
 } from './observability';
 import { recordHealthIncident, recordRefresh, recordRoutingSignal, recordSyncAnomaly } from './metrics';
-import { healthMessage, observeTrackingHealth, type HealthSample } from './trackingHealth';
+import { healthMessage, healthReviewSignal, observeTrackingHealth, type HealthSample } from './trackingHealth';
 import { SupabaseError, type SupabaseServiceClient } from './supabase';
 import { isRecord, type JsonObject } from './types';
 import { trackingSupportContext } from './trackingSupport';
@@ -142,7 +142,7 @@ function noteHealthIncident(incident: JsonObject): void {
   logOperationalEvent('tracking_health_incident', {
     kind, subject, state, title: healthMessage(incident).title,
     failures: Number(incident.failures ?? 0), attempts: Number(incident.attempts ?? 0),
-  }, state === 'recovered' ? 'info' : 'warning');
+  }, healthReviewSignal(incident) ? 'info' : 'warning');
 }
 
 export class TrackingSyncAudit {
@@ -340,10 +340,10 @@ export class TrackingSyncAudit {
       await this.writeAudit('evaluate_health', async () => {
         const incidents = await this.client.recordTrackingHealth(this.attemptId, this.packageId, samples);
         for (const incident of incidents) noteHealthIncident(incident);
-        // A recovery is a review signal: Postgres keeps it once acknowledged, Sentry never sees it.
-        const recovered = incidents.filter(incident => incident.state === 'recovered');
-        const reported = incidents.filter(incident => incident.state !== 'recovered' && captureTrackingHealth(incident));
-        const ids = [...recovered, ...(reported.length && await flushObservability() ? reported : [])]
+        // A recovery or a closing is a review signal: Postgres keeps it once acknowledged, Sentry never sees it.
+        const signals = incidents.filter(healthReviewSignal);
+        const reported = incidents.filter(incident => !healthReviewSignal(incident) && captureTrackingHealth(incident));
+        const ids = [...signals, ...(reported.length && await flushObservability() ? reported : [])]
           .map(incident => String(incident.id));
         if (ids.length) await this.client.ackTrackingHealth(ids);
       });

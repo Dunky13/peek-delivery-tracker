@@ -61,7 +61,7 @@ group by 1, 2, 3, 4
 order by cases desc, carrier;
 
 \echo '== Health incidents: notified in the window, or still failing'
-select i.kind, i.subject, case when i.active then 'failing' else 'recovered' end as state,
+select i.kind, i.subject, case when i.active then 'failing' else 'over' end as state,
        'adapters' as lane, to_char(i.last_notified_at, 'YYYY-MM-DD HH24:MI') as notified,
        count(s.*) filter (where not s.healthy) as failures, count(s.*) as checks
 from public.tracking_health_incidents i

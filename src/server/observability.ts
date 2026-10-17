@@ -3,7 +3,7 @@ import 'server-only';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import * as Sentry from '@sentry/node';
 import type { Breadcrumb, ErrorEvent } from '@sentry/node';
-import { healthMessage } from './trackingHealth';
+import { healthMessage, healthReviewSignal } from './trackingHealth';
 import type { JsonObject } from './types';
 import { UpstreamHttpError, type UpstreamHttpDiagnostics } from 'universal-parcel-scraper/node';
 
@@ -471,10 +471,10 @@ export function reportRoutingEvent(code: string, context: {
 
 /**
  * An incident that opened, or still fails six hours on, reaches Sentry; the event
- * title states the impact. A recovery is a review signal and stays out (null).
+ * title states the impact. A recovery or a closing is a review signal and stays out (null).
  */
 export function captureTrackingHealth(incident: JsonObject): string | null {
-  if (incident.state === 'recovered' || !initObservability()) return null;
+  if (healthReviewSignal(incident) || !initObservability()) return null;
   const message = healthMessage(incident);
   let id: string | null = null;
   Sentry.withScope(scope => {

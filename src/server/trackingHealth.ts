@@ -73,12 +73,23 @@ export function observeTrackingHealth<T>(samples: Map<string, HealthSample>, ope
   return observations.run(samples, operation);
 }
 
+/** A recovery, or a closing once no sample is left: logged and counted, never sent to Sentry. */
+export function healthReviewSignal(incident: JsonObject): boolean {
+  return incident.state === 'recovered' || incident.state === 'closed';
+}
+
 export function healthMessage(incident: JsonObject): { title: string; nextSteps: string; impact: string } {
   const subject = String(incident.subject);
   const refresh = incident.kind === 'refresh';
   const recovered = incident.state === 'recovered';
   const evidence = incident.evidence as JsonObject | undefined;
   const scope = refresh ? 'Shipment refreshes' : incident.kind === 'direct' ? 'Direct tracking' : 'Provider lookups';
+  if (incident.state === 'closed') {
+    return { title: `${scope} closed without a recent check: ${subject}`,
+      nextSteps: 'Nothing was checked for 24 hours, so no recovery was observed. If it should still be checked, find out why it is not; fresh failures open a new incident.',
+      impact: refresh ? 'No scheduled refresh of this carrier was recorded for 24 hours.'
+        : 'This describes one provider or direct transport that was not used for 24 hours.' };
+  }
   const title = recovered ? `${scope} recovered: ${subject}`
     : `${scope} repeatedly failing: ${subject} (${incident.failures}/${incident.attempts} in ${incident.window_hours}h${incident.consecutive_failures ? '; 3 consecutive checks failed for a parcel' : ''})`;
   let nextSteps = 'Inspect the carrier scraper dashboard and the latest error type. Check the provider response and adapter parsing; retain the working fallback and scheduled backoff.';

@@ -40,19 +40,20 @@ failures age out of the window; a new failure meanwhile reminds as usual.
 - A parcel whose own carrier says not-found stays `waiting` even if every fallback fails.
   The fallbacks can't know a parcel the carrier hasn't announced.
 - If a tier stops being probed (no parcels left), its incident closes once its last sample
-  ages out, **without** a recovery line.
+  ages out, with a `closed` notice instead of a recovery: none was observed. A new outage
+  of that tier notifies at once.
 
 ## Delivery
 
 Postgres serializes transitions. A repeated incident notifies at most once per 6 hours;
 recovery at once. An opening or reminder is acknowledged once the SDK has flushed its event,
 so it is delivered at least once (2-minute lease), and duplicates group under the same
-fingerprint. A recovery is acknowledged at once.
+fingerprint. A recovery or a closing is acknowledged at once.
 
 Events carry `component:tracking-health`, `incident_kind`, `incident_state` and `provider`
 tags, plus a `tracking_health` context with counts, impact, evidence and next steps.
 Opening and reminders share one issue per incident kind and provider. Every notification,
-recoveries included, is also a `tracking_health_incident` log line and counts in
+recoveries and closings included, is also a `tracking_health_incident` log line and counts in
 `tracking_health_incident_total`, and the hourly review
 ([ops/review/signals.sql](../review/signals.sql)) lists it. Resolve the outage's issue once
 its recovery shows there; the next outage of the same kind and provider then shows as a

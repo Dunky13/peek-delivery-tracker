@@ -1426,7 +1426,7 @@
       "type": "table",
       "id": 32,
       "title": "Health incidents",
-      "description": "Refresh, provider and direct-tracking incidents that opened (or still fail six hours on) or recovered. Open ones are also Sentry issues; recoveries are not.",
+      "description": "Refresh, provider and direct-tracking incidents that opened (or still fail six hours on), recovered, or closed with no sample left. Open ones are also Sentry issues; the others are not.",
       "datasource": {"type": "prometheus", "uid": "${datasource}"},
       "gridPos": {"x": 16, "y": 65, "w": 8, "h": 8},
       "targets": [

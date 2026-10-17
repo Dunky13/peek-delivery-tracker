@@ -484,8 +484,9 @@ Key JSON events:
   `tracking_status_observation_write_failed`;
 - `tracking_sync_anomaly` (warning, by `attempt_id`): one per anomaly code of a check,
   with the previous, reported and selected stage, the provider status and the event counts;
-- `tracking_health_incident`: a health incident opened, still fails six hours on (warning)
-  or recovered (info), with its `kind`, `subject`, `title`, `failures` and `attempts`;
+- `tracking_health_incident`: a health incident opened, still fails six hours on (warning),
+  recovered, or closed once no sample of it was left (info), with its `kind`, `subject`,
+  `title`, `failures` and `attempts`;
 - `dpd_app_session`: the scraper took up a saved session at start (`outcome` `taken_up`,
   with `age_ms`, how long ago it opened), or an opening ended, `opened` or `failed`
   (warning, with `error_kind`). `trigger` says what began it: `start`, `retry` a quarter of
@@ -735,7 +736,7 @@ or a carrier's tracking that does not know the item, is `no_history` rather than
 | `carrier_refresh_total` (carrier, served_by, outcome) | Who served each refresh: `adapter`, `other_adapter`, `provider` or `none`, and how it ended: `updated` (a new scan or stage), `unchanged`, `waiting`, `error` or `superseded` |
 | `tracking_routing_signal_total` (signal, carrier, subject) | Routing signals for the review: `subject` is the carrier the signal is about, `uncatalogued` for a name a provider gave |
 | `tracking_sync_anomaly_total` (carrier, anomaly) | Suspicious decisions of checks, by anomaly code |
-| `tracking_health_incident_total` (kind, subject, state) | Health incidents that opened or still fail six hours on (`open`), or `recovered` |
+| `tracking_health_incident_total` (kind, subject, state) | Health incidents that opened or still fail six hours on (`open`), `recovered`, or `closed` with no sample left |
 | `carrier_checksum_rejection_total` (carrier, rule) | Parcels a carrier's own lookup first confirmed although detection had left that carrier out on a failed check digit. `rule` is the failing rule's id in the scraper's `carrier.json` |
 | `public_lookup_total` (outcome) | Lookups without an account: `created`, `reused` (the number was already stored), `limited_burst`, `limited_daily` (the client's day is used up), `limited_network` (its IPv6 /48's day), `limited_global` |
 | `public_detection_total` (outcome) | Detections without an account that needed a carrier's answer: `asked`, or refused first as `limited_burst`, `limited_daily` or `limited_global` |
