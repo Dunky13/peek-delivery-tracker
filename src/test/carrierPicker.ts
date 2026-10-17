@@ -10,6 +10,9 @@ export function carrierPicker(): HTMLElement {
 export async function pickCarrier(user: UserEvent, opener: HTMLElement, name: string): Promise<void> {
   await user.click(opener);
   const picker = await screen.findByRole('dialog', { name: 'Carrier' });
-  await user.type(within(picker).getByRole('combobox', { name: 'Search carriers' }), name);
+  // Pasted in one go: typing searches and redraws the results once per letter,
+  // which held the tests that pick carriers close to their time limit under load.
+  await user.click(within(picker).getByRole('combobox', { name: 'Search carriers' }));
+  await user.paste(name);
   await user.click(within(picker).getByRole('option', { name }));
 }
