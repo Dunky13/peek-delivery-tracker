@@ -87,6 +87,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "AliExpress order tracking: carriers, statuses and disputes"
     },
     {
+      "id": "otto-orders",
+      "slug": "otto-order-tracking",
+      "title": "OTTO order tracking: carriers, delivery and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -232,6 +237,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "aliexpress-orders",
       "slug": "aliexpress-sendungsverfolgung",
       "title": "AliExpress-Sendungsverfolgung: Status und Streitfall"
+    },
+    {
+      "id": "otto-orders",
+      "slug": "otto-sendungsverfolgung",
+      "title": "OTTO Sendungsverfolgung: Wo ist meine Bestellung?"
     },
     {
       "id": "find-tracking-number",
@@ -381,6 +391,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi colis AliExpress\u00a0: transporteur, statuts et litige"
     },
     {
+      "id": "otto-orders",
+      "slug": "suivi-commande-otto",
+      "title": "Suivi de commande OTTO\u00a0: transporteurs, livraison, retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -526,6 +541,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "aliexpress-orders",
       "slug": "tracciare-ordine-aliexpress",
       "title": "Tracciare un ordine AliExpress: codice, stati e controversie"
+    },
+    {
+      "id": "otto-orders",
+      "slug": "tracciare-ordine-otto",
+      "title": "Tracciare un ordine OTTO: corrieri, consegna e ritardi"
     },
     {
       "id": "find-tracking-number",
@@ -675,6 +695,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de pedidos AliExpress: estados y disputas"
     },
     {
+      "id": "otto-orders",
+      "slug": "seguimiento-pedido-otto",
+      "title": "Seguimiento de pedidos OTTO: transportistas y retrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -822,6 +847,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Rastrear uma encomenda AliExpress: estados e disputas"
     },
     {
+      "id": "otto-orders",
+      "slug": "seguir-encomenda-otto",
+      "title": "Seguir uma encomenda OTTO: transportadoras e atrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -967,6 +997,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "aliexpress-orders",
       "slug": "sledzenie-zamowienia-aliexpress",
       "title": "Śledzenie zamówienia AliExpress: statusy i spory"
+    },
+    {
+      "id": "otto-orders",
+      "slug": "sledzenie-zamowienia-otto",
+      "title": "Śledzenie zamówienia OTTO: przewoźnicy, dostawa, problemy"
     },
     {
       "id": "find-tracking-number",

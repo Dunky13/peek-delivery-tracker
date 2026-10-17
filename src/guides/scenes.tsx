@@ -886,6 +886,21 @@ function Countdown() {
   </>;
 }
 
+function Freight() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <Truck x={40} y={172} tone="green" scale={4} />
+    {/* A wardrobe-sized box on a hand truck. */}
+    <Box x={286} y={56} width={112} height={180} />
+    <path d="M270 40v196h140" stroke={ink} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M262 40h16" stroke={ink} strokeWidth="6" strokeLinecap="round" />
+    <circle cx="292" cy="242" r="12" fill={ink} />
+    <circle cx="292" cy="242" r="4.5" fill={paper} />
+    <path d="M214 132C236 104 252 98 264 100" stroke="var(--green)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <Pip x={518} ground={262} width={140} mood="joy" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -903,6 +918,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'temu-orders': { tone: 'ochre', draw: Haul },
   'shein-orders': { tone: 'rose', draw: Mailer },
   'aliexpress-orders': { tone: 'lilac', draw: Countdown },
+  'otto-orders': { tone: 'green', draw: Freight },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

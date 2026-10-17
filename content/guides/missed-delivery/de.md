@@ -78,7 +78,7 @@ Ja, für die meisten Pakete, mit deiner Vollmacht und ihrem eigenen Ausweis.
 
 - **DHL:** Füll das Vollmachtsformular von DHL vollständig aus, druck es aus und unterschreib es. Die Person bringt die Vollmacht, die Benachrichtigungskarte und ihren eigenen amtlichen Lichtbildausweis mit.
 - **Deutsche Post:** Die Vollmacht kann auch auf der Rückseite der Benachrichtigungskarte stehen. Sie braucht deine Unterschrift auf Papier: Eine digitale Unterschrift auf dem Handy nimmt die Post nicht an. Wer abholt, muss nicht volljährig sein.
-- **Hermes:** Nur das Hermes-Vollmachtsformular im Original, vollständig ausgefüllt und von dir unterschrieben, keine Kopie. Manche Versender, etwa Otto, About You und C&A, schließen die Abholung mit Vollmacht aus.
+- **Hermes:** Nur das Hermes-Vollmachtsformular im Original, vollständig ausgefüllt und von dir unterschrieben, keine Kopie. Manche Versender, etwa [Otto](guide:otto-orders), About You und C&A, schließen die Abholung mit Vollmacht aus.
 - **Österreichische Post:** Ein Ersatzempfänger braucht den gelben Zettel. Wer oft für dich abholt, bekommt eine Postvollmacht: bis zu 5 Personen, 31,80 € für 2 Jahre. Dann zeigen sie nur ihren Ausweis.
 - **Schweizerische Post:** Mit der Abholungseinladung kann jeder eine normale Sendung abholen. Für Signature-Pakete braucht die Person eine Einmalvollmacht (kostenlos) oder eine Dauervollmacht (CHF 24.– online, CHF 30.– in der Filiale). Wer im selben Haushalt lebt, braucht keine Vollmacht, auch mit anderem Nachnamen oder in einer WG.
 
