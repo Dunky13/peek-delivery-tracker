@@ -1139,7 +1139,7 @@ describe('persistent tracking routing', () => {
     expect(universalCarrierHints(['DHL']).discovered_carrier).toBeUndefined();
     // A bare brand resolves only when the number leaves one of its networks.
     expect(universalCarrierHints(['DPD Group'], '06080000000002')).toMatchObject({ discovered_carrier: 'dpd' });
-    expect(universalCarrierHints(['DPD Group'], '06200000000002').discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['DPD Group'], '06460000000002').discovered_carrier).toBeUndefined();
     expect(universalCarrierHints(['UPS', 'Swiss Post']).discovered_carrier).toBeUndefined();
     expect(universalCarrierHints(['UPS'])).toMatchObject({ discovered_carrier: 'ups' });
     expect(universalCarrierHints(['Posti'])).toMatchObject({ discovered_carrier: 'posti' });

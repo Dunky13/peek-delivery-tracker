@@ -1219,7 +1219,7 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(swissDepot.preferred, [.dpd])
         XCTAssertEqual(swissDepot.candidates.first, .dpd)
         XCTAssertEqual(catalog.detect("10000000000001").candidates.first, .dpdFr)
-        XCTAssertEqual(catalog.detect("06200000000002").preferred, [])
+        XCTAssertEqual(catalog.detect("06460000000002").preferred, [])
     }
 
     func testAcceptsASelectableCarrierThatWasNotCompiledIntoTheApp() throws {
