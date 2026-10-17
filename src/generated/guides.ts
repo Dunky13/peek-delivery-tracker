@@ -92,6 +92,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "OTTO order tracking: carriers, delivery and problems"
     },
     {
+      "id": "mediamarkt-orders",
+      "slug": "mediamarkt-order-tracking",
+      "title": "MediaMarkt order tracking: carriers, pickup and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -242,6 +247,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "otto-orders",
       "slug": "otto-sendungsverfolgung",
       "title": "OTTO Sendungsverfolgung: Wo ist meine Bestellung?"
+    },
+    {
+      "id": "mediamarkt-orders",
+      "slug": "mediamarkt-sendungsverfolgung",
+      "title": "MediaMarkt Sendungsverfolgung: Wo ist meine Bestellung?"
     },
     {
       "id": "find-tracking-number",
@@ -396,6 +406,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande OTTO\u00a0: transporteurs, livraison, retards"
     },
     {
+      "id": "mediamarkt-orders",
+      "slug": "suivi-commande-mediamarkt",
+      "title": "Suivi de commande MediaMarkt\u00a0: transporteurs et retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -546,6 +561,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "otto-orders",
       "slug": "tracciare-ordine-otto",
       "title": "Tracciare un ordine OTTO: corrieri, consegna e ritardi"
+    },
+    {
+      "id": "mediamarkt-orders",
+      "slug": "tracking-ordine-mediaworld-mediamarkt",
+      "title": "Ordini MediaWorld (MediaMarkt): tracking e corrieri"
     },
     {
       "id": "find-tracking-number",
@@ -700,6 +720,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de pedidos OTTO: transportistas y retrasos"
     },
     {
+      "id": "mediamarkt-orders",
+      "slug": "seguimiento-pedido-mediamarkt",
+      "title": "Pedido de MediaMarkt: seguimiento y transportistas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -852,6 +877,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguir uma encomenda OTTO: transportadoras e atrasos"
     },
     {
+      "id": "mediamarkt-orders",
+      "slug": "seguimento-encomenda-mediamarkt-darty",
+      "title": "Encomendas MediaMarkt e Darty: seguimento e entregas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -1002,6 +1032,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "otto-orders",
       "slug": "sledzenie-zamowienia-otto",
       "title": "Śledzenie zamówienia OTTO: przewoźnicy, dostawa, problemy"
+    },
+    {
+      "id": "mediamarkt-orders",
+      "slug": "sledzenie-zamowienia-mediamarkt",
+      "title": "Zamówienie z MediaMarkt: śledzenie i przewoźnicy"
     },
     {
       "id": "find-tracking-number",

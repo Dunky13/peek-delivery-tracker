@@ -901,6 +901,27 @@ function Freight() {
   </>;
 }
 
+function Showroom() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <Truck x={36} y={172} tone="orange" scale={4} />
+    {/* A flat TV box, too big for a letterbox. */}
+    <Box x={170} y={130} width={140} height={118}>
+      <rect x="31" y="44" width="78" height="48" rx="5" stroke={CARD.ink} strokeWidth="5" />
+      <path d="M57 104h26M70 92v12" stroke={CARD.ink} strokeWidth="5" strokeLinecap="round" />
+    </Box>
+    <Box x={318} y={214} width={40} height={34} />
+    <Pip x={418} ground={262} width={108} mood="joy" side={1} />
+    {/* The shop, its sign showing where parcels are picked up. */}
+    <path d="M446 112 526 70l80 42Z" fill="var(--orange)" />
+    <rect x="458" y="108" width="136" height="140" fill="var(--orange)" />
+    <rect x="494" y="176" width="64" height="72" rx="3" fill={paper} opacity=".25" />
+    <rect x="490" y="126" width="72" height="36" rx="8" fill={paper} />
+    <rect x="512" y="134" width="28" height="22" rx="3" fill={CARD.top} />
+    <rect x="523" y="134" width="6" height="6" fill={CARD.tape} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -919,6 +940,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'shein-orders': { tone: 'rose', draw: Mailer },
   'aliexpress-orders': { tone: 'lilac', draw: Countdown },
   'otto-orders': { tone: 'green', draw: Freight },
+  'mediamarkt-orders': { tone: 'orange', draw: Showroom },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },
