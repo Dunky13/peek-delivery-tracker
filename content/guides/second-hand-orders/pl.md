@@ -23,7 +23,7 @@ Sprzedający ma 72 godziny na potwierdzenie sprzedaży. Wtedy dostaje etykietę 
 - home | Ty | Sprawdzasz i w 48 godzin potwierdzasz albo zgłaszasz problem
 :::
 
-Na Allegro Lokalnie logujesz się kontem Allegro. Ogłoszenia z dostawą do Allegro One Box albo do Paczkomatu InPost mogą mieć Smart!, czyli darmową dostawę przy zakupach u jednego sprzedającego od określonej kwoty.
+Na Allegro Lokalnie logujesz się kontem Allegro. Ogłoszenia z dostawą do Allegro One Box albo do Paczkomatu InPost mogą mieć Smart!, czyli darmową dostawę przy zakupach u jednego sprzedającego od określonej kwoty. Zakupy w sklepach na allegro.pl opisujemy w poradniku o [paczkach z Allegro](guide:allegro-orders).
 
 ## Który przewoźnik dowozi paczkę?
 

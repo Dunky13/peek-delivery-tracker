@@ -67,6 +67,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Zalando order tracking: carriers, parcels and delays"
     },
     {
+      "id": "allegro-orders",
+      "slug": "allegro-order-tracking",
+      "title": "Allegro order tracking: carriers, numbers and disputes"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -192,6 +197,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "zalando-orders",
       "slug": "zalando-paket-verfolgen",
       "title": "Zalando-Paket verfolgen: Paketdienst, Nummer, Probleme"
+    },
+    {
+      "id": "allegro-orders",
+      "slug": "allegro-sendungsverfolgung",
+      "title": "Allegro Sendungsverfolgung: Paketdienst, Nummer, Probleme"
     },
     {
       "id": "find-tracking-number",
@@ -321,6 +331,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Zalando\u00a0: transporteurs, colis, retards"
     },
     {
+      "id": "allegro-orders",
+      "slug": "suivi-commande-allegro",
+      "title": "Suivi de commande Allegro\u00a0: transporteurs, numéro, retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -446,6 +461,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "zalando-orders",
       "slug": "tracciare-ordine-zalando",
       "title": "Tracciare un ordine Zalando: corrieri, pacchi e ritardi"
+    },
+    {
+      "id": "allegro-orders",
+      "slug": "tracciare-ordine-allegro",
+      "title": "Tracciare un ordine Allegro: corrieri, codici e ritardi"
     },
     {
       "id": "find-tracking-number",
@@ -575,6 +595,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de pedidos Zalando: transportistas y retrasos"
     },
     {
+      "id": "allegro-orders",
+      "slug": "seguimiento-pedido-allegro",
+      "title": "Seguimiento de pedidos de Allegro: transportistas y retrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -702,6 +727,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguir uma encomenda Zalando: CTT, pacotes e atrasos"
     },
     {
+      "id": "allegro-orders",
+      "slug": "seguir-encomenda-allegro",
+      "title": "Seguir encomendas do Allegro: transportadoras e atrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -827,6 +857,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "zalando-orders",
       "slug": "sledzenie-zamowienia-zalando",
       "title": "Śledzenie zamówienia Zalando: przewoźnicy i opóźnienia"
+    },
+    {
+      "id": "allegro-orders",
+      "slug": "sledzenie-przesylki-allegro",
+      "title": "Śledzenie przesyłki Allegro: numer, przewoźnik, Dyskusja"
     },
     {
       "id": "find-tracking-number",

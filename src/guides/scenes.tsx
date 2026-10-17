@@ -802,6 +802,31 @@ function Fashion() {
   </>;
 }
 
+function OneBox() {
+  const doors = [[394, 70, 50], [458, 70, 50], [522, 70, 50], [394, 128, 52], [522, 128, 52], [394, 188, 46], [458, 188, 46], [522, 188, 46]] as const;
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The order on a phone: it's in the locker. */}
+    <Phone x={40} y={40} width={116} height={200}>
+      <Box x={24} y={40} width={68} height={50} />
+      <rect x="20" y="108" width="76" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="20" y="126" width="52" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="20" y="164" width="76" height="20" rx="10" fill="var(--orange)" />
+    </Phone>
+    <Pip x={262} ground={262} width={140} mood="eager" side={1} />
+    {/* A locker with one door open, the parcel inside. */}
+    <rect x="380" y="56" width="210" height="192" rx="12" fill="var(--orange)" />
+    {doors.map(([x, y, height]) => <g key={`${x}-${y}`}>
+      <rect x={x} y={y} width="54" height={height} rx="5" fill={paper} opacity=".2" />
+      <circle cx={x + 44} cy={y + height / 2} r="3.5" fill={paper} opacity=".6" />
+    </g>)}
+    <rect x="458" y="128" width="54" height="52" rx="4" fill="#20251E" opacity=".55" />
+    <Box x={466} y={146} width={38} height={30} />
+    <path d="M458 128 432 118v72l26-10z" fill={paper} />
+    <circle cx="440" cy="154" r="3.5" fill="var(--orange)" />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -815,6 +840,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'etsy-orders': { tone: 'rose', draw: Handmade },
   'second-hand-orders': { tone: 'lilac', draw: SecondHand },
   'zalando-orders': { tone: 'blue', draw: Fashion },
+  'allegro-orders': { tone: 'orange', draw: OneBox },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },
