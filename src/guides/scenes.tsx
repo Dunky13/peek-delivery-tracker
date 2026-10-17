@@ -783,6 +783,25 @@ function Lockers() {
   </>;
 }
 
+function Fashion() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <Pip x={118} ground={262} width={150} mood="eager" side={1} />
+    {/* The parcel, its tag showing a coat hanger. */}
+    <path d="M532 164C514 72 336 62 298 156" stroke="var(--blue)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <Box x={240} y={168} width={104} height={80} />
+    <path d="M316 168c8-14 20-22 34-22" stroke={soft} strokeWidth="2.4" strokeLinecap="round" />
+    <g transform="rotate(10 382 160)">
+      <Sheet x={346} y={136} width={72} height={52} rx={8}>
+        <circle cx="12" cy="12" r="4" fill="var(--blue-soft)" />
+        <path d="M33 18a5 5 0 1 1 5 5v4l17 12H21l17-12" stroke={ink} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+      </Sheet>
+    </g>
+    {/* The van that brought it. */}
+    <Truck x={604} y={172} tone="blue" scale={4} flip />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -795,6 +814,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'ebay-orders': { tone: 'blue', draw: Auction },
   'etsy-orders': { tone: 'rose', draw: Handmade },
   'second-hand-orders': { tone: 'lilac', draw: SecondHand },
+  'zalando-orders': { tone: 'blue', draw: Fashion },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

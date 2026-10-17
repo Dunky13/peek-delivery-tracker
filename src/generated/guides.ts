@@ -62,6 +62,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Tracking Depop, Mercari, Poshmark and Marketplace orders"
     },
     {
+      "id": "zalando-orders",
+      "slug": "zalando-order-tracking",
+      "title": "Zalando order tracking: carriers, parcels and delays"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -182,6 +187,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "second-hand-orders",
       "slug": "kleinanzeigen-sendungsverfolgung",
       "title": "Kleinanzeigen, willhaben, Ricardo, tutti: Sendung verfolgen"
+    },
+    {
+      "id": "zalando-orders",
+      "slug": "zalando-paket-verfolgen",
+      "title": "Zalando-Paket verfolgen: Paketdienst, Nummer, Probleme"
     },
     {
       "id": "find-tracking-number",
@@ -306,6 +316,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Leboncoin, 2ememain, Ricardo, anibis\u00a0: suivre ton colis"
     },
     {
+      "id": "zalando-orders",
+      "slug": "suivi-commande-zalando",
+      "title": "Suivi de commande Zalando\u00a0: transporteurs, colis, retards"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -426,6 +441,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "second-hand-orders",
       "slug": "tracciamento-pacco-subito",
       "title": "Subito e TuttoSubito: come tracciare il pacco"
+    },
+    {
+      "id": "zalando-orders",
+      "slug": "tracciare-ordine-zalando",
+      "title": "Tracciare un ordine Zalando: corrieri, pacchi e ritardi"
     },
     {
       "id": "find-tracking-number",
@@ -550,6 +570,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Wallapop Envíos y Milanuncios: seguir el paquete"
     },
     {
+      "id": "zalando-orders",
+      "slug": "seguimiento-pedido-zalando",
+      "title": "Seguimiento de pedidos Zalando: transportistas y retrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -672,6 +697,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "OLX Portugal e Wallapop: seguir a encomenda"
     },
     {
+      "id": "zalando-orders",
+      "slug": "seguir-encomenda-zalando",
+      "title": "Seguir uma encomenda Zalando: CTT, pacotes e atrasos"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -792,6 +822,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "second-hand-orders",
       "slug": "sledzenie-przesylki-olx",
       "title": "Przesyłka OLX i Allegro Lokalnie: śledzenie paczki"
+    },
+    {
+      "id": "zalando-orders",
+      "slug": "sledzenie-zamowienia-zalando",
+      "title": "Śledzenie zamówienia Zalando: przewoźnicy i opóźnienia"
     },
     {
       "id": "find-tracking-number",
