@@ -206,6 +206,9 @@ describe('App', () => {
     const sneakers = (await repo.list()).find((parcel) => parcel.label.startsWith('New trainers'))!;
     renderApp(repo);
     await screen.findByText('Coffee beans ☕');
+    // Earlier tests can leave entries ahead of the current one, which a push
+    // drops: start from the newest entry so a push adds exactly one.
+    window.history.pushState({}, '', '/');
     const entries = window.history.length;
     act(() => announceKeepOutcome({ id: 'k7Qm2xHd9RtW', outcome: 'already', packageId: sneakers.id, name: null }));
     expect(await screen.findByRole('dialog', { name: /New trainers/ })).toBeVisible();
