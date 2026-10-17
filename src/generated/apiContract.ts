@@ -1924,7 +1924,7 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CELR][A-Z]\\d{9}SK$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -2668,6 +2668,10 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^\\d{15}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^EOB\\d{17}$",
         "confidence": "low"
       }
     ],
@@ -8681,6 +8685,11 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
+        "pattern": "^[CELR][A-Z]\\d{9}SK$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}SK$",
         "confidence": "low",
         "checksum": "s10",
@@ -12635,10 +12644,18 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Lima",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "serpost",
+      "recognitionRank": 893
     },
     "linkRules": [],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}PE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.serpost.com.pe/Cliente/SegumientoLinea"
   },
   "servientrega": {
@@ -13623,6 +13640,10 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^FC\\d{13}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^XZG\\d{9}WL$",
         "confidence": "low"
       }
     ],
@@ -22892,6 +22913,46 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ]
+  },
+  "linhan": {
+    "displayName": "LinHan International",
+    "aliases": [
+      "LinHan",
+      "林瀚国际",
+      "林瀚國際",
+      "林瀚国际物流",
+      "深圳市林瀚国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#eb5c20",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "linhan"
+    },
+    "trackingUrlTemplate": "https://www.linhan56.com/index/tracknumber/track?nos={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "linhan56.com",
+          "www.linhan56.com"
+        ],
+        "pathPattern": "^/index/tracknumber/track/?$",
+        "params": [
+          "nos"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^LHGJ\\d{8}CD$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.linhan56.com/index/tracknumber/track"
   }
 } as const;
 
@@ -23517,7 +23578,8 @@ export const CARRIER_IDS = [
   "posta-faroe",
   "tusass",
   "tws-express",
-  "byhd"
+  "byhd",
+  "linhan"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 

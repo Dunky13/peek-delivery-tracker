@@ -55302,14 +55302,10 @@
   },
   {
     "input": "CA017252768SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -57760,14 +57756,10 @@
   },
   {
     "input": "CQ001202463SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -58018,14 +58010,10 @@
   },
   {
     "input": "CT001362607SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -58159,14 +58147,10 @@
   },
   {
     "input": "CV671749677SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -59155,26 +59139,18 @@
   },
   {
     "input": "EB141416500SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
     "input": "EB585462469SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -59514,14 +59490,10 @@
   },
   {
     "input": "EE002744430SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -59594,6 +59566,18 @@
     ]
   },
   {
+    "input": "EE010045134PE",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "serpost",
+      "chronopost"
+    ]
+  },
+  {
     "input": "EE010741846PE",
     "carrier": "intl-post",
     "confidence": "high",
@@ -59601,6 +59585,7 @@
       "intl-post"
     ],
     "asked": [
+      "serpost",
       "chronopost"
     ]
   },
@@ -60507,6 +60492,17 @@
     ],
     "asked": [
       "egypt-post"
+    ]
+  },
+  {
+    "input": "EOB99099100000000015",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "brt"
+    ],
+    "asked": [
+      "brt"
     ]
   },
   {
@@ -65765,6 +65761,14 @@
     ]
   },
   {
+    "input": "LHGJ32071042CD",
+    "carrier": "linhan",
+    "confidence": "high",
+    "candidates": [
+      "linhan"
+    ]
+  },
+  {
     "input": "LI12976442",
     "carrier": "ontrac",
     "confidence": "high",
@@ -65877,26 +65881,18 @@
   },
   {
     "input": "LK056233672SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
     "input": "LK062951638SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -71315,6 +71311,18 @@
     ]
   },
   {
+    "input": "RE104856140PE",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "serpost",
+      "chronopost"
+    ]
+  },
+  {
     "input": "RE113184005HK",
     "carrier": "hongkong-post",
     "confidence": "high",
@@ -71491,14 +71499,10 @@
   },
   {
     "input": "RG998541170SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -71588,14 +71592,10 @@
   },
   {
     "input": "RH131719789SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -72142,14 +72142,10 @@
   },
   {
     "input": "RP099043738SK",
-    "carrier": "intl-post",
+    "carrier": "slovenska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "slovenska-posta",
-      "chronopost"
+      "slovenska-posta"
     ]
   },
   {
@@ -77169,6 +77165,17 @@
     "confidence": "high",
     "candidates": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "XZG000000001WL",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhlink"
+    ],
+    "asked": [
+      "dhlink"
     ]
   },
   {
