@@ -11741,7 +11741,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Lima",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "olva-courier",
+      "recognitionRank": 911
     },
     "trackingUrlTemplate": "https://tracking.olvacourier.com/?q={trackingNumber}",
     "linkRules": [
@@ -18937,7 +18938,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Tashkent",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "uzbekistan-post",
+      "recognitionRank": 906
     },
     "trackingUrlTemplate": "https://uz.post/ru/tracking/{trackingNumber}",
     "linkRules": [
@@ -18959,7 +18961,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}UZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://uz.post/ru/tracking"
   },
   "zajil": {
