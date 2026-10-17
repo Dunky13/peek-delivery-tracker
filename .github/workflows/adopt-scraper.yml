@@ -4,8 +4,11 @@ name: Adopt scraper release
 # main. docs/SCRAPER.md describes it and its database gate.
 
 on:
-  repository_dispatch:
-    types: [scraper-release]
+  # The newest release every 2 hours, from 06:07 to 22:07 UTC: one deploy takes
+  # every release published since the last run.
+  schedule:
+    - cron: '7 6-22/2 * * *'
+  # An urgent release, or one the database gate stopped.
   workflow_dispatch:
     inputs:
       version:
@@ -69,13 +72,13 @@ jobs:
         with:
           node-version: 26
 
-      # npm scans a release for minutes before it serves it. The scraper
-      # dispatches once npm lists the release; a run started by hand can name
-      # one that is still being scanned.
+      # npm scans a release for minutes before it serves it. A run without a
+      # version takes what npm lists; one started by hand can name a release
+      # that is still being scanned.
       - name: Wait for npm to serve the release
         id: release
         env:
-          REQUESTED_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+          REQUESTED_VERSION: ${{ inputs.version }}
           DATABASE_READY: ${{ inputs.database_ready == true }}
         run: |
           arguments=("--version=$REQUESTED_VERSION")

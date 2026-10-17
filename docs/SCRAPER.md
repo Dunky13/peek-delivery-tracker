@@ -70,9 +70,9 @@ exercise each provider independently of coverage ordering.
 
 ## Updating the dependency
 
-`.github/workflows/adopt-scraper.yml` moves the app to a scraper release. The scraper
-repository starts it after each npm publish, stable or prerelease, when it has the
-`SCRAPER_ADOPTION_TOKEN` secret. It is also started by hand:
+`.github/workflows/adopt-scraper.yml` moves the app to a scraper release. Every 2 hours
+from 06:07 to 22:07 UTC it takes the newer of npm's `latest` and `next`, so one deploy
+carries every release published since the last run. An urgent release is adopted by hand:
 
 ```bash
 gh workflow run adopt-scraper.yml                    # the newer of npm's latest and next
@@ -104,8 +104,7 @@ those pins and the scraper in one commit by hand, with `npm run contract:generat
 `@playwright/test` and the browser journeys' Playwright image in `.github/workflows/ci.yml`.
 
 `SCRAPER_ADOPTION_TOKEN` is a fine-grained token with read and write access to this
-repository's contents, stored as a secret in both repositories. The scraper starts the
-workflow with it. Here it is required to push the commit and start CI. Without it, adoption
+repository's contents. It is required to push the commit and start CI. Without it, adoption
 stops without pushing: the workflow's own token would suppress the validation workflows.
 
 The scraper's release workflow also publishes versioned HTTP and TRAWL images. TRAWL is
@@ -127,7 +126,8 @@ release changes one of these:
 - the names of the universal providers.
 
 The run's summary lists each change with the constraints and functions that enforce it.
-Write the migration, apply it to production, then continue with that release:
+Every scheduled run stops the same way until the migration is in. Write the migration,
+apply it to production, then continue with the release the run named:
 
 ```bash
 gh workflow run adopt-scraper.yml -f version=1.2.3 -f database_ready=true

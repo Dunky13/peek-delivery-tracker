@@ -260,6 +260,13 @@ describe('scraper adoption validation', () => {
     assert.ok(workflow.includes('PUSH_TOKEN: ${{ secrets.SCRAPER_ADOPTION_TOKEN }}'));
   });
 
+  it('adopts the newest release every 2 hours by day, or by hand, not on each release', () => {
+    const triggers = workflow.match(/\non:\n([\s\S]*?)\n\S/)?.[1] ?? '';
+    assert.match(triggers, /\n  schedule:\n(?:\s*#.*\n)*\s+- cron: '7 6-22\/2 \* \* \*'/);
+    assert.match(triggers, /\n  workflow_dispatch:/);
+    assert.doesNotMatch(workflow, /repository_dispatch|client_payload/);
+  });
+
   it('refuses to push without the token that starts validation workflows', () => {
     const step = workflow.match(/      - name: Push to main[\s\S]*?        run: \|\n([\s\S]*?)(?=\n      - name:)/)?.[1];
     assert.ok(step, 'The adoption push step must exist.');
