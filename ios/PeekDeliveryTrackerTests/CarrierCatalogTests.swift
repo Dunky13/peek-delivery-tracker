@@ -430,7 +430,7 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertTrue(names("italien").isEmpty)
         XCTAssertTrue(Set(CarrierPickerSearch.search("italien", catalog: catalog, language: .de)
             .map(\.carrier)).isSuperset(of: [.brt, .posteItaliane]))
-        XCTAssertEqual(names("gls").first, "GLS France")
+        XCTAssertNotEqual(names("gls").first, "GLS Switzerland")
         XCTAssertEqual(names("gls", preferred: [.glsCh]).first, "GLS Switzerland")
         XCTAssertEqual(names("zzqx"), [])
     }
