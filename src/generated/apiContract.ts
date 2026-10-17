@@ -23279,7 +23279,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AU"
     ],
-    "color": "#f25010",
+    "color": "#000000",
     "selectable": true,
     "timezone": "Australia/Sydney",
     "tracking": {
@@ -23571,6 +23571,107 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://transportrdl.com/suivre-un-colis/"
+  },
+  "energo": {
+    "displayName": "Energo Logistic",
+    "aliases": [
+      "Energo",
+      "Energo Logistic S.p.A."
+    ],
+    "countries": [
+      "IT"
+    ],
+    "color": "#e30613",
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^EN\\d{9}$",
+        "confidence": "high",
+        "rawPattern": "^EN\\d{2}-\\d{6}-\\d$"
+      }
+    ],
+    "trackingSearchUrl": "https://www.energologistic.it/tracking/"
+  },
+  "method": {
+    "displayName": "Method",
+    "aliases": [
+      "METHOD Advanced Logistics",
+      "Method Logistics",
+      "Method XL"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "color": "#1f3432",
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://method-logistics.com/localizador-de-envios/"
+  },
+  "sailpost": {
+    "displayName": "Sailpost",
+    "aliases": [
+      "SAILPOST",
+      "Sailpost SpA"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "color": "#e5c043",
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.sailpost.it/traccia-il-pacco/"
+  },
+  "t-group": {
+    "displayName": "Tgroup",
+    "aliases": [
+      "Tgroup S.p.A.",
+      "T Group",
+      "T-Group"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "color": "#ed7602",
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://track.tgroupspa.com/ttnet/traccia_spedizione/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "track.tgroupspa.com"
+        ],
+        "path": "^/ttnet/traccia_spedizione/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^3010TGR\\d{14}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.tgroupspa.com/"
   }
 } as const;
 
@@ -24215,7 +24316,11 @@ export const CARRIER_IDS = [
   "homexpress",
   "postmedia-parcel-services",
   "precision-deliveries",
-  "transport-rdl"
+  "transport-rdl",
+  "energo",
+  "method",
+  "sailpost",
+  "t-group"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
