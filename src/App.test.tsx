@@ -1745,7 +1745,8 @@ describe('App', () => {
     renderApp(repo);
 
     expect(await screen.findByRole('button', { name: /^(?:Next up: )?Saved coffee —/ })).toBeInTheDocument();
-    expect(screen.getByRole('alert')).toHaveTextContent('Your saved parcels are still available');
+    // The saved parcels show at once; the alert waits for the failed request.
+    expect(await screen.findByRole('alert')).toHaveTextContent('Your saved parcels are still available');
     expect(screen.queryByText('No parcels yet')).not.toBeInTheDocument();
   });
 
