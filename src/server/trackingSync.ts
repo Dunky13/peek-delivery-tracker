@@ -59,7 +59,7 @@ const MAX_PACKAGES_PER_OWNER_PER_SYNC = 5;
 const MAX_ONE_OFF_PACKAGES_PER_SYNC = 10;
 /** A one-off parcel stays on the schedule this long after one of its links was last opened. */
 const ONE_OFF_FOLLOWED_MS = 24 * 60 * 60 * 1_000;
-/** A catalog queues at most this many checks of parcels its rules point to another carrier. */
+/** A catalog queues the checks of parcels its rules point to another carrier this many at a time. */
 const MAX_REDETECTIONS = 50;
 /** A parcel no notification can reach keeps the daytime cadence this long after its account's apps or one of its links were last opened; then it is checked hourly. */
 const WATCHED_AFTER_OPEN_MS = 60 * 60 * 1_000;
@@ -740,9 +740,11 @@ export class TrackingSyncService {
   #reportedObservationFailure = false;
   /**
    * The catalog rules this process looked for redetections with, whether it has
-   * listed them yet, and the parcels still in their cooldown, with when it ends.
+   * listed them yet, the parcels still to check, the most likely to change first,
+   * with when each one's cooldown ends, and the batch queued last.
    */
-  #redetections: { rules: string; listed: boolean; waiting: Map<string, { userId: string | null; dueAt: number }> } | null = null;
+  #redetections: { rules: string; listed: boolean; waiting: Array<{ packageId: string; userId: string | null; dueAt: number }>;
+    batch: string[] } | null = null;
 
   constructor(
     readonly client: SupabaseServiceClient,
@@ -814,43 +816,50 @@ export class TrackingSyncService {
    * carrier its routing never asked, such as a lookup added before a scraper release
    * brought the number's detection rule, the name a provider gives or the carrier's
    * adapter, whose link nobody opens any more, and of each unfiled one with a carrier
-   * to recognize it (redetection.ts). A parcel still in its
-   * cooldown is queued by the first run after it ends. Returns how many checks were
-   * queued; they wait behind every other job, a lookup's check too.
+   * to recognize it (redetection.ts). The checks most likely to change the parcel's
+   * answer go first, 50 at a time: the next batch waits until the last one's checks are
+   * done. A parcel still in its cooldown is queued by the first run after it ends.
+   * Returns how many checks were queued; they wait behind every other job, a lookup's
+   * check too.
    */
   async queueRedetections(signal?: AbortSignal): Promise<number> {
     const rules = catalogRules();
-    if (this.#redetections?.rules !== rules) this.#redetections = { rules, listed: false, waiting: new Map() };
+    if (this.#redetections?.rules !== rules) this.#redetections = { rules, listed: false, waiting: [], batch: [] };
     const redetections = this.#redetections;
-    if (redetections.listed && !redetections.waiting.size) return 0;
+    if (redetections.listed && !redetections.waiting.length) return 0;
     const now = this.now().getTime();
     let queued = 0;
-    let left = 0;
     try {
       if (!redetections.listed) {
         const candidates = await this.client.listRedetectionCandidates(new Date(now - REDETECTION_WINDOW_MS), rules);
+        const leads: Array<{ packageId: string; userId: string | null; dueAt: number; rank: number }> = [];
         for (const parcel of candidates) {
-          if (!await rerouteAskable(parcel, rules, now)) continue;
+          const lead = await rerouteAskable(parcel, rules, now);
+          if (!lead) continue;
           const dueAt = trackingSyncDueAt(parcel);
           if (dueAt === Infinity) continue;
-          if (redetections.waiting.size >= MAX_REDETECTIONS) left += 1;
-          else redetections.waiting.set(String(parcel.id), { userId: typeof parcel.user_id === 'string' ? parcel.user_id : null, dueAt });
+          leads.push({ packageId: String(parcel.id), userId: typeof parcel.user_id === 'string' ? parcel.user_id : null, dueAt, rank: lead.rank });
         }
+        // Listed newest first; the sort keeps that order within a rank.
+        redetections.waiting = leads.sort((a, b) => a.rank - b.rank)
+          .map(({ packageId, userId, dueAt }) => ({ packageId, userId, dueAt }));
         redetections.listed = true;
       }
-      for (const [packageId, { userId, dueAt }] of redetections.waiting) {
-        if (dueAt > now) continue;
-        await this.client.enqueueSyncJob({ packageId, userId, background: true });
-        redetections.waiting.delete(packageId);
+      if (redetections.batch.length && await this.client.packageSyncJobsPending(redetections.batch)) return 0;
+      redetections.batch = [];
+      for (const parcel of [...redetections.waiting]) {
+        if (queued >= MAX_REDETECTIONS) break;
+        if (parcel.dueAt > now) continue;
+        await this.client.enqueueSyncJob({ packageId: parcel.packageId, userId: parcel.userId, background: true });
+        redetections.waiting.splice(redetections.waiting.indexOf(parcel), 1);
+        redetections.batch.push(parcel.packageId);
         queued += 1;
       }
     } catch (error) {
       signal?.throwIfAborted();
       captureOperationalError(error, { component: 'tracking', operation: 'queue_redetections' });
     }
-    if (queued > 0 || left > 0) {
-      logOperationalEvent('tracking_redetections_queued', { queued, waiting: redetections.waiting.size, left });
-    }
+    if (queued > 0) logOperationalEvent('tracking_redetections_queued', { queued, waiting: redetections.waiting.length });
     return queued;
   }
 

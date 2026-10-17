@@ -159,6 +159,15 @@ describe('one-off parcels and their links', () => {
     expect(sent.get('or')).toBe('(carrier_data->routing->>rules.is.null,carrier_data->routing->>rules.neq.rules-1)');
   });
 
+  it('tells whether a check of any of the given parcels is still queued or running', async () => {
+    const client = service();
+    const request = vi.spyOn(client, 'request').mockResolvedValueOnce([{ id: 'job' }]).mockResolvedValueOnce([]);
+    await expect(client.packageSyncJobsPending(['a', 'b'])).resolves.toBe(true);
+    await expect(client.packageSyncJobsPending(['a', 'b'])).resolves.toBe(false);
+    expect(Object.fromEntries(params(request.mock.calls[0][0])))
+      .toEqual({ select: 'id', package_id: 'in.(a,b)', state: 'in.(queued,running)', limit: '1' });
+  });
+
   it('lists the one-off parcels a scheduled run follows in the shape of the other candidates', async () => {
     const client = service();
     const request = vi.spyOn(client, 'request').mockResolvedValue([{ id: 'one-off', one_off: true }]);

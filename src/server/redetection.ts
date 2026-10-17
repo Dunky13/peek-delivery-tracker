@@ -29,6 +29,18 @@ export const REDETECTION_WINDOW_MS = 30 * 24 * 60 * 60 * 1_000;
  */
 export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now = Date.now(),
   refused: ReadonlySet<string> = new Set()): string | null {
+  return rerouteLead(parcel, rules, now, refused)?.carrier ?? null;
+}
+
+/**
+ * The carrier a release's check would ask, and how likely that check is to change the
+ * parcel's answer, the most likely first: 0, the carrier's own answer is now dated, or it
+ * refused the number under an older release; 1, a carrier the parcel never asked; 2, one
+ * a parcel filed under no carrier asks again, or the first its recognition would ask.
+ */
+export interface RerouteLead { carrier: string; rank: 0 | 1 | 2 }
+
+function rerouteLead(parcel: JsonObject, rules: string, now: number, refused: ReadonlySet<string>): RerouteLead | null {
   const data = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
   const routing = routingState(parcel);
   const filed = String(parcel.carrier);
@@ -49,41 +61,42 @@ export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now =
   const leads = (carrier: string | undefined): carrier is string => carrier !== undefined && carrier !== filed
     && !refused.has(carrier) && AUTOMATIC_CARRIER_IDS.has(carrier) && (!directCarrier(carrier) ? unfiled
       : unfiled ? carrier !== routing.confirmed_carrier && !waiting(carrier) : !asked(carrier));
+  const lead = (carrier: string, rank: 0 | 1 | 2 = asked(carrier) ? 2 : 1): RerouteLead =>
+    ({ carrier, rank: refusedBefore(carrier) ? 0 : rank });
   const detected = detectCarrierMatch(number);
-  if (detected.confidence === 'high' && leads(detected.carrier)) return detected.carrier;
+  if (detected.confidence === 'high' && leads(detected.carrier)) return lead(detected.carrier);
   // The names a provider gave, read with today's aliases and number rules.
   const names = Array.isArray(data.reported_carriers)
     ? data.reported_carriers.filter((name): name is string => typeof name === 'string') : [];
   const named = names.length ? universalCarrierHints(names, number).discovered_carrier : undefined;
-  if (leads(named) && (named !== routing.discovered_carrier || refusedBefore(named))) return named;
+  if (leads(named) && (named !== routing.discovered_carrier || refusedBefore(named))) return lead(named);
   if (unfiled) {
     const [first] = recognitionCandidates(number, { hint: routing.discovered_carrier,
       skip: (carrier) => waiting(carrier) || refused.has(carrier) });
-    if (first) return first.carrier;
+    if (first) return lead(first.carrier, 2);
   }
   // The filed carrier's own adapter, new since the provider took over, or one only
   // recognition asked before the parcel was filed under it: such a probe drops an
   // answer on local clocks, which the filed carrier's own lookup keeps. Or the filed
   // carrier answered on local clocks, which the provider dated, and now dates its scans.
-  const localAnswer = isRecord(data.direct_local_history) && data.direct_local_history.carrier === filed
-    && !localClockCarrier(filed);
-  return provider && !unfiled && directCarrier(filed) && !refused.has(filed)
-    && (localAnswer || (filed !== routing.confirmed_carrier && (!routing.failures[filed] || refusedBefore(filed)))) ? filed : null;
+  if (!provider || unfiled || !directCarrier(filed) || refused.has(filed)) return null;
+  if (isRecord(data.direct_local_history) && data.direct_local_history.carrier === filed && !localClockCarrier(filed)) return lead(filed, 0);
+  return filed !== routing.confirmed_carrier && (!routing.failures[filed] || refusedBefore(filed)) ? lead(filed, 1) : null;
 }
 
 /**
- * The carrier rerouteCarrier points the parcel to, passing over those whose adapter
- * refuses the number by its own check, which sends nothing: the queued check could
- * not ask them. A later release, whose adapters may take the number, looks again.
+ * The carrier rerouteCarrier points the parcel to, with its rank, passing over those
+ * whose adapter refuses the number by its own check, which sends nothing: the queued
+ * check could not ask them. A later release, whose adapters may take the number, looks again.
  */
 export async function rerouteAskable(parcel: JsonObject, rules = catalogRules(), now = Date.now(),
-  refuses: (carrier: string, number: string) => Promise<boolean> = refusesNumber): Promise<string | null> {
+  refuses: (carrier: string, number: string) => Promise<boolean> = refusesNumber): Promise<RerouteLead | null> {
   const number = String(parcel.tracking_number ?? '');
   const refused = new Set<string>();
   // Each refusal leaves that carrier out of the next pick, so the catalog bounds the loop.
-  for (let carrier = rerouteCarrier(parcel, rules, now, refused); carrier; carrier = rerouteCarrier(parcel, rules, now, refused)) {
-    if (!await refuses(carrier, number)) return carrier;
-    refused.add(carrier);
+  for (let lead = rerouteLead(parcel, rules, now, refused); lead; lead = rerouteLead(parcel, rules, now, refused)) {
+    if (!await refuses(lead.carrier, number)) return lead;
+    refused.add(lead.carrier);
   }
   return null;
 }

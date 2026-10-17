@@ -526,8 +526,8 @@ Key JSON events:
   knew the number or failed, and what it settled on (a carrier, `choice` or `none`).
 - `tracking_redetections_queued`: how many parcels added in the last 30 days were queued for
   a check because a scraper release's catalog now points them to a carrier they never asked
-  (`queued`), how many wait for their cooldown to end (`waiting`) and how many were left out
-  past the 50 a catalog queues (`left`) ([ROUTING.md](ROUTING.md));
+  (`queued`, at most 50 a batch) and how many wait for a later batch or their cooldown to end
+  (`waiting`) ([ROUTING.md](ROUTING.md));
 - `parcel_links_forgotten`: how many expired lookups, and parcels with them, a maintenance
   pass forgot, how many stopped links from accounts it purged and how many alerts of
   finished journeys it ended. `parcel_link_maintenance_failed` when it could not run.

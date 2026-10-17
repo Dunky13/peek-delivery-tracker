@@ -119,13 +119,31 @@ it('passes over a carrier whose adapter refuses the number, until a release whos
   // A provider's name the check could not ask, and nothing else to ask.
   const named = parcel({ tracking_number: UNCLAIMED }, { reported_carriers: ['UPS'] });
   expect(await rerouteAskable(named, 'newer', Date.now(), refuses(['ups']))).toBeNull();
-  expect(await rerouteAskable(named, 'newer', Date.now(), refuses([]))).toBe('ups');
+  expect(await rerouteAskable(named, 'newer', Date.now(), refuses([]))).toEqual({ carrier: 'ups', rank: 1 });
   // The next carrier the check would ask instead.
   const now = Date.parse('2026-09-10T12:00:00Z');
   const unseen = parcel({ tracking_number: '1234567891', current_stage: 'pending' }, { tracking_provider: undefined });
-  expect(await rerouteAskable(unseen, 'newer', now, refuses(['dhl-express']))).toBe('relais-colis');
+  expect(await rerouteAskable(unseen, 'newer', now, refuses(['dhl-express']))).toEqual({ carrier: 'relais-colis', rank: 2 });
   // The adapters' own checks, which send nothing: DPD France's takes no 18 digits.
   const dpd = parcel({ tracking_number: '123456789012345678' }, { reported_carriers: ['DPD France'] });
   expect(rerouteCarrier(dpd, 'newer', now)).toBe('dpd-fr');
-  expect(await rerouteAskable(dpd, 'newer', now)).not.toBe('dpd-fr');
+  expect((await rerouteAskable(dpd, 'newer', now))?.carrier).not.toBe('dpd-fr');
+});
+
+it('ranks the checks most likely to change the answer first', async () => {
+  const now = Date.parse('2026-09-10T12:00:00Z');
+  const lead = (values: JsonObject, data: JsonObject = {}) => rerouteAskable(parcel(values, data), 'newer', now, async () => false);
+  const refusal = { kind: 'schema', count: 5, retry_at: '2026-09-09T06:00:00Z', user_error: 'carrier:invalid_input' };
+  // The carrier's own answer is now dated, or the number it refused may be taken now.
+  expect(await lead({ carrier: 'thhy', tracking_number: 'AT0000000001TH' }, { tracking_provider: '17TRACK',
+    direct_local_history: { carrier: 'thhy', number: 'AT0000000001TH', events: [] }, routing: { confirmed_carrier: 'thhy' } }))
+    .toEqual({ carrier: 'thhy', rank: 0 });
+  expect(await lead({}, { routing: { failures: { ups: refusal } } })).toEqual({ carrier: 'ups', rank: 0 });
+  // A carrier never asked.
+  expect(await lead({})).toEqual({ carrier: 'ups', rank: 1 });
+  // A carrier asked again once a passing failure is over, and recognition's first guess.
+  expect(await lead({}, { routing: { failures: { ups: { kind: 'rate_limited', count: 1, retry_at: '2026-09-10T11:00:00Z' } } } }))
+    .toEqual({ carrier: 'ups', rank: 2 });
+  expect(await lead({ tracking_number: '1234567891', current_stage: 'pending' }, { tracking_provider: undefined }))
+    .toEqual({ carrier: 'dhl-express', rank: 2 });
 });

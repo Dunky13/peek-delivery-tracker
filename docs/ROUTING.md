@@ -337,8 +337,7 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   (`routing.rules`: each carrier's detection rules, names, whether it has an adapter of
   its own and whether that adapter's clocks are local). After each deploy, once the first scheduled run is over, the open parcels added
   in the last 30 days that were routed with another catalog are read again, with nothing
-  sent ([`redetection.ts`](../src/server/redetection.ts)). A check is queued, at most 50,
-  for each one the new catalog points to a carrier it has not asked yet: the carrier its
+  sent ([`redetection.ts`](../src/server/redetection.ts)). A check is queued for each one the new catalog points to a carrier it has not asked yet: the carrier its
   number is now detected as, the one a provider's saved carrier names now read as, or the
   filed carrier's new adapter. A filed carrier only recognition asked, before the parcel was
   filed under it, counts as not asked: a probe drops an answer on local clocks. So does a
@@ -349,9 +348,12 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   teach an adapter a number, and a rate limit or outage passes. A carrier whose adapter
   refuses the number by its own check, which sends nothing, is passed over until a release
   whose adapter takes it. One that refused the number under an older release counts as not
-  asked, the filed carrier and a provider's name the parcel already holds included. One still in its cooldown is
-  queued by the first scheduled run after the cooldown ends. These checks wait behind every other job, a lookup's own
-  check too. Only parcels filed under no carrier, or showing a provider's history, are
+  asked, the filed carrier and a provider's name the parcel already holds included. The checks
+  most likely to change the answer go first (a carrier's answer the catalog now dates, or a
+  number it refused under an older release, then a carrier never asked, then one asked again),
+  50 at a time: the next batch goes once the last one's checks are done. One still in its
+  cooldown is queued by the first scheduled run after the cooldown ends. These checks wait
+  behind every other job, a lookup's own check too. Only parcels filed under no carrier, or showing a provider's history, are
   looked at. A lookup nobody follows any more gets this one check.
 
 ## Handoffs (two carriers)

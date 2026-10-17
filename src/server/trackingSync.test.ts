@@ -1535,34 +1535,40 @@ describe('TrackingSyncService', () => {
     await expect(service.queueRedetections()).resolves.toBe(2);
     expect(client.listRedetectionCandidates).toHaveBeenCalledExactlyOnceWith(new Date('2026-08-10T10:00:00Z'), catalogRules());
     expect(client.enqueueSyncJob.mock.calls).toEqual([[{ packageId: 'owned', userId: 'a', background: true }], [{ packageId: 'lookup', userId: null, background: true }]]);
-    expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 2, waiting: 0, left: 0 });
+    expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 2, waiting: 0 });
     // The same catalog is not looked at twice.
     await expect(service.queueRedetections()).resolves.toBe(0);
     expect(client.listRedetectionCandidates).toHaveBeenCalledOnce();
   });
 
-  it('queues the check of a parcel in its cooldown once the cooldown ends, and counts what is left over', async () => {
+  it('queues the checks 50 at a time, the most likely to change first, and one in its cooldown once it ends', async () => {
     const parcel = (id: string, routing: JsonObject = {}) => ({ id, user_id: 'a', carrier: 'unknown', tracking_number: '1Z999AA10123456784',
       current_stage: 'in_transit', carrier_data: { tracking_provider: 'ParcelsApp', routing: { version: 1, configured_carrier: 'unknown',
         failures: {}, probe_cursor: 0, discovery_cursor: 0, rules: 'older', ...routing } } });
-    const candidates = [parcel('deferred', { next_check_at: '2026-09-09T10:30:00Z' }),
-      ...Array.from({ length: 51 }, (_, index) => parcel(`due-${index}`))];
+    const failure = (kind: string, values: JsonObject = {}) => ({ failures: { ups: { kind, count: 1, retry_at: '2026-09-09T09:00:00Z', ...values } } });
+    // Listed newest first: UPS asked again after a rate limit, a parcel in its cooldown, 51 that never asked
+    // UPS, and the oldest, whose number UPS refused under an older release.
+    const candidates = [parcel('retry', failure('rate_limited')), parcel('deferred', { next_check_at: '2026-09-09T10:30:00Z' }),
+      ...Array.from({ length: 51 }, (_, index) => parcel(`due-${index}`)),
+      parcel('refused', failure('schema', { user_error: 'carrier:invalid_input' }))];
     const client = { ...fakeClient(), listRedetectionCandidates: vi.fn().mockResolvedValue(candidates),
-      enqueueSyncJob: vi.fn().mockResolvedValue({ id: 'job' }) };
+      enqueueSyncJob: vi.fn().mockResolvedValue({ id: 'job' }), packageSyncJobsPending: vi.fn().mockResolvedValue(true) };
     const logged = vi.spyOn(observability, 'logOperationalEvent');
     let now = new Date('2026-09-09T10:00:00Z');
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() }, null, () => now);
-    // Fifty a catalog: the one in its cooldown and 49 others; two are left for the next catalog.
-    await expect(service.queueRedetections()).resolves.toBe(49);
-    expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 49, waiting: 1, left: 2 });
-    now = new Date('2026-09-09T10:20:00Z');
-    await expect(service.queueRedetections()).resolves.toBe(0);
+    const queued = () => client.enqueueSyncJob.mock.calls.map(([job]) => job.packageId);
+    await expect(service.queueRedetections()).resolves.toBe(50);
+    expect(queued()).toEqual(['refused', ...Array.from({ length: 49 }, (_, index) => `due-${index}`)]);
+    expect(logged).toHaveBeenCalledWith('tracking_redetections_queued', { queued: 50, waiting: 4 });
+    // The rest wait until that batch's checks are done.
     now = new Date('2026-09-09T10:30:00Z');
-    await expect(service.queueRedetections()).resolves.toBe(1);
-    expect(client.enqueueSyncJob).toHaveBeenLastCalledWith({ packageId: 'deferred', userId: 'a', background: true });
+    await expect(service.queueRedetections()).resolves.toBe(0);
+    expect(client.packageSyncJobsPending).toHaveBeenLastCalledWith(queued());
+    client.packageSyncJobsPending.mockResolvedValue(false);
+    await expect(service.queueRedetections()).resolves.toBe(4);
+    expect(queued().slice(50)).toEqual(['deferred', 'due-49', 'due-50', 'retry']);
     await expect(service.queueRedetections()).resolves.toBe(0);
     expect(client.listRedetectionCandidates).toHaveBeenCalledOnce();
-    expect(client.enqueueSyncJob).toHaveBeenCalledTimes(50);
   });
 
   it('looks again after the next run when the recent parcels cannot be listed', async () => {

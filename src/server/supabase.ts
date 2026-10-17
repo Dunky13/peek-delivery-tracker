@@ -1776,6 +1776,12 @@ export class SupabaseServiceClient extends SupabaseClient {
     if (userId) params.user_id = `eq.${userId}`;
     return rows(await this.request(`/rest/v1/sync_jobs?${query(params)}`)).length;
   }
+
+  /** Whether a check of any of these parcels is still queued or running. */
+  async packageSyncJobsPending(packageIds: string[]): Promise<boolean> {
+    const params = { select: 'id', package_id: `in.(${packageIds.join(',')})`, state: 'in.(queued,running)', limit: '1' };
+    return rows(await this.request(`/rest/v1/sync_jobs?${query(params)}`)).length > 0;
+  }
 }
 
 export class SupabaseUserClient extends SupabaseClient {
