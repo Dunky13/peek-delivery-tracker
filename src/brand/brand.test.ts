@@ -145,6 +145,8 @@ describe('carrier brand', () => {
       'metropolitan-warehouse',
       'citymail', 'correos-cuba', 'correos-el-salvador', 'delnext', 'hispapost', 'intereuropa', 'iran-post',
       'kronos-express', 'm-one', 'pack-man', 'pannon-xp', 'phlpost', 'redur', 'torrestir',
+      'afghan-post', 'corre', 'correos-nicaragua', 'kyrgyz-post', 'la-poste-burkina-faso', 'lao-post',
+      'pitney-bowes',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

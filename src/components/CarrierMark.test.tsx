@@ -88,6 +88,8 @@ describe('carrier mark', () => {
     'metropolitan-warehouse',
     'citymail', 'correos-cuba', 'correos-el-salvador', 'delnext', 'hispapost', 'intereuropa', 'iran-post',
     'kronos-express', 'm-one', 'pack-man', 'pannon-xp', 'phlpost', 'redur', 'torrestir',
+    'afghan-post', 'corre', 'correos-nicaragua', 'kyrgyz-post', 'la-poste-burkina-faso', 'lao-post',
+    'pitney-bowes',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

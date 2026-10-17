@@ -35,6 +35,9 @@
   "aex-paraguay": {
     "decal": "aex-paraguay"
   },
+  "afghan-post": {
+    "decal": "afghan-post"
+  },
   "akash-ganga": {
     "decal": "akash-ganga"
   },
@@ -322,6 +325,9 @@
   "coordinadora": {
     "decal": "coordinadora"
   },
+  "corre": {
+    "decal": "corre"
+  },
   "correios-br": {
     "palette": {
       "accent": "#06416a",
@@ -356,6 +362,9 @@
       "brand-light": "#002e6d"
     },
     "decal": "correos"
+  },
+  "correos-nicaragua": {
+    "decal": "correos-nicaragua"
   },
   "correos-spain": {
     "palette": {
@@ -987,12 +996,18 @@
   "kunyoung": {
     "decal": "kunyoung"
   },
+  "kyrgyz-post": {
+    "decal": "kyrgyz-post"
+  },
   "la-poste": {
     "decal": "la-poste",
     "palette": {
       "accent": "#003da5",
       "brand-light": "#003da5"
     }
+  },
+  "la-poste-burkina-faso": {
+    "decal": "la-poste-burkina-faso"
   },
   "la-poste-ci": {
     "decal": "la-poste-ci"
@@ -1008,6 +1023,9 @@
   },
   "landmark-global": {
     "decal": "landmark-global"
+  },
+  "lao-post": {
+    "decal": "lao-post"
   },
   "latvijas-pasts": {
     "decal": "latvijas-pasts"
@@ -1272,6 +1290,9 @@
   },
   "pilot-freight": {
     "decal": "pilot-freight"
+  },
+  "pitney-bowes": {
+    "decal": "pitney-bowes"
   },
   "pitt-ohio": {
     "decal": "pitt-ohio"

@@ -27,6 +27,7 @@ and [`truck.json`](truck.json).
 | `acs-courier` | [acscourier.net](https://www.acscourier.net/lib/cms/img/logo.svg) — logo fills #e42229 (swoosh) and #1d1d1b (shadow) |
 | `aeropost` | [aeropost.com](https://aeropost.com/images/redesign/Logo.svg) — logo SVG fill #0b3e9d, also the most used colour in the home page |
 | `aex-paraguay` | [aex.com.py](https://www.aex.com.py/public/images/logos/aex.svg) — logo SVG fill #4a9fdc |
+| `afghan-post` | [afghanpost.gov.af](https://afghanpost.gov.af/) — header bar CSS `.main-navigation{background:#115ea4}` |
 | `akash-ganga` | [akashganga.info](https://www.akashganga.info/images/logo-compnay.png) — logo PNG #024182 with orange #e77817 (approximate) |
 | `aks-express` | [aks.rs](https://www.aks.rs/wp-content/themes/aks/assets/images/svg/logo.svg) — logo SVG fills #2b0299 (letters) and #ee2329 (speed lines) |
 | `alem-tat` | [alemtat.kz](https://www.alemtat.kz/wp-content/themes/Alemtat/images/logo_alemtat_315.png) — dominant indigo of the logo PNG #3b2d88, cyan #00a1e6 (approximate) |
@@ -106,6 +107,7 @@ and [`truck.json`](truck.json).
 | `colis-prive` | [colisprive.fr](https://www.colisprive.fr/) (sampled from the site icon) |
 | `colisweb` | [colisweb.com](https://www.colisweb.com/) (sampled from the site icon) |
 | `coordinadora` | [coordinadora.com](https://coordinadora.com/wp-content/uploads/2023/03/logo-coordinadora.svg) — logo SVG fill #1063ac, favicon #0b63ad |
+| `corre` | [corremz.com](https://www.corremz.com/) — site CSS `--brand: #e4002b` |
 | `correios-br` | [correios.com.br](https://www.correios.com.br/) |
 | `correo-argentino` | [correoargentino.com.ar](https://www.correoargentino.com.ar/sites/default/files/favicon_0.png) — favicon yellow #fece00 with navy #152663 (approximate) |
 | `correo-uruguayo` | [correo.com.uy](https://www.correo.com.uy/home) — theme CSS #main-head background #00a7e6; logo sun #fad000 |
@@ -115,6 +117,7 @@ and [`truck.json`](truck.json).
 | `correos-de-mexico` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Correos_de_M%C3%A9xico.png) — bird about #ec007c, matching the catalog #ed007d; the [tracking infographic](https://www.correosdemexico.gob.mx/SSLServicios/SeguimientoEnvio/Imagenes/Infografia.jpg) uses magenta panels (about #e00c74) (approximate) |
 | `correos-el-salvador` | [correos.gob.sv](https://www.correos.gob.sv/wp-content/uploads/2021/09/logo_dgces-e1638219667706.png) — logo bird #08416b (approximate); its boxes print the logo in this one navy |
 | `correos-express` | [correosexpress.com](https://www.correosexpress.com/) |
+| `correos-nicaragua` | [rastreo.correos.gob.ni](https://rastreo.correos.gob.ni:8084/Content/bootstrap/img/logoc.jpg) — logo figure blue sampled #447dc2 (approximate) |
 | `correos-spain` | [correos.es](https://www.correos.es/) |
 | `courier-center` | [courier.gr](https://www.courier.gr/skin/frontend/cc/default/images/logos/logo.png) — logo PNG orange #f37029 (approximate) |
 | `courier-it` | [courierit.co.za](https://www.courierit.co.za/) — site CSS #eb2227; logo PNG red #ec2028 (approximate) |
@@ -264,11 +267,14 @@ and [`truck.json`](truck.json).
 | `ktd` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/190522.png) — icon pixels #01234d (approximate) |
 | `kuehne-nagel` | [kuehne-nagel.com](https://www.kuehne-nagel.com/) |
 | `kunyoung` | [kunyoung.com](http://www.kunyoung.com/css/style.css) — site CSS #04378c (most used), header logo navy #01378d (approximate) |
+| `kyrgyz-post` | [post.kg](https://post.kg/language/ru/main/) — site button CSS `background-color: #184CEC`; favicon fill #164dee |
+| `la-poste-burkina-faso` | [laposte.bf](https://laposte.bf/) — site CSS #155bab (its most used brand blue); logo blue sampled #175fa6 (approximate) |
 | `la-poste-ci` | [laposte.ci.post](https://laposte.ci.post/) — the page's dominant green #00614a; logo PNG green #006951 (approximate) |
 | `la-poste-senegal` | [laposte.sn](https://www.laposte.sn/wp-content/uploads/2026/04/cropped-cropped-logo-Poste.png) — logo square blue #1b5cab, sphere #99dbf8 (approximate) |
 | `la-poste-tunisienne` | [poste.tn](https://concours.poste.tn/image/gif/logo.gif) — site icon GIF navy #10155f and yellow #fec321 (approximate); 2011 logo SVG on Wikimedia Commons navy #081d5c, yellow #fdc613 |
 | `laar-courier` | [fenix.laarcourier.com](https://fenix.laarcourier.com/Tracking/) — tracker CSS --color-yellow #FCE200, also the favicon tile |
 | `landmark-global` | [landmarkglobal.com](https://landmarkglobal.com/) |
+| `lao-post` | [laopost.com.la](https://www.laopost.com.la/logo/logo_laopost_nav.svg) — logo SVG fill #F6871F |
 | `latvijas-pasts` | [pasts.lv](https://pasts.lv/) — --color-header-logo #0C72BA; the mans.pasts.lv icon blue is #0072bb |
 | `leopards-courier` | [pk.leopardscourier.com](https://pk.leopardscourier.com/leopardcourier_dubai/css/custome.css) — site CSS #ffcb05 (105 uses); favicon is a yellow tile |
 | `libanpost` | [libanpost.com](https://www.libanpost.com/styles/css-EN?v=1510261716) — site CSS #006db7 (91 uses), also the logo wordmark blue; wing yellow #fed300 |
@@ -344,6 +350,7 @@ and [`truck.json`](truck.json).
 | `pfc-express` | [pfctrack.com](https://www.pfctrack.com/images/logo.png) — logo background #0e84d6 (approximate, JPEG) |
 | `phlpost` | [phlpost.gov.ph](https://phlpost.gov.ph/wp-content/uploads/2026/07/Phlpost_2012_logo.svg_.png) — logo red #9e0000 (POST), navy #001862, yellow #feac01 (approximate) |
 | `pilot-freight` | [delivers.maersk.com](https://delivers.maersk.com/tracking/) — site CSS #42b0d5 (Maersk blue) |
+| `pitney-bowes` | [pitneybowes.com](https://www.pitneybowes.com/etc.clientlibs/pitneybowes/clientlibs/clientlib-site/resources/images/SVG/logo-color.svg) — logo SVG monogram fill #3e53a4, also the site CSS primary |
 | `pitt-ohio` | [pittohio.com](https://pittohio.com/mypittohio/images/logo.png) — logo PNG red bar #ed1c24, letters #231f20 (approximate) |
 | `pmm` | [pmm.com.mx](https://pmm.com.mx/assets/images/fav_pmm.svg) — favicon SVG fills #1e008d and #3dae2b |
 | `poczta-polska` | [poczta-polska.pl](https://www.poczta-polska.pl/) |
@@ -1016,3 +1023,10 @@ and [`truck.json`](truck.json).
 | `phlpost` | Yellow running courier holding up an envelope on red | [phlpost.gov.ph](https://phlpost.gov.ph/wp-content/uploads/2026/07/Phlpost_2012_logo.svg_.png) — header logo, yellow running courier with an envelope after PHLPOST |
 | `redur` | White italic R with an open slot on dark teal | [redur.es](https://redur.es/app/uploads/2021/05/FAVICON-300x300.png) — site icon, white italic R on dark teal |
 | `torrestir` | Gold roaring lion head with a flowing mane on green | [torrestir.com](https://www.torrestir.com/wp-content/uploads/2018/11/cropped-Favicon-Torrestir-website-2-1-192x192.png) — site icon, gold lion head on a green disc |
+| `afghan-post` | White isometric cube outline on blue | [afghanpost.gov.af](https://afghanpost.gov.af/sites/default/files/2019-09/logoforsite.png) — header logo, the isometric cube |
+| `corre` | Three white arrowheads on red | [corremz.com](https://www.corremz.com/) — header logo, three arrowheads before "Corre" |
+| `correos-nicaragua` | White leaping figure carrying a white envelope on blue | [rastreo.correos.gob.ni](https://rastreo.correos.gob.ni:8084/Content/bootstrap/img/logoc.jpg) — tracking page logo, a leaping figure carrying an envelope |
+| `kyrgyz-post` | White P with an eagle head on blue | [post.kg](https://post.kg/wp-content/themes/hashone-child/images/post_logo_2.svg) — header logo, the P with an eagle head |
+| `la-poste-burkina-faso` | Yellow horse head inside a white ring on blue | [laposte.bf](https://laposte.bf/wp-content/uploads/2023/08/cropped-lapostebf_logo001.png) — header logo, the yellow horse head with a white ring |
+| `lao-post` | White map pin with a person, on a disc, on orange | [laopost.com.la](https://www.laopost.com.la/logo/logo_laopost_nav.svg) — header logo, the map pin with a person on a globe |
+| `pitney-bowes` | White ring around the pb monogram on blue | [pitneybowes.com](https://www.pitneybowes.com/etc.clientlibs/pitneybowes/clientlibs/clientlib-site/resources/images/SVG/logo-color.svg) — the circle symbol with the pb monogram |
