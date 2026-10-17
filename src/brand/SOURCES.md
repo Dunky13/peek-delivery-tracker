@@ -150,6 +150,7 @@ and [`truck.json`](truck.json).
 | `direx` | [direx.bg](https://direx.bg/) — theme CSS --color-primary #6B4597; icon SVG fill #6b4598 |
 | `dohrn-transfer` | [dohrn.com](https://www.dohrn.com/) — site theme variable --primaryColor #ee3631; logo SVG red #ed3424 |
 | `domex` | [domex.lk](https://domex.lk/) — track button and header text #FFCD05; logo PNG yellow #ffca05 (approximate) |
+| `drop2shop` | [drop2shop.ie](https://www.drop2shop.ie/assets/css/drop2shop-theme.css) — theme pink #d8127d (161 uses), the same pink as the favicon's dots (approximate in the 32 px favicon PNG) |
 | `dropp` | [dropp.is](https://dropp.is/) — app theme primary #00007D; logo SVG fills #00007E and #0FF |
 | `dsv` | [dsv.com](https://www.dsv.com/en) — header logo fill #002664 |
 | `dtdc` | [dtdc.com](https://www.dtdc.com/) (approximate) |
@@ -175,6 +176,7 @@ and [`truck.json`](truck.json).
 | `estafeta` | [estafeta.com](https://www.estafeta.com/) |
 | `estes` | [estes-express.com](https://www.estes-express.com/application/themes/estes/images/estes-logo-main-yellow.svg) — logo fill #ffd200; the ball red #e91b2c sampled from the app icon PNG (approximate) |
 | `ethiopian-post` | [ethio.post](https://ethio.post/wp-content/uploads/2024/09/cropped-Ethiopost-Logo-Reversed-Color-270x270.png) — icon PNG disc #f8ac19 (approximate) |
+| `eurodis` | [eurodis.com](https://eurodis.com/wp-content/themes/eurodis/layouts/images/logo.png) — header logo PNG, flat lid fill #0b418b (the same blue fills the 270 px site icon); site CSS main.css also uses #0b418b, with #00428c for links and headings |
 | `euroexpress-ba` | [euroexpress.ba](https://www.euroexpress.ba/static/css/main.48a626ff.chunk.css) — site CSS #da212e (42 uses); logo SVG red #db353d and blue #2f629c |
 | `europochta` | [evropochta.by](https://web.archive.org/web/20251205001851/https://evropochta.by/) — site CSS blue #225ba8 (most used colour) and favicon blue #225daa; logo SVG has red #d91c18 for ЕВРО and blue #214480 for ПОЧТА (archived; the live site answers 403 here) |
 | `evri` | [evri.com](https://www.evri.com/) |
@@ -322,6 +324,7 @@ and [`truck.json`](truck.json).
 | `naqel` | [naqelexpress.com](https://www.naqelexpress.com/static/images/logo%20with%20logistic%20en.jpg) — logo navy #071f5b (approximate), site CSS #06205C; Q red site CSS #e31837 |
 | `nationex` | [nationex.com](https://nationex.com/) — header logo fills and theme-color #006736 |
 | `ncs-courier` | [ncskurir.com](https://ncskurir.com/assets/css/layoutfe.css) — site CSS #243f80 and #e89c26, the logo navy and orange (logo PNG #243f80) |
+| `neighbour-express` | [neighbourexpress.com](https://www.neighbourexpress.com/) — header bar background rgb(37,75,141) #254b8d, the logo's blue panel; green #6ea25a is the site's button colour and the logo's lower panel |
 | `nepal-post` | [nepalpost.gov.np](https://giwmscdnone.gov.np/media/logo/logo_17z4vo1.png) — header emblem PNG #f6c63e (approximate) |
 | `nhat-tin` | [ntlogistics.vn](https://ntlogistics.vn/) — home page header class bg-[#FDD800]; logo SVG grey #484848, site icon smile yellow on #212221 |
 | `nim-express` | [nimexpress.com](https://www.nimexpress.com/) — redesign.css --nx-blue #0967b3 (97 uses; red #e31e24 is the accent); logo EXPRESS blue #006bb7 |
@@ -347,12 +350,14 @@ and [`truck.json`](truck.json).
 | `ozon-logistics` | [ozon.ru](https://tracking.ozon.ru/) — CSS --action-primary #005bff on Ozon pages; Commons OZON logo SVG fill #005bff |
 | `pack-man` | [pack-man.gr](https://pack-man.gr/assets/img/favicon.svg) — favicon SVG fills #06377b and #fbd733; theme-color #06377b |
 | `packeta` | [packeta.com](https://www.packeta.com/) |
+| `packli-punkt` | [paeckli-punkt.ch](https://www.paeckli-punkt.ch/wp-content/uploads/2024/09/paeckli-punkt-logo-pink.svg) — logo SVG fills #EA5A8E (disc) and #F9E937 (letters) |
 | `pakistan-post` | [ep.gov.pk](https://ep.gov.pk/images/logo_post.png) — logo red #ed1b24 (approximate; the JPEG logo reads #ec1b24); site CSS uses #be0101 |
 | `palletways` | [palletways.com](https://www.palletways.com/wp-content/uploads/2020/02/New-logo-palletways-corporate.png) — logo green #74bf43 (approximate) |
 | `pannon-xp` | [mypxp.pannonxp.hu](https://mypxp.pannonxp.hu/style/pxpfutar-4.1.1.css) — CSS --pxp-color #f68121; logo orange #f58120 (approximate) |
 | `paperfly` | [paperfly.com.bd](https://paperfly.com.bd/wp-content/uploads/2022/09/Paperfly-Logo.svg) — logo SVG fill #00ADEE (lower plane #17479D) |
 | `paquetexpress` | [paquetexpress.com.mx](https://www.paquetexpress.com.mx/) — inline CSS --px-blue-logo #002a52 (header behind the white logo) |
 | `parcelforce` | [parcelforce.com](https://www.parcelforce.com/) |
+| `parcelpoint` | [parcelpoint.com.au](https://parcelpoint.com.au/wp-content/uploads/2026/05/PARCELPOINT-Logo-1.png) — app icon (apple-touch-icon) black disc #000000 with white "P."; the site is black (header and hero, global colour #0a0a0a) with a white wordmark |
 | `pargo` | [pargo.co.za](https://pargo.co.za/wp-content/themes/pargo/assets/img/logo.svg) — logo SVG circle fill #fff200; site icon the same yellow with black |
 | `passport` | [passportglobal.com](https://passportglobal.com/) (CSS #00e796, also the logo P) |
 | `pathao-courier` | [pathao.com](https://pathao.com/courier/) — theme-color #e83330 and logo SVG fill #E83330 |
@@ -520,6 +525,7 @@ and [`truck.json`](truck.json).
 | `yalidine` | [yalidine.com](https://www.yalidine.com/assets/img/yalidine-logo.png) — logo PNG red #d62e2f (approximate) |
 | `yamato` | [kuronekoyamato.co.jp](https://www.kuronekoyamato.co.jp/) |
 | `yanwen` | [yw56.com.cn](https://www.yw56.com.cn/) |
+| `yilong-logistics` | [yxhlexpress.com](http://www.yxhlexpress.com/Files/Site/SiteLogo/faa54a40-c672-4766-b82a-767e7b20486f.png) — logo PNG flat red #ec0307, its most frequent pixel (approximate) |
 | `yimidida` | [yimidida.com](https://web.archive.org/web/2023/https://www.yimidida.com/img/logooo.87b9e3ac.png) — logo bar #f5a91a (approximate, archived PNG); site CSS primary #fabe00 |
 | `yto` | [yto.net.cn](https://www.yto.net.cn/) (sampled from the footer logo) |
 | `yunda` | [yundaex.com](https://www.yundaex.com/) |
@@ -537,7 +543,7 @@ and [`truck.json`](truck.json).
 | Decal (carriers) | Mark | Reference |
 | --- | --- | --- |
 | `fedex` | Orange forward arrow on purple | [fedex.com](https://www.fedex.com/) |
-| `dpd` (`dpd`, `dpd-fr`, `dpd-de`, `dpd-uk`, `dpd-ie`, `dpd-za`, `brt`) | White parcel cube on red; BRT's own logo carries the same cube | [dpd.com](https://www.dpd.com/), [brt.it](https://www.brt.it/) |
+| `dpd` (`dpd`, `dpd-fr`, `dpd-de`, `dpd-uk`, `dpd-ie`, `dpd-za`, `dpd-at`, `brt`) | White parcel cube on red; BRT's own logo carries the same cube | [dpd.com](https://www.dpd.com/), [brt.it](https://www.brt.it/) |
 | `amazon` (`amazon-logistics`, `amazon-shipping`) | Orange smile on a dark truck | [shipping.amazon.com](https://shipping.amazon.com/) |
 | `japan-post` | White postal mark on red | [post.japanpost.jp](https://www.post.japanpost.jp/) |
 | `swiss-post` (Swiss Post, Swiss Post Cargo, PostLogistics) | Red Swiss cross and black P on yellow | [Swiss Post brand](https://site.post.ch/en/about-us/company/the-brand-swiss-post) |
@@ -558,7 +564,7 @@ and [`truck.json`](truck.json).
 | `inpost` | Black crescent and rays of the sun on yellow | [inpost.pl](https://inpost.pl/) |
 | `bpost` | White swoosh on red | [bpost.be](https://www.bpost.be/) |
 | `austrian-post` | Black outline of the horn and its mouthpiece on yellow | [post.at](https://www.post.at/) |
-| `hermes` (`hermes-de`, `hermes`) | White wing of speed lines on blue | [myhermes.de](https://www.myhermes.de/) |
+| `hermes` (`hermes-de`, `hermes`, `hermes-at`) | White wing of speed lines on blue | [myhermes.de](https://www.myhermes.de/) |
 | `nova-poshta` | White arrows pointing four ways on red | [novaposhta.ua](https://novaposhta.ua/) |
 | `korea-post` | White ribbon of a swallow ahead of three chevrons on red; the chevrons' orange and yellow are approximations | [koreapost.go.kr](https://postman.koreapost.go.kr/kpost/subIndex/4263.do) |
 | `nz-post` | White striped loop in a ring on red | [nzpost.co.nz](https://www.nzpost.co.nz/) |
@@ -572,7 +578,7 @@ and [`truck.json`](truck.json).
 | `thailand-post` | Envelope folded into a dart, in blue, white and grey on red; the blue and grey are approximations | [international.thailandpost.com](https://international.thailandpost.com/) |
 | `bring` (`bring-posten`) | Ring in a white half and a grey half on green; the grey is an approximation | [bring.com](https://www.bring.com/) |
 | `packeta` | White taped box drawn as a solid on red; the greys are approximations | [packeta.com](https://www.packeta.com/) |
-| `gls` (`gls-ch`, `gls-de`, `gls-es`, `gls-fr`, `gls-it`) | White letters and the yellow dot on blue | [gls-group.com](https://gls-group.com/) |
+| `gls` (`gls-ch`, `gls-de`, `gls-es`, `gls-fr`, `gls-it`, `gls-at`) | White letters and the yellow dot on blue | [gls-group.com](https://gls-group.com/) |
 | `evri` (`evri`, `evri-uk`) | Cyan letters on navy | [evri.com](https://www.evri.com/) |
 | `postnord` | White lowercase name on two lines on blue | [postnord.com](https://www.postnord.com/) |
 | `poste-italiane` | Blue word Poste on yellow | [poste.it](https://www.poste.it/) |
@@ -1066,3 +1072,9 @@ and [`truck.json`](truck.json).
 | `tusass` | Navy lowercase t on turquoise | [tusass.gl](https://www.tusass.gl/etc/icon-180.png) — site icon, a bold navy lowercase t with an angled top |
 | `tws-express` | Black hexagon with a yellow arrow on yellow | [twsexpresscourier.it](https://twsexpresscourier.it/wp-content/uploads/2024/02/twsexpresscourier_logo_brand.svg) — logo, black hexagonal box with a yellow arrow pointing to its corner |
 | `byhd` | White and orange split roundel on blue: white C and lower stem, orange D and upper stems | [byhd56.com](http://www.byhd56.com/images/favicon.ico) — the round emblem in the site logo and favicon |
+| `eurodis` | The logo's wide parcel box: white sides under a blue lid, on blue | [eurodis.com](https://eurodis.com/wp-content/themes/eurodis/layouts/images/logo.png) — header logo, a flat box with a blue lid and the name on its white sides |
+| `parcelpoint` | White "P." of its app icon on black | [parcelpoint.com.au](https://parcelpoint.com.au/wp-content/uploads/2026/05/PARCELPOINT-Logo-1.png) |
+| `drop2shop` | White "2" whose foot runs into an arrow, from its wordmark, on pink | [drop2shop.ie](https://www.drop2shop.ie/assets/images/logo.png) |
+| `neighbour-express` | White zigzag arrow rising over a green ground on blue | [neighbourexpress.com](https://www.neighbourexpress.com/assets/neighbourexpress_logo-e8c4e9b3.webp) |
+| `packli-punkt` | Yellow "PP" of its favicon on pink | [paeckli-punkt.ch](https://www.paeckli-punkt.ch/wp-content/uploads/2024/09/paeckli-punkt-logo-pink.svg) |
+| `yilong-logistics` | White S of two spiralling dragon hooks on red | [yxhlexpress.com](http://www.yxhlexpress.com/Files/Site/SiteLogo/faa54a40-c672-4766-b82a-767e7b20486f.png) |

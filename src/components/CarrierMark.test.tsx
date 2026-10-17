@@ -94,6 +94,7 @@ describe('carrier mark', () => {
     'intex-paketdienst', 'liccardi', 'logoix', 'nox', 'peddler', 'pigeon-express', 'posta-faroe', 'tusass',
     'tws-express',
     'byhd',
+    'eurodis', 'parcelpoint', 'drop2shop', 'neighbour-express', 'packli-punkt', 'yilong-logistics',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

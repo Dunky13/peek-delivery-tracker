@@ -151,6 +151,7 @@ describe('carrier brand', () => {
       'intex-paketdienst', 'liccardi', 'logoix', 'nox', 'peddler', 'pigeon-express', 'posta-faroe', 'tusass',
       'tws-express',
       'byhd',
+      'eurodis', 'parcelpoint', 'drop2shop', 'neighbour-express', 'packli-punkt', 'yilong-logistics',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

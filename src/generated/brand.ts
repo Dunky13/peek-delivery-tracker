@@ -14,6 +14,7 @@ export const CARRIER_FAMILIES: Record<string, string> = {
   "dhl-ecommerce-uk": "dhl",
   "dhl-express": "dhl",
   "dhl-freight": "dhl",
+  "dpd-at": "dpd",
   "dpd-be": "dpd",
   "dpd-de": "dpd",
   "dpd-fr": "dpd",
@@ -23,13 +24,16 @@ export const CARRIER_FAMILIES: Record<string, string> = {
   "dpd-uk": "dpd",
   "dpd-za": "dpd",
   "evri-uk": "evri",
+  "fedex-pl": "fedex",
   "geodis-pl": "geodis",
+  "gls-at": "gls",
   "gls-ch": "gls",
   "gls-de": "gls",
   "gls-es": "gls",
   "gls-fr": "gls",
   "gls-it": "gls",
   "gls-pl": "gls",
+  "hermes-at": "hermes",
   "mng-kargo": "dhl",
   "postlogistics": "swiss-post",
   "swiss-post-cargo": "swiss-post"
@@ -218,10 +222,24 @@ export const CARRIER_PALETTES: Record<string, Partial<CarrierPalette>> = {
   "fedex": {
     "accent": "#ff6600"
   },
+  "fedex-pl": {
+    "accent": "#ff6600"
+  },
   "geis": {
     "truck": "#ffe501",
     "edge": "#ff0001",
     "accent": "#0a2363"
+  },
+  "gls-at": {
+    "surface-light": "#dfebfa",
+    "surface-dark": "#293e57",
+    "ink-light": "#355e8a",
+    "ink-dark": "#b7d1ee",
+    "brand-light": "#1634a7",
+    "brand-dark": "#abc7ff",
+    "truck": "#1634a7",
+    "edge": "#1634a7",
+    "accent": "#ffcf00"
   },
   "gls-ch": {
     "surface-light": "#dfebfa",
@@ -356,6 +374,9 @@ export const CARRIER_PALETTES: Record<string, Partial<CarrierPalette>> = {
     "truck": "#fcb414",
     "edge": "#ca9010",
     "accent": "#1f3a93"
+  },
+  "packli-punkt": {
+    "accent": "#f9e937"
   },
   "passport": {
     "accent": "#333333"
@@ -616,6 +637,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "dohrn-transfer": "dohrn-transfer",
   "domex": "domex",
   "dpd": "dpd",
+  "dpd-at": "dpd",
   "dpd-be": "dpd",
   "dpd-de": "dpd",
   "dpd-fr": "dpd",
@@ -624,6 +646,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "dpd-pt": "dpd",
   "dpd-uk": "dpd",
   "dpd-za": "dpd",
+  "drop2shop": "drop2shop",
   "dropp": "dropp",
   "dsv": "dsv",
   "dtdc": "dtdc",
@@ -650,6 +673,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "estafeta": "estafeta",
   "estes": "estes",
   "ethiopian-post": "ethiopian-post",
+  "eurodis": "eurodis",
   "euroexpress-ba": "euroexpress-ba",
   "europochta": "europochta",
   "evri": "evri",
@@ -662,6 +686,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "fargo-uz": "fargo-uz",
   "fastfrate": "fastfrate",
   "fedex": "fedex",
+  "fedex-pl": "fedex",
   "fermopoint": "fermopoint",
   "fg-delivery": "fg-delivery",
   "first-delivery-tn": "first-delivery-tn",
@@ -685,6 +710,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "ghana-post": "ghana-post",
   "ghn": "ghn",
   "ghtk": "ghtk",
+  "gls-at": "gls",
   "gls-ch": "gls",
   "gls-de": "gls",
   "gls-es": "gls",
@@ -709,6 +735,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "heppner": "heppner",
   "hepsijet": "hepsijet",
   "hermes": "hermes",
+  "hermes-at": "hermes",
   "hermes-de": "hermes",
   "hi-trans": "hi-trans",
   "hispapost": "hispapost",
@@ -814,6 +841,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "naqel": "naqel",
   "nationex": "nationex",
   "ncs-courier": "ncs-courier",
+  "neighbour-express": "neighbour-express",
   "nepal-post": "nepal-post",
   "nhat-tin": "nhat-tin",
   "nim-express": "nim-express",
@@ -841,12 +869,14 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "paack": "paack",
   "pack-man": "pack-man",
   "packeta": "packeta",
+  "packli-punkt": "packli-punkt",
   "pakistan-post": "pakistan-post",
   "palletways": "palletways",
   "pannon-xp": "pannon-xp",
   "paperfly": "paperfly",
   "paquetexpress": "paquetexpress",
   "parcelforce": "parcelforce",
+  "parcelpoint": "parcelpoint",
   "pargo": "pargo",
   "passport": "passport",
   "pathao-courier": "pathao-courier",
@@ -1026,6 +1056,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "yalidine": "yalidine",
   "yamato": "yamato",
   "yanwen": "yanwen",
+  "yilong-logistics": "yilong-logistics",
   "yimidida": "yimidida",
   "yto": "yto",
   "yunda": "yunda",
@@ -10783,6 +10814,88 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M13.56 4.63L14.33 5.12L15 5.72L15.56 6.43L16 7.21L16.31 8.06L16.47 8.95L16.49 9.85L16.36 10.75L16.08 11.61L15.67 12.41L15.13 13.13L14.48 13.76L13.73 14.27L12.92 14.66L13.88 11.9L14.25 11.37L14.52 10.78L14.69 10.15L14.75 9.51L14.7 8.86L14.53 8.23L14.26 7.64L13.84 8.85L11.88 9.44Z",
         "fill": "#df7017"
+      }
+    ],
+    "eurodis": [
+      {
+        "type": "polygon",
+        "d": "M9.52 4L3.9 5.86L3.9 10.28L12.65 15L18.09 12.28L18.09 7.86Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M9.44 5.5L5.57 6.78L12.65 10.71L16.52 8.68Z",
+        "fill": "truck"
+      }
+    ],
+    "parcelpoint": [
+      {
+        "type": "polygon",
+        "d": "M7.85 14.6L7.85 4.4L11.15 4.4L12.08 4.55L12.91 4.97L13.58 5.64L14 6.47L14.15 7.4L14 8.33L13.58 9.16L12.91 9.83L12.08 10.25L11.15 10.4L10.25 10.4L10.25 14.6Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M10.25 6.4L11.15 6.4L11.53 6.48L11.86 6.69L12.07 7.02L12.15 7.4L12.07 7.78L11.86 8.11L11.53 8.32L11.15 8.4L10.25 8.4Z",
+        "fill": "truck"
+      },
+      {
+        "type": "circle",
+        "cx": 12.55,
+        "cy": 13.25,
+        "r": 1.35,
+        "fill": "accent"
+      }
+    ],
+    "drop2shop": [
+      {
+        "type": "line",
+        "d": "M5.08 6.68L5.44 5.93L6.04 5.36L6.81 5.05L7.64 5.03L8.42 5.31L9.05 5.86L9.43 6.6L9.53 7.42L9.32 8.23L5.25 13.4L15.8 13.4",
+        "stroke": "accent",
+        "strokeWidth": 2
+      },
+      {
+        "type": "polygon",
+        "d": "M18.2 13.4L15.5 11.65L15.5 15.15Z",
+        "fill": "accent"
+      }
+    ],
+    "neighbour-express": [
+      {
+        "type": "polygon",
+        "d": "M3.4 10.2L6.9 7.6L9.4 11L17.59 5.42L19 5.6L18 15L3.4 15Z",
+        "fill": "#6ea25a"
+      },
+      {
+        "type": "line",
+        "d": "M3.4 10.2L6.9 7.6L9.4 11L16.6 6.1",
+        "stroke": "accent",
+        "strokeWidth": 1.6
+      },
+      {
+        "type": "polygon",
+        "d": "M18.58 4.75L17.58 7.55L15.62 4.65Z",
+        "fill": "accent"
+      }
+    ],
+    "packli-punkt": [
+      {
+        "type": "line",
+        "d": "M5.04 13.7L5.04 5.3L7.39 5.3L8.13 5.43L8.79 5.81L9.28 6.39L9.54 7.1L9.54 7.86L9.28 8.58L8.79 9.16L8.13 9.54L7.39 9.67L5.04 9.67M12.43 13.7L12.43 5.3L14.78 5.3L15.53 5.43L16.18 5.81L16.67 6.39L16.93 7.1L16.93 7.86L16.67 8.58L16.18 9.16L15.53 9.54L14.78 9.67L12.43 9.67",
+        "stroke": "accent",
+        "strokeWidth": 2
+      }
+    ],
+    "yilong-logistics": [
+      {
+        "type": "polygon",
+        "d": "M14.9 7.05L14.62 6.25L14.13 5.58L13.51 5.03L12.79 4.62L12.01 4.36L11.2 4.25L10.38 4.31L9.58 4.52L8.84 4.88L8.18 5.38L7.61 5.99L7.17 6.69L6.86 7.45L6.7 8.24L6.68 9.04L6.79 9.8L7.04 10.51L7.39 11.13L7.84 11.66L8.36 12.06L8.92 12.33L9.49 12.47L10.05 12.48L10.57 12.35L11.02 12.1L11.35 11.67L11.01 11.51L10.72 11.41L10.46 11.29L10.22 11.13L10 10.95L9.8 10.75L9.63 10.51L9.48 10.24L9.36 9.95L9.27 9.63L9.21 9.29L9.19 8.93L9.22 8.55L9.3 8.16L9.44 7.77L9.64 7.38L9.91 7.02L10.24 6.69L10.65 6.41L11.12 6.2L11.65 6.07L12.23 6.04L12.85 6.11L13.5 6.31L14.17 6.63L14.9 7.05Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M7.1 11.95L7.38 12.75L7.87 13.42L8.49 13.97L9.21 14.38L9.99 14.64L10.8 14.75L11.62 14.69L12.42 14.48L13.16 14.12L13.82 13.62L14.39 13.01L14.83 12.31L15.14 11.55L15.3 10.76L15.32 9.96L15.21 9.2L14.96 8.49L14.61 7.87L14.16 7.34L13.64 6.94L13.08 6.67L12.51 6.53L11.95 6.52L11.43 6.65L10.98 6.9L10.65 7.33L10.99 7.49L11.28 7.59L11.54 7.71L11.78 7.87L12 8.05L12.2 8.25L12.37 8.49L12.52 8.76L12.64 9.05L12.73 9.37L12.79 9.71L12.81 10.07L12.78 10.45L12.7 10.84L12.56 11.23L12.36 11.62L12.09 11.98L11.76 12.31L11.35 12.59L10.88 12.8L10.35 12.93L9.77 12.96L9.15 12.89L8.5 12.69L7.83 12.37L7.1 11.95Z",
+        "fill": "accent"
       }
     ]
   }

@@ -528,6 +528,9 @@
   "dpd": {
     "decal": "dpd"
   },
+  "dpd-at": {
+    "family": "dpd"
+  },
   "dpd-be": {
     "family": "dpd"
   },
@@ -551,6 +554,9 @@
   },
   "dpd-za": {
     "family": "dpd"
+  },
+  "drop2shop": {
+    "decal": "drop2shop"
   },
   "dropp": {
     "decal": "dropp"
@@ -641,6 +647,9 @@
   "ethiopian-post": {
     "decal": "ethiopian-post"
   },
+  "eurodis": {
+    "decal": "eurodis"
+  },
   "euroexpress-ba": {
     "decal": "euroexpress-ba"
   },
@@ -682,6 +691,9 @@
       "accent": "#ff6600"
     },
     "decal": "fedex"
+  },
+  "fedex-pl": {
+    "family": "fedex"
   },
   "fermopoint": {
     "decal": "fermopoint"
@@ -756,6 +768,9 @@
   },
   "ghtk": {
     "decal": "ghtk"
+  },
+  "gls-at": {
+    "family": "gls"
   },
   "gls-ch": {
     "family": "gls",
@@ -848,6 +863,9 @@
   },
   "hermes": {
     "decal": "hermes"
+  },
+  "hermes-at": {
+    "family": "hermes"
   },
   "hermes-de": {
     "decal": "hermes"
@@ -1201,6 +1219,9 @@
   "ncs-courier": {
     "decal": "ncs-courier"
   },
+  "neighbour-express": {
+    "decal": "neighbour-express"
+  },
   "nepal-post": {
     "decal": "nepal-post"
   },
@@ -1295,6 +1316,12 @@
   "packeta": {
     "decal": "packeta"
   },
+  "packli-punkt": {
+    "decal": "packli-punkt",
+    "palette": {
+      "accent": "#f9e937"
+    }
+  },
   "pakistan-post": {
     "decal": "pakistan-post"
   },
@@ -1312,6 +1339,9 @@
   },
   "parcelforce": {
     "decal": "parcelforce"
+  },
+  "parcelpoint": {
+    "decal": "parcelpoint"
   },
   "pargo": {
     "decal": "pargo"
@@ -1937,6 +1967,9 @@
   },
   "yanwen": {
     "decal": "yanwen"
+  },
+  "yilong-logistics": {
+    "decal": "yilong-logistics"
   },
   "yimidida": {
     "decal": "yimidida"
