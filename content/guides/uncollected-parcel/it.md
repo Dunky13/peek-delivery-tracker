@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 Un pacco in giacenza che nessuno ritira, all'ufficio postale, in un punto di ritiro o in un locker, di solito torna al mittente quando scade il termine. Gli uffici postali lo tengono più a lungo (Poste Italiane 10 giorni lavorativi, la Posta svizzera 7 giorni, 15 per i pacchi dall'estero), i locker InPost e Amazon spesso solo 3 giorni. Conta l'ultimo giorno scritto sull'avviso, nell'SMS o nell'e-mail. Dopo, è il negozio a decidere se rimborsarti o rispedirlo.
 
+Il codice non è arrivato o il locker era pieno? Leggi [pacco nel locker](guide:parcel-lockers).
+
 ## Cosa succede se non ritiro un pacco?
 
 Di solito torna al mittente con lo stesso corriere. Con alcuni servizi, però, resta lì e viene considerato abbandonato.

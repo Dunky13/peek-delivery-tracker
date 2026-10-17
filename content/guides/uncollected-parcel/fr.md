@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 Un colis non retiré au bureau de poste, en point relais ou en consigne repart chez l'expéditeur une fois son dernier jour passé. Les bureaux de poste et les points de retrait le gardent le plus longtemps (15 jours calendaires au bureau de poste en France, 14 dans un Point d'enlèvement bpost), les consignes souvent 5 jours seulement, et c'est la date de ton avis de passage, de ton SMS ou de ton e-mail qui compte. Si tu l'as raté, demande à la boutique de te rembourser ou de te le renvoyer.
 
+Pas reçu de code, ou la consigne était pleine ? C'est dans [consigne à colis](guide:parcel-lockers).
+
 ## Que devient un colis non retiré ou non récupéré ?
 
 Il repart chez l'expéditeur, en général par le même réseau, pas chez toi.

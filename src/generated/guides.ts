@@ -82,6 +82,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Parcel not collected from the post office: what happens?"
     },
     {
+      "id": "parcel-lockers",
+      "slug": "parcel-locker-collection-code",
+      "title": "Parcel lockers: collection codes, time limits and problems"
+    },
+    {
       "id": "damaged-parcel",
       "slug": "parcel-arrived-damaged",
       "title": "What to do if a parcel arrives damaged, and how to claim"
@@ -197,6 +202,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "uncollected-parcel",
       "slug": "paket-nicht-abgeholt",
       "title": "Paket nicht abgeholt: Was passiert dann?"
+    },
+    {
+      "id": "parcel-lockers",
+      "slug": "paketautomat-abholcode",
+      "title": "Packstation und Paketautomat: Abholcode, Frist, Probleme"
     },
     {
       "id": "damaged-parcel",
@@ -316,6 +326,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Colis non retiré\u00a0: délai de retrait et ce qu'il devient"
     },
     {
+      "id": "parcel-lockers",
+      "slug": "consigne-colis-code-retrait",
+      "title": "Consigne à colis\u00a0: code de retrait, délai et problèmes"
+    },
+    {
       "id": "damaged-parcel",
       "slug": "colis-endommage-que-faire",
       "title": "Colis endommagé\u00a0: que faire et comment réclamer"
@@ -431,6 +446,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "uncollected-parcel",
       "slug": "pacco-in-giacenza-non-ritirato",
       "title": "Pacco in giacenza non ritirato: quanti giorni e cosa succede"
+    },
+    {
+      "id": "parcel-lockers",
+      "slug": "pacco-locker-codice-ritiro",
+      "title": "Pacco nel locker: codice di ritiro, tempi e problemi"
     },
     {
       "id": "damaged-parcel",
@@ -550,6 +570,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Paquete no recogido: qué pasa y cuánto tiempo lo guardan"
     },
     {
+      "id": "parcel-lockers",
+      "slug": "taquilla-paquetes-codigo-recogida",
+      "title": "Paquete en una taquilla: código de recogida y plazos"
+    },
+    {
       "id": "damaged-parcel",
       "slug": "paquete-danado-que-hacer",
       "title": "Paquete dañado: qué hacer y cómo reclamar"
@@ -667,6 +692,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Quanto tempo tenho para levantar uma encomenda?"
     },
     {
+      "id": "parcel-lockers",
+      "slug": "cacifo-encomendas-codigo-levantamento",
+      "title": "Encomenda no cacifo: código para levantar e prazos"
+    },
+    {
       "id": "damaged-parcel",
       "slug": "encomenda-danificada",
       "title": "Encomenda danificada: o que fazer e como reclamar"
@@ -782,6 +812,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "uncollected-parcel",
       "slug": "paczka-nie-odebrana",
       "title": "Nieodebrana paczka z paczkomatu lub poczty: co dalej?"
+    },
+    {
+      "id": "parcel-lockers",
+      "slug": "paczkomat-kod-odbioru-terminy",
+      "title": "Paczkomat i automat paczkowy: kod odbioru i terminy"
     },
     {
       "id": "damaged-parcel",

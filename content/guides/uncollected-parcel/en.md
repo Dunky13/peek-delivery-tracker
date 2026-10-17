@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 If nobody collects a parcel from a post office, parcel shop or locker, it goes back to the sender once its last day has passed. Post offices hold parcels longest (Royal Mail 18 days, USPS usually 15, [Canada Post](carrier:canada-post) 15 calendar days), while many lockers give you only 2 or 3. The date on your card, text or email is the one that counts, and if you've missed it, ask the shop for a refund or to send it again.
 
+Locker code never came, or the locker was full? That's in [parcel lockers](guide:parcel-lockers).
+
 ## What happens if a parcel is not collected?
 
 It goes back to the sender, usually by the same service.

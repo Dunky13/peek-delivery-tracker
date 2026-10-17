@@ -752,6 +752,37 @@ function Return() {
   </>;
 }
 
+function Lockers() {
+  const doors = [[314, 54, 56], [450, 54, 56], [518, 54, 56], [314, 118, 56], [518, 118, 56], [314, 182, 54], [382, 182, 54], [450, 182, 54], [518, 182, 54]] as const;
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The phone with the code that opens the door. */}
+    <Phone x={40} y={48} width={116} height={192}>
+      <rect x="20" y="40" width="56" height="9" rx="4.5" fill="var(--control)" />
+      {['4', '8', '2', '9', '1', '3'].map((digit, index) => <g key={index} transform={`translate(${13 + index % 3 * 31} ${62 + Math.floor(index / 3) * 38})`}>
+        <rect width="26" height="32" rx="6" fill="var(--rose-soft)" />
+        <text x="13" y="22" textAnchor="middle" fontFamily={MONO} fontSize="18" fontWeight="700" fill={ink}>{digit}</text>
+      </g>)}
+      <rect x="20" y="150" width="76" height="20" rx="10" fill="var(--rose)" />
+    </Phone>
+    <path d="M168 92C230 30 300 24 380 44" stroke="var(--rose)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    {/* A bank of lockers: its screen and keypad, and the door Pip came out of. */}
+    <rect x="300" y="40" width="290" height="208" rx="12" fill="var(--rose)" />
+    {doors.map(([x, y, height]) => <g key={`${x}-${y}`}>
+      <rect x={x} y={y} width="58" height={height} rx="5" fill={paper} opacity=".2" />
+      <circle cx={x + 48} cy={y + height / 2} r="3.5" fill={paper} opacity=".6" />
+    </g>)}
+    <rect x="382" y="54" width="58" height="56" rx="5" fill={paper} />
+    <rect x="392" y="66" width="38" height="8" rx="4" fill="var(--control)" />
+    <rect x="392" y="82" width="26" height="8" rx="4" fill="var(--control)" />
+    {Array.from({ length: 9 }, (_, index) => <circle key={index} cx={395 + index % 3 * 16} cy={130 + Math.floor(index / 3) * 15} r="4" fill={paper} opacity=".75" />)}
+    <rect x="450" y="118" width="58" height="56" rx="4" fill="#20251E" opacity=".55" />
+    <path d="M508 118 538 108v76l-30-10z" fill={paper} />
+    <circle cx="530" cy="146" r="3.5" fill="var(--rose)" />
+    <Pip x={472} ground={262} width={136} mood="joy" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -768,6 +799,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },
   'uncollected-parcel': { tone: 'ochre', draw: Uncollected },
+  'parcel-lockers': { tone: 'rose', draw: Lockers },
   'damaged-parcel': { tone: 'orange', draw: Damaged },
   'lost-parcel': { tone: 'lilac', draw: Lost },
   'delivery-scam-texts': { tone: 'lilac', draw: Scam },

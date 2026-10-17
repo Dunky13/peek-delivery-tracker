@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 Un paquete que nadie recoge en una oficina, una tienda o un locker vuelve al remitente cuando se acaba el plazo. Correos lo guarda 15 días en la oficina; en un locker sueles tener 5 días o menos (3 en un Amazon Locker). La fecha que manda es la de tu aviso, SMS o email. Después, la tienda o la plataforma decide si te devuelve el dinero o te lo vuelve a enviar.
 
+¿No te ha llegado el código o la taquilla estaba llena? Lo tienes en [paquete en una taquilla](guide:parcel-lockers).
+
 ## ¿Qué pasa si no recojo un paquete?
 
 Vuelve al remitente, normalmente con el mismo transportista, no a tu casa.

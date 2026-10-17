@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 Holt niemand ein Paket aus der Filiale, dem Paketshop oder der Packstation ab, geht es nach Ablauf der Abholfrist an den Absender zurück. Bei DHL und Hermes in Deutschland sind das meist 7 Werktage, bei der Österreichischen Post läuft die Frist bis zum dritten Montag nach der Benachrichtigung, bei der Schweizerischen Post in der Regel 7 Tage, die du kostenlos verlängern kannst. Es zählt das Datum auf deiner Benachrichtigung, in der SMS oder E-Mail. Ist es vorbei, frag den Shop, ob er dir das Geld erstattet oder das Paket noch einmal schickt.
 
+Kein Abholcode gekommen oder die Packstation war voll? Das steht unter [Packstation und Paketautomat](guide:parcel-lockers).
+
 ## Was passiert, wenn ein Paket nicht abgeholt wird?
 
 Es geht zurück an den Absender, nicht noch einmal zu dir.

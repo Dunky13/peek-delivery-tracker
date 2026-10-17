@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 Nieodebrana paczka z automatu, punktu albo poczty wraca do nadawcy, gdy minie ostatni dzień odbioru. Najdłużej czeka na poczcie (przesyłka polecona Poczty Polskiej 14 dni od dnia po pierwszym awizo), najkrócej w automacie: w Paczkomacie InPost 48 godzin. Liczy się termin z Twojego SMS-a, e-maila albo awizo. Potem to sklep decyduje, czy odda Ci pieniądze, czy wyśle paczkę jeszcze raz.
 
+Kod nie przyszedł albo automat był pełny? Zobacz [Paczkomat i automat paczkowy](guide:parcel-lockers).
+
 ## Co się stanie z nieodebraną paczką?
 
 Wraca do nadawcy. Zwykle odwozi ją ta sama firma, która ją przywiozła.

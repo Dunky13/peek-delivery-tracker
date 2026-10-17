@@ -9,6 +9,8 @@ updated: 2026-10-14
 
 Depende de onde está a encomenda: nos CTT tens 10 dias úteis para levantar uma Encomenda Postal numa Loja ou Ponto CTT (15 se vier do estrangeiro), mas só 5 dias num cacifo Locky ou num Locker da InPost. O que conta é a data-limite do aviso, do SMS ou do e-mail. Passado esse dia, a encomenda volta para o remetente, e é a loja que decide se te reembolsa ou se a envia outra vez.
 
+O código não chegou ou o cacifo estava cheio? Vê [encomenda no cacifo](guide:parcel-lockers).
+
 ## O que acontece se não levantar a encomenda?
 
 Volta para o remetente, normalmente pela mesma transportadora, e não para a tua morada.
