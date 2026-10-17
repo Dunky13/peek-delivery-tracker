@@ -155,6 +155,8 @@ describe('carrier brand', () => {
       'codexpress', 'designer-transport', 'direct-couriers', 'ewe', 'homexpress', 'postmedia-parcel-services',
       'precision-deliveries', 'transport-rdl', 'energo', 't-group', 'method', 'sailpost',
       'tforce-logistics', 'globalpost', 'united-delivery-service', 'best-overnite-express', 'estes-forwarding',
+      'ajex', 'exelot', 'kwick-box', 'labaih', 'shipblu', 'starlinks', 'gtl-goto', 'paxel', 'pickupp',
+      '247express',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

@@ -5,6 +5,9 @@
   "17feia": {
     "decal": "17feia"
   },
+  "247express": {
+    "decal": "247express"
+  },
   "2go": {
     "decal": "2go"
   },
@@ -43,6 +46,9 @@
   },
   "afghan-post": {
     "decal": "afghan-post"
+  },
+  "ajex": {
+    "decal": "ajex"
   },
   "akash-ganga": {
     "decal": "akash-ganga"
@@ -692,6 +698,9 @@
       "accent": "#f3e127"
     }
   },
+  "exelot": {
+    "decal": "exelot"
+  },
   "exline-kz": {
     "decal": "exline-kz"
   },
@@ -854,6 +863,9 @@
   },
   "gs-postbox": {
     "decal": "gs-postbox"
+  },
+  "gtl-goto": {
+    "decal": "gtl-goto"
   },
   "guatex": {
     "decal": "guatex"
@@ -1091,6 +1103,9 @@
   "kunyoung": {
     "decal": "kunyoung"
   },
+  "kwick-box": {
+    "decal": "kwick-box"
+  },
   "kyrgyz-post": {
     "decal": "kyrgyz-post"
   },
@@ -1115,6 +1130,9 @@
   },
   "laar-courier": {
     "decal": "laar-courier"
+  },
+  "labaih": {
+    "decal": "labaih"
   },
   "landmark-global": {
     "decal": "landmark-global"
@@ -1391,6 +1409,9 @@
   "pathao-courier": {
     "decal": "pathao-courier"
   },
+  "paxel": {
+    "decal": "paxel"
+  },
   "paxi": {
     "decal": "paxi",
     "palette": {
@@ -1414,6 +1435,12 @@
   },
   "phlpost": {
     "decal": "phlpost"
+  },
+  "pickupp": {
+    "decal": "pickupp"
+  },
+  "pickupp-sg": {
+    "family": "pickupp"
   },
   "pigeon-express": {
     "decal": "pigeon-express"
@@ -1666,6 +1693,9 @@
   "shipa": {
     "decal": "shipa"
   },
+  "shipblu": {
+    "decal": "shipblu"
+  },
   "shipup": {
     "decal": "shipup",
     "palette": {
@@ -1748,6 +1778,9 @@
   "spx-ph": {
     "decal": "spx"
   },
+  "spx-sg": {
+    "decal": "spx"
+  },
   "spx-th": {
     "decal": "spx"
   },
@@ -1771,6 +1804,9 @@
   },
   "starken": {
     "decal": "starken"
+  },
+  "starlinks": {
+    "decal": "starlinks"
   },
   "steadfast": {
     "decal": "steadfast"

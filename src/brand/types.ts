@@ -111,7 +111,9 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'neighbour-express' | 'packli-punkt' | 'yilong-logistics' | 'codexpress' | 'designer-transport'
   | 'direct-couriers' | 'ewe' | 'homexpress' | 'postmedia-parcel-services' | 'precision-deliveries'
   | 'transport-rdl' | 'energo' | 't-group' | 'method' | 'sailpost' | 'tforce-logistics'
-  | 'globalpost' | 'united-delivery-service' | 'best-overnite-express' | 'estes-forwarding';
+  | 'globalpost' | 'united-delivery-service' | 'best-overnite-express' | 'estes-forwarding' | 'ajex'
+  | 'exelot' | 'kwick-box' | 'labaih' | 'shipblu' | 'starlinks' | 'gtl-goto' | 'paxel' | 'pickupp'
+  | '247express';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

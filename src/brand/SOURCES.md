@@ -17,6 +17,7 @@ and [`truck.json`](truck.json).
 | --- | --- |
 | `139express` | [139express.com](http://www.139express.com/images/ru/logo.gif) — dominant red of the logo GIF, #b81c22 (approximate) |
 | `17feia` | [17feia.com](https://www.17feia.com/) — search-button gradient #00d4f3 to #00a9e4 in the site's tracking and home CSS; the header logo is white |
+| `247express` | [247express.vn](https://247express.vn/images/logo.png) — logo PNG main fill #ed1f24, shaded with #cd2027 and #991b1e (approximate); the site CSS uses #d92923 for buttons |
 | `2go` | [2go.com.ph](https://2go.com.ph/wp-content/uploads/2025/03/2GO-Only_Magenta-01-2048x882.png) — logo PNG #ec008c (approximate); Elementor primary colour #ec008c |
 | `4-72` | [4-72.com.co](https://www.4-72.com.co/info/portal_472/media/bloque5.png) — logo PNG blue #0033a0, yellow #ffc72c, red #e4002b (approximate) |
 | `5post` | [fivepost.ru](https://fivepost.ru/files/public/favicon/favicon.svg) — favicon SVG fill #64b441 with grey #575756 |
@@ -29,6 +30,7 @@ and [`truck.json`](truck.json).
 | `aeropost` | [aeropost.com](https://aeropost.com/images/redesign/Logo.svg) — logo SVG fill #0b3e9d, also the most used colour in the home page |
 | `aex-paraguay` | [aex.com.py](https://www.aex.com.py/public/images/logos/aex.svg) — logo SVG fill #4a9fdc |
 | `afghan-post` | [afghanpost.gov.af](https://afghanpost.gov.af/) — header bar CSS `.main-navigation{background:#115ea4}` |
+| `ajex` | [aj-ex.com](https://www.aj-ex.com/) — site CSS --primarys #ec171c, the header bar behind the white logo |
 | `akash-ganga` | [akashganga.info](https://www.akashganga.info/images/logo-compnay.png) — logo PNG #024182 with orange #e77817 (approximate) |
 | `aks-express` | [aks.rs](https://www.aks.rs/wp-content/themes/aks/assets/images/svg/logo.svg) — logo SVG fills #2b0299 (letters) and #ee2329 (speed lines) |
 | `alem-tat` | [alemtat.kz](https://www.alemtat.kz/wp-content/themes/Alemtat/images/logo_alemtat_315.png) — dominant indigo of the logo PNG #3b2d88, cyan #00a1e6 (approximate) |
@@ -188,6 +190,7 @@ and [`truck.json`](truck.json).
 | `evri` | [evri.com](https://www.evri.com/) |
 | `evropat` | [evropat.bg](https://evropat.bg/wp-content/uploads/2026/08/cropped-logo-full-2-1024x360.png) — logo PNG #103683 and red #eb2c1b (two-colour palette); site CSS primary #103683 |
 | `ewe` | [ewe.com.au](https://www.ewe.com.au/) — header CSS #0036a9 behind the yellow logo; logo yellow #f3e127 (approximate), site icon blue #013cbc (approximate) |
+| `exelot` | [exelot.com](https://cdn.prod.website-files.com/6675710ddb951bbeffc6998f/667574dff5674853e52f2e25_excelot-logo.svg) — logo SVG main fill #2E00AB (wordmark and chevron tip), with #F68C38 and #0056FF facets |
 | `exline-kz` | [exline.kz](https://exline.kz/logo.png) — logo PNG globe #0535ef, band #f3311d (approximate) |
 | `express-one` | [expressone.hu](https://expressone.hu/assets/images/logo-black.svg) — swoosh fill #ec6500 |
 | `fan-courier` | [fancourier.ro](https://www.fancourier.ro/wp-content/uploads/2023/03/logo.svg) — dominant fill #0F2345 |
@@ -224,6 +227,7 @@ and [`truck.json`](truck.json).
 | `gogo-xpress` | [gogoxpress.com](https://cdn.gogoxpress.com/brand_icons/gogo-xpress-logo.svg) — logo SVG fills #23a3dd (blue letters) and #c21f44 (red letters) |
 | `groupe-guilbault` | [groupeguilbault.com](https://www.groupeguilbault.com/css/main.css?v=4) — site CSS red #c32d30 and yellow #fcdf15; red cabs with yellow lettering in the site photos |
 | `gs-postbox` | [cvsnet.co.kr](https://www.cvsnet.co.kr/common/images/logo_on.png) — logo orange #e36808 and favicon #e56a00 (approximate); site CSS buttons #f36523 |
+| `gtl-goto` | [gtl.id](https://www.gtl.id/) — logo SVG fill #14922C inlined in the site bundle (main.js), the theme colour texasGreen.500 of the navigation bar, and the favicon's green |
 | `guatex` | [guatex.com](https://guatex.com/wp-content/uploads/2022/11/logo_guatex_25_aniversario.png) — logo PNG flat navy #282f6a (approximate; site CSS #141b49) |
 | `gzyl` | [yunlianhouyun.com](http://yunlianhouyun.com/skin/logistics/css/style.css) — CSS --blue #4e79e1; every opaque logo pixel #4e79e1 |
 | `hanjin` | [hanjin.com](https://www.hanjin.com/attach/IMAGE/TopDesignMgr/LogoImgUpload/2025/1/ijmShJL6Y2PPN8tQ.PNG) — logo navy #051469 (approximate) |
@@ -288,12 +292,14 @@ and [`truck.json`](truck.json).
 | `ktd` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/190522.png) — icon pixels #01234d (approximate) |
 | `kuehne-nagel` | [kuehne-nagel.com](https://www.kuehne-nagel.com/) |
 | `kunyoung` | [kunyoung.com](http://www.kunyoung.com/css/style.css) — site CSS #04378c (most used), header logo navy #01378d (approximate) |
+| `kwick-box` | [kwick-box.com](https://www.kwick-box.com/) — the site's theme-main-blue rgb(37, 75, 102) behind the home page hero, matching the KwickBox app icon's dark blue; the logo's BOX is #246081 |
 | `kyrgyz-post` | [post.kg](https://post.kg/language/ru/main/) — site button CSS `background-color: #184CEC`; favicon fill #164dee |
 | `la-poste-burkina-faso` | [laposte.bf](https://laposte.bf/) — site CSS #155bab (its most used brand blue); logo blue sampled #175fa6 (approximate) |
 | `la-poste-ci` | [laposte.ci.post](https://laposte.ci.post/) — the page's dominant green #00614a; logo PNG green #006951 (approximate) |
 | `la-poste-senegal` | [laposte.sn](https://www.laposte.sn/wp-content/uploads/2026/04/cropped-cropped-logo-Poste.png) — logo square blue #1b5cab, sphere #99dbf8 (approximate) |
 | `la-poste-tunisienne` | [poste.tn](https://concours.poste.tn/image/gif/logo.gif) — site icon GIF navy #10155f and yellow #fec321 (approximate); 2011 logo SVG on Wikimedia Commons navy #081d5c, yellow #fdc613 |
 | `laar-courier` | [fenix.laarcourier.com](https://fenix.laarcourier.com/Tracking/) — tracker CSS --color-yellow #FCE200, also the favicon tile |
+| `labaih` | [mylabaih.com](https://mylabaih.com/assets/images/logo.png) — logo PNG orange #f8931d for the "h" and the cart line (approximate); the site CSS uses #ff8e00 and the header shows the logo in white on orange |
 | `landmark-global` | [landmarkglobal.com](https://landmarkglobal.com/) |
 | `lao-post` | [laopost.com.la](https://www.laopost.com.la/logo/logo_laopost_nav.svg) — logo SVG fill #F6871F |
 | `latvijas-pasts` | [pasts.lv](https://pasts.lv/) — --color-header-logo #0C72BA; the mans.pasts.lv icon blue is #0072bb |
@@ -371,6 +377,7 @@ and [`truck.json`](truck.json).
 | `pargo` | [pargo.co.za](https://pargo.co.za/wp-content/themes/pargo/assets/img/logo.svg) — logo SVG circle fill #fff200; site icon the same yellow with black |
 | `passport` | [passportglobal.com](https://passportglobal.com/) (CSS #00e796, also the logo P) |
 | `pathao-courier` | [pathao.com](https://pathao.com/courier/) — theme-color #e83330 and logo SVG fill #E83330 |
+| `paxel` | [paxel.co](https://paxel.co/css/app.css) — wordmark fill #5f51a1 in the header logo PNG (exact pixel) and the stylesheet's most used brand colour (#5f51a1/#5e50a1, navbar and buttons); the app icon background is the same purple |
 | `paxi` | [paxi.co.za](https://cdn.prod.website-files.com/632874eb357ffe9936d5498d/636a4b9640d40d161b81e109_PAXI_logo%5B93%5D.webp) — logo orange #fa751e and teal #005065 (approximate) |
 | `pbt` | [pbt.nz](https://www.pbt.nz/) — header and site blue #008fbe (most used colour of the stylesheet; logo SVG is white) |
 | `pecom` | [pecom.ru](https://upload.pecom.ru/svg/logo.svg) — logo SVG fills #242265, red #E4003E |
@@ -378,6 +385,7 @@ and [`truck.json`](truck.json).
 | `pelican-express` | [e-can.com.tw](https://www.e-can.com.tw/images/logo.png) — logo PNG blue #005ead (flat), beak #fcca0f |
 | `pfc-express` | [pfctrack.com](https://www.pfctrack.com/images/logo.png) — logo background #0e84d6 (approximate, JPEG) |
 | `phlpost` | [phlpost.gov.ph](https://phlpost.gov.ph/wp-content/uploads/2026/07/Phlpost_2012_logo.svg_.png) — logo red #9e0000 (POST), navy #001862, yellow #feac01 (approximate) |
+| `pickupp` | [hk.pickupp.io](https://hk.pickupp.io/manifest.webmanifest) — theme_color and background_color #ef3b3b in the web manifest and the page's theme-color; the logo's bright "upp" is #ee3a3a |
 | `pigeon-express` | [pigeonexpress.com](https://pigeonexpress.com/_design/assets/images/logo.svg) — logo SVG fills #00327D and #FF8C12 |
 | `pilot-freight` | [delivers.maersk.com](https://delivers.maersk.com/tracking/) — site CSS #42b0d5 (Maersk blue) |
 | `pitney-bowes` | [pitneybowes.com](https://www.pitneybowes.com/etc.clientlibs/pitneybowes/clientlibs/clientlib-site/resources/images/SVG/logo-color.svg) — logo SVG monogram fill #3e53a4, also the site CSS primary |
@@ -447,6 +455,7 @@ and [`truck.json`](truck.json).
 | `sfc` | [sendfromchina.com](https://www.sendfromchina.com/) — site CSS #ff8100; logo swoosh #f36a21 |
 | `shadowfax` | [shadowfax.in](https://www.shadowfax.in/) — CSS .bg-theme-green rgb(0 138 113); theme yellow rgb(241 238 27) |
 | `shipa` | [shipa.com](https://shipa.com/static/6add25daa42f483a2844655b94664348/footer_shipa_delivery_logo_spaced_b650c90d74.svg.svg) — Shipa Delivery logo SVG slash fill #00f; shipa.com marks the Shipa Delivery card color="#0000ff" |
+| `shipblu` | [shipblu.com](https://shipblu.com/assets/img/navlogo.972e5b91.svg) — the logo's bird and "Blu" fill #1c5bfe (PNG embedded in the nav logo SVG, approximate), also the most used colour in the site stylesheet; the navy #0a3266 is the "Ship" text, the bird's tail and the footer |
 | `shipup` | [shipup.co](https://www.shipup.co/) (sampled from the site icon) |
 | `shree-anjani` | [shreeanjanicourier.com](https://shreeanjanicourier.com/img/logo.svg) — logo SVG fill #F58220; site CSS --critical-primary #f58220 |
 | `shree-maruti` | [shreemaruti.com](https://shreemaruti.com/) — CSS --primary-color #2a3680; header logo navy #2a3680 |
@@ -469,6 +478,7 @@ and [`truck.json`](truck.json).
 | `spx-br` | [spx.com.br](https://spx.com.br/logo/spx-express.svg) — logo SVG fill #EE4D2D; the home page CSS --nss-primary-color is #ee4d2d |
 | `spx-id` | [spx.co.id](https://spx.co.id/) — home page styles #ee4d2d |
 | `spx-my` | [spx.com.my](https://spx.com.my/) — home page styles #ee4d2d |
+| `spx-sg` | [spx.sg](https://spx.sg/) — the SPX Express orange #ee4d2d of its sister sites |
 | `spx-th` | [spx.co.th](https://spx.co.th/) — home page styles #ee4d2d |
 | `spx-tw` | [spx.tw](https://spx.tw/) — the SPX Express orange #ee4d2d of its sister sites |
 | `spx-vn` | [spx.vn](https://spx.vn/) — home page styles #ee4d2d |
@@ -476,6 +486,7 @@ and [`truck.json`](truck.json).
 | `st-courier` | [stcourier.com](https://stcourier.com/images/logo.png) — logo PNG wordmark #c7262f (approximate); site CSS #de200b |
 | `stallion-express` | [stallion.ca](https://stallion.ca/wp-content/uploads/2026/09/Stallion-Express-Logo-Icon-Black-on-Orange.png) — icon disc #fbad40, horse #221e20 (approximate) |
 | `starken` | [starken.cl](https://www.starken.cl/logo192.png) — app icon green #009f3e (approximate); site CSS #009239 |
+| `starlinks` | [starlinks-me.com](https://cdn.prod.website-files.com/67b709c3b0778f02215f7fa9/67b709c3b0778f02215f8143_Logo%202000.png) — logo PNG star and arch fill #0d714c (approximate; the app webclip green is #06704a and the site CSS --primary--main #1f6a4a) |
 | `steadfast` | [steadfast.com.bd](https://steadfast.com.bd/) — CSS --sf-primary #00BF6F, the logo kite fill |
 | `sto` | [sto.cn](https://www.sto.cn/) |
 | `sundarban-courier` | [sundarbancourierltd.com](https://www.sundarbancourierltd.com/FontendStyle/img/fav-icon.png) — logo frame blue #0b4c9f and tiger #ffbf00 (approximate); site header navy |
@@ -638,7 +649,7 @@ and [`truck.json`](truck.json).
 | `singapore-post` | Two red slanted bars on a white slab, on blue | [singpost.com](https://www.singpost.com/) |
 | `geodis` | White capitals on blue | [geodis.com](https://geodis.com/) |
 | `lbc-express` | White letters in a six-sided frame on red | [lbcexpress.com](https://www.lbcexpress.com/) |
-| `spx` (`spx-br`, `spx-id`, `spx-my`, `spx-ph`, `spx-th`, `spx-tw`, `spx-vn`) | White letters on orange | [spx.ph](https://spx.ph/) |
+| `spx` (`spx-br`, `spx-id`, `spx-my`, `spx-ph`, `spx-sg`, `spx-th`, `spx-tw`, `spx-vn`) | White letters on orange | [spx.ph](https://spx.ph/) |
 | `ekart` | White name on blue | [ekartlogistics.com](https://www.ekartlogistics.com/) |
 | `xpressbees` | Two initials on orange, the second in black | [xpressbees.com](https://www.xpressbees.com/) |
 | `cne` | White slanted letters in a frame on red | [cne.com](https://www.cne.com/) |
@@ -1112,3 +1123,13 @@ and [`truck.json`](truck.json).
 | `united-delivery-service` | White and grey italic UDS split by a diagonal on blue | [uniteddeliveryservice.com](https://www.uniteddeliveryservice.com/img/logo/logo.png) — heavy italic UDS, blue above a rising split line and grey below |
 | `best-overnite-express` | White BEST over a red brush swoosh on navy | [bestovernite.com](https://www.bestovernite.com/wp-content/uploads/2022/06/logo.png) — navy BEST / OVERNITE / EXPRESS over a red brush swoosh rising to the right |
 | `estes-forwarding` | Three white wing blades pointing left on navy | [efwtrack.com](https://efwtrack.com/img/EFWLandingLogo@2x.f355ad0c.png) — the wing of three curved blades left of the italic EFW |
+| `ajex` | White bold AJEX on red | [aj-ex.com](https://www.aj-ex.com/images/icons/ajex-dhl-logo-horizontal-en.png) — the white AJEX wordmark of the header logo; the favicon carries the same lettering |
+| `exelot` | Orange, white and blue faceted chevron on purple | [exelot.com](https://cdn.prod.website-files.com/6675710ddb951bbeffc6998f/667574dff5674853e52f2e25_excelot-logo.svg) — the three-facet chevron left of the exelot wordmark |
+| `kwick-box` | Grey K and white B with a white corner bracket on dark blue | [kwick-box.com](https://www.kwick-box.com/label.png) — the KWICKBOX logo's corner bracket and the KB monogram of the KwickBox Shipper app icon |
+| `labaih` | White L and h joined into a hand cart on two wheels on orange | [mylabaih.com](https://mylabaih.com/assets/images/logo.png) — the LaBaih wordmark, whose L, baseline, wheels and h form a cart |
+| `shipblu` | White origami bird with a navy tail and beak on bright blue | [shipblu.com](https://shipblu.com/assets/img/navlogo.972e5b91.svg) — the folded-paper bird of the ShipBlu logo |
+| `starlinks` | White five-pointed star over a white arch on green | [starlinks-me.com](https://cdn.prod.website-files.com/67b709c3b0778f02215f7fa9/67b709c3b0778f02215f8143_Logo%202000.png) — the star and arch above the STARLINKS wordmark |
+| `gtl-goto` | White italic GTL with a lightning-bolt G on green | [gtl.id](https://lf16-statics.oecsccdn.com/obj/oec-sc-static-sg/oec-gtl-hp/favicon.ico) — the GTL logo in the site bundle and the favicon's white GTL on a green shield |
+| `paxel` | Red and yellow outlined cube of two overlapping rounded squares on purple | [paxel.co](https://paxel.co/images/icon/paxel_logo_whitetext.png) — the cube icon of the Paxel logo and app icon |
+| `pickupp` | White lowercase p on red | [hk.pickupp.io](https://hk.pickupp.io/icons/icon-512x512.png) — the lowercase pickupp wordmark, shown in white on a red rounded rectangle on the site |
+| `247express` | White ribbon shield in four arched bands on red | [247express.vn](https://247express.vn/images/logo.png) — the red ribbon-shield emblem left of the 247Express wordmark |
