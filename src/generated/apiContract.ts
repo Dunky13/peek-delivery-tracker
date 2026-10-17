@@ -1097,7 +1097,11 @@ export const CARRIER_CAPABILITIES = {
       "LU",
       "PT"
     ],
-    "trackingSearchUrl": "https://www.mondialrelay.fr/suivi-de-colis/"
+    "trackingSearchUrl": "https://www.mondialrelay.fr/suivi-de-colis/",
+    "aliases": [
+      "InPost Spain",
+      "InPost España"
+    ]
   },
   "relais-colis": {
     "displayName": "Relais Colis",
@@ -1603,6 +1607,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^PK\\d{18}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[CE]2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{8}$",
+        "confidence": "low"
       }
     ],
     "aliases": [
@@ -2085,7 +2093,17 @@ export const CARRIER_CAPABILITIES = {
       "adapter": "inpost",
       "recognitionRank": 820
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "inpost.pl"
+        ],
+        "pathPattern": "^/(?:en/find-parcel|sledzenie-przesylek)/?$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^\\d{24}$",
@@ -2598,6 +2616,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^D\\d{5}[A-Z]\\d{6}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{12}$",
+        "confidence": "low",
+        "checksum": "poste-italiane"
       }
     ],
     "trackingUrlTemplate": "https://www.poste.it/cerca/index.html#/risultati-spedizioni/{trackingNumber}",
@@ -3781,8 +3804,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "zto",
-      "recognitionRank": 51,
-      "browserRecognitionRank": 51
+      "recognitionRank": 51
     },
     "linkRules": [],
     "detectionRules": [
@@ -4057,7 +4079,11 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AU"
     ],
-    "trackingSearchUrl": "https://auspost.com.au/mypost/track/details/"
+    "trackingSearchUrl": "https://auspost.com.au/mypost/track/details/",
+    "aliases": [
+      "StarTrack",
+      "Star Track Express"
+    ]
   },
   "hongkong-post": {
     "displayName": "Hongkong Post",
@@ -4215,7 +4241,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "packeta"
+      "adapter": "packeta",
+      "recognitionRank": 665
     },
     "linkRules": [
       {
@@ -4238,6 +4265,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^Z\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[1-9]\\d{9}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$|^\\d{3} \\d{4} \\d{3}$"
       }
     ],
     "trackingUrlTemplate": "https://tracking.packeta.com/en/{trackingNumber}",
@@ -8747,7 +8779,8 @@ export const CARRIER_CAPABILITIES = {
   "vinted-go": {
     "displayName": "Vinted Go",
     "aliases": [
-      "VintedGo"
+      "VintedGo",
+      "Homerr"
     ],
     "countries": [
       "FR",
@@ -12122,7 +12155,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Skopje",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-north-macedonia",
+      "recognitionRank": 899
     },
     "trackingUrlTemplate": "https://www.posta.com.mk/Tracking/index.html?tn={trackingNumber}",
     "linkRules": [
@@ -12136,7 +12170,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MK$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.posta.com.mk/Tracking/index.html"
   },
   "posta-romana": {
@@ -17387,7 +17428,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Algiers",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "algerie-poste",
+      "recognitionRank": 897
     },
     "trackingUrlTemplate": "https://ems.dz/track/index.php?icd={trackingNumber}",
     "linkRules": [
@@ -17413,8 +17455,19 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^E[CD]\\d{11}$",
+        "pattern": "^E[CDT]\\d{11}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}DZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      },
+      {
+        "pattern": "^EY\\d{9}DZ$",
+        "confidence": "low",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://www.ems.dz/"
@@ -17829,12 +17882,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Yerevan",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "haypost",
+      "recognitionRank": 898
     },
-    "trackingUrlTemplate": "https://www.haypost.am/track-trace#{trackingNumber}",
+    "trackingUrlTemplate": "https://www.haypost.am/am/track-trace#{trackingNumber}",
     "linkRules": [],
-    "detectionRules": [],
-    "trackingSearchUrl": "https://www.haypost.am/en/track-trace"
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AM$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
+    "trackingSearchUrl": "https://www.haypost.am/am/track-trace"
   },
   "hi-trans": {
     "displayName": "Hi-Trans Express",
@@ -22790,6 +22851,33 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://twsexpresscourier.it/traccia-spedizione/"
+  },
+  "byhd": {
+    "displayName": "BYHD",
+    "aliases": [
+      "Boyi Hongda",
+      "Bo Yi Hong Da",
+      "博益弘达",
+      "博益弘达物流",
+      "深圳市博益弘达物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#084282",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "byhd"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^BYHD\\d{9}$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -23414,7 +23502,8 @@ export const CARRIER_IDS = [
   "pigeon-express",
   "posta-faroe",
   "tusass",
-  "tws-express"
+  "tws-express",
+  "byhd"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
