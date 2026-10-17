@@ -59,7 +59,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     outputs:
-      adopt: ${{ steps.target.outputs.adopt }}
+      adopt: ${{ steps.target.outputs.adopt == 'true' && steps.gate.outputs.blocked != 'true' }}
+      blocked: ${{ steps.gate.outputs.blocked == 'true' }}
       version: ${{ steps.target.outputs.version }}
       current: ${{ steps.target.outputs.current }}
       base: ${{ steps.target.outputs.base }}
@@ -113,34 +114,35 @@ jobs:
         run: npm install --save-exact --prefer-online "universal-parcel-scraper@$VERSION"
 
       # Before regenerating: the contract generator refuses a changed stage
-      # vocabulary without saying what the database needs.
+      # vocabulary without saying what the database needs. A release that waits
+      # for a migration (status 3) skips the rest; the gate job reports it.
       - name: Stop when the database must change first
         id: gate
         if: steps.target.outputs.adopt == 'true'
         env:
           DATABASE_READY: ${{ inputs.database_ready == true }}
         run: |
-          if [ "$DATABASE_READY" = "true" ]; then
-            node scripts/adopt-scraper.mjs gate "$RUNNER_TEMP/scraper-before.json" --database-ready
-          else
-            node scripts/adopt-scraper.mjs gate "$RUNNER_TEMP/scraper-before.json"
-          fi
+          arguments=("$RUNNER_TEMP/scraper-before.json")
+          if [ "$DATABASE_READY" = "true" ]; then arguments+=(--database-ready); fi
+          status=0
+          node scripts/adopt-scraper.mjs gate "${arguments[@]}" || status=$?
+          if [ "$status" = 3 ]; then echo 'blocked=true' >> "$GITHUB_OUTPUT"; else exit "$status"; fi
 
       - name: Check the scraper's optional peers
         id: peers
-        if: steps.target.outputs.adopt == 'true'
+        if: steps.target.outputs.adopt == 'true' && steps.gate.outputs.blocked != 'true'
         run: node scripts/adopt-scraper.mjs peers
 
       - name: Regenerate the contract and the iPhone resources
         id: regenerate
-        if: steps.target.outputs.adopt == 'true'
+        if: steps.target.outputs.adopt == 'true' && steps.gate.outputs.blocked != 'true'
         run: |
           npm run contract:generate
           npm run ios:resources
 
       - name: Write the adoption as a patch
         id: patch
-        if: steps.target.outputs.adopt == 'true'
+        if: steps.target.outputs.adopt == 'true' && steps.gate.outputs.blocked != 'true'
         run: |
           read -r -a files <<< "$ADOPTION_FILES"
           git add -- "${files[@]}"
@@ -158,13 +160,13 @@ jobs:
       # to CI on the pushed commit.
       - name: Test the app with the release
         id: tests
-        if: steps.target.outputs.adopt == 'true'
+        if: steps.target.outputs.adopt == 'true' && steps.gate.outputs.blocked != 'true'
         run: |
           npm run typecheck
           npm test
 
       - name: Hand the patch to the push job
-        if: steps.target.outputs.adopt == 'true'
+        if: steps.target.outputs.adopt == 'true' && steps.gate.outputs.blocked != 'true'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: adoption
@@ -196,6 +198,36 @@ jobs:
   # Has the token that writes to main, on a runner where nothing of the release
   # ever ran: no npm, no node_modules. What the adopt job hands over is data,
   # accepted only as changes to the files an adoption owns.
+  # A release that waits for a migration fails the first run it stops, which
+  # notifies; the runs after it end without failing until the migration is in.
+  gate:
+    name: Database gate for ${{ needs.adopt.outputs.version }}
+    needs: adopt
+    if: needs.adopt.outputs.blocked == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    steps:
+      - name: Fail once per release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          JOB: Database gate for ${{ needs.adopt.outputs.version }}
+          VERSION: ${{ needs.adopt.outputs.version }}
+        run: |
+          first=''
+          for run in $(gh api "repos/$GH_REPO/actions/workflows/adopt-scraper.yml/runs?status=failure&per_page=30" --jq '.workflow_runs[].id'); do
+            first=$(gh api "repos/$GH_REPO/actions/runs/$run/jobs" --jq '.jobs[] | select(.name == env.JOB and .conclusion == "failure") | .html_url')
+            if [ -n "$first" ]; then break; fi
+          done
+          if [ -n "$first" ]; then
+            echo "Universal Parcel Scraper $VERSION still waits for its migration, which $first reported first." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "::error::Universal Parcel Scraper $VERSION waits for a migration. The adopt job's summary lists what it changes."
+          exit 1
+
   push:
     name: Push
     needs: adopt

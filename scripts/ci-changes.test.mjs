@@ -267,6 +267,16 @@ describe('scraper adoption validation', () => {
     assert.doesNotMatch(workflow, /repository_dispatch|client_payload/);
   });
 
+  it('fails once for a release that waits for a migration, not on every run', () => {
+    assert.match(workflow, /if \[ "\$status" = 3 \]; then echo 'blocked=true' >> "\$GITHUB_OUTPUT"; else exit "\$status"; fi/);
+    const gate = workflow.match(/\n  gate:\n([\s\S]*?)\n  push:\n/)?.[1];
+    assert.ok(gate, 'The gate job must sit between adopt and push.');
+    assert.match(gate, /name: Database gate for \$\{\{ needs\.adopt\.outputs\.version \}\}/);
+    assert.match(gate, /if: needs\.adopt\.outputs\.blocked == 'true'/);
+    assert.match(gate, /permissions:\n\s+actions: read\n/);
+    assert.doesNotMatch(gate, /\bnpm\b|secrets\./);
+  });
+
   it('refuses to push without the token that starts validation workflows', () => {
     const step = workflow.match(/      - name: Push to main[\s\S]*?        run: \|\n([\s\S]*?)(?=\n      - name:)/)?.[1];
     assert.ok(step, 'The adoption push step must exist.');

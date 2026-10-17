@@ -4,7 +4,7 @@
 //
 //   node scripts/adopt-scraper.mjs resolve [--version=1.2.3] [--database-ready]
 //   node scripts/adopt-scraper.mjs snapshot <file>        before installing the release
-//   node scripts/adopt-scraper.mjs gate <file> [--database-ready]
+//   node scripts/adopt-scraper.mjs gate <file> [--database-ready]   exits 3 when the release waits for a migration
 //   node scripts/adopt-scraper.mjs peers
 import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -331,9 +331,8 @@ async function resolveTarget(requested, databaseReady) {
   const distTags = requested ? {} : (await retry(registryDocument, { attempts: 3, pauseMs: 5_000 })).distTags;
   const target = chooseTarget({ current, requested, distTags, databaseReady });
   if (target.adopt) {
-    // npm scans a release for minutes before serving it. The scraper dispatches
-    // once npm lists it; a run started by hand can name one still in the scan.
-    // This waits half an hour.
+    // npm scans a release for minutes before serving it: a run started by hand
+    // can name one still in the scan. This waits half an hour.
     await retry(async () => {
       if (!(await registryDocument()).versions.includes(target.version)) {
         console.error(`Waiting for npm to serve ${PACKAGE_NAME}@${target.version}.`);
@@ -355,7 +354,7 @@ async function gate(snapshotFile, databaseReady) {
   const after = await installedRelease();
   const changes = diffDatabaseFacets(before.facets, after.facets);
   await summarize(gateReport({ from: before.version, to: after.version, changes, databaseReady }));
-  if (changes.length > 0 && !databaseReady) process.exitCode = 1;
+  if (changes.length > 0 && !databaseReady) process.exitCode = 3;
 }
 
 async function checkPeers() {

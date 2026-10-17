@@ -126,8 +126,10 @@ release changes one of these:
 - the names of the universal providers.
 
 The run's summary lists each change with the constraints and functions that enforce it.
-Every scheduled run stops the same way until the migration is in. Write the migration,
-apply it to production, then continue with the release the run named:
+Only the first run a release stops fails, which notifies; later runs stop at the same
+release without failing until the migration is in, and their summary links to that first
+run. Write the migration, apply it to production, then continue with the release the run
+named:
 
 ```bash
 gh workflow run adopt-scraper.yml -f version=1.2.3 -f database_ready=true
