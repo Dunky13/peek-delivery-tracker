@@ -21821,6 +21821,318 @@
           "confidence": "high"
         }
       ]
+    },
+    "afghan-post": {
+      "displayName": "Afghan Post",
+      "aliases": [
+        "افغان پست",
+        "Afghanistan Post"
+      ],
+      "countries": [
+        "AF"
+      ],
+      "color": "#115fa2",
+      "selectable": true,
+      "timezone": "Asia/Kabul",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "afghanpost.gov.af",
+            "www.afghanpost.gov.af"
+          ],
+          "pathPattern": "^/track/index\\.php$",
+          "params": [
+            "ID"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://track.afghanpost.gov.af/"
+    },
+    "corre": {
+      "displayName": "CORRE",
+      "aliases": [
+        "Correio Expresso de Moçambique",
+        "Correio Expresso de Mocambique",
+        "Corre",
+        "Correios de Moçambique",
+        "Mozambique Post"
+      ],
+      "countries": [
+        "MZ"
+      ],
+      "color": "#e4002b",
+      "selectable": true,
+      "timezone": "Africa/Maputo",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.corremz.com/cgi-bin/tracktrace.cgi?OBJ={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.corremz.com",
+            "corremz.com"
+          ],
+          "pathPattern": "^/cgi-bin/(?:tracktrace|trace)\\.cgi$",
+          "params": [
+            "OBJ"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.corremz.com/trace/"
+    },
+    "correos-nicaragua": {
+      "displayName": "Correos de Nicaragua",
+      "aliases": [
+        "Nicaragua Post",
+        "Nicaraguan Postal Service",
+        "Correos Nicaragua"
+      ],
+      "countries": [
+        "NI"
+      ],
+      "color": "#4078c0",
+      "selectable": true,
+      "timezone": "America/Managua",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://rastreo.correos.gob.ni:8084/SICRastreo"
+    },
+    "dpd-pt": {
+      "displayName": "DPD Portugal",
+      "aliases": [
+        "Chronopost Portugal",
+        "DPD PT"
+      ],
+      "countries": [
+        "PT"
+      ],
+      "color": "#dc0032",
+      "selectable": true,
+      "timezone": "Europe/Lisbon",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://tracking.dpd.pt/track-and-trace?reference={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.dpd.pt",
+            "dpd.pt"
+          ],
+          "pathPattern": "^/(?:track-and-trace|en/getting-parcel/track-trace)/?$",
+          "params": [
+            "reference"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://tracking.dpd.pt/track-and-trace"
+    },
+    "gls-pl": {
+      "displayName": "GLS Poland",
+      "aliases": [
+        "GLS Polska",
+        "General Logistics Systems Poland"
+      ],
+      "countries": [
+        "PL"
+      ],
+      "color": "#ffdd00",
+      "selectable": true,
+      "timezone": "Europe/Warsaw",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://gls-group.com/PL/pl/sledzenie-paczek/?match={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "gls-group.com",
+            "gls-group.eu"
+          ],
+          "pathPattern": "^/PL/",
+          "params": [
+            "match",
+            "parcelNumber",
+            "matchParcelNumber"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://gls-group.com/PL/pl/sledzenie-paczek/"
+    },
+    "kyrgyz-post": {
+      "displayName": "Kyrgyz Post",
+      "aliases": [
+        "Кыргыз почтасы",
+        "Kyrgyz Pochtasy",
+        "Почта Кыргызстана",
+        "Kyrgyzstan Post",
+        "Kyrgyzpost"
+      ],
+      "countries": [
+        "KG"
+      ],
+      "color": "#184cec",
+      "selectable": true,
+      "timezone": "Asia/Bishkek",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "kyrgyzpost.kg",
+            "www.kyrgyzpost.kg"
+          ],
+          "pathPattern": "^/ru/zip-search\\.html$",
+          "params": [
+            "searchword"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://post.kg/language/ru/treking-posylok/"
+    },
+    "la-poste-burkina-faso": {
+      "displayName": "La Poste Burkina Faso",
+      "aliases": [
+        "La Poste BF",
+        "La Poste du Burkina Faso",
+        "SONAPOST",
+        "Société nationale des Postes",
+        "Burkina Faso Post"
+      ],
+      "countries": [
+        "BF"
+      ],
+      "color": "#155bab",
+      "selectable": true,
+      "timezone": "Africa/Ouagadougou",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "webtracking.laposte.bf",
+            "webtracking.sonapost.bf"
+          ],
+          "pathPattern": "^/webtracking/IPSWeb_item_events\\.aspx$",
+          "params": [
+            "itemid"
+          ]
+        }
+      ],
+      "detectionRules": []
+    },
+    "lao-post": {
+      "displayName": "Lao Post",
+      "aliases": [
+        "ໄປສະນີລາວ",
+        "Laos Postal Service",
+        "Entreprise des Postes Lao"
+      ],
+      "countries": [
+        "LA"
+      ],
+      "color": "#f6871f",
+      "selectable": true,
+      "timezone": "Asia/Vientiane",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://laopost.com.la/online-service/tracking?tracking-number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "laopost.com.la",
+            "www.laopost.com.la"
+          ],
+          "pathPattern": "^/online-service/tracking/?$",
+          "params": [
+            "tracking-number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://laopost.com.la/online-service/tracking"
+    },
+    "pitney-bowes": {
+      "displayName": "Pitney Bowes",
+      "aliases": [
+        "Pitney Bowes Global Ecommerce",
+        "Pitney Bowes Expedited Parcel Service",
+        "eBay Global Shipping Program",
+        "PBI"
+      ],
+      "countries": [
+        "GB",
+        "US"
+      ],
+      "color": "#3e53a4",
+      "selectable": true,
+      "timezone": "Europe/London",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://trackpb.shipment.co/track/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "trackpb.shipment.co"
+          ],
+          "path": "^/track/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "trackpb.shipment.co"
+          ],
+          "pathPattern": "^/track/?$",
+          "params": [
+            "number"
+          ]
+        },
+        {
+          "domains": [
+            "parceltracking.pb.com"
+          ],
+          "path": "^/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^UPAA[A-Z]\\d{15}$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^UPBE[0-9A-F]{16}$",
+          "confidence": "high"
+        },
+        {
+          "pattern": "^PBX[A-Z]{2}(?:\\d{9}|[0-9A-F]{15})$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://trackpb.shipment.co/track"
     }
   },
   "servers": [
@@ -24865,7 +25177,16 @@
           "pannon-xp",
           "phlpost",
           "redur",
-          "torrestir"
+          "torrestir",
+          "afghan-post",
+          "corre",
+          "correos-nicaragua",
+          "dpd-pt",
+          "gls-pl",
+          "kyrgyz-post",
+          "la-poste-burkina-faso",
+          "lao-post",
+          "pitney-bowes"
         ]
       },
       "Stage": {
