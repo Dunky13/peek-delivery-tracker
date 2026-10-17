@@ -22050,7 +22050,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Lisbon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-pt",
+      "recognitionRank": 894
     },
     "trackingUrlTemplate": "https://tracking.dpd.pt/track-and-trace?reference={trackingNumber}",
     "linkRules": [
