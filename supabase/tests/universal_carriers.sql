@@ -12,7 +12,7 @@ begin
   foreach carrier_id in array array[
     'abf-freight', 'acs-courier', 'allegro-one', 'apc-overnight', 'aras-kargo',
     'box-now', 'cdek', 'ceska-posta', 'chit-chats', 'correos-de-mexico',
-    'cyprus-post', 'day-ross', 'dsv', 'dx', 'dynalogic', 'envialia',
+    'cyprus-post', 'day-ross', 'dsv', 'dynalogic', 'envialia',
     'epost-global', 'estes', 'fan-courier',
     'geniki-taxydromiki', 'gls-it', 'jitsu', 'kuehne-nagel',
     'latvijas-pasts', 'loomis-express', 'lso', 'magyar-posta', 'meest',
@@ -29,7 +29,7 @@ begin
     if (select carrier from public.packages where id = parcel.id) <> carrier_id then
       raise exception 'Carrier change to % failed', carrier_id;
     end if;
-    -- None of them asks for a postcode. GLS Spain, XDP and Gebrüder Weiss, added with them, take one since.
+    -- None of them asks for a postcode. GLS Spain, XDP, Gebrüder Weiss and DX, added with them, take one since.
     begin
       perform test_support.add_parcel('UP' || lpad(serial::text, 10, '0'), 'With a postcode', carrier_id, null, '75001');
       raise exception 'A % postcode was accepted', carrier_id;
