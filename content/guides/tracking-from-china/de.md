@@ -156,13 +156,13 @@ Geh in dieser Reihenfolge vor:
 | Temu | Kundenservice innerhalb von 90 Tagen nach dem Bestelldatum | Ebenso |
 | Shein | Innerhalb von 45 Tagen nach dem Zahlungsdatum | Innerhalb von 30 Tagen nach dem Lieferdatum in der Sendungsverfolgung |
 
-Bei gekennzeichneten Artikeln gibt es über das „Delivery Commitment“ von AliExpress einen Gutschein, wenn die Lieferung zu spät kommt, und eine Erstattung, wenn sie nach einer festgelegten Zahl von Tagen noch nicht da ist. Billige Versandarten wie AliExpress Saver Shipping oder Cainiao Super Economy sind davon ausgenommen.
+Bei Artikeln mit dem Hinweis „Schnelle Lieferung“ gibt es bei AliExpress einen Gutschein, wenn die Lieferung zu spät kommt, und eine Erstattung, wenn sie nach einer festgelegten Zahl von Tagen noch nicht da ist. Bei Artikeln ohne den Hinweis gibt es eine Erstattung nach 60, 75, 90 oder 120 Tagen, je nach Lieferbedingungen.
 
 > Bei AliExpress bleiben dir ab dem Moment, in dem du den Erhalt bestätigst, nur noch 15 Tage, um eine Erstattung zu beantragen. Bestätige also erst, wenn du das Paket in den Händen hältst.
 
 Steht „zugestellt“ in der Sendungsverfolgung, aber nichts ist angekommen? Dann hilft [Paket zugestellt, aber nicht erhalten](guide:delivered-not-received).
 
-Bildschirme, Status, Gutschriften und Reklamationen der Shops selbst: [Temu-Sendungsverfolgung](guide:temu-orders) und [Shein-Paket verfolgen](guide:shein-orders).
+Bildschirme, Status, Gutschriften und Reklamationen der Shops selbst: [AliExpress-Sendungsverfolgung](guide:aliexpress-orders), [Temu-Sendungsverfolgung](guide:temu-orders) und [Shein-Paket verfolgen](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help center](https://global.cainiao.com/helpDoc.htm) – Status, 11 und 12 Tage, Economy-Hinweis
@@ -173,7 +173,7 @@ Bildschirme, Status, Gutschriften und Reklamationen der Shops selbst: [Temu-Send
 - [AliExpress: How to open dispute?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015227&language=en) – Frist für Streitfälle
 - [AliExpress: What is Buyer Protection?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 Tage nach der Bestätigung
 - [AliExpress: Shows delivered, not received](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – erst der Paketdienst im Zielland
-- [AliExpress: Commitment](https://www.aliexpress.com/p/service-mindset/index.html) – Choice 6 bis 8 Tage, Ausnahmen des Delivery Commitment
+- [AliExpress: AliExpress-Verpflichtung](https://de.aliexpress.com/p/service-mindset/index.html) – Choice 6 bis 8 Tage, „Schnelle Lieferung“, 60 bis 120 Tage
 - [AliExpress: Do I have to pay for customs and import taxes?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – Lager im eigenen Land, keine zusätzlichen Zölle und Steuern
 - [Temu: Versandinformationen (Archivkopie vom 11. März 2026)](https://web.archive.org/web/20260311044435/https://www.temu.com/de/shipping-info.html) – Bearbeitung, Lieferzeit pro Paket, lokale Lager, Tracking, 90 Tage
 - [Temu Deutschland: Versandinformationen](https://www.temu.com/de/shipping-info.html) – lokale Lager ohne Mindestbestellwert

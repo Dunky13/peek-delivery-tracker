@@ -145,13 +145,13 @@ Sigue este orden:
 | Temu | Contacta con atención al cliente en los 90 días siguientes a la fecha del pedido | Igual |
 | Shein | En los 45 días siguientes a la fecha de pago | En los 30 días siguientes a la fecha de entrega que muestra el seguimiento |
 
-En los artículos que llevan en su ficha la etiqueta de entrega rápida, la garantía de entrega de AliExpress te da un cupón si el pedido se retrasa y el reembolso si no llega en cierto número de días. No cubre los envíos baratos, como AliExpress Saver Shipping o Cainiao Super Economy.
+En los artículos que llevan en su ficha la etiqueta «Entrega rápida», AliExpress te da un cupón si el pedido se retrasa y el reembolso si no llega en cierto número de días. Sin la etiqueta, el reembolso llega a los 60, 75, 90 o 120 días, según las condiciones de entrega.
 
 > En AliExpress, confirmar la recepción pone en marcha tus últimos 15 días para pedir un reembolso. No la confirmes hasta tener el paquete en la mano.
 
 Si pone entregado y no hay nada, mira [paquete entregado pero no recibido](guide:delivered-not-received).
 
-Pantallas, estados, créditos y reclamaciones de cada tienda: [seguimiento de pedidos de Temu](guide:temu-orders) y [seguimiento de pedidos de Shein](guide:shein-orders).
+Pantallas, estados, créditos y reclamaciones de cada tienda: [seguimiento de pedidos de AliExpress](guide:aliexpress-orders), [seguimiento de pedidos de Temu](guide:temu-orders) y [seguimiento de pedidos de Shein](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help centre (en inglés)](https://global.cainiao.com/helpDoc.htm) – estados, 11 y 12 días, seguimiento del envío económico
@@ -163,7 +163,7 @@ Pantallas, estados, créditos y reclamaciones de cada tienda: [seguimiento de pe
 - [AliExpress: How to open a dispute (en inglés)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015227&language=en) – plazo de disputa
 - [AliExpress: What is Buyer Protection? (en inglés)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 días tras confirmar la recepción
 - [AliExpress: Delivered but not received (en inglés)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – primero la empresa de reparto
-- [AliExpress: Delivery Commitment (en inglés)](https://es.aliexpress.com/p/service-mindset/index.html) – cupón, reembolso, etiqueta de entrega rápida, envíos excluidos
+- [AliExpress: Compromiso de AliExpress](https://es.aliexpress.com/p/service-mindset/index.html) – etiqueta «Entrega rápida», cupón, reembolso, 60–120 días
 - [AliExpress: Do I have to pay for customs and import taxes? (en inglés)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – almacén en tu país, sin aranceles ni impuestos de más
 - [Temu: Shipping info (en inglés)](https://www.temu.com/uk/shipping-info.html) – preparación, plazo por paquete, empresas locales, 90 días
 - [Temu España: Información de envío](https://www.temu.com/es/shipping-info.html) – almacenes locales sin importe mínimo

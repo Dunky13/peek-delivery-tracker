@@ -142,13 +142,13 @@ Działaj po kolei:
 | Temu | Napisz do obsługi klienta w ciągu 90 dni od daty zamówienia | Tak samo |
 | Shein | W ciągu 45 dni od daty płatności | W ciągu 30 dni od daty doręczenia podanej w śledzeniu |
 
-AliExpress w ramach Delivery Commitment daje przy oznaczonych produktach kupon za spóźnienie, a po określonej liczbie dni zwrot pieniędzy. Nie dotyczy to tanich metod wysyłki, takich jak AliExpress Saver Shipping czy Cainiao Super Economy.
+Przy produktach z etykietą „Szybka dostawa” AliExpress daje kupon za spóźnienie, a po określonej liczbie dni zwrot pieniędzy. Bez tej etykiety zwrot przysługuje po 60, 75, 90 albo 120 dniach, zależnie od warunków dostawy.
 
 > Na AliExpress po potwierdzeniu odbioru zostaje Ci już tylko 15 dni na wniosek o zwrot. Nie potwierdzaj odbioru, dopóki nie trzymasz paczki w rękach.
 
 Status mówi „doręczona”, a paczki nie ma? Zajrzyj do poradnika [paczka doręczona, a jej nie ma](guide:delivered-not-received).
 
-Ekrany, statusy, rekompensaty i reklamacje w każdym sklepie: [śledzenie zamówienia z Temu](guide:temu-orders) i [śledzenie zamówienia z Shein](guide:shein-orders).
+Ekrany, statusy, rekompensaty i reklamacje w każdym sklepie: [śledzenie zamówienia z AliExpress](guide:aliexpress-orders), [śledzenie zamówienia z Temu](guide:temu-orders) i [śledzenie zamówienia z Shein](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – statusy, 11 i 12 dni, śledzenie przy wysyłce ekonomicznej
@@ -161,7 +161,7 @@ Ekrany, statusy, rekompensaty i reklamacje w każdym sklepie: [śledzenie zamów
 - [AliExpress: How to open a dispute](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015227&language=en) – termin na spór
 - [AliExpress: What is Buyer Protection?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 dni po potwierdzeniu odbioru
 - [AliExpress: Delivered but not received](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – najpierw przewoźnik w kraju docelowym
-- [AliExpress: Commitment](https://www.aliexpress.com/p/service-mindset/index.html) – wyłączenia z Delivery Commitment
+- [AliExpress: Gwarancja AliExpress](https://pl.aliexpress.com/p/service-mindset/index.html) – etykieta „Szybka dostawa”, kupon, zwrot pieniędzy, 60–120 dni
 - [AliExpress: Do I have to pay for customs and import taxes?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – magazyn w Twoim kraju, bez dodatkowego cła i podatków
 - [Temu: Shipping info](https://www.temu.com/uk/shipping-info.html) – przygotowanie, czas dla każdej paczki, lokalni przewoźnicy, 90 dni (strona brytyjska)
 - [Temu Polska: Informacje o wysyłce](https://www.temu.com/pl/shipping-info.html) – lokalne magazyny bez minimalnej wartości zamówienia

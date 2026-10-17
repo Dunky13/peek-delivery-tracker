@@ -82,6 +82,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Shein order tracking: carriers, statuses and delays"
     },
     {
+      "id": "aliexpress-orders",
+      "slug": "aliexpress-order-tracking",
+      "title": "AliExpress order tracking: carriers, statuses and disputes"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -222,6 +227,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "shein-orders",
       "slug": "shein-paket-verfolgen",
       "title": "Shein-Paket verfolgen: Paketdienste, Status und Verspätung"
+    },
+    {
+      "id": "aliexpress-orders",
+      "slug": "aliexpress-sendungsverfolgung",
+      "title": "AliExpress-Sendungsverfolgung: Status und Streitfall"
     },
     {
       "id": "find-tracking-number",
@@ -366,6 +376,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Shein\u00a0: transporteurs, statuts et retards"
     },
     {
+      "id": "aliexpress-orders",
+      "slug": "suivi-colis-aliexpress",
+      "title": "Suivi colis AliExpress\u00a0: transporteur, statuts et litige"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -506,6 +521,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "shein-orders",
       "slug": "tracciare-ordine-shein",
       "title": "Tracciare un ordine Shein: corrieri, stati e ritardi"
+    },
+    {
+      "id": "aliexpress-orders",
+      "slug": "tracciare-ordine-aliexpress",
+      "title": "Tracciare un ordine AliExpress: codice, stati e controversie"
     },
     {
       "id": "find-tracking-number",
@@ -650,6 +670,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Seguimiento de pedidos Shein: empresas, estados y retrasos"
     },
     {
+      "id": "aliexpress-orders",
+      "slug": "seguimiento-pedido-aliexpress",
+      "title": "Seguimiento de pedidos AliExpress: estados y disputas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -792,6 +817,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Rastrear encomenda Shein: transportadoras, estados e atrasos"
     },
     {
+      "id": "aliexpress-orders",
+      "slug": "rastrear-encomenda-aliexpress",
+      "title": "Rastrear uma encomenda AliExpress: estados e disputas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -932,6 +962,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "shein-orders",
       "slug": "sledzenie-zamowienia-shein",
       "title": "Śledzenie zamówienia Shein: przewoźnik, statusy i opóźnienia"
+    },
+    {
+      "id": "aliexpress-orders",
+      "slug": "sledzenie-zamowienia-aliexpress",
+      "title": "Śledzenie zamówienia AliExpress: statusy i spory"
     },
     {
       "id": "find-tracking-number",

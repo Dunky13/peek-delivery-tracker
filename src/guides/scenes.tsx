@@ -864,6 +864,28 @@ function Mailer() {
   </>;
 }
 
+function Countdown() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* The plane that brought it, and the way down to the door. */}
+    <g transform="translate(116 76) rotate(90) scale(1.2)" fill="var(--lilac)">
+      <path d="M0-26c3.3 0 5.3 4 5.3 10v12l24.7 14.7v6.6L5.3 9.9v14l8 6v4L0 30.6l-13.3 3.3v-4l8-6v-14L-30 17.3v-6.6L-5.3-4v-12c0-6 2-10 5.3-10Z" />
+    </g>
+    <path d="M160 82C214 70 254 100 262 152" stroke="var(--lilac)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <Box x={214} y={170} width={96} height={78} />
+    <Pip x={378} ground={262} width={128} mood="wait" side={1} />
+    {/* The order on a phone, its protection clock running down. */}
+    <Phone x={466} y={40} width={124} height={200}>
+      <circle cx="62" cy="68" r="32" stroke="var(--control)" strokeWidth="9" />
+      <path d="M62 36a32 32 0 1 1-30.4 42" stroke="var(--lilac)" strokeWidth="9" strokeLinecap="round" />
+      <path d="M62 52v17l11 7" stroke={ink} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="22" y="122" width="80" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="22" y="140" width="54" height="9" rx="4.5" fill="var(--control)" />
+      <rect x="22" y="166" width="80" height="20" rx="10" fill="var(--lilac)" />
+    </Phone>
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -880,6 +902,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'allegro-orders': { tone: 'orange', draw: OneBox },
   'temu-orders': { tone: 'ochre', draw: Haul },
   'shein-orders': { tone: 'rose', draw: Mailer },
+  'aliexpress-orders': { tone: 'lilac', draw: Countdown },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

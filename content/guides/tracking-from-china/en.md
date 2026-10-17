@@ -153,13 +153,13 @@ Go in this order:
 | Temu | Contact customer service within 90 days of the order date | Same |
 | Shein | Within 45 days of the payment date | Within 30 days of the delivery date on the tracking page (45 in the US) |
 
-AliExpress's Delivery Commitment adds a late-delivery coupon 48 hours after the latest estimated date and a refund after a set number of days on labelled items, but not on cheap methods such as AliExpress Saver Shipping or Cainiao Super Economy. Shein and Temu make up for lateness too: Shein's On-Time Delivery gives 500 points in the US, Ireland and Australia, 500 points or a £5 credit in the UK, and a CAD 5 credit in Canada; Temu issues a credit about 48 hours after the latest delivery date in your order details.
+On items labelled "Fast delivery", AliExpress adds a late-delivery coupon 48 hours after the latest estimated date and a refund if the parcel still isn't there a set number of days after shipping; other items get a refund after 60, 75, 90 or 120 days, depending on the delivery terms. Shein and Temu make up for lateness too: Shein's On-Time Delivery gives 500 points in the US, Ireland and Australia, 500 points or a £5 credit in the UK, and a CAD 5 credit in Canada; Temu issues a credit about 48 hours after the latest delivery date in your order details.
 
 > On AliExpress, confirming receipt starts your last 15 days to ask for a refund. Don't confirm until the parcel is in your hands.
 
 If it says delivered and nothing is there, follow [delivered but not received](guide:delivered-not-received).
 
-Each shop's own screens, statuses, credits and claims: [Temu order tracking](guide:temu-orders) and [Shein order tracking](guide:shein-orders).
+Each shop's own screens, statuses, credits and claims: [AliExpress order tracking](guide:aliexpress-orders), [Temu order tracking](guide:temu-orders) and [Shein order tracking](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help centre](https://global.cainiao.com/helpDoc.htm) – statuses, 11 and 12 days, economy tracking
@@ -170,7 +170,8 @@ Each shop's own screens, statuses, credits and claims: [Temu order tracking](gui
 - [AliExpress: How to open a dispute](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015227&language=en) – dispute window
 - [AliExpress: What is Buyer Protection?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 days after confirming
 - [AliExpress: Delivered but not received](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – local carrier first, Cainiao lookup
-- [AliExpress: Commitment](https://www.aliexpress.com/p/service-mindset/index.html) – Delivery Commitment coupon and exclusions
+- [AliExpress: Commitment](https://www.aliexpress.com/p/service-mindset/index.html) – "Fast delivery" coupon and refunds, 60 to 120 days
+- [AliExpress: Fast Delivery Policy](https://helpcenter.aliexpress.com/s/BuyerHelp/knowledge?language=en_US&m_station=BuyerHelp&questionId=k01000000000000000000000000014mi) – refund days by country
 - [AliExpress: Do I have to pay for customs and import taxes?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – warehouse in your country, no extra duties or taxes
 - [Temu: Shipping info](https://www.temu.com/uk/shipping-info.html) – processing, UK and per-parcel times, 90 days
 - [Temu: Late delivery compensation policy](https://www.temu.com/late-delivery-compensation-policy.html) – credit 48 hours after the latest delivery date

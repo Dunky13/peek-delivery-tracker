@@ -145,13 +145,13 @@ Procedi in quest'ordine:
 | Temu | Contatta il servizio clienti entro 90 giorni dalla data dell'ordine | Stessa regola |
 | Shein | Entro 45 giorni dalla data del pagamento | Entro 30 giorni dalla data di consegna indicata nel tracking |
 
-Se un ordine Shein arriva dopo la data prevista, la «Garanzia di consegna puntuale» ti dà 200 punti SHEIN in Italia e 500 in Svizzera. Il Delivery Commitment di AliExpress aggiunge un coupon per il ritardo e un rimborso dopo un certo numero di giorni sugli articoli che hanno la sua etichetta, ma non sui metodi economici come AliExpress Saver Shipping o Cainiao Super Economy.
+Se un ordine Shein arriva dopo la data prevista, la «Garanzia di consegna puntuale» ti dà 200 punti SHEIN in Italia e 500 in Svizzera. Sugli articoli con l'etichetta «Consegna rapida», AliExpress aggiunge un coupon per il ritardo e un rimborso dopo un certo numero di giorni. Senza l'etichetta, il rimborso arriva dopo 60, 75, 90 o 120 giorni, secondo le condizioni di consegna.
 
 > Su AliExpress, confermare la ricezione fa partire gli ultimi 15 giorni per chiedere un rimborso. Non confermare finché non hai il pacco in mano.
 
 Se risulta consegnato ma non hai ricevuto niente, segui la guida [pacco consegnato ma non ricevuto](guide:delivered-not-received).
 
-Schermate, stati, crediti e reclami di ogni negozio: [tracciare un ordine Temu](guide:temu-orders) e [tracciare un ordine Shein](guide:shein-orders).
+Schermate, stati, crediti e reclami di ogni negozio: [tracciare un ordine AliExpress](guide:aliexpress-orders), [tracciare un ordine Temu](guide:temu-orders) e [tracciare un ordine Shein](guide:shein-orders).
 
 :::sources
 - [Cainiao: Help centre (in inglese)](https://global.cainiao.com/helpDoc.htm) – stati, 11 e 12 giorni, tracking economy, ufficio postale
@@ -163,7 +163,7 @@ Schermate, stati, crediti e reclami di ogni negozio: [tracciare un ordine Temu](
 - [AliExpress: How to open a dispute (in inglese)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015227&language=en) – finestra della controversia
 - [AliExpress: What is Buyer Protection? (in inglese)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 giorni dopo la conferma
 - [AliExpress: Delivered but not received (in inglese)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – prima il corriere locale, tracking su Cainiao
-- [AliExpress: Commitment (in inglese)](https://www.aliexpress.com/p/service-mindset/index.html) – esclusioni del Delivery Commitment
+- [AliExpress: Impegno AliExpress](https://it.aliexpress.com/p/service-mindset/index.html) – etichetta «Consegna rapida», coupon, rimborso, 60–120 giorni
 - [AliExpress: Do I have to pay for customs and import taxes? (in inglese)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – magazzino nel tuo Paese, niente dazi né tasse in più
 - [Temu: Shipping info (in inglese)](https://www.temu.com/uk/shipping-info.html) – preparazione, tempi per pacco, tracking incompleto, 90 giorni
 - [Temu Italia: Informazioni sulla spedizione](https://www.temu.com/it/shipping-info.html) – magazzini locali senza minimo d'ordine

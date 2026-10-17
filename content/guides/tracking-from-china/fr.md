@@ -147,13 +147,13 @@ Dans cet ordre :
 | Temu | Contacte le service client dans les 90 jours suivant la date de commande | Idem |
 | Shein | Dans les 45 jours suivant la date de paiement | Dans les 30 jours suivant la date de livraison indiquée dans le suivi |
 
-Sur les articles qui portent l'étiquette de l'engagement de livraison d'AliExpress, tu as droit à un coupon en cas de retard, puis à un remboursement si le colis n'arrive pas dans un nombre de jours fixé, sauf avec les modes bon marché comme AliExpress Saver Shipping ou Cainiao Super Economy. Chez Shein, une commande qui n'arrive pas à la date prévue te vaut 200 points en France, 500 en Suisse ; en Belgique, 200 selon fr.shein.com/be, 500 selon le site européen de Shein.
+Sur les articles qui portent la mention « Livraison rapide », AliExpress te donne un coupon en cas de retard, puis un remboursement si le colis n'arrive pas dans un nombre de jours fixé ; sans cette mention, le remboursement vient au bout de 60, 75, 90 ou 120 jours, selon les conditions de livraison. Chez Shein, une commande qui n'arrive pas à la date prévue te vaut 200 points en France, 500 en Suisse ; en Belgique, 200 selon fr.shein.com/be, 500 selon le site européen de Shein.
 
 > Sur AliExpress, confirmer la réception lance tes 15 derniers jours pour demander un remboursement. Ne confirme pas avant d'avoir le colis en main.
 
 Si le suivi indique « livré » et que tu n'as rien reçu : [colis livré mais pas reçu](guide:delivered-not-received).
 
-Les écrans, statuts, crédits et réclamations propres à chaque boutique : [suivre une commande Temu](guide:temu-orders) et [suivre un colis Shein](guide:shein-orders).
+Les écrans, statuts, crédits et réclamations propres à chaque boutique : [suivre un colis AliExpress](guide:aliexpress-orders), [suivre une commande Temu](guide:temu-orders) et [suivre un colis Shein](guide:shein-orders).
 
 :::sources
 - [Cainiao : centre d'aide](https://global.cainiao.com/helpDoc.htm) – statuts en anglais et en français, 11 et 12 jours, livraison économique
@@ -164,7 +164,7 @@ Les écrans, statuts, crédits et réclamations propres à chaque boutique : [su
 - [AliExpress : How to open dispute? (en anglais)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015227&language=en) – délai de litige
 - [AliExpress : What is Buyer Protection? (en anglais)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 jours après confirmation
 - [AliExpress : Delivered but not received (en anglais)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – transporteur local d'abord
-- [AliExpress : Commitment (en anglais)](https://www.aliexpress.com/p/service-mindset/index.html) – Choice, engagement de livraison, exclusions
+- [AliExpress : L'engagement AliExpress](https://fr.aliexpress.com/p/service-mindset/index.html) – Choice, « Livraison rapide », 60 à 120 jours
 - [AliExpress : Do I have to pay for customs and import taxes? (en anglais)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – entrepôt dans ton pays, pas de droits ni de taxes en plus
 - [Temu : Informations de livraison (copie d'archive du 18 mai 2026)](https://web.archive.org/web/20260518215914/https://www.temu.com/fr/shipping-info.html) – préparation, délai par colis, suivi, 90 jours
 - [Temu France : Informations de livraison](https://www.temu.com/fr/shipping-info.html) – entrepôts locaux sans minimum de commande
