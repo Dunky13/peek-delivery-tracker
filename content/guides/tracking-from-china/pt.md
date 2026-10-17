@@ -4,10 +4,10 @@ description: Como seguir uma encomenda do AliExpress, da Temu ou da Shein até P
 slug: rastrear-encomenda-da-china
 picture: Um avião traça um arco pontilhado sobre o globo, de um marcador vermelho até ao marcador verde de casa, e o Pip viaja entre duas carrinhas.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-17
 ---
 
-Uma encomenda do AliExpress, da Temu ou da Shein muda de mãos pelo caminho: uma empresa de logística chinesa leva-a de avião, a alfândega verifica-a à chegada e os [CTT](carrier:ctt) ou outra transportadora entregam-na, muitas vezes com um número novo. Cada empresa só regista leituras no seu troço do percurso. Por isso, conta com até 11 dias sem nenhuma leitura no início, silêncio durante o voo e uma espera depois de «arrived at destination country». Segue primeiro o tracking da loja e depois o da transportadora local. No envio mais barato, o seguimento pode acabar de vez nessa troca.
+Uma encomenda do AliExpress, da Temu ou da Shein muda de mãos pelo caminho: uma empresa de logística chinesa leva-a de avião, a alfândega verifica-a à chegada e os [CTT](carrier:ctt) ou outra transportadora entregam-na, muitas vezes com um número novo. Cada empresa só regista leituras no seu troço do percurso. Por isso, conta com até 11 dias sem nenhuma leitura no início, silêncio durante o voo e uma espera depois de «arrived at destination country». Segue primeiro o tracking da loja e depois o da transportadora local. No envio mais barato, o seguimento pode acabar de vez nessa troca. O que sai de um armazém na UE poupa o voo e a alfândega.
 
 ## O tracking do AliExpress é fiável?
 
@@ -100,6 +100,14 @@ Depende da linha de envio:
 
 Se a encomenda chegar pela [Ecoscooting](carrier:ecoscooting), a página dela explica os estados, os pontos de recolha e como a contactar.
 
+## Enviado de um armazém na Europa: o que muda?
+
+Nem tudo sai da China. Na página de envios para Portugal, a Temu fala dos produtos enviados de armazéns locais, que não têm valor mínimo de encomenda. E quer mais: segundo um comunicado dos CTT, a Temu começou a convidar vendedores locais em vários países europeus e espera que até 80 % das vendas na Europa venham deste modelo local-para-local. Na Shein Portugal, a etiqueta «Entregue em 5 dias úteis/Envio Rápido» marca os artigos que podem sair de um armazém na Europa. Os outros saem de fora da Europa, e a Shein avisa que isso pode atrasar a encomenda.
+
+No seguimento, uma encomenda que sai de um armazém na UE não apanha o avião da China nem passa pela alfândega. Os dois longos silêncios descritos acima desaparecem, e o seguimento começa logo na Europa.
+
+Também muda o que pagas. Para artigos que já estão na UE no momento da compra, não há formalidades aduaneiras e o IVA já vem incluído no preço, explica a Comissão Europeia. O AliExpress diz o mesmo dos vendedores que enviam a partir de um armazém no teu país: nesse caso, não te pedem direitos nem impostos a mais.
+
 ## Quanto tempo demora uma encomenda da China para Portugal?
 
 Depende da linha que pagaste. A Cainiao conta dias seguidos; a Shein conta dias úteis:
@@ -155,14 +163,17 @@ Se aparece como entregue e não tens nada, vê [encomenda entregue mas não rece
 - [AliExpress: What is Buyer Protection? (em inglês)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 dias depois de confirmar
 - [AliExpress: Delivered but not received (em inglês)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – transportadora local primeiro
 - [AliExpress: Commitment (em inglês)](https://www.aliexpress.com/p/service-mindset/index.html) – exclusões do Delivery Commitment
+- [AliExpress: Do I have to pay for customs and import taxes? (em inglês)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – armazém no teu país, sem direitos nem impostos a mais
 - [Temu: Shipping info (em inglês)](https://www.temu.com/uk/shipping-info.html) – preparação, prazo e número por volume, transportadoras locais, 90 dias
+- [Temu Portugal: Informações de envio](https://www.temu.com/pt/shipping-info.html) – armazéns locais sem valor mínimo de encomenda
 - [Shein Portugal: Informação de envio](https://pt.shein.com/Shipping-Info-a-280.html) – prazos, Ponto Pickup, armazém na Europa, 45 e 30 dias, 500 pontos
 - [CTT: Resultados que podem aparecer na pesquisa do «Seguir objeto»](https://www.ctt.pt/ajuda/particulares/seguir-ou-alterar-entrega/seguir/resultados-que-podem-aparecer-na-pesquisa-do-seguir-objeto) – Aguarda entrada nos CTT, Aceite, Em importação, Em entrega
 - [CTT: Desalfandegar encomendas](https://www.ctt.pt/particulares/receber/desalfandegar/desalfandegar-encomendas) – aviso antecipado, adiantar o processo
 - [CTT: Prazo para desalfandegar a minha encomenda](https://www.ctt.pt/ajuda/particulares/importacoes-e-desalfandegamento/prazo-de-desalfandegamento/prazo-para-desalfandegar-a-minha-encomenda) – 20 dias, devolução ao remetente
 - [CTT: Fim da isenção de direitos aduaneiros em compras até 150 euros](https://www.ctt.pt/particulares/receber/desalfandegar/fim-da-isencao-de-direitos-aduaneiros-em-compras-ate-150-euros-fora-da-uniao-europeia) – 3 € por tipo de produto, Serviço CTT, só IVA pago, demoras
 - [CTT: Parceiro de distribuição estratégico da Temu](https://www.ctt.pt/grupo-ctt/media/noticias/ctt-sao-o-parceiro-de-distribuicao-estrategico-da-temu-para-a-peninsula-iberica) – parceiro exclusivo em 2023
-- [CTT: Temu alarga entrega em Portugal](https://www.ctt.pt/grupo-ctt/media/noticias/temu-alarga-entrega-em-portugal-atraves-de-parceria-estrategica-com-os-ctt) – Açores, Madeira, Lojas e Pontos CTT, Agentes Payshop, cacifos Locky
+- [CTT: Temu alarga entrega em Portugal](https://www.ctt.pt/grupo-ctt/media/noticias/temu-alarga-entrega-em-portugal-atraves-de-parceria-estrategica-com-os-ctt) – Açores, Madeira, Lojas e Pontos CTT, Agentes Payshop, cacifos Locky, vendedores locais, até 80 % das vendas na Europa
+- [Comissão Europeia: Buying goods online coming from a non-EU country (em inglês)](https://taxation-customs.ec.europa.eu/buying-goods-online-coming-non-european-union-country_en) – artigos já na UE: sem formalidades aduaneiras, IVA no preço
 - [Comissão Europeia: EU Customs Reform (em inglês)](https://taxation-customs.ec.europa.eu/customs/eu-customs-reform_en) – taxa de tratamento a partir de 1 de novembro de 2026
 - [Conselho da UE: Regulamento delegado C(2026) 6694](https://data.consilium.europa.eu/doc/document/ST-13480-2026-INIT/pt/pdf) – 2 € por artigo
 - [Comissão Europeia: Guidance on EUR 3 customs duty (PDF, em inglês)](https://taxation-customs.ec.europa.eu/document/download/053e5b4e-f0be-4f20-9a23-3e3b659a6676_en?filename=Customs%20Guidance%20on%20EUR%203%20customs%20duty.pdf) – 2 € por artigo, contado por linha da declaração, qualquer valor

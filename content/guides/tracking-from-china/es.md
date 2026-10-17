@@ -4,10 +4,10 @@ description: Por qué el seguimiento de AliExpress, Temu o Shein se para o cambi
 slug: seguimiento-paquete-de-china
 picture: Un avión traza un arco punteado sobre el globo, de un marcador rojo al marcador verde de casa, y Pip viaja entre dos furgonetas.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-17
 ---
 
-Un paquete de AliExpress, Temu o Shein cambia de manos por el camino: una empresa logística china lo saca del país, la Aduana lo revisa al llegar y [Correos](carrier:correos-spain) u otra empresa de reparto te lo entrega, a menudo con otro número. Cada una solo escanea su tramo, así que es normal pasar hasta 11 días sin un primer escaneo, no ver nada durante el vuelo y volver a esperar cuando ya ha llegado al país de destino. Sigue primero el número de la tienda y luego el de la empresa de reparto. Con el envío más barato, el seguimiento puede cortarse ahí para siempre.
+Un paquete de AliExpress, Temu o Shein cambia de manos por el camino: una empresa logística china lo saca del país, la Aduana lo revisa al llegar y [Correos](carrier:correos-spain) u otra empresa de reparto te lo entrega, a menudo con otro número. Cada una solo escanea su tramo, así que es normal pasar hasta 11 días sin un primer escaneo, no ver nada durante el vuelo y volver a esperar cuando ya ha llegado al país de destino. Sigue primero el número de la tienda y luego el de la empresa de reparto. Con el envío más barato, el seguimiento puede cortarse ahí para siempre. Lo que sale de un almacén en la UE se ahorra el vuelo desde China y el arancel.
 
 ## ¿Es fiable el seguimiento de AliExpress?
 
@@ -98,6 +98,14 @@ Depende de la línea de envío:
 
 Si en el seguimiento aparece una empresa de reparto de aquí, como [Ecoscooting](carrier:ecoscooting) con un número `CNESP`, sigue el paquete en su web o en su app, con el número que te dé.
 
+## Enviado desde un almacén en Europa: ¿qué cambia?
+
+No todo sale de China. En su página de envíos para España, Temu menciona los productos enviados por almacenes locales, que no tienen un importe mínimo por pedido. Temu acepta además vendedores locales: en Europa desde 2024, también en España, y hoy su programa para ellos está abierto en más de 35 mercados. Shein marca con «Almacén UE» los artículos que pueden salir de un almacén en Europa. Lo demás sale de fuera de Europa, y Shein avisa de que eso puede retrasar el pedido.
+
+Para el seguimiento, un paquete que sale de un almacén en Europa no hace el vuelo desde China. Ese largo silencio desaparece y el seguimiento empieza ya en Europa.
+
+También cambia lo que pagas. Según la Agencia Tributaria, no hay derechos de aduana si tus productos están en España u otro país de la UE en el momento en que se hace el pedido. Lo que cuenta es desde dónde se envían, no el dominio de la web ni que los precios estén en euros. AliExpress dice lo mismo de los vendedores que envían desde un almacén en tu país: entonces no te piden aranceles ni impuestos de más.
+
 ## ¿Cuánto tarda un paquete de China a España?
 
 Depende del envío que hayas pagado. Cainiao cuenta días naturales; Shein, días laborables:
@@ -109,7 +117,7 @@ Depende del envío que hayas pagado. Cainiao cuenta días naturales; Shein, día
 | Temu | De 1 a 3 días para preparar el pedido, y luego un plazo para cada paquete cuando sale |
 | Shein España | De 1 a 3 días para preparar el pedido. Luego, Estándar, de 8 a 11 días laborables; Exprés, de 7 a 10; punto de recogida, de 8 a 11; Económico, de 10 a 12 |
 
-Shein marca con «Almacén UE» los artículos que pueden salir de un almacén en Europa. Lo demás sale de fuera de Europa, y Shein avisa de que eso puede retrasar el pedido. ¿Es un regalo de Navidad? Pídelo pronto y mira [las fechas límite de Navidad](guide:christmas-posting-dates).
+¿Es un regalo de Navidad? Pídelo pronto y mira [las fechas límite de Navidad](guide:christmas-posting-dates).
 
 ## ¿Tendrás que pagar aduanas aparte?
 
@@ -154,14 +162,17 @@ Si pone entregado y no hay nada, mira [paquete entregado pero no recibido](guide
 - [AliExpress: What is Buyer Protection? (en inglés)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 días tras confirmar la recepción
 - [AliExpress: Delivered but not received (en inglés)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – primero la empresa de reparto
 - [AliExpress: Delivery Commitment (en inglés)](https://es.aliexpress.com/p/service-mindset/index.html) – cupón, reembolso, etiqueta de entrega rápida, envíos excluidos
+- [AliExpress: Do I have to pay for customs and import taxes? (en inglés)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – almacén en tu país, sin aranceles ni impuestos de más
 - [Temu: Shipping info (en inglés)](https://www.temu.com/uk/shipping-info.html) – preparación, plazo por paquete, empresas locales, 90 días
+- [Temu España: Información de envío](https://www.temu.com/es/shipping-info.html) – almacenes locales sin importe mínimo
+- [Temu: Temu Helps European Small Businesses Expand Internationally (en inglés)](https://www.temu.com/about_temu/temu-small-business-insights-report-2026.html) – vendedores locales en Europa desde 2024, también en España, más de 35 mercados
 - [Shein España: Información de envío](https://es.shein.com/Shipping-Info-a-280.html) – preparación y plazos, Almacén UE, Mis Pedidos, 45 y 30 días
 - [Correos: Nota de prensa con AliExpress y Cainiao (2019)](https://www.correos.com/wp-content/uploads/2019/03/2019_03_19-NP-Correos-AliExpress-Cainiao.pdf) – principal operador logístico en España
 - [Xataka Móvil: Temu y Correos](https://www.xatakamovil.com/mercado/temu-ha-encontrado-aliado-perfecto-para-ofrecer-entregas-rapidas-espana-correos) – acuerdo de 2025, cobertura, oficinas
 - [Correos: Arancel para envíos de bajo valor en la UE](https://www.correos.es/es/es/atencion-al-cliente/informacion-aduanera/arancel-para-envios-de-bajo-valor-en-la-ue) – 3 € por tipo de producto, Canarias, Ceuta y Melilla, IOSS
 - [Correos: Información aduanera](https://www.correos.es/es/es/atencion-al-cliente/informacion-aduanera) – pagar para recoger los paquetes pendientes de tramitación aduanera
 - [Correos: Tramitación aduanera en la importación](https://www.correos.es/es/es/particulares/recibir/tramitacion-aduanera-en-la-importacion) – tarifa de gestión fuera de IOSS
-- [Agencia Tributaria: Envíos por un valor de hasta 150 euros](https://sede.agenciatributaria.gob.es/Sede/aduanas/comercio-electronico-pipe-envios-particulares/compras-internet-envios-particulares/envios-valor-hasta-150-euros.html) – arancel, quién lo cobra, origen del envío
+- [Agencia Tributaria: Envíos por un valor de hasta 150 euros](https://sede.agenciatributaria.gob.es/Sede/aduanas/comercio-electronico-pipe-envios-particulares/compras-internet-envios-particulares/envios-valor-hasta-150-euros.html) – arancel, quién lo cobra, origen del envío, sin derechos de aduana desde la UE
 - [European Commission: EU Customs Reform (en inglés)](https://taxation-customs.ec.europa.eu/customs/eu-customs-reform_en) – tasa de 2 € desde el 1 de noviembre de 2026
 - [European Commission: Customs Guidance on EUR 3 customs duty (en inglés)](https://taxation-customs.ec.europa.eu/document/download/053e5b4e-f0be-4f20-9a23-3e3b659a6676_en?filename=Customs%20Guidance%20on%20EUR%203%20customs%20duty.pdf) – la tasa de 2 € se cuenta igual que el arancel de 3 €
 - [SF International: avisos de servicio (en chino)](https://www.sf-international.com/cn/sc) – festivos de 2026

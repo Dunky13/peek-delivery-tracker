@@ -4,10 +4,10 @@ description: Warum die Sendungsverfolgung aus China tagelang stehen bleibt oder 
 slug: paket-aus-china-verfolgen
 picture: Ein Flugzeug zieht einen gepunkteten Bogen über den Globus, von einer roten Stecknadel zu einer grünen am Ziel, und Pip reist zwischen zwei Lieferwagen.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-17
 ---
 
-Ein Paket von AliExpress, Temu oder Shein geht durch mehrere Hände: Ein chinesisches Logistikunternehmen schickt es per Flugzeug los, der Zoll prüft es, und bei dir stellt es die Post, [DHL](carrier:dhl) oder ein anderer Paketdienst zu, oft unter einer neuen Nummer. Jeder scannt nur seine eigene Etappe. Rechne also mit bis zu 11 Tagen bis zum ersten Scan, mit Funkstille während des Flugs und mit Wartezeit nach „Arrived at destination country“. Verfolge erst die Nummer aus dem Shop, dann die des Paketdienstes vor Ort. Beim billigsten Versand ist an dieser Übergabe manchmal endgültig Schluss mit der Sendungsverfolgung.
+Ein Paket von AliExpress, Temu oder Shein geht durch mehrere Hände: Ein chinesisches Logistikunternehmen schickt es per Flugzeug los, der Zoll prüft es, und bei dir stellt es die Post, [DHL](carrier:dhl) oder ein anderer Paketdienst zu, oft unter einer neuen Nummer. Jeder scannt nur seine eigene Etappe. Rechne also mit bis zu 11 Tagen bis zum ersten Scan, mit Funkstille während des Flugs und mit Wartezeit nach „Arrived at destination country“. Verfolge erst die Nummer aus dem Shop, dann die des Paketdienstes vor Ort. Beim billigsten Versand ist an dieser Übergabe manchmal endgültig Schluss mit der Sendungsverfolgung. Ware aus einem Lager in der EU spart sich den Flug, in Deutschland und Österreich auch den Zoll.
 
 ## Wie kann ich ein Paket aus China verfolgen?
 
@@ -105,7 +105,15 @@ Das hängt von der Versandlinie ab, die der Verkäufer bucht. Den Namen des Pake
 | Österreich | Postsendungen aus Nicht-EU-Ländern verzollt die Österreichische Post für dich und stellt sie zu. Laut einer Temu-Pressemitteilung von 2025 arbeiten Temu und die Post seit 2023 eng zusammen. |
 | Schweiz | Die Schweizerische Post verzollt alles, was per Post oder über das Netz von [GLS](carrier:gls-ch) in die Schweiz kommt. Shein-Pakete mit Economy-Versand haben derzeit keine Sendungsverfolgung. |
 
-Nicht jedes Temu-Paket kommt übrigens aus China: Ein Teil der Ware wird laut Temu aus lokalen Lagern verschickt.
+## Versand aus einem Lager in der EU: Was ändert sich?
+
+Nicht jedes Temu-Paket kommt aus China: Ein Teil der Ware wird laut Temu aus lokalen Lagern verschickt. Auf den Versandseiten für Deutschland und Österreich nennt Temu diese Produkte ausdrücklich, für sie gilt kein Mindestbestellwert. Es sollen mehr werden: Temu lädt Verkäufer aus Deutschland, Österreich und anderen europäischen Ländern ein, die über lokale Lagerhäuser liefern, und erwartet, dass bis zu 80 Prozent seines Umsatzes in Europa künftig aus diesem Local-to-Local-Modell kommen, mit schnelleren Lieferungen. Laut seiner Absichtserklärung mit Temu soll DHL auch dieses Modell unterstützen.
+
+Für die Sendungsverfolgung heißt das: Ein Paket aus einem Lager in der EU spart sich den Flug aus China und den Zoll. Die zwei langen Funkstillen von oben fallen weg, die Sendungsverfolgung beginnt in Europa.
+
+Auch beim Geld ändert sich etwas. Für Waren, die beim Kauf schon in der EU liegen, gibt es laut EU-Kommission keine Zollformalitäten, und die Mehrwertsteuer steckt schon im Preis. AliExpress sagt dasselbe über Verkäufer, die aus einem Lager in deinem Land verschicken: Dann musst du keine zusätzlichen Zölle und Steuern zahlen.
+
+In der Schweiz ändert sich weniger: Auch ein Paket aus einem Lager in Deutschland kommt aus dem Ausland, und laut BAZG wird jede Sendung aus dem Ausland beim Zoll angemeldet.
 
 ## Wie lange braucht ein Paket aus China nach Deutschland, Österreich oder in die Schweiz?
 
@@ -164,7 +172,10 @@ Steht „zugestellt“ in der Sendungsverfolgung, aber nichts ist angekommen? Da
 - [AliExpress: What is Buyer Protection?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 Tage nach der Bestätigung
 - [AliExpress: Shows delivered, not received](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – erst der Paketdienst im Zielland
 - [AliExpress: Commitment](https://www.aliexpress.com/p/service-mindset/index.html) – Choice 6 bis 8 Tage, Ausnahmen des Delivery Commitment
+- [AliExpress: Do I have to pay for customs and import taxes?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – Lager im eigenen Land, keine zusätzlichen Zölle und Steuern
 - [Temu: Versandinformationen (Archivkopie vom 11. März 2026)](https://web.archive.org/web/20260311044435/https://www.temu.com/de/shipping-info.html) – Bearbeitung, Lieferzeit pro Paket, lokale Lager, Tracking, 90 Tage
+- [Temu Deutschland: Versandinformationen](https://www.temu.com/de/shipping-info.html) – lokale Lager ohne Mindestbestellwert
+- [Temu Österreich: Versandinformationen](https://www.temu.com/at/shipping-info.html) – lokale Lager ohne Mindestbestellwert
 - [Shein Deutschland: Versandinformation](https://de.shein.com/Shipping-Info-a-280.html) – Lieferzeitraum, verschiedene Lager, 45 und 30 Tage
 - [Shein Österreich: Versandinformation](https://at.shein.com/Shipping-Info-a-280.html) – 6 bis 10 Werktage, 45 und 30 Tage
 - [Shein Schweiz: Versandinformation](https://ch.shein.com/Shipping-Info-a-280.html) – 6 bis 8 Werktage, Economy ohne Tracking, 45 und 30 Tage
@@ -174,14 +185,15 @@ Steht „zugestellt“ in der Sendungsverfolgung, aber nichts ist angekommen? Da
 - [CSIRO: Happy Lunar New Year](https://www.atnf.csiro.au/daily-picture/2024/02/12/happy-lunar-new-year-2/) – Neujahrsfest zwischen 21. Januar und 20. Februar
 - [UPU: S10-Standard](https://www.upu.int/UPU/media/upu/files/postalSolutions/programmesAndServices/standards/S10-12.pdf) – eine Nummer pro Sendung
 - [Universal Parcel Scraper: Paketdienst-Daten](https://github.com/plhery/universal-parcel-scraper/tree/main/carriers) – Nummernformen, Statustexte
-- [DHL Group: Absichtserklärung mit Temu](https://www.prnewswire.co.uk/news-releases/dhl-group-and-temu-sign-memorandum-of-understanding-to-support-local-businesses-302419680.html) – Luftfracht und Zustellung für Temu
+- [DHL Group: Absichtserklärung mit Temu](https://www.prnewswire.co.uk/news-releases/dhl-group-and-temu-sign-memorandum-of-understanding-to-support-local-businesses-302419680.html) – Luftfracht und Zustellung für Temu, Unterstützung des Local-to-Local-Modells
 - [echo24: Pakete von Temu und Co.](https://www.echo24.de/welt/lawinenartiges-wachstum-bei-paketen-von-temu-und-co-auch-deutschland-betroffen-zr-93477021.html) – Hermes-Sprecherin zum Etikett mit vier Barcodes
-- [APA-OTS: Temu und die Österreichische Post](https://www.ots.at/presseaussendung/OTS_20250731_OTS0021/temu-und-die-austrian-post-vertiefen-ihre-partnerschaft-und-fuehren-einen-abhol-und-zustelldienst-ein) – Zusammenarbeit seit 2023
+- [APA-OTS: Temu und die Österreichische Post](https://www.ots.at/presseaussendung/OTS_20250731_OTS0021/temu-und-die-austrian-post-vertiefen-ihre-partnerschaft-und-fuehren-einen-abhol-und-zustelldienst-ein) – Zusammenarbeit seit 2023, lokale Verkäufer und Lagerhäuser, bis zu 80 Prozent
 - [DHL: Bedeutung des Sendungsstatus](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/sendungsverfolgung/was-bedeutet-mein-sendungsstatus.html) – Weitertransport zu DHL
 - [DHL: Sendungsstatus international](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/themen/international/sendungsverfolgung/was-bedeutet-mein-sendungsstatus.html) – Zollabfertigung, einige Werktage
 - [DHL: Fragen zur Einfuhrverzollung](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/themen/international/zoll/fragen-zu-einfuhrverzollung.html) – 3 € je Warenart, meist schon im Shop
 - [DHL: Fragen zu Kosten](https://www.dhl.de/de/privatkunden/hilfe-kundenservice/themen/international/zoll/fragen-zu-kosten.html) – postalische Verzollung, 7,50 € Auslagepauschale, IOSS
 - [Zoll: Internetbestellungen](https://www.zoll.de/DE/Privatpersonen/Postsendungen-Internetbestellungen/Sendungen-aus-einem-Nicht-EU-Staat/Zoll-und-Steuern/Internetbestellungen/internetbestellungen_node.html) – 3 € pro Warenkategorie
+- [EU-Kommission: Buying goods online coming from a non-EU country](https://taxation-customs.ec.europa.eu/buying-goods-online-coming-non-european-union-country_en) – Waren schon in der EU: keine Zollformalitäten, MwSt. im Preis
 - [EU-Kommission: EU customs reform](https://taxation-customs.ec.europa.eu/customs/eu-customs-reform_en) – 2 € Bearbeitungsgebühr ab 1. November 2026
 - [EU-Kommission: Customs Guidance on EUR 3 customs duty](https://taxation-customs.ec.europa.eu/document/download/053e5b4e-f0be-4f20-9a23-3e3b659a6676_en?filename=Customs%20Guidance%20on%20EUR%203%20customs%20duty.pdf) – 2 € je Warenart (gleiche Zolltarifnummer, Beschreibung und Herkunft), bei jedem Warenwert
 - [Rat der EU: Delegierte Verordnung C(2026) 6694](https://data.consilium.europa.eu/doc/document/ST-13480-2026-INIT/en/pdf) – 2 € pro Ware
@@ -191,6 +203,6 @@ Steht „zugestellt“ in der Sendungsverfolgung, aber nichts ist angekommen? Da
 - [Österreichische Post: Sendungsstatus](https://www.post.at/p/c/hilfe-sendungsstatus) – Sendung ins Zielland weitergeleitet, Sendung in Verteilung
 - [Schweizerische Post: Importverzollung](https://www.post.ch/de/empfangen/importverzollung) – Post und GLS, CHF 16.–, 3 %
 - [Schweizerische Post: Ereignisse in der Sendungsverfolgung](https://www.post.ch/de/empfangen/sendung-verfolgen/ereignisse-sendungen-verfolgen) – Grenzstelle, Zollfreigabe
-- [BAZG: Empfangen von Briefen und Paketen](https://www.bazg.admin.ch/de/empfangen-von-briefen-und-paketen) – bis CHF 5.– nicht erhoben
+- [BAZG: Empfangen von Briefen und Paketen](https://www.bazg.admin.ch/de/empfangen-von-briefen-und-paketen) – jede Sendung aus dem Ausland angemeldet, bis CHF 5.– nicht erhoben
 - [BAZG: Versandhandel und Plattformbesteuerung](https://www.bazg.admin.ch/de/regelung-mwst-versandhandel-und-plattformbesteuerung) – Versandhändler und Plattformen rechnen die MWST selbst ab
 :::

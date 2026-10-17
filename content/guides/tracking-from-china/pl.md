@@ -4,10 +4,10 @@ description: Jak śledzić paczkę z Chin: czemu numer się zmienia, kto doręcz
 slug: sledzenie-paczki-z-chin
 picture: Samolot leci przerywanym łukiem nad kulą ziemską, od czerwonej pinezki do zielonej, oznaczającej dom, a Pip podróżuje między dwiema furgonetkami.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-17
 ---
 
-Paczka z AliExpress, Temu albo Shein przechodzi z rąk do rąk: chińska firma logistyczna wysyła ją samolotem, celnicy ją sprawdzają, a w Polsce doręcza ją [Poczta Polska](carrier:poczta-polska), [InPost](carrier:inpost) albo inny przewoźnik, często pod nowym numerem. Każda z tych firm skanuje tylko swój odcinek. Licz się więc z tym, że pierwszy skan pojawi się nawet po 11 dniach, w czasie lotu śledzenie zamilknie, a po statusie „arrived at destination country” paczka jeszcze trochę poczeka. Śledź najpierw numer ze sklepu, a potem numer polskiego przewoźnika. Przy najtańszej wysyłce śledzenie może się urwać na dobre właśnie przy tym przekazaniu.
+Paczka z AliExpress, Temu albo Shein przechodzi z rąk do rąk: chińska firma logistyczna wysyła ją samolotem, celnicy ją sprawdzają, a w Polsce doręcza ją [Poczta Polska](carrier:poczta-polska), [InPost](carrier:inpost) albo inny przewoźnik, często pod nowym numerem. Każda z tych firm skanuje tylko swój odcinek. Licz się więc z tym, że pierwszy skan pojawi się nawet po 11 dniach, w czasie lotu śledzenie zamilknie, a po statusie „arrived at destination country” paczka jeszcze trochę poczeka. Śledź najpierw numer ze sklepu, a potem numer polskiego przewoźnika. Przy najtańszej wysyłce śledzenie może się urwać na dobre właśnie przy tym przekazaniu. Paczka z magazynu w UE omija lot z Chin i odprawę celną.
 
 ## Jak śledzić paczkę z Chin i czy śledzenie jest dokładne?
 
@@ -96,6 +96,14 @@ To zależy od linii wysyłki:
 
 Gdy w śledzeniu pojawi się nazwa polskiego przewoźnika albo jego numer, dalej śledź paczkę u niego. Niektóre trackery [same połączą oba numery](guide:universal-tracker), jeśli drugi pojawi się w danych pierwszego przewoźnika.
 
+## Wysyłka z magazynu w Europie: co się zmienia?
+
+Nie wszystko leci z Chin. Na stronie o wysyłce do Polski Temu wspomina o produktach wysyłanych z lokalnych magazynów, które nie mają minimalnej wartości zamówienia. W Shein produkty z etykietą „Magazyn w UE” mogą wyjść z magazynu w Europie. Jeśli to niemożliwe, idą z magazynu poza Europą, a Shein uprzedza, że to może opóźnić dostawę. W jednym zamówieniu część produktów może więc przyjść z Europy, a część spoza Europy, w osobnych paczkach.
+
+Dla śledzenia oznacza to, że paczka z magazynu w UE nie leci samolotem z Chin i nie czeka w Polsce na odprawę celną. Komisja Europejska przypomina, że towar odprawiony w jednym kraju UE może swobodnie trafić do innych bez dodatkowych kontroli. Dwie długie przerwy w śledzeniu, opisane wyżej, znikają, a śledzenie zaczyna się już w Europie.
+
+Zmienia się też to, ile płacisz. Według Komisji Europejskiej przy towarach, które w chwili zakupu są już w UE, nie ma formalności celnych, a VAT jest już wliczony w cenę. AliExpress pisze to samo o sprzedawcach, którzy wysyłają z magazynu w Twoim kraju: wtedy nie zapłacisz dodatkowego cła ani podatków. Dopłaty przy odbiorze, opisane niżej, Poczta Polska pobiera przy przesyłkach spoza Unii Europejskiej.
+
 ## Ile idzie paczka z Chin do Polski?
 
 To zależy od linii, za którą płacisz. Cainiao liczy dni kalendarzowe, a Shein w Polsce podaje przedział dat:
@@ -106,8 +114,6 @@ To zależy od linii, za którą płacisz. Cainiao liczy dni kalendarzowe, a Shei
 | Linie Cainiao | Premium: 5–10 dni do krajów takich jak Hiszpania czy Holandia. Standard: 10–18 dni (do Francji i Niemiec najszybciej w 7). Economy: 20–45 dni. Polski Cainiao w tych przykładach nie wymienia |
 | Temu | 1–3 dni na przygotowanie, potem czas dostawy dla każdej paczki, gdy zostanie wysłana |
 | Shein Polska | 1–3 dni na przygotowanie, potem przedział dat. Dla zamówienia z 7 października 2026 r.: 14–19 października |
-
-Nie wszystko z Shein leci z Chin. Produkty z etykietą „Magazyn w UE” mogą wyjść z magazynu w Europie. Jeśli to niemożliwe, idą z magazynu poza Europą, a Shein uprzedza, że to może opóźnić dostawę.
 
 ## Czy przy odbiorze paczki z Chin coś dopłacisz?
 
@@ -154,7 +160,9 @@ Status mówi „doręczona”, a paczki nie ma? Zajrzyj do poradnika [paczka dor
 - [AliExpress: What is Buyer Protection?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 dni po potwierdzeniu odbioru
 - [AliExpress: Delivered but not received](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – najpierw przewoźnik w kraju docelowym
 - [AliExpress: Commitment](https://www.aliexpress.com/p/service-mindset/index.html) – wyłączenia z Delivery Commitment
+- [AliExpress: Do I have to pay for customs and import taxes?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – magazyn w Twoim kraju, bez dodatkowego cła i podatków
 - [Temu: Shipping info](https://www.temu.com/uk/shipping-info.html) – przygotowanie, czas dla każdej paczki, lokalni przewoźnicy, 90 dni (strona brytyjska)
+- [Temu Polska: Informacje o wysyłce](https://www.temu.com/pl/shipping-info.html) – lokalne magazyny bez minimalnej wartości zamówienia
 - [Shein Polska: Informacje o wysyłce](https://pl.shein.com/Shipping-Info-a-280.html) – przygotowanie, przedział dat, Magazyn w UE, automat paczkowy lub punkt odbioru, 45 i 30 dni
 - [Yanwen: strona główna](https://www.yw56.com.cn/) – linie z Temu i AliExpress w nazwie
 - [SF International: komunikaty](https://www.sf-international.com/cn/sc) – święta w Chinach w 2026 r.
@@ -168,7 +176,8 @@ Status mówi „doręczona”, a paczki nie ma? Zajrzyj do poradnika [paczka dor
 - [Poczta Polska: Zmiany w opłatach dla przesyłek spoza Unii Europejskiej od 1 lipca 2026 r.](https://www.poczta-polska.pl/news/zmiany-w-oplatach-dla-przesylek-spoza-unii-europejskiej-od-1-lipca-2026-r/) – 3 euro za rodzaj produktu, pobranie przy doręczeniu
 - [Poczta Polska: Przypomnienie oraz zmiany dotyczące procesu i kosztów obsługi zgłoszeń celno-podatkowych](https://www.poczta-polska.pl/news/przypomnienie-oraz-zmiany-dotyczace-procesu-i-kosztow-obslugi-zgloszen-celno-podatkowych/) – IOSS, opłata za zgłoszenie także przy IOSS
 - [Poczta Polska: Cennik opłat dodatkowych](https://www.poczta-polska.pl/wp-content/uploads/2025/04/cennik-oplat-dodatkowych.pdf) – od 1 lipca 2026 r.: 20,00 zł za zgłoszenie celne
-- [Komisja Europejska: Pytania i odpowiedzi dotyczące cła w wysokości 3 EUR](https://ec.europa.eu/commission/presscorner/detail/pl/qanda_26_1492) – 3 euro za pozycję
+- [Komisja Europejska: Buying goods online coming from a non-EU country](https://taxation-customs.ec.europa.eu/buying-goods-online-coming-non-european-union-country_en) – towar już w UE: bez formalności celnych, VAT w cenie
+- [Komisja Europejska: Pytania i odpowiedzi dotyczące cła w wysokości 3 EUR](https://ec.europa.eu/commission/presscorner/detail/pl/qanda_26_1492) – 3 euro za pozycję, towar odprawiony w jednym kraju bez dodatkowych kontroli w innych
 - [Komisja Europejska: Customs Guidance on EUR 3 customs duty](https://taxation-customs.ec.europa.eu/document/download/053e5b4e-f0be-4f20-9a23-3e3b659a6676_en?filename=Customs%20Guidance%20on%20EUR%203%20customs%20duty.pdf) – 3 euro także przy IOSS
 - [Komisja Europejska: Reforma celna UE wyznacza nową erę dla organów celnych w Europie](https://ec.europa.eu/commission/presscorner/detail/pl/ip_26_1904) – opłata manipulacyjna od listopada 2026 r.
 - [Komisja Europejska: EU customs reform](https://taxation-customs.ec.europa.eu/customs/eu-customs-reform_en) – 2 euro od 1 listopada 2026 r.

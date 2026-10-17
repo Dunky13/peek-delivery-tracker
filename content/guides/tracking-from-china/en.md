@@ -4,10 +4,10 @@ description: Why tracking from China goes quiet or changes number, who delivers 
 slug: parcel-tracking-from-china
 picture: A plane's dotted arc over the globe from a red pin to a green home pin, and Pip travelling between two vans.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-17
 ---
 
-A parcel (or package) from AliExpress, Temu or Shein changes hands: a Chinese logistics firm flies it out, your country's customs checks it, and your local post or courier delivers it, often under a new number. Each company scans only its own leg, so expect up to 11 days before the first scan, silence during the flight and a wait after "arrived at destination country". Follow the shop's tracking, then the local carrier's; on the cheapest shipping, tracking can stop at that handover for good.
+A parcel (or package) from AliExpress, Temu or Shein changes hands: a Chinese logistics firm flies it out, your country's customs checks it, and your local post or courier delivers it, often under a new number. Each company scans only its own leg, so expect up to 11 days before the first scan, silence during the flight and a wait after "arrived at destination country". Follow the shop's tracking, then the local carrier's; on the cheapest shipping, tracking can stop at that handover for good. Items shipped from a warehouse in your country (or, for Ireland, in the EU) skip the flight and customs.
 
 ## How accurate is AliExpress tracking?
 
@@ -97,6 +97,18 @@ It depends on the shipping line:
 | Canada | [Canada Post](carrier:canada-post) for postal items, or a courier such as UniUni. |
 | Australia | [Australia Post](carrier:australia-post) for postal items. Shein doesn't deliver to PO boxes or parcel lockers. |
 
+## Shipped from a local warehouse: what changes?
+
+Not every order starts in China. Here's what the platforms' own pages say:
+
+- **Shein US** marks items "Local" when they ship from a U.S. warehouse. "QuickShip" items are typically shipped from within the U.S. and can arrive faster, though Shein says the label "does not guarantee a specific delivery date".
+- **Shein UK**'s "EU/UK Warehouse" label means the item can ship from a warehouse in Europe. Either way, a UK courier delivers it and you don't deal with customs.
+- **Temu**'s Irish and Australian shipping pages mention products shipped from local warehouses, which have no minimum order value.
+
+If the local stock runs out, Shein sends the item from a warehouse abroad and warns that it can take longer. One order can mix both and arrive as separate parcels.
+
+A parcel from a warehouse in your own country skips the flight and customs, the two long silences described above, so its tracking starts with the courier that delivers it. Costs change too. AliExpress says some sellers ship from a warehouse in your country, and then "you won't be asked to pay for any additional customs duties and taxes". In Ireland, Revenue says goods bought from another EU country owe no customs duty.
+
 ## How long does shipping from China take?
 
 It depends on the line you paid for. Cainiao counts calendar days; Shein counts working days:
@@ -157,10 +169,13 @@ If it says delivered and nothing is there, follow [delivered but not received](g
 - [AliExpress: What is Buyer Protection?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 days after confirming
 - [AliExpress: Delivered but not received](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – local carrier first, Cainiao lookup
 - [AliExpress: Commitment](https://www.aliexpress.com/p/service-mindset/index.html) – Delivery Commitment coupon and exclusions
+- [AliExpress: Do I have to pay for customs and import taxes?](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – warehouse in your country, no extra duties or taxes
 - [Temu: Shipping info](https://www.temu.com/uk/shipping-info.html) – processing, UK and per-parcel times, 90 days
 - [Temu: Late delivery compensation policy](https://www.temu.com/late-delivery-compensation-policy.html) – credit 48 hours after the latest delivery date
-- [Shein US: Shipping info](https://us.shein.com/Shipping-Info-a-280.html) – times, deadlines
-- [Shein UK: Shipping info](https://www.shein.co.uk/Shipping-Info-a-280.html) – stock in China, couriers, deadlines, On-Time Delivery
+- [Temu Ireland: Shipping info](https://www.temu.com/ie/shipping-info.html) – local warehouses, no minimum order value
+- [Temu Australia: Shipping info](https://www.temu.com/au/shipping-info.html) – local warehouses, no minimum order value
+- [Shein US: Shipping info](https://us.shein.com/Shipping-Info-a-280.html) – times, deadlines, Local and QuickShip labels
+- [Shein UK: Shipping info](https://www.shein.co.uk/Shipping-Info-a-280.html) – stock in China, EU/UK Warehouse label, couriers, no customs, deadlines, On-Time Delivery
 - [Shein Europe: Shipping info](https://eur.shein.com/Shipping-Info-a-280.html) – times to Ireland
 - [Shein Canada: Shipping info](https://ca.shein.com/Shipping-Info-a-280.html) – delivery window, taxes at checkout, CAD 5 credit
 - [Shein Australia: Shipping info](https://au.shein.com/Shipping-Info-a-280.html) – times, no PO boxes
@@ -172,6 +187,7 @@ If it says delivered and nothing is there, follow [delivered but not received](g
 - [Universal Parcel Scraper: carrier data](https://github.com/plhery/universal-parcel-scraper/tree/main/carriers) – number shapes, wordings
 - [Federal Register: De minimis suspension for mail](https://www.federalregister.gov/documents/2026/06/24/2026-12669/indefinite-suspension-of-the-de-minimis-exemption-for-mail-shipments-and-new-postal-informal-entry) – suspension since 29 August 2025
 - [GOV.UK: Tax and duty on goods sent from abroad](https://www.gov.uk/goods-sent-from-abroad/tax-and-duty) – VAT at checkout up to £135
+- [Revenue: Buying goods from an EU country](https://www.revenue.ie/en/customs/individuals/buying-online-personal/from-eu.aspx) – no customs duty
 - [Revenue: Union Handling Fee](https://www.revenue.ie/en/corporate/press-office/press-releases/2026/pr-092926-handling-fee.aspx) – €3 duty, €2 fee, checkout or delivery
 - [An Post: Pay customs charge](https://www.anpost.com/Post-Parcels/Receiving/Pay-Customs-Charge) – notices by post, text or email
 - [CBSA: Importing by mail](https://www.cbsa-asfc.gc.ca/import/personal-personnel/postal-postale-eng.html) – CAD 20 exemption

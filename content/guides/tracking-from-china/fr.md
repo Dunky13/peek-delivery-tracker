@@ -4,10 +4,10 @@ description: Pourquoi le suivi AliExpress, Temu ou Shein ne bouge plus ou change
 slug: suivi-colis-chine-aliexpress-temu-shein
 picture: Au-dessus du globe, un avion file en pointillés d'un repère rouge au repère vert de la maison, et Pip voyage entre deux camionnettes.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-17
 ---
 
-Un colis AliExpress, Temu ou Shein change de mains en route : une société logistique chinoise l'expédie hors de Chine, la douane le contrôle à l'arrivée, puis ta poste ou un transporteur local le livre, souvent sous un nouveau numéro. Chacun ne scanne que sa part du trajet. Le premier scan peut mettre jusqu'à 11 jours à apparaître, le suivi reste muet pendant le vol, et il faut encore patienter après « arrivé dans le pays de destination ». Suis le numéro donné par la boutique, puis celui du transporteur local. En livraison économique, le suivi peut s'arrêter pour de bon à ce passage de relais.
+Un colis AliExpress, Temu ou Shein change de mains en route : une société logistique chinoise l'expédie hors de Chine, la douane le contrôle à l'arrivée, puis ta poste ou un transporteur local le livre, souvent sous un nouveau numéro. Chacun ne scanne que sa part du trajet. Le premier scan peut mettre jusqu'à 11 jours à apparaître, le suivi reste muet pendant le vol, et il faut encore patienter après « arrivé dans le pays de destination ». Suis le numéro donné par la boutique, puis celui du transporteur local. En livraison économique, le suivi peut s'arrêter pour de bon à ce passage de relais. Un article expédié depuis un entrepôt dans l'UE évite l'avion et, en France et en Belgique, la douane.
 
 ## Le suivi AliExpress est-il fiable ?
 
@@ -96,6 +96,16 @@ Colle l'un ou l'autre numéro dans [Peek](/) : il retrouve le transporteur parmi
 | Belgique | bpost : Temu et bpostgroup ont signé en novembre 2025 un protocole d'entente pour renforcer leur collaboration en Belgique. My bpost et Track & Trace t'indiquent les frais éventuels avant la livraison. |
 | Suisse | [La Poste suisse](carrier:swiss-post), qui dédouane les lettres, colis et envois EMS arrivés par la poste ou par le réseau [GLS](carrier:gls-ch), puis te facture les taxes. |
 
+## Expédié depuis un entrepôt en Europe : qu'est-ce qui change ?
+
+Tout ne vient pas de Chine. Sur ses pages de livraison pour la France et la Belgique, Temu cite les produits expédiés par des entrepôts locaux, qui n'ont pas de minimum de commande. Et il en prévoit davantage : Temu a ouvert sa place de marché aux vendeurs locaux en Belgique et dans le reste de l'Europe en 2024, et prévoit que les vendeurs locaux et la logistique locale représenteront jusqu'à 80 % de ses ventes européennes. Chez Shein France et Belgique, ce sont les articles marqués « Entrepôt UE » : ils peuvent partir d'un entrepôt en Europe ; sinon, Shein prévient qu'ils peuvent arriver en retard.
+
+Côté suivi, un colis qui part d'un entrepôt dans l'UE ne prend pas l'avion depuis la Chine et ne passe pas la douane. Les deux longs silences décrits plus haut disparaissent, et le suivi commence en Europe.
+
+Côté frais aussi. Pour des articles qui se trouvent déjà dans l'UE au moment de l'achat, il n'y a pas de formalités douanières, et la TVA est comprise dans le prix payé, explique la Commission européenne. AliExpress le dit aussi des vendeurs qui expédient depuis un entrepôt dans ton pays : tu n'as alors pas de droits de douane ni de taxes en plus à payer.
+
+En Suisse, c'est différent : un colis parti d'un entrepôt en France ou en Allemagne arrive de l'étranger, et l'OFDF rappelle que tout envoi en provenance de l'étranger est déclaré à la douane.
+
 ## Combien de temps met un colis venant de Chine ?
 
 Ça dépend du mode de livraison payé. Cainiao compte en jours calendaires, Shein en jours ouvrés :
@@ -153,9 +163,12 @@ Si le suivi indique « livré » et que tu n'as rien reçu : [colis livré mais 
 - [AliExpress : What is Buyer Protection? (en anglais)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015100&language=en) – 15 jours après confirmation
 - [AliExpress : Delivered but not received (en anglais)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060071162&language=en) – transporteur local d'abord
 - [AliExpress : Commitment (en anglais)](https://www.aliexpress.com/p/service-mindset/index.html) – Choice, engagement de livraison, exclusions
+- [AliExpress : Do I have to pay for customs and import taxes? (en anglais)](https://service.aliexpress.com/page/knowledge?pageId=82&knowledge=1060015161&language=en) – entrepôt dans ton pays, pas de droits ni de taxes en plus
 - [Temu : Informations de livraison (copie d'archive du 18 mai 2026)](https://web.archive.org/web/20260518215914/https://www.temu.com/fr/shipping-info.html) – préparation, délai par colis, suivi, 90 jours
+- [Temu France : Informations de livraison](https://www.temu.com/fr/shipping-info.html) – entrepôts locaux sans minimum de commande
+- [Temu Belgique : Informations de livraison](https://www.temu.com/be/shipping-info.html) – entrepôts locaux sans minimum de commande
 - [Shein France : Livraison](https://fr.shein.com/Shipping-Info-a-280.html) – délais, Entrepôt UE, Mondial Relay, délais de réclamation, points
-- [Shein Belgique : Livraison](https://fr.shein.com/be/Shipping-Info-a-280.html) – délais Belgique
+- [Shein Belgique : Livraison](https://fr.shein.com/be/Shipping-Info-a-280.html) – délais Belgique, Entrepôt UE
 - [Shein Suisse : Livraison](https://ch.shein.com/fr/Shipping-Info-a-280.html) – délais, entrepôts, réclamations, points
 - [Yanwen : accueil (en chinois)](https://www.yw56.com.cn/) – lignes par transporteur et par plateforme
 - [SF International : avis de service (en chinois)](https://www.sf-international.com/cn/sc) – fêtes de 2026
@@ -164,18 +177,19 @@ Si le suivi indique « livré » et que tu n'as rien reçu : [colis livré mais 
 - [UPU : norme S10 (en anglais)](https://www.upu.int/UPU/media/upu/files/postalSolutions/programmesAndServices/standards/S10-12.pdf) – un seul numéro par envoi
 - [Universal Parcel Scraper : données transporteurs](https://github.com/plhery/universal-parcel-scraper/tree/main/carriers) – formes de numéros, libellés
 - [La Poste Groupe : Accord La Poste-Temu, ce qu'il faut savoir](https://www.lapostegroupe.com/fr/actualite/accord-la-poste-temu-ce-qu-il-faut-savoir) – Temu depuis 2023, accord, part de Colissimo
-- [bpostgroup : Temu signe un protocole d'entente avec bpostgroup](https://press.bnode.com/temu-signe-un-protocole-dentente-avec-bpostgroup-pour-renforcer-leur-collaboration-logistique-internationale) – collaboration en Belgique
+- [bpostgroup : Temu signe un protocole d'entente avec bpostgroup](https://press.bnode.com/temu-signe-un-protocole-dentente-avec-bpostgroup-pour-renforcer-leur-collaboration-logistique-internationale) – collaboration en Belgique, vendeurs locaux depuis 2024, jusqu'à 80 % des ventes européennes
 - [La Poste : Formalités d'importation en cours ou suspendues](https://aide.laposte.fr/contenu/que-signifie-les-statuts-les-formalites-d-importation-sont-en-cours-suspendues) – statut, quelques jours
 - [La Poste : Droits et taxes à payer à l'importation](https://aide.laposte.fr/contenu/de-l-etranger-et-l-outre-mer-vers-la-metropole-quels-sont-les-droits-et-taxes-a-payer-a-l-importation) – à l'achat ou à l'arrivée
 - [La Poste : Frais de gestion à l'importation](https://aide.laposte.fr/contenu/pourquoi-la-poste-applique-des-frais-de-gestion-a-l-importation) – seulement si des droits sont dus
 - [Service-Public.fr : La taxe française sur les petits colis remplacée par un droit de douane européen](https://www.service-public.gouv.fr/particuliers/actualites/A18985) – 3 € par catégorie d'articles
 - [Commission européenne : Questions et réponses sur le droit de douane de 3 euros](https://ec.europa.eu/commission/presscorner/detail/fr/qanda_26_1492) – 3 € par article, colis jusqu'à 150 €
+- [Commission européenne : Buying goods online coming from a non-EU country (en anglais)](https://taxation-customs.ec.europa.eu/buying-goods-online-coming-non-european-union-country_en) – articles déjà dans l'UE : pas de formalités douanières, TVA comprise
 - [Commission européenne : La réforme douanière de l'UE](https://ec.europa.eu/commission/presscorner/detail/fr/ip_26_1904) – frais de traitement à partir de novembre 2026
 - [Commission européenne : EU Customs Reform (en anglais)](https://taxation-customs.ec.europa.eu/customs/eu-customs-reform_en) – 2 € au 1er novembre 2026
 - [Conseil de l'UE : règlement délégué C(2026) 6694 (PDF)](https://data.consilium.europa.eu/doc/document/ST-13480-2026-INIT/fr/pdf) – 2 € par article
 - [Commission européenne : Guidance on EUR 3 customs duty (PDF, en anglais)](https://taxation-customs.ec.europa.eu/document/download/053e5b4e-f0be-4f20-9a23-3e3b659a6676_en?filename=Customs%20Guidance%20on%20EUR%203%20customs%20duty.pdf) – 2 € par ligne de déclaration, comme les 3 €, quelle que soit la valeur
 - [bpost : Mon colis à la douane](https://www.bpost.be/fr/recevoir-colis/douane) – plusieurs jours, frais demandés à l'arrivée
 - [La Poste suisse : Dédouanement à l'importation](https://www.post.ch/fr/reception/dedouanement-a-l-importation) – dédouanement facturé, poste et GLS
-- [OFDF : Réception de lettres et de paquets](https://www.bazg.admin.ch/fr/reception-de-lettres-et-paquets) – jusqu'à CHF 5.– compris, base de CHF 62.–
+- [OFDF : Réception de lettres et de paquets](https://www.bazg.admin.ch/fr/reception-de-lettres-et-paquets) – tout envoi de l'étranger déclaré, jusqu'à CHF 5.– compris, base de CHF 62.–
 - [OFDF : Vente par correspondance et imposition des plateformes](https://www.bazg.admin.ch/fr/vente-par-correspondance-et-imposition-des-plateformes) – 2025, CHF 100 000.–
 :::
