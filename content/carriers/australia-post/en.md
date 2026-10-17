@@ -3,7 +3,7 @@ title: Australia Post tracking: numbers, statuses and lockers
 description: Track an Australia Post parcel: where the tracking number is, what each status means, Post Office and Parcel Locker pickup, late parcels and contacts.
 slug: australia-post-tracking
 published: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-17
 ---
 
 Australia Post is Australia's national postal service. Track a parcel on [auspost.com.au/mypost/track](https://auspost.com.au/mypost/track), in the AusPost app or by pasting the number in the box above, no account needed. The number comes from the sender: the shop's order confirmation, an email from Australia Post or your Post Office receipt.
@@ -26,7 +26,8 @@ Australia Post publishes no number format. These are the shapes Peek knows, with
 | `12ABC123456789000123456` | The same with 2 digits in front (23 characters). |
 | `94001234567890000123456` | 23 digits starting `9400`: still Australia Post. |
 | `12ABC1234567` | Consignment number, 12 characters. |
-| `RR123456785AU` | International postal number ending `AU`. |
+| `EE123456785AU` | EMS, parcel or tracked-letter number: `C`, `E` or `L`, a letter, 9 digits, `AU`. |
+| `RR123456785AU` | Other international postal number ending `AU`, such as registered mail. |
 
 Lookalikes: 2 letters and 10 digits (`AB1234567890`) belong to [Aramex Australia](carrier:aramex-au) or [Aramex New Zealand](carrier:aramex-nz); a 22-digit `9400` number is USPS's. Number not found? It may be wrong or not scanned yet: Australia Post suggests trying again in 24 hours. More in [tracking number formats](guide:tracking-number-formats).
 
@@ -85,7 +86,7 @@ StarTrack, Australia Post's courier and freight arm, has its own numbers (13 23 
 
 ## Tracking Australia Post parcels with Peek
 
-[Peek](/) names Australia Post at once for 21- and 23-character article IDs. Consignment numbers and 22-digit prepaid barcodes are shared with other carriers, so Peek asks the likely ones at once and names the one that knows the number; if it can't settle, pick Australia Post with "Change". A postal number ending `AU` shows as a postal item while Peek asks Australia Post. Links from auspost.com.au with `id=` or `/mypost/track/details/` work; older `#/search` links don't, so paste the number.
+[Peek](/) names Australia Post at once for 21- and 23-character article IDs. Consignment numbers and 22-digit prepaid barcodes are shared with other carriers, so Peek asks the likely ones at once and names the one that knows the number; if it can't settle, pick Australia Post with "Change". It also names Australia Post at once for an EMS, parcel or tracked-letter number ending `AU` with a valid check digit; any other postal number ending `AU` shows as a postal item while Peek asks Australia Post. Links from auspost.com.au with `id=` or `/mypost/track/details/` work; older `#/search` links don't, so paste the number.
 
 If Australia Post refuses Peek's plain request, a browser on Peek's server opens auspost.com.au instead. Tracking services hold little of Australia Post's history, so if the browser is refused too, the history can be thin.
 

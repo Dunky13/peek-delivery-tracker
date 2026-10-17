@@ -1,9 +1,9 @@
 ---
 title: Paack tracking: order number, postcode and delivery slots
-description: Track a Paack delivery in Spain, Portugal or France: where the order number is, why you need the postcode, what each status means and how to reach Paack.
+description: Track a Paack delivery in Spain, Portugal, France or Italy: where the order number is, why you need the postcode, what each status means and how to reach Paack.
 slug: paack-tracking
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-17
 ---
 
 Paack delivers online shops' orders to homes in Spain, Portugal, France and Italy, in scheduled time slots. To track a parcel, enter the order number and the delivery postcode on [Paack's tracking page](https://paack.co/shipments/tracking), or paste the number in the box above and pick Paack. Both are at the end of Paack's email; the number is also in the shop's messages.
@@ -79,9 +79,9 @@ Paack's help gives no number for Italy or the UK.
 
 ## Tracking a Paack parcel with Peek
 
-[Peek](/) can't tell a Paack parcel from its number or ask Paack whether it knows one. A number with letters usually gets no carrier ("Peek looks it up when you track"); one made only of digits may be offered to another carrier with that shape. Press "Change" and pick Paack, or paste a mydeliveries.paack.app link with `tracking_number=`. Those open on paack.co/shipments, whose links aren't read, so copy the link, not the address bar.
+[Peek](/) names Paack straight away for `PK` and 18 digits, the number on parcels Paack delivers for Evri International, and tracks those without a postcode. Paack's other numbers have no shape of their own, and Peek can't ask Paack whether it knows one. For a SHEIN package number, `C` or `E`, a six-digit date (year, month, day) and 8 more digits, "Change" lists Paack under "Fits this number". Any other number with letters usually gets no carrier ("Peek looks it up when you track"); one made only of digits may be offered to another carrier with that shape. Press "Change" and pick Paack, or paste a link to Paack's tracking page with `tracking_number=`, from mydeliveries.paack.app or paack.co/shipments/tracking.
 
-The "Delivery postcode" field is then required, and a postcode inside a link isn't used. Paack answers only when both match, so a wrong pair looks like an unknown number. The postcode goes to Paack and, when needed, to tracking services. Peek writes the number in capitals and drops spaces, dots and hyphens, while Paack asks for it exactly as written: if nothing turns up, try Paack's page too.
+Then fill in "Delivery postcode". It's marked optional because a `PK` number needs none, but Paack shows other orders only with it, and a postcode inside a link isn't used. Paack answers only when both match, so a wrong pair looks like an unknown number. The postcode goes to Paack and, when needed, to tracking services. Peek writes the number in capitals and drops spaces, dots and hyphens, while Paack asks for it exactly as written: if nothing turns up, try Paack's page too.
 
 You see the status, the history and the expected day and slot, on the delivery address's clock (Canary Islands time for postcodes starting 35 or 38). At a PaackGo Point, Peek should show its name and address (not yet seen on a real parcel), never the pickup code, QR code or deadline: keep Paack's email. Steps appear in Peek's own words; a PaackGo pickup shows as "Delivered". Paack gives no place for its scans and names no other carrier, so Peek follows none. The shop's name and your name and address are dropped. Checks run every 10 minutes, every 2 once out for delivery, with notifications for every scan, important steps or delivery day only.
 
