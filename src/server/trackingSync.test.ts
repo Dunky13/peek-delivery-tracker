@@ -257,6 +257,22 @@ describe('tracking event normalization', () => {
     );
   });
 
+  it('names the universal provider on the stage change it reported without a time', () => {
+    const observedAt = new Date('2026-08-30T13:00:00Z');
+    const rows = buildEvents({ id: 'package-upu', carrier: 'intl-post', current_stage: 'accepted' }, {
+      tracking_provider: 'UPU',
+      status: 'in_transit',
+      current_stage: 'in_transit',
+      last_status_text: 'Departure from outward office of exchange',
+      events: [{ description: 'Departure from outward office of exchange', stage: 'in_transit', local_time: '2026-08-30T09:00:00', provider_code: 'EXC' }],
+    }, 'unknown', observedAt);
+    expect(rows).toEqual([expect.objectContaining({
+      stage: 'in_transit',
+      occurred_at: observedAt.toISOString(),
+      raw_data: expect.objectContaining({ observed_without_provider_timestamp: true, local_time: '2026-08-30T09:00:00', universal_provider: 'UPU' }),
+    })]);
+  });
+
   it('records an observed event when a timestamp-less current state changes', () => {
     const observedAt = new Date('2026-08-30T13:00:00Z');
     const result: CarrierResult = {

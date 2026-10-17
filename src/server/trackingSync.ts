@@ -429,6 +429,7 @@ export function buildEvents(
   // holds an identity twice cannot be saved, so each scan is kept once.
   const identities = new Set<string>();
   // A universal provider's scans name it, so their rows follow its clock until a carrier writes them (eventIdentity.ts).
+  // The stage change seen without a provider time names it too: no copy or clock rule reads that row.
   const provider = carrierId === 'unknown' && typeof result.tracking_provider === 'string'
     ? { [UNIVERSAL_PROVIDER]: result.tracking_provider } : {};
   for (const raw of result.events ?? []) {
@@ -520,6 +521,7 @@ export function buildEvents(
           description,
           result.current_stage_source ?? matchingEvent?.stage_source,
         ),
+        ...provider,
       },
     });
   }
