@@ -12628,7 +12628,8 @@
       "timezone": "Europe/Madrid",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "sending",
+        "recognitionRank": 891
       },
       "linkRules": [],
       "detectionRules": [],
@@ -21455,7 +21456,23 @@
       "timezone": "Europe/London",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "relaytech",
+        "requirements": [
+          {
+            "field": "dpdPostcode",
+            "whenTrackingNumber": "^RELR[A-Z0-9]{8}$",
+            "validator": "internationalPostcode",
+            "optional": true,
+            "label": "Delivery postcode",
+            "type": "text",
+            "placeholder": "SW1A 1AA",
+            "help": "Relay shows a shipment only with its delivery postcode. Without it, other sources are asked.",
+            "pattern": "^(?:[Gg][Ii][Rr]|[A-PR-UWYZa-pr-uwyz](?:[0-9][0-9A-HJKPSTUWa-hjkpstuw]?|[A-HK-Ya-hk-y][0-9][0-9ABEHMNPRVWXYabehmnprvwxy]?)) ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}$",
+            "maxLength": 8,
+            "inputMode": "text",
+            "autoComplete": "postal-code"
+          }
+        ]
       },
       "linkRules": [],
       "detectionRules": [
@@ -23325,6 +23342,234 @@
           "confidence": "high"
         }
       ]
+    },
+    "codexpress": {
+      "displayName": "CODExpress",
+      "aliases": [
+        "COD Express",
+        "CODEX",
+        "COD Express Australia"
+      ],
+      "countries": [
+        "AU"
+      ],
+      "color": "#292d42",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://cbd-tracking.locate2u.com/"
+    },
+    "designer-transport": {
+      "displayName": "Designer Transport",
+      "countries": [
+        "AU"
+      ],
+      "color": "#000000",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://track.designertransport.com.au/"
+    },
+    "direct-couriers": {
+      "displayName": "Direct Couriers",
+      "countries": [
+        "AU",
+        "NZ"
+      ],
+      "color": "#f2852d",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://appsrv.directcouriers.com.au/online/jobtrackgen.cl"
+    },
+    "ewe": {
+      "displayName": "EWE Group",
+      "aliases": [
+        "EWE",
+        "EWE Global Express",
+        "EWE Logistics"
+      ],
+      "countries": [
+        "AU"
+      ],
+      "color": "#f3e127",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.ewe.com.au/pages/tracking-order?cno={trackingNumber}#track-results",
+      "linkRules": [
+        {
+          "domains": [
+            "www.ewe.com.au",
+            "ewe.com.au"
+          ],
+          "pathPattern": "^/pages/tracking-order/?$",
+          "params": [
+            "cno"
+          ]
+        },
+        {
+          "domains": [
+            "www.ewe.com.au",
+            "ewe.com.au"
+          ],
+          "pathPattern": "^/html/track\\.html$",
+          "params": [
+            "cno"
+          ]
+        },
+        {
+          "domains": [
+            "trace.ewe.com.au"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "no"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.ewe.com.au/pages/tracking-order"
+    },
+    "homexpress": {
+      "displayName": "HOMEXPRESS",
+      "aliases": [
+        "HomeExpress",
+        "Home Express"
+      ],
+      "countries": [
+        "AU"
+      ],
+      "color": "#ff9800",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.homexpress.com.au/"
+    },
+    "postmedia-parcel-services": {
+      "displayName": "Postmedia Parcel Services",
+      "aliases": [
+        "BNI",
+        "BNICA",
+        "Brunswick News",
+        "Brunswick News Inc."
+      ],
+      "countries": [
+        "CA"
+      ],
+      "color": "#ffd100",
+      "selectable": true,
+      "timezone": "America/Toronto",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "postmediaparcelservices.com",
+            "www.postmediaparcelservices.com"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "bniTrackingID"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://postmediaparcelservices.com/"
+    },
+    "precision-deliveries": {
+      "displayName": "Precision Deliveries",
+      "aliases": [
+        "Precision Parcel and Package Deliveries",
+        "Precision Parcel & Package Deliveries",
+        "Precision Parcel Deliveries",
+        "Precision Parcel",
+        "ASL Distribution",
+        "ASL Distribution Services"
+      ],
+      "countries": [
+        "CA"
+      ],
+      "color": "#0000fe",
+      "selectable": true,
+      "timezone": "America/Toronto",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://track.precisiondeliveries.com/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "track.precisiondeliveries.com"
+          ],
+          "path": "^/([A-Z]{3}\\d[0-9A-Z]{9,})/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^ASL\\d{10}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://track.precisiondeliveries.com/"
+    },
+    "transport-rdl": {
+      "displayName": "Transport RDL",
+      "aliases": [
+        "RDL",
+        "Transport Rivière-du-Loup"
+      ],
+      "countries": [
+        "CA"
+      ],
+      "color": "#0a2240",
+      "selectable": true,
+      "timezone": "America/Toronto",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://transportrdl.com/suivre-un-colis/?tracking-number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "transportrdl.com",
+            "www.transportrdl.com"
+          ],
+          "pathPattern": "^/suivre-un-colis/?$",
+          "params": [
+            "tracking-number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://transportrdl.com/suivre-un-colis/"
     }
   }
 }
