@@ -1625,6 +1625,7 @@
         "ES",
         "PT",
         "FR",
+        "IT",
         "GB"
       ],
       "trackingSearchUrl": "https://mydeliveries.paack.app/tracking"
@@ -1929,7 +1930,7 @@
       "linkRules": [],
       "detectionRules": [
         {
-          "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CELR][A-Z]\\d{9}SK$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+          "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
           "confidence": "high",
           "checksum": "s10"
         }
@@ -4076,6 +4077,11 @@
           "pattern": "^0[0-3]\\d{20}$",
           "confidence": "low",
           "checksum": "gs1"
+        },
+        {
+          "pattern": "^[CEL][A-Z]\\d{9}AU$",
+          "confidence": "high",
+          "checksum": "s10"
         },
         {
           "pattern": "^[A-Z]{2}\\d{9}AU$",
@@ -13749,6 +13755,10 @@
         {
           "pattern": "^TRK[0-9A-F]{12}$",
           "confidence": "low"
+        },
+        {
+          "pattern": "^[A-Z]{4}\\d{2}D\\d{4}[A-Z]{4}$",
+          "confidence": "low"
         }
       ],
       "trackingSearchUrl": "https://www.szhywl.it.com/track.html"
@@ -22959,6 +22969,368 @@
         }
       ],
       "trackingSearchUrl": "https://www.linhan56.com/index/tracknumber/track"
+    },
+    "dpd-at": {
+      "displayName": "DPD Austria",
+      "aliases": [
+        "DPD Österreich",
+        "DPD AT"
+      ],
+      "countries": [
+        "AT"
+      ],
+      "color": "#dc0032",
+      "selectable": true,
+      "timezone": "Europe/Vienna",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.mydpd.at/?f=parcel.load&p={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "mydpd.at"
+          ],
+          "pathPattern": "^/$",
+          "params": [
+            "p"
+          ]
+        },
+        {
+          "domains": [
+            "mydpd.at"
+          ],
+          "pathPattern": "^/meine-pakete/?$",
+          "params": [
+            "ipn"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^06(?:2\\d|3[02-5]|4[3-59])\\d{10}$",
+          "confidence": "low",
+          "preferred": true
+        }
+      ],
+      "trackingSearchUrl": "https://www.mydpd.at/"
+    },
+    "drop2shop": {
+      "displayName": "Drop2Shop",
+      "aliases": [
+        "COLL-8",
+        "COLL-8 Logistics",
+        "Drop2Shop Return"
+      ],
+      "countries": [
+        "IE",
+        "GB"
+      ],
+      "color": "#d8127d",
+      "selectable": true,
+      "timezone": "Europe/Dublin",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.drop2shop.ie/tracking?trackingnumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "drop2shop.ie"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "trackingnumber",
+            "trackingNumber"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^GLB\\d{13}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.drop2shop.ie/tracking"
+    },
+    "eurodis": {
+      "displayName": "EURODIS",
+      "aliases": [
+        "EURODIS GmbH"
+      ],
+      "countries": [
+        "DE",
+        "AT"
+      ],
+      "color": "#0b418b",
+      "selectable": true,
+      "timezone": "Europe/Berlin",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "eurodis.com"
+          ],
+          "pathPattern": "^/(?:[a-z]{2}/)?track-trace/?$",
+          "params": [
+            "trackCollo-input-of"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://eurodis.com/"
+    },
+    "fedex-pl": {
+      "displayName": "FedEx Poland",
+      "aliases": [
+        "FedEx Polska",
+        "Opek"
+      ],
+      "countries": [
+        "PL"
+      ],
+      "color": "#4d148c",
+      "selectable": true,
+      "timezone": "Europe/Warsaw",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://fds2tracking.emea.fedex.com/#/preview?packages={trackingNumber}&trackingKey={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "fds2tracking.emea.fedex.com"
+          ],
+          "pathPattern": "^/$",
+          "fragment": "^/preview\\?(?:[^#]*&)?trackingKey=(\\d{13})(?:&|$)"
+        },
+        {
+          "domains": [
+            "fedex.com"
+          ],
+          "pathPattern": "^/(?:pl-pl|en-pl)/online/domestic-tracking\\.html$",
+          "fragment": "^/preview\\?(?:[^#]*&)?trackingKey=(\\d{13})(?:&|$)"
+        },
+        {
+          "domains": [
+            "poland.fedex.com"
+          ],
+          "pathPattern": "^/domestic-shipping/pub/tracktrace\\.do$",
+          "params": [
+            "packageId"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://fds2tracking.emea.fedex.com/"
+    },
+    "gls-at": {
+      "displayName": "GLS Austria",
+      "aliases": [
+        "GLS Österreich",
+        "General Logistics Systems Austria"
+      ],
+      "countries": [
+        "AT"
+      ],
+      "color": "#ffdd00",
+      "selectable": true,
+      "timezone": "Europe/Vienna",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://gls-group.com/AT/de/paket-verfolgen/?match={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "gls-group.com",
+            "gls-group.eu"
+          ],
+          "pathPattern": "^/AT/",
+          "params": [
+            "match",
+            "parcelNumber",
+            "matchParcelNumber"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://gls-group.com/AT/de/paket-verfolgen/"
+    },
+    "hermes-at": {
+      "displayName": "Hermes Austria",
+      "aliases": [
+        "Hermes Österreich",
+        "Hermes Logistik Österreich",
+        "myHermes.at"
+      ],
+      "countries": [
+        "AT"
+      ],
+      "color": "#0091cd",
+      "selectable": true,
+      "timezone": "Europe/Vienna",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.myhermes.at/sendungsverfolgung/trackingnummer/{trackingNumber}/",
+      "linkRules": [
+        {
+          "domains": [
+            "myhermes.at"
+          ],
+          "path": "^/(?:sendungsverfolgung|en/tracking)/trackingnummer/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.myhermes.at/sendungsverfolgung/"
+    },
+    "neighbour-express": {
+      "displayName": "Neighbour Express",
+      "aliases": [
+        "NeighbourExpress"
+      ],
+      "countries": [
+        "CA"
+      ],
+      "color": "#254b8d",
+      "selectable": true,
+      "timezone": "America/Toronto",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.neighbourexpress.com/track?trackingNumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "neighbourexpress.com",
+            "neighbourexpress.ca"
+          ],
+          "pathPattern": "^/track/?$",
+          "params": [
+            "trackingNumber",
+            "no"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.neighbourexpress.com/track"
+    },
+    "packli-punkt": {
+      "displayName": "Päckli Punkt",
+      "aliases": [
+        "Paeckli Punkt",
+        "Päckli-Punkt"
+      ],
+      "countries": [
+        "CH"
+      ],
+      "color": "#ea5a8e",
+      "selectable": true,
+      "timezone": "Europe/Zurich",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.paeckli-punkt.ch/paket-verfolgen/?packet={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "paeckli-punkt.ch"
+          ],
+          "pathPattern": "^/(?:(?:fr|it|en)/)?(?:paket-verfolgen|suivre-un-colis|pacchetto-pista|track-package)/?$",
+          "params": [
+            "packet"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.paeckli-punkt.ch/paket-verfolgen/"
+    },
+    "parcelpoint": {
+      "displayName": "ParcelPoint",
+      "aliases": [
+        "PARCELPOINT",
+        "HUBBED",
+        "HUBBED Parcelpoints"
+      ],
+      "countries": [
+        "AU"
+      ],
+      "color": "#f25010",
+      "selectable": true,
+      "timezone": "Australia/Sydney",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://parcelpoint.com.au/track-your-parcel/?trackingnumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "parcelpoint.com.au"
+          ],
+          "pathPattern": "^/track-your-parcel/?$",
+          "params": [
+            "trackingnumber",
+            "trackingId"
+          ]
+        },
+        {
+          "domains": [
+            "parcelpoint.com.au"
+          ],
+          "path": "^/track/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "hubbed.com"
+          ],
+          "pathPattern": "^/track-parcel/?$",
+          "params": [
+            "locate",
+            "hubbed_track_parcel_tracking_no"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://parcelpoint.com.au/track-your-parcel/"
+    },
+    "yilong-logistics": {
+      "displayName": "Yilong Logistics",
+      "aliases": [
+        "YIL",
+        "YXHL",
+        "一龙物流",
+        "莆田市城厢区一龙物流有限公司"
+      ],
+      "countries": [
+        "CN"
+      ],
+      "color": "#ec0307",
+      "selectable": true,
+      "timezone": "Asia/Shanghai",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "yilong-logistics"
+      },
+      "linkRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^YIL\\d{9}WL$",
+          "confidence": "high"
+        }
+      ]
     }
   },
   "servers": [
@@ -26031,7 +26403,17 @@
           "tusass",
           "tws-express",
           "byhd",
-          "linhan"
+          "linhan",
+          "dpd-at",
+          "drop2shop",
+          "eurodis",
+          "fedex-pl",
+          "gls-at",
+          "hermes-at",
+          "neighbour-express",
+          "packli-punkt",
+          "parcelpoint",
+          "yilong-logistics"
         ]
       },
       "Stage": {
