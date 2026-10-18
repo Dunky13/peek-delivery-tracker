@@ -11085,7 +11085,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hunter-express"
     },
     "trackingUrlTemplate": "https://portal.hunterexpress.com.au/Track/55010/{trackingNumber}",
     "linkRules": [
@@ -13466,7 +13466,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "trackon",
+      "recognitionRank": 821
     },
     "trackingUrlTemplate": "https://www.trackon.in/courier-tracking?awb={trackingNumber}",
     "linkRules": [
@@ -14956,7 +14957,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "2go",
+      "recognitionRank": 799
     },
     "linkRules": [
       {
@@ -21236,7 +21238,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ocasa",
+      "recognitionRank": 797
     },
     "trackingUrlTemplate": "https://tracking.ocasa.com/Tracking/index?client=&airbillnumber={trackingNumber}&i=18&url=ocasa",
     "linkRules": [
@@ -27450,7 +27453,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "quicksilver-sa"
     },
     "trackingUrlTemplate": "https://erp.quick-silver.express/v2/tracking/{trackingNumber}",
     "linkRules": [
@@ -28081,7 +28084,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "indah-logistik",
+      "recognitionRank": 798
     },
     "trackingUrlTemplate": "https://indahonline.com/services/view?NO_RESI={trackingNumber}",
     "linkRules": [
