@@ -23983,7 +23983,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "globalpost"
     },
     "trackingUrlTemplate": "https://www.goglobalpost.com/track-detail/?t={trackingNumber}",
     "linkRules": [
@@ -25787,7 +25787,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "ES"
     ],
-    "color": "#27348b",
+    "color": "#1d2a84",
     "selectable": true,
     "timezone": "Europe/Madrid",
     "tracking": {
@@ -25815,7 +25815,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "MA"
     ],
-    "color": "#0060a2",
+    "color": "#009adf",
     "selectable": true,
     "timezone": "Africa/Casablanca",
     "tracking": {
@@ -25882,7 +25882,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IT"
     ],
-    "color": "#e81c3a",
+    "color": "#005baa",
     "selectable": true,
     "timezone": "Europe/Rome",
     "tracking": {
@@ -26014,7 +26014,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "ES"
     ],
-    "color": "#ff7b3a",
+    "color": "#e84417",
     "selectable": true,
     "timezone": "Europe/Madrid",
     "tracking": {
@@ -26036,6 +26036,115 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.urvaam.es/track"
+  },
+  "gofo-nl": {
+    "displayName": "GOFO Netherlands",
+    "aliases": [
+      "GOFO NL",
+      "CIRRO E-Commerce"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "color": "#fc4c02",
+    "selectable": true,
+    "timezone": "UTC",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "gofo-nl",
+      "recognitionRank": 455
+    },
+    "trackingUrlTemplate": "https://www.gofo.com/nl/tracking-results/?id={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "gofo.com"
+        ],
+        "pathPattern": "^/nl(?:/|$)",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^(?:GF|CI)NL\\d{13,14}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.gofo.com/nl/tracking-results/"
+  },
+  "next-level-delivery": {
+    "displayName": "Next Level",
+    "aliases": [
+      "NextLevel"
+    ],
+    "countries": [
+      "BG",
+      "GR",
+      "RO",
+      "PL",
+      "SK",
+      "CZ",
+      "SI",
+      "HU",
+      "HR",
+      "CY"
+    ],
+    "color": "#eba121",
+    "selectable": true,
+    "timezone": "Europe/Sofia",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://nextlevel.delivery/track?awb={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "nextlevel.delivery"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://nextlevel.delivery/"
+  },
+  "tmm-express": {
+    "displayName": "TMM Express",
+    "aliases": [
+      "ТММ Express"
+    ],
+    "countries": [
+      "UA",
+      "PL",
+      "LU",
+      "BY"
+    ],
+    "color": "#650360",
+    "selectable": true,
+    "timezone": "Europe/Kyiv",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://ukr.tmm-express.com/en/trackparcels?num={trackingNumber}&mark=is_code",
+    "linkRules": [
+      {
+        "domains": [
+          "tmm-express.com"
+        ],
+        "pathPattern": "^/(?:en|ru|uk)/trackparcels/?$",
+        "params": [
+          "num"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://ukr.tmm-express.com/en/callback"
   }
 } as const;
 
@@ -26745,7 +26854,10 @@ export const CARRIER_IDS = [
   "pro-carrier",
   "teleship",
   "transaher",
-  "urvaam"
+  "urvaam",
+  "gofo-nl",
+  "next-level-delivery",
+  "tmm-express"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
