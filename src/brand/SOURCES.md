@@ -72,6 +72,7 @@ and [`truck.json`](truck.json).
 | `blue-dart` | [bluedart.com](https://www.bluedart.com/) |
 | `blue-express` | [blue.cl](https://www.blue.cl/) — favicon and inline logo fill #0032A0, dot #41b6e6 |
 | `blueex` | [blue-ex.com](https://www.blue-ex.com/) — theme-color and site CSS #1946ba (logo SVG fill #0047ba) |
+| `bombino` | [bombinoexp.com](https://www.bombinoexp.com/) — site stylesheet --primary #06567f (logo B ≈ #0c6089); accent #f9ae1f |
 | `bookurier` | [t.bookurier.ro](https://t.bookurier.ro/) — theme-color #dc2626; logo SVG gradient #e3482c to #ba0049 (midpoint #d63134) |
 | `border-express` | [borderexpress.com.au](https://www.borderexpress.com.au/) — site CSS #cc092f; app icon red #cf152d (approximate); logo SVG red #e21836 |
 | `bosta` | [bosta.co](https://bosta.co/en-eg) — logo SVG fill #E30613 in the site bundle (favicon is #ff0000) |
@@ -252,6 +253,7 @@ and [`truck.json`](truck.json).
 | `hrvatska-posta` | [logo SVG](https://posiljka.posta.hr/assets/icons/hp-full-logo.svg) |
 | `hunter-express` | [hunterexpress.com.au](https://www.hunterexpress.com.au/wp-content/uploads/2025/05/NEW-Hunter-Logo-with-Slogan-scaled.jpg) — logo JPG wordmark orange #f7aa3a, oval blue #0053a1 (approximate) |
 | `hywl` | [szhywl.it.com](https://www.szhywl.it.com/assets/logo-huiyi.svg) — logo SVG fill and arc stroke #0b8f91 ('HUIYI LOGISTICS'), styles.css --teal #0b8f91 |
+| `icc-worldwide` | [iccworld.com](https://www.iccworld.com/css/custom.css) — custom.css #bd0607 (buttons and heading bars); logo red ≈ #ca0505 (approximate) |
 | `ics-courier` | [icscourier.ca](https://www.icscourier.ca/rcdesign/styles/main.css) — logo CSS: .letters fill #004B8E, .swoosh fill #D93835 |
 | `idexpress` | [idexpress.com](https://www.idexpress.com/images/logo.svg) — logo SVG fill red (#ff0000) |
 | `ids-logistik` | [ids-logistik.de](https://www.ids-logistik.de/assets/images/h/Logo_IDS-enhm9snaty2njcm.svg) — logo SVG fill #006BAB |
@@ -332,6 +334,7 @@ and [`truck.json`](truck.json).
 | `maltapost` | [maltapost.com](https://www.maltapost.com/delivery/app.0994df2816c3a2de401e.js) (the delivery app's theme primary) |
 | `mandae` | [mandae.com.br](https://www.mandae.com.br/) — the site colour #0050C3 (header and hero, 131 uses) behind the white logo |
 | `maritime-ontario` | [m-o.com](https://www.m-o.com/wp-content/uploads/2023/05/M-O-New-Logo-New.png) — logo blue #0064b1 (approximate); site CSS --blue #0060A9 |
+| `maruti-air` | [marutiair.com](https://web.archive.org/web/20250604180536/https://marutiair.com/assets/images/logo.png) — archived logo.png, maruti and globe red #ed3237, slashes indigo #3e4095 |
 | `matkahuolto` | [matkahuolto.fi](https://www.matkahuolto.fi/favicon.svg) — favicon SVG fill #001E60, same as the home page theme-color |
 | `mauritius-post` | [mauritiuspost.mu](https://www.mauritiuspost.mu/) — Elementor global colours accent #F5D800 (yellow) and secondary #00539B (blue); logo stamp yellow #ffe716, blue #00529b (approximate) |
 | `mayiyinfu` | [mayiyinfu.com.cn](http://www.mayiyinfu.com.cn/) — the logo is a black ant and black lettering |
@@ -354,6 +357,7 @@ and [`truck.json`](truck.json).
 | `ninja-van` | [ninjavan.co](https://www.ninjavan.co/) |
 | `nipost` | [nipost.gov.ng](https://nipost.gov.ng/wp-content/uploads/2024/05/logo_fav.png) — favicon navy #010f69 and stamp yellow #fcb92c (approximate); tracking site CSS #010F69 |
 | `nippon-express` | [nipponexpress.com](https://www.nipponexpress.com/themes/custom/nx_olivero/assets/img/logo_nittsu_we_find_the_way.svg) — NX logo green #8ec400 (Commons NX_logo.svg #8ec300) with navy #1a005d |
+| `noest` | [noest-dz.com](https://www.noest-dz.com/assets/img/logo_colors_new.png) — logo disc and NOEST navy #003462; road wedges red #ab121c |
 | `nord-wheel` | [nordw.ru](https://nordw.ru/images/build/nordw-logo-new.svg) — header logo SVG fill #0c55ff (red #fe0002 for the slash and right arc) |
 | `northline` | [northline.com.au](https://www.northline.com.au/app/themes/northline/images/N-icon.png) — N icon black #000000, red #e51937 (approximate); theme-color #000000; logo SVG accent #e3173e |
 | `nox` | [nox.eu](https://www.nox.eu/_nuxt/logo.DMSz3kyv.svg) — logo SVG fill #FADB00 beside #111113 lettering |
@@ -436,6 +440,7 @@ and [`truck.json`](truck.json).
 | `redpack` | [redpack.com.mx](https://www.redpack.com.mx/) — red `#e2211c` and navy `#062f87` are the palette entries of the indexed logo PNG and of the favicon |
 | `redur` | [redur.es](https://redur.es/wp-content/themes/redur/assets/img/logo-redur-dark.svg) — logo SVG fill #0c4c49; site icon #0c4c49 |
 | `redx` | [redx.com.bd](https://redx.com.bd/images/redx-logo.svg) — logo SVG fill #EB2127; favicon #eb2127 |
+| `rivigo` | [zoom.rivigo.com](https://zoom.rivigo.com/assets/images/rivigo-logo-new.png) — RIVIGO wordmark and chevron red #f4162d in the tracker logo (approximate) |
 | `rl-carriers` | [rlcarriers.com](https://www.rlcarriers.com/) — the apple-touch icon's green R+L is `#006e51` (approximate), close to the catalog `#006647` |
 | `roadie` | [roadie.com](https://46302491.fs1.hubspotusercontent-na1.net/hubfs/46302491/Roadie%20Circle%20R%20Icon_COLOR.svg) — icon SVG fills #76cccd (disc) and #351c13 (R) |
 | `roadrunner` | [rrts.com](https://www.rrts.com/SiteAssets/images/logos/RRFreightLogo.gif) — logo orange about #e5481c (approximate) |
@@ -467,6 +472,7 @@ and [`truck.json`](truck.json).
 | `shipblu` | [shipblu.com](https://shipblu.com/assets/img/navlogo.972e5b91.svg) — the logo's bird and "Blu" fill #1c5bfe (PNG embedded in the nav logo SVG, approximate), also the most used colour in the site stylesheet; the navy #0a3266 is the "Ship" text, the bird's tail and the footer |
 | `shipup` | [shipup.co](https://www.shipup.co/) (sampled from the site icon) |
 | `shree-anjani` | [shreeanjanicourier.com](https://shreeanjanicourier.com/img/logo.svg) — logo SVG fill #F58220; site CSS --critical-primary #f58220 |
+| `shree-mahavir` | [shreemahavircourier.com](https://www.shreemahavircourier.com/) — text colour #e31e25 in the site stylesheet, matching the logo red; wing indigo #393186 |
 | `shree-maruti` | [shreemaruti.com](https://shreemaruti.com/) — CSS --primary-color #2a3680; header logo navy #2a3680 |
 | `shree-nandan` | [shreenandancourier.com](https://www.shreenandancourier.com/static/media/footerLogo.f73d4136.svg) — logo SVG fill #ed008c; app CSS #ed008c (240 uses) |
 | `sicepat` | [ekspres.sicepat.com](https://fe-cft.cdn.sicepat.express/web-company-v3/public/company-logo.svg) — logo SVG fill #B52025; site CSS button #AF272C |
@@ -508,10 +514,12 @@ and [`truck.json`](truck.json).
 | `t-group` | [tgroupspa.com](https://www.tgroupspa.com/) — site CSS #ED7602 (menu hover and current page); header logo orange #ec7601 (approximate) |
 | `tanzania-posts` | [posta.co.tz](https://www.posta.co.tz/static/assets_new/images/clients/posta_logo.png) — logo PNG red #dd1f2e and yellow #fadb25 (approximate, flat fills); the site CSS uses #c31f26 as a button and border colour |
 | `taxydema` | [taxydema.gr](https://www.taxydema.gr/css/style.css) — site orange #fe5000 (13 uses); the logo PNG samples #fe5a00 (approximate) |
+| `tccs` | [tccs.in](https://tccs.in/static/img/favicon.png) — globe and outer arrows blue #2e458d in the logo emblem (approximate) |
 | `tci-express` | [tciexpress.in](https://www.tciexpress.in/style.css) — style.css brand blue #0d5fa6 (55 uses); logo PNG blue sampled #0d60a7, red X #db3140 |
 | `tcs-pakistan` | [tcsexpress.com](https://www.tcsexpress.com/) — site bundle classes #f21e26 (158 uses); app icon #ec2027 (approximate) |
 | `tealca` | [tealca.com](https://www.tealca.com/wp-content/uploads/2021/06/001_LOGO_HEADER.svg) — logo SVG fill #00559e |
 | `team-global-express` | [teamglobalexp.com](https://teamglobalexp.com/image/layout_set_logo?img_id=5087020) — logo PNG #143200 (approximate), site CSS #143200 and wattle #cbff55 |
+| `tej-couriers` | [tejcouriers.com](https://www.tejcouriers.com/) — page style .red-button #d2232a; logo COURIERS red #ed3237 |
 | `tforce-freight` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:TForce_Freight_Logo.svg) — logo SVG fills #0053a1 (letters) and #e6403b (swoosh) |
 | `tforce-logistics` | [tforcelogistics.com](https://www.tforcelogistics.com/wp-content/uploads/2020/06/logo.png) — logo PNG letters #054b8b, arc #dc3b41; the stylesheet's most used colour and the Track button are #054b8b (approximate) |
 | `thailand-post` | [international.thailandpost.com](https://international.thailandpost.com/) |
@@ -543,6 +551,7 @@ and [`truck.json`](truck.json).
 | `urbano` | [urbano.com.pe](https://www.urbano.com.pe/) — Nuxt bundle app bar and buttons #5c068c |
 | `usps` | [usps.com](https://www.usps.com/) |
 | `uzbekistan-post` | [uz.post](https://uz.post/assets/index-BSg4lfOx.css) — site CSS .header-section #183e98, also the rendered logo blue; logo orange #f07824 (rendered, approximate) |
+| `valmo` | [valmo.in](https://www.valmo.in/) — site stylesheet --color-valmo-primary #092d5e, the navy of the header and page sections behind the logo |
 | `vasp-expresso` | [vaspexpresso.pt](https://www.vaspexpresso.pt/media/bajdmcow/vasp-expresso_cor.png) — logo colour #02518a (approximate, PNG); site CSS #005189 |
 | `veloces` | [veloces.app](https://s3.amazonaws.com/webflow-prod-assets/6a8dae1d54bfc0f0c317c51c/6a8db5a84a31eff3142b4386_veloces-logo.png) — logo PNG flat fill #fd026f (approximate, from the PNG) |
 | `venipak` | [logo SVG](https://venipak.com/wp-content/uploads/venipak-logo-mob.svg) |
@@ -1159,3 +1168,12 @@ and [`truck.json`](truck.json).
 | `pdq-chile` | White bold italic PDQ on red | [pdq.cl](https://pdq.cl/images/jira-logo-scaled.png) — the bold italic PDQ wordmark |
 | `skyking` | White running courier with a parcel on red | [skyking.co](https://skyking.co/images/icon.png) — the red running figure carrying a box that forms the K of the logo and is the site and app icon |
 | `veloces` | White slanted double-bar V mark on pink | [veloces.app](https://s3.amazonaws.com/webflow-prod-assets/6a8dae1d54bfc0f0c317c51c/6a8db5a84a31eff3142b4386_veloces-logo.png) — the two slanted bars, the left one notched, of the Veloces logo |
+| `valmo` | White V under a cube corner (cyan top face, blue side face) on navy | [valmo.in](https://www.valmo.in/static-assets/valmo-web/favicon_dark.svg) — favicon_dark.svg; logo valmo-logo-white.svg uses the same corner |
+| `rivigo` | Dark grey play triangle and white chevron on red | [zoom.rivigo.com](https://zoom.rivigo.com/assets/images/favicon/favicon-arrow.png) — the Rivigo by Mahindra Logistics icon the tracker shows (rivigo-logo-new.png) |
+| `bombino` | White B inside a crescent C with a yellow paper plane on blue | [bombinoexp.com](https://www.bombinoexp.com/bombino-logo-01.png) — bombino-logo-01.png |
+| `tccs` | White striped globe inside two swirling white arrows on blue | [tccs.in](https://tccs.in/static/img/total-couriers-cargo-services-logo.png) — logo emblem; favicon.png is the same globe |
+| `tej-couriers` | White winged running figure on red | [tejcouriers.com](https://www.tejcouriers.com/assets/images/favicon/Tej_Icon1.png) — Tej_Icon1.png, the figure from tej_courier_logo.png |
+| `shree-mahavir` | White globe between indigo bow-tie wings on red | [shreemahavircourier.com](https://www.shreemahavircourier.com/assets/images/logo.jpg) — logo.jpg |
+| `maruti-air` | White globe with red peaks beside two indigo slashes on red | [marutiair.com](https://web.archive.org/web/20250604180557/https://marutiair.com/assets/images/footer-logo.png) — archived footer-logo.png (globe emblem and slashes) |
+| `icc-worldwide` | White striped ICC slab letters on dark red | [iccworld.com](https://www.iccworld.com/img/logo.jpg) — logo.jpg |
+| `noest` | White roundel with a navy road between red wedges on navy | [noest-dz.com](https://www.noest-dz.com/assets/img/logo_colors_new.png) — logo_colors_new.png emblem |

@@ -159,6 +159,8 @@ describe('carrier brand', () => {
       '247express',
       'fleetoptics', 'straightship', 'apple-express', 'ab-courier', 'lightning-express', 'kyoungdong',
       'yc-delivery', 'sagawa-global', 'copa-courier', 'hound-express', 'pdq-chile', 'skyking', 'veloces',
+      'valmo', 'rivigo', 'bombino', 'tccs', 'tej-couriers', 'shree-mahavir', 'maruti-air', 'icc-worldwide',
+      'noest',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

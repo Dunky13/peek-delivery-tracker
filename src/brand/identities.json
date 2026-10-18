@@ -193,6 +193,9 @@
   "blueex": {
     "decal": "blueex"
   },
+  "bombino": {
+    "decal": "bombino"
+  },
   "bookurier": {
     "decal": "bookurier"
   },
@@ -966,6 +969,9 @@
   "hywl": {
     "decal": "hywl"
   },
+  "icc-worldwide": {
+    "decal": "icc-worldwide"
+  },
   "ics-courier": {
     "decal": "ics-courier"
   },
@@ -1236,6 +1242,9 @@
   "maritime-ontario": {
     "decal": "maritime-ontario"
   },
+  "maruti-air": {
+    "decal": "maruti-air"
+  },
   "matkahuolto": {
     "decal": "matkahuolto"
   },
@@ -1314,6 +1323,9 @@
   },
   "nippon-express": {
     "decal": "nippon-express"
+  },
+  "noest": {
+    "decal": "noest"
   },
   "nord-wheel": {
     "decal": "nord-wheel"
@@ -1627,6 +1639,9 @@
   "relais-colis": {
     "decal": "relais-colis"
   },
+  "rivigo": {
+    "decal": "rivigo"
+  },
   "rl-carriers": {
     "decal": "rl-carriers"
   },
@@ -1732,6 +1747,9 @@
   },
   "shree-anjani": {
     "decal": "shree-anjani"
+  },
+  "shree-mahavir": {
+    "decal": "shree-mahavir"
   },
   "shree-maruti": {
     "decal": "shree-maruti"
@@ -1881,6 +1899,9 @@
   "taxydema": {
     "decal": "taxydema"
   },
+  "tccs": {
+    "decal": "tccs"
+  },
   "tci-express": {
     "decal": "tci-express"
   },
@@ -1895,6 +1916,9 @@
     "palette": {
       "accent": "#cbff55"
     }
+  },
+  "tej-couriers": {
+    "decal": "tej-couriers"
   },
   "tforce-freight": {
     "decal": "tforce-freight"
@@ -2021,6 +2045,9 @@
   },
   "uzbekistan-post": {
     "decal": "uzbekistan-post"
+  },
+  "valmo": {
+    "decal": "valmo"
   },
   "vasp-expresso": {
     "decal": "vasp-expresso"
