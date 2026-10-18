@@ -1450,6 +1450,11 @@ export class TrackingSyncService {
       if (result.sender_name === undefined && typeof previousSender === 'string') {
         carrierData.sender_name = previousSender;
       }
+      // A provider taking over the summary may not know where the parcel is going; the carrier that said so still
+      // does. A carrier the router swapped to tracks another shipment, so it does not inherit the destination.
+      if (result.destination_country == null && typeof previousData.destination_country === 'string' && !fetched.correction) {
+        carrierData.destination_country = previousData.destination_country;
+      }
       if (handoff) {
         carrierData.active_tracking_carrier = sourceCarrierId;
         carrierData.swiss_post_ready = swissPostReady;
@@ -1511,6 +1516,11 @@ export class TrackingSyncService {
         values.carrier_data = {
           ...(isRecord(values.carrier_data) ? values.carrier_data : previousData), direct_local_history: localHistory,
         };
+      }
+      // An older reply still says where the parcel is going, when the newer summary kept does not.
+      if (preserveSummary && !keepSaved && !fetched.correction && typeof result.destination_country === 'string') {
+        const kept = isRecord(values.carrier_data) ? values.carrier_data : previousData;
+        if (kept.destination_country == null) values.carrier_data = { ...kept, destination_country: result.destination_country };
       }
       const eventsToPersist = keepSaved || (preserveSummary && (result.tracking_provider === 'UPU' || localOnlyFallback)) ? [] : events;
       const persistedIds = new Set(eventsToPersist.map((event) => String(event.provider_event_id)));

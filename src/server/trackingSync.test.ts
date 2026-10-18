@@ -1962,6 +1962,43 @@ describe('TrackingSyncService', () => {
     expect(values.carrier_data.obsolete).toBeUndefined();
   });
 
+  it('keeps where a parcel is going when a reply does not say, unless the router swapped carriers', async () => {
+    const client = fakeClient();
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+      { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, null);
+    await service.syncPackage({ id: 'destination', carrier: 'swiss-post', tracking_number: 'TEST1234',
+      carrier_data: { destination_country: 'CH' } });
+    expect(client.updatePackage.mock.calls.at(-1)![1].carrier_data.destination_country).toBe('CH');
+
+    const swapped = fakeClient();
+    const adapter = { fetch: vi.fn().mockRejectedValueOnce(new Error('wrong carrier')).mockResolvedValue({
+      status: 'in_transit', current_stage: 'in_transit', last_update: '2026-09-10T11:00:00Z',
+      events: [{ time: '2026-09-10T11:00:00Z', description: 'Confirmed UPS history', stage: 'in_transit' }],
+    }), fetchUniversal: vi.fn() };
+    await new TrackingSyncService(swapped as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'))
+      .syncPackage({ id: 'swapped', carrier: 'dhl', tracking_number: '1Z999AA10123456784', current_stage: 'pending',
+        carrier_data: { destination_country: 'CH' } });
+    const saved = swapped.updatePackage.mock.calls.at(-1)![1];
+    expect(saved.carrier).toBe('ups');
+    expect(saved.carrier_data.destination_country).toBeUndefined();
+  });
+
+  it('takes the destination from an older reply when the newer summary kept does not name one', async () => {
+    const client = fakeClient();
+    const adapter = { fetch: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit',
+      last_status_text: 'Left the border point', last_update: '2026-09-10T09:00:00Z', destination_country: 'CH',
+      events: [{ time: '2026-09-10T09:00:00Z', description: 'Left the border point', stage: 'in_transit' }] }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    await service.syncPackage({ id: 'older-destination', carrier: 'swiss-post', tracking_number: 'TEST1234', current_stage: 'in_transit',
+      last_status_text: 'Passed a checkpoint',
+      carrier_data: { tracking_provider: 'ParcelsApp', last_status_text: 'Passed a checkpoint',
+        routing: { version: 1, configured_carrier: 'swiss-post', last_event_at: '2026-09-10T11:00:00.000Z' } } });
+    const values = client.updatePackage.mock.calls.at(-1)![1];
+    expect(values).not.toHaveProperty('last_status_text');
+    expect(values.carrier_data).toMatchObject({ tracking_provider: 'ParcelsApp', last_status_text: 'Passed a checkpoint',
+      destination_country: 'CH', routing: { last_event_at: '2026-09-10T11:00:00.000Z' } });
+  });
+
   it('refreshes the delivery carrier and retains linked original tracking', async () => {
     const identity = {
       original_carrier: 'gls-de', original_tracking_number: '12345678901',

@@ -477,7 +477,10 @@ providers cannot help, the direct current status remains available without advan
 freshness watermark. An unresolved direct lookup cannot displace a carrier already confirmed
 by dated progress. A status summary without scans also preserves previously saved direct
 history. The sync preserves richer saved progress and records status changes as
-observations, keeping observation time distinct from a carrier scan time.
+observations, keeping observation time distinct from a carrier scan time. Where the parcel
+is going outlives the summary that named it: a reply that names no destination keeps the
+saved one, and an older reply names it for a newer summary that lacks it, unless the router
+swapped carriers. The map draws the rest of the way to it.
 
 ## Tracking links
 
