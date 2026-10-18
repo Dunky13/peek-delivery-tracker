@@ -169,6 +169,7 @@ describe('carrier brand', () => {
       'cst-italia', 'tmm-express', 'next-level-delivery',
       'pdn-express', 'x-trac', 'hovership',
       'shipentegra', 'pts-worldwide-express', 'evdemo-lojistik', 'big-smart', 'proships', 'gta-airskip',
+      'domain-logistics', 'fleetex', 'postplus', 'bringer-parcel', 'micro-express',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

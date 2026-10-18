@@ -83,6 +83,7 @@ and [`truck.json`](truck.json).
 | `box-now` | [boxnow.cy](https://boxnow.cy/BoxNow.Theme/img/boxnow-logo.svg) — logo background fill #44D62C, msapplication-TileColor #44D62C |
 | `bpost` | [bpost.be](https://www.bpost.be/) |
 | `bring-posten` | [bring.com](https://www.bring.com/) |
+| `bringer-parcel` | [bringerparcel.com](https://www.bringerparcel.com/) — theme-color meta #150773; app icon PNG #150773 |
 | `brt` | [brt.it](https://www.brt.it/) |
 | `bts-uz` | [bts.uz](https://bts.uz/img/logo.svg) — logo SVG wordmark fill #ee6800 |
 | `budbee` | [budbee.com](https://budbee.com/wp-content/uploads/2020/06/logo-green.svg) — logo SVG fill #41cda5; theme-color #41cda5 |
@@ -167,6 +168,7 @@ and [`truck.json`](truck.json).
 | `direct-freight-express` | [directfreight.com.au](https://www.directfreight.com.au/images/dfelogo_desktop.svg) — logo SVG navy rgb(11.8%,26.7%,53.3%) #1e4488, orange #f16924 |
 | `direx` | [direx.bg](https://direx.bg/) — theme CSS --color-primary #6B4597; icon SVG fill #6b4598 |
 | `dohrn-transfer` | [dohrn.com](https://www.dohrn.com/) — site theme variable --primaryColor #ee3631; logo SVG red #ed3424 |
+| `domain-logistics` | [domainlogistics.ca](https://domainlogistics.ca/tracking/) — logo SVG fill #6abf4b (the green plane of the corner mark), also the tracking page's button background |
 | `domex` | [domex.lk](https://domex.lk/) — track button and header text #FFCD05; logo PNG yellow #ffca05 (approximate) |
 | `dragon-star-curier` | [dragonstarcurier.ro](https://dragonstarcurier.ro/public/project/images/logo.svg) — logo SVG fill #000b8c (DSC and the emblem arms), red #aa182c top panel |
 | `drop2shop` | [drop2shop.ie](https://www.drop2shop.ie/assets/css/drop2shop-theme.css) — theme pink #d8127d (161 uses), the same pink as the favicon's dots (approximate in the 32 px favicon PNG) |
@@ -217,6 +219,7 @@ and [`truck.json`](truck.json).
 | `first-delivery-tn` | [firstdeliverygroup.com](https://www.firstdeliverygroup.com/wp-content/uploads/2023/08/Logo_First-e1692977453756.png) — logo PNG palette green #51b045 |
 | `flash-express` | [flashexpress.co.th](https://www.flashexpress.co.th/) — site CSS #FFEA33 (132 uses); logo bolt #fcee20 |
 | `flash-express-ph` | [flashexpress.ph](https://www.flashexpress.ph/) — header background CSS rgb(255, 234, 51) #ffea33 |
+| `fleetex` | [fleetexpress.ca](https://fleetexpress.ca/logo.png) — logo PNG #572aee (approximate), same violet in the favicon |
 | `fleetoptics` | [track.fleetopticsinc.com](https://track.fleetopticsinc.com/assets/css/custom.css) — tracker CSS --brandPrimary #02001E behind the white logo, also the apple-touch-icon ground; fleetopticsinc.com uses #03011f |
 | `followmont` | [followmont.com.au](https://www.followmont.com.au/) — app.css #022160 (57 uses) and .fmt-blue #002060 behind the logo; logo cyan #00b0f1 (.fmt-blue-banner) |
 | `forward-air` | [forwardair.com](https://www.forwardair.com/apple-touch-icon.png) — app icon red #c8102e, also a theme-color on the site (approximate) |
@@ -358,6 +361,7 @@ and [`truck.json`](truck.json).
 | `messenger-cz` | [messenger.cz](https://messenger.cz/assets/img/logo.svg) — logo SVG background fill #fedf05, lettering #161615 |
 | `method` | [method-logistics.com](https://method-logistics.com/wp-content/uploads/logo-1.svg) — logo SVG fill #1F3432, also in site CSS |
 | `metropolitan-warehouse` | [gomwd.com](https://sso.gomwd.com/ssf/img/metropolitan-hd.png) — logo PNG (the same logo heads gomwd.com): blue #0062b7 in METROPOLITAN and the M, orange #fb9517 in the W and tagline (approximate) |
+| `micro-express` | [microexpress.com.au](https://microexpress.com.au/static/logo-banner.png) — header logo PNG, 'Micro' #e73100 (approximate) |
 | `midland-transport` | [midlandtransport.com](https://www.midlandtransport.com/) — theme-color #009057 and header logo SVG fill #009057 |
 | `mrw` | [mrw.es](https://www.mrw.es/) |
 | `mylerz` | [mylerz.com](https://cdn.prod.website-files.com/651c198b3ea329eb422858f1/651c198b3ea329eb4228590e_logo.svg) — logo SVG fill #FB4F14 |
@@ -445,6 +449,7 @@ and [`truck.json`](truck.json).
 | `posti` | [posti.fi](https://www.posti.fi/) |
 | `postmedia-parcel-services` | [postmediaparcelservices.com](https://postmediaparcelservices.com/css/app.fee6356f.css) — site CSS #ffd100; logo PNG yellow #ffd100 |
 | `postnord` | [postnord.com](https://www.postnord.com/) |
+| `postplus` | [post.plus](https://post.plus/wp-content/themes/postplus/img/android-icon-192x192.png) — app icon #002b53 (approximate); theme stylesheet text, header blocks and footer #002B53 |
 | `posturinn` | [posturinn.is](https://www.posturinn.is/media/j31gnu2y/logo.svg) — logo SVG fill #FF0000 |
 | `ppl` | [logo SVG](https://www.ppl.cz/documents/20122/6525005/hlavi%C4%8Dka+logo+%281%29.svg/0ee90745-08fd-e313-dcd5-8af3a4c68f8c) |
 | `precision-deliveries` | [track.precisiondeliveries.com](https://track.precisiondeliveries.com/precision_logo.png) — logo PNG blue #0000fe, its most frequent pixel (approximate) |
@@ -1243,3 +1248,8 @@ and [`truck.json`](truck.json).
 | `big-smart` | White big with a yellow chevron on navy | [bigsmart.mx](https://bigsmart.mx/wp-content/uploads/2021/01/big-logo__white.svg) — the logo: white lowercase big and a yellow > chevron |
 | `proships` | Bold dark grey P on yellow | [proships.com](https://proships.com/wp-content/uploads/2025/07/logo-proships.png) — the header logo's P, a thick rounded outline beside a dark grey truck cab; the site icon is a yellow P too |
 | `gta-airskip` | White airliner seen from above, nose up, on blue | [gtaairskip.com](https://gtaairskip.com/wp-content/uploads/2026/08/Logo-Menu-Bar-6.png) — the airliner that replaces the I in the AIRSKIP wordmark |
+| `domain-logistics` | White wall and floor of Domain's corner mark, with its slate floor plane, on green | [domainlogistics.ca](https://domainlogistics.ca/wp-content/uploads/2021/02/cropped-dl-favicon-192x192.png) — site icon: a light blue wall standing on a green and slate floor |
+| `fleetex` | White F of three stacked feather bars on violet | [fleetexpress.ca](https://fleetexpress.ca/logo.png) — header logo: an F of three slanted feather bars beside the FleetExpress name |
+| `postplus` | White P bracket and plus of the Post+ mark on navy | [post.plus](https://post.plus/wp-content/themes/postplus/img/logo.svg?v=1) — logo SVG: a P bracket beside a plus |
+| `bringer-parcel` | White heavy italic B on indigo | [bringerparcel.com](https://www.bringerparcel.com/favicons/android-chrome-512x512.png) — app icon: the heavy italic B of the BPX logo |
+| `micro-express` | Red M in a white disc on red-orange | [microexpress.com.au](https://microexpress.com.au/static/logo.png) — site icon: a white M on a red disc |

@@ -229,6 +229,9 @@
   "bring-posten": {
     "decal": "bring"
   },
+  "bringer-parcel": {
+    "decal": "bringer-parcel"
+  },
   "brt": {
     "decal": "dpd"
   },
@@ -579,6 +582,9 @@
   "dohrn-transfer": {
     "decal": "dohrn-transfer"
   },
+  "domain-logistics": {
+    "decal": "domain-logistics"
+  },
   "domex": {
     "decal": "domex"
   },
@@ -790,6 +796,9 @@
   },
   "flash-express-ph": {
     "decal": "flash-express-ph"
+  },
+  "fleetex": {
+    "decal": "fleetex"
   },
   "fleetoptics": {
     "decal": "fleetoptics"
@@ -1326,6 +1335,9 @@
   "metropolitan-warehouse": {
     "decal": "metropolitan-warehouse"
   },
+  "micro-express": {
+    "decal": "micro-express"
+  },
   "midland-transport": {
     "decal": "midland-transport"
   },
@@ -1649,6 +1661,9 @@
   },
   "postnord": {
     "decal": "postnord"
+  },
+  "postplus": {
+    "decal": "postplus"
   },
   "posturinn": {
     "decal": "posturinn"

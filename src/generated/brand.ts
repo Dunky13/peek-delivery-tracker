@@ -578,6 +578,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "box-now": "box-now",
   "bpost": "bpost",
   "bring-posten": "bring",
+  "bringer-parcel": "bringer-parcel",
   "brt": "dpd",
   "bts-uz": "bts-uz",
   "budbee": "budbee",
@@ -675,6 +676,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "direct-freight-express": "direct-freight-express",
   "direx": "direx",
   "dohrn-transfer": "dohrn-transfer",
+  "domain-logistics": "domain-logistics",
   "domex": "domex",
   "dpd": "dpd",
   "dpd-at": "dpd",
@@ -739,6 +741,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "first-delivery-tn": "first-delivery-tn",
   "flash-express": "flash-express",
   "flash-express-ph": "flash-express-ph",
+  "fleetex": "fleetex",
   "fleetoptics": "fleetoptics",
   "followmont": "followmont",
   "forward-air": "forward-air",
@@ -898,6 +901,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "messenger-cz": "messenger-cz",
   "method": "method",
   "metropolitan-warehouse": "metropolitan-warehouse",
+  "micro-express": "micro-express",
   "midland-transport": "midland-transport",
   "mng-kargo": "dhl",
   "mondial-relay": "mondial-relay",
@@ -992,6 +996,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "postlogistics": "swiss-post",
   "postmedia-parcel-services": "postmedia-parcel-services",
   "postnord": "postnord",
+  "postplus": "postplus",
   "posturinn": "posturinn",
   "ppl": "ppl",
   "precision-deliveries": "precision-deliveries",
@@ -12738,6 +12743,83 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M11 11.8L14 13.1L14 13.9L11 13.4L8 13.9L8 13.1Z",
         "fill": "accent"
+      }
+    ],
+    "domain-logistics": [
+      {
+        "type": "polygon",
+        "d": "M16.77 11.45L11.04 10.13L10.93 4.2L16.72 4.64Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M11.06 14.8L5.23 13.01L11.04 10.13Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M16.76 11.45L11.04 10.13L11.06 14.8Z",
+        "fill": "#4e738a"
+      }
+    ],
+    "fleetex": [
+      {
+        "type": "polygon",
+        "d": "M6.7 8.8L6.7 7.72L6.73 7.45L6.81 7.22L6.94 7.03L7.13 6.88L7.38 6.77L14.57 4.31L14.69 4.29L14.78 4.3L14.85 4.34L14.89 4.43L14.9 4.55L14.9 5.43L14.88 5.64L14.81 5.82L14.71 5.98L14.55 6.1L14.36 6.18Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M6.7 11.6L6.7 10.52L6.73 10.25L6.81 10.02L6.94 9.83L7.13 9.68L7.38 9.57L12.22 7.92L12.34 7.89L12.43 7.9L12.5 7.95L12.54 8.03L12.55 8.15L12.55 9.03L12.53 9.24L12.46 9.43L12.36 9.58L12.2 9.7L12.01 9.79Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M6.7 14.4L6.7 13.26L6.73 13.02L6.8 12.8L6.93 12.63L7.1 12.49L7.33 12.39L9.02 11.81L9.14 11.78L9.23 11.79L9.3 11.84L9.34 11.92L9.35 12.04L9.35 12.96L9.33 13.16L9.27 13.33L9.17 13.47L9.03 13.58L8.85 13.67Z",
+        "fill": "accent"
+      }
+    ],
+    "postplus": [
+      {
+        "type": "polygon",
+        "d": "M7.5 4.1L7.5 6.39L14.45 6.39L14.45 9.36L13 9.36L13 11.66L16.74 11.66L16.74 4.1Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M12.03 9.35L12.03 11.65L9.79 11.65L9.79 13.9L7.51 13.9L7.51 11.65L5.26 11.65L5.26 9.35L7.51 9.35L7.51 7.41L9.79 7.41L9.79 9.35Z",
+        "fill": "accent"
+      }
+    ],
+    "bringer-parcel": [
+      {
+        "type": "polygon",
+        "d": "M3.29 14L6.71 5L17.11 5L17.83 5.21L18.19 5.8L18.1 6.6L17.72 7.6L17.31 8.3L16.23 9.15L16.68 9.95L16.58 10.6L16.09 11.9L15.67 12.68L14.93 13.41L14.02 13.88L13.29 14L12.89 14Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M10.1 6.6L12.7 6.6L13.11 6.72L13.26 7.5L12.51 8.28L12.02 8.4L9.42 8.4Z",
+        "fill": "truck"
+      },
+      {
+        "type": "polygon",
+        "d": "M8.85 9.9L11.85 9.9L12.39 10.06L12.59 11.1L11.6 12.14L10.94 12.3L7.74 12.3Z",
+        "fill": "truck"
+      }
+    ],
+    "micro-express": [
+      {
+        "type": "circle",
+        "cx": 11,
+        "cy": 9.3,
+        "r": 5.3,
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M7.5 12.4L7.5 6.2L9.9 6.2L11 8.93L12.1 6.2L14.5 6.2L14.5 12.4L12.9 12.4L12.9 7.69L11 12.4L9.1 7.69L9.1 12.4Z",
+        "fill": "truck"
       }
     ]
   }
