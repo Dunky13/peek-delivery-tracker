@@ -783,6 +783,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "foxpost": "foxpost",
   "franch-express": "franch-express",
   "fukuyama": "fukuyama",
+  "gaash": "gaash",
   "gati": "gati",
   "gdex": "gdex",
   "gebrueder-weiss": "gebrueder-weiss",
@@ -990,6 +991,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "one-world-express": "one-world-express",
   "ontrac": "ontrac",
   "opt-nc": "opt-nc",
+  "orian": "orian",
   "orlen-paczka": "orlen-paczka",
   "osm-worldwide": "osm-worldwide",
   "overseas-express": "overseas-express",
@@ -14200,6 +14202,60 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M3.4 6.6L4.74 5.8L6.13 5.12L7.56 4.56L9.03 4.12L10.55 3.8L12.11 3.6L13.72 3.52L15.37 3.56L17.06 3.72L18.8 4L18.4 6.4L16.85 5.97L15.3 5.64L13.77 5.42L12.26 5.3L10.75 5.28L9.26 5.36L7.77 5.54L6.3 5.82L4.85 6.21Z",
         "fill": "#ff4b55"
+      }
+    ],
+    "gaash": [
+      {
+        "type": "polygon",
+        "d": "M8.98 4.97L11 3.8L13.02 4.97L12.27 6.27L11.7 5.94L11.7 7.4L10.3 7.4L10.3 5.94L9.73 6.27Z",
+        "fill": "#f58020"
+      },
+      {
+        "type": "polygon",
+        "d": "M13.91 5.48L15.94 6.65L15.94 8.99L14.44 8.99L14.44 7.52L13.16 6.78Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M15.94 10.01L15.94 12.35L13.91 13.52L13.16 12.22L13.74 11.89L12.47 11.16L13.17 9.94L14.44 10.68L14.44 10.01Z",
+        "fill": "#f58020"
+      },
+      {
+        "type": "polygon",
+        "d": "M13.02 14.03L11 15.2L8.98 14.03L9.73 12.73L11 13.47L12.27 12.73Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M8.09 13.52L6.06 12.35L6.06 10.01L7.56 10.01L7.56 10.68L8.83 9.94L9.53 11.16L8.26 11.89L8.84 12.22Z",
+        "fill": "#f58020"
+      },
+      {
+        "type": "polygon",
+        "d": "M6.06 8.99L6.06 6.65L8.09 5.48L8.84 6.78L7.56 7.52L7.56 8.99Z",
+        "fill": "accent"
+      }
+    ],
+    "orian": [
+      {
+        "type": "polygon",
+        "d": "M3 6.5L15 6.5L15 8.5L13 8.5L13 12.5L3 12.5Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M9 8.5L11 8.5L11 10.5L9 10.5Z",
+        "fill": "truck"
+      },
+      {
+        "type": "polygon",
+        "d": "M17 6.5L19 6.5L19 8.5L17 8.5Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M15 10.5L17 10.5L17 12.5L15 12.5Z",
+        "fill": "accent"
       }
     ]
   }

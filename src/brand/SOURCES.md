@@ -250,6 +250,7 @@ and [`truck.json`](truck.json).
 | `foxpost` | [logo SVG](https://foxpost.hu/img/header-logo-square.svg) — tile fill #B70100 |
 | `franch-express` | [franchexpress.com](https://franchexpress.com/wp-content/uploads/2024/03/logo-franch-express-white.png) — logo PNG frame and FRANCH red #ec1b24 (approximate) |
 | `fukuyama` | [fukutsu.co.jp](https://corp.fukutsu.co.jp/corp/assets/img/common/header/logo_fukuyama.png) — logo red #e70128 (approximate) |
+| `gaash` | [gaashwd.com](https://gaashwd.com/wp-content/uploads/2022/11/GAASH-Logo.png) — logo PNG: the GAASH wordmark and blue hexagon brackets are #115ca1, the arrows #f58020 (approximate) |
 | `gati` | [allcargologistics.com](https://www.allcargologistics.com/assets/images/Gati-logo.webp) — GATI panel of the AllcargoGATI logo, #1781a4 (approximate) |
 | `gdex` | [my.gdexpress.com](https://my.gdexpress.com/static/media/myGDexLogo.47a1d55a.svg) — logo SVG fill #D71921 (D and EX; G in navy #041049) |
 | `gebrueder-weiss` | [gw-world.com](https://www.gw-world.com/ch/) — meta theme-color #FF6600, logo band fill #f60 |
@@ -436,6 +437,7 @@ and [`truck.json`](truck.json).
 | `one-world-express` | [oneworldexpress.com](https://www.oneworldexpress.com/) — home page CSS #161c5e (12 uses); the logo SVG is white and sits on this navy |
 | `ontrac` | [ontrac.com](https://www.ontrac.com/) |
 | `opt-nc` | [opt.nc](https://www.opt.nc/) — inline logo SVG fills #28347C (kagu and OPT) and #FDC40A (square) |
+| `orian` | [orian.com](https://www.orian.com/templates/Orian2019/assets/images/logo26.png) — logo PNG: the bar is #d01b21 (approximate; flat fill, the wordmark is #161412) |
 | `orlen-paczka` | [logo SVG](https://www.orlenpaczka.pl/wp-content/themes/orlenpaczka/img/logo.svg) — the square's fill `#DB3830` |
 | `osm-worldwide` | [osmworldwide.com](https://www.osmworldwide.com/) — theme CSS --global-palette1 #a2002b, the same as the OSM letters in the logo |
 | `overseas-express` | [overseas.hr](https://www.overseas.hr/) — theme-color #f58220; logo orange #ee7f01 (approximate) |
@@ -1385,3 +1387,5 @@ and [`truck.json`](truck.json).
 | `ccfs` | White bison with a red horn on red | [ccfs.com](https://www.ccfs.com/images/webclip.png) — the bison of the logo and apple-touch icon, facing right |
 | `custom-companies` | Gold disc with a black map of the United States and a gold bullseye dot, on black | [customco.com](https://www.customco.com/wp-content/uploads/2023/03/new-logo.svg) — the O of CUSTOM: a disc holding the US map with a bullseye |
 | `hercules-freight` | White italic H under a red arc on blue | [herculesfreight.com](https://herculesfreight.com/assets-v2/images/hercules-logo.svg) — the bold italic Hercules wordmark under a red arc, reduced to its H |
+| `gaash` | White hexagon of corner brackets with three orange outward arrows on blue | [gaashwd.com](https://gaashwd.com/wp-content/uploads/2018/10/gaash-icon.png) — site icon: hexagon of corner brackets, orange arrows at the top and lower corners, blue sphere inside (left out) |
+| `orian` | White pixel bar breaking into squares on red | [orian.com](https://www.orian.com/templates/Orian2019/favicon.png) — favicon and logo bar: a red band that dissolves into square pixels at its right end |

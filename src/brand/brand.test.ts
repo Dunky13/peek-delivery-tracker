@@ -185,6 +185,7 @@ describe('carrier brand', () => {
       'dpex', 'mrl-global', 'fliway', 'morning-global',
       'rpx-hk', 'montenegro-post', 'vitran-express',
       'am-home-delivery', 'american-west-express', 'ccfs', 'custom-companies', 'hercules-freight',
+      'gaash', 'orian',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {
