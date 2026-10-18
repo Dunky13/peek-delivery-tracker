@@ -1037,6 +1037,26 @@ function Appliance() {
   </>;
 }
 
+function Shelves() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    {/* Warehouse shelving: two uprights and three shelves of boxes. */}
+    <rect x="40" y="36" width="10" height="212" rx="3" fill="var(--lilac)" />
+    <rect x="310" y="36" width="10" height="212" rx="3" fill="var(--lilac)" />
+    {[100, 170, 240].map((y) => <rect key={y} x="34" y={y} width="292" height="8" rx="3" fill="var(--lilac)" />)}
+    <Box x={208} y={62} width={70} height={38} />
+    <Box x={62} y={118} width={72} height={52} />
+    <Box x={144} y={136} width={46} height={34} />
+    <Box x={200} y={108} width={100} height={62} />
+    <Box x={58} y={182} width={100} height={58} />
+    <Box x={168} y={204} width={52} height={36} />
+    <Box x={230} y={190} width={70} height={50} />
+    <Pip x={126} ground={100} width={92} mood="look" side={1} />
+    <path d="M336 150C362 128 384 128 400 140" stroke="var(--lilac)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 12" />
+    <Truck x={420} y={172} tone="lilac" scale={4} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -1061,6 +1081,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'cdiscount-orders': { tone: 'blue', draw: Megastore },
   'pccomponentes-orders': { tone: 'rose', draw: Tower },
   'worten-orders': { tone: 'rose', draw: Appliance },
+  'galaxus-orders': { tone: 'lilac', draw: Shelves },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

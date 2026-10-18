@@ -122,6 +122,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Worten order tracking: delivery and problems"
     },
     {
+      "id": "galaxus-orders",
+      "slug": "galaxus-order-tracking",
+      "title": "Galaxus order tracking: carriers, delivery and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -302,6 +307,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "worten-orders",
       "slug": "worten-bestellung-verfolgen",
       "title": "Worten-Bestellung verfolgen: Lieferung und Probleme"
+    },
+    {
+      "id": "galaxus-orders",
+      "slug": "galaxus-sendungsverfolgung",
+      "title": "Galaxus Sendungsverfolgung: Wo ist meine Bestellung?"
     },
     {
       "id": "find-tracking-number",
@@ -486,6 +496,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Worten\u00a0: livraison et problèmes"
     },
     {
+      "id": "galaxus-orders",
+      "slug": "suivi-commande-galaxus",
+      "title": "Suivi de commande Galaxus\u00a0: où est mon colis\u202f?"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -666,6 +681,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "worten-orders",
       "slug": "tracciare-ordine-worten",
       "title": "Tracciare un ordine Worten: consegna e problemi"
+    },
+    {
+      "id": "galaxus-orders",
+      "slug": "tracking-ordine-galaxus",
+      "title": "Tracking ordine Galaxus: dov'è il mio pacco?"
     },
     {
       "id": "find-tracking-number",
@@ -850,6 +870,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Pedidos Worten: seguimiento, entrega y problemas"
     },
     {
+      "id": "galaxus-orders",
+      "slug": "seguimiento-pedido-galaxus",
+      "title": "Pedidos Galaxus: seguimiento, entrega y problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -1032,6 +1057,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Encomendas Worten: seguimento, entrega e problemas"
     },
     {
+      "id": "galaxus-orders",
+      "slug": "seguimento-encomenda-galaxus",
+      "title": "Encomendas Galaxus: seguimento, entrega e problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -1212,6 +1242,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "worten-orders",
       "slug": "sledzenie-zamowienia-worten",
       "title": "Śledzenie zamówienia Worten: dostawa i problemy"
+    },
+    {
+      "id": "galaxus-orders",
+      "slug": "sledzenie-zamowienia-galaxus",
+      "title": "Zamówienie z Galaxus: śledzenie, dostawa i problemy"
     },
     {
       "id": "find-tracking-number",
