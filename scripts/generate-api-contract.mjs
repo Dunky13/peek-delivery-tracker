@@ -32,10 +32,10 @@ const contractKeyOrder = ['displayName', 'displayNames', 'aliases', 'countries',
 // The API names a carrier's postcode input as the app stores it; the scraper calls it `postcode`.
 const contractField = (field) => (field === 'postcode' ? 'dpdPostcode' : field);
 
-/** Leaves out what only the scraper uses: the page its canary probes, refresh pacing and clocks. */
+/** Leaves out what only the scraper uses: the page its canary probes, refresh pacing, clocks and browsers. */
 function contractEntry(carrier) {
   const tracking = Object.fromEntries(Object.entries(carrier.tracking)
-    .filter(([key]) => !['refresh', 'localClocks'].includes(key))
+    .filter(([key]) => !['refresh', 'localClocks', 'browser'].includes(key))
     .map(([key, value]) => (key === 'requirements'
       ? [key, value.map((requirement) => ({ ...requirement, field: contractField(requirement.field) }))]
       : [key, value])));

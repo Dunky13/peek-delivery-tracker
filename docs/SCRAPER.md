@@ -55,8 +55,8 @@ iPhone, the carrier's own country otherwise. The examples live in
 [`shared/postcode-examples.json`](../shared/postcode-examples.json).
 
 The scraper validates its own catalog. The app contract generator projects the catalog
-onto the client API, excluding what only retrieval uses: refresh pacing, clocks and the
-page the scraper's canary probes. The scraper's stage vocabulary must agree with the
+onto the client API, excluding what only retrieval uses: refresh pacing, clocks, whether a
+lookup can open a browser and the page the scraper's canary probes. The scraper's stage vocabulary must agree with the
 contract. Brand palettes, decals and truck geometry live in `src/brand`;
 `scripts/generate-brand.mjs` feeds both web and native resources.
 
