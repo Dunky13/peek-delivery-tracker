@@ -397,6 +397,10 @@ A parcel often changes carrier at the border. The origin history is always kept.
   before the local courier. Its history is shown while the filed carrier has none, but it
   neither replaces the filed carrier nor raises `carrier_mismatch_confirmed`. The filed
   carrier is asked first on every check.
+- A carrier asked about a parcel filed as unknown or under another carrier, that confirms the
+  number and hands the parcel on in the same lookup, files it as it would without the
+  handoff, and the parcel keeps the handoff. The database takes such a correction only when
+  the handoff starts from the new carrier under the parcel's own number.
 - Once adopted (`handed_over_at`), the partner answers for the parcel. The origin publishes
   some scans late, so for a day it is still asked alongside the partner, at most every 55 min
   (`earlier_checked_at`). Its scans join the history; its failures and its clock do not touch

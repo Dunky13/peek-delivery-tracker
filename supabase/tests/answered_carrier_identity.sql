@@ -90,4 +90,56 @@ begin
   end if;
 end;
 $$;
+
+-- A carrier that answers for an unknown parcel and hands it to its delivery carrier in the
+-- same lookup files the parcel, which keeps the hand-off it reported.
+do $$
+declare
+  parcel public.packages;
+  correction jsonb;
+  scans jsonb := jsonb_build_array(jsonb_build_object('provider_event_id', 'gofo:hub',
+    'stage', 'in_transit', 'description', 'Arrived at the hub', 'occurred_at', now()));
+begin
+  insert into public.packages(user_id, tracking_number, carrier, current_stage)
+  values ('10000000-0000-0000-0000-000000000001', 'QH000000000001FS', 'unknown', 'in_transit') returning * into parcel;
+  correction := jsonb_build_object('carrier', 'dhlink', 'tracking_url', null, 'dpd_postcode', null,
+    'current_stage', 'in_transit', 'sync_status', 'ok', 'carrier_data', jsonb_build_object(
+      'original_carrier', 'dhlink', 'original_tracking_number', parcel.tracking_number,
+      'active_tracking_carrier', 'gofo', 'active_tracking_number', 'GFUS01000000000001',
+      'auto_changed_from', 'unknown', 'auto_changed_to', 'dhlink',
+      'routing', jsonb_build_object('version', 1, 'configured_carrier', 'dhlink', 'preferred_number', parcel.tracking_number,
+        'confirmed_carrier', 'dhlink', 'confirmed_number', parcel.tracking_number)));
+  begin
+    perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation,
+      jsonb_set(correction, '{carrier_data,original_carrier}', '"gofo"'), scans);
+    raise exception 'A correction naming another carrier as the origin was accepted';
+  exception when sqlstate '22023' then null;
+  end;
+  begin
+    perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation,
+      jsonb_set(correction, '{carrier_data,original_tracking_number}', '"QH000000000002FS"'), scans);
+    raise exception 'A correction naming the origin of another number was accepted';
+  exception when sqlstate '22023' then null;
+  end;
+  begin
+    -- A provider's word alone names no hand-off.
+    perform public.apply_tracking_sync(parcel.id, parcel.tracking_generation, jsonb_build_object(
+      'carrier', 'dhlink', 'tracking_url', null, 'dpd_postcode', null, 'sync_status', 'ok', 'carrier_data', jsonb_build_object(
+        'original_carrier', 'dhlink', 'original_tracking_number', parcel.tracking_number,
+        'tracking_provider', 'ParcelsApp', 'discovered_carrier', 'dhlink', 'reported_carriers', jsonb_build_array('DHLink'),
+        'routing', jsonb_build_object('version', 1, 'configured_carrier', 'dhlink', 'discovered_carrier', 'dhlink',
+          'preferred_number', parcel.tracking_number))), scans);
+    raise exception 'A provider identity naming a hand-off was accepted';
+  exception when sqlstate '22023' then null;
+  end;
+  if not public.apply_tracking_sync(parcel.id, parcel.tracking_generation, correction, scans) then
+    raise exception 'The carrier that answered and handed the parcel on was not saved';
+  end if;
+  if not exists (select 1 from public.packages where id = parcel.id and carrier = 'dhlink'
+      and carrier_data->>'original_carrier' = 'dhlink' and carrier_data->>'active_tracking_carrier' = 'gofo'
+      and carrier_data->>'auto_changed_from' = 'unknown') then
+    raise exception 'The handed-on parcel lost its hand-off or its correction notice';
+  end if;
+end;
+$$;
 rollback;
