@@ -901,4 +901,17 @@ describe('newest-event times set by copies read in the wrong zone', () => {
     const added = [...stored, row('app:pending', '2026-01-04T14:40:00.123+00:00', 'Tracking added')];
     expect(withoutCopyDrift(at('2026-01-04T15:59:03Z'), events, added, takeover, { withStored: true })).toBe(at('2026-01-04T12:59:03Z'));
   });
+
+  it('brings back a time copies are known to have set, once their rows moved', () => {
+    // The provider's copy already sits at the carrier's instant: the carrier's scan meets it, and no copy claims the excess.
+    const stored = [row('gofo:label', '2026-01-02T12:30:00+00:00', 'Shipping Label Created'), row('gofo:out', '2026-01-04T12:59:03+00:00', 'Out for Delivery')];
+    const events = [scan('gofo:out', '2026-01-04T12:59:03Z', 'Out for Delivery')];
+    const late = at('2026-01-04T15:59:03Z');
+    expect(withoutCopyDrift(late, events, stored, none, { withStored: true })).toBe(late);
+    expect(withoutCopyDrift(late, events, stored, none, { withStored: true, explained: [late] })).toBe(at('2026-01-04T12:59:03Z'));
+    // A newer stored scan still holds it, and a time past what is explained stands.
+    const newer = [...stored, row('unknown:sorted', '2026-01-04T14:10:00+00:00', 'Sorted')];
+    expect(withoutCopyDrift(late, events, newer, none, { withStored: true, explained: [late] })).toBe(at('2026-01-04T14:10:00Z'));
+    expect(withoutCopyDrift(late, events, stored, none, { withStored: true, explained: [at('2026-01-04T15:00:00Z')] })).toBe(late);
+  });
 });

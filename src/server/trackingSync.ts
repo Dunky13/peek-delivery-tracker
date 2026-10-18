@@ -1370,8 +1370,9 @@ export class TrackingSyncService {
       const matches = { reused: new Map([...reworded, ...shared.reused]), skipped: shared.skipped };
       // Copies a universal provider read in the wrong zone must not make a result
       // look fresher, or the carrier's own reply older, than it is.
+      const previousData = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
       const previousEventTime = withoutCopyDrift(
-        Date.parse(previousRouting.last_event_at ?? ''), events, stored, matches, { withStored: true },
+        Date.parse(previousRouting.last_event_at ?? ''), events, stored, matches, providerWatermark(previousData, stored),
       );
       // Read as routing wrote the watermark: a naive local clock in its source's zone.
       const returnedEventTime = withoutCopyDrift(
@@ -1379,7 +1380,6 @@ export class TrackingSyncService {
       );
       const olderSnapshot = Number.isFinite(previousEventTime) && Number.isFinite(returnedEventTime)
         && returnedEventTime < previousEventTime;
-      const previousData = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
       // UPU wall time cannot prove freshness against another source. It may
       // establish initial progress, or update its own saved local-time summary.
       const unprovenUpuSummary = result.tracking_provider === 'UPU' && (
@@ -1886,7 +1886,20 @@ function watermarkWithoutCopies(parcel: JsonObject, watermark: number, value: Ro
   const stored = storedEventIdentities(parcel);
   const known = new Set(stored.map((row) => row.provider_event_id));
   const rows = [...stored, ...(provider ? buildEvents(parcel, provider, 'unknown') : []).filter((row) => !known.has(row.provider_event_id))];
-  return withoutCopyDrift(watermark, events, rows, sharedScans(events, rows), { withStored: true });
+  return withoutCopyDrift(watermark, events, rows, sharedScans(events, rows),
+    providerWatermark(isRecord(parcel.carrier_data) ? parcel.carrier_data : {}, stored));
+}
+
+/**
+ * How a saved watermark meets the stored rows. One a universal provider's summary set is
+ * that provider's newest scan, which the sync stored: past every stored scan, it was set
+ * by copies since moved or taken over at their real instant, and comes back to the newest.
+ * A UPU summary is on a wall clock, and a parcel loaded without its rows proves nothing.
+ */
+function providerWatermark(saved: JsonObject, stored: readonly JsonObject[]): { withStored: true; explained?: number[] } {
+  const watermark = Date.parse(String(isRecord(saved.routing) ? saved.routing.last_event_at ?? '' : ''));
+  return typeof saved.tracking_provider === 'string' && saved.tracking_provider !== 'UPU' && stored.length
+    ? { withStored: true, explained: [watermark] } : { withStored: true };
 }
 
 /**

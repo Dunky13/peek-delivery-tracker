@@ -4198,6 +4198,32 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(store.rows.size).toBe(3);
   });
 
+  it('takes the carrier reply back from a provider summary whose copies have since moved to the carrier clock', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch: vi.fn().mockResolvedValue(result([out, hub, label])), fetchUniversal: vi.fn() };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    const sync = async (carrierData?: JsonObject) => {
+      await service.syncPackage({ ...parcel, current_stage: carrierData ? 'out_for_delivery' : 'pending',
+        ...(carrierData ? { carrier_data: carrierData } : {}), [STORED_EVENT_IDENTITIES]: store.identities() });
+      return (store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject).carrier_data as JsonObject;
+    };
+    await sync();
+    // A provider's summary three hours late, saved before its rows moved to GOFO's instants: no copy is left to explain it.
+    const late = '2026-01-04T15:59:03.000Z';
+    const routing = { version: 1, configured_carrier: 'gofo', last_event_at: late };
+    const recovered = await sync({ tracking_provider: 'ParcelsApp', last_update: late, routing });
+    expect(recovered).not.toHaveProperty('tracking_provider');
+    expect((recovered.routing as JsonObject).last_event_at).toBe('2026-01-04T12:59:03.000Z');
+    // A watermark no provider's summary set stands.
+    const kept = await sync({ last_update: late, routing });
+    expect((kept.routing as JsonObject).last_event_at).toBe(late);
+  });
+
   it('stores a provider scan from another place a zone after a carrier scan, and moves the watermark to it', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const store = eventStore();

@@ -427,7 +427,9 @@ the sync when it checks whether a returned summary is older than the watermark. 
 copy of a stored scan counts at the stored scan's instant, and a row a scan takes over or
 moves at that scan's instant. A provider that misread the zone therefore cannot set the
 watermark hours ahead and make the carrier's own reply look older, and the watermark comes
-back once the provider's corrected answer moves its rows. The router holds a carrier
+back once the provider's corrected answer moves its rows. A watermark a provider's summary
+set is that provider's newest scan, which the sync stored, so one past every stored scan
+comes back to the newest, its copies having moved since. The router holds a carrier
 detection or a provider names to the same rule before taking it: its newest scan counts
 against the watermark less the copies of its own scans, stored or in the answer of the
 provider that names it. An answer it sets aside stays in `routing.set_aside` (when, its newest

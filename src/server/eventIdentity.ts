@@ -548,19 +548,21 @@ export function relayedScans(earlier: readonly JsonObject[], delivery: readonly 
  * claimed, so the copies explain the excess (the router caps a future-dated
  * copy at the time of the check); a time they do not explain stands. The batch
  * always counts, `stored` rows only with `withStored`, and `also` adds instants
- * the batch rows do not carry. The app's own rows ("Tracking added") are no
- * scans: a parcel added after its newest scan keeps that scan's time.
+ * the batch rows do not carry. `explained` adds times copies are known to have
+ * set: a universal provider's summary time is its newest scan's, which the
+ * sync stored. The app's own rows ("Tracking added") are no scans: a parcel
+ * added after its newest scan keeps that scan's time.
  */
 export function withoutCopyDrift(
   time: number,
   events: readonly JsonObject[],
   stored: readonly JsonObject[],
   matches: { reused: ReadonlyMap<string, string>; skipped: ReadonlyMap<string, string> },
-  options: { withStored?: boolean; also?: readonly number[] } = {},
+  options: { withStored?: boolean; also?: readonly number[]; explained?: readonly number[] } = {},
 ): number {
   if (!Number.isFinite(time)) return time;
   const storedById = new Map(stored.map((row) => [identity(row), row] as const));
-  const claimed: number[] = [];
+  const claimed: number[] = [...(options.explained ?? [])];
   const retimed = new Map<string, number>();
   const kept: number[] = [...(options.also ?? [])];
   for (const event of events) {
