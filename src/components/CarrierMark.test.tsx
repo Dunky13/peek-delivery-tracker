@@ -112,6 +112,8 @@ describe('carrier mark', () => {
     'pdn-express', 'x-trac', 'hovership',
     'shipentegra', 'pts-worldwide-express', 'evdemo-lojistik', 'big-smart', 'proships', 'gta-airskip',
     'domain-logistics', 'fleetex', 'postplus', 'bringer-parcel', 'micro-express',
+    'l-post', 'vestovoy', '4sides', 'dobropost', 'flippost', 'jet-logistic', 'starex-az',
+    'mongol-infinity-post', 'peqasus-az',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

@@ -14,6 +14,9 @@
   "4-72": {
     "decal": "4-72"
   },
+  "4sides": {
+    "decal": "4sides"
+  },
   "5post": {
     "decal": "5post"
   },
@@ -579,6 +582,12 @@
   "direx": {
     "decal": "direx"
   },
+  "dobropost": {
+    "decal": "dobropost",
+    "palette": {
+      "accent": "#1d2b37"
+    }
+  },
   "dohrn-transfer": {
     "decal": "dohrn-transfer"
   },
@@ -802,6 +811,9 @@
   },
   "fleetoptics": {
     "decal": "fleetoptics"
+  },
+  "flippost": {
+    "decal": "flippost"
   },
   "followmont": {
     "decal": "followmont"
@@ -1133,6 +1145,9 @@
   "jersey-post": {
     "decal": "jersey-post"
   },
+  "jet-logistic": {
+    "decal": "jet-logistic"
+  },
   "jhgj": {
     "decal": "jhgj"
   },
@@ -1198,6 +1213,9 @@
   },
   "kyrgyz-post": {
     "decal": "kyrgyz-post"
+  },
+  "l-post": {
+    "decal": "l-post"
   },
   "la-poste": {
     "decal": "la-poste",
@@ -1353,6 +1371,9 @@
       "brand-light": "#94154b",
       "brand-dark": "#f5a9bb"
     }
+  },
+  "mongol-infinity-post": {
+    "decal": "mongol-infinity-post"
   },
   "mrw": {
     "decal": "mrw"
@@ -1552,6 +1573,9 @@
   },
   "pelican-express": {
     "decal": "pelican-express"
+  },
+  "peqasus-az": {
+    "decal": "peqasus-az"
   },
   "pfc-express": {
     "decal": "pfc-express"
@@ -1955,6 +1979,9 @@
       "accent": "#221e20"
     }
   },
+  "starex-az": {
+    "decal": "starex-az"
+  },
   "starken": {
     "decal": "starken"
   },
@@ -2183,6 +2210,9 @@
   },
   "venipak": {
     "decal": "venipak"
+  },
+  "vestovoy": {
+    "decal": "vestovoy"
   },
   "via-cargo": {
     "decal": "via-cargo"

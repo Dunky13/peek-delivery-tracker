@@ -170,6 +170,8 @@ describe('carrier brand', () => {
       'pdn-express', 'x-trac', 'hovership',
       'shipentegra', 'pts-worldwide-express', 'evdemo-lojistik', 'big-smart', 'proships', 'gta-airskip',
       'domain-logistics', 'fleetex', 'postplus', 'bringer-parcel', 'micro-express',
+      'l-post', 'vestovoy', '4sides', 'dobropost', 'flippost', 'jet-logistic', 'starex-az',
+      'mongol-infinity-post', 'peqasus-az',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {
