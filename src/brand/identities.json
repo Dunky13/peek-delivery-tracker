@@ -59,6 +59,9 @@
   "air-star-xpress": {
     "decal": "air-star-xpress"
   },
+  "airpak-express": {
+    "decal": "airpak-express"
+  },
   "ajex": {
     "decal": "ajex"
   },
@@ -180,6 +183,9 @@
   },
   "belpost": {
     "decal": "belpost"
+  },
+  "best-express-my": {
+    "decal": "best-express-my"
   },
   "best-express-vn": {
     "decal": "best-express-vn"
@@ -1047,6 +1053,9 @@
   "hound-express": {
     "decal": "hound-express"
   },
+  "houng-ah-loun": {
+    "decal": "houng-ah-loun"
+  },
   "hovership": {
     "decal": "hovership"
   },
@@ -1094,6 +1103,9 @@
   },
   "imile": {
     "decal": "imile"
+  },
+  "indah-logistik": {
+    "decal": "indah-logistik"
   },
   "india-post": {
     "decal": "india-post",
@@ -1359,6 +1371,9 @@
   "major-express": {
     "decal": "major-express"
   },
+  "makati-express": {
+    "decal": "makati-express"
+  },
   "maltapost": {
     "decal": "maltapost"
   },
@@ -1440,6 +1455,9 @@
   },
   "nepal-post": {
     "decal": "nepal-post"
+  },
+  "netpost-vn": {
+    "decal": "netpost-vn"
   },
   "next-level-delivery": {
     "decal": "next-level-delivery"
@@ -1565,6 +1583,9 @@
   "palletways": {
     "decal": "palletways"
   },
+  "pandu-logistics": {
+    "decal": "pandu-logistics"
+  },
   "pannon-xp": {
     "decal": "pannon-xp"
   },
@@ -1606,6 +1627,12 @@
   },
   "pbt": {
     "decal": "pbt"
+  },
+  "pcp-express": {
+    "decal": "pcp-express"
+  },
+  "pcs-logistics-vn": {
+    "decal": "pcs-logistics-vn"
   },
   "pdn-express": {
     "decal": "pdn-express"
@@ -1828,6 +1855,9 @@
   "roadrunner": {
     "decal": "roadrunner"
   },
+  "royal-express-mm": {
+    "decal": "royal-express-mm"
+  },
   "royal-mail": {
     "decal": "royal-mail",
     "palette": {
@@ -1836,6 +1866,9 @@
   },
   "rpx-indonesia": {
     "decal": "rpx-indonesia"
+  },
+  "rr-express-sg": {
+    "decal": "rr-express-sg"
   },
   "russian-post": {
     "decal": "russian-post"
@@ -2174,6 +2207,9 @@
   },
   "total-express": {
     "decal": "total-express"
+  },
+  "tp-logistics-th": {
+    "decal": "tp-logistics-th"
   },
   "trackon": {
     "decal": "trackon"

@@ -177,6 +177,9 @@ describe('carrier brand', () => {
       'jetline-couriers', 'pavan-courier', 'sahara-express', 'shree-mahabali-express', 'speed-and-safe',
       'ocs-ana', 'icl-express', 'atlantic-courier', 'gms-worldwide', 'pushpak-courier',
       'united-worldwide-couriers', 'dnx-cargo', 'daily-xpress',
+      'best-express-my', 'royal-express-mm', 'airpak-express', 'makati-express', 'indah-logistik',
+      'pandu-logistics', 'pcp-express', 'houng-ah-loun', 'netpost-vn', 'tp-logistics-th', 'pcs-logistics-vn',
+      'rr-express-sg',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {
