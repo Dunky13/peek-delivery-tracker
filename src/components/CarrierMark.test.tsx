@@ -123,6 +123,7 @@ describe('carrier mark', () => {
     'pandu-logistics', 'pcp-express', 'houng-ah-loun', 'netpost-vn', 'tp-logistics-th', 'pcs-logistics-vn',
     'rr-express-sg',
     'eparcel-kr', 'aci-express-kr', 'gsi-express', 'today-kr', 'exmate', 'winion-logis', 'last-one-mile-coop',
+    'dpex', 'mrl-global', 'fliway', 'morning-global',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

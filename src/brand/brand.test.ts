@@ -182,6 +182,7 @@ describe('carrier brand', () => {
       'rr-express-sg',
       'eparcel-kr', 'aci-express-kr', 'gsi-express', 'today-kr', 'exmate', 'winion-logis',
       'last-one-mile-coop',
+      'dpex', 'mrl-global', 'fliway', 'morning-global',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

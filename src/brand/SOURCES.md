@@ -180,6 +180,7 @@ and [`truck.json`](truck.json).
 | `dohrn-transfer` | [dohrn.com](https://www.dohrn.com/) — site theme variable --primaryColor #ee3631; logo SVG red #ed3424 |
 | `domain-logistics` | [domainlogistics.ca](https://domainlogistics.ca/tracking/) — logo SVG fill #6abf4b (the green plane of the corner mark), also the tracking page's button background |
 | `domex` | [domex.lk](https://domex.lk/) — track button and header text #FFCD05; logo PNG yellow #ffca05 (approximate) |
+| `dpex` | [dpex.com](https://dpex.com/wp-content/uploads/dpex-logo-full.png) — logo PNG red #ec3a43 (flat fill, sampled from the PNG), also the home page slideshow background #EC3A43 |
 | `dragon-star-curier` | [dragonstarcurier.ro](https://dragonstarcurier.ro/public/project/images/logo.svg) — logo SVG fill #000b8c (DSC and the emblem arms), red #aa182c top panel |
 | `drop2shop` | [drop2shop.ie](https://www.drop2shop.ie/assets/css/drop2shop-theme.css) — theme pink #d8127d (161 uses), the same pink as the favicon's dots (approximate in the 32 px favicon PNG) |
 | `dropp` | [dropp.is](https://dropp.is/) — app theme primary #00007D; logo SVG fills #00007E and #0FF |
@@ -236,6 +237,7 @@ and [`truck.json`](truck.json).
 | `fleetex` | [fleetexpress.ca](https://fleetexpress.ca/logo.png) — logo PNG #572aee (approximate), same violet in the favicon |
 | `fleetoptics` | [track.fleetopticsinc.com](https://track.fleetopticsinc.com/assets/css/custom.css) — tracker CSS --brandPrimary #02001E behind the white logo, also the apple-touch-icon ground; fleetopticsinc.com uses #03011f |
 | `flippost` | [flippost.com](https://flippost.com/skin/images/logo.svg) — logo SVG fill #2F4E77, also the main colour of the site CSS |
+| `fliway` | [fliway.com](https://www.fliway.com/Css/overwrites.min.css) — site CSS main colour #002b5c (37 uses), also on the Fliway Group careers page |
 | `flyking` | [flyking.in, archived](https://web.archive.org/web/20160806144948im_/http://flyking.in/images/logo-flyking.png) — logo PNG red #da251d (approximate); the archived site CSS headers and buttons are red too |
 | `followmont` | [followmont.com.au](https://www.followmont.com.au/) — app.css #022160 (57 uses) and .fmt-blue #002060 behind the logo; logo cyan #00b0f1 (.fmt-blue-banner) |
 | `forward-air` | [forwardair.com](https://www.forwardair.com/apple-touch-icon.png) — app icon red #c8102e, also a theme-color on the site (approximate) |
@@ -393,6 +395,8 @@ and [`truck.json`](truck.json).
 | `micro-express` | [microexpress.com.au](https://microexpress.com.au/static/logo-banner.png) — header logo PNG, 'Micro' #e73100 (approximate) |
 | `midland-transport` | [midlandtransport.com](https://www.midlandtransport.com/) — theme-color #009057 and header logo SVG fill #009057 |
 | `mongol-infinity-post` | [mypost.mn](https://mypost.mn/images/logo.jpg) — logo blue #404b9b, the same as the site CSS .primaryBackgroundColor |
+| `morning-global` | [morninglobal.com](https://www.morninglobal.com/trace-track/) — CSS brand variables --mg-tr-primary and --mg-blue #050059; the logo PNG is the same deep indigo (#100964, approximate) |
+| `mrl-global` | [mrlglobal.com](https://www.mrlglobal.com/wp-content/uploads/2024/02/d8b56e6e4b37064446910e6f20e34013.svg) — logo SVG fill #0071A6 (letters) with an #F47E20 orange wedge |
 | `mrw` | [mrw.es](https://www.mrw.es/) |
 | `mylerz` | [mylerz.com](https://cdn.prod.website-files.com/651c198b3ea329eb422858f1/651c198b3ea329eb4228590e_logo.svg) — logo SVG fill #FB4F14 |
 | `nacex` | [nacex.es](https://www.nacex.es/) |
@@ -1361,3 +1365,7 @@ and [`truck.json`](truck.json).
 | `exmate` | White X crossed by a long spike on indigo | [exmate.net](https://cdn.imweb.me/thumbnail/20230418/c759825849e90.png) — the X with its slash spike from the EXMATE logo |
 | `winion-logis` | Two white slanted strokes with a grey wedge on blue | [winionlogistics.com](https://winionlogistics.com/img/new_logo.png) — the W of grey and blue slanted bars in the header logo |
 | `last-one-mile-coop` | Black hand truck with white boxes on orange | [lastonemile.org](https://lastonemile.org/lom24/wp-content/themes/lom2024/img/apple-touch-icon.png) — the hand truck with two boxes from the co-op logo |
+| `dpex` | White DP and grey EX in heavy italic on red | [dpex.com](https://dpex.com/wp-content/uploads/dpex-logo-full.png) — the DPEX wordmark, red DP and grey EX in heavy italic |
+| `mrl-global` | White italic MRL over an orange wedge on blue | [mrlglobal.com](https://www.mrlglobal.com/wp-content/uploads/2024/02/d8b56e6e4b37064446910e6f20e34013.svg) — the MRL letters and orange GLOBAL wedge, as painted on the blue trailers in the home page photo (https://www.mrlglobal.com/wp-content/uploads/2024/08/IMG_6803-e1724038978146.jpg) |
+| `fliway` | White heavy block F on navy | [fliway.com](https://www.fliway.com/img/header-logo-big.png) — the heavy block F of the bevelled FLIWAY wordmark |
+| `morning-global` | White M of a large and a small figure on indigo | [morninglobal.com](https://www.morninglobal.com/wp-content/uploads/2026/05/imageye___-_imgi_1_logo-300x166-1-e1777955054238.png) — the M of MORNING, a large figure whose arm slopes down to a small figure |

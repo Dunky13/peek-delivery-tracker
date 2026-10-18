@@ -651,6 +651,9 @@
   "dpd-za": {
     "family": "dpd"
   },
+  "dpex": {
+    "decal": "dpex"
+  },
   "dragon-star-curier": {
     "decal": "dragon-star-curier"
   },
@@ -850,6 +853,9 @@
   },
   "flippost": {
     "decal": "flippost"
+  },
+  "fliway": {
+    "decal": "fliway"
   },
   "flyking": {
     "decal": "flyking"
@@ -1446,6 +1452,12 @@
   },
   "mongol-infinity-post": {
     "decal": "mongol-infinity-post"
+  },
+  "morning-global": {
+    "decal": "morning-global"
+  },
+  "mrl-global": {
+    "decal": "mrl-global"
   },
   "mrw": {
     "decal": "mrw"
