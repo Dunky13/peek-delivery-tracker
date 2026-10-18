@@ -4095,7 +4095,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "australia-post",
-      "browserRecognitionRank": 500
+      "recognitionRank": 500
     },
     "linkRules": [
       {
@@ -10394,7 +10394,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "d-express",
+      "recognitionRank": 819
     },
     "trackingUrlTemplate": "https://www.dexpress.rs/rs/pracenje-posiljaka/{trackingNumber}",
     "linkRules": [
@@ -10402,7 +10403,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "dexpress.rs"
         ],
-        "path": "^/rs/pracenje-posiljaka/([^/?#]+)/?$"
+        "path": "^/(?:rs/pracenje-posiljaka|en/track-and-trace)/([^/?#]+)/?$"
       }
     ],
     "detectionRules": [],
@@ -17838,7 +17839,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "city-express-rs",
+      "recognitionRank": 817
     },
     "linkRules": [],
     "detectionRules": [
@@ -18017,7 +18019,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Sarajevo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "euroexpress-ba",
+      "recognitionRank": 816
     },
     "trackingUrlTemplate": "https://www.euroexpress.ba/pracenje-posiljke/{trackingNumber}",
     "linkRules": [
@@ -19394,7 +19397,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "4-72"
     },
     "trackingUrlTemplate": "https://svc2.sipost.co/TrazabilidadWeb?guia={trackingNumber}",
     "linkRules": [
@@ -21383,7 +21386,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shipa"
     },
     "trackingUrlTemplate": "https://shipa.com/track/?trackingno={trackingNumber}",
     "linkRules": [
@@ -28313,6 +28316,305 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://tptrack.info/ecom/dtrack.php"
+  },
+  "aci-express-kr": {
+    "displayName": "ACI Express",
+    "aliases": [
+      "ACI WORLDWIDE",
+      "에이씨아이월드와이드",
+      "ACIEXPRESS"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "color": "#db2e6e",
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://acieshop.com/aci_pod/pod.php?BL={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "acieshop.com",
+          "www.acieshop.com"
+        ],
+        "pathPattern": "^/aci_pod/pod\\.php$",
+        "params": [
+          "BL"
+        ]
+      },
+      {
+        "domains": [
+          "acieshop.com",
+          "www.acieshop.com",
+          "old.acieshop.com"
+        ],
+        "pathPattern": "^/pod\\.html$",
+        "params": [
+          "OrderNo"
+        ]
+      },
+      {
+        "domains": [
+          "acieshop.com",
+          "www.acieshop.com"
+        ],
+        "pathPattern": "^/trackingbl\\.html$",
+        "params": [
+          "bl"
+        ]
+      },
+      {
+        "domains": [
+          "pod.acieshop.com"
+        ],
+        "pathPattern": "^/tracking\\.php$",
+        "params": [
+          "bl"
+        ]
+      },
+      {
+        "domains": [
+          "wms.acieshop.com"
+        ],
+        "path": "^/comn/deliveryTrack/(\\d+)/?$"
+      },
+      {
+        "domains": [
+          "133.acieshop.com"
+        ],
+        "pathPattern": "^/webpod\\.php$",
+        "params": [
+          "HawbNo"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.aciexpress.net/delivery/"
+  },
+  "eparcel-kr": {
+    "displayName": "eParcel Korea",
+    "aliases": [
+      "용성종합물류"
+    ],
+    "countries": [
+      "KR",
+      "PH",
+      "TH"
+    ],
+    "color": "#286aff",
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.eparcel.kr/Track/Result?mode=0&ids={trackingNumber}&lang=en-US",
+    "linkRules": [
+      {
+        "domains": [
+          "www.eparcel.kr",
+          "eparcel.kr"
+        ],
+        "pathPattern": "^/Track/Result/?$",
+        "params": [
+          "ids"
+        ]
+      },
+      {
+        "domains": [
+          "www.eparcel.kr",
+          "eparcel.kr"
+        ],
+        "pathPattern": "^/Track/MainTracking/?$",
+        "params": [
+          "num"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^E[A-Z]{2}\\d{9}KR$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.eparcel.kr/Track/Search"
+  },
+  "exmate": {
+    "displayName": "Exmate",
+    "aliases": [
+      "이엑스메이트",
+      "EXMATE"
+    ],
+    "countries": [
+      "KR",
+      "JP"
+    ],
+    "color": "#3855c7",
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://pod.exmate.net/pod/?exmno={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "pod.exmate.net"
+        ],
+        "pathPattern": "^/pod(?:/jpjp|/langchange)?/?$",
+        "params": [
+          "exmno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^EXK\\d{8}J$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://pod.exmate.net/"
+  },
+  "gsi-express": {
+    "displayName": "GSI Express",
+    "aliases": [
+      "GSI EXPRESS",
+      "GSI EXPRESS LOGISTICS INC."
+    ],
+    "countries": [
+      "US",
+      "KR"
+    ],
+    "color": "#254f89",
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.gsiexpress.com/track_pop.php?textfield={trackingNumber}&track_type=invoice_no",
+    "linkRules": [
+      {
+        "domains": [
+          "www.gsiexpress.com",
+          "gsiexpress.com"
+        ],
+        "pathPattern": "^/(?:track_pop|custracking2)\\.php$",
+        "params": [
+          "textfield",
+          "query_num"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.gsiexpress.com/tracking_query.php"
+  },
+  "last-one-mile-coop": {
+    "displayName": "Last One Mile Co-op",
+    "aliases": [
+      "ラストワンマイル協同組合",
+      "LAST ONE MILE CO-OP"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "color": "#eb690b",
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://y-track.jp/ytrack/inqservlet?cd=81118&id=02116&number01={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "y-track.jp",
+          "sv2.y-track.jp"
+        ],
+        "pathPattern": "^/ytrack/inqservlet/?$",
+        "query": "(?:^|&)cd=81118&id=02116&number01=(\\d{12})(?:&|$)"
+      }
+    ],
+    "detectionRules": []
+  },
+  "today-kr": {
+    "displayName": "To-Day",
+    "aliases": [
+      "투데이",
+      "투데이택배",
+      "브이투브이",
+      "VtoV"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "color": "#355cff",
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://my.amazing.today/track/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "my.amazing.today"
+        ],
+        "path": "^/track/(\\d{12})/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://my.amazing.today/track"
+  },
+  "winion-logis": {
+    "displayName": "WINION LOGIS",
+    "aliases": [
+      "위니온로지스",
+      "위니온택배",
+      "Winion Logistics"
+    ],
+    "countries": [
+      "KR"
+    ],
+    "color": "#005baf",
+    "selectable": true,
+    "timezone": "Asia/Seoul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://winionlogistics.com/home.html?num={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "winionlogistics.com",
+          "www.winionlogistics.com"
+        ],
+        "pathPattern": "^/(?:home\\.html)?$",
+        "params": [
+          "num"
+        ]
+      },
+      {
+        "domains": [
+          "winionlogis.com",
+          "www.winionlogis.com"
+        ],
+        "pathPattern": "^/Trace\\.do$",
+        "params": [
+          "T"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://winionlogistics.com/home.html"
   }
 } as const;
 
@@ -29088,7 +29390,14 @@ export const CARRIER_IDS = [
   "pcs-logistics-vn",
   "royal-express-mm",
   "rr-express-sg",
-  "tp-logistics-th"
+  "tp-logistics-th",
+  "aci-express-kr",
+  "eparcel-kr",
+  "exmate",
+  "gsi-express",
+  "last-one-mile-coop",
+  "today-kr",
+  "winion-logis"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
