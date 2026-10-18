@@ -396,7 +396,8 @@ once more as of its end.
   or the one it was handed to; and the same share of the day's answered checks.
 - **Failed checks**: checks that ended `error` or `abandoned`.
 - **Stale parcels**: followed parcels without an answered check for 24 h. A parcel is followed
-  when it belongs to an account or had a check in the last 24 h; the others are not checked.
+  when it belongs to an account or had a check in the last 24 h other than a scraper
+  release's, which nobody asked for; the others are not checked.
   A parcel without a scan waits for its carrier and is never stale.
 - **Readers who say it's right**: right answers among the last 7 days' answers, with their count.
 - **Quality**: scans no map read or a wording rule read, new unmapped wording, checks with an

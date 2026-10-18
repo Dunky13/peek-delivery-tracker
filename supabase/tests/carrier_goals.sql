@@ -38,6 +38,8 @@ insert into auth.users (id, email) values ('f4000000-0000-4000-8000-000000000001
 -- set aside, not asked: lookups ParcelsApp answers, filed under a carrier whose answer was set
 -- aside as older than the parcel, without movement or on local clocks, and under one that was
 -- not asked; none part of the gap.
+-- released: a lookup nobody followed for days, its carrier last answering 30 h ago, that only
+-- a scraper release's check, failing, asked since: not followed, so not part of the gap.
 insert into public.packages (id, user_id, one_off, tracking_number, carrier, current_stage, sync_status, created_at, last_synced_at, carrier_data)
 values
   ('f4000000-0000-4000-8000-00000000000a', 'f4000000-0000-4000-8000-000000000001', false, 'GOALS0001', 'la-poste',
@@ -66,7 +68,9 @@ values
   ('f4000000-0000-4000-8000-000000000013', null, true, 'GOALS0010', 'la-poste',
     'in_transit', 'ok', now() - interval '3 days', now() - interval '6 minutes',
     '{"tracking_provider": "ParcelsApp", "routing": {"set_aside": {"la-poste": {"reason": "local_clock",
-      "checked_at": "2026-10-08T11:00:00Z", "count": 1}}}}');
+      "checked_at": "2026-10-08T11:00:00Z", "count": 1}}}}'),
+  ('f4000000-0000-4000-8000-000000000014', null, true, 'GOALS0011', 'la-poste',
+    'in_transit', 'error', now() - interval '3 days', now() - interval '7 minutes', '{}');
 
 insert into public.tracking_sync_attempts (id, package_id, trigger, configured_carrier, source_carrier, outcome, selected_stage, anomaly_codes, started_at, completed_at)
 values
@@ -83,7 +87,11 @@ values
   ('f4000000-0000-4000-8000-0000000000e1', 'f4000000-0000-4000-8000-00000000000e', 'scheduled', 'la-poste', 'la-poste',
     'updated', 'delivered', '{}', now() - interval '2 days', now() - interval '2 days'),
   ('f4000000-0000-4000-8000-0000000000f1', 'f4000000-0000-4000-8000-00000000000f', 'scheduled', 'la-poste', 'la-poste',
-    'updated', 'in_transit', '{}', now() - interval '3 days', now() - interval '3 days');
+    'updated', 'in_transit', '{}', now() - interval '3 days', now() - interval '3 days'),
+  ('f4000000-0000-4000-8000-000000000141', 'f4000000-0000-4000-8000-000000000014', 'scheduled', 'la-poste', 'la-poste',
+    'updated', 'in_transit', '{}', now() - interval '30 hours', now() - interval '30 hours'),
+  ('f4000000-0000-4000-8000-000000000142', 'f4000000-0000-4000-8000-000000000014', 'release', 'la-poste', null,
+    'error', null, '{}', now() - interval '7 minutes', now() - interval '7 minutes');
 insert into public.tracking_sync_steps (attempt_id, sequence, step, status, details)
 values ('f4000000-0000-4000-8000-0000000000b1', 6, 'complete', 'succeeded', '{"support_provider": "ParcelsApp"}');
 
@@ -102,7 +110,8 @@ values
     now() - interval '1 day');
 
 -- Each goal counts the parcels it is about: answered directly, by a provider, gone stale,
--- shown with a copy; the waiting, delivered and dormant parcels count nowhere.
+-- shown with a copy; the waiting, delivered and dormant parcels count nowhere, and the
+-- released one only among the parcels answered directly.
 do $$
 declare
   before goals_before;
@@ -112,8 +121,8 @@ begin
   perform metrics.record_goals((now() at time zone 'UTC')::date);
   select * into strict after from metrics.goals_daily where day = (now() at time zone 'UTC')::date;
 
-  if after.parcels - before.parcels <> 4
-      or after.parcels_own_adapter - before.parcels_own_adapter <> 3
+  if after.parcels - before.parcels <> 5
+      or after.parcels_own_adapter - before.parcels_own_adapter <> 4
       or after.parcels_parcelsapp - before.parcels_parcelsapp <> 1
       or after.parcels_other_provider <> before.parcels_other_provider then
     raise exception 'Parcels were not counted by who answered them last: % then %', before, after;
@@ -132,7 +141,7 @@ begin
   end if;
   -- Late enough in the day that the checks of the last minutes are today's.
   if (now() at time zone 'UTC')::time >= time '00:10' and (
-      after.checks - before.checks <> 4 or after.failed_checks - before.failed_checks <> 1
+      after.checks - before.checks <> 5 or after.failed_checks - before.failed_checks <> 2
       or after.answered_checks - before.answered_checks <> 2 or after.direct_checks - before.direct_checks <> 1
       or after.anomalous_checks - before.anomalous_checks <> 1) then
     raise exception 'Today''s checks were miscounted: % then %', before, after;
@@ -141,7 +150,7 @@ end;
 $$;
 
 -- The gap is the provider's parcel, filed under no carrier, and the parcel stuck on a
--- captcha: the direct, waiting and dormant ones are not part of it.
+-- captcha: the direct, waiting, dormant and released ones are not part of it.
 do $$
 begin
   if (select array_agg(row(could_take, reason, lane)::text order by could_take)
@@ -173,6 +182,15 @@ begin
         row('GOALS0010', 'answer on local clocks', 'answer on local clocks', 'adapters', false)::text] then
     raise exception 'A set-aside answer was not told from a carrier not asked: %', (select array_agg(row(tracking_number, why, reason, lane, gap)::text)
       from private.tracking_gaps where tracking_number in ('GOALS0007', 'GOALS0008', 'GOALS0009', 'GOALS0010'));
+  end if;
+end;
+$$;
+
+-- A release's check is no follow-up: the lookup it asked stays unfollowed.
+do $$
+begin
+  if (select followed from private.tracking_gaps where tracking_number = 'GOALS0011') is distinct from false then
+    raise exception 'A release''s check made a lookup nobody follows look followed';
   end if;
 end;
 $$;
