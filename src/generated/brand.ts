@@ -378,6 +378,9 @@ export const CARRIER_PALETTES: Record<string, Partial<CarrierPalette>> = {
     "brand-light": "#94154b",
     "brand-dark": "#f5a9bb"
   },
+  "montenegro-post": {
+    "accent": "#1d1d1b"
+  },
   "nox": {
     "truck": "#151515",
     "edge": "#000000",
@@ -940,6 +943,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "mng-kargo": "dhl",
   "mondial-relay": "mondial-relay",
   "mongol-infinity-post": "mongol-infinity-post",
+  "montenegro-post": "montenegro-post",
   "morning-global": "morning-global",
   "mrl-global": "mrl-global",
   "mrw": "mrw",
@@ -1070,6 +1074,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "roadrunner": "roadrunner",
   "royal-express-mm": "royal-express-mm",
   "royal-mail": "royal-mail",
+  "rpx-hk": "rpx-hk",
   "rpx-indonesia": "rpx-indonesia",
   "rr-express-sg": "rr-express-sg",
   "russian-post": "russian-post",
@@ -1212,6 +1217,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "viettel-post": "viettel-post",
   "vimenpaq": "vimenpaq",
   "vinted-go": "vinted-go",
+  "vitran-express": "vitran-express",
   "vnpost": "vnpost",
   "vozovoz": "vozovoz",
   "vrl-logistics": "vrl-logistics",
@@ -14014,6 +14020,49 @@ export const CARRIER_TRUCK: TruckGeometry = {
       {
         "type": "polygon",
         "d": "M16.01 7.35L15.55 7.5L15.23 7.87L15.11 8.39L15.23 8.91L15.55 9.29L16.01 9.43L16.46 9.29L16.77 8.91L16.9 8.39L16.77 7.87L16.46 7.5Z",
+        "fill": "accent"
+      }
+    ],
+    "rpx-hk": [
+      {
+        "type": "polygon",
+        "d": "M9.9 3.95L16.2 10.3L5.5 14.85Z",
+        "fill": "#006b6e"
+      },
+      {
+        "type": "line",
+        "d": "M3.85 12.05L4.5 8.45L5.25 7.7L12.55 7.7L11.8 11.3L8.5 11.3L9.1 7.8",
+        "stroke": "accent",
+        "strokeWidth": 1.5
+      },
+      {
+        "type": "polygon",
+        "d": "M11.93 6.95L13.87 6.95L18.02 12.05L16.08 12.05Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M16.57 6.95L18.83 6.95L13.08 12.05L10.82 12.05Z",
+        "fill": "accent"
+      }
+    ],
+    "montenegro-post": [
+      {
+        "type": "line",
+        "d": "M17.85 9.52L17.85 11.43L17.75 12.05L17.47 12.61L17.03 13.05L16.47 13.33L15.85 13.43L5.53 13.33L4.97 13.05L4.53 12.61L4.25 12.05L4.15 11.43L4.25 6.55L4.53 5.99L4.97 5.55L5.53 5.27L6.15 5.17L16.5 5.23L17.08 5.39L17.53 5.65L17.79 5.96L17.84 6.31L17.68 6.64L17.31 6.93L16.79 7.14L10.58 8.91L7.49 7.64",
+        "stroke": "accent",
+        "strokeWidth": 1.5
+      }
+    ],
+    "vitran-express": [
+      {
+        "type": "polygon",
+        "d": "M7.4 7.4L10.15 7.4L10.8 11.38L13.05 7.4L15.8 7.4L11.3 14.4L9.1 14.4Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M4 6.25L5.06 5.84L6.13 5.47L7.19 5.15L8.26 4.86L9.32 4.63L10.39 4.43L11.45 4.28L12.51 4.18L13.58 4.12L14.64 4.12L15.71 4.19L16.77 4.31L17.84 4.5L18.9 4.75L18.9 6.75L17.84 6.39L16.77 6.09L15.71 5.86L14.64 5.69L13.58 5.58L12.51 5.54L11.45 5.54L10.39 5.58L9.32 5.68L8.26 5.82L7.19 6L6.13 6.24L5.06 6.52L4 6.85Z",
         "fill": "accent"
       }
     ]

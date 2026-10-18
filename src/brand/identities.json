@@ -1453,6 +1453,12 @@
   "mongol-infinity-post": {
     "decal": "mongol-infinity-post"
   },
+  "montenegro-post": {
+    "decal": "montenegro-post",
+    "palette": {
+      "accent": "#1d1d1b"
+    }
+  },
   "morning-global": {
     "decal": "morning-global"
   },
@@ -1890,6 +1896,9 @@
     "palette": {
       "accent": "#fdda24"
     }
+  },
+  "rpx-hk": {
+    "decal": "rpx-hk"
   },
   "rpx-indonesia": {
     "decal": "rpx-indonesia"
@@ -2369,6 +2378,9 @@
   },
   "vinted-go": {
     "decal": "vinted-go"
+  },
+  "vitran-express": {
+    "decal": "vitran-express"
   },
   "vnpost": {
     "decal": "vnpost",

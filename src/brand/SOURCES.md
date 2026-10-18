@@ -395,6 +395,7 @@ and [`truck.json`](truck.json).
 | `micro-express` | [microexpress.com.au](https://microexpress.com.au/static/logo-banner.png) — header logo PNG, 'Micro' #e73100 (approximate) |
 | `midland-transport` | [midlandtransport.com](https://www.midlandtransport.com/) — theme-color #009057 and header logo SVG fill #009057 |
 | `mongol-infinity-post` | [mypost.mn](https://mypost.mn/images/logo.jpg) — logo blue #404b9b, the same as the site CSS .primaryBackgroundColor |
+| `montenegro-post` | [postacg.me](https://www.postacg.me/wp-content/uploads/main_logo_horizontal_color.svg) — logo SVG fill #FAB900 (wordmark #1D1D1B); the site icon samples #f9b900 |
 | `morning-global` | [morninglobal.com](https://www.morninglobal.com/trace-track/) — CSS brand variables --mg-tr-primary and --mg-blue #050059; the logo PNG is the same deep indigo (#100964, approximate) |
 | `mrl-global` | [mrlglobal.com](https://www.mrlglobal.com/wp-content/uploads/2024/02/d8b56e6e4b37064446910e6f20e34013.svg) — logo SVG fill #0071A6 (letters) with an #F47E20 orange wedge |
 | `mrw` | [mrw.es](https://www.mrw.es/) |
@@ -518,6 +519,7 @@ and [`truck.json`](truck.json).
 | `roadrunner` | [rrts.com](https://www.rrts.com/SiteAssets/images/logos/RRFreightLogo.gif) — logo orange about #e5481c (approximate) |
 | `royal-express-mm` | [royalx.net](https://royalx.net/assets/css/style.css) — site CSS red #ed1c24 (also the tracking button); the logo red samples about #e91b17 (approximate); yellow #ffed00 from the same CSS |
 | `royal-mail` | [royalmail.com](https://www.royalmail.com/) |
+| `rpx-hk` | [tracking.rpxonline.com](https://tracking.rpxonline.com/css/rpx.pSIvfYBQ.css) — RPX theme of its tracker, primary #eb1d4d, also the red of the headings on rpxonline.com; the site icon's triangle samples #ed174b and its letters #006b6e (approximate) |
 | `rpx-indonesia` | [rpx.co.id](https://rpx.co.id/static/css/main.css) — site CSS --primary and --gold #c9a73d; logo PNG black #231f20, gold #cbb778 (approximate) |
 | `rr-express-sg` | [rrexpress.com.sg](https://rrexpress.com.sg/img/logo/horizontal-on-white-removebg-preview.png) — logo PNG navy #002f75 and red #df1918 |
 | `russian-post` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Russian_Post_wordmark.svg) — wordmark fill #1928DC |
@@ -653,6 +655,7 @@ and [`truck.json`](truck.json).
 | `viettel-post` | [viettelpost.com.vn](https://viettelpost.com.vn/) — site CSS #ee0033 (40 uses); white logo on a red header |
 | `vimenpaq` | [vimenpaq.do](https://www.vimenpaq.do/media/14229/nuevo-logo-vimenpaq-horizontal.png) — logo PNG flat blue #013ca6, red #f42434 (approximate) |
 | `vinted-go` | [vintedgo.com](https://vintedgo.com/) (header background, CSS --primary-dark 0,70,84; the favicon background #004755) |
+| `vitran-express` | [vitran.com](https://web.archive.org/web/20250409152253cs_/https://www.vitran.com/Content/style.css) — archived site CSS primary #004bac; the header logo samples #0053a2 (approximate) |
 | `vnpost` | [vnpost.vn](https://vnpost.vn/) — site CSS #004b8e (27 uses); logo mark yellow #f9a81a (approximate, logo PNG) |
 | `vozovoz` | [vozovoz.ru](https://vozovoz.ru/) — site CSS --primary #ec1b22; favicon red #e21e23 |
 | `vrl-logistics` | [vrlgroup.in](https://www.vrlgroup.in/css/site.css) — site CSS brand yellow #ffcb00 (41 uses) with #111111 ink; logo SVG fill #2b2a29 |
@@ -1369,3 +1372,6 @@ and [`truck.json`](truck.json).
 | `mrl-global` | White italic MRL over an orange wedge on blue | [mrlglobal.com](https://www.mrlglobal.com/wp-content/uploads/2024/02/d8b56e6e4b37064446910e6f20e34013.svg) — the MRL letters and orange GLOBAL wedge, as painted on the blue trailers in the home page photo (https://www.mrlglobal.com/wp-content/uploads/2024/08/IMG_6803-e1724038978146.jpg) |
 | `fliway` | White heavy block F on navy | [fliway.com](https://www.fliway.com/img/header-logo-big.png) — the heavy block F of the bevelled FLIWAY wordmark |
 | `morning-global` | White M of a large and a small figure on indigo | [morninglobal.com](https://www.morninglobal.com/wp-content/uploads/2026/05/imageye___-_imgi_1_logo-300x166-1-e1777955054238.png) — the M of MORNING, a large figure whose arm slopes down to a small figure |
+| `rpx-hk` | White angular rpx over a teal triangle on red | [rpxonline.com](https://www.rpxonline.com/wp-content/uploads/2019/12/cropped-rpx-pop-up-logo-192x192.png) — site icon: a slim red triangle behind teal r-p-x letters that turn white where they cross it |
+| `montenegro-post` | Black envelope outline with its curled flap on yellow | [postacg.me](https://www.postacg.me/wp-content/uploads/main_logo_horizontal_color.svg) — the emblem: one rounded-rectangle stroke that curls at the top right into the envelope flap |
+| `vitran-express` | White italic V under a white swoosh on blue | [vitran.com](https://web.archive.org/web/20250409152253im_/https://www.vitran.com/images/vitran-logo.png) — archived header logo: heavy italic blue Vitran under a red swoosh; the footer's reversed logo (images/vitran-white.png) is all white |

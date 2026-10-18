@@ -124,6 +124,7 @@ describe('carrier mark', () => {
     'rr-express-sg',
     'eparcel-kr', 'aci-express-kr', 'gsi-express', 'today-kr', 'exmate', 'winion-logis', 'last-one-mile-coop',
     'dpex', 'mrl-global', 'fliway', 'morning-global',
+    'rpx-hk', 'montenegro-post', 'vitran-express',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);
