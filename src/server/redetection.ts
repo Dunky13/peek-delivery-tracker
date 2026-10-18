@@ -31,10 +31,11 @@ export const RELEASE_REASK_MS = 12 * 60 * 60 * 1_000;
  * have taught it the number, and its last answer may have been a passing
  * failure such as a rate limit. A carrier the parcel already asked waits until
  * the parcel has gone RELEASE_REASK_MS without a check, unless the answer it
- * gave, set aside as older than the parcel, would now be taken. Null otherwise.
- * Only parcels filed under no carrier, or showing a universal provider's
- * history, are looked at. Nothing is sent: the check queued for the parcel asks
- * the carrier. Carriers in `refused` are passed over (rerouteAskable).
+ * gave, set aside as older than the parcel or on local clocks, would now be
+ * taken. Null otherwise. Only parcels filed under no carrier, or showing a
+ * universal provider's history, are looked at. Nothing is sent: the check
+ * queued for the parcel asks the carrier. Carriers in `refused` are passed
+ * over (rerouteAskable).
  */
 export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now = Date.now(),
   refused: ReadonlySet<string> = new Set()): string | null {
@@ -44,9 +45,9 @@ export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now =
 /**
  * The carrier a release's check would ask, and how likely that check is to change the
  * parcel's answer, the most likely first: 0, the carrier's own answer is now dated, it
- * refused the number under an older release, or the parcel's newest scan has come back to
- * the answer it gave that was set aside as older; 1, a carrier the parcel never asked; 2,
- * one a parcel filed under no carrier asks again, or the first its recognition would ask.
+ * refused the number under an older release, or the answer it gave that was set aside would
+ * now be taken; 1, a carrier the parcel never asked; 2, one a parcel filed under no carrier
+ * asks again, or the first its recognition would ask.
  */
 export interface RerouteLead { carrier: string; rank: 0 | 1 | 2 }
 
@@ -63,8 +64,13 @@ function rerouteLead(parcel: JsonObject, rules: string, now: number, refused: Re
   // this release's adapter may take it (rerouteAskable checks).
   const refusedBefore = (carrier: string) => routing.failures[carrier]?.user_error === 'carrier:invalid_input';
   // An answer set aside as older than the parcel that the parcel's newest scan has since
-  // come back to, as a provider's corrected clock brings it: the carrier's check would take it.
-  const fits = (carrier: string) => Date.parse(routing.set_aside?.[carrier]?.newest ?? '') >= Date.parse(routing.last_event_at ?? '');
+  // come back to, as a provider's corrected clock brings it, or one on local clocks that
+  // the catalog now dates: the carrier's check would take it. One without movement wouldn't.
+  const fits = (carrier: string) => {
+    const aside = routing.set_aside?.[carrier];
+    return aside?.reason === 'local_clock' ? !localClockCarrier(carrier)
+      : Date.parse(aside?.newest ?? '') >= Date.parse(routing.last_event_at ?? '');
+  };
   const asked = (carrier: string) => carrier === routing.confirmed_carrier || Boolean(routing.set_aside?.[carrier])
     || (Boolean(routing.failures[carrier]) && !refusedBefore(carrier)) || Boolean(routing.candidate_probes?.[carrier]);
   const checkedRecently = now - Date.parse(String(parcel.last_synced_at ?? '')) < RELEASE_REASK_MS;

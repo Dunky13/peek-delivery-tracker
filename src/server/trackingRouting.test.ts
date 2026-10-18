@@ -459,6 +459,22 @@ describe('persistent tracking routing', () => {
       expect(taken.result.routing).not.toHaveProperty('set_aside');
     });
 
+    it('records an answer without movement it sets aside, without a scan to hold against the parcel\'s', async () => {
+      const { router, direct } = setup();
+      direct.mockResolvedValue({ ...directValue(), result: thinHistory() });
+      const first = await router.fetch(named(), false);
+      expect(first.correction).toBeUndefined();
+      expect(first.result.routing).toMatchObject({ set_aside: { ups: { reason: 'no_movement', checked_at: time.toISOString(), count: 1 } } });
+      const setAside = (first.result.routing as JsonObject).set_aside as JsonObject;
+      expect(setAside.ups).not.toHaveProperty('newest');
+      const again = await router.fetch(named({ set_aside: setAside }), false);
+      expect(again.result.routing).toMatchObject({ set_aside: { ups: { reason: 'no_movement', count: 2 } } });
+      // An answer that moved but is older starts over, for that reason.
+      direct.mockResolvedValue(older());
+      const other = await router.fetch(named({ set_aside: setAside }), false);
+      expect(other.result.routing).toMatchObject({ set_aside: { ups: { reason: 'older', newest: '2026-09-10T03:00:00.000Z', count: 1 } } });
+    });
+
     it('holds the carrier against the copies in the answer of the provider that names it', async () => {
       const withoutCopies = vi.fn((watermark: number) => watermark > Date.parse('2026-09-10T11:00:00Z') ? Date.parse('2026-09-10T03:00:00Z') : watermark);
       const { router, direct, universal } = setup(time, { withoutCopies });
@@ -1489,6 +1505,8 @@ describe('persistent tracking routing', () => {
           routing: { configured_carrier: '17feia', discovered_carrier: '17feia' },
           direct_local_history: { carrier: '17feia', number, events: [expect.objectContaining({ local_time: '2026-09-10T09:00:00' })] } } });
       expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+      // Taken, its answer is not left set aside.
+      expect(result.result.routing).not.toHaveProperty('set_aside');
       expect(result.result).not.toHaveProperty('auto_changed_from');
       // Filed under the carrier, its next answer is the filed carrier's local fallback.
       const next = setup(new Date('2026-09-10T19:00:00Z'));
@@ -1508,6 +1526,7 @@ describe('persistent tracking routing', () => {
             routing: { configured_carrier: '17feia', confirmed_carrier: '17feia', confirmed_number: number },
             direct_local_history: { carrier: '17feia', number } } });
         expect(result.result).not.toHaveProperty('tracking_provider');
+        expect(result.result.routing).not.toHaveProperty('set_aside');
       };
       const failing = setup();
       failing.direct.mockResolvedValue(local());
@@ -1566,7 +1585,9 @@ describe('persistent tracking routing', () => {
       const result = await router.fetch(filed(routing, { tracking_number: trackingNumber }), false);
       expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier }), carrier);
       expect(result.correction).toBeUndefined();
-      expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { configured_carrier: 'unknown' } });
+      expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { configured_carrier: 'unknown',
+        set_aside: { [carrier]: { reason: 'local_clock', checked_at: time.toISOString(), count: 1 } } } });
+      expect((result.result.routing as JsonObject).set_aside).not.toHaveProperty([carrier, 'newest']);
     });
 
     it.each([
@@ -1588,6 +1609,7 @@ describe('persistent tracking routing', () => {
           routing: { configured_carrier: carrier, discovered_carrier: carrier }, direct_local_history: { carrier } } });
       expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
       expect(result.result.routing).not.toHaveProperty(['failures', carrier]);
+      expect(result.result.routing).not.toHaveProperty('set_aside');
     });
 
     it('keeps the local history of the carrier it takes, not of one asked before it', async () => {

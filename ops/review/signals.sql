@@ -72,8 +72,9 @@ group by i.kind, i.subject, i.active, i.last_notified_at
 order by i.active desc, i.last_notified_at desc;
 
 \echo '== Unfinished parcels a provider tracks, by the carrier that could take them (new: added in the window)'
-\echo '   carriers: no carrier known; adapters: the adapter refuses, fails or half-answers the number, or gave no direct'
-\echo '   answer in 30 days; captcha: a verification or captcha page stops the adapter; dormant: not checked for 24 h;'
+\echo '   carriers: no carrier known; adapters: the adapter refuses, fails or half-answers the number, answered it without'
+\echo '   movement or on local clocks only, or gave no direct answer in 30 days; captcha: a verification or captcha page'
+\echo '   stops the adapter; dormant: not checked for 24 h;'
 \echo '   none: the carrier answers and the provider history is kept;'
 \echo '   delivery-tracker: its adapter answers other parcels and was not asked for these (carrier not asked),'
 \echo '   or its answer was set aside as older than the parcel''s newest scan (answer older than parcel)'

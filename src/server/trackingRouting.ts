@@ -44,7 +44,9 @@ export interface RoutedResult {
   earlierFollowUp?: boolean;
 }
 interface Failure { count: number; retry_at: string; kind: RoutingFailureKind; user_error?: string }
-export interface SetAside { checked_at: string; newest: string; watermark: string; count: number }
+/** Older than the parcel's newest scan; no movement; or dated only by a local clock. Absent: older. */
+export type SetAsideReason = 'older' | 'no_movement' | 'local_clock';
+export interface SetAside { reason?: SetAsideReason; checked_at: string; newest?: string; watermark?: string; count: number }
 export interface RoutingState extends JsonObject {
   version: 1;
   configured_carrier: string;
@@ -71,9 +73,10 @@ export interface RoutingState extends JsonObject {
   /** The filed carrier's local-clock answer that a provider's history last matched, adding no scan or stage. */
   provider_copy?: { carrier: string; number: string; scans: number; stage: string | null; provider: string; checked_at: string };
   /**
-   * Carriers asked as candidates whose dated answer was set aside as older than the parcel's
-   * newest scan: when, the answer's newest scan, the watermark it lost to, and how many checks
-   * in a row set that same answer aside. Asking the carrier again replaces it.
+   * Carriers asked as candidates whose answer was set aside: why, when, how many checks in a
+   * row set that same answer aside, and for one older than the parcel's newest scan, the
+   * answer's newest scan and the watermark it lost to. Asking the carrier again replaces it,
+   * and an answer on local clocks the check then takes leaves nothing.
    */
   set_aside?: Record<string, SetAside>;
   probe_cursor: number;
@@ -321,6 +324,12 @@ export class TrackingRouter {
     // Carriers asked in this check whose own answer for the number moved but had only
     // local clocks: the answer, the local history it brought, and how to confirm the carrier.
     const localAnswers = new Map<string, { value: RoutedResult; history: JsonObject | undefined; confirm: () => void }>();
+    // Asked again, or its answer on local clocks taken, a carrier has nothing set aside.
+    const clearSetAside = (carrier: string) => {
+      if (!state.set_aside?.[carrier]) return;
+      delete state.set_aside[carrier];
+      if (!Object.keys(state.set_aside).length) delete state.set_aside;
+    };
     const universalNumber = metadata.original_carrier && metadata.active_tracking_carrier
       && typeof metadata.active_tracking_number === 'string' ? metadata.active_tracking_number : number;
     // The owner's answer to a provider's postcode request, for this number only.
@@ -451,7 +460,10 @@ export class TrackingRouter {
         // A provider naming several legs may settle on none (17FEIA, and a DPD the catalog
         // cannot place): the carrier that answered is the one routing settled on, which the
         // database's guard requires of a parcel a provider's history files.
-        if (answered) state.discovered_carrier = answered;
+        if (answered) {
+          state.discovered_carrier = answered;
+          clearSetAside(answered);
+        }
         value.correction = { carrier: named, trackingUrl: null, postcode: null };
       }
       return { ...value, result: { ...value.result, routing: state,
@@ -493,10 +505,15 @@ export class TrackingRouter {
       if (millis(state.failures[carrier]?.retry_at) > now().getTime()) return null;
       attemptedDirect.add(carrier);
       const setAside = state.set_aside?.[carrier];
-      if (setAside) {
-        delete state.set_aside![carrier];
-        if (!Object.keys(state.set_aside!).length) delete state.set_aside;
-      }
+      clearSetAside(carrier);
+      // Kept, so the review tells it from a carrier never asked, and a release's
+      // check knows the same answer would be set aside again (redetection.ts).
+      const setAsideAs = (reason: SetAsideReason, newest?: string) => {
+        const again = setAside && (setAside.reason ?? 'older') === reason && setAside.newest === newest;
+        state.set_aside = { ...state.set_aside, [carrier]: { reason, checked_at: now().toISOString(),
+          ...(newest ? { newest, watermark: iso(millis(state.last_event_at)) } : {}),
+          count: again ? Math.min(20, setAside.count + 1) : 1 } };
+      };
       try {
         const lookupParcel = candidate ? { ...parcel, carrier,
           tracking_url: ownInputs ? state.confirmed_tracking_url : null,
@@ -560,15 +577,16 @@ export class TrackingRouter {
           if (candidate && moved && value.sourceCarrierId === carrier && !earlierLeg(carrier, value)) {
             localAnswers.set(carrier, { value, history: capturedHistory, confirm });
           }
+          // Set aside unless the check takes it in the end.
+          if (candidate) setAsideAs(moved ? 'local_clock' : 'no_movement');
           return null;
         }
-        if (candidate && !moved) return null;
+        if (candidate && !moved) {
+          setAsideAs('no_movement');
+          return null;
+        }
         if (candidate && olderThanParcel(value, provider)) {
-          // Kept, so the review tells it from a carrier never asked, and a release's
-          // check knows the same answer would be set aside again (redetection.ts).
-          const newest = iso(latest(value));
-          state.set_aside = { ...state.set_aside, [carrier]: { checked_at: now().toISOString(), newest,
-            watermark: iso(millis(state.last_event_at)), count: setAside?.newest === newest ? Math.min(20, setAside.count + 1) : 1 } };
+          setAsideAs('older', iso(latest(value)));
           return null;
         }
         if (terminalStage && ['delivered', 'returned'].includes(terminalStage)
@@ -639,6 +657,7 @@ export class TrackingRouter {
       const answer = carrier ? localAnswers.get(carrier) : undefined;
       if (!carrier || !answer) return undefined;
       answer.confirm();
+      clearSetAside(carrier);
       localHistory = answer.history;
       state.direct_retry_at = undefined;
       return keepLocal({ value: answer.value, carrier });

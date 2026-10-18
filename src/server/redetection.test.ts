@@ -189,5 +189,27 @@ describe('a carrier whose answer was set aside as older than the parcel', () => 
     expect(filed({ last_event_at: '2026-09-10T11:00:00.000Z',
       set_aside: { ups: { checked_at: '2026-10-08T11:00:00.000Z', newest: '2026-09-10T03:00:00.000Z', watermark: '2026-09-10T11:00:00.000Z', count: 1 } } }))
       .toBeNull();
+    // So does one set aside without movement.
+    expect(filed({ set_aside: { ups: { reason: 'no_movement', checked_at: '2026-10-08T11:00:00.000Z', count: 1 } } })).toBeNull();
+  });
+});
+
+describe('a carrier whose answer was set aside without movement or on local clocks', () => {
+  const now = Date.parse('2026-10-08T12:00:00Z');
+  const item = (carrier: string, reason: string, values: JsonObject = {}) => parcel({ carrier: 'intl-post', tracking_number: 'EY123456785AU',
+    last_synced_at: '2026-10-08T11:00:00Z', ...values }, { routing: { configured_carrier: 'intl-post', last_event_at: '2026-10-08T05:46:00.000Z',
+    set_aside: { [carrier]: { reason, checked_at: '2026-10-08T11:00:00.000Z', count: 2 } } } });
+  const lead = (parcel: JsonObject) => rerouteAskable(parcel, 'newer', now, async () => false);
+
+  it('waits half a day like any carrier asked, whatever the watermark', async () => {
+    expect(await lead(item('australia-post', 'no_movement'))).toBeNull();
+    expect(await lead(item('australia-post', 'no_movement', { last_synced_at: '2026-10-07T23:00:00Z' }))).toEqual({ carrier: 'australia-post', rank: 2 });
+  });
+
+  it('goes first, without waiting, once the catalog dates the carrier\'s scans', async () => {
+    // Australia Post's clocks aren't local: an answer set aside on them would now be dated.
+    expect(await lead(item('australia-post', 'local_clock'))).toEqual({ carrier: 'australia-post', rank: 0 });
+    // YunExpress's still are.
+    expect(await lead(item('yunexpress', 'local_clock'))).not.toEqual({ carrier: 'yunexpress', rank: 0 });
   });
 });
