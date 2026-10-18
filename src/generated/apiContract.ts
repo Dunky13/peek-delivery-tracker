@@ -2726,7 +2726,7 @@ export const CARRIER_CAPABILITIES = {
       "mode": "automatic",
       "adapter": "ecoscooting",
       "recognitionRank": 655,
-      "recognitionPattern": "^(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}$"
+      "recognitionPattern": "^(?:(?:0[1-9]|[1-4]\\d|5[0-2])\\d{3}0000\\d{9}|[CE]2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{8})$"
     },
     "linkRules": [
       {
@@ -2757,6 +2757,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^(?:ESP\\d{5}1234\\d{11}|PRT\\d{7}1234\\d{9})$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[CE]2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{8}$",
+        "confidence": "low"
       }
     ],
     "trackingUrlTemplate": "https://ecoscooting.com/tracking/{trackingNumber}",
@@ -21086,7 +21090,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Prague",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "messenger-cz"
     },
     "trackingUrlTemplate": "https://tracking.messenger.cz/{trackingNumber}",
     "linkRules": [
@@ -23318,7 +23322,13 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^6\\d{12}$",
+        "confidence": "low",
+        "checksum": "gs1"
+      }
+    ],
     "trackingSearchUrl": "https://fds2tracking.emea.fedex.com/"
   },
   "gls-at": {
