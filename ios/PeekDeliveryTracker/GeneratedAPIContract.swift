@@ -765,6 +765,18 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let ocsAna = CarrierID(rawValue: "ocs-ana")
     static let pushpakCourier = CarrierID(rawValue: "pushpak-courier")
     static let unitedWorldwideCouriers = CarrierID(rawValue: "united-worldwide-couriers")
+    static let airpakExpress = CarrierID(rawValue: "airpak-express")
+    static let bestExpressMy = CarrierID(rawValue: "best-express-my")
+    static let houngAhLoun = CarrierID(rawValue: "houng-ah-loun")
+    static let indahLogistik = CarrierID(rawValue: "indah-logistik")
+    static let makatiExpress = CarrierID(rawValue: "makati-express")
+    static let netpostVn = CarrierID(rawValue: "netpost-vn")
+    static let panduLogistics = CarrierID(rawValue: "pandu-logistics")
+    static let pcpExpress = CarrierID(rawValue: "pcp-express")
+    static let pcsLogisticsVn = CarrierID(rawValue: "pcs-logistics-vn")
+    static let royalExpressMm = CarrierID(rawValue: "royal-express-mm")
+    static let rrExpressSg = CarrierID(rawValue: "rr-express-sg")
+    static let tpLogisticsTh = CarrierID(rawValue: "tp-logistics-th")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -1494,6 +1506,18 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .ocsAna,
         .pushpakCourier,
         .unitedWorldwideCouriers,
+        .airpakExpress,
+        .bestExpressMy,
+        .houngAhLoun,
+        .indahLogistik,
+        .makatiExpress,
+        .netpostVn,
+        .panduLogistics,
+        .pcpExpress,
+        .pcsLogisticsVn,
+        .royalExpressMm,
+        .rrExpressSg,
+        .tpLogisticsTh,
     ]
 
     init(from decoder: Decoder) throws {
