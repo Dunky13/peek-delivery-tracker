@@ -69,6 +69,7 @@ and [`truck.json`](truck.json).
 | `best-transport` | [besttransport.se](https://www.besttransport.se/) — CSS --primary-color #ef7d00; logo PNG #ef7d00 |
 | `better-trucks` | [bettertrucks.com](https://www.bettertrucks.com/hubfs/Better-Trucks%20(1)-1.png) — header logo PNG blue #218cee (approximate) |
 | `bex-express` | [bexexpress.rs](https://bexexpress.rs/) — most used site colour #468e42, matching the leaf in meta-logo.png |
+| `bjs-home-delivery` | [track.bjshomedelivery.com](https://track.bjshomedelivery.com/assets/img/BJSTypeLogo.svg) — BJSTypeLogo.svg fill #FEBA30, the same as the site favicon; the tracker CSS uses #fdba30 |
 | `blue-dart` | [bluedart.com](https://www.bluedart.com/) |
 | `blue-express` | [blue.cl](https://www.blue.cl/) — favicon and inline logo fill #0032A0, dot #41b6e6 |
 | `blueex` | [blue-ex.com](https://www.blue-ex.com/) — theme-color and site CSS #1946ba (logo SVG fill #0047ba) |
@@ -359,6 +360,7 @@ and [`truck.json`](truck.json).
 | `nippon-express` | [nipponexpress.com](https://www.nipponexpress.com/themes/custom/nx_olivero/assets/img/logo_nittsu_we_find_the_way.svg) — NX logo green #8ec400 (Commons NX_logo.svg #8ec300) with navy #1a005d |
 | `noest` | [noest-dz.com](https://www.noest-dz.com/assets/img/logo_colors_new.png) — logo disc and NOEST navy #003462; road wedges red #ab121c |
 | `nord-wheel` | [nordw.ru](https://nordw.ru/images/build/nordw-logo-new.svg) — header logo SVG fill #0c55ff (red #fe0002 for the slash and right arc) |
+| `norsk-global` | [norsk.global](https://norsk.global/img/norsk-global-logo.webp) — NORSK wordmark about #114634 (approximate, sampled from the WebP logo); the site CSS uses #114433 (43 uses) |
 | `northline` | [northline.com.au](https://www.northline.com.au/app/themes/northline/images/N-icon.png) — N icon black #000000, red #e51937 (approximate); theme-color #000000; logo SVG accent #e3173e |
 | `nox` | [nox.eu](https://www.nox.eu/_nuxt/logo.DMSz3kyv.svg) — logo SVG fill #FADB00 beside #111113 lettering |
 | `nz-couriers` | [nzcouriers.co.nz](https://assets-nzcouriers.ep-prod.freightways.co.nz/uploads/2022/12/nzc_logo.svg) — logo SVG fill #ffc900, outline #1a1818 |
@@ -369,6 +371,7 @@ and [`truck.json`](truck.json).
 | `old-dominion` | [odfl.com](https://www.odfl.com/) |
 | `olva-courier` | [olvacourier.com](https://www.olvacourier.com/) — CSS #FCB414 commented as Olva yellow; header bar is that yellow |
 | `omniva` | [logo SVG](https://www.omniva.ee/wp-content/themes/omniva/assets/dist/assets/img/logo/logo-horizontal.svg) |
+| `one-world-express` | [oneworldexpress.com](https://www.oneworldexpress.com/) — home page CSS #161c5e (12 uses); the logo SVG is white and sits on this navy |
 | `ontrac` | [ontrac.com](https://www.ontrac.com/) |
 | `opt-nc` | [opt.nc](https://www.opt.nc/) — inline logo SVG fills #28347C (kagu and OPT) and #FDC40A (square) |
 | `orlen-paczka` | [logo SVG](https://www.orlenpaczka.pl/wp-content/themes/orlenpaczka/img/logo.svg) — the square's fill `#DB3830` |
@@ -378,6 +381,7 @@ and [`truck.json`](truck.json).
 | `pack-man` | [pack-man.gr](https://pack-man.gr/assets/img/favicon.svg) — favicon SVG fills #06377b and #fbd733; theme-color #06377b |
 | `packeta` | [packeta.com](https://www.packeta.com/) |
 | `packli-punkt` | [paeckli-punkt.ch](https://www.paeckli-punkt.ch/wp-content/uploads/2024/09/paeckli-punkt-logo-pink.svg) — logo SVG fills #EA5A8E (disc) and #F9E937 (letters) |
+| `packs` | [packs.nl](https://www.packs.nl/) — site CSS #e11f1d (28 uses: menu bar, buttons, links) |
 | `pakistan-post` | [ep.gov.pk](https://ep.gov.pk/images/logo_post.png) — logo red #ed1b24 (approximate; the JPEG logo reads #ec1b24); site CSS uses #be0101 |
 | `palletways` | [palletways.com](https://www.palletways.com/wp-content/uploads/2020/02/New-logo-palletways-corporate.png) — logo green #74bf43 (approximate) |
 | `pannon-xp` | [mypxp.pannonxp.hu](https://mypxp.pannonxp.hu/style/pxpfutar-4.1.1.css) — CSS --pxp-color #f68121; logo orange #f58120 (approximate) |
@@ -535,6 +539,7 @@ and [`truck.json`](truck.json).
 | `trackon` | [trackon.in](https://www.trackon.in/assets/images/trackon_logo.png) — logo PNG maroon #981e21 and orange #f27224 (approximate) |
 | `tracx-logis` | [tracxlogis.com](https://www.tracxlogis.com/image/home/logo_tracxlogis.svg) — logo SVG X fill #0084ca; app icon #2393d1 (approximate) |
 | `trans-o-flex` | [trans-o-flex.com](https://www.trans-o-flex.com/) (approximate) |
+| `transmission` | [trans-mission.nl](https://www.trans-mission.nl/templates/transmission/img/logo.svg) — logo SVG fills #e32314 (> and Mission) and #1f3581 (< and Trans); the trucks in the site banners are this red |
 | `transport-rdl` | [transportrdl.com](https://transportrdl.com/wp-content/uploads/elementor/css/post-502.css?ver=1792084157) — site CSS --e-global-color-primary #0A2240; site icon navy #0a2241 (approximate) |
 | `trendyol-express` | [trendyolexpress.com](https://www.trendyolexpress.com/) — header logo orange #f16623 (approximate, embedded PNG) |
 | `tsjy` | [tsjy56.com](https://www.tsjy56.com/public/imgs/logo_01.png) — logo pixels #4042e2 ('Tonse Supply Chain', blue half of the monogram), orange #ff6600 (approximate) |
@@ -570,6 +575,7 @@ and [`truck.json`](truck.json).
 | `x-express-ba` | [x-express.ba](https://www.x-express.ba/templates/cassiopeia/images/logo-x-express-brza-posta.webp) — logo flat orange #f15921 (approximate) |
 | `xde-logistics` | [xde.com.ph](https://www.xde.com.ph/) — theme-color and styles.css --navy #071a2b |
 | `xdp` | [logo SVG](https://xdp.co.uk/wp-content/uploads/2023/02/Group-6295.svg) — wordmark fill `#53b6ed`, chevrons `#f4b84f` |
+| `xlcourier` | [xlcourier.com](https://www.xlcourier.com/) — CSS --theme-color #044ad6 (header and buttons); the logo PNG (white XL, red #c70000 C) is drawn for that blue header |
 | `xpo-ltl` | [xpo.com](https://www.xpo.com/) |
 | `yalidine` | [yalidine.com](https://www.yalidine.com/assets/img/yalidine-logo.png) — logo PNG red #d62e2f (approximate) |
 | `yamato` | [kuronekoyamato.co.jp](https://www.kuronekoyamato.co.jp/) |
@@ -1177,3 +1183,9 @@ and [`truck.json`](truck.json).
 | `maruti-air` | White globe with red peaks beside two indigo slashes on red | [marutiair.com](https://web.archive.org/web/20250604180557/https://marutiair.com/assets/images/footer-logo.png) — archived footer-logo.png (globe emblem and slashes) |
 | `icc-worldwide` | White striped ICC slab letters on dark red | [iccworld.com](https://www.iccworld.com/img/logo.jpg) — logo.jpg |
 | `noest` | White roundel with a navy road between red wedges on navy | [noest-dz.com](https://www.noest-dz.com/assets/img/logo_colors_new.png) — logo_colors_new.png emblem |
+| `bjs-home-delivery` | Dark taupe BJS on yellow | [bjshomedelivery.com](https://www.bjshomedelivery.com/en-gb) — header logo, yellow BJS over taupe TWO-MAN HOME DELIVERY, as on its vans |
+| `norsk-global` | White-rimmed red badge with a white star on dark green | [norsk.global](https://norsk.global/img/TabBarLogo.png) — the red star badge (#e4051f) that is the O of NORSK and the tab icon |
+| `one-world-express` | White globe with speed lines on navy | [oneworldexpress.com](https://www.oneworldexpress.com/express/imgs/logo/one-world-logo.svg) — the globe whose latitudes trail off as speed lines |
+| `xlcourier` | White italic XLC on blue | [xlcourier.com](https://xlcourier.oss-eu-west-1.aliyuncs.com/website/logo.png) — header logo; the site photo shows the van with blue XL and red C |
+| `transmission` | Blue and white chevrons (< >) on red | [trans-mission.nl](https://www.trans-mission.nl/nl/) — the logo chevrons, painted on its red trucks as a blue < and a white > |
+| `packs` | White cube on red | [packs.nl](https://www.packs.nl/wp-content/uploads/2020/04/packs-logo-klein-1.png) — the red cube of the logo, also printed on its trailers |

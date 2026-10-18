@@ -63,6 +63,9 @@ export const CARRIER_PALETTES: Record<string, Partial<CarrierPalette>> = {
     "accent": "#1a1a1a",
     "brand-light": "#1a1a1a"
   },
+  "bjs-home-delivery": {
+    "accent": "#5c5147"
+  },
   "bulgarian-posts": {
     "accent": "#000016"
   },
@@ -555,6 +558,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "best-transport": "best-transport",
   "better-trucks": "better-trucks",
   "bex-express": "bex-express",
+  "bjs-home-delivery": "bjs-home-delivery",
   "blue-dart": "blue-dart",
   "blue-express": "blue-express",
   "blueex": "blueex",
@@ -889,6 +893,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "nippon-express": "nippon-express",
   "noest": "noest",
   "nord-wheel": "nord-wheel",
+  "norsk-global": "norsk-global",
   "northline": "northline",
   "nova-poshta": "nova-poshta",
   "nox": "nox",
@@ -900,6 +905,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "old-dominion": "old-dominion",
   "olva-courier": "olva-courier",
   "omniva": "omniva",
+  "one-world-express": "one-world-express",
   "ontrac": "ontrac",
   "opt-nc": "opt-nc",
   "orlen-paczka": "orlen-paczka",
@@ -910,6 +916,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "pack-man": "pack-man",
   "packeta": "packeta",
   "packli-punkt": "packli-punkt",
+  "packs": "packs",
   "pakistan-post": "pakistan-post",
   "palletways": "palletways",
   "pannon-xp": "pannon-xp",
@@ -1078,6 +1085,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "trackon": "trackon",
   "tracx-logis": "tracx-logis",
   "trans-o-flex": "trans-o-flex",
+  "transmission": "transmission",
   "transport-rdl": "transport-rdl",
   "trendyol-express": "trendyol-express",
   "tsjy": "tsjy",
@@ -1114,6 +1122,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "x-express-ba": "x-express-ba",
   "xde-logistics": "xde-logistics",
   "xdp": "xdp",
+  "xlcourier": "xlcourier",
   "xpo-ltl": "xpo-ltl",
   "xpressbees": "xpressbees",
   "yalidine": "yalidine",
@@ -12107,6 +12116,86 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M13.7 14.18L13.92 13.21L14.13 12.3L14.33 11.44L14.52 10.64L14.71 9.9L14.88 9.21L15.05 8.58L15.2 8L15.26 12.82Z",
         "fill": "#ab121c"
+      }
+    ],
+    "bjs-home-delivery": [
+      {
+        "type": "line",
+        "d": "M4.43 12.6L4.43 6.4L6.29 6.4L6.75 6.49L7.16 6.75L7.47 7.14L7.63 7.63L7.63 8.15L7.47 8.63L7.16 9.03L6.75 9.29L6.29 9.38L4.43 9.38M4.43 9.38L6.41 9.38L6.92 9.47L7.37 9.75L7.7 10.18L7.88 10.71L7.88 11.27L7.7 11.79L7.37 12.22L6.92 12.5L6.41 12.6L4.43 12.6M12.49 6.4L12.49 10.86L12.4 11.46L12.15 11.98L11.77 12.37L11.31 12.57L10.81 12.57L10.35 12.37L9.97 11.98L9.72 11.46L9.64 10.86M17.42 7.29L17.03 6.81L16.48 6.5L15.84 6.4L15.21 6.54L14.69 6.88L14.34 7.39L14.22 7.97L14.36 8.56L14.72 9.05L15.26 9.38L15.9 9.5L16.53 9.62L17.07 9.95L17.44 10.44L17.57 11.03L17.46 11.61L17.11 12.12L16.58 12.46L15.95 12.6L15.31 12.5L14.76 12.19L14.38 11.71",
+        "stroke": "accent",
+        "strokeWidth": 1.65
+      }
+    ],
+    "norsk-global": [
+      {
+        "type": "circle",
+        "cx": 11,
+        "cy": 9.5,
+        "r": 5.3,
+        "fill": "accent"
+      },
+      {
+        "type": "circle",
+        "cx": 11,
+        "cy": 9.5,
+        "r": 4.55,
+        "fill": "#e4051f"
+      },
+      {
+        "type": "polygon",
+        "d": "M11 5.95L10.05 8.39L7.43 8.54L9.46 10.2L8.8 12.73L11 11.32L13.2 12.73L12.54 10.2L14.57 8.54L11.95 8.39Z",
+        "fill": "accent"
+      }
+    ],
+    "one-world-express": [
+      {
+        "type": "polygon",
+        "d": "M11.22 4.61L12.19 4.32L13.18 4.23L14.18 4.32L15.14 4.6L16.04 5.05L16.83 5.67L17.49 6.43L17.99 7.29L18.32 8.24L18.47 9.23L18.42 10.23L18.19 11.21L17.78 12.12L17.2 12.94L16.47 13.64L15.63 14.18L14.7 14.56L13.72 14.75L12.72 14.75L11.73 14.57L10.8 14.2L9.95 13.66L10.85 12.51L11.46 12.91L12.13 13.17L12.85 13.31L13.58 13.31L14.29 13.17L14.96 12.89L15.57 12.5L16.1 12L16.52 11.4L16.82 10.74L16.99 10.03L17.02 9.31L16.91 8.59L16.67 7.9L16.31 7.27L15.83 6.72L15.26 6.28L14.61 5.94L13.91 5.74L13.19 5.68L12.46 5.75L11.77 5.95Z",
+        "fill": "accent"
+      },
+      {
+        "type": "line",
+        "d": "M5.6 7.05L17.03 7.05M3.4 9.5L17.75 9.5M4.6 11.95L17.03 11.95",
+        "stroke": "accent",
+        "strokeWidth": 1.45
+      },
+      {
+        "type": "polygon",
+        "d": "M13.27 4.2L12.42 4.55L11.62 5.41L11.06 6.59L10.72 7.99L10.6 9.5L10.72 11.01L11.06 12.41L11.62 13.59L12.42 14.45L13.27 14.8L13.77 13.49L13.24 13.31L12.8 12.82L12.38 11.95L12.1 10.8L12 9.5L12.1 8.2L12.38 7.05L12.8 6.18L13.24 5.69L13.77 5.51Z",
+        "fill": "accent"
+      }
+    ],
+    "xlcourier": [
+      {
+        "type": "line",
+        "d": "M5.07 6.5L7.35 12.5M8.67 6.5L3.75 12.5M10.23 6.5L8.91 12.5L11.67 12.5M17.99 7.27L17.41 6.68L16.63 6.5L15.77 6.76L14.95 7.42L14.29 8.38L13.89 9.5L13.8 10.62L14.04 11.58L14.57 12.24L15.32 12.5L16.17 12.32L17 11.73",
+        "stroke": "accent",
+        "strokeWidth": 1.65
+      }
+    ],
+    "transmission": [
+      {
+        "type": "polygon",
+        "d": "M3.78 10.4L10.83 7.24L10.83 9.13L6.39 11.12L10.83 13.11L10.83 15L3.78 11.85Z",
+        "fill": "#1f3581"
+      },
+      {
+        "type": "polygon",
+        "d": "M18.22 7.15L10.97 4L10.97 5.9L15.53 7.88L10.97 9.86L10.97 11.75L18.22 8.6Z",
+        "fill": "accent"
+      }
+    ],
+    "packs": [
+      {
+        "type": "polygon",
+        "d": "M4.43 9.5L7.77 4L14.07 4L17.57 9.5L14.07 15L7.77 15Z",
+        "fill": "accent"
+      },
+      {
+        "type": "line",
+        "d": "M7.77 4L11.03 9.5L17.57 9.5M11.03 9.5L7.77 15",
+        "stroke": "truck",
+        "strokeWidth": 1
       }
     ]
   }

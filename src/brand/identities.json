@@ -184,6 +184,12 @@
   "bex-express": {
     "decal": "bex-express"
   },
+  "bjs-home-delivery": {
+    "decal": "bjs-home-delivery",
+    "palette": {
+      "accent": "#5c5147"
+    }
+  },
   "blue-dart": {
     "decal": "blue-dart"
   },
@@ -1330,6 +1336,9 @@
   "nord-wheel": {
     "decal": "nord-wheel"
   },
+  "norsk-global": {
+    "decal": "norsk-global"
+  },
   "northline": {
     "decal": "northline"
   },
@@ -1376,6 +1385,9 @@
   "omniva": {
     "decal": "omniva"
   },
+  "one-world-express": {
+    "decal": "one-world-express"
+  },
   "ontrac": {
     "decal": "ontrac"
   },
@@ -1408,6 +1420,9 @@
     "palette": {
       "accent": "#f9e937"
     }
+  },
+  "packs": {
+    "decal": "packs"
   },
   "pakistan-post": {
     "decal": "pakistan-post"
@@ -1968,6 +1983,9 @@
   "trans-o-flex": {
     "decal": "trans-o-flex"
   },
+  "transmission": {
+    "decal": "transmission"
+  },
   "transport-rdl": {
     "decal": "transport-rdl"
   },
@@ -2110,6 +2128,9 @@
   },
   "xdp": {
     "decal": "xdp"
+  },
+  "xlcourier": {
+    "decal": "xlcourier"
   },
   "xpo-ltl": {
     "decal": "xpo-ltl"
