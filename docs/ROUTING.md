@@ -443,7 +443,13 @@ When a scraper fix changes a stored scan's instant, a row only a universal provi
 moves on that provider's next answer. Other rows need a data migration that repairs the
 row, summary and watermark together, preserving its creation time and notification
 receipts. A source the fix still reads can instead name the old zone in its identity
-policy, and its next sync moves each row in place.
+policy, and its next sync moves each row in place. Any repair that moves, rewrites or
+deletes rows ends, in the same transaction, with
+`select * from private.settle_repaired_parcels(array[...]::uuid[])`
+([migration](../supabase/migrations/20261018112000_settle_repaired_parcels.sql)): each
+parcel's watermark becomes its newest scan left, and a summary whose stage no row left shows
+takes the newest row's stage and words. It returns each parcel's stage and watermark before
+and after, so a dry run rolled back shows what the repair changes.
 
 ## Direct histories without complete timestamps
 
