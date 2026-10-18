@@ -19,7 +19,9 @@ export function deferredTrackingFailure(
   failures: Record<string, { user_error?: string; kind: string }>,
   configuredCarrier: string,
 ): string | null {
-  if (failures[configuredCarrier]?.user_error === 'carrier:input_required') return 'carrier:input_required';
+  // The parcel's own carrier needs an input, or refuses the number: only the parcel's details can change that.
+  const own = failures[configuredCarrier]?.user_error;
+  if (own === 'carrier:input_required' || own === 'carrier:invalid_input') return own;
   const codes = Object.values(failures).map(failure => failure.user_error
     ?? ({ rate_limited: 'carrier:rate_limited', verification: 'carrier:challenge', not_found: 'carrier:not_found' } as Record<string, string>)[failure.kind]);
   return codes.length && codes[0] && codes.every(code => code === codes[0]) ? codes[0] : null;

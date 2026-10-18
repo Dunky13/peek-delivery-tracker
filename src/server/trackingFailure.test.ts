@@ -11,9 +11,11 @@ describe('public tracking failure codes', () => {
     expect(trackingFailureCode(new Error('unclassified'))).toBeNull();
   });
 
-  it('keeps missing input actionable after fallback attempts, without blaming mixed failures on one provider', () => {
+  it('keeps missing input and a refused number actionable after fallback attempts, without blaming mixed failures on one provider', () => {
     expect(deferredTrackingFailure({ heppner: { kind: 'schema', user_error: 'carrier:input_required' }, universal: { kind: 'transport' } }, 'heppner')).toBe('carrier:input_required');
     expect(deferredTrackingFailure({ other: { kind: 'schema', user_error: 'carrier:input_required' }, universal: { kind: 'transport' } }, 'heppner')).toBeNull();
+    expect(deferredTrackingFailure({ nacex: { kind: 'invalid_input', user_error: 'carrier:invalid_input' }, universal: { kind: 'transport' } }, 'nacex')).toBe('carrier:invalid_input');
+    expect(deferredTrackingFailure({ other: { kind: 'invalid_input', user_error: 'carrier:invalid_input' }, universal: { kind: 'transport' } }, 'nacex')).toBeNull();
     expect(deferredTrackingFailure({ first: { kind: 'rate_limited' }, second: { kind: 'rate_limited' } }, 'heppner')).toBe('carrier:rate_limited');
     expect(deferredTrackingFailure({ first: { kind: 'rate_limited' }, second: { kind: 'transport' } }, 'heppner')).toBeNull();
   });
