@@ -3486,6 +3486,11 @@
         {
           "pattern": "^LP\\d{13}CN$",
           "confidence": "low"
+        },
+        {
+          "pattern": "^EM\\d{16}CA$",
+          "confidence": "low",
+          "preferred": true
         }
       ],
       "trackingUrlTemplate": "https://track.4px.com/#/result/0/{trackingNumber}",
@@ -5615,6 +5620,10 @@
       "detectionRules": [
         {
           "pattern": "^EM\\d{12}CA$",
+          "confidence": "low"
+        },
+        {
+          "pattern": "^EM\\d{16}CA$",
           "confidence": "low"
         }
       ],
@@ -13301,7 +13310,7 @@
       "timezone": "Europe/Prague",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "toptrans"
       },
       "trackingUrlTemplate": "https://apis.toptrans.cz/tracking?parcel_number={trackingNumber}",
       "linkRules": [
@@ -20056,7 +20065,7 @@
       "timezone": "Europe/Bucharest",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "bookurier"
       },
       "trackingUrlTemplate": "https://t.bookurier.ro/?awb={trackingNumber}",
       "linkRules": [
@@ -20187,7 +20196,8 @@
       "timezone": "Europe/Stockholm",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "bussgods",
+        "recognitionRank": 867
       },
       "trackingUrlTemplate": "https://bussgods.se/spara-paket/#{trackingNumber}",
       "linkRules": [
@@ -20428,7 +20438,7 @@
       "timezone": "Europe/Athens",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "easy-mail"
       },
       "trackingUrlTemplate": "https://trackntrace.easymail.gr/{trackingNumber}",
       "linkRules": [
@@ -21659,7 +21669,8 @@
       "timezone": "Europe/Stockholm",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "citymail",
+        "recognitionRank": 868
       },
       "trackingUrlTemplate": "https://tracking.citymail.se/?search={trackingNumber}",
       "linkRules": [
@@ -22247,7 +22258,8 @@
             "inputMode": "text",
             "autoComplete": "postal-code"
           }
-        ]
+        ],
+        "recognitionRank": 606
       },
       "trackingUrlTemplate": "https://gls-group.com/PL/pl/sledzenie-paczek/?match={trackingNumber}",
       "linkRules": [
@@ -22264,7 +22276,12 @@
           ]
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^\\d{11}$",
+          "confidence": "low"
+        }
+      ],
       "trackingSearchUrl": "https://gls-group.com/PL/pl/sledzenie-paczek/"
     },
     "kyrgyz-post": {
@@ -22506,7 +22523,8 @@
       "timezone": "Europe/Rome",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "fermopoint",
+        "recognitionRank": 872
       },
       "trackingUrlTemplate": "https://www.fermopoint.it/prenotazione/{trackingNumber}",
       "linkRules": [
@@ -22762,7 +22780,7 @@
       "timezone": "Europe/Rome",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "liccardi"
       },
       "trackingUrlTemplate": "https://my.liccarditrasporti.com/segui?ldv={trackingNumber}",
       "linkRules": [
@@ -23176,7 +23194,8 @@
       "timezone": "Europe/Dublin",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "drop2shop",
+        "recognitionRank": 871
       },
       "trackingUrlTemplate": "https://www.drop2shop.ie/tracking?trackingnumber={trackingNumber}",
       "linkRules": [
@@ -23304,7 +23323,8 @@
             "inputMode": "text",
             "autoComplete": "postal-code"
           }
-        ]
+        ],
+        "recognitionRank": 604
       },
       "trackingUrlTemplate": "https://gls-group.com/AT/de/paket-verfolgen/?match={trackingNumber}",
       "linkRules": [
@@ -23321,7 +23341,12 @@
           ]
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^\\d{11}$",
+          "confidence": "low"
+        }
+      ],
       "trackingSearchUrl": "https://gls-group.com/AT/de/paket-verfolgen/"
     },
     "hermes-at": {
@@ -25433,7 +25458,7 @@
         "BE",
         "LU"
       ],
-      "color": "#1f3581",
+      "color": "#e32314",
       "selectable": true,
       "timezone": "Europe/Amsterdam",
       "tracking": {
@@ -25465,7 +25490,7 @@
       "countries": [
         "GB"
       ],
-      "color": "#c70000",
+      "color": "#044ad6",
       "selectable": true,
       "timezone": "Europe/London",
       "tracking": {
