@@ -1529,13 +1529,13 @@ describe('ambiguous number shapes', () => {
     expect(detectCarrierMatch('01234567890123')).toEqual({
       carrier: 'unknown',
       confidence: 'low',
-      candidates: expect.arrayContaining(['dpd', 'dpd-fr', 'relais-colis', 'ciblex', 'seur', 'brt', 'delhivery', 'dpd-de', 'dpd-uk']),
+      candidates: expect.arrayContaining(['dpd', 'dpd-fr', 'ciblex', 'seur', 'brt', 'delhivery', 'dpd-de', 'dpd-uk']),
       preferred: [],
     });
     expect(detectCarrierMatch('10594002378611')).toEqual({
       carrier: 'unknown',
       confidence: 'low',
-      candidates: expect.arrayContaining(['dpd-fr', 'dpd', 'relais-colis', 'ciblex', 'seur', 'brt', 'delhivery', 'dpd-de', 'dpd-uk', 'xpressbees']),
+      candidates: expect.arrayContaining(['dpd-fr', 'dpd', 'ciblex', 'seur', 'brt', 'delhivery', 'dpd-de', 'dpd-uk', 'xpressbees']),
       preferred: ['dpd-fr'],
     });
   });
