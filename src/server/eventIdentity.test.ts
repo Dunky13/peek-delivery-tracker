@@ -893,6 +893,10 @@ describe('newest-event times set by copies read in the wrong zone', () => {
     // A stage change stamped when the sync saw it is not a scan time.
     const observed = { ...scan('gofo:observed', '2026-01-05T11:00:00.123Z', 'Out for Delivery'), raw_data: { observed_without_provider_timestamp: true } };
     expect(withoutCopyDrift(at('2026-01-04T15:59:03Z'), [...events, observed], stored, takeover, { withStored: true })).toBe(at('2026-01-04T12:59:03Z'));
+    // Nor is the time a stored row was first seen, its provider giving it no instant (UPU's wall clocks).
+    const seen = [...stored, { ...row('unknown:upu', '2026-01-05T11:00:00.123+00:00', 'Departure from outward office of exchange'),
+      raw_data: { observed_without_provider_timestamp: true } }];
+    expect(withoutCopyDrift(at('2026-01-04T15:59:03Z'), events, seen, takeover, { withStored: true })).toBe(at('2026-01-04T12:59:03Z'));
     // Nor is the time the parcel was added, after its newest scan.
     const added = [...stored, row('app:pending', '2026-01-04T14:40:00.123+00:00', 'Tracking added')];
     expect(withoutCopyDrift(at('2026-01-04T15:59:03Z'), events, added, takeover, { withStored: true })).toBe(at('2026-01-04T12:59:03Z'));

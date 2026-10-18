@@ -426,7 +426,8 @@ back once the provider's corrected answer moves its rows. The router holds a car
 detection or a provider names to the same rule before taking it: its newest scan counts
 against the watermark less the copies of its own scans, stored or in the answer of the
 provider that names it. The app's "Tracking added" row is no scan, so a parcel added after
-its newest scan keeps that scan's time.
+its newest scan keeps that scan's time. Nor is a row stamped when it was observed, such as a
+UPU milestone: its observation time never holds the watermark ahead.
 
 When a scraper fix changes a stored scan's instant, a row only a universal provider wrote
 moves on that provider's next answer. Other rows need a data migration that repairs the

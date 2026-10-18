@@ -575,7 +575,8 @@ export function withoutCopyDrift(
     kept.push(instantOf(twin ?? event));
   }
   if (options.withStored) {
-    for (const row of stored) if (sourceOf(identity(row)) !== 'app') kept.push(retimed.get(identity(row)) ?? instantOf(row));
+    // A row stored when the sync first saw it, a provider having given no instant, holds no scan time.
+    for (const row of stored) if (sourceOf(identity(row)) !== 'app' && !observedOnly(row)) kept.push(retimed.get(identity(row)) ?? instantOf(row));
   }
   const newest = Math.max(...kept.filter(Number.isFinite));
   const claimedNewest = Math.max(...claimed.filter(Number.isFinite));

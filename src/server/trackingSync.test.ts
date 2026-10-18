@@ -4282,6 +4282,28 @@ describe('scans a carrier and a universal provider both report', () => {
       expect(watermark).toBe('2026-01-03T18:30:10.000Z');
     });
 
+    it('bring the watermark back past a row stored when it was first seen', async () => {
+      vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+      const store = eventStore();
+      // A postal scan on a wall clock, stored at the check that first saw it: no scan time.
+      store.rows.set('unknown:postal', { provider_event_id: 'unknown:postal', occurred_at: '2026-01-04T09:00:00.123Z', stage: 'in_transit',
+        description: 'Departure from outward office of exchange', raw_data: { universal_provider: 'UPU', observed_without_provider_timestamp: true } });
+      const client = leased(store);
+      const adapter = { fetch: vi.fn().mockRejectedValue(down), fetchUniversal: vi.fn()
+        .mockResolvedValueOnce(answer('UTC', [departed('2026-01-04T02:30:10Z'), sorted]))
+        .mockResolvedValueOnce(answer('Asia/Shanghai', [departed('2026-01-03T18:30:10.000Z'), sorted])) };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+      let watermark: unknown;
+      for (const stage of ['in_transit', 'in_transit']) {
+        await service.syncPackage({ ...parcel, current_stage: stage,
+          ...(watermark ? { carrier_data: { routing: { version: 1, configured_carrier: 'gofo', last_event_at: watermark } } } : {}),
+          [STORED_EVENT_IDENTITIES]: store.identities() });
+        watermark = (((store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject).carrier_data as JsonObject).routing as JsonObject).last_event_at;
+      }
+      // A carrier whose newest scan is the corrected departure is no longer older than the parcel.
+      expect(watermark).toBe('2026-01-03T18:30:10.000Z');
+    });
+
     it('keep a row a carrier took over on the carrier\'s clock', async () => {
       vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
       const store = eventStore();
