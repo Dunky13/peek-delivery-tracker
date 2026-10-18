@@ -22762,7 +22762,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "intex-paketdienst"
     },
     "trackingUrlTemplate": "https://www.intex-paketdienst.de/sendungsstatus/index.php?sdnr={trackingNumber}&mid=1",
     "linkRules": [
@@ -22875,7 +22875,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nox",
+      "recognitionRank": 874
     },
     "trackingUrlTemplate": "https://trackandtrace.app.nox.express/scannungen/{trackingNumber}",
     "linkRules": [
@@ -23862,7 +23863,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "t-group",
+      "recognitionRank": 877
     },
     "trackingUrlTemplate": "https://track.tgroupspa.com/ttnet/traccia_spedizione/{trackingNumber}",
     "linkRules": [
