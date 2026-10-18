@@ -9617,7 +9617,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bex-express",
+      "recognitionRank": 827
     },
     "trackingUrlTemplate": "https://bexexpress.rs/pracenje-posiljke?broj-posiljke={trackingNumber}",
     "linkRules": [
@@ -15746,7 +15747,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "internet-express"
     },
     "trackingUrlTemplate": "https://portal.internetexpress.co.za/track?ref={trackingNumber}",
     "linkRules": [
@@ -15819,7 +15820,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "janio",
+      "recognitionRank": 811
     },
     "trackingUrlTemplate": "https://tracker.janio.asia/{trackingNumber}",
     "linkRules": [
@@ -16646,7 +16648,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "quantium-solutions",
+      "recognitionRank": 809
     },
     "trackingUrlTemplate": "https://track.quantiumworldwide.com/?trackno={trackingNumber}",
     "linkRules": [
@@ -23097,7 +23100,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Atlantic/Faroe",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "posta-faroe",
+      "recognitionRank": 814
     },
     "trackingUrlTemplate": "https://www.posta.fo/en/private/send-receive/track-trace/{trackingNumber}",
     "linkRules": [
@@ -23723,7 +23727,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ewe"
     },
     "trackingUrlTemplate": "https://www.ewe.com.au/pages/tracking-order?cno={trackingNumber}#track-results",
     "linkRules": [
@@ -24247,7 +24251,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ajex",
+      "recognitionRank": 812
     },
     "trackingUrlTemplate": "https://aj-ex.com/shipment-status/{trackingNumber}",
     "linkRules": [
@@ -25790,7 +25795,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dragon-star-curier",
+      "recognitionRank": 828
     },
     "trackingUrlTemplate": "https://dragonstarcurier.ro/tracking-awb?awb={trackingNumber}",
     "linkRules": [
@@ -25822,7 +25828,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Malta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fastdrop",
+      "recognitionRank": 826
     },
     "trackingUrlTemplate": "https://booking.fastdrop.mt/package-tracking/{trackingNumber}",
     "linkRules": [
@@ -26521,7 +26528,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "evdemo-lojistik",
+      "recognitionRank": 813
     },
     "trackingUrlTemplate": "https://www.evdemolojistik.com/takip?kargo_kodu={trackingNumber}",
     "linkRules": [
@@ -26928,7 +26936,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dobropost",
+      "recognitionRank": 824
     },
     "trackingUrlTemplate": "https://tracking.dobropost.com/?trackNumber={trackingNumber}",
     "linkRules": [
@@ -28490,7 +28499,7 @@ export const CARRIER_CAPABILITIES = {
       "US",
       "KR"
     ],
-    "color": "#254f89",
+    "color": "#386cac",
     "selectable": true,
     "timezone": "America/New_York",
     "tracking": {
@@ -28554,7 +28563,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "KR"
     ],
-    "color": "#355cff",
+    "color": "#000000",
     "selectable": true,
     "timezone": "Asia/Seoul",
     "tracking": {
@@ -28583,7 +28592,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "KR"
     ],
-    "color": "#005baf",
+    "color": "#006ecd",
     "selectable": true,
     "timezone": "Asia/Seoul",
     "tracking": {
@@ -28615,6 +28624,171 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://winionlogistics.com/home.html"
+  },
+  "dpex": {
+    "displayName": "DPEX Worldwide",
+    "aliases": [
+      "DPEX"
+    ],
+    "countries": [
+      "SG",
+      "HK",
+      "CN",
+      "AU"
+    ],
+    "color": "#d6151f",
+    "selectable": true,
+    "timezone": "Asia/Singapore",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://dpex.com/track-and-trace/?cn={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "dpex.com",
+          "www.dpex.com"
+        ],
+        "pathPattern": "^/track-and-trace/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "dpex.com",
+          "www.dpex.com"
+        ],
+        "pathPattern": "^/Tools-And-Applications/Track-And-Trace/?$",
+        "params": [
+          "cn"
+        ]
+      },
+      {
+        "domains": [
+          "dpexonline.com",
+          "www.dpexonline.com",
+          "erp.dpex.com.cn"
+        ],
+        "pathPattern": "^/trace-and-track/index/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://dpex.com/track-and-trace/"
+  },
+  "fliway": {
+    "displayName": "Fliway",
+    "aliases": [
+      "Fliway Group",
+      "Fliway Holdings"
+    ],
+    "countries": [
+      "NZ"
+    ],
+    "color": "#002b5c",
+    "selectable": true,
+    "timezone": "Pacific/Auckland",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://online.fliway.com/Public/Track/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "online.fliway.com"
+        ],
+        "path": "^/Public/Track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "online.fliway.com"
+        ],
+        "pathPattern": "^/Public/(?:Track|TrackItem)/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.fliway.com/"
+  },
+  "morning-global": {
+    "displayName": "Morning Global",
+    "aliases": [
+      "Morning Global International",
+      "MG International Express",
+      "MG International Postal"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "color": "#050059",
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.morninglobal.com/trace-track/?tracking_number={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.morninglobal.com"
+        ],
+        "pathPattern": "^/trace-track/?$",
+        "params": [
+          "tracking_number",
+          "ydh"
+        ]
+      },
+      {
+        "domains": [
+          "www.morninglobal.com"
+        ],
+        "pathPattern": "^/yundan/status\\.php$",
+        "params": [
+          "ydh"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.morninglobal.com/trace-track/"
+  },
+  "mrl-global": {
+    "displayName": "MRL Global",
+    "aliases": [
+      "MRL Logistics",
+      "Sampson Express"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "color": "#012148",
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.mrlglobal.com/tracking/?connoteno={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.mrlglobal.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "connoteno"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.mrlglobal.com/tracking/"
   }
 } as const;
 
@@ -29397,7 +29571,11 @@ export const CARRIER_IDS = [
   "gsi-express",
   "last-one-mile-coop",
   "today-kr",
-  "winion-logis"
+  "winion-logis",
+  "dpex",
+  "fliway",
+  "morning-global",
+  "mrl-global"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
