@@ -110,9 +110,12 @@ async function lookup(number: string, health: ProviderHealth, signal: AbortSigna
       retryAfterMs = Math.max(0, Math.min(7 * 86_400_000, retryAfterMsOf(error) ?? 0));
       // Missing recipient data is an answer about one parcel, never an upstream outage.
       if (failure === 'input_required') { kind = 'not_found'; return { provider, outcome: plausibleInputRequest(number) ? 'input_required' : 'no_history' }; }
-      if (failure === 'not_found' || failure === 'indeterminate') { kind = 'not_found'; return { provider, outcome: 'no_history' }; }
-      // A refused number is an answer about this number too: it keeps the provider's circuit closed.
-      kind = failure === 'invalid_input' ? 'not_found' : failure === 'rate_limited' ? 'rate_limited'
+      // A refused number is an answer about this number too: it has no history there, asking again cannot change
+      // that, and it keeps the provider's circuit closed.
+      if (failure === 'not_found' || failure === 'indeterminate' || failure === 'invalid_input') {
+        kind = 'not_found'; return { provider, outcome: 'no_history' };
+      }
+      kind = failure === 'rate_limited' ? 'rate_limited'
         : failure === 'challenge' ? 'verification' : failure === 'schema' ? 'schema' : 'transport';
       return { provider, outcome: 'unavailable' };
     } finally {

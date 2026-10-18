@@ -17,7 +17,8 @@ other gets one more second and is then cancelled; a cancelled call is not a prov
 failure and is left out of the answer, health, metrics and Sentry. Without dated history
 the check waits for both. A successful universal answer
 returns immediately; direct confirmation continues after saving. Their outcomes distinguish missing
-history, recipient input, cooldowns and service failures. Universal history proves that
+history, recipient input, cooldowns and service failures. A provider refusing the number reports missing
+history: asking again cannot change its answer. Universal history proves that
 tracking is available. A single catalog carrier named with dated movement by every provider
 asked identifies an unknown parcel; conflicting names, a cancelled provider, bare brands and
 registration-only history stay unresolved, and so does a carrier whose adapter refuses the number.

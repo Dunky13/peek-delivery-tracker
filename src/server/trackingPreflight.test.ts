@@ -39,12 +39,13 @@ it('keeps input requirements actionable without opening the provider circuit', a
   expect(service.finishTrackingProvider.mock.calls.map((call) => call[2])).toEqual(['not_found', 'not_found']);
   expect(preflightInputNeeded('9876000046')).toEqual({ provider: 'ParcelsApp', field: 'dpdPostcode' });
 });
-it('keeps the provider circuit closed when a provider refuses the number', async () => {
+it('takes a refused number as no history and keeps the provider circuit closed', async () => {
   vi.spyOn(UniversalTracker.prototype, 'fetchSource').mockImplementation(async (source) => {
     throw new InvalidInputError(source, `Invalid ${source} tracking number`);
   });
   const service = health();
-  await preflightTracking('9876000061', service);
+  // The reader is told the number has no history yet, not that the check failed and will be retried.
+  expect(await preflightTracking('9876000061', service)).toEqual({ providers: [{ provider: 'Ship24', outcome: 'no_history' }, { provider: 'ParcelsApp', outcome: 'no_history' }] });
   expect(service.finishTrackingProvider.mock.calls.map((call) => call[2])).toEqual(['not_found', 'not_found']);
 });
 it('takes a postcode request for a number no carrier issues in that shape as no history', async () => {
