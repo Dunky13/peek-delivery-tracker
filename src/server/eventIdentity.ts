@@ -395,7 +395,10 @@ function copies(scan: JsonObject, row: JsonObject): boolean {
  * provider's clock instead (a scraper fix that reads its scans in another
  * zone). A scan whose own row it is moves the row to the scan's instant,
  * unless another row matches the scan by the rules above: that row holds the
- * scan already, so the scan is left out as before. A scan that matches such a
+ * scan already, so the scan is left out and its row on the old clock goes. So
+ * does such a row the fix gave another identity, when the provider's answer no
+ * longer shows its instant, shows an older scan, and shows the scan a zone
+ * shift away where another row holds it. A scan that matches such a
  * row across an offset, not just within a minute, takes it over as a carrier's
  * scan would.
  */
@@ -512,11 +515,32 @@ export function sharedScans(
     const twin = heldCopy(event);
     if (twin) shared.skipped.set(id, identity(twin));
   }
-  // Moving its own row beside another row that holds the scan would store the scan twice.
+  // Moving its own row beside another row that holds the scan would store the scan twice:
+  // the scan stays out, and its own row, on the clock the fix corrected, goes.
   for (const event of moving) {
     const id = identity(event);
-    if (matchOf(event, !newAt.has(instantOf(event))) || heldCopy(event)) shared.skipped.set(id, id);
-    else shared.reused.set(id, id);
+    if (matchOf(event, !newAt.has(instantOf(event))) || heldCopy(event)) {
+      shared.skipped.set(id, id);
+      shared.absorbed.add(id);
+    } else shared.reused.set(id, id);
+  }
+  // A fix can change the time a scan's identity hashes too. A row its provider alone wrote,
+  // at an instant the provider's answer no longer shows though another of its scans is older,
+  // is the stale copy of a scan the answer shows a zone shift away, once another row holds it.
+  const holders = new Map<string, string>();
+  for (const event of events) {
+    const id = identity(event);
+    const holder = shared.reused.get(id) ?? shared.skipped.get(id) ?? (storedById.has(id) ? id : undefined);
+    if (holder) holders.set(id, holder);
+  }
+  const claimed = new Set([...holders.values(), ...shared.absorbed]);
+  for (const row of rows) {
+    const id = identity(row);
+    if (sourceOf(id) !== UNIVERSAL || providerOf(row) === '' || claimed.has(id) || shown.has(instantOf(row))) continue;
+    const answer = events.filter((event) => followsClock(row, event));
+    const copy = answer.find((event) => holders.has(identity(event)) && zoneApart(instantOf(event), instantOf(row))
+      && sameWording(wordingOf(event), wordingOf(row)) && !placesConflict(placeWords(event), placeWords(row)));
+    if (copy && answer.some((event) => event !== copy && instantOf(event) < instantOf(row))) shared.absorbed.add(id);
   }
   return shared;
 }

@@ -4461,7 +4461,7 @@ describe('scans a carrier and a universal provider both report', () => {
       expect(store.rows.get(copy(out))).toMatchObject({ occurred_at: '2026-01-04T12:59:03Z' });
     });
 
-    it('leave a row stored before rows named their provider, and a scan another row at the corrected instant holds', async () => {
+    it('leave a row stored before rows named their provider, and drop a named row whose scan another row holds at the corrected instant', async () => {
       vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
       const store = eventStore();
       const client = leased(store);
@@ -4486,10 +4486,11 @@ describe('scans a carrier and a universal provider both report', () => {
       expect((store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject).carrier_data)
         .toMatchObject({ tracking_provider: 'ParcelsApp' });
       expect(ids(store.batch())).toEqual([universal(weighed)]);
-      expect(store.rows.size).toBe(4);
+      expect(store.rows.size).toBe(3);
       expect(store.rows.get(universal(weighed))).toMatchObject({ id: 'seed-3', occurred_at: '2026-01-03T00:40:00Z' });
       expect(store.rows.get(universal(sorted))).toMatchObject({ occurred_at: '2026-01-03T21:15:42Z' });
-      expect(store.rows.get(universal(loaded))).toMatchObject({ occurred_at: '2026-01-03T09:05:00Z' });
+      expect(store.rows.has(universal(loaded))).toBe(false);
+      expect(store.rows.get('gofo:loaded')).toMatchObject({ occurred_at: '2026-01-03T01:05:00Z' });
     });
   });
 });

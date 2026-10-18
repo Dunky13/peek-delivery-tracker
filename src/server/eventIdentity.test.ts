@@ -810,9 +810,33 @@ describe('rows only a universal provider wrote', () => {
     expect(twinned.reused.size).toBe(0);
     expect(pairs(twinned.skipped)).toEqual([['unknown:sorted', 'unknown:sorted']]);
     expect([...twinned.shifted]).toEqual(['unknown:sorted']);
+    expect([...twinned.absorbed]).toEqual(['unknown:sorted']);
     // Another scan's row there does not hold it.
     const other = row('speedaf:weighed', '2026-01-03T13:15:42+00:00', 'Weighed', 'accepted');
-    expect(pairs(sharedScans([sorted], [late, other]).reused)).toEqual([['unknown:sorted', 'unknown:sorted']]);
+    const moved = sharedScans([sorted], [late, other]);
+    expect(pairs(moved.reused)).toEqual([['unknown:sorted', 'unknown:sorted']]);
+    expect(moved.absorbed.size).toBe(0);
+  });
+
+  it('drops its row on the old clock under another identity once another row holds the scan at the corrected instant', () => {
+    // The provider read a hub on the wrong clock, three hours late, beside the scan another leg copied right.
+    const hub = 'Carteret, NJ';
+    const at = <T extends object>(value: T) => ({ ...value, location: hub });
+    const label = fixed('unknown:label', '2026-01-01T07:38:40Z', 'Shipping label created');
+    const arrived = { ...fixed('unknown:arrived', '2026-01-03T00:42:33Z', 'Arrived at origin hub'), location: hub };
+    const right = named(at(row('unknown:arrived', '2026-01-03T00:42:33+00:00', 'Arrived at origin hub')));
+    const stale = named(at(row('unknown:arrived-late', '2026-01-03T03:42:33+00:00', 'Arrived at origin hub')));
+    expect([...sharedScans([label, arrived], [right, stale]).absorbed]).toEqual(['unknown:arrived-late']);
+    // It stays while the answer shows its instant, does not reach back past it, or nothing else holds the scan.
+    const again = { ...fixed('unknown:again', '2026-01-03T03:42:33Z', 'Arrived at origin hub'), location: hub };
+    expect(sharedScans([label, arrived, again], [right, stale]).absorbed.size).toBe(0);
+    expect(sharedScans([arrived], [right, stale]).absorbed.size).toBe(0);
+    expect(sharedScans([label, arrived], [stale]).absorbed.size).toBe(0);
+    // Nor does a row another provider wrote, one that names none, or one at another place.
+    for (const kept of [named(stale, 'Ship24'), at(row('unknown:arrived-late', '2026-01-03T03:42:33+00:00', 'Arrived at origin hub')),
+      { ...stale, location: 'Eastvale, CA' }]) {
+      expect(sharedScans([label, arrived], [right, kept]).absorbed.size).toBe(0);
+    }
   });
 
   it('names the provider on its new rows and the rows it named, never on a row a carrier or an earlier release wrote', () => {
