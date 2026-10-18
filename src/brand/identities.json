@@ -273,6 +273,9 @@
   "castores": {
     "decal": "castores"
   },
+  "cbl-logistica": {
+    "decal": "cbl-logistica"
+  },
   "cdek": {
     "decal": "cdek"
   },
@@ -357,6 +360,9 @@
   },
   "colisweb": {
     "decal": "colisweb"
+  },
+  "connect-couriers": {
+    "decal": "connect-couriers"
   },
   "coordinadora": {
     "decal": "coordinadora"
@@ -591,6 +597,9 @@
   "dpd-za": {
     "family": "dpd"
   },
+  "dragon-star-curier": {
+    "decal": "dragon-star-curier"
+  },
   "drop2shop": {
     "decal": "drop2shop"
   },
@@ -733,6 +742,9 @@
   },
   "fargo-uz": {
     "decal": "fargo-uz"
+  },
+  "fastdrop": {
+    "decal": "fastdrop"
   },
   "fastfrate": {
     "decal": "fastfrate"
@@ -1014,6 +1026,9 @@
   },
   "intelcom": {
     "decal": "intelcom"
+  },
+  "inter-courier": {
+    "decal": "inter-courier"
   },
   "intereuropa": {
     "decal": "intereuropa"
@@ -1811,6 +1826,9 @@
   "southeastern-freight-lines": {
     "decal": "southeastern-freight-lines"
   },
+  "sp-express": {
+    "decal": "sp-express"
+  },
   "spee-dee": {
     "decal": "spee-dee"
   },
@@ -1922,6 +1940,12 @@
   },
   "tcs-pakistan": {
     "decal": "tcs-pakistan"
+  },
+  "tdn": {
+    "decal": "tdn",
+    "palette": {
+      "accent": "#000000"
+    }
   },
   "tealca": {
     "decal": "tealca"

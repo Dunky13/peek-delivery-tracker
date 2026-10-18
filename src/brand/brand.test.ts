@@ -162,6 +162,8 @@ describe('carrier brand', () => {
       'valmo', 'rivigo', 'bombino', 'tccs', 'tej-couriers', 'shree-mahavir', 'maruti-air', 'icc-worldwide',
       'noest',
       'bjs-home-delivery', 'norsk-global', 'one-world-express', 'xlcourier', 'transmission', 'packs',
+      'tdn', 'cbl-logistica', 'inter-courier', 'sp-express', 'dragon-star-curier', 'connect-couriers',
+      'fastdrop',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

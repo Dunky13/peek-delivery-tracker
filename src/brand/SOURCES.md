@@ -94,6 +94,7 @@ and [`truck.json`](truck.json).
 | `canpar` | [canpar.com](https://www.canpar.com/) (approximate) |
 | `cargus` | [cargus.ro](https://www.cargus.ro/personal/urmareste-coletul/) — theme colour --wp--preset--color--kb-palette-1 #f68121 |
 | `castores` | [castores.com.mx](https://www.castores.com.mx/Code/front_end/dist/prod/images/global/favicon-144x144.png) — favicon red #c72628 (approximate); CSS --red-3 #c72628 |
+| `cbl-logistica` | [cbl-logistica.com](https://www.cbl-logistica.com/) — site CSS --brand-color-1 #E31D1A (cookie and action buttons); the CBL lettering on its white vans is this red |
 | `cdek` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:CDEK_logo.svg) — fill #00B33C |
 | `cdl` | [cdldelivers.com](https://cdldelivers.com/) — header background `#3d74b2` in the site CSS; flame `#fb3e3e` from the logo PNG's flat red |
 | `celeritas` | [celeritastransporte.com](https://celeritastransporte.com/wp-content/uploads/elementor/css/post-9.css) — Elementor --e-global-color-primary #009AAB (secondary #EE7D00) |
@@ -116,6 +117,7 @@ and [`truck.json`](truck.json).
 | `codexpress` | [codexpress.com.au](https://www.codexpress.com.au/CODE_Logo_NoTagline_noBG.png) — logo PNG navy #292d42, the wordmark colour and its most frequent pixel; X cyan #00aeef (approximate) |
 | `colis-prive` | [colisprive.fr](https://www.colisprive.fr/) (sampled from the site icon) |
 | `colisweb` | [colisweb.com](https://www.colisweb.com/) (sampled from the site icon) |
+| `connect-couriers` | [connectcouriers.eu](https://www.connectcouriers.eu/wp-content/uploads/2023/05/logo.png) — CONNECT wordmark #9c231b (approximate, sampled from the PNG logo) |
 | `coordinadora` | [coordinadora.com](https://coordinadora.com/wp-content/uploads/2023/03/logo-coordinadora.svg) — logo SVG fill #1063ac, favicon #0b63ad |
 | `copa-courier` | [copacourier.com](https://www.copacourier.com/) — header and Seguimiento button background rgb(0, 50, 160) #0032a0 behind the white logo (Pantone 286 C); the favicon is #233e93 |
 | `corre` | [corremz.com](https://www.corremz.com/) — site CSS `--brand: #e4002b` |
@@ -161,6 +163,7 @@ and [`truck.json`](truck.json).
 | `direx` | [direx.bg](https://direx.bg/) — theme CSS --color-primary #6B4597; icon SVG fill #6b4598 |
 | `dohrn-transfer` | [dohrn.com](https://www.dohrn.com/) — site theme variable --primaryColor #ee3631; logo SVG red #ed3424 |
 | `domex` | [domex.lk](https://domex.lk/) — track button and header text #FFCD05; logo PNG yellow #ffca05 (approximate) |
+| `dragon-star-curier` | [dragonstarcurier.ro](https://dragonstarcurier.ro/public/project/images/logo.svg) — logo SVG fill #000b8c (DSC and the emblem arms), red #aa182c top panel |
 | `drop2shop` | [drop2shop.ie](https://www.drop2shop.ie/assets/css/drop2shop-theme.css) — theme pink #d8127d (161 uses), the same pink as the favicon's dots (approximate in the 32 px favicon PNG) |
 | `dropp` | [dropp.is](https://dropp.is/) — app theme primary #00007D; logo SVG fills #00007E and #0FF |
 | `dsv` | [dsv.com](https://www.dsv.com/en) — header logo fill #002664 |
@@ -201,6 +204,7 @@ and [`truck.json`](truck.json).
 | `fan-courier` | [fancourier.ro](https://www.fancourier.ro/wp-content/uploads/2023/03/logo.svg) — dominant fill #0F2345 |
 | `fargo-courier` | [fargocourier.co.ke](https://www.fargocourier.co.ke/wp-content/uploads/2024/02/fargo-courier-logo.png) — logo PNG green #0a4436 and gold #c79b46 (approximate); the theme CSS also uses #0a4436 |
 | `fargo-uz` | [fargo.uz](https://fargo.uz/) — theme-color #ed1f2b and favicon SVG wedge fill #ed1f2b |
+| `fastdrop` | [fastdrop.mt](https://fastdrop.mt/wp-content/uploads/2024/03/cropped-Favicon-180x180.png) — app icon and home-page logo cyan #5dbbd1 (approximate, sampled from the PNGs); home-page button text and accents #5dbbd1 |
 | `fastfrate` | [fastfrate.com](https://media.fastfrategroup.com/fastfrate-group/wp-content/uploads/sites/2/2026/07/28153231/FF-Group_Fastfrate-Logo.svg) — logo SVG fill #d70321 |
 | `fermopoint` | [fermopoint.it](https://www.fermopoint.it/) — logo f pixels #dc0032 (approximate) and site .btn-primary #dc0032 |
 | `fg-delivery` | [fgdelivery.it](https://fgdelivery.it/) — Elementor primary colour #393D78; logo PNG #393d78 (approximate) |
@@ -264,6 +268,7 @@ and [`truck.json`](truck.json).
 | `instabox` | [favicon SVG](https://track.instabox.com/assets/icons/instabox-favicon.svg) — circle fill #FF3E3E |
 | `integral-pack` | [integralpack.com.ar](https://www.integralpack.com.ar/assets/img/logo.svg?v=2026-01-04) — logo SVG fills #004D9C and #FFC629 |
 | `intelcom` | [dragonflyshipping.ca](https://dragonflyshipping.ca/) (sampled from the site icon) |
+| `inter-courier` | [intercourier.pt](https://intercourier.pt/assets/img/logo/logo.svg) — logo SVG fill #76ba59 (COURIER and the up-right arrow); the site's buttons use the same green |
 | `intereuropa` | [intereuropa.si](https://www.intereuropa.si/files/default/vsebina/logo-mobile.png) — mobile logo fill #1b5949 (approximate); main logo #02695a |
 | `internet-express` | [internetexpress.co.za](https://www.internetexpress.co.za/Content/img/IE_LOGOS_Circle.png) — logo PNG yellow #fae80b (approximate) |
 | `interrapidisimo` | [interrapidisimo.com](https://interrapidisimo.com/icon.svg) — icon fill #18191A, site CSS --secondary #18191a |
@@ -491,6 +496,7 @@ and [`truck.json`](truck.json).
 | `smsa-express` | [smsaexpress.com](https://www.smsaexpress.com/themes/custom/smsa/logo_en.png) — logo PNG orange #fc671a (site CSS #ff6700, purple #400099) |
 | `south-african-post-office` | [postoffice.co.za](https://www.postoffice.co.za/images/mobilogo.jpg) — logo red #c12026 (approximate, JPG) |
 | `southeastern-freight-lines` | [sefl.com](https://www.sefl.com/SeflWebTemplate/sass/style.css) — site CSS #c41230, also the red in the apple-touch icon |
+| `sp-express` | [sp.express](https://sp.express/layout//spx/spx.png) — logo PNG and favicon green #007d00 (the X's split arm and "GREEN MODE"); green action buttons on the site |
 | `spee-dee` | [speedeedelivery.com](https://speedeedelivery.com/) |
 | `speedex` | [speedex.gr](https://www.speedex.gr/datafiles/image/speedex-logo.png) — logo PNG green #55b248, arrow blue #0075bc (approximate) |
 | `speedx` | [speedx.io](https://speedx.io/) |
@@ -521,6 +527,7 @@ and [`truck.json`](truck.json).
 | `tccs` | [tccs.in](https://tccs.in/static/img/favicon.png) — globe and outer arrows blue #2e458d in the logo emblem (approximate) |
 | `tci-express` | [tciexpress.in](https://www.tciexpress.in/style.css) — style.css brand blue #0d5fa6 (55 uses); logo PNG blue sampled #0d60a7, red X #db3140 |
 | `tcs-pakistan` | [tcsexpress.com](https://www.tcsexpress.com/) — site bundle classes #f21e26 (158 uses); app icon #ec2027 (approximate) |
+| `tdn` | [tdn.es](https://www.tdn.es/) — site CSS #ffc72c (header, menu and button backgrounds); its trucks are painted this yellow |
 | `tealca` | [tealca.com](https://www.tealca.com/wp-content/uploads/2021/06/001_LOGO_HEADER.svg) — logo SVG fill #00559e |
 | `team-global-express` | [teamglobalexp.com](https://teamglobalexp.com/image/layout_set_logo?img_id=5087020) — logo PNG #143200 (approximate), site CSS #143200 and wattle #cbff55 |
 | `tej-couriers` | [tejcouriers.com](https://www.tejcouriers.com/) — page style .red-button #d2232a; logo COURIERS red #ed3237 |
@@ -1189,3 +1196,10 @@ and [`truck.json`](truck.json).
 | `xlcourier` | White italic XLC on blue | [xlcourier.com](https://xlcourier.oss-eu-west-1.aliyuncs.com/website/logo.png) — header logo; the site photo shows the van with blue XL and red C |
 | `transmission` | Blue and white chevrons (< >) on red | [trans-mission.nl](https://www.trans-mission.nl/nl/) — the logo chevrons, painted on its red trucks as a blue < and a white > |
 | `packs` | White cube on red | [packs.nl](https://www.packs.nl/wp-content/uploads/2020/04/packs-logo-klein-1.png) — the red cube of the logo, also printed on its trailers |
+| `tdn` | Black heavy italic TDN on yellow | [tdn.es](https://www.tdn.es/wp-content/uploads/TDN_KN_COMPANY-02-1-png.webp) — logo, the black slanted TDN wordmark (its "A Kuehne+Nagel Company" line left out) |
+| `cbl-logistica` | White italic CBL over a slanted bar on red | [cbl-logistica.com](https://www.cbl-logistica.com/image/layout_set_logo?img_id=36137) — logo, italic CBL over the slanted LOGISTICA bar (the lion head left out) |
+| `inter-courier` | White up-right arrow with three dark grey corner arrows on green | [intercourier.pt](https://intercourier.pt/assets/img/logo/logo.svg) — logo symbol, four arrows pointing out to the corners, the long up-right one green and the others grey |
+| `sp-express` | White SPX with the X's upper arm split off, on green | [sp.express](https://sp.express/layout//spx/favicon.ico) — favicon and logo, SPX with the X's upper-right arm split off in green |
+| `dragon-star-curier` | White-rimmed red triangle over two white arms on navy | [dragonstarcurier.ro](https://dragonstarcurier.ro/public/project/images/logo.svg) — logo emblem, an inverted triangle split by a Y into a red top panel with a white dragon and two navy arms (dragon left out) |
+| `connect-couriers` | White interlocking swooshes with light grey leaves on dark red | [connectcouriers.eu](https://www.connectcouriers.eu/wp-content/uploads/2023/05/logo.png) — logo symbol, two interlocking grey swooshes (light outer crescents, darker inner leaves) beside CONNECT |
+| `fastdrop` | White two-winged f on cyan | [fastdrop.mt](https://fastdrop.mt/wp-content/uploads/2024/03/cropped-Favicon-180x180.png) — app icon, the white two-winged f of the logo on cyan |
