@@ -10372,7 +10372,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "danske-fragtmaend",
+      "recognitionRank": 873
     },
     "trackingUrlTemplate": "https://trace.fragt.dk/{trackingNumber}",
     "linkRules": [
@@ -12930,7 +12931,9 @@ export const CARRIER_CAPABILITIES = {
       "SkyNet",
       "SkyNet Worldwide",
       "SkyNet WWE",
-      "Skynet Express"
+      "Skynet Express",
+      "Deltec International Courier",
+      "Deltec Courier"
     ],
     "countries": [
       "GB"
@@ -12940,7 +12943,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skynet-worldwide"
     },
     "trackingUrlTemplate": "https://tracking.skynetexpress.com/go/plm-tracking?stid=skynet&cn={trackingNumber}",
     "linkRules": [
@@ -21778,7 +21781,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hispapost"
     },
     "linkRules": [],
     "detectionRules": [],
@@ -23779,11 +23782,23 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Rome",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sailpost"
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "sailpost.it",
+          "www.sailpost.it"
+        ],
+        "pathPattern": "^/traccia-il-pacco/?$",
+        "params": [
+          "codice"
+        ]
+      }
+    ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://www.sailpost.it/traccia-il-pacco/"
+    "trackingSearchUrl": "https://www.sailpost.it/traccia-il-pacco/",
+    "trackingUrlTemplate": "https://www.sailpost.it/traccia-il-pacco/?codice={trackingNumber}"
   },
   "t-group": {
     "displayName": "Tgroup",
@@ -24526,7 +24541,7 @@ export const CARRIER_CAPABILITIES = {
       "CA",
       "US"
     ],
-    "color": "#f20036",
+    "color": "#cc2131",
     "selectable": true,
     "timezone": "America/Toronto",
     "tracking": {
@@ -24578,7 +24593,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CA"
     ],
-    "color": "#e33952",
+    "color": "#02001e",
     "selectable": true,
     "timezone": "America/Toronto",
     "tracking": {
@@ -24699,7 +24714,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "KR"
     ],
-    "color": "#141991",
+    "color": "#2f308d",
     "selectable": true,
     "timezone": "Asia/Seoul",
     "tracking": {
@@ -24827,7 +24842,7 @@ export const CARRIER_CAPABILITIES = {
       "UY",
       "VE"
     ],
-    "color": "#233e93",
+    "color": "#0032a0",
     "selectable": true,
     "timezone": "America/Panama",
     "tracking": {
@@ -24905,7 +24920,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#007dc6",
+    "color": "#ed1c24",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -24966,7 +24981,7 @@ export const CARRIER_CAPABILITIES = {
       "GB",
       "AE"
     ],
-    "color": "#0f172a",
+    "color": "#06567f",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -25065,7 +25080,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#0c1f38",
+    "color": "#ed3237",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -25105,7 +25120,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "DZ"
     ],
-    "color": "#0880e8",
+    "color": "#003462",
     "selectable": true,
     "timezone": "Africa/Algiers",
     "tracking": {
@@ -25126,7 +25141,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#dd712f",
+    "color": "#f4162d",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -25198,7 +25213,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#e01e1e",
+    "color": "#2e458d",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -25251,7 +25266,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#0378b6",
+    "color": "#092d5e",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -25275,6 +25290,197 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.valmo.in/track"
+  },
+  "bjs-home-delivery": {
+    "displayName": "BJS Home Delivery",
+    "aliases": [
+      "BJS Distribution",
+      "BJS Two-Man Home Delivery"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "color": "#feba30",
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://track.bjshomedelivery.com/?parcel-id={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "track.bjshomedelivery.com",
+          "www.track.bjshomedelivery.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "parcel-id",
+          "OrderReference",
+          "order-number"
+        ]
+      },
+      {
+        "domains": [
+          "bjshomedelivery.com",
+          "www.bjshomedelivery.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "parcel-id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^B\\d{11}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://track.bjshomedelivery.com/"
+  },
+  "norsk-global": {
+    "displayName": "Norsk Global",
+    "aliases": [
+      "Norsk",
+      "Norsk-Global"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "color": "#114433",
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://norsk.trackmyparcel.info/gb/tracking/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "norsk.trackmyparcel.info"
+        ],
+        "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://norsk.trackmyparcel.info/"
+  },
+  "one-world-express": {
+    "displayName": "One World Express",
+    "aliases": [
+      "OWE",
+      "OneWorldExpress",
+      "One World Express Inc. Ltd."
+    ],
+    "countries": [
+      "GB"
+    ],
+    "color": "#161c5e",
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.smarttrack.co/tracking.php?tracking_number={trackingNumber}",
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^OWE\\d{12}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.oneworldexpress.com/tracking"
+  },
+  "packs": {
+    "displayName": "Packs",
+    "countries": [
+      "NL",
+      "BE",
+      "LU"
+    ],
+    "color": "#e11f1d",
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "www.packs.nl",
+          "packs.nl"
+        ],
+        "pathPattern": "^/(?:track-trace|tracktrace)/?$",
+        "params": [
+          "zendingnr"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.packs.nl/track-trace/"
+  },
+  "transmission": {
+    "displayName": "TransMission",
+    "aliases": [
+      "TransMission B.V."
+    ],
+    "countries": [
+      "NL",
+      "BE",
+      "LU"
+    ],
+    "color": "#1f3581",
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "api.trans-mission.nl"
+        ],
+        "path": "^/tt/([^/?#]+)/[^/?#]+/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[TP]\\d{14}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://api.trans-mission.nl/Search-shipment"
+  },
+  "xlcourier": {
+    "displayName": "XLCourier",
+    "aliases": [
+      "XL Courier",
+      "XLC"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "color": "#c70000",
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^XLC\\d{10,12}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.xlcourier.com/trackOrder"
   }
 } as const;
 
@@ -25963,7 +26169,13 @@ export const CARRIER_IDS = [
   "shree-mahavir",
   "tccs",
   "tej-couriers",
-  "valmo"
+  "valmo",
+  "bjs-home-delivery",
+  "norsk-global",
+  "one-world-express",
+  "packs",
+  "transmission",
+  "xlcourier"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
