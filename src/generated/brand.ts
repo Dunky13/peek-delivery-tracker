@@ -33,6 +33,9 @@ export const CARRIER_FAMILIES: Record<string, string> = {
   "gls-fr": "gls",
   "gls-it": "gls",
   "gls-pl": "gls",
+  "gofo-fr": "gofo",
+  "gofo-it": "gofo",
+  "gofo-nl": "gofo",
   "hermes-at": "hermes",
   "mng-kargo": "dhl",
   "pickupp-sg": "pickupp",
@@ -513,6 +516,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "5post": "5post",
   "99minutos": "99minutos",
   "a-duie-pyle": "a-duie-pyle",
+  "a-tu-hora-express": "a-tu-hora-express",
   "a1-post": "a1-post",
   "aaa-cooper": "aaa-cooper",
   "ab-courier": "ab-courier",
@@ -598,6 +602,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "chilexpress": "chilexpress",
   "china-post": "china-post",
   "chit-chats": "chit-chats",
+  "chronodiali": "chronodiali",
   "chronopost": "chronopost",
   "chunghwa-post": "chunghwa-post",
   "chunil": "chunil",
@@ -608,6 +613,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "citysprint": "citysprint",
   "cj-logistics": "cj-logistics",
   "cj-packet": "cj-packet",
+  "closer-logistics": "closer-logistics",
   "cne": "cne",
   "codexpress": "codexpress",
   "colis-prive": "colis-prive",
@@ -634,6 +640,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "credifin": "credifin",
   "cruz-del-sur": "cruz-del-sur",
   "cse-russia": "cse-russia",
+  "cst-italia": "cst-italia",
   "ctt": "ctt",
   "ctt-express": "ctt",
   "cttyex": "cttyex",
@@ -761,6 +768,9 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "go4": "go4",
   "gobolt": "gobolt",
   "gofo": "gofo",
+  "gofo-fr": "gofo",
+  "gofo-it": "gofo",
+  "gofo-nl": "gofo",
   "gogo-xpress": "gogo-xpress",
   "groupe-guilbault": "groupe-guilbault",
   "gs-postbox": "gs-postbox",
@@ -894,6 +904,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "ncs-courier": "ncs-courier",
   "neighbour-express": "neighbour-express",
   "nepal-post": "nepal-post",
+  "next-level-delivery": "next-level-delivery",
   "nhat-tin": "nhat-tin",
   "nim-express": "nim-express",
   "ninja-van": "ninja-van",
@@ -977,6 +988,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "posturinn": "posturinn",
   "ppl": "ppl",
   "precision-deliveries": "precision-deliveries",
+  "pro-carrier": "pro-carrier",
   "professional-couriers": "professional-couriers",
   "prompt-xpress": "prompt-xpress",
   "pronto-lanka": "pronto-lanka",
@@ -1080,6 +1092,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "tealca": "tealca",
   "team-global-express": "team-global-express",
   "tej-couriers": "tej-couriers",
+  "teleship": "teleship",
   "tforce-freight": "tforce-freight",
   "tforce-logistics": "tforce-logistics",
   "thailand-post": "thailand-post",
@@ -1088,6 +1101,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "tiki": "tiki",
   "tipsa": "tipsa",
   "tirupati-courier": "tirupati-courier",
+  "tmm-express": "tmm-express",
   "tnt": "tnt",
   "toptrans": "toptrans",
   "torrestir": "torrestir",
@@ -1095,6 +1109,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "trackon": "trackon",
   "tracx-logis": "tracx-logis",
   "trans-o-flex": "trans-o-flex",
+  "transaher": "transaher",
   "transmission": "transmission",
   "transport-rdl": "transport-rdl",
   "trendyol-express": "trendyol-express",
@@ -1111,6 +1126,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "upaya": "upaya",
   "ups": "ups",
   "urbano": "urbano",
+  "urvaam": "urvaam",
   "usps": "usps",
   "uzbekistan-post": "uzbekistan-post",
   "valmo": "valmo",
@@ -12333,6 +12349,201 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M8.4 9.25L12.95 9.25L12.49 10.08L11.79 10.97L10.89 11.78L9.83 12.37L8.65 12.6L7.05 12.6L5.78 12.92L4.78 13.65L4.09 14.46L3.75 15L3.65 13.78L3.91 12.49L4.52 11.26L5.47 10.23L6.77 9.52Z",
         "fill": "accent"
+      }
+    ],
+    "pro-carrier": [
+      {
+        "type": "polygon",
+        "d": "M15.39 8.3L15.81 7.88L15.96 7.3L15.81 6.73L15.39 6.3L14.81 6.15L14.24 6.3L6.61 10.7L6.19 11.12L6.04 11.7L6.19 12.27L6.61 12.7L7.19 12.85L7.76 12.7Z",
+        "fill": "#46baba"
+      },
+      {
+        "type": "polygon",
+        "d": "M14.24 12.7L14.81 12.85L15.39 12.7L15.81 12.27L15.96 11.7L15.81 11.12L15.39 10.7L7.76 6.3L7.19 6.15L6.61 6.3L6.19 6.73L6.04 7.3L6.19 7.88L6.61 8.3Z",
+        "fill": "#e2de00"
+      },
+      {
+        "type": "polygon",
+        "d": "M9.85 13.9L10 14.47L10.43 14.9L11 15.05L11.57 14.9L12 14.47L12.15 13.9L12.15 5.1L12 4.52L11.57 4.1L11 3.95L10.43 4.1L10 4.52L9.85 5.1Z",
+        "fill": "#e72f70"
+      },
+      {
+        "type": "polygon",
+        "d": "M11 7.75L9.48 8.62L9.48 10.38L11 11.25L12.52 10.38L12.52 8.62Z",
+        "fill": "truck"
+      }
+    ],
+    "teleship": [
+      {
+        "type": "polygon",
+        "d": "M11 4.1L6.24 6.85L6.24 12.35L11 15.1L15.76 12.35L15.76 6.85Z",
+        "fill": "#1c1e1e"
+      },
+      {
+        "type": "polygon",
+        "d": "M11 5.32L14.29 7.22L11 9.12L7.71 7.22Z",
+        "fill": "truck"
+      },
+      {
+        "type": "polygon",
+        "d": "M7.3 7.94L10.59 9.84L10.59 13.64L7.3 11.74Z",
+        "fill": "#aaf2ad"
+      },
+      {
+        "type": "polygon",
+        "d": "M11.41 9.84L14.7 7.94L14.7 11.74L11.41 13.64Z",
+        "fill": "#a3c8f0"
+      }
+    ],
+    "a-tu-hora-express": [
+      {
+        "type": "polygon",
+        "d": "M10.5 4.3L13.5 4.3L17 12.6L14.3 12.6L13.7 11L10.3 11L9.7 12.6L7 12.6Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M11 9L13 9L12 6.4Z",
+        "fill": "truck"
+      },
+      {
+        "type": "polygon",
+        "d": "M3.6 8.6L5.2 8.6L5.2 13L18.2 13.6L18.2 14.1L3.6 14.6Z",
+        "fill": "#47bdda"
+      }
+    ],
+    "transaher": [
+      {
+        "type": "circle",
+        "cx": 11,
+        "cy": 9.5,
+        "r": 5.3,
+        "fill": "#f8b32c"
+      },
+      {
+        "type": "line",
+        "d": "M7.9 9.7L10.2 12L14.4 7.4",
+        "stroke": "truck",
+        "strokeWidth": 1.7
+      }
+    ],
+    "urvaam": [
+      {
+        "type": "polygon",
+        "d": "M3.7 5.55L6.6 5.55L9.4 11.95L9 14.75L7.4 14.75Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M9 14.75L9.46 13.37L9.95 12.11L10.47 10.96L11.01 9.92L11.58 9L12.17 8.19L12.8 7.49L13.44 6.91L14.12 6.43L14.82 6.08L15.55 5.83L16.3 5.7L16.3 4.5L15.43 4.7L14.61 4.97L13.84 5.32L13.13 5.75L12.48 6.26L11.87 6.84L11.33 7.5L10.83 8.23L10.39 9.05L10.01 9.94L9.68 10.91L9.4 11.95Z",
+        "fill": "accent"
+      },
+      {
+        "type": "circle",
+        "cx": 17.65,
+        "cy": 5.05,
+        "r": 1.1,
+        "fill": "accent"
+      }
+    ],
+    "closer-logistics": [
+      {
+        "type": "line",
+        "d": "M4.4 10.1L4.4 8.6L4.53 7.8L4.9 7.07L5.47 6.5L6.2 6.13L7 6L14.8 6M17.6 8.9L17.6 10.4L17.47 11.2L17.1 11.93L16.53 12.5L15.8 12.87L15 13L7.2 13",
+        "stroke": "accent",
+        "strokeWidth": 1.5
+      },
+      {
+        "type": "circle",
+        "cx": 17.75,
+        "cy": 5.9,
+        "r": 1,
+        "fill": "accent"
+      },
+      {
+        "type": "circle",
+        "cx": 4.25,
+        "cy": 13.1,
+        "r": 1,
+        "fill": "accent"
+      }
+    ],
+    "chronodiali": [
+      {
+        "type": "polygon",
+        "d": "M11 3.8L5.67 6.65L5.67 12.35L11 15.2L16.33 12.35L16.33 6.65Z",
+        "fill": "accent"
+      },
+      {
+        "type": "line",
+        "d": "M5.27 6.42L11 9.5L11 13.9M12.1 8.86L16.73 6.42",
+        "stroke": "truck",
+        "strokeWidth": 1.3
+      }
+    ],
+    "cst-italia": [
+      {
+        "type": "line",
+        "d": "M8.13 7.37L7.42 6.78L6.6 6.6L5.8 6.86L5.13 7.52L4.68 8.48L4.52 9.6L4.68 10.72L5.13 11.68L5.8 12.34L6.6 12.6L7.42 12.42L8.13 11.83M12.53 7.47L12.16 7L11.63 6.69L11.01 6.6L10.4 6.73L9.89 7.06L9.55 7.55L9.44 8.12L9.57 8.69L9.92 9.17L10.45 9.49L11.06 9.6L11.67 9.71L12.2 10.03L12.55 10.51L12.68 11.08L12.57 11.65L12.23 12.14L11.72 12.47L11.11 12.6L10.49 12.51L9.96 12.2L9.59 11.73M13.88 6.6L17.48 6.6M15.68 6.6L15.68 12.6",
+        "stroke": "accent",
+        "strokeWidth": 1.6
+      }
+    ],
+    "tmm-express": [
+      {
+        "type": "line",
+        "d": "M5.9 11.6L11 7.4L16.1 11.6",
+        "stroke": "accent",
+        "strokeWidth": 1.3
+      },
+      {
+        "type": "circle",
+        "cx": 5.9,
+        "cy": 11.6,
+        "r": 2.9,
+        "fill": "accent"
+      },
+      {
+        "type": "circle",
+        "cx": 11,
+        "cy": 7.4,
+        "r": 2.9,
+        "fill": "accent"
+      },
+      {
+        "type": "circle",
+        "cx": 16.1,
+        "cy": 11.6,
+        "r": 2.9,
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M4.28 9.93L7.52 9.93L7.52 11.09L6.48 11.09L6.48 13.27L5.32 13.27L5.32 11.09L4.28 11.09Z",
+        "fill": "truck"
+      },
+      {
+        "type": "polygon",
+        "d": "M9.25 9.07L9.25 5.73L10.41 5.73L11 6.76L11.59 5.73L12.75 5.73L12.75 9.07L11.59 9.07L11.59 7.59L11 7.97L10.41 7.59L10.41 9.07Z",
+        "fill": "truck"
+      },
+      {
+        "type": "polygon",
+        "d": "M14.35 13.27L14.35 9.93L15.51 9.93L16.1 10.96L16.69 9.93L17.85 9.93L17.85 13.27L16.69 13.27L16.69 11.79L16.1 12.17L15.51 11.79L15.51 13.27Z",
+        "fill": "truck"
+      }
+    ],
+    "next-level-delivery": [
+      {
+        "type": "polygon",
+        "d": "M10.6 4.3L18.7 9.5L10.6 14.7Z",
+        "fill": "accent"
+      },
+      {
+        "type": "line",
+        "d": "M6 6.9L9.4 6.9M3.4 9.5L9.4 9.5M4.8 12.1L9.4 12.1",
+        "stroke": "accent",
+        "strokeWidth": 1.4
       }
     ]
   }

@@ -62,6 +62,7 @@ describe('carrier brand', () => {
     ['dhl-ecommerce-uk', 'dhl'], ['dpd-fr', 'dpd'], ['amazon-shipping', 'amazon-logistics'],
     ['swiss-post-cargo', 'swiss-post'], ['postlogistics', 'swiss-post'],
     ['dpd-de', 'dpd'], ['dpd-uk', 'dpd'], ['evri-uk', 'evri'], ['delivengo', 'la-poste'],
+    ['gofo-fr', 'gofo'], ['gofo-it', 'gofo'], ['gofo-nl', 'gofo'],
   ])('shares %s branding with %s', (id, owner) => {
     expect(carrierBrandFamily(id)).toBe(owner);
     expect(carrierDecal(id)).toBe(carrierDecal(owner));
@@ -164,6 +165,8 @@ describe('carrier brand', () => {
       'bjs-home-delivery', 'norsk-global', 'one-world-express', 'xlcourier', 'transmission', 'packs',
       'tdn', 'cbl-logistica', 'inter-courier', 'sp-express', 'dragon-star-curier', 'connect-couriers',
       'fastdrop',
+      'pro-carrier', 'teleship', 'a-tu-hora-express', 'transaher', 'urvaam', 'closer-logistics', 'chronodiali',
+      'cst-italia', 'tmm-express', 'next-level-delivery',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

@@ -23,6 +23,7 @@ and [`truck.json`](truck.json).
 | `5post` | [fivepost.ru](https://fivepost.ru/files/public/favicon/favicon.svg) — favicon SVG fill #64b441 with grey #575756 |
 | `99minutos` | [tracking.99minutos.com](https://tracking.99minutos.com/) — logo fills #85c440 (ring) and #323634 (99) |
 | `a-duie-pyle` | [aduiepyle.com](https://aduiepyle.com/) — site theme CSS #f27629 (most used colour); favicon swoosh #f58022 (approximate) |
+| `a-tu-hora-express` | [atuhoraexpress.com](https://atuhoraexpress.com/wp-content/uploads/2022/03/atuhora-logo.png) — logo wordmark #1d2a84, EXPRESS and the corner stroke #47bdda (flat PNG fills) |
 | `a1-post` | [a1post.bg](https://a1post.bg/) — theme-color meta and site CSS #fba512; logo SVG fill #fba511 |
 | `aaa-cooper` | [aaacooper.com](https://web.archive.org/web/2025/https://www.aaacooper.com/) — site CSS #113C77; app icon (act-favicon-192.png) navy-blue field around #06365c (approximate) |
 | `ab-courier` | [abcourier.com](https://abcourier.com/img/logo.svg) — logo SVG single fill #004890 |
@@ -105,6 +106,7 @@ and [`truck.json`](truck.json).
 | `chilexpress` | [chilexpress.cl](https://www.chilexpress.cl/Resources/CSS/style_new_home.css) — site CSS #ffb81c, ink #1d1816 |
 | `china-post` | [chinapost.com.cn](https://www.chinapost.com.cn/) |
 | `chit-chats` | [chitchats.com](https://chitchats.com/) — mask-icon colour #dc2b35 and btn-primary #db2b35 (the catalog colour); logo crown #f32735 |
+| `chronodiali` | [chronodiali.ma](https://chronodiali.ma/assets/logofr.png) — logo cube and 'diali' #009adf (flat PNG fill; the favicon cube is the same); the site's buttons and headings are #0060a2 |
 | `chunghwa-post` | [post.gov.tw](https://www.post.gov.tw/post/internet/Group/images/Logo.jpg) — emblem red sampled from the site logo (approximate) |
 | `chunil` | [chunilps.co.kr](http://www.chunilps.co.kr/img/2015/main_logo.gif) — logo GIF navy #000080, dots #ff092c |
 | `ciblex` | [ciblex.fr](https://www.ciblex.fr/) (sampled from the site icon) |
@@ -114,6 +116,7 @@ and [`truck.json`](truck.json).
 | `citysprint` | [citysprint.co.uk](https://www.citysprint.co.uk/) — site CSS #002F64 (header, most used) |
 | `cj-logistics` | [cjlogistics.com](https://www.cjlogistics.com/static/pc/global/template/images/logo/logo_footer_ko.png) — logo petals red #ef151e, orange #ff9700, blue #006ecd (approximate) |
 | `cj-packet` | [cjpacket.com](https://www.cjpacket.com/) — site CSS #ff7700; header logo PNG #ff6702 (approximate) |
+| `closer-logistics` | [closerlogistics.com](https://www.closerlogistics.com/img/logo_closer_line.svg) — logo SVG disc fill #7bb4b8 (cls-14) |
 | `codexpress` | [codexpress.com.au](https://www.codexpress.com.au/CODE_Logo_NoTagline_noBG.png) — logo PNG navy #292d42, the wordmark colour and its most frequent pixel; X cyan #00aeef (approximate) |
 | `colis-prive` | [colisprive.fr](https://www.colisprive.fr/) (sampled from the site icon) |
 | `colisweb` | [colisweb.com](https://www.colisweb.com/) (sampled from the site icon) |
@@ -139,6 +142,7 @@ and [`truck.json`](truck.json).
 | `credifin` | [credifin.com.ar](https://credifin.com.ar/static/media/logo.a9f19338.svg) — logo SVG fill #001d9c (CREDIFIN, emblem ring); red #e1001e |
 | `cruz-del-sur` | [cruzdelsur.com](https://www.cruzdelsur.com/images/logo.png) — logo PNG navy #2a367c and light blue #1392d1 (approximate) |
 | `cse-russia` | [cse.ru](https://www.cse.ru/) — theme-color and inline logo symbol fill #f47920 |
+| `cst-italia` | [cstitaliascarl.it](https://www.cstitaliascarl.it/wp-content/themes/understrap/img/CST-italia.png) — logo #005baa (flat PNG fill), also the theme CSS's menu band and headings |
 | `ctt` | [ctt.pt](https://www.ctt.pt/) |
 | `ctt-express` | [cttexpress.com](https://www.cttexpress.com/) |
 | `cttyex` | [cttyvip888.com](https://www.cttyvip888.com/assets/img/logo.png) — logo blue around #0068ac (approximate), orange play mark around #e88c20 |
@@ -358,6 +362,7 @@ and [`truck.json`](truck.json).
 | `ncs-courier` | [ncskurir.com](https://ncskurir.com/assets/css/layoutfe.css) — site CSS #243f80 and #e89c26, the logo navy and orange (logo PNG #243f80) |
 | `neighbour-express` | [neighbourexpress.com](https://www.neighbourexpress.com/) — header bar background rgb(37,75,141) #254b8d, the logo's blue panel; green #6ea25a is the site's button colour and the logo's lower panel |
 | `nepal-post` | [nepalpost.gov.np](https://giwmscdnone.gov.np/media/logo/logo_17z4vo1.png) — header emblem PNG #f6c63e (approximate) |
+| `next-level-delivery` | [nextlevel.delivery](https://nextlevel.delivery/img/main-logo.svg) — logo SVG fill #EBA121 (the only colour; the wordmark is white on the dark #191820 header) |
 | `nhat-tin` | [ntlogistics.vn](https://ntlogistics.vn/) — home page header class bg-[#FDD800]; logo SVG grey #484848, site icon smile yellow on #212221 |
 | `nim-express` | [nimexpress.com](https://www.nimexpress.com/) — redesign.css --nx-blue #0967b3 (97 uses; red #e31e24 is the accent); logo EXPRESS blue #006bb7 |
 | `ninja-van` | [ninjavan.co](https://www.ninjavan.co/) |
@@ -436,6 +441,7 @@ and [`truck.json`](truck.json).
 | `posturinn` | [posturinn.is](https://www.posturinn.is/media/j31gnu2y/logo.svg) — logo SVG fill #FF0000 |
 | `ppl` | [logo SVG](https://www.ppl.cz/documents/20122/6525005/hlavi%C4%8Dka+logo+%281%29.svg/0ee90745-08fd-e313-dcd5-8af3a4c68f8c) |
 | `precision-deliveries` | [track.precisiondeliveries.com](https://track.precisiondeliveries.com/precision_logo.png) — logo PNG blue #0000fe, its most frequent pixel (approximate) |
+| `pro-carrier` | [weareprocarrier.com](https://weareprocarrier.com/) — header logo SVG: pin fill #2c1f72, also the CARRIER wordmark; PRO and the tracker buttons are #46baba |
 | `professional-couriers` | [tpcindia.com](https://web.archive.org/web/2025/https://www.tpcindia.com/images/logo.png) — logo PNG red #e92429, swooshes #ffcb05 and #f48020 (approximate) |
 | `prompt-xpress` | [promptxpress.lk](https://promptxpress.lk/Images/iconlogo.png) — logo PNG XP #24408f with red #ed1c24 (approximate); navbar CSS #254091 |
 | `pronto-lanka` | [prontolanka.lk](https://www.prontolanka.lk/dist/img/pronto_logo.png) — logo PNG #ec1b24 (approximate) |
@@ -531,6 +537,7 @@ and [`truck.json`](truck.json).
 | `tealca` | [tealca.com](https://www.tealca.com/wp-content/uploads/2021/06/001_LOGO_HEADER.svg) — logo SVG fill #00559e |
 | `team-global-express` | [teamglobalexp.com](https://teamglobalexp.com/image/layout_set_logo?img_id=5087020) — logo PNG #143200 (approximate), site CSS #143200 and wattle #cbff55 |
 | `tej-couriers` | [tejcouriers.com](https://www.tejcouriers.com/) — page style .red-button #d2232a; logo COURIERS red #ed3237 |
+| `teleship` | [teleship.com](https://teleship.com/teleship-logo.png) — logo cube tops #ff66d2 (flat PNG fill); side faces #aaf2ad and #a3c8f0, outlines and wordmark #1c1e1e |
 | `tforce-freight` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:TForce_Freight_Logo.svg) — logo SVG fills #0053a1 (letters) and #e6403b (swoosh) |
 | `tforce-logistics` | [tforcelogistics.com](https://www.tforcelogistics.com/wp-content/uploads/2020/06/logo.png) — logo PNG letters #054b8b, arc #dc3b41; the stylesheet's most used colour and the Track button are #054b8b (approximate) |
 | `thailand-post` | [international.thailandpost.com](https://international.thailandpost.com/) |
@@ -539,6 +546,7 @@ and [`truck.json`](truck.json).
 | `tiki` | [tiki.id](https://tiki.id/images/tiki_logo_transparent.png) — logo PNG #0033ab with red #ff0000 (approximate); site CSS #105cef |
 | `tipsa` | [tip-sa.com](https://www.tip-sa.com/) |
 | `tirupati-courier` | [shreetirupaticourier.net](https://www.shreetirupaticourier.net/images/logo-company1.png) — logo PNG #f4791f (approximate); favicon and site CSS #f47f22 |
+| `tmm-express` | [ukr.tmm-express.com](https://ukr.tmm-express.com/sites/default/files/tmm_logo_0.png) — every opaque pixel of the logo PNG is #650360, the same as the site's theme-color meta #650360 |
 | `tnt` | [tnt.com](https://www.tnt.com/express/en_gb/site/home.html) |
 | `toptrans` | [toptrans.cz](https://www.toptrans.cz/_nuxt/logo.e9ca4bc8.svg) — logo SVG fill #005DAA, stripe #EE3124 |
 | `torrestir` | [torrestir.com](https://www.torrestir.com/wp-content/uploads/2018/11/cropped-Favicon-Torrestir-website-2-1-192x192.png) — site icon disc #417c47 and gold #ffc629 (approximate); site CSS #417d48 (135 uses) |
@@ -546,6 +554,7 @@ and [`truck.json`](truck.json).
 | `trackon` | [trackon.in](https://www.trackon.in/assets/images/trackon_logo.png) — logo PNG maroon #981e21 and orange #f27224 (approximate) |
 | `tracx-logis` | [tracxlogis.com](https://www.tracxlogis.com/image/home/logo_tracxlogis.svg) — logo SVG X fill #0084ca; app icon #2393d1 (approximate) |
 | `trans-o-flex` | [trans-o-flex.com](https://www.trans-o-flex.com/) (approximate) |
+| `transaher` | [transaher.es](https://transaher.es/) — header band rgba(35, 59, 129) behind the white logo and tracking bar; the logo badge is #f8b32c |
 | `transmission` | [trans-mission.nl](https://www.trans-mission.nl/templates/transmission/img/logo.svg) — logo SVG fills #e32314 (> and Mission) and #1f3581 (< and Trans); the trucks in the site banners are this red |
 | `transport-rdl` | [transportrdl.com](https://transportrdl.com/wp-content/uploads/elementor/css/post-502.css?ver=1792084157) — site CSS --e-global-color-primary #0A2240; site icon navy #0a2241 (approximate) |
 | `trendyol-express` | [trendyolexpress.com](https://www.trendyolexpress.com/) — header logo orange #f16623 (approximate, embedded PNG) |
@@ -561,6 +570,7 @@ and [`truck.json`](truck.json).
 | `uniuni` | [uniuni.com](https://www.uniuni.com/) |
 | `upaya` | [upaya.com.np](https://upaya.com.np/) — tracking page CSS --ux-navy #003d87, also the logo PNG navy; orange #ff5527 (--ux-orange) |
 | `urbano` | [urbano.com.pe](https://www.urbano.com.pe/) — Nuxt bundle app bar and buttons #5c068c |
+| `urvaam` | [urvaam.es](https://www.urvaam.es/) — header logo PNG: the swoosh v #e84417 (flat fill), the rest of the wordmark black; the site stylesheet's links and buttons are #ff7b3a |
 | `usps` | [usps.com](https://www.usps.com/) |
 | `uzbekistan-post` | [uz.post](https://uz.post/assets/index-BSg4lfOx.css) — site CSS .header-section #183e98, also the rendered logo blue; logo orange #f07824 (rendered, approximate) |
 | `valmo` | [valmo.in](https://www.valmo.in/) — site stylesheet --color-valmo-primary #092d5e, the navy of the header and page sections behind the logo |
@@ -671,7 +681,7 @@ and [`truck.json`](truck.json).
 | `four-px` | White slanted 4PX beside an orange spark on blue; the orange is an approximation | [4px.com](https://www.4px.com/) |
 | `planzer` | White capitals on red | [planzer.ch](https://www.planzer.ch/) |
 | `tipsa` | White capitals between four orange corners on navy | [tip-sa.com](https://www.tip-sa.com/) |
-| `gofo` | White capitals on orange | [gofo.com](https://www.gofo.com/us/) |
+| `gofo` (`gofo`, `gofo-fr`, `gofo-it`, `gofo-nl`) | White capitals on orange | [gofo.com](https://www.gofo.com/us/) |
 | `dachser` | Blue capitals on a yellow panel across a blue truck; the yellow is an approximation | [dachser.com](https://www.dachser.com/) |
 | `asendia` | White lowercase name over a yellow line on teal | [asendia.com](https://www.asendia.com/) |
 | `colis-prive` | Dark pin and purple exclamation mark on lilac | [colisprive.fr](https://www.colisprive.fr/) |
@@ -1203,3 +1213,13 @@ and [`truck.json`](truck.json).
 | `dragon-star-curier` | White-rimmed red triangle over two white arms on navy | [dragonstarcurier.ro](https://dragonstarcurier.ro/public/project/images/logo.svg) — logo emblem, an inverted triangle split by a Y into a red top panel with a white dragon and two navy arms (dragon left out) |
 | `connect-couriers` | White interlocking swooshes with light grey leaves on dark red | [connectcouriers.eu](https://www.connectcouriers.eu/wp-content/uploads/2023/05/logo.png) — logo symbol, two interlocking grey swooshes (light outer crescents, darker inner leaves) beside CONNECT |
 | `fastdrop` | White two-winged f on cyan | [fastdrop.mt](https://fastdrop.mt/wp-content/uploads/2024/03/cropped-Favicon-180x180.png) — app icon, the white two-winged f of the logo on cyan |
+| `pro-carrier` | The logo's six-spoke asterisk in pink, yellow and teal around a navy hexagon, on navy | [weareprocarrier.com](https://weareprocarrier.com/) — header logo: navy map pin holding the three-colour asterisk |
+| `teleship` | One of the logo's cubes, outlined in black with a pink top, green left and blue right face, on pink | [teleship.com](https://teleship.com/favicon.png) — favicon: four black-outlined isometric cubes with pink tops |
+| `a-tu-hora-express` | White bold A over the logo's cyan corner stroke, on navy | [atuhoraexpress.com](https://atuhoraexpress.com/wp-content/uploads/2022/04/icono-mapa.png) — site icon: navy A above a cyan corner stroke |
+| `transaher` | Yellow disc with a navy check mark, on navy | [transaher.es](https://transaher.es/wp-content/uploads/2018/09/cropped-listas-5-180x180.png) — site icon: white check in a yellow disc, the badge of the logo |
+| `urvaam` | White swoosh v from the wordmark, its long right arm ending in a dot, on orange | [urvaam.es](https://www.urvaam.es/) — header logo: black italic urvaam with an orange swoosh v |
+| `closer-logistics` | White rounded ring broken at two corners, a dot beyond each break, on teal | [closerlogistics.com](https://www.closerlogistics.com/img/logo_closer_line.svg) — logo symbol: white split ring and two dots on a teal disc |
+| `chronodiali` | White parcel cube with its edge lines cut in blue, on light blue | [chronodiali.ma](https://chronodiali.ma/assets/logofr.png) — logo: blue parcel cube with white edge lines |
+| `cst-italia` | White CST on blue | [cstitaliascarl.it](https://www.cstitaliascarl.it/) — header logo: blue calligraphic CST beside Italia |
+| `tmm-express` | Three white circles linked in a row, the middle one raised, with purple T, M, M on purple | [ukr.tmm-express.com](https://ukr.tmm-express.com/sites/default/files/tmm_logo_0.png) — the header logo: T, M, M in three linked circles over "express" |
+| `next-level-delivery` | White play arrow with three speed lines on orange | [nextlevel.delivery](https://nextlevel.delivery/img/main-logo.svg) — the logo symbol: an orange play triangle with a truck and speed lines |

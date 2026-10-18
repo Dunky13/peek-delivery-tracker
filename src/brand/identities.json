@@ -23,6 +23,9 @@
   "a-duie-pyle": {
     "decal": "a-duie-pyle"
   },
+  "a-tu-hora-express": {
+    "decal": "a-tu-hora-express"
+  },
   "a1-post": {
     "decal": "a1-post",
     "palette": {
@@ -309,6 +312,9 @@
   "chit-chats": {
     "decal": "chit-chats"
   },
+  "chronodiali": {
+    "decal": "chronodiali"
+  },
   "chronopost": {
     "decal": "chronopost",
     "palette": {
@@ -348,6 +354,9 @@
   },
   "cj-packet": {
     "decal": "cj-packet"
+  },
+  "closer-logistics": {
+    "decal": "closer-logistics"
   },
   "cne": {
     "decal": "cne"
@@ -438,6 +447,9 @@
   },
   "cse-russia": {
     "decal": "cse-russia"
+  },
+  "cst-italia": {
+    "decal": "cst-italia"
   },
   "ctt": {
     "decal": "ctt"
@@ -888,6 +900,15 @@
   "gofo": {
     "decal": "gofo"
   },
+  "gofo-fr": {
+    "family": "gofo"
+  },
+  "gofo-it": {
+    "family": "gofo"
+  },
+  "gofo-nl": {
+    "family": "gofo"
+  },
   "gogo-xpress": {
     "decal": "gogo-xpress"
   },
@@ -1330,6 +1351,9 @@
   "nepal-post": {
     "decal": "nepal-post"
   },
+  "next-level-delivery": {
+    "decal": "next-level-delivery"
+  },
   "nhat-tin": {
     "decal": "nhat-tin"
   },
@@ -1613,6 +1637,9 @@
   },
   "precision-deliveries": {
     "decal": "precision-deliveries"
+  },
+  "pro-carrier": {
+    "decal": "pro-carrier"
   },
   "professional-couriers": {
     "decal": "professional-couriers"
@@ -1959,6 +1986,9 @@
   "tej-couriers": {
     "decal": "tej-couriers"
   },
+  "teleship": {
+    "decal": "teleship"
+  },
   "tforce-freight": {
     "decal": "tforce-freight"
   },
@@ -1986,6 +2016,9 @@
   "tirupati-courier": {
     "decal": "tirupati-courier"
   },
+  "tmm-express": {
+    "decal": "tmm-express"
+  },
   "tnt": {
     "decal": "tnt"
   },
@@ -2006,6 +2039,9 @@
   },
   "trans-o-flex": {
     "decal": "trans-o-flex"
+  },
+  "transaher": {
+    "decal": "transaher"
   },
   "transmission": {
     "decal": "transmission"
@@ -2076,6 +2112,9 @@
   },
   "urbano": {
     "decal": "urbano"
+  },
+  "urvaam": {
+    "decal": "urvaam"
   },
   "usps": {
     "decal": "usps",

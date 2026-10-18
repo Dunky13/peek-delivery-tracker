@@ -107,6 +107,8 @@ describe('carrier mark', () => {
     'bjs-home-delivery', 'norsk-global', 'one-world-express', 'xlcourier', 'transmission', 'packs',
     'tdn', 'cbl-logistica', 'inter-courier', 'sp-express', 'dragon-star-curier', 'connect-couriers',
     'fastdrop',
+    'pro-carrier', 'teleship', 'a-tu-hora-express', 'transaher', 'urvaam', 'closer-logistics', 'chronodiali',
+    'cst-italia', 'tmm-express', 'next-level-delivery',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

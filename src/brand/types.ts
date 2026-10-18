@@ -119,7 +119,9 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'tej-couriers' | 'shree-mahavir' | 'maruti-air' | 'icc-worldwide' | 'noest'
   | 'bjs-home-delivery' | 'norsk-global' | 'one-world-express' | 'xlcourier' | 'transmission'
   | 'packs' | 'tdn' | 'cbl-logistica' | 'inter-courier' | 'sp-express' | 'dragon-star-curier'
-  | 'connect-couriers' | 'fastdrop';
+  | 'connect-couriers' | 'fastdrop' | 'pro-carrier' | 'teleship' | 'a-tu-hora-express' | 'transaher'
+  | 'urvaam' | 'closer-logistics' | 'chronodiali' | 'cst-italia' | 'tmm-express'
+  | 'next-level-delivery';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {
