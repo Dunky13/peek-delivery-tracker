@@ -2313,7 +2313,9 @@
       "trackingSearchUrl": "https://tracking.postnord.com/en/",
       "aliases": [
         "PostNord Danmark",
-        "PostNord Denmark"
+        "PostNord Denmark",
+        "Direct Link",
+        "Direct Link Worldwide"
       ]
     },
     "posti": {
@@ -2332,6 +2334,13 @@
             "posti.fi"
           ],
           "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)(?:/[0-9]+)?/?$"
+        },
+        {
+          "domains": [
+            "smartposti.ee",
+            "smartposti.lt"
+          ],
+          "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas)/([^/?#]+)(?:/[0-9]+)?/?$"
         }
       ],
       "detectionRules": [
@@ -2354,9 +2363,18 @@
       ],
       "trackingUrlTemplate": "https://www.posti.fi/en/tracking/{trackingNumber}",
       "countries": [
-        "FI"
+        "FI",
+        "EE",
+        "LV",
+        "LT"
       ],
-      "trackingSearchUrl": "https://www.posti.fi/en/tracking/"
+      "trackingSearchUrl": "https://www.posti.fi/en/tracking/",
+      "aliases": [
+        "SmartPosti",
+        "Smartpost Itella",
+        "Itella SmartPOST",
+        "Itella Estonia"
+      ]
     },
     "correos-express": {
       "displayName": "Correos Express",
@@ -25505,6 +25523,241 @@
         }
       ],
       "trackingSearchUrl": "https://www.xlcourier.com/trackOrder"
+    },
+    "cbl-logistica": {
+      "displayName": "CBL Logística",
+      "aliases": [
+        "CBL Logistica",
+        "CBL",
+        "Cbl Logistica"
+      ],
+      "countries": [
+        "ES",
+        "PT"
+      ],
+      "color": "#e31d1a",
+      "selectable": true,
+      "timezone": "Europe/Madrid",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": []
+    },
+    "connect-couriers": {
+      "displayName": "Connect Couriers",
+      "aliases": [
+        "Connect Express",
+        "Connect Express Couriers",
+        "Connect Services Ltd"
+      ],
+      "countries": [
+        "MT"
+      ],
+      "color": "#9c231b",
+      "selectable": true,
+      "timezone": "Europe/Malta",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.connectcouriers.eu/tracking/?tracking_number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.connectcouriers.eu",
+            "connectcouriers.eu"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "tracking_number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.connectcouriers.eu/tracking/"
+    },
+    "dragon-star-curier": {
+      "displayName": "Dragon Star Curier",
+      "aliases": [
+        "DSC",
+        "DSC Dragon Star Curier",
+        "DSC-DragonStarCurier",
+        "Dragon Star"
+      ],
+      "countries": [
+        "RO"
+      ],
+      "color": "#000b8c",
+      "selectable": true,
+      "timezone": "Europe/Bucharest",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://dragonstarcurier.ro/tracking-awb?awb={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "dragonstarcurier.ro",
+            "www.dragonstarcurier.ro"
+          ],
+          "pathPattern": "^/tracking-awb/?$",
+          "params": [
+            "awb"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://dragonstarcurier.ro/tracking-awb"
+    },
+    "fastdrop": {
+      "displayName": "Fastdrop",
+      "aliases": [
+        "FastDrop",
+        "eCabs Fastdrop"
+      ],
+      "countries": [
+        "MT"
+      ],
+      "color": "#26bed3",
+      "selectable": true,
+      "timezone": "Europe/Malta",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://booking.fastdrop.mt/package-tracking/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "booking.fastdrop.mt"
+          ],
+          "path": "^/package-tracking/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://tracking.fastdrop.mt/"
+    },
+    "inter-courier": {
+      "displayName": "Intercourier",
+      "aliases": [
+        "Inter Courier",
+        "INTERCOURIER",
+        "INTERCOURIER - Serviço Expresso Global"
+      ],
+      "countries": [
+        "PT"
+      ],
+      "color": "#76ba59",
+      "selectable": true,
+      "timezone": "Europe/Lisbon",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://intercourier.pt/pt/tracking?tracking={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "intercourier.pt",
+            "www.intercourier.pt"
+          ],
+          "pathPattern": "^/(?:pt|en)/tracking/?$",
+          "params": [
+            "tracking"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://intercourier.pt/pt/tracking"
+    },
+    "sp-express": {
+      "displayName": "SP Express",
+      "aliases": [
+        "SP EXPRESS",
+        "SP Express Sp. z o.o.",
+        "Świat Przesyłek",
+        "Swiat Przesylek"
+      ],
+      "countries": [
+        "PL"
+      ],
+      "color": "#247c00",
+      "selectable": true,
+      "timezone": "Europe/Warsaw",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://en.sp.express/tt/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "sp.express",
+            "en.sp.express",
+            "swiatprzesylek.pl"
+          ],
+          "path": "^/tt/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "sp.express",
+            "swiatprzesylek.pl"
+          ],
+          "path": "^/tt-cainiao/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^483\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{6}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://sp.express/tt"
+    },
+    "tdn": {
+      "displayName": "TDN",
+      "aliases": [
+        "TDN, S.A.U."
+      ],
+      "countries": [
+        "ES",
+        "PT"
+      ],
+      "color": "#ffc72c",
+      "selectable": true,
+      "timezone": "Europe/Madrid",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.tdn.es/tracking?envio={trackingNumber}&autoredir=1",
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.tdnonline.com"
+          ],
+          "pathPattern": "^/consulta_expediciones/tracking/?$",
+          "params": [
+            "REFERENCIA"
+          ]
+        },
+        {
+          "domains": [
+            "www.tdn.es",
+            "tdn.es"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "envio",
+            "Envio"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.tdn.es/tracking/"
     }
   }
 }
