@@ -76,6 +76,40 @@ API actions report one final `outcome`: `success`, `error`, or `accepted` for a 
 Background polling, detection, token renewal and invitation previews aren't tracked.
 Demo actions never count as account API successes.
 
+## Funnel
+
+The way from arriving to following a parcel. Each step is a page view at a screen's virtual
+path, such as `/front-door`, or an action:
+
+1. **Arrival**: `front-door`, or `parcel-link` at a parcel's address. On the web a guide or
+   carrier page can come first. `welcome` is no step: the web never shows it, and on the
+   iPhone it stands for the launch.
+2. **Lookup**: on the web `parcel-lookup`, and a `door-*` action for each notice that stops
+   it; on the iPhone `add-parcel`. Someone signed in who adds a parcel counts `parcel-add`.
+3. **Parcel**: `parcel-link` for a parcel's page, `parcel` for one opened from the deliveries.
+4. **Account**: `parcel-link-sign-in` (and `parcel-link-email`), the sign-in actions and
+   `sign-in-complete`, then `parcel-link-keep` as the parcel joins the account.
+5. **Alerts**: `notifications-enable` and `email-offer-accept`; on the web also a parcel
+   page's `parcel-link-alerts-open` and `parcel-link-alerts`.
+
+Umami's funnel report chains these steps within one property, by its own estimate of a
+visitor: neither client sends an identifier, so steps join per visit, never per person.
+`platform` separates `web`, `pwa` and `ios`, and `mode` the visitor (`anonymous`), the sample
+parcel (`demo`) and the account; signing in turns `anonymous` into `account` midway.
+
+Gaps:
+
+- Web and iPhone are separate properties, so nothing joins one person across them, or
+  across browsers and devices.
+- A visitor's lookup on the iPhone sends nothing, so `add-parcel` doesn't say whether it
+  found the parcel.
+- A parcel page opened from a share and one reached by a lookup are the same `parcel-link`;
+  only a `parcel-lookup` just before tells them apart.
+- `parcel-link-keep` counts requests, not parcels: one keeps the parcel on its page, one
+  brings a device's parcels along after sign-in, which the iPhone does on its own.
+- Installing the web app isn't counted; later events just carry `platform=pwa`. A web
+  notification opened isn't counted either; the iPhone counts `notification-open`.
+
 ## Privacy
 
 Never sent: emails, account or parcel ids, parcel link ids or owner keys, the token of an
