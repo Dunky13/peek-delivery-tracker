@@ -821,6 +821,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "j-and-t-br": "j-and-t-cn",
   "j-and-t-cargo": "j-and-t-cargo",
   "j-and-t-cn": "j-and-t-cn",
+  "j-and-t-middle-east": "j-and-t-cn",
   "j-and-t-mx": "j-and-t-cn",
   "jadlog": "jadlog",
   "jamaica-post": "jamaica-post",
