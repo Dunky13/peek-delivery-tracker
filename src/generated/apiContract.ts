@@ -3009,7 +3009,7 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|CUB|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ],
@@ -4126,6 +4126,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^(?![A-Z]{2}\\d)(?!\\d{3})[A-Z0-9]{3}\\d{7}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^(?=[A-Z0-9]{0,2}[A-Z])[A-Z0-9]{3}Z\\d{8}$",
+        "confidence": "low",
+        "preferred": true
       },
       {
         "pattern": "^0[0-3]\\d{20}$",
@@ -11860,7 +11865,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Pacific/Auckland",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nz-couriers"
     },
     "trackingUrlTemplate": "https://nzcouriers.co.nz/track?query={trackingNumber}",
     "linkRules": [
@@ -15262,7 +15267,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Atlantic/Reykjavik",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dropp",
+      "recognitionRank": 807
     },
     "trackingUrlTemplate": "https://api.dropp.is/dropp/track/{trackingNumber}",
     "linkRules": [
@@ -20937,7 +20943,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jeebly",
+      "recognitionRank": 805
     },
     "linkRules": [
       {
@@ -28960,7 +28967,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "US"
     ],
-    "color": "#0c71c3",
+    "color": "#2d419a",
     "selectable": true,
     "timezone": "America/Los_Angeles",
     "tracking": {
@@ -28991,7 +28998,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "US"
     ],
-    "color": "#cb2026",
+    "color": "#ae2326",
     "selectable": true,
     "timezone": "America/Chicago",
     "tracking": {
@@ -29019,7 +29026,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "US"
     ],
-    "color": "#0056a7",
+    "color": "#ffca43",
     "selectable": true,
     "timezone": "America/Chicago",
     "tracking": {
@@ -29060,7 +29067,7 @@ export const CARRIER_CAPABILITIES = {
       "US",
       "CA"
     ],
-    "color": "#1c2752",
+    "color": "#004da9",
     "selectable": true,
     "timezone": "America/Los_Angeles",
     "tracking": {
@@ -29085,6 +29092,84 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://herculesfreight.com/Forms/TrackShipment"
+  },
+  "gaash": {
+    "displayName": "GAASH Worldwide",
+    "aliases": [
+      "GAASH",
+      "Gaash Worldwide",
+      "GAASH Worldwide Ltd",
+      "Gaash"
+    ],
+    "countries": [
+      "IL"
+    ],
+    "color": "#153d6b",
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://gaashwd.com/track-parcel/?TrackingNumber={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "gaashwd.com",
+          "www.gaashwd.com"
+        ],
+        "pathPattern": "^/(?:track-parcel/?|he/(?:%D7%90%D7%99%D7%AA%D7%95%D7%A8-%D7%97%D7%91%D7%99%D7%9C%D7%94|איתור-חבילה)/?)?$",
+        "params": [
+          "TrackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://gaashwd.com/track-parcel/"
+  },
+  "orian": {
+    "displayName": "Orian",
+    "aliases": [
+      "Orian Express",
+      "OEX Orian",
+      "אוריין",
+      "אוריין אקספרס"
+    ],
+    "countries": [
+      "IL"
+    ],
+    "color": "#d01b21",
+    "selectable": true,
+    "timezone": "Asia/Jerusalem",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search?searchKey={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking-ecom.orian.com"
+        ],
+        "pathPattern": "^/CargoTracking/public-tracking/search/?$",
+        "params": [
+          "searchKey"
+        ]
+      },
+      {
+        "domains": [
+          "www.orian.com",
+          "orian.com"
+        ],
+        "pathPattern": "^/OrianBarcodeTracking/?$",
+        "params": [
+          "barcode",
+          "b"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search"
   }
 } as const;
 
@@ -29879,7 +29964,9 @@ export const CARRIER_IDS = [
   "american-west-express",
   "ccfs",
   "custom-companies",
-  "hercules-freight"
+  "hercules-freight",
+  "gaash",
+  "orian"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
