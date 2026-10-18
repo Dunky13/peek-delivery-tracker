@@ -7835,7 +7835,8 @@ export const CARRIER_CAPABILITIES = {
     "displayName": "Early Bird",
     "aliases": [
       "Earlybird",
-      "Early Bird AB"
+      "Early Bird AB",
+      "Morgontidig Distribution"
     ],
     "countries": [
       "SE"
@@ -9745,7 +9746,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "burd-delivery",
+      "recognitionRank": 861
     },
     "trackingUrlTemplate": "https://burd.dk/track?code={trackingNumber}",
     "linkRules": [
@@ -12873,7 +12875,8 @@ export const CARRIER_CAPABILITIES = {
       "Shree Maruti",
       "Shree Maruti Courier Services",
       "Shree Maruti Courier Services Private Limited",
-      "Shree Maruti Courier Service"
+      "Shree Maruti Courier Service",
+      "Innofulfill"
     ],
     "countries": [
       "IN"
@@ -16433,7 +16436,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pfc-express",
+      "recognitionRank": 856
     },
     "trackingUrlTemplate": "https://www.pfctrack.com/?nums={trackingNumber}",
     "linkRules": [
@@ -16462,7 +16466,7 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^R\\d{16}$",
+        "pattern": "^R(?=\\d{13,17}$)\\d{5,6}2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{1,4}$",
         "confidence": "low"
       }
     ],
@@ -17315,7 +17319,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "winit",
+      "recognitionRank": 855
     },
     "trackingUrlTemplate": "https://track.winit.com/tracking/Mobile/result?trackingNos={trackingNumber}",
     "linkRules": [
@@ -17351,6 +17356,10 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^WO\\d{11}(?:\\d{3})?[A-Z]{2}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^WO\\d{10,11}[A-Z]$",
         "confidence": "high"
       }
     ],
@@ -22439,7 +22448,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pitney-bowes"
     },
     "trackingUrlTemplate": "https://trackpb.shipment.co/track/{trackingNumber}",
     "linkRules": [
@@ -22496,7 +22505,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "a1-post"
     },
     "trackingUrlTemplate": "https://a1post.bg/track.php?t={trackingNumber}",
     "linkRules": [
@@ -26291,6 +26300,249 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.xtrac-express.com/tracking"
+  },
+  "big-smart": {
+    "displayName": "Big Smart",
+    "aliases": [
+      "BigSmart",
+      "BIG Pack"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "color": "#f0bd18",
+    "selectable": true,
+    "timezone": "America/Mexico_City",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://bigsmart.mx/en/tracking/?trackingNumber={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "bigsmart.mx",
+          "www.bigsmart.mx"
+        ],
+        "pathPattern": "^/(?:en/)?tracking/?$",
+        "params": [
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://bigsmart.mx/en/tracking/"
+  },
+  "evdemo-lojistik": {
+    "displayName": "Evdemo Lojistik",
+    "aliases": [
+      "Evdemo",
+      "Evdemo Kargo"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "color": "#f77a00",
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.evdemolojistik.com/takip?kargo_kodu={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.evdemolojistik.com",
+          "evdemolojistik.com"
+        ],
+        "pathPattern": "^/takip/?$",
+        "params": [
+          "kargo_kodu"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.evdemolojistik.com/takip"
+  },
+  "gta-airskip": {
+    "displayName": "GTA AirSkip",
+    "aliases": [
+      "GTA GSM",
+      "GTAGSM"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "color": "#1081c4",
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://gtaairskip.com/tracking/?trackingid={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "gtaairskip.com",
+          "www.gtaairskip.com",
+          "gtagsm.com",
+          "www.gtagsm.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}(?:-[a-zA-Z]{2})?/)?tracking/?$",
+        "params": [
+          "trackingid",
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^GR[GS]\\d{5}[0-9A-Z]{11}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://gtaairskip.com/tracking/"
+  },
+  "nova-global": {
+    "displayName": "Nova Global",
+    "aliases": [
+      "Nova Poshta Global",
+      "NP Global",
+      "Нова Пошта Глобал",
+      "Nova Poshta International"
+    ],
+    "countries": [
+      "UA",
+      "US",
+      "CA"
+    ],
+    "color": "#da291c",
+    "selectable": true,
+    "timezone": "Europe/Kyiv",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://nova.global/track/?Tracking_ID={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "nova.global",
+          "novaposhtaglobal.ua"
+        ],
+        "pathPattern": "^/(?:(?:en|ru|uk)/)?track/?$",
+        "params": [
+          "Tracking_ID"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9,16}NPG$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://nova.global/track/"
+  },
+  "proships": {
+    "displayName": "ProShips",
+    "aliases": [
+      "PROSHIPS",
+      "ProShips e-commerce Logistics"
+    ],
+    "countries": [
+      "CO"
+    ],
+    "color": "#f8b909",
+    "selectable": true,
+    "timezone": "America/Bogota",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://proships.com/tracking?tracking={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "proships.com",
+          "www.proships.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "tracking",
+          "code"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://proships.com/tracking/"
+  },
+  "pts-worldwide-express": {
+    "displayName": "PTS Worldwide Express",
+    "aliases": [
+      "PTS Kargo"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "color": "#be1722",
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "pts.net",
+          "www.pts.net"
+        ],
+        "pathPattern": "^/sqlptstrack\\.php$",
+        "params": [
+          "trackid"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://wp.pts.net/gonderi-takip"
+  },
+  "shipentegra": {
+    "displayName": "ShipEntegra",
+    "aliases": [
+      "Ship Entegra"
+    ],
+    "countries": [
+      "TR"
+    ],
+    "color": "#0db6dc",
+    "selectable": true,
+    "timezone": "Europe/Istanbul",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://track.shipentegra.com/?trackno={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "track.shipentegra.com"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/?)?(?:track/?)?$",
+        "params": [
+          "trackno"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^1SE\\d{9}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://track.shipentegra.com/"
   }
 } as const;
 
@@ -27007,7 +27259,14 @@ export const CARRIER_IDS = [
   "j-and-t-middle-east",
   "hovership",
   "pdn-express",
-  "x-trac"
+  "x-trac",
+  "big-smart",
+  "evdemo-lojistik",
+  "gta-airskip",
+  "nova-global",
+  "proships",
+  "pts-worldwide-express",
+  "shipentegra"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
