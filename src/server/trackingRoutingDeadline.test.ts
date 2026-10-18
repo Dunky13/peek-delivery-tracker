@@ -13,7 +13,8 @@ const browserReply = (source: string) => Response.json({
   html: `<div class="tracking-info"><div class="parcel"><table class="parcel-attributes"><tr><td>Tracking number</td><td>${number}</td></tr></table></div></div>`,
   capturedResponses: [{ status: 200,
     url: source === 'ParcelsApp' ? 'https://parcelsapp.com/api/v2/parcels' : 'https://t.17track.net/track/restapi',
-    body: JSON.stringify(source === 'ParcelsApp' ? { states: [{ date: stamp, status: 'In transit' }] }
+    // ParcelsApp's label is an instant only for a network the scraper knows, such as the postal union's feed.
+    body: JSON.stringify(source === 'ParcelsApp' ? { carriers: ['Universal Postal Union'], states: [{ date: stamp, status: 'In transit', carrier: 0 }] }
       : { meta: { code: 200 }, shipments: [{ number, code: 200, shipment: {
         tracking: { providers: [{ events: [{ time_utc: stamp, description: 'In transit', stage: 'InTransit' }] }] },
       } }] }),
