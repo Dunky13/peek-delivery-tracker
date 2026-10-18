@@ -261,13 +261,16 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(catalog.parse("https://t.17track.net/en#nums=ZZ12345678900").trackingNumber, "ZZ12345678900")
     }
 
+    func testOffersCChezVousForItsSharedOrderShape() {
+        XCTAssertEqual(catalog.detect("FGRC45BKLM").candidates, [.cChezVous])
+    }
+
     func testDetectsHighConfidenceCarriers() {
         XCTAssertEqual(catalog.detect("1Z999AA10123456784").carrier, .ups)
         XCTAssertEqual(catalog.detect("443412345678901234").carrier, .quickpac)
         XCTAssertEqual(catalog.detect("RA123456785CH").carrier, .swissPost)
         XCTAssertEqual(catalog.detect("250123456789012").carrier, .dpdFr)
         XCTAssertEqual(catalog.detect("CC200000000401").carrier, .relaisColis)
-        XCTAssertEqual(catalog.detect("FGRC45BKLM").carrier, .cChezVous)
         XCTAssertEqual(catalog.detect("ASE12345678").carrier, .asendia)
         XCTAssertEqual(catalog.detect("FR1234567890").carrier, .amazonLogistics)
         XCTAssertEqual(catalog.detect("2103/11207088").carrier.rawValue, "nacex")

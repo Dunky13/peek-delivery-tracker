@@ -248,9 +248,10 @@ describe('carrier detection', () => {
   });
 
   it('c-chez-vous — C Chez Vous', () => {
-    // OFFICIAL EXAMPLE short code from the order-tracking page.
+    // OFFICIAL EXAMPLE short code from the order-tracking page. Other carriers print this
+    // shape too, so detection offers C Chez Vous and recognition confirms it.
     // Source: https://www.cchezvous.fr/suivi-colis
-    expect(detectCarrier('FGRC45BKLM')).toBe('c-chez-vous');
+    expect(detectCarrierMatch('FGRC45BKLM').candidates).toEqual(['c-chez-vous']);
     // OFFICIAL composite example needs reconstruction with -- for the URL; the raw
     // composite itself is not a number-only oracle.
     // Source: https://www.cchezvous.fr/suivi-colis
