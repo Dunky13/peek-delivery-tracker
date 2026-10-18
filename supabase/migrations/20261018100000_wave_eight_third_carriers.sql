@@ -2,7 +2,9 @@
 -- universal providers.
 -- Built on 20261018090000_j_and_t_middle_east, the last carrier list applied and the last
 -- that defined the functions.
--- Database gate: carriers added hovership, pdn-express, x-trac
+-- Database gate: carriers added hovership
+-- Database gate: carriers added pdn-express
+-- Database gate: carriers added x-trac
 
 alter table public.packages
   drop constraint if exists packages_carrier_check,
