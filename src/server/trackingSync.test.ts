@@ -2543,29 +2543,30 @@ describe('TrackingSyncService', () => {
     }) };
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
     let parcel: JsonObject = { id: 'postal', carrier: 'la-poste', tracking_number: 'LX123456785FR' };
-    const refresh = async () => {
+    const refresh = async (time: string) => {
+      now = new Date(`2026-09-10T${time}:00Z`);
       adapter.fetch.mockClear();
       await service.syncPackage(parcel, { trigger: 'scheduled' });
       parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
       return adapter.fetch.mock.calls.map((call) => call[0]);
     };
 
-    expect(await refresh()).toEqual(['la-poste', 'swiss-post']);
-    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T10:00:00.000Z', origin_update: originUpdate } });
+    expect(await refresh('10:00')).toEqual(['la-poste', 'swiss-post']);
+    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T10:00:00.000Z', origin_update: originUpdate, misses: 1 } });
     // Nothing moved: the two-minute and ten-minute cadences no longer repeat the probe.
-    now = new Date('2026-09-10T10:10:00Z');
-    expect(await refresh()).toEqual(['la-poste']);
-    now = new Date('2026-09-10T10:50:00Z');
-    expect(await refresh()).toEqual(['la-poste']);
+    expect(await refresh('10:10')).toEqual(['la-poste']);
+    expect(await refresh('10:50')).toEqual(['la-poste']);
     expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T10:00:00.000Z' } });
-    // The hourly overnight cadence still asks every time.
-    now = new Date('2026-09-10T11:00:00Z');
-    expect(await refresh()).toEqual(['la-poste', 'swiss-post']);
-    // A new origin event is the usual sign of a handover, so it asks at once.
-    now = new Date('2026-09-10T11:10:00Z');
+    // Each miss doubles the gap, from 55 min up to 6 h.
+    for (const [time, asked, misses] of [['10:55', true, 2], ['12:40', false, 2], ['12:45', true, 3],
+      ['16:20', false, 3], ['16:25', true, 4], ['22:20', false, 4], ['22:25', true, 5]] as const) {
+      expect(await refresh(time)).toEqual(asked ? ['la-poste', 'swiss-post'] : ['la-poste']);
+      expect(parcel.carrier_data).toMatchObject({ delivery_probe: { misses } });
+    }
+    // A new origin event is the usual sign of a handover, so it asks at once and starts the gaps over.
     originUpdate = '2026-09-10T12:30:00+02:00';
-    expect(await refresh()).toEqual(['la-poste', 'swiss-post']);
-    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T11:10:00.000Z', origin_update: originUpdate } });
+    expect(await refresh('22:40')).toEqual(['la-poste', 'swiss-post']);
+    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T22:40:00.000Z', origin_update: originUpdate, misses: 1 } });
   });
 
   it('asks a partner that has announced the parcel on every check until its first scan', async () => {
@@ -2644,11 +2645,11 @@ describe('TrackingSyncService', () => {
     expect(await refresh('package')).toEqual(['la-poste']);
     now = new Date('2026-09-10T10:41:00Z');
     expect(await refresh('package')).toEqual(['la-poste', 'swiss-post']);
-    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T10:41:00.000Z' } });
-    // The scheduled checks go on counting the long gap, from that ask.
-    now = new Date('2026-09-10T11:00:00Z');
-    expect(await refresh('scheduled')).toEqual(['la-poste']);
+    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T10:41:00.000Z', misses: 2 } });
+    // The scheduled checks go on counting the gap, doubled by that miss, from that ask.
     now = new Date('2026-09-10T11:40:00Z');
+    expect(await refresh('scheduled')).toEqual(['la-poste']);
+    now = new Date('2026-09-10T12:31:00Z');
     expect(await refresh('scheduled')).toEqual(['la-poste', 'swiss-post']);
   });
 
@@ -2708,6 +2709,19 @@ describe('TrackingSyncService', () => {
     expect(client.updatePackage.mock.calls.at(-1)?.[1]).toMatchObject({
       sync_status: 'ok', carrier_data: { active_tracking_carrier: 'swiss-post' },
     });
+  });
+
+  it('asks a saved partner after the first gap while the international tracker is unavailable', async () => {
+    const client = fakeClient();
+    const adapter = { fetch: vi.fn().mockRejectedValueOnce(new Error('Cainiao unavailable'))
+      .mockResolvedValueOnce({ status: 'out_for_delivery' }) };
+    // Four misses would wait 6 h with the origin answering.
+    await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T11:00:00Z'))
+      .syncPackage({ id: 'postal-outage', carrier: 'aliexpress', tracking_number: 'LX123456785NL', carrier_data: {
+        delivery_carrier: 'swiss-post', delivery_probe: { carrier: 'swiss-post', at: '2026-09-10T10:00:00.000Z', origin_update: null, misses: 4 } } },
+      { trigger: 'scheduled' });
+    expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['aliexpress', 'swiss-post']);
+    expect(client.updatePackage.mock.calls.at(-1)?.[1]).toMatchObject({ carrier_data: { active_tracking_carrier: 'swiss-post' } });
   });
 
   it('persists a different domestic number and uses it for later refreshes', async () => {

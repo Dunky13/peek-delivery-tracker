@@ -384,9 +384,11 @@ A parcel often changes carrier at the border. The origin history is always kept.
   the same number.
 - The partner is only adopted once its own adapter (no required inputs) returns dated,
   fresh progress. A partner whose only input is optional (DPD's postcode) is asked without
-  it, and only with a reference of its own number shape, never the origin's postal number. Failed confirmations wait 55 min unless the origin history or the partner
-  changes. The wait is 5 min on a refresh by hand, and once the partner has announced the
-  parcel: a dated record no older than the origin's newest scan, without a scan of its own.
+  it, and only with a reference of its own number shape, never the origin's postal number.
+  Failed confirmations wait 55 min, doubling with each miss up to 6 h, unless the origin
+  history or the partner changes; the wait stays 55 min while the origin is down. It is
+  5 min on a refresh by hand, and once the partner has announced the parcel: a dated
+  record no older than the origin's newest scan, without a scan of its own.
   A partner that does not know the item yet, or answers inconclusively, is not
   reported as `provider_failed`; its network failures and server errors still are.
 - Until then the parcel is followed on the origin. The cards, parcel links and the delivered email

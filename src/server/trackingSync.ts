@@ -96,7 +96,8 @@ const ARCHIVED_FOLLOWED_MS = 30 * 24 * 60 * 60 * 1_000;
 
 /**
  * An unsuccessful partner confirmation must not double every refresh's cost.
- * Recheck when origin history advances, the partner/reference changes, or this gap passes.
+ * Recheck when origin history advances, the partner/reference changes, or the gap
+ * passes: this one after the first miss.
  */
 const DELIVERY_PROBE_INTERVAL_MS = 55 * 60 * 1_000;
 /**
@@ -106,11 +107,11 @@ const DELIVERY_PROBE_INTERVAL_MS = 55 * 60 * 1_000;
  */
 const DELIVERY_PROBE_SHORT_INTERVAL_MS = 5 * 60 * 1_000;
 /**
- * A Swiss postal number filed under Swiss Post is followed on Cainiao while Swiss Post
- * does not know it. Each probe Swiss Post misses while Cainiao has no news doubles the
- * gap before the next, from DELIVERY_PROBE_INTERVAL_MS up to this.
+ * Each probe the partner misses while the origin has no news doubles the gap before
+ * the next, from DELIVERY_PROBE_INTERVAL_MS up to this. A Swiss postal number filed
+ * under Swiss Post is followed on Cainiao the same way while Swiss Post does not know it.
  */
-const SWISS_POST_PROBE_MAX_INTERVAL_MS = 6 * 60 * 60 * 1_000;
+const DELIVERY_PROBE_MAX_INTERVAL_MS = 6 * 60 * 60 * 1_000;
 /**
  * A carrier publishes some scans after it handed the parcel over. The earlier
  * carrier is asked again this long after the handoff, at most once per
@@ -123,7 +124,7 @@ interface DeliveryProbe extends JsonObject {
   origin_update: string | null;
   /** The partner had the parcel on record, dated no earlier than the origin's news, without a scan of its own. */
   announced?: true;
-  /** The Swiss Post probes in a row that found nothing while Cainiao had no news. */
+  /** The probes in a row that found nothing while the origin (Cainiao for Swiss Post) had no news. */
   misses?: number;
 }
 
@@ -1743,14 +1744,18 @@ export class TrackingSyncService {
       const previousProbe = candidate ? previousDeliveryProbe(parcel, candidate.carrier, candidate.number) : null;
       const originUpdate = typeof origin.last_update === 'string' ? origin.last_update : previousProbe?.origin_update ?? null;
       const sinceProbe = previousProbe ? this.now().getTime() - Date.parse(previousProbe.at) : Number.NaN;
-      const gap = byHand || previousProbe?.announced ? DELIVERY_PROBE_SHORT_INTERVAL_MS : DELIVERY_PROBE_INTERVAL_MS;
+      const misses = previousProbe?.misses ?? 1;
+      // While the origin is down, the saved partner alone can show the delivery: its gap does not grow.
+      const gap = byHand || previousProbe?.announced ? DELIVERY_PROBE_SHORT_INTERVAL_MS
+        : Math.min(DELIVERY_PROBE_MAX_INTERVAL_MS, DELIVERY_PROBE_INTERVAL_MS * 2 ** (originError ? 0 : misses - 1));
       const askedRecently = previousProbe !== null && originUpdate === previousProbe.origin_update
         && sinceProbe >= 0 && sinceProbe < gap;
       if (candidate && askedRecently) {
         // carrier_data is rebuilt from the result on every refresh: carry the marker forward.
         origin.delivery_probe = { ...previousProbe, carrier: candidate.carrier, number: candidate.number };
       } else if (candidate) {
-        const probe: DeliveryProbe = { at: this.now().toISOString(), origin_update: originUpdate, carrier: candidate.carrier, number: candidate.number };
+        const probe: DeliveryProbe = { at: this.now().toISOString(), origin_update: originUpdate, carrier: candidate.carrier, number: candidate.number,
+          misses: previousProbe && originUpdate === previousProbe.origin_update ? misses + 1 : 1 };
         origin.delivery_probe = probe;
         try {
           const delivery = normalizeCarrierResult(await this.fetchCarrier(checks, candidate.carrier, candidate.number, null, null));
@@ -1790,7 +1795,7 @@ export class TrackingSyncService {
             };
           }
           // It has the parcel on record with news of its own and no scan yet: its first scan comes next.
-          if (!scanned && deliveryTime > 0 && deliveryTime >= watermark) probe.announced = true;
+          if (!scanned && deliveryTime > 0 && deliveryTime >= watermark) Object.assign(probe, { announced: true, misses: 1 });
         } catch (error) {
           fallbackError = errorType(error);
           // A partner that does not know the item yet, or answers inconclusively
@@ -1821,7 +1826,7 @@ export class TrackingSyncService {
     const previousProbe = previousDeliveryProbe(parcel, 'swiss-post', trackingNumber);
     const misses = previousProbe?.misses ?? 1;
     const gap = byHand ? DELIVERY_PROBE_SHORT_INTERVAL_MS
-      : Math.min(SWISS_POST_PROBE_MAX_INTERVAL_MS, DELIVERY_PROBE_INTERVAL_MS * 2 ** (misses - 1));
+      : Math.min(DELIVERY_PROBE_MAX_INTERVAL_MS, DELIVERY_PROBE_INTERVAL_MS * 2 ** (misses - 1));
     const sinceProbe = previousProbe ? this.now().getTime() - Date.parse(previousProbe.at) : Number.NaN;
     // Within the gap after Swiss Post missed the item, Cainiao answers first. Its news,
     // the usual sign of the handover, asks Swiss Post again at once.
