@@ -76,7 +76,8 @@ All tables and views here are service-role only.
   reported to Sentry as `reopen_announcements`). A not-yet-announced number
   is a successful `fetch` with disposition `unannounced`, and the attempt ends as
   `waiting`. Real failures end as `error`. A `fetch` that reused answers another copy of
-  its number got earlier in the same scheduled run counts them in `shared_answers`.
+  its number got earlier in the same scheduled run counts them in `shared_answers`, as it
+  does the failure of a carrier whose own browser already failed in the run.
 
 Completed rows are kept for 90 days. A check cut off at shutdown ends `interrupted`, with
 its `tracking_sync_completed` line; one whose worker died is marked `abandoned` when its

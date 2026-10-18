@@ -1,6 +1,6 @@
 import 'server-only';
 import { deferredTrackingFailure, trackingFailureCode } from './trackingFailure';
-import { CarrierError, inferStage, stageSource, resultStage, resultHasUpdate, CARRIER_DEFINITIONS, type CarrierId } from 'universal-parcel-scraper';
+import { CarrierError, carrierErrorKind, inferStage, stageSource, resultStage, resultHasUpdate, CARRIER_DEFINITIONS, type CarrierId } from 'universal-parcel-scraper';
 export { classifyStage, inferStage, stageSource, resultStage, resultHasUpdate } from 'universal-parcel-scraper';
 import { AMAZON_ACCOUNT_MESSAGE, AMAZON_HISTORY_EXPIRED, requiresAmazonAccount } from '../lib/amazon';
 import { normalizeTrackingNumber } from '../lib/carriers';
@@ -304,6 +304,8 @@ export interface TrackingAdapter {
   /** A carrier's cheap check of whether it knows a number (carrier.json `tracking.recognition`). */
   recognize?(carrierId: string, trackingNumber: string, context?: TrackingContext): Promise<Recognition>;
   recognizeBrowser?(carrierId: string, trackingNumber: string, context?: TrackingContext, previousError?: unknown): Promise<Recognition>;
+  /** Whether the carrier is tracked only through its own browser, which fails every parcel alike when it is down. */
+  browserOnly?(carrierId: string): boolean;
   fetch(
     carrierId: string,
     trackingNumber: string,
@@ -331,6 +333,11 @@ export class CarrierTrackingAdapter implements TrackingAdapter {
   }
 
   recognizeBrowser = recognizeBrowser;
+
+  browserOnly(carrierId: string): boolean {
+    const steps = this.registry.for(carrierId)?.steps ?? [];
+    return steps.length > 0 && steps.every((step) => step === 'browser');
+  }
 
   async fetch(
     carrierId: string,
@@ -1652,7 +1659,17 @@ export class TrackingSyncService {
   private fetchCarrier(checks: ParcelLookups | undefined, carrierId: string, trackingNumber: string,
     trackingUrl: string | null, dpdPostcode: string | null): Promise<CarrierResult> {
     const lookup = () => this.adapter.fetch(carrierId, trackingNumber, trackingUrl, dpdPostcode);
-    return checks ? checks.once(carrierLookupKey(carrierId, trackingNumber, trackingUrl, dpdPostcode), lookup) : lookup();
+    if (!checks) return lookup();
+    const key = carrierLookupKey(carrierId, trackingNumber, trackingUrl, dpdPostcode);
+    if (!this.adapter.browserOnly?.(carrierId)) return checks.once(key, lookup);
+    // A run asks a carrier tracked only through its own browser once while that browser fails:
+    // each failed lookup can take the browser's whole timeout.
+    const outage = checks.outage(carrierId);
+    if (outage) return Promise.reject(outage);
+    return checks.once(key, lookup).catch((error: unknown) => {
+      if (['transport', 'budget', 'maintenance'].includes(carrierErrorKind(error) ?? '')) checks.down(carrierId, error);
+      throw error;
+    });
   }
 
   private async fetchResult(

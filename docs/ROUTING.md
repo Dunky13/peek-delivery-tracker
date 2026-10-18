@@ -194,7 +194,9 @@ parcels followed without an account that nobody watches (below).
 A parcel checked hourly or less often has an hour of its own, opening at a minute its
 number gives, so by day those checks spread over the hour rather than all falling in its
 first runs; copies of one number open together and share their lookups. Overnight runs
-start on the hour and check them all.
+start on the hour and check them all. A carrier tracked only through its own browser, such
+as Royal Mail, fails every parcel alike while that browser is down or times out: once it
+fails that way in a run, the run's other checks take the same failure without asking it.
 
 Cooldowns use the persisted `last_synced_at` and `sync_status`, so restarts and repeated
 Refresh taps don't bypass them. New or reconfigured parcels are checked at once. A scheduled

@@ -52,6 +52,7 @@ function pick(source: JsonObject, keys: readonly string[]): JsonObject {
  */
 export class SharedLookups {
   readonly #answers = new Map<string, Promise<unknown>>();
+  readonly #outages = new Map<string, unknown>();
   readonly #routing = new Map<string, { routing: JsonObject; data: JsonObject }>();
 
   constructor(parcels: readonly JsonObject[] = []) {
@@ -74,7 +75,7 @@ export class SharedLookups {
   for(parcel: JsonObject): ParcelLookups {
     const identity = lookupIdentity(parcel);
     const shared = identity ? this.#routing.get(identity) : undefined;
-    return new ParcelLookups(this.#answers, shared ? follow(parcel, shared) : parcel);
+    return new ParcelLookups(this.#answers, shared ? follow(parcel, shared) : parcel, this.#outages);
   }
 }
 
@@ -94,10 +95,23 @@ function follow(parcel: JsonObject, shared: { routing: JsonObject; data: JsonObj
 }
 
 export class ParcelLookups {
-  /** Answers this check took from another copy's lookup instead of asking again. */
+  /** Answers this check took from another copy's lookup, or outages from another check, instead of asking again. */
   shared = 0;
 
-  constructor(private readonly answers: Map<string, Promise<unknown>>, readonly parcel: JsonObject) {}
+  constructor(private readonly answers: Map<string, Promise<unknown>>, readonly parcel: JsonObject,
+    private readonly outages = new Map<string, unknown>()) {}
+
+  /** The failure a carrier that fails every lookup alike gave earlier in the run, which later checks take instead of asking. */
+  outage(carrier: string): unknown {
+    const outage = this.outages.get(carrier);
+    if (outage) this.shared++;
+    return outage;
+  }
+
+  /** The carrier is down for the rest of the run. */
+  down(carrier: string, error: unknown): void {
+    if (!this.outages.has(carrier)) this.outages.set(carrier, error);
+  }
 
   /** The answer another check of this run already got or awaits for the key: a copy of it, or the same failure. */
   reuse<T>(key: readonly unknown[]): Promise<T> | undefined {

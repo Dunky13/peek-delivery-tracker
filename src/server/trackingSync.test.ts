@@ -1,5 +1,5 @@
 import { carrierResult } from '../test/carrierResults';
-import { CarrierError } from 'universal-parcel-scraper';
+import { CarrierError, ChallengeError } from 'universal-parcel-scraper';
 import { REGISTRY } from 'universal-parcel-scraper/node';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { idlePollDelay, secondsUntilNextSync, syncWindowStart, workerPollDelay } from './background';
@@ -34,7 +34,7 @@ import {
 } from './trackingSync';
 import type { JsonObject } from './types';
 import * as observability from './observability';
-import { catalogRules, TrackingRouter } from './trackingRouting';
+import { catalogRules, routingFailure, TrackingRouter } from './trackingRouting';
 import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
@@ -1462,6 +1462,40 @@ describe('TrackingSyncService', () => {
         carrier_data: { tracking_provider: adapter.fetchUniversal.mock.calls[0][0],
           routing: { failures: { 'swiss-post': { kind: 'transport' } } } } });
     }
+  });
+
+  it.each([
+    { name: 'a browser that timed out', error: new BudgetExceededError('Royal Mail', 30_000), lookups: 1 },
+    { name: 'a challenge', error: new ChallengeError('Royal Mail'), lookups: 3 },
+  ])('asks a carrier tracked only by its own browser once per run after $name: $lookups lookups', async ({ error, lookups }) => {
+    const parcel = (id: string, number: string): JsonObject => ({ id, user_id: 'a', carrier: 'royal-mail', tracking_number: number,
+      current_stage: 'in_transit', created_at: '2026-09-10T08:00:00Z', last_synced_at: '2026-09-10T11:00:00Z', sync_status: 'ok' });
+    const client = { ...fakeClient([parcel('first', 'TEST1234'), parcel('second', 'TEST5678'), parcel('third', 'TEST9012')]),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    const adapter = { fetch: vi.fn().mockRejectedValue(error), fetchUniversal: vi.fn().mockRejectedValue(new UpstreamHttpError('ParcelsApp', 502)),
+      browserOnly: (carrier: string) => carrier === 'royal-mail' };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    await expect(service.sync()).resolves.toMatchObject({ checked: 3 });
+    expect(adapter.fetch).toHaveBeenCalledTimes(lookups);
+    const attempt = client.startSyncAttempt.mock.calls.find(([, values]) => values.package_id === 'third')?.[0];
+    expect(client.completeSyncAttempt).toHaveBeenCalledWith(attempt, expect.anything(), expect.arrayContaining([
+      expect.objectContaining({ step: 'fetch', details: lookups === 1 ? expect.objectContaining({ shared_answers: 1 })
+        : expect.not.objectContaining({ shared_answers: expect.anything() }) })]));
+    // Each parcel still records the carrier's failure and waits for the next run.
+    for (const id of ['first', 'second', 'third']) {
+      expect(client.updatePackage.mock.calls.filter(([packageId]) => packageId === id).at(-1)?.[1], id).toMatchObject({
+        carrier_data: { routing: { failures: { 'royal-mail': { kind: routingFailure(error).kind } } } } });
+    }
+  });
+
+  it('knows the carriers tracked only by their own browser', () => {
+    const adapter = new CarrierTrackingAdapter({ fetch: vi.fn() } as unknown as UniversalTracker);
+    expect(adapter.browserOnly('royal-mail')).toBe(true);
+    // A browser service that serves many carriers, or a browser behind direct requests, can fail one parcel alone.
+    expect(adapter.browserOnly('usps')).toBe(false);
+    expect(adapter.browserOnly('dhl-ecommerce')).toBe(false);
+    expect(adapter.browserOnly('swiss-post')).toBe(false);
   });
 
   it('still checks the accounts when the one-off parcels cannot be listed', async () => {
