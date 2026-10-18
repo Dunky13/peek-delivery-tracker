@@ -43,7 +43,9 @@ and [`truck.json`](truck.json).
 | `algerie-poste` | [commons.wikimedia.org](https://upload.wikimedia.org/wikipedia/commons/7/72/AlgeriePoste.svg) — logo SVG fills #22297c (swoosh and name) and #fecc0b (yellow swoosh) |
 | `aliexpress` | [aliexpress.com](https://www.aliexpress.com/) (sampled from the site icon) |
 | `allegro-one` | [about.allegro.eu](https://about.allegro.eu/wp-content/uploads/2026/06/one.png) — logo tile pixels #006d57 (one) and #7edf00 (box) (approximate) |
+| `am-home-delivery` | [amtrucking.com](https://www.amtrucking.com/images/logo2.png) — logo PNG: blue M #013e81, red A and swoosh #bc242a (approximate); amtracking.css colours headings #013e81 |
 | `ameex` | [ameex.ma](https://www.ameex.ma/icon.svg) — app icon SVG fill #132F7D; theme-color #132F7D |
+| `american-west-express` | [awest.com](https://www.awest.com/wp-content/uploads/2020/07/AW-Logo-with-Sun-1.jpg) — logo JPEG blue #2d419a, sun #f2692b (approximate); the site icon crops the same emblem |
 | `amerijet` | [amerijet.com](https://www.amerijet.com/) — site CSS #0d4a79 (with #0e4a79); logo PNG #154979 (approximate) |
 | `ampm` | [grupoampm.com](https://grupoampm.com/wp-content/uploads/2025/03/ampm-logo.svg) — logo SVG fills #0d298e (pm, lower half disc) and #2861c6 (am, upper half disc) |
 | `an-post` | [anpost.com](https://www.anpost.com/) |
@@ -105,6 +107,7 @@ and [`truck.json`](truck.json).
 | `cargus` | [cargus.ro](https://www.cargus.ro/personal/urmareste-coletul/) — theme colour --wp--preset--color--kb-palette-1 #f68121 |
 | `castores` | [castores.com.mx](https://www.castores.com.mx/Code/front_end/dist/prod/images/global/favicon-144x144.png) — favicon red #c72628 (approximate); CSS --red-3 #c72628 |
 | `cbl-logistica` | [cbl-logistica.com](https://www.cbl-logistica.com/) — site CSS --brand-color-1 #E31D1A (cookie and action buttons); the CBL lettering on its white vans is this red |
+| `ccfs` | [ccfs.com](https://www.ccfs.com/images/CCFS-LTL.svg) — logo SVG: bison fill #AE2326, CCFS wordmark #06508C; the apple-touch icon is the same red bison (#af2127) |
 | `cdek` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:CDEK_logo.svg) — fill #00B33C |
 | `cdl` | [cdldelivers.com](https://cdldelivers.com/) — header background `#3d74b2` in the site CSS; flame `#fb3e3e` from the logo PNG's flat red |
 | `celeritas` | [celeritastransporte.com](https://celeritastransporte.com/wp-content/uploads/elementor/css/post-9.css) — Elementor --e-global-color-primary #009AAB (secondary #EE7D00) |
@@ -155,6 +158,7 @@ and [`truck.json`](truck.json).
 | `ctt` | [ctt.pt](https://www.ctt.pt/) |
 | `ctt-express` | [cttexpress.com](https://www.cttexpress.com/) |
 | `cttyex` | [cttyvip888.com](https://www.cttyvip888.com/assets/img/logo.png) — logo blue around #0068ac (approximate), orange play mark around #e88c20 |
+| `custom-companies` | [customco.com](https://www.customco.com/wp-content/themes/customco/assets/css/main.min.css) — site accent #ffca43 (links, titles, buttons) on the page background #1e1e1e; the trucks in the site's 40th-anniversary photo are black with gold CUSTOM lettering |
 | `cycloon` | [cycloon.eu](https://www.cycloon.eu/assets/img/logo-cycloon.svg) — logo SVG fill #E4002B, theme-color #e4002b |
 | `cyprus-post` | [cypruspost.post](https://www.cypruspost.post/themes/post-office/css/style1000.css) — #e4a50e in the site CSS, matching the horn in the logo JPEG (approximate) |
 | `d-express` | [dexpress.rs](https://www.dexpress.rs/files/images/Daily_Express_doo/logo/DExpress_logo_sa_sloganom.png) — logo red #ff0000 (approximate) |
@@ -279,6 +283,7 @@ and [`truck.json`](truck.json).
 | `hct-logistics` | [hct.com.tw](https://www.hct.com.tw/CSS/default.css) — site CSS #004B97 (navigation and tab frame), between the badge gradient #007ac3 to #181878 |
 | `helthjem` | [helthjem.no](https://helthjem.no/next-assets/images/hh_logo.svg) — logo SVG fill #ffb202 (parcel front), #050505 (lid, side, name) |
 | `hepsijet` | [hepsijet.com](https://www.hepsijet.com/images/hepsijet.svg) — logo SVG fill #562898 for JET (archived copy; live site returns 403) |
+| `hercules-freight` | [herculesfreight.com](https://herculesfreight.com/assets-v2/images/hercules-logo.svg) — logo SVG fills #004da9 (wordmark) and #ea0029 (arc); site CSS --blue #00499c |
 | `hi-trans` | [hi-trans.com.au](https://www.hi-trans.com.au/wp-content/uploads/2016/02/Hi-Trans_logo.png) — logo PNG chevron red #c82027, with highlight #ed1f24 (approximate) |
 | `hispapost` | [hispapost.es](https://www.hispapost.es/assets/img/hispapost-logo.svg) — logo SVG fill #00548b; theme-color #00548b |
 | `homexpress` | [homexpress.com.au](https://www.homexpress.com.au/logo.png) — site icon yellow #ffcd00, its most frequent pixel (approximate); lettering green #00864c (approximate) |
@@ -1375,3 +1380,8 @@ and [`truck.json`](truck.json).
 | `rpx-hk` | White angular rpx over a teal triangle on red | [rpxonline.com](https://www.rpxonline.com/wp-content/uploads/2019/12/cropped-rpx-pop-up-logo-192x192.png) — site icon: a slim red triangle behind teal r-p-x letters that turn white where they cross it |
 | `montenegro-post` | Black envelope outline with its curled flap on yellow | [postacg.me](https://www.postacg.me/wp-content/uploads/main_logo_horizontal_color.svg) — the emblem: one rounded-rectangle stroke that curls at the top right into the envelope flap |
 | `vitran-express` | White italic V under a white swoosh on blue | [vitran.com](https://web.archive.org/web/20250409152253im_/https://www.vitran.com/images/vitran-logo.png) — archived header logo: heavy italic blue Vitran under a red swoosh; the footer's reversed logo (images/vitran-white.png) is all white |
+| `am-home-delivery` | Red italic A and white M on navy | [amtrucking.com](https://www.amtrucking.com/images/logo2.png) — header logo: red italic A with an arrow streak beside a blue M, over HOME DELIVERY |
+| `american-west-express` | White triangle with a blue crescent and an orange sun on blue | [awest.com](https://www.awest.com/wp-content/uploads/2020/07/AW-Logo-with-Sun-1.jpg) — the emblem: a blue A triangle with a white crescent swoosh above a W triangle, an orange sun behind its apex |
+| `ccfs` | White bison with a red horn on red | [ccfs.com](https://www.ccfs.com/images/webclip.png) — the bison of the logo and apple-touch icon, facing right |
+| `custom-companies` | Gold disc with a black map of the United States and a gold bullseye dot, on black | [customco.com](https://www.customco.com/wp-content/uploads/2023/03/new-logo.svg) — the O of CUSTOM: a disc holding the US map with a bullseye |
+| `hercules-freight` | White italic H under a red arc on blue | [herculesfreight.com](https://herculesfreight.com/assets-v2/images/hercules-logo.svg) — the bold italic Hercules wordmark under a red arc, reduced to its H |

@@ -135,7 +135,8 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'pcp-express' | 'houng-ah-loun' | 'netpost-vn' | 'tp-logistics-th' | 'pcs-logistics-vn'
   | 'rr-express-sg' | 'eparcel-kr' | 'aci-express-kr' | 'gsi-express' | 'today-kr' | 'exmate'
   | 'winion-logis' | 'last-one-mile-coop' | 'dpex' | 'mrl-global' | 'fliway' | 'morning-global'
-  | 'rpx-hk' | 'montenegro-post' | 'vitran-express';
+  | 'rpx-hk' | 'montenegro-post' | 'vitran-express' | 'am-home-delivery' | 'american-west-express'
+  | 'ccfs' | 'custom-companies' | 'hercules-freight';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

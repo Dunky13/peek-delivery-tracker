@@ -102,6 +102,11 @@ export const CARRIER_PALETTES: Record<string, Partial<CarrierPalette>> = {
     "accent": "#002e6d",
     "brand-light": "#002e6d"
   },
+  "custom-companies": {
+    "truck": "#1e1e1e",
+    "edge": "#000000",
+    "accent": "#ffca43"
+  },
   "cyprus-post": {
     "accent": "#202020"
   },
@@ -542,9 +547,11 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "algerie-poste": "algerie-poste",
   "aliexpress": "aliexpress",
   "allegro-one": "allegro-one",
+  "am-home-delivery": "am-home-delivery",
   "amazon-logistics": "amazon",
   "amazon-shipping": "amazon",
   "ameex": "ameex",
+  "american-west-express": "american-west-express",
   "amerijet": "amerijet",
   "ampm": "ampm",
   "an-post": "an-post",
@@ -607,6 +614,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "cargus": "cargus",
   "castores": "castores",
   "cbl-logistica": "cbl-logistica",
+  "ccfs": "ccfs",
   "cdek": "cdek",
   "cdl": "cdl",
   "celeritas": "celeritas",
@@ -659,6 +667,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "ctt": "ctt",
   "ctt-express": "ctt",
   "cttyex": "cttyex",
+  "custom-companies": "custom-companies",
   "cycloon": "cycloon",
   "cyprus-post": "cyprus-post",
   "d-express": "d-express",
@@ -819,6 +828,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "helthjem": "helthjem",
   "heppner": "heppner",
   "hepsijet": "hepsijet",
+  "hercules-freight": "hercules-freight",
   "hermes": "hermes",
   "hermes-at": "hermes",
   "hermes-de": "hermes",
@@ -14064,6 +14074,132 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M4 6.25L5.06 5.84L6.13 5.47L7.19 5.15L8.26 4.86L9.32 4.63L10.39 4.43L11.45 4.28L12.51 4.18L13.58 4.12L14.64 4.12L15.71 4.19L16.77 4.31L17.84 4.5L18.9 4.75L18.9 6.75L17.84 6.39L16.77 6.09L15.71 5.86L14.64 5.69L13.58 5.58L12.51 5.54L11.45 5.54L10.39 5.58L9.32 5.68L8.26 5.82L7.19 6L6.13 6.24L5.06 6.52L4 6.85Z",
         "fill": "accent"
+      }
+    ],
+    "am-home-delivery": [
+      {
+        "type": "polygon",
+        "d": "M3.3 14.6L8.3 4.4L10.9 4.4L10.7 14.6L8.5 14.6L8.5 12.5L6.6 12.5L5.7 14.6Z",
+        "fill": "#ff4b55"
+      },
+      {
+        "type": "polygon",
+        "d": "M7.5 10.5L8.6 7.6L8.55 10.5Z",
+        "fill": "truck"
+      },
+      {
+        "type": "polygon",
+        "d": "M11.9 14.6L11.9 4.4L14.2 4.4L15.35 8.4L16.5 4.4L18.8 4.4L18.8 14.6L16.9 14.6L16.9 9L15.95 12.2L14.75 12.2L13.8 9L13.8 14.6Z",
+        "fill": "accent"
+      }
+    ],
+    "american-west-express": [
+      {
+        "type": "polygon",
+        "d": "M14.27 4.98L14.5 3.79L15.3 4.7Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M15.1 4.7L15.9 3.79L16.13 4.98Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M15.96 4.88L17.11 4.49L16.72 5.64Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M16.62 5.47L17.81 5.7L16.9 6.5Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M16.9 6.3L17.81 7.1L16.62 7.33Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M16.72 7.16L17.11 8.31L15.96 7.92Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M16.13 7.82L15.9 9.01L15.1 8.1Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M15.3 8.1L14.5 9.01L14.27 7.82Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M14.44 7.92L13.29 8.31L13.68 7.16Z",
+        "fill": "#f2692b"
+      },
+      {
+        "type": "circle",
+        "cx": 15.2,
+        "cy": 6.4,
+        "r": 1.9,
+        "fill": "#f2692b"
+      },
+      {
+        "type": "polygon",
+        "d": "M3.3 14.6L10.4 4.2L16.9 14.6Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M9.8 7.02L9.03 7.78L8.44 8.79L8.09 9.96L8 11.2L8.18 12.43L8.61 13.56L9.26 14.49L10.08 15.17L11.5 14.63L10.91 14.04L10.44 13.22L10.13 12.24L10 11.17L10.07 10.09L10.32 9.08L10.74 8.2L11.3 7.54Z",
+        "fill": "truck"
+      }
+    ],
+    "ccfs": [
+      {
+        "type": "polygon",
+        "d": "M13.2 4L15.3 5.3L16 4.1L16.7 4L16.5 5L16.3 5.9L18.3 7.3L18.8 8.6L18.4 10.5L17.6 11.2L17 13.5L16.3 12L16.1 14.4L14.6 14.4L14.4 12.2L8.5 11.8L6.9 14.4L4.8 14.4L4.4 12.1L3.8 10.4L3.2 10.8L3.7 9.2L5.4 7.6L7.2 6.6L7.8 5.7L8.3 6.2L9.4 5L9.8 5.5L11.2 4.6Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M15.87 6.1L15.69 6.64L15.6 7.22L15.62 7.81L15.75 8.37L15.96 8.89L16.92 8.52L16.79 8.2L16.71 7.85L16.7 7.49L16.75 7.13L16.86 6.8Z",
+        "fill": "truck"
+      }
+    ],
+    "custom-companies": [
+      {
+        "type": "circle",
+        "cx": 11,
+        "cy": 9.5,
+        "r": 5.5,
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M6.77 7.42L11.07 7.11L11.76 7.84L12.62 7.42L14.34 6.8L15.03 7.32L14 8.57L13.48 9.71L14.17 11.79L13.48 11.79L12.62 10.86L11.42 10.96L10.73 12L10.04 11.17L9.18 10.65L8.15 10.54L7.29 9.92L6.6 8.57Z",
+        "fill": "truck"
+      },
+      {
+        "type": "circle",
+        "cx": 10.56,
+        "cy": 9.09,
+        "r": 0.95,
+        "fill": "accent"
+      }
+    ],
+    "hercules-freight": [
+      {
+        "type": "polygon",
+        "d": "M3.6 15L5.73 7.4L8.03 7.4L7.24 10.2L11.54 10.2L12.33 7.4L14.63 7.4L12.5 15L10.2 15L11.01 12.1L6.71 12.1L5.9 15Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M3.4 6.6L4.74 5.8L6.13 5.12L7.56 4.56L9.03 4.12L10.55 3.8L12.11 3.6L13.72 3.52L15.37 3.56L17.06 3.72L18.8 4L18.4 6.4L16.85 5.97L15.3 5.64L13.77 5.42L12.26 5.3L10.75 5.28L9.26 5.36L7.77 5.54L6.3 5.82L4.85 6.21Z",
+        "fill": "#ff4b55"
       }
     ]
   }

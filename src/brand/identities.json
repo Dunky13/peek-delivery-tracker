@@ -91,6 +91,9 @@
       "accent": "#7edf00"
     }
   },
+  "am-home-delivery": {
+    "decal": "am-home-delivery"
+  },
   "amazon-logistics": {
     "decal": "amazon",
     "palette": {
@@ -104,6 +107,9 @@
   },
   "ameex": {
     "decal": "ameex"
+  },
+  "american-west-express": {
+    "decal": "american-west-express"
   },
   "amerijet": {
     "decal": "amerijet"
@@ -306,6 +312,9 @@
   "cbl-logistica": {
     "decal": "cbl-logistica"
   },
+  "ccfs": {
+    "decal": "ccfs"
+  },
   "cdek": {
     "decal": "cdek"
   },
@@ -486,6 +495,14 @@
   },
   "cttyex": {
     "decal": "cttyex"
+  },
+  "custom-companies": {
+    "decal": "custom-companies",
+    "palette": {
+      "truck": "#1e1e1e",
+      "edge": "#000000",
+      "accent": "#ffca43"
+    }
   },
   "cycloon": {
     "decal": "cycloon"
@@ -1040,6 +1057,9 @@
   },
   "hepsijet": {
     "decal": "hepsijet"
+  },
+  "hercules-freight": {
+    "decal": "hercules-freight"
   },
   "hermes": {
     "decal": "hermes"
