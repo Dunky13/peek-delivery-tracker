@@ -1143,7 +1143,7 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       },
       {
-        "pattern": "^(?:\\d{10}|\\d{14})$",
+        "pattern": "^\\d{10}$",
         "confidence": "low"
       },
       {
@@ -2779,7 +2779,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tipsa",
-      "recognitionRank": 680
+      "recognitionRank": 680,
+      "recognitionPattern": "^\\d{22}$"
     },
     "linkRules": [
       {
@@ -4083,7 +4084,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "australia-post",
-      "recognitionRank": 500
+      "browserRecognitionRank": 500
     },
     "linkRules": [
       {
@@ -11130,7 +11131,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ids-logistik",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "IDS shows a shipment only with the recipient's postcode.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "linkRules": [
       {
@@ -12638,7 +12652,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "seko",
+      "recognitionRank": 854
     },
     "trackingUrlTemplate": "https://www.sekologistics.com/en/track/?trackingNumbers={trackingNumber}",
     "linkRules": [
@@ -13731,7 +13746,8 @@ export const CARRIER_CAPABILITIES = {
       "DHLink",
       "Dhlink",
       "驼飞侠",
-      "駝飛俠"
+      "駝飛俠",
+      "XZG"
     ],
     "countries": [
       "CN"
@@ -13761,6 +13777,10 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^EYT\\d{10}HZ$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^QH\\d{12}FS$",
         "confidence": "low"
       }
     ],
@@ -15380,7 +15400,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "equick",
+      "recognitionRank": 853
     },
     "linkRules": [
       {
@@ -15391,7 +15412,12 @@ export const CARRIER_CAPABILITIES = {
         "fragment": "^/support/supportWay\\?(?:[^#]*&)?nums=([^&,]+)"
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^EQK[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
   },
   "fargo-courier": {
     "displayName": "Fargo Courier",
@@ -22537,7 +22563,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "direx"
     },
     "trackingUrlTemplate": "https://direx.bg/track/?code={trackingNumber}",
     "linkRules": [
@@ -25770,7 +25796,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Madrid",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tdn",
+      "recognitionRank": 857
     },
     "trackingUrlTemplate": "https://www.tdn.es/tracking?envio={trackingNumber}&autoredir=1",
     "linkRules": [
@@ -26186,7 +26213,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "j-and-t-middle-east"
     },
     "trackingUrlTemplate": "https://www.jtexpress.me/KSA/trajectoryList?waybillNo={trackingNumber}&type=0",
     "linkRules": [
@@ -26310,7 +26337,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "MX"
     ],
-    "color": "#f0bd18",
+    "color": "#2f2f5e",
     "selectable": true,
     "timezone": "America/Mexico_City",
     "tracking": {
@@ -26342,7 +26369,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "TR"
     ],
-    "color": "#f77a00",
+    "color": "#e3590f",
     "selectable": true,
     "timezone": "Europe/Istanbul",
     "tracking": {
@@ -26543,6 +26570,155 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://track.shipentegra.com/"
+  },
+  "bringer-parcel": {
+    "displayName": "Bringer Parcel Xpress",
+    "aliases": [
+      "BPX",
+      "Bringer Parcel Service",
+      "Bringer Parcel Services"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#150773",
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.bringerparcel.com/tracking/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.bringerparcel.com",
+          "bringerparcel.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BPS[A-Z0-9]{12,13}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://www.bringerparcel.com/tracking"
+  },
+  "domain-logistics": {
+    "displayName": "Domain Logistics",
+    "aliases": [
+      "Domain Express"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "color": "#6abf4b",
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://domainlogistics.ca/tracking/?tracking={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "domainlogistics.ca"
+        ],
+        "pathPattern": "^/tracking(?:/fr)?/?$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://domainlogistics.ca/tracking/"
+  },
+  "fleetex": {
+    "displayName": "FleetExpress",
+    "aliases": [
+      "FleetEx",
+      "Fleet Express",
+      "FleetExpress Canada"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "color": "#2563eb",
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking.fleetexpress.ca/tracking/en/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.fleetexpress.ca"
+        ],
+        "path": "^/tracking/(?:[a-z]{2,3})/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://tracking.fleetexpress.ca/tracking"
+  },
+  "micro-express": {
+    "displayName": "Micro Express",
+    "aliases": [
+      "Mirco Express"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "color": "#dc143c",
+    "selectable": true,
+    "timezone": "Australia/Melbourne",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^ME\\d{13}[A-Z]{3}$",
+        "confidence": "high"
+      }
+    ]
+  },
+  "postplus": {
+    "displayName": "PostPlus",
+    "aliases": [
+      "Post+",
+      "Post+ B.V.",
+      "Post Plus"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "color": "#fe5f55",
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://post.plus/?tracking={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "post.plus"
+        ],
+        "pathPattern": "^/$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://post.plus/"
   }
 } as const;
 
@@ -27266,7 +27442,12 @@ export const CARRIER_IDS = [
   "nova-global",
   "proships",
   "pts-worldwide-express",
-  "shipentegra"
+  "shipentegra",
+  "bringer-parcel",
+  "domain-logistics",
+  "fleetex",
+  "micro-express",
+  "postplus"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
