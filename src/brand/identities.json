@@ -56,6 +56,9 @@
   "afghan-post": {
     "decal": "afghan-post"
   },
+  "air-star-xpress": {
+    "decal": "air-star-xpress"
+  },
   "ajex": {
     "decal": "ajex"
   },
@@ -264,6 +267,9 @@
   },
   "c-chez-vous": {
     "decal": "c-chez-vous"
+  },
+  "c3x": {
+    "decal": "c3x"
   },
   "campost": {
     "decal": "campost"
@@ -657,6 +663,9 @@
   "ecms-express": {
     "decal": "ecms-express"
   },
+  "eco-express-ae": {
+    "decal": "eco-express-ae"
+  },
   "econt": {
     "decal": "econt"
   },
@@ -800,6 +809,9 @@
   "first-delivery-tn": {
     "decal": "first-delivery-tn"
   },
+  "first-fly-express": {
+    "decal": "first-fly-express"
+  },
   "flash-express": {
     "decal": "flash-express"
   },
@@ -814,6 +826,9 @@
   },
   "flippost": {
     "decal": "flippost"
+  },
+  "flyking": {
+    "decal": "flyking"
   },
   "followmont": {
     "decal": "followmont"
@@ -938,6 +953,12 @@
   },
   "gogo-xpress": {
     "decal": "gogo-xpress"
+  },
+  "goodluck-courier": {
+    "decal": "goodluck-courier"
+  },
+  "grand-slam-express": {
+    "decal": "grand-slam-express"
   },
   "groupe-guilbault": {
     "decal": "groupe-guilbault"
@@ -1148,6 +1169,9 @@
   "jet-logistic": {
     "decal": "jet-logistic"
   },
+  "jetline-couriers": {
+    "decal": "jetline-couriers"
+  },
   "jhgj": {
     "decal": "jhgj"
   },
@@ -1283,6 +1307,9 @@
   },
   "loggi": {
     "decal": "loggi"
+  },
+  "logistiq": {
+    "decal": "logistiq"
   },
   "logoix": {
     "decal": "logoix"
@@ -1547,6 +1574,9 @@
   "pathao-courier": {
     "decal": "pathao-courier"
   },
+  "pavan-courier": {
+    "decal": "pavan-courier"
+  },
   "paxel": {
     "decal": "paxel"
   },
@@ -1741,6 +1771,9 @@
   "quickpac": {
     "decal": "quickpac"
   },
+  "quicksilver-sa": {
+    "decal": "quicksilver-sa"
+  },
   "quiqup": {
     "decal": "quiqup"
   },
@@ -1794,6 +1827,9 @@
   },
   "sagawa-global": {
     "decal": "sagawa-global"
+  },
+  "sahara-express": {
+    "decal": "sahara-express"
   },
   "saia": {
     "decal": "saia"
@@ -1874,6 +1910,9 @@
   "shree-anjani": {
     "decal": "shree-anjani"
   },
+  "shree-mahabali-express": {
+    "decal": "shree-mahabali-express"
+  },
   "shree-mahavir": {
     "decal": "shree-mahavir"
   },
@@ -1891,6 +1930,9 @@
   },
   "skroutz-last-mile": {
     "decal": "skroutz-last-mile"
+  },
+  "skyex-ae": {
+    "decal": "skyex-ae"
   },
   "skyking": {
     "decal": "skyking"
@@ -1927,6 +1969,9 @@
   },
   "spee-dee": {
     "decal": "spee-dee"
+  },
+  "speed-and-safe": {
+    "decal": "speed-and-safe"
   },
   "speedex": {
     "decal": "speedex"
@@ -2049,6 +2094,9 @@
   "tealca": {
     "decal": "tealca"
   },
+  "team-express-ae": {
+    "decal": "team-express-ae"
+  },
   "team-global-express": {
     "decal": "team-global-express",
     "palette": {
@@ -2060,6 +2108,9 @@
   },
   "teleship": {
     "decal": "teleship"
+  },
+  "tfm-express": {
+    "decal": "tfm-express"
   },
   "tforce-freight": {
     "decal": "tforce-freight"
@@ -2114,6 +2165,9 @@
   },
   "transaher": {
     "decal": "transaher"
+  },
+  "transcorp": {
+    "decal": "transcorp"
   },
   "transmission": {
     "decal": "transmission"

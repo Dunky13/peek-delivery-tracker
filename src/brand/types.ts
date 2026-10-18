@@ -125,7 +125,10 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'pts-worldwide-express' | 'evdemo-lojistik' | 'big-smart' | 'proships' | 'gta-airskip'
   | 'domain-logistics' | 'fleetex' | 'postplus' | 'bringer-parcel' | 'micro-express' | 'l-post'
   | 'vestovoy' | '4sides' | 'dobropost' | 'flippost' | 'jet-logistic' | 'starex-az'
-  | 'mongol-infinity-post' | 'peqasus-az';
+  | 'mongol-infinity-post' | 'peqasus-az' | 'c3x' | 'eco-express-ae' | 'logistiq' | 'quicksilver-sa'
+  | 'skyex-ae' | 'team-express-ae' | 'tfm-express' | 'transcorp' | 'air-star-xpress'
+  | 'first-fly-express' | 'flyking' | 'goodluck-courier' | 'grand-slam-express' | 'jetline-couriers'
+  | 'pavan-courier' | 'sahara-express' | 'shree-mahabali-express' | 'speed-and-safe';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

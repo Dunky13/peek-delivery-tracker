@@ -114,6 +114,9 @@ describe('carrier mark', () => {
     'domain-logistics', 'fleetex', 'postplus', 'bringer-parcel', 'micro-express',
     'l-post', 'vestovoy', '4sides', 'dobropost', 'flippost', 'jet-logistic', 'starex-az',
     'mongol-infinity-post', 'peqasus-az',
+    'c3x', 'eco-express-ae', 'logistiq', 'quicksilver-sa', 'skyex-ae', 'team-express-ae', 'tfm-express',
+    'transcorp', 'air-star-xpress', 'first-fly-express', 'flyking', 'goodluck-courier', 'grand-slam-express',
+    'jetline-couriers', 'pavan-courier', 'sahara-express', 'shree-mahabali-express', 'speed-and-safe',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);
