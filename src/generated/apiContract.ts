@@ -12001,7 +12001,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "palletways"
     },
     "linkRules": [],
     "detectionRules": [],
@@ -22100,7 +22100,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Lisbon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "torrestir",
+      "recognitionRank": 866
     },
     "trackingUrlTemplate": "https://tracking.torrestir.com/?id={trackingNumber}",
     "linkRules": [
@@ -22833,7 +22834,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "logoix",
+      "recognitionRank": 869
     },
     "trackingUrlTemplate": "https://www.logoix.com/cgi-bin/tnt.pl?q={trackingNumber}",
     "linkRules": [
@@ -23256,7 +23258,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Berlin",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "eurodis"
     },
     "trackingUrlTemplate": "https://eurodis.com/track-trace?track_and_trace_hidden_field=trackCollo&trackCollo-input-of={trackingNumber}",
     "linkRules": [
@@ -25765,6 +25767,265 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.tdn.es/tracking/"
+  },
+  "a-tu-hora-express": {
+    "displayName": "A Tu Hora Express",
+    "aliases": [
+      "A TU HORA EXPRESS",
+      "A Tu Hora"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "color": "#27348b",
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^0{6}\\d{10}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^0{6}\\d{10}001\\d{5}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://mydelivery.atuhoraexpress.com/"
+  },
+  "chronodiali": {
+    "displayName": "Chronodiali",
+    "aliases": [
+      "Chrono Diali"
+    ],
+    "countries": [
+      "MA"
+    ],
+    "color": "#0060a2",
+    "selectable": true,
+    "timezone": "Africa/Casablanca",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://chronodiali.ma/suivi_colis.html?id={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "chronodiali.ma",
+          "www.chronodiali.ma"
+        ],
+        "pathPattern": "^/suivi_colis\\.html$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^CHPU\\d{19}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://chronodiali.ma/suivi_colis.html"
+  },
+  "closer-logistics": {
+    "displayName": "Closer Logistics",
+    "aliases": [
+      "Closer",
+      "Closerlogistics"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "color": "#7bb4b8",
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking.closerlogistics.com/tracking/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.closerlogistics.com"
+        ],
+        "path": "^/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://tracking.closerlogistics.com/"
+  },
+  "cst-italia": {
+    "displayName": "CST Italia",
+    "aliases": [
+      "CST Corriere Espresso",
+      "CST Italia Scarl",
+      "BDM Network",
+      "BDM Corriere Espresso"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "color": "#e81c3a",
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^CST\\d{18}(?:\\d{4})?$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^BDM\\d{18}(?:\\d{4})?$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.cstitaliascarl.it/tracking/"
+  },
+  "pro-carrier": {
+    "displayName": "Pro Carrier",
+    "aliases": [
+      "ProCarrier",
+      "PRO Carrier",
+      "Pro-Carrier",
+      "Pro Carrier Limited"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "color": "#2c1f72",
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking.weareprocarrier.com/?tn={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.weareprocarrier.com"
+        ],
+        "pathPattern": "^//?$",
+        "params": [
+          "tn"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^DG\\d{11}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://tracking.weareprocarrier.com/"
+  },
+  "teleship": {
+    "displayName": "Teleship",
+    "aliases": [
+      "Teleship Limited"
+    ],
+    "countries": [
+      "GB"
+    ],
+    "color": "#ff66d2",
+    "selectable": true,
+    "timezone": "Europe/London",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://teleship.com/tracking?number={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "teleship.com",
+          "www.teleship.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "number",
+          "trackingNumber"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://teleship.com/tracking"
+  },
+  "transaher": {
+    "displayName": "Transaher",
+    "aliases": [
+      "Grupo Transaher"
+    ],
+    "countries": [
+      "ES",
+      "PT"
+    ],
+    "color": "#233b81",
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://clientes.transaher.es/webclient/htracking/-5,0,{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "clientes.transaher.es"
+        ],
+        "path": "^/webclient/h?tracking/-5,0,([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^103\\d{24}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://transaher.es/"
+  },
+  "urvaam": {
+    "displayName": "Urvaam",
+    "aliases": [
+      "URVAAM",
+      "Servicios Urbanos Vaam"
+    ],
+    "countries": [
+      "ES"
+    ],
+    "color": "#ff7b3a",
+    "selectable": true,
+    "timezone": "Europe/Madrid",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.urvaam.es/track/result?no={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.urvaam.es",
+          "urvaam.es"
+        ],
+        "pathPattern": "^/track/result/?$",
+        "params": [
+          "no"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.urvaam.es/track"
   }
 } as const;
 
@@ -26466,7 +26727,15 @@ export const CARRIER_IDS = [
   "fastdrop",
   "inter-courier",
   "sp-express",
-  "tdn"
+  "tdn",
+  "a-tu-hora-express",
+  "chronodiali",
+  "closer-logistics",
+  "cst-italia",
+  "pro-carrier",
+  "teleship",
+  "transaher",
+  "urvaam"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 

@@ -703,6 +703,14 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let interCourier = CarrierID(rawValue: "inter-courier")
     static let spExpress = CarrierID(rawValue: "sp-express")
     static let tdn = CarrierID(rawValue: "tdn")
+    static let aTuHoraExpress = CarrierID(rawValue: "a-tu-hora-express")
+    static let chronodiali = CarrierID(rawValue: "chronodiali")
+    static let closerLogistics = CarrierID(rawValue: "closer-logistics")
+    static let cstItalia = CarrierID(rawValue: "cst-italia")
+    static let proCarrier = CarrierID(rawValue: "pro-carrier")
+    static let teleship = CarrierID(rawValue: "teleship")
+    static let transaher = CarrierID(rawValue: "transaher")
+    static let urvaam = CarrierID(rawValue: "urvaam")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -1370,6 +1378,14 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .interCourier,
         .spExpress,
         .tdn,
+        .aTuHoraExpress,
+        .chronodiali,
+        .closerLogistics,
+        .cstItalia,
+        .proCarrier,
+        .teleship,
+        .transaher,
+        .urvaam,
     ]
 
     init(from decoder: Decoder) throws {
