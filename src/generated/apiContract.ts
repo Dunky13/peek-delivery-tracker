@@ -13750,6 +13750,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^YLUS\\d{10}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^EYT\\d{10}HZ$",
+        "confidence": "low"
       }
     ],
     "trackingSearchUrl": "https://www.dhlink.com/trackQuery"
@@ -25622,7 +25626,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "MT"
     ],
-    "color": "#26bed3",
+    "color": "#5dbbd1",
     "selectable": true,
     "timezone": "Europe/Malta",
     "tracking": {
@@ -25685,7 +25689,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "PL"
     ],
-    "color": "#247c00",
+    "color": "#007d00",
     "selectable": true,
     "timezone": "Europe/Warsaw",
     "tracking": {
