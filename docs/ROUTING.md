@@ -353,9 +353,10 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   refuses the number by its own check, which sends nothing, is passed over until a release
   whose adapter takes it. One that refused the number under an older release counts as not
   asked, the filed carrier and a provider's name the parcel already holds included. One whose
-  answer was set aside counts as asked. A carrier the parcel already asked is asked again only
-  once the parcel has gone 12 hours without a check: its answer would most likely be the same,
-  and some lookups open a browser. A set-aside answer that the parcel's newest scan has since
+  answer was set aside counts as asked. A carrier the parcel already asked whose lookup can open
+  a browser (the catalog's `tracking.browser`) is asked again only once the parcel has gone 12
+  hours without a check: its answer would most likely be the same. Another is asked again at
+  once. A set-aside answer that the parcel's newest scan has since
   come back to, or one on local clocks the catalog now dates, doesn't wait. The checks most
   likely to change the answer go first (a carrier's answer the catalog now dates, a number it
   refused under an older release, or a set-aside answer that would now be taken, then a

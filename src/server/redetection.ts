@@ -1,5 +1,5 @@
 import 'server-only';
-import { recognitionCandidates } from 'universal-parcel-scraper';
+import { CARRIER_DEFINITIONS, recognitionCandidates } from 'universal-parcel-scraper';
 import { universalCarrierHints } from 'universal-parcel-scraper/app';
 import { detectCarrierMatch } from '../lib/carriers';
 import { AUTOMATIC_CARRIER_IDS } from './carriers';
@@ -13,10 +13,13 @@ export const REDETECTION_WINDOW_MS = 30 * 24 * 60 * 60 * 1_000;
 
 /**
  * How long after a parcel's last check a release waits before asking again a carrier the
- * parcel already asked: its answer would most likely come back the same, and some of these
- * lookups open a browser.
+ * parcel already asked whose lookup can open a browser: its answer would most likely come
+ * back the same. Another is asked again at once.
  */
 export const RELEASE_REASK_MS = 12 * 60 * 60 * 1_000;
+
+/** Carriers whose lookup can open a browser (the catalog's `tracking.browser`). */
+const BROWSER_CARRIERS = new Set(Object.entries(CARRIER_DEFINITIONS).filter(([, carrier]) => carrier.tracking.browser).map(([id]) => id));
 
 /**
  * The carrier the catalog's current rules point an open parcel to, when the
@@ -29,10 +32,10 @@ export const RELEASE_REASK_MS = 12 * 60 * 60 * 1_000;
  * or named carrier, or else the first carrier its check's recognition would
  * ask, asked before or not, once that carrier's wait is over: a release may
  * have taught it the number, and its last answer may have been a passing
- * failure such as a rate limit. A carrier the parcel already asked waits until
- * the parcel has gone RELEASE_REASK_MS without a check, unless the answer it
- * gave, set aside as older than the parcel or on local clocks, would now be
- * taken. Null otherwise. Only parcels filed under no carrier, or showing a
+ * failure such as a rate limit. A carrier the parcel already asked whose lookup
+ * can open a browser waits until the parcel has gone RELEASE_REASK_MS without a
+ * check, unless the answer it gave, set aside as older than the parcel or on
+ * local clocks, would now be taken. Null otherwise. Only parcels filed under no carrier, or showing a
  * universal provider's history, are looked at. Nothing is sent: the check
  * queued for the parcel asks the carrier. Carriers in `refused` are passed
  * over (rerouteAskable).
@@ -75,7 +78,8 @@ function rerouteLead(parcel: JsonObject, rules: string, now: number, refused: Re
     || (Boolean(routing.failures[carrier]) && !refusedBefore(carrier)) || Boolean(routing.candidate_probes?.[carrier]);
   const checkedRecently = now - Date.parse(String(parcel.last_synced_at ?? '')) < RELEASE_REASK_MS;
   const waiting = (carrier: string) => Date.parse(routing.candidate_probes?.[carrier]?.retry_at ?? '') > now
-    || Date.parse(routing.failures[carrier]?.retry_at ?? '') > now || (checkedRecently && asked(carrier) && !fits(carrier));
+    || Date.parse(routing.failures[carrier]?.retry_at ?? '') > now
+    || (checkedRecently && BROWSER_CARRIERS.has(carrier) && asked(carrier) && !fits(carrier));
   // A carrier with an adapter of its own that the parcel never asked, or an unfiled parcel
   // can ask again, or one an unfiled parcel's check asks the providers about.
   const leads = (carrier: string | undefined): carrier is string => carrier !== undefined && carrier !== filed

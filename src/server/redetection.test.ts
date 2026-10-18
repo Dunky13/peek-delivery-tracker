@@ -148,16 +148,17 @@ it('ranks the checks most likely to change the answer first', async () => {
     .toEqual({ carrier: 'dhl-express', rank: 2 });
 });
 
-it('asks a carrier the parcel already asked again only once the parcel has gone half a day without a check', () => {
+it('asks a carrier the parcel already asked that can open a browser again only once the parcel has gone half a day without a check', () => {
   const now = Date.parse('2026-09-10T12:00:00Z');
   const probe = { count: 7, retry_at: '2026-09-10T11:00:00Z' };
   const unseen = (checked: string, probes: JsonObject) => parcel({ tracking_number: '1234567891', current_stage: 'pending',
     last_synced_at: checked }, { tracking_provider: undefined, routing: { candidate_probes: probes } });
-  // Asked an hour ago: the next carrier its recognition would ask, never asked yet.
+  // DHL Express, whose lookup can open a browser, asked an hour ago: the next carrier its
+  // recognition would ask, never asked yet.
   expect(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe }), 'newer', now)).toBe('relais-colis');
-  expect(['dhl-express', 'relais-colis'])
-    .not.toContain(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe, 'relais-colis': probe }), 'newer', now));
-  // Half a day later, it is asked again.
+  // Relais Colis opens none: asked an hour ago, it is asked again at once.
+  expect(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe, 'relais-colis': probe }), 'newer', now)).toBe('relais-colis');
+  // Half a day later, DHL Express is asked again.
   expect(rerouteCarrier(unseen('2026-09-09T23:00:00Z', { 'dhl-express': probe }), 'newer', now)).toBe('dhl-express');
   // So is a detected carrier whose failure's wait is over.
   const failed = (checked: string) => parcel({ last_synced_at: checked },
@@ -201,7 +202,7 @@ describe('a carrier whose answer was set aside without movement or on local cloc
     set_aside: { [carrier]: { reason, checked_at: '2026-10-08T11:00:00.000Z', count: 2 } } } });
   const lead = (parcel: JsonObject) => rerouteAskable(parcel, 'newer', now, async () => false);
 
-  it('waits half a day like any carrier asked, whatever the watermark', async () => {
+  it('waits half a day like any carrier asked that can open a browser, whatever the watermark', async () => {
     expect(await lead(item('australia-post', 'no_movement'))).toBeNull();
     expect(await lead(item('australia-post', 'no_movement', { last_synced_at: '2026-10-07T23:00:00Z' }))).toEqual({ carrier: 'australia-post', rank: 2 });
   });
