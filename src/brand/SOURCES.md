@@ -257,6 +257,7 @@ and [`truck.json`](truck.json).
 | `hongkong-post` | [hongkongpost.hk](https://www.hongkongpost.hk/en/home/index.html) |
 | `horoz` | [horoz.com.tr](https://www.horoz.com.tr/_assets/images/logo/horoz-logo-color.svg) — logo SVG fill #c31f3f |
 | `hound-express` | [hound-express.com](https://www.hound-express.com/hx/wp-content/uploads/2024/05/logo-hound.svg) — logo SVG hound fill #18233e, also the navy of the site hero, menu bar and footer |
+| `hovership` | [hovership.com](https://www.hovership.com/favicon.svg) — theme-color #6768fe, also --color-brand-2 and the middle stop of the logo gradient (#29b0fe → #6768fe → #a51fff) |
 | `hp-mostar` | [post.ba](https://www.post.ba/) — site CSS --bs-post-main #ffed00; logo PNG yellow #fff200 (approximate) |
 | `hr-parcel` | [hrparcel.com](https://www.hrparcel.com/wp-content/uploads/2022/07/HR-PARCEL.svg) — logo SVG disc fill #FFD512; site buttons #ffd512 |
 | `hrvatska-posta` | [logo SVG](https://posiljka.posta.hr/assets/icons/hp-full-logo.svg) |
@@ -406,6 +407,7 @@ and [`truck.json`](truck.json).
 | `paxel` | [paxel.co](https://paxel.co/css/app.css) — wordmark fill #5f51a1 in the header logo PNG (exact pixel) and the stylesheet's most used brand colour (#5f51a1/#5e50a1, navbar and buttons); the app icon background is the same purple |
 | `paxi` | [paxi.co.za](https://cdn.prod.website-files.com/632874eb357ffe9936d5498d/636a4b9640d40d161b81e109_PAXI_logo%5B93%5D.webp) — logo orange #fa751e and teal #005065 (approximate) |
 | `pbt` | [pbt.nz](https://www.pbt.nz/) — header and site blue #008fbe (most used colour of the stylesheet; logo SVG is white) |
+| `pdn-express` | [pdn.express](https://pdn.express/en/track/) — site CSS --brand-blue #0b63f6; the favicon shows the white logo on this blue (sampled #0063e6, approximate) |
 | `pdq-chile` | [pdq.cl](https://pdq.cl/images/jira-logo-scaled.png) — logo PNG flat fill #ed1c24 (approximate, from the PNG) |
 | `pecom` | [pecom.ru](https://upload.pecom.ru/svg/logo.svg) — logo SVG fills #242265, red #E4003E |
 | `peddler` | [peddler.express](https://www.peddler.express/) — site CSS --pd #34205A; icon PNG #34205a (approximate) |
@@ -591,6 +593,7 @@ and [`truck.json`](truck.json).
 | `whistl` | [whistl.co.uk](https://www.whistl.co.uk/) — theme-color #fd4f00, also the favicon disc |
 | `winit` | [winit.com.cn](https://cnres.winit.com.cn/winit/logo/svg/logo_full.svg) — logo SVG fill #a07647 |
 | `x-express-ba` | [x-express.ba](https://www.x-express.ba/templates/cassiopeia/images/logo-x-express-brza-posta.webp) — logo flat orange #f15921 (approximate) |
+| `x-trac` | [xtrac-express.com](https://www.xtrac-express.com/) — logo PNG, flat fills #082799 (blue) and #da251d (red) |
 | `xde-logistics` | [xde.com.ph](https://www.xde.com.ph/) — theme-color and styles.css --navy #071a2b |
 | `xdp` | [logo SVG](https://xdp.co.uk/wp-content/uploads/2023/02/Group-6295.svg) — wordmark fill `#53b6ed`, chevrons `#f4b84f` |
 | `xlcourier` | [xlcourier.com](https://www.xlcourier.com/) — CSS --theme-color #044ad6 (header and buttons); the logo PNG (white XL, red #c70000 C) is drawn for that blue header |
@@ -1224,3 +1227,6 @@ and [`truck.json`](truck.json).
 | `cst-italia` | White CST on blue | [cstitaliascarl.it](https://www.cstitaliascarl.it/) — header logo: blue calligraphic CST beside Italia |
 | `tmm-express` | Three white circles linked in a row, the middle one raised, with purple T, M, M on purple | [ukr.tmm-express.com](https://ukr.tmm-express.com/sites/default/files/tmm_logo_0.png) — the header logo: T, M, M in three linked circles over "express" |
 | `next-level-delivery` | White play arrow with three speed lines on orange | [nextlevel.delivery](https://nextlevel.delivery/img/main-logo.svg) — the logo symbol: an orange play triangle with a truck and speed lines |
+| `pdn-express` | White PDN with the sail-cut D over a tapering swoosh on blue | [pdn.express](https://pdn.express/_astro/favicon.D__E9G2A.png) — favicon and header logo (white wordmark; EXPRESS dropped) |
+| `x-trac` | White X with a red triangle for its upper-left arm and a pixel bar above its upper-right arm, on navy | [xtrac-express.com](https://www.xtrac-express.com/) — header logo's X (pixel trail reduced to one bar) |
+| `hovership` | White striped globe with stepped round band ends on violet | [hovership.com](https://www.hovership.com/favicon.svg) — favicon and apple-touch-icon sphere |

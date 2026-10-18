@@ -167,6 +167,7 @@ describe('carrier brand', () => {
       'fastdrop',
       'pro-carrier', 'teleship', 'a-tu-hora-express', 'transaher', 'urvaam', 'closer-logistics', 'chronodiali',
       'cst-italia', 'tmm-express', 'next-level-delivery',
+      'pdn-express', 'x-trac', 'hovership',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

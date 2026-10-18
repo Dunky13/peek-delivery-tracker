@@ -984,6 +984,9 @@
   "hound-express": {
     "decal": "hound-express"
   },
+  "hovership": {
+    "decal": "hovership"
+  },
   "hp-mostar": {
     "decal": "hp-mostar",
     "palette": {
@@ -1510,6 +1513,9 @@
   },
   "pbt": {
     "decal": "pbt"
+  },
+  "pdn-express": {
+    "decal": "pdn-express"
   },
   "pdq-chile": {
     "decal": "pdq-chile"
@@ -2188,6 +2194,9 @@
   },
   "x-express-ba": {
     "decal": "x-express-ba"
+  },
+  "x-trac": {
+    "decal": "x-trac"
   },
   "xde-logistics": {
     "decal": "xde-logistics"
