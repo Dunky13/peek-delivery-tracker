@@ -404,7 +404,8 @@ A parcel often changes carrier at the border. The origin history is always kept.
 - Once adopted (`handed_over_at`), the partner answers for the parcel. The origin publishes
   some scans late, so for a day it is still asked alongside the partner, at most every 55 min
   (`earlier_checked_at`). Its scans join the history; its failures and its clock do not touch
-  the parcel's summary or freshness watermark. A scan of the origin's that reaches the parcel
+  the parcel's summary or freshness watermark, and a stage it reports without a time adds no
+  row stamped at observation time. A scan of the origin's that reaches the parcel
   after a later one announces no push or link alert
   ([`relayCopies.ts`](../src/server/relayCopies.ts)); one newer than everything stored does.
 - After the handoff the origin often goes on telling the partner's scans in its own

@@ -2073,6 +2073,34 @@ describe('TrackingSyncService', () => {
     expect(adapter.fetchUniversal).not.toHaveBeenCalled();
   });
 
+  it('dates no row from the earlier carrier’s stage it reports without a time', async () => {
+    const client = { ...fakeClient(), acquireTrackingProvider: vi.fn(), finishTrackingProvider: vi.fn() };
+    let now = new Date('2026-01-12T10:30:00Z');
+    let origin: CarrierResult = { status: 'in_transit', destination_country: 'FI', delivery_carrier: 'posti',
+      last_update: '2026-01-11T10:00:00Z', events: [{ time: '2026-01-11T10:00:00Z', description: 'In transport', stage: 'in_transit' }] };
+    let delivery: CarrierResult = { status: 'in_transit', current_stage: 'out_for_delivery',
+      last_update: '2026-01-12T10:00:00Z', events: [{ time: '2026-01-12T10:00:00Z', description: 'Out for delivery', stage: 'out_for_delivery' }] };
+    const adapter = { fetch: vi.fn(async (carrier: string) => carrier === 'posti' ? delivery : origin), fetchUniversal: vi.fn() };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    let parcel: JsonObject = { id: 'untimed-origin', carrier: 'la-poste', tracking_number: 'CW123456785FR' };
+    await service.syncPackage(parcel);
+    parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
+    expect(parcel.carrier_data).toMatchObject({ active_tracking_carrier: 'posti' });
+    // The earlier carrier relays the delivery on a clock without an offset; the delivery carrier times it.
+    origin = { status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered', last_update_local: '2026-01-12T13:00:00',
+      events: [{ local_time: '2026-01-12T13:00:00', description: 'Delivered', stage: 'delivered' }] };
+    delivery = { status: 'delivered', current_stage: 'delivered', last_update: '2026-01-12T11:00:00Z',
+      events: [...delivery.events!, { time: '2026-01-12T11:00:00Z', description: 'Delivered', stage: 'delivered' }] };
+    now = new Date('2026-01-12T11:30:00Z');
+    adapter.fetch.mockClear();
+    client.insertEvents.mockClear();
+    await service.syncPackage(parcel);
+    expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['posti', 'la-poste']);
+    const rows = client.insertEvents.mock.calls.flatMap((call) => call[0] as JsonObject[]);
+    expect(rows.filter((row) => row.stage === 'delivered').map((row) => [row.occurred_at, (row.raw_data as JsonObject).observed_without_provider_timestamp]))
+      .toEqual([['2026-01-12T11:00:00Z', undefined]]);
+  });
+
   it('does not let a Swiss issuer suffix bypass an explicitly selected Posti adapter', async () => {
     const client = fakeClient();
     const adapter = { fetch: vi.fn().mockResolvedValue({ status: 'delivered' }) };

@@ -1317,8 +1317,10 @@ export class TrackingSyncService {
         const normalizedSelectedStage = normalizedReportedStage && result!.status !== 'pending'
           ? normalizedReportedStage
           : (progressEvent ? String(progressEvent.stage) : null) ?? normalizedReportedStage ?? latestEventStage;
+        // The delivery carrier answers for the parcel's stage: the earlier
+        // carrier's stage, seen without a time of its own, dates no row.
         const earlierEvents = fetched.earlierResult && fetched.earlierCarrierId
-          ? buildEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId, now) : [];
+          ? buildEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId) : [];
         return {
           events: [...earlierEvents, ...normalizedEvents],
           relays: relayedScans(earlierEvents, normalizedEvents),
