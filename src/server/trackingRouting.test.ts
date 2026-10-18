@@ -733,7 +733,7 @@ describe('persistent tracking routing', () => {
 
     it.each([
       ['RR123456785FI', 'posti', ['posti', 'chronopost']],
-      ['RA123456785DE', 'chronopost', ['chronopost']],
+      ['RA123456785IR', 'chronopost', ['chronopost']],
       ['33870000000000001', 'dhl-ecommerce', ['dhl-ecommerce']],
       // Other carriers whose numbers pass the same check are asked beside TNT.
       ['505600001', 'tnt', recognitionAskedCarriers('505600001')],

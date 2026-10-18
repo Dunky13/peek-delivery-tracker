@@ -333,9 +333,9 @@ final class CarrierCatalogTests: XCTestCase {
         let finnish = catalog.recognitionCandidates(for: number)
         XCTAssertEqual(finnish.first, .posti)
         XCTAssertTrue(finnish.contains(.chronopost))
-        let german = catalog.recognitionCandidates(for: "RA123456785DE")
-        XCTAssertTrue(german.contains(.chronopost))
-        XCTAssertFalse(german.contains(.posti))
+        let generic = catalog.recognitionCandidates(for: "RA123456785IR")
+        XCTAssertTrue(generic.contains(.chronopost))
+        XCTAssertFalse(generic.contains(.posti))
         XCTAssertFalse(catalog.recognitionCandidates(for: "RR123456789FI").contains(.posti))
         XCTAssertTrue(CarrierRecognition.applies(to: input, amazon: false, demo: false))
         XCTAssertFalse(CarrierRecognition.applies(to: input, amazon: false, demo: true))
@@ -489,7 +489,7 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(detected.candidates, [.springGDS])
         XCTAssertEqual(catalog.detect("lx 123.456-785 nl").carrier, .springGDS)
         XCTAssertEqual(catalog.detect("LX123456789NL").carrier, .unknown)
-        XCTAssertEqual(catalog.detect("RA123456785DE").carrier, .internationalPost)
+        XCTAssertEqual(catalog.detect("RA123456785IR").carrier, .internationalPost)
         XCTAssertTrue(catalog.tracksAutomatically(.springGDS))
         XCTAssertEqual(catalog.info(for: .springGDS).displayName, "PostNL")
         XCTAssertEqual(catalog.trackingHintKey(for: .internationalPost), "add.autoSync")
@@ -887,7 +887,7 @@ final class CarrierCatalogTests: XCTestCase {
 
     func testUnknownPostalCarrierUsesLocalized17TrackInsteadOfLegacySwissPostLink() throws {
         var parcel = Parcel(
-            id: UUID(), trackingNumber: "RA123456785DE", label: "Postal shipment",
+            id: UUID(), trackingNumber: "RA123456785IR", label: "Postal shipment",
             carrier: .internationalPost, createdAt: "2026-09-07T13:00:00Z",
             syncStatus: .unsupported, notificationsMuted: false
         )
@@ -898,12 +898,12 @@ final class CarrierCatalogTests: XCTestCase {
             .pl: "Nieznany operator pocztowy",
         ]
         for language in AppLanguage.allCases {
-            for savedURL in [nil, "https://service.post.ch/ekp-web/ui/entry/search/RA123456785DE"] as [String?] {
+            for savedURL in [nil, "https://service.post.ch/ekp-web/ui/entry/search/RA123456785IR"] as [String?] {
                 parcel.trackingURL = savedURL
                 let link = try XCTUnwrap(catalog.trackingLinks(for: parcel, language: language).first)
                 XCTAssertEqual(catalog.info(for: .internationalPost, language: language).displayName, names[language])
                 XCTAssertEqual(link.name, "17TRACK")
-                XCTAssertEqual(link.url.absoluteString, "https://t.17track.net/\(language.rawValue)#nums=RA123456785DE")
+                XCTAssertEqual(link.url.absoluteString, "https://t.17track.net/\(language.rawValue)#nums=RA123456785IR")
                 XCTAssertEqual(link.carrier, .internationalPost)
             }
         }

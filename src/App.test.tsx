@@ -118,8 +118,8 @@ describe('App', () => {
     const repo = createDemoRepo(window.localStorage);
     const [sample] = await repo.list();
     const parcel: ParcelWithEvents = {
-      ...sample, carrier: 'intl-post', trackingNumber: 'RA123456785DE',
-      trackingUrl: 'https://service.post.ch/ekp-web/ui/entry/search/RA123456785DE',
+      ...sample, carrier: 'intl-post', trackingNumber: 'RA123456785IR',
+      trackingUrl: 'https://service.post.ch/ekp-web/ui/entry/search/RA123456785IR',
       label: 'Postal shipment', syncStatus: 'pending', events: [], archivedAt: undefined,
       syncError: undefined,
     };
@@ -136,7 +136,7 @@ describe('App', () => {
     const detail = screen.getByRole('dialog', { name: 'Postal shipment' });
     expect(within(detail).getByText('Unknown postal carrier', { exact: true })).toBeInTheDocument();
     expect(within(detail).getByRole('link', { name: 'Open the 17TRACK website' }))
-      .toHaveAttribute('href', 'https://t.17track.net/en#nums=RA123456785DE');
+      .toHaveAttribute('href', 'https://t.17track.net/en#nums=RA123456785IR');
     expect(within(detail).queryByRole('link', { name: /Swiss Post|International Post/ })).not.toBeInTheDocument();
     expect(within(detail).queryByText(/automatic adapter/)).not.toBeInTheDocument();
     expect(within(detail).getByRole('button', { name: 'Check now' })).toBeInTheDocument();

@@ -258,7 +258,7 @@ test('opens unknown postal tracking on 17TRACK in the selected language', async 
   await page.getByRole('button', { name: 'Add a parcel' }).click();
   const sheet = page.getByRole('dialog', { name: 'Add a parcel' });
   await sheet.getByLabel(/^Name/).fill('Postal shipment');
-  await sheet.getByLabel('Tracking number or link').fill('RA123456785DE');
+  await sheet.getByLabel('Tracking number or link').fill('RA123456785IR');
   await expect(sheet.getByText('Unknown postal carrier', { exact: true })).toBeVisible();
   await expect(sheet.getByText(/Automatic updates aren’t available. Check 17TRACK/)).toHaveCount(0);
   await sheet.getByRole('button', { name: 'Add parcel' }).click();
@@ -266,7 +266,7 @@ test('opens unknown postal tracking on 17TRACK in the selected language', async 
   let detail = page.getByRole('dialog', { name: 'Postal shipment' });
   const link = detail.getByRole('link', { name: 'Open the 17TRACK website' });
   await expect(link).toBeVisible();
-  await expect(link).toHaveAttribute('href', 'https://t.17track.net/en#nums=RA123456785DE');
+  await expect(link).toHaveAttribute('href', 'https://t.17track.net/en#nums=RA123456785IR');
   await expect(detail.getByRole('button', { name: 'Check now', exact: true })).toBeVisible();
   await expect(detail.getByRole('button', { name: 'Change carrier from Unknown postal carrier' })).toBeVisible();
   await detail.getByRole('button', { name: 'Back', exact: true }).click();
@@ -280,7 +280,7 @@ test('opens unknown postal tracking on 17TRACK in the selected language', async 
   await expect(detail.getByRole('button', { name: /Transporteur postal inconnu/ })).toBeVisible();
   const frenchLink = detail.getByRole('link', { name: 'Ouvrir le site 17TRACK' });
   await expect(frenchLink).toBeVisible();
-  await expect(frenchLink).toHaveAttribute('href', 'https://t.17track.net/fr#nums=RA123456785DE');
+  await expect(frenchLink).toHaveAttribute('href', 'https://t.17track.net/fr#nums=RA123456785IR');
   await expect(detail.getByText(/Consultez 17TRACK ou choisissez le transporteur/)).toHaveCount(0);
   const viewport = await page.evaluate(() => ({
     clientWidth: document.documentElement.clientWidth,
