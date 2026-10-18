@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { InvalidInputError } from 'universal-parcel-scraper';
 import { TrackingSyncAudit } from './trackingAudit';
 import { SupabaseServiceClient } from './supabase';
 import { trackingSupportEvidence } from './trackingSupport';
@@ -135,6 +136,25 @@ describe('a check of a number its carrier does not issue', () => {
     await other.finish({ outcome: 'error', sourceCarrier: 'seur', providerFailures: failures });
     expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(other.attemptId, 'synthetic-package',
       [expect.objectContaining({ kind: 'refresh', subject: 'seur', healthy: false })]);
+  });
+
+  it('is an answer too while the parcel still waits, or when the carrier refused it outside routing', async () => {
+    const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),
+      recordTrackingHealth: vi.fn().mockResolvedValue([]), ackTrackingHealth: vi.fn() };
+    const refusal = new InvalidInputError('NACEX', 'The number is not a NACEX number');
+    const waiting = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'nacex', 'pending', { trigger: 'scheduled' });
+    waiting.record('fetch', 'failed', 100, {}, new Error('Every tier deferred'));
+    await waiting.finish({ outcome: 'waiting', sourceCarrier: 'nacex',
+      providerFailures: { nacex: { kind: 'schema', count: 1, user_error: 'carrier:invalid_input' } } });
+    expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(waiting.attemptId, 'synthetic-package',
+      [expect.objectContaining({ kind: 'refresh', subject: 'nacex', healthy: true, details: expect.objectContaining({ category: 'input_required' }) })]);
+    const direct = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'nacex', 'pending', { trigger: 'scheduled' });
+    direct.record('fetch', 'failed', 100, {}, refusal);
+    await direct.finish({ outcome: 'error', sourceCarrier: 'nacex', error: refusal });
+    expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(direct.attemptId, 'synthetic-package',
+      [expect.objectContaining({ kind: 'refresh', subject: 'nacex', healthy: true })]);
   });
 });
 

@@ -35,6 +35,9 @@ failures age out of the window; a new failure meanwhile reminds as usual.
   that does not know the item yet (Ukrposhta, myDSV, Ecoscooting), inconclusive with the
   reason `status_api_not_found` or `portal_not_found`: routing files it as `no_history`,
   and the hand-off probes of mail bound for Ukraine can't open an incident either.
+- A number the parcel's own carrier refuses as one it does not issue is the owner's to
+  correct. The check stays an error or `waiting` for the parcel, and its refresh sample is
+  healthy, filed as missing input, whether or not routing made the check.
 - A step skipped during a cooldown is not a success. A check that contacted nobody because
   everything was cooling down records nothing.
 - A parcel whose own carrier says not-found stays `waiting` even if every fallback fails.

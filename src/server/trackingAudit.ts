@@ -15,6 +15,7 @@ import { recordHealthIncident, recordRefresh, recordRoutingSignal, recordSyncAno
 import { healthMessage, healthReviewSignal, observeTrackingHealth, type HealthSample } from './trackingHealth';
 import { SupabaseError, type SupabaseServiceClient } from './supabase';
 import { isRecord, type JsonObject } from './types';
+import { trackingFailureCode } from './trackingFailure';
 import { trackingSupportContext } from './trackingSupport';
 
 /** A check someone asked for (or a lookup's), a scheduled run's, or a scraper release's re-check. */
@@ -112,18 +113,19 @@ export function providerFailureSummary(failures: unknown): string | null {
   return pairs.length ? pairs.join(',').slice(0, 300) : null;
 }
 
+/** Whether the check failed on the carrier's refusal of the number as one it does not issue, through routing or not. */
+function refusedNumber(completion: SyncAuditCompletion, carrier: string): boolean {
+  const failure = isRecord(completion.providerFailures) ? completion.providerFailures[carrier] : undefined;
+  return (isRecord(failure) && failure.user_error === 'carrier:invalid_input')
+    || trackingFailureCode(completion.error) === 'carrier:invalid_input';
+}
+
 /**
  * What a failed refresh adds to its health sample beyond its error class: the
  * check's anomaly codes and routing's failure per source. A check that failed
  * because its answer lost progress has no error, and one that every tier
  * deferred names no failing tier of its own.
  */
-/** Whether routing's failures hold the carrier's refusal of the number as one it does not issue. */
-function refusedNumber(failures: unknown, carrier: string): boolean {
-  const failure = isRecord(failures) ? failures[carrier] : undefined;
-  return isRecord(failure) && failure.user_error === 'carrier:invalid_input';
-}
-
 function refreshEvidence(completion: SyncAuditCompletion): JsonObject {
   const anomalies = [...new Set(completion.anomalyCodes ?? [])].join(',').slice(0, 200);
   const failures = providerFailureSummary(completion.providerFailures);
@@ -336,8 +338,9 @@ export class TrackingSyncAudit {
       && ['updated', 'unchanged', 'waiting', 'error'].includes(completion.outcome)) {
       const failedFetch = this.#steps.some(step => step.step === 'fetch' && step.status === 'failed');
       // A number the carrier does not issue is the owner's to correct. Like a missing input, the
-      // refresh was answered, and it says nothing about the carrier's health.
-      const refused = completion.outcome === 'error' && refusedNumber(completion.providerFailures, this.configuredCarrier);
+      // refresh was answered, and it says nothing about the carrier's health, whether the check
+      // ended as an error or still waits for the carrier's first scan.
+      const refused = (completion.outcome === 'error' || failedFetch) && refusedNumber(completion, this.configuredCarrier);
       const healthy = refused || (completion.outcome !== 'error' && !failedFetch);
       const samples: JsonObject[] = [...this.#healthSamples.values(), {
         kind: 'refresh', subject: this.configuredCarrier, healthy,
