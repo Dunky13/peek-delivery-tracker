@@ -75,7 +75,8 @@ order by i.active desc, i.last_notified_at desc;
 \echo '   carriers: no carrier known; adapters: the adapter refuses, fails or half-answers the number, or gave no direct'
 \echo '   answer in 30 days; captcha: a verification or captcha page stops the adapter; dormant: not checked for 24 h;'
 \echo '   none: the carrier answers and the provider history is kept;'
-\echo '   delivery-tracker: its adapter answers other parcels and was not asked for these'
+\echo '   delivery-tracker: its adapter answers other parcels and was not asked for these (carrier not asked),'
+\echo '   or its answer was set aside as older than the parcel''s newest scan (answer older than parcel)'
 \echo '   could_take: the carrier that answered or a provider names, else the one detection names for an unfiled parcel'
 -- private.tracking_gaps classifies them, as the carrier dashboard's goals count them.
 select carrier, could_take, provider, lane, why,

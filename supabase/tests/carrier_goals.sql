@@ -35,6 +35,8 @@ insert into auth.users (id, email) values ('f4000000-0000-4000-8000-000000000001
 -- provider: a lookup ParcelsApp answered, no carrier known.
 -- stale: an account's parcel its carrier last answered 30 h ago; captcha since.
 -- waiting: no scan yet. finished: delivered. dormant: a lookup nobody followed for days.
+-- set aside, not asked: lookups ParcelsApp answers, filed under a carrier whose answer was set
+-- aside as older than the parcel, and under one that was not asked; neither part of the gap.
 insert into public.packages (id, user_id, one_off, tracking_number, carrier, current_stage, sync_status, created_at, last_synced_at, carrier_data)
 values
   ('f4000000-0000-4000-8000-00000000000a', 'f4000000-0000-4000-8000-000000000001', false, 'GOALS0001', 'la-poste',
@@ -49,7 +51,13 @@ values
   ('f4000000-0000-4000-8000-00000000000e', 'f4000000-0000-4000-8000-000000000001', false, 'GOALS0005', 'la-poste',
     'delivered', 'ok', now() - interval '3 days', now() - interval '2 days', '{}'),
   ('f4000000-0000-4000-8000-00000000000f', null, true, 'GOALS0006', 'la-poste',
-    'in_transit', 'ok', now() - interval '3 days', now() - interval '3 days', '{}');
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '3 days', '{}'),
+  ('f4000000-0000-4000-8000-000000000010', null, true, 'GOALS0007', 'la-poste',
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '6 minutes',
+    '{"tracking_provider": "ParcelsApp", "routing": {"set_aside": {"la-poste": {"checked_at": "2026-10-08T11:00:00Z",
+      "newest": "2026-10-07T23:01:00Z", "watermark": "2026-10-08T05:46:00Z", "count": 1}}}}'),
+  ('f4000000-0000-4000-8000-000000000011', null, true, 'GOALS0008', 'la-poste',
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '6 minutes', '{"tracking_provider": "ParcelsApp"}');
 
 insert into public.tracking_sync_attempts (id, package_id, trigger, configured_carrier, source_carrier, outcome, selected_stage, anomaly_codes, started_at, completed_at)
 values
@@ -139,6 +147,20 @@ begin
       or exists (select 1 from metrics.carrier_gaps where cumulative_percent > 100)
       or (select max(cumulative_percent) from metrics.carrier_gaps) <> 100 then
     raise exception 'The carriers'' share of the gap was miscounted';
+  end if;
+end;
+$$;
+
+-- The review tells a carrier whose answer was set aside as older than the parcel from one not asked.
+do $$
+begin
+  if (select array_agg(row(tracking_number, why, reason, lane, gap is true)::text order by tracking_number)
+      from private.tracking_gaps where tracking_number in ('GOALS0007', 'GOALS0008'))
+      is distinct from array[
+        row('GOALS0007', 'answer older than parcel', 'answer set aside as older', 'delivery-tracker', false)::text,
+        row('GOALS0008', 'carrier not asked', 'carrier not asked', 'delivery-tracker', false)::text] then
+    raise exception 'A set-aside answer was not told from a carrier not asked: %', (select array_agg(row(tracking_number, why, reason, lane, gap)::text)
+      from private.tracking_gaps where tracking_number in ('GOALS0007', 'GOALS0008'));
   end if;
 end;
 $$;

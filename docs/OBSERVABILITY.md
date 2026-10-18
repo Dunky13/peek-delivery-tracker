@@ -365,8 +365,9 @@ Each row names the lane that acts on it:
   reader's answer that a carrier's status, steps, times or places are off;
 - **captcha**: an adapter stopped by a verification or captcha page;
 - **delivery-tracker**: the app's routing, such as parcels left with a provider although
-  their carrier's adapter answers other parcels and was not asked for them, a check whose
-  worker died, or a reader's answer that gives no reason.
+  their carrier's adapter answers other parcels and was not asked for them or had its answer
+  set aside as older than the parcel's newest scan, a check whose worker died, or a reader's
+  answer that gives no reason.
 
 A parcel a provider tracks can also be **dormant**, not checked for 24 h because nobody
 follows it any more, or need **none**: its carrier answers and the provider's fuller history

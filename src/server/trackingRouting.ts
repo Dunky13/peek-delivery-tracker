@@ -44,6 +44,7 @@ export interface RoutedResult {
   earlierFollowUp?: boolean;
 }
 interface Failure { count: number; retry_at: string; kind: RoutingFailureKind; user_error?: string }
+export interface SetAside { checked_at: string; newest: string; watermark: string; count: number }
 export interface RoutingState extends JsonObject {
   version: 1;
   configured_carrier: string;
@@ -69,6 +70,12 @@ export interface RoutingState extends JsonObject {
   partial_checked_at?: string;
   /** The filed carrier's local-clock answer that a provider's history last matched, adding no scan or stage. */
   provider_copy?: { carrier: string; number: string; scans: number; stage: string | null; provider: string; checked_at: string };
+  /**
+   * Carriers asked as candidates whose dated answer was set aside as older than the parcel's
+   * newest scan: when, the answer's newest scan, the watermark it lost to, and how many checks
+   * in a row set that same answer aside. Asking the carrier again replaces it.
+   */
+  set_aside?: Record<string, SetAside>;
   probe_cursor: number;
   discovery_cursor: number;
   failures: Record<string, Failure>;
@@ -485,6 +492,11 @@ export class TrackingRouter {
       }
       if (millis(state.failures[carrier]?.retry_at) > now().getTime()) return null;
       attemptedDirect.add(carrier);
+      const setAside = state.set_aside?.[carrier];
+      if (setAside) {
+        delete state.set_aside![carrier];
+        if (!Object.keys(state.set_aside!).length) delete state.set_aside;
+      }
       try {
         const lookupParcel = candidate ? { ...parcel, carrier,
           tracking_url: ownInputs ? state.confirmed_tracking_url : null,
@@ -551,7 +563,14 @@ export class TrackingRouter {
           return null;
         }
         if (candidate && !moved) return null;
-        if (candidate && olderThanParcel(value, provider)) return null;
+        if (candidate && olderThanParcel(value, provider)) {
+          // Kept, so the review tells it from a carrier never asked, and a release's
+          // check knows the same answer would be set aside again (redetection.ts).
+          const newest = iso(latest(value));
+          state.set_aside = { ...state.set_aside, [carrier]: { checked_at: now().toISOString(), newest,
+            watermark: iso(millis(state.last_event_at)), count: setAside?.newest === newest ? Math.min(20, setAside.count + 1) : 1 } };
+          return null;
+        }
         if (terminalStage && ['delivered', 'returned'].includes(terminalStage)
           && value.result.current_stage !== terminalStage) return null;
         if (capturedHistory) localHistory = capturedHistory;

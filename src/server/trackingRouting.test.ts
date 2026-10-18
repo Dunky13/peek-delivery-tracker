@@ -438,6 +438,27 @@ describe('persistent tracking routing', () => {
       expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
     });
 
+    it('records the answer it sets aside, and the checks in a row that set the same one aside, until one is taken', async () => {
+      const withoutCopies = vi.fn().mockReturnValue(Date.parse('2026-09-10T05:00:00Z'));
+      const { router, direct } = setup(time, { withoutCopies });
+      direct.mockResolvedValue(older());
+      const aside = { checked_at: time.toISOString(), newest: '2026-09-10T03:00:00.000Z', watermark: '2026-09-10T11:00:00.000Z' };
+      const first = await router.fetch(named(), false);
+      expect(first.result.routing).toMatchObject({ set_aside: { ups: { ...aside, count: 1 } } });
+      const setAside = (first.result.routing as JsonObject).set_aside as JsonObject;
+      const again = await router.fetch(named({ set_aside: setAside }), false);
+      expect(again.result.routing).toMatchObject({ set_aside: { ups: { ...aside, count: 2 } } });
+      // Another answer, still older, starts over.
+      direct.mockResolvedValue({ ...directValue(), result: history('2026-09-10T04:00:00Z') });
+      const other = await router.fetch(named({ set_aside: setAside }), false);
+      expect(other.result.routing).toMatchObject({ set_aside: { ups: { ...aside, newest: '2026-09-10T04:00:00.000Z', count: 1 } } });
+      // A newer one is taken, and nothing is left set aside.
+      direct.mockResolvedValue({ ...directValue(), result: history('2026-09-10T11:30:00Z') });
+      const taken = await router.fetch(named({ set_aside: setAside }), false);
+      expect(taken).toMatchObject({ sourceCarrierId: 'ups', correction: { carrier: 'ups' } });
+      expect(taken.result.routing).not.toHaveProperty('set_aside');
+    });
+
     it('holds the carrier against the copies in the answer of the provider that names it', async () => {
       const withoutCopies = vi.fn((watermark: number) => watermark > Date.parse('2026-09-10T11:00:00Z') ? Date.parse('2026-09-10T03:00:00Z') : watermark);
       const { router, direct, universal } = setup(time, { withoutCopies });
