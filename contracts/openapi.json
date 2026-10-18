@@ -12343,7 +12343,8 @@
       "timezone": "Atlantic/Reykjavik",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "posturinn",
+        "recognitionRank": 875
       },
       "trackingUrlTemplate": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/?q={trackingNumber}",
       "linkRules": [
@@ -12359,7 +12360,14 @@
           ]
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^[A-Z]{2}\\d{9}IS$",
+          "confidence": "low",
+          "checksum": "s10",
+          "preferred": true
+        }
+      ],
       "trackingSearchUrl": "https://posturinn.is/einstaklingar/mottaka/fylgstu-med-sendingunni-thinni/"
     },
     "professional-couriers": {
@@ -24950,6 +24958,328 @@
       ],
       "detectionRules": [],
       "trackingSearchUrl": "https://tracking.veloces.app/"
+    },
+    "bombino": {
+      "displayName": "Bombino Express",
+      "aliases": [
+        "Bombino",
+        "Bombino Express Worldwide"
+      ],
+      "countries": [
+        "IN",
+        "US",
+        "GB",
+        "AE"
+      ],
+      "color": "#0f172a",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.bombinoexp.com/track?tracking_no={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.bombinoexp.com",
+            "bombinoexp.com"
+          ],
+          "pathPattern": "^/track/?$",
+          "params": [
+            "tracking_no",
+            "awb"
+          ]
+        },
+        {
+          "domains": [
+            "www.bombinoexp.com",
+            "bombinoexp.com"
+          ],
+          "pathPattern": "^/Tracking\\.aspx$",
+          "params": [
+            "txtAwb"
+          ]
+        },
+        {
+          "domains": [
+            "www.bombinoexp.com",
+            "bombinoexp.com"
+          ],
+          "pathPattern": "^/track\\.aspx$",
+          "params": [
+            "AwbNo"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.bombinoexp.com/track"
+    },
+    "icc-worldwide": {
+      "displayName": "ICC Worldwide",
+      "aliases": [
+        "ICC World",
+        "ICC",
+        "iccworld"
+      ],
+      "countries": [
+        "IN",
+        "US",
+        "GB"
+      ],
+      "color": "#bd0607",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.iccworld.com/track-result.php?track_no={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.iccworld.com",
+            "iccworld.com"
+          ],
+          "pathPattern": "^/track-result\\.php$",
+          "params": [
+            "track_no"
+          ]
+        },
+        {
+          "domains": [
+            "www.iccworld.com",
+            "iccworld.com"
+          ],
+          "pathPattern": "^/track\\.asp$",
+          "params": [
+            "txtawbno"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.iccworld.com/"
+    },
+    "maruti-air": {
+      "displayName": "Maruti Air Couriers & Cargo",
+      "aliases": [
+        "Maruti Air",
+        "Maruti Air Couriers",
+        "Maruti Air Couriers & Cargo Pvt. Ltd."
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#0c1f38",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "erp.marutiair.com"
+          ],
+          "pathPattern": "^/TrackpageWeb/WebAWBTracking\\.aspx$",
+          "params": [
+            "AWB"
+          ]
+        },
+        {
+          "domains": [
+            "www.marutiair.com",
+            "marutiair.com"
+          ],
+          "pathPattern": "^/Doc_Tracking\\.aspx$",
+          "params": [
+            "No"
+          ]
+        }
+      ],
+      "detectionRules": []
+    },
+    "noest": {
+      "displayName": "NOEST Express",
+      "aliases": [
+        "NOEST",
+        "Noest Express",
+        "Nord et Ouest Express"
+      ],
+      "countries": [
+        "DZ"
+      ],
+      "color": "#0880e8",
+      "selectable": true,
+      "timezone": "Africa/Algiers",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://app.noest-dz.com/list/t"
+    },
+    "rivigo": {
+      "displayName": "Rivigo",
+      "aliases": [
+        "RIVIGO",
+        "Rivigo by Mahindra Logistics",
+        "Rivigo Services"
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#dd712f",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://zoom.rivigo.com/#/trackconsignment/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "zoom.rivigo.com"
+          ],
+          "pathPattern": "^/?$",
+          "fragment": "^/trackconsignment/([^/?#]+)"
+        }
+      ],
+      "detectionRules": []
+    },
+    "shree-mahavir": {
+      "displayName": "Shree Mahavir Express Services",
+      "aliases": [
+        "Shree Mahavir Express",
+        "Shree Mahavir Courier",
+        "SMESPL",
+        "Shree Mahavir Express Services Pvt. Ltd."
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#e31e25",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.shreemahavircourier.com/Frm_DocTrack.aspx?docno={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.shreemahavircourier.com",
+            "shreemahavircourier.com"
+          ],
+          "pathPattern": "^/Frm_DocTrack\\.aspx$",
+          "params": [
+            "docno"
+          ]
+        },
+        {
+          "domains": [
+            "www.smespl.in",
+            "smespl.in"
+          ],
+          "pathPattern": "^/Frm_DocTrackWeb\\.aspx$",
+          "params": [
+            "docno"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.shreemahavircourier.com/"
+    },
+    "tccs": {
+      "displayName": "TCCS",
+      "aliases": [
+        "Total Couriers Cargo Services",
+        "Total Courier and Cargo Services"
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#e01e1e",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [
+        {
+          "domains": [
+            "www.tccs.in",
+            "tccs.in"
+          ],
+          "pathPattern": "^/Tracking\\.aspx$",
+          "params": [
+            "txtawbno"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://tccs.in/tracking/"
+    },
+    "tej-couriers": {
+      "displayName": "Tej Couriers",
+      "aliases": [
+        "TEJ Couriers",
+        "Tej Courier",
+        "Ghatge Patil Consultancy Services"
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#d2232a",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.tejcouriers.com/shipment-tracking.php"
+    },
+    "valmo": {
+      "displayName": "Valmo",
+      "aliases": [
+        "VALMO",
+        "Valmo Logistics",
+        "Valmo by Meesho"
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#0378b6",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.valmo.in/track/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.valmo.in",
+            "valmo.in"
+          ],
+          "path": "^/track/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^VL\\d{13}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://www.valmo.in/track"
     }
   },
   "servers": [
@@ -28075,7 +28405,16 @@
           "hound-express",
           "pdq-chile",
           "skyking",
-          "veloces"
+          "veloces",
+          "bombino",
+          "icc-worldwide",
+          "maruti-air",
+          "noest",
+          "rivigo",
+          "shree-mahavir",
+          "tccs",
+          "tej-couriers",
+          "valmo"
         ]
       },
       "Stage": {
