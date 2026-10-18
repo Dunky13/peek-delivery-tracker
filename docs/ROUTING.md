@@ -409,7 +409,10 @@ A parcel often changes carrier at the border. The origin history is always kept.
   step of its own. Of a pair, the row stored second announces no push or link alert, and
   the delivered email quotes the other one ([`relayCopies.ts`](../src/server/relayCopies.ts)).
 - Compatibility: AliExpress `L…CH` numbers keep a Swiss Post confirmation probe, and
-  selected Swiss postal routes keep their Cainiao fallback.
+  selected Swiss postal routes keep their Cainiao fallback. On such a route Swiss Post is
+  asked first; once it has missed the item, Cainiao answers first. Cainiao's news asks Swiss
+  Post again at once; without news the gap doubles with each miss, from 55 min up to 6 h
+  (5 min on a refresh by hand).
 
 ## UPU history
 

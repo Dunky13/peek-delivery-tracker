@@ -106,6 +106,12 @@ const DELIVERY_PROBE_INTERVAL_MS = 55 * 60 * 1_000;
  */
 const DELIVERY_PROBE_SHORT_INTERVAL_MS = 5 * 60 * 1_000;
 /**
+ * A Swiss postal number filed under Swiss Post is followed on Cainiao while Swiss Post
+ * does not know it. Each probe Swiss Post misses while Cainiao has no news doubles the
+ * gap before the next, from DELIVERY_PROBE_INTERVAL_MS up to this.
+ */
+const SWISS_POST_PROBE_MAX_INTERVAL_MS = 6 * 60 * 60 * 1_000;
+/**
  * A carrier publishes some scans after it handed the parcel over. The earlier
  * carrier is asked again this long after the handoff, at most once per
  * DELIVERY_PROBE_INTERVAL_MS, alongside the delivery carrier.
@@ -117,6 +123,8 @@ interface DeliveryProbe extends JsonObject {
   origin_update: string | null;
   /** The partner had the parcel on record, dated no earlier than the origin's news, without a scan of its own. */
   announced?: true;
+  /** The Swiss Post probes in a row that found nothing while Cainiao had no news. */
+  misses?: number;
 }
 
 /** Whether this check asks a handed-over parcel's earlier carrier again: within a day of the handoff, at most hourly. */
@@ -133,7 +141,8 @@ function previousDeliveryProbe(parcel: JsonObject, carrier: string, number: stri
   if (!isRecord(stored) || typeof stored.at !== 'string' || !Number.isFinite(Date.parse(stored.at))) return null;
   if ((stored.carrier != null && stored.carrier !== carrier) || (stored.number != null && stored.number !== number)) return null;
   return { at: stored.at, origin_update: typeof stored.origin_update === 'string' ? stored.origin_update : null,
-    ...(stored.announced === true ? { announced: true as const } : {}) };
+    ...(stored.announced === true ? { announced: true as const } : {}),
+    ...(Number.isSafeInteger(stored.misses) && Number(stored.misses) > 0 ? { misses: Number(stored.misses) } : {}) };
 }
 
 /** How many answers a check took from another copy of its number in the same run, when any. */
@@ -1789,6 +1798,25 @@ export class TrackingSyncService {
         handoffFallbackErrorType: null,
       };
     }
+    const fetchCainiao = async () => normalizeCarrierResult(await this.fetchCarrier(checks, 'aliexpress', trackingNumber, null, null));
+    const previousProbe = previousDeliveryProbe(parcel, 'swiss-post', trackingNumber);
+    const misses = previousProbe?.misses ?? 1;
+    const gap = byHand ? DELIVERY_PROBE_SHORT_INTERVAL_MS
+      : Math.min(SWISS_POST_PROBE_MAX_INTERVAL_MS, DELIVERY_PROBE_INTERVAL_MS * 2 ** (misses - 1));
+    const sinceProbe = previousProbe ? this.now().getTime() - Date.parse(previousProbe.at) : Number.NaN;
+    // Within the gap after Swiss Post missed the item, Cainiao answers first. Its news,
+    // the usual sign of the handover, asks Swiss Post again at once.
+    let cainiao = sinceProbe >= 0 && sinceProbe < gap ? await fetchCainiao() : null;
+    if (cainiao && (typeof cainiao.last_update !== 'string' || cainiao.last_update === previousProbe!.origin_update)) {
+      return {
+        // carrier_data is rebuilt from the result on every refresh: carry the marker forward.
+        result: { ...cainiao, delivery_probe: { ...previousProbe!, carrier: 'swiss-post', number: trackingNumber } },
+        sourceCarrierId: 'aliexpress',
+        swissPostReady: false,
+        handoffFallbackErrorType: null,
+      };
+    }
+    const askedAt = this.now().toISOString();
     let handoffFallbackErrorType: string | null = null;
     try {
       const swiss = normalizeCarrierResult(
@@ -1809,9 +1837,12 @@ export class TrackingSyncService {
       });
       // Cainiao still covers the international leg if Swiss Post is not ready.
     }
-    const cainiao = await this.fetchCarrier(checks, 'aliexpress', trackingNumber, null, null);
+    cainiao ??= await fetchCainiao();
+    const originUpdate = typeof cainiao.last_update === 'string' ? cainiao.last_update : previousProbe?.origin_update ?? null;
+    const probe: DeliveryProbe = { at: askedAt, origin_update: originUpdate, carrier: 'swiss-post', number: trackingNumber,
+      misses: previousProbe && originUpdate === previousProbe.origin_update ? misses + 1 : 1 };
     return {
-      result: normalizeCarrierResult(cainiao),
+      result: { ...cainiao, delivery_probe: probe },
       sourceCarrierId: 'aliexpress',
       swissPostReady: false,
       handoffFallbackErrorType,

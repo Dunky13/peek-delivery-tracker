@@ -2248,6 +2248,48 @@ describe('TrackingSyncService', () => {
     expect(adapter.fetch).toHaveBeenCalledExactlyOnceWith('aliexpress', 'LX123456785CH', null, null);
   });
 
+  it('asks Swiss Post less often about a Swiss postal number it keeps missing, and at once on Cainiao news', async () => {
+    const client = fakeClient();
+    let now = new Date('2026-09-10T10:00:00Z');
+    let cainiaoUpdate = '2026-09-09T10:00:00+08:00';
+    let swiss: CarrierResult | null = null;
+    const adapter = { fetch: vi.fn(async (carrier: string): Promise<CarrierResult> => {
+      if (carrier === 'aliexpress') return { status: 'in_transit', last_update: cainiaoUpdate,
+        events: [{ time: cainiaoUpdate, description: 'Departed from sorting center', stage: 'in_transit' }] };
+      if (swiss) return swiss;
+      throw Object.assign(new Error('Shipment not found'), { status: 404 });
+    }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    let parcel: JsonObject = { id: 'swiss-letter', carrier: 'swiss-post', tracking_number: 'LX123456785CH' };
+    const refresh = async (time: string, trigger: 'package' | 'scheduled' = 'scheduled') => {
+      now = new Date(`2026-09-10T${time}:00Z`);
+      adapter.fetch.mockClear();
+      await service.syncPackage(parcel, { trigger });
+      parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
+      return adapter.fetch.mock.calls.map((call) => call[0]);
+    };
+
+    expect(await refresh('10:00')).toEqual(['swiss-post', 'aliexpress']);
+    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T10:00:00.000Z', origin_update: cainiaoUpdate, misses: 1 } });
+    // Each miss doubles the gap, from 55 min up to 6 h.
+    for (const [time, asked, misses] of [['10:50', false, 1], ['10:55', true, 2], ['12:40', false, 2], ['12:45', true, 3],
+      ['16:20', false, 3], ['16:25', true, 4], ['22:20', false, 4], ['22:25', true, 5]] as const) {
+      expect(await refresh(time)).toEqual(asked ? ['swiss-post', 'aliexpress'] : ['aliexpress']);
+      expect(parcel.carrier_data).toMatchObject({ delivery_probe: { misses } });
+    }
+    // A refresh by hand asks again after 5 min.
+    expect(await refresh('22:27', 'package')).toEqual(['aliexpress']);
+    expect(await refresh('22:30', 'package')).toEqual(['swiss-post', 'aliexpress']);
+    // Cainiao's news asks at once and starts the gaps over.
+    cainiaoUpdate = '2026-09-11T05:00:00+08:00';
+    expect(await refresh('22:40')).toEqual(['aliexpress', 'swiss-post']);
+    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T22:40:00.000Z', origin_update: cainiaoUpdate, misses: 1 } });
+    swiss = { status: 'in_transit', last_update: '2026-09-10T23:30:00+02:00', timezone: 'Europe/Zurich',
+      events: [{ time: '2026-09-10T23:30:00+02:00', description: 'Arrived at sorting centre', stage: 'in_transit' }] };
+    expect(await refresh('23:40')).toEqual(['swiss-post']);
+    expect(parcel.carrier_data).toMatchObject({ swiss_post_ready: true });
+  });
+
   it.each(['Switzerland', 'Finland'])('respects Cainiao’s actual destination field before the historical probe: %s', async (country) => {
     const number = 'LX123456785CH';
     const origin = carrierResult(country === 'Switzerland' ? 'cainiao-Switzerland' : 'cainiao-Finland');
