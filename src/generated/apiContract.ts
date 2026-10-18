@@ -21037,11 +21037,11 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Dakar",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "la-poste-senegal"
     },
     "linkRules": [],
     "detectionRules": [],
-    "trackingSearchUrl": "https://www.laposte.sn/suivi-colis/"
+    "trackingSearchUrl": "https://www.laposte.sn/"
   },
   "mailplus-au": {
     "displayName": "MailPlus",
@@ -25432,7 +25432,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "valmo"
     },
     "trackingUrlTemplate": "https://www.valmo.in/track/{trackingNumber}",
     "linkRules": [
@@ -26664,9 +26664,16 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Istanbul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pts-worldwide-express",
+      "recognitionRank": 818
     },
     "linkRules": [
+      {
+        "domains": [
+          "tracking.pts.net"
+        ],
+        "path": "^/([0-9]+)/?$"
+      },
       {
         "domains": [
           "pts.net",
@@ -26679,7 +26686,8 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://wp.pts.net/gonderi-takip"
+    "trackingSearchUrl": "https://wp.pts.net/gonderi-takip",
+    "trackingUrlTemplate": "https://tracking.pts.net/{trackingNumber}"
   },
   "shipentegra": {
     "displayName": "ShipEntegra",
@@ -27932,7 +27940,7 @@ export const CARRIER_CAPABILITIES = {
       "SG",
       "MY"
     ],
-    "color": "#cd2727",
+    "color": "#f5333f",
     "selectable": true,
     "timezone": "Asia/Singapore",
     "tracking": {
@@ -28014,7 +28022,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "LA"
     ],
-    "color": "#ef4444",
+    "color": "#ea2127",
     "selectable": true,
     "timezone": "Asia/Vientiane",
     "tracking": {
@@ -28116,7 +28124,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "VN"
     ],
-    "color": "#0083cb",
+    "color": "#ed1c24",
     "selectable": true,
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
@@ -28149,7 +28157,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "ID"
     ],
-    "color": "#d71921",
+    "color": "#052f66",
     "selectable": true,
     "timezone": "Asia/Jakarta",
     "tracking": {
@@ -28251,7 +28259,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "SG"
     ],
-    "color": "#00008e",
+    "color": "#002f75",
     "selectable": true,
     "timezone": "Asia/Singapore",
     "tracking": {
