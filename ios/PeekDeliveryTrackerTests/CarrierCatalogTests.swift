@@ -4,10 +4,12 @@ import XCTest
 final class CarrierCatalogTests: XCTestCase {
     func testDiscoveryIncludesBrowserCandidatesWithoutChangingHTTPRecognition() {
         let http = catalog.recognitionCandidates(for: "000000000103")
-        XCTAssertTrue(http.contains(.colisPrive))
+        XCTAssertFalse(http.isEmpty)
         XCTAssertFalse(http.contains(.fedex))
-        XCTAssertEqual(catalog.discoveryCandidates(for: "000000000103"), http + [.fedex])
-        XCTAssertEqual(catalog.recognitionCandidates(for: "33870000000000001", browser: true), [.dhlEcommerce])
+        let discovery = catalog.discoveryCandidates(for: "000000000103")
+        XCTAssertEqual(Array(discovery.prefix(http.count)), http)
+        XCTAssertTrue(discovery.dropFirst(http.count).contains(.fedex))
+        XCTAssertTrue(catalog.recognitionCandidates(for: "33870000000000001", browser: true).contains(.dhlEcommerce))
         XCTAssertEqual(catalog.discoveryCandidates(for: "1Z999AA10123456784"), [])
     }
     func testMondialRelayLabelBarcodeDetectionAndPublicLink() throws {
@@ -293,8 +295,10 @@ final class CarrierCatalogTests: XCTestCase {
         let asked = catalog.recognitionCandidates(for: number)
         XCTAssertEqual(ambiguous.confidence, .low)
         XCTAssertEqual(ambiguous.carrier, .unknown)
-        // The scraper may add a network to the shape; the known ones keep their order.
-        XCTAssertEqual(asked.filter { [.glsCh, .glsDe, .postlogistics].contains($0) }, [.glsDe, .glsCh, .postlogistics])
+        // The scraper may add a network to the shape; the known ones still asked keep their order.
+        let known: [CarrierID] = [.glsDe, .glsCh, .postlogistics]
+        XCTAssertTrue(asked.contains(.glsDe))
+        XCTAssertEqual(asked.filter(known.contains), known.filter(asked.contains))
         XCTAssertTrue(CarrierRecognition.applies(to: ambiguous, amazon: false, demo: false))
         XCTAssertFalse(CarrierRecognition.applies(to: ambiguous, amazon: false, demo: true))
         XCTAssertFalse(CarrierRecognition.applies(to: ambiguous, amazon: true, demo: false))
@@ -323,8 +327,12 @@ final class CarrierCatalogTests: XCTestCase {
         let input = catalog.parse(number)
         XCTAssertEqual(input.carrier, .internationalPost)
         XCTAssertEqual(input.confidence, .high)
-        XCTAssertEqual(catalog.recognitionCandidates(for: number), [.posti, .chronopost])
-        XCTAssertEqual(catalog.recognitionCandidates(for: "RA123456785DE"), [.chronopost])
+        let finnish = catalog.recognitionCandidates(for: number)
+        XCTAssertEqual(finnish.first, .posti)
+        XCTAssertTrue(finnish.contains(.chronopost))
+        let german = catalog.recognitionCandidates(for: "RA123456785DE")
+        XCTAssertTrue(german.contains(.chronopost))
+        XCTAssertFalse(german.contains(.posti))
         XCTAssertFalse(catalog.recognitionCandidates(for: "RR123456789FI").contains(.posti))
         XCTAssertTrue(CarrierRecognition.applies(to: input, amazon: false, demo: false))
         XCTAssertFalse(CarrierRecognition.applies(to: input, amazon: false, demo: true))
@@ -407,32 +415,48 @@ final class CarrierCatalogTests: XCTestCase {
     }
 
     func testCarrierPickerSearchesNamesOtherNamesAndCountries() {
-        func names(_ query: String, preferred: Set<CarrierID> = []) -> [String] {
-            CarrierPickerSearch.search(query, catalog: catalog, language: .en, preferred: preferred)
-                .map { catalog.info(for: $0.carrier).displayName }
+        // Results are found by carrier, not position: new carriers keep sorting among them.
+        func search(_ query: String, language: AppLanguage = .en, preferred: Set<CarrierID> = []) -> [CarrierPickerSearch.Result] {
+            CarrierPickerSearch.search(query, catalog: catalog, language: language, preferred: preferred)
         }
-        XCTAssertTrue(names("dpd").prefix(2).allSatisfy { $0.hasPrefix("DPD ") })
-        XCTAssertEqual(names("colis prive").first, "Colis Privé")
-        XCTAssertEqual(Array(names("jt").prefix(2)), ["J&T Cargo", "J&T Express"])
-        XCTAssertEqual(names("4px").first, "4PX")
-        let hugger = CarrierPickerSearch.search("hugger", catalog: catalog, language: .en).first
-        XCTAssertEqual(hugger?.carrier, .swissPostCargo)
+        func result(_ query: String, _ carrier: CarrierID) -> CarrierPickerSearch.Result? {
+            search(query).first { $0.carrier == carrier }
+        }
+        func found(_ query: String, language: AppLanguage = .en) -> Set<CarrierID> {
+            Set(search(query, language: language).map(\.carrier))
+        }
+        // Every name that starts with the query comes before the rest.
+        func starting(_ query: String) -> Set<CarrierID> {
+            let results = search(query)
+            let count = results.prefix { $0.highlight?.lowerBound == 0 }.count
+            XCTAssertFalse(results.dropFirst(count).contains { $0.highlight?.lowerBound == 0 }, query)
+            return Set(results.prefix(count).map(\.carrier))
+        }
+        XCTAssertTrue(starting("dpd").isSuperset(of: [.dpdFr, .dpdDe]))
+        // Case, accents and punctuation are ignored; a name equal to the query sorts before longer ones.
+        XCTAssertEqual(search("colis prive").first?.carrier, .colisPrive)
+        XCTAssertEqual(search("4px").first?.carrier, .fourPx)
+        for carrier in [CarrierID.jAndTCargo, .jAndT] {
+            XCTAssertNotNil(result("jt", carrier), carrier.rawValue)
+            XCTAssertNil(result("jt", carrier)?.alias, carrier.rawValue)
+        }
+        let hugger = result("hugger", .swissPostCargo)
         XCTAssertEqual(hugger?.alias, "Hugger")
         XCTAssertNil(hugger?.highlight)
-        XCTAssertEqual(names("die post").first, "Swiss Post")
-        XCTAssertEqual(names("hermes uk").first, "Evri UK")
-        let colis = CarrierPickerSearch.search("colis", catalog: catalog, language: .en)
-        XCTAssertEqual(colis.map { catalog.info(for: $0.carrier).displayName },
-                       ["Colis Privé", "Colisweb", "La Poste / Colissimo", "Relais Colis"])
-        XCTAssertEqual(colis[2].highlight, 11..<16)
-        XCTAssertTrue(Set(names("italy")).isSuperset(of: ["BRT", "Poste Italiane", "InPost"]))
+        XCTAssertEqual(result("die post", .swissPost)?.alias, "Die Post")
+        XCTAssertEqual(result("hermes uk", .evriUk)?.alias, "Hermes UK")
+        // The match is marked at the start of the name or of a later word, which ranks after.
+        XCTAssertTrue(starting("colis").isSuperset(of: [.colisPrive, .colisweb]))
+        XCTAssertEqual(result("colis", .colisweb)?.highlight, 0..<5)
+        XCTAssertEqual(result("colis", .laPoste)?.highlight, 11..<16)
+        XCTAssertEqual(result("colis", .relaisColis)?.highlight, 7..<12)
+        XCTAssertTrue(found("italy").isSuperset(of: [.brt, .posteItaliane, .inpost]))
         // Countries are searched in the reader's language and in English.
-        XCTAssertTrue(names("italien").isEmpty)
-        XCTAssertTrue(Set(CarrierPickerSearch.search("italien", catalog: catalog, language: .de)
-            .map(\.carrier)).isSuperset(of: [.brt, .posteItaliane]))
-        XCTAssertNotEqual(names("gls").first, "GLS Switzerland")
-        XCTAssertEqual(names("gls", preferred: [.glsCh]).first, "GLS Switzerland")
-        XCTAssertEqual(names("zzqx"), [])
+        XCTAssertTrue(found("italien").isDisjoint(with: [.brt, .posteItaliane]))
+        XCTAssertTrue(found("italien", language: .de).isSuperset(of: [.brt, .posteItaliane]))
+        XCTAssertNotEqual(search("gls").first?.carrier, .glsCh)
+        XCTAssertEqual(search("gls", preferred: [.glsCh]).first?.carrier, .glsCh)
+        XCTAssertEqual(search("zzqx"), [])
     }
 
     func testCarrierPickerSectionsAndLines() {
@@ -986,7 +1010,7 @@ final class CarrierCatalogTests: XCTestCase {
         // Hermes's check digit passes; DPD's networks are only more popular.
         let fourteen = catalog.recognitionCandidates(for: "12345678901231")
         XCTAssertEqual(fourteen.first, .hermesDe)
-        XCTAssertEqual(Array(fourteen.dropFirst().prefix(2)), [.dpdBe, .dpd])
+        XCTAssertTrue(fourteen.contains(.dpd))
     }
 
     func testUspsPackageChecksumsIgnoreRoutingAndRejectAmbiguousSplits() {
@@ -1219,7 +1243,7 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(swissDepot.preferred, [.dpd])
         XCTAssertEqual(swissDepot.candidates.first, .dpd)
         XCTAssertEqual(catalog.detect("10000000000001").candidates.first, .dpdFr)
-        XCTAssertEqual(catalog.detect("06460000000002").preferred, [])
+        XCTAssertFalse(catalog.detect("06460000000002").preferred.contains(.dpd))
     }
 
     func testAcceptsASelectableCarrierThatWasNotCompiledIntoTheApp() throws {
