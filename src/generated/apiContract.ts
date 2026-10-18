@@ -17100,7 +17100,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "taxydema",
+      "recognitionRank": 864
     },
     "trackingUrlTemplate": "https://www.taxydema.gr/entopismos/{trackingNumber}",
     "linkRules": [
@@ -21964,7 +21965,9 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Athens",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pack-man",
+      "recognitionRank": 862,
+      "recognitionPattern": "^[A-Z]\\d{8}$"
     },
     "trackingUrlTemplate": "https://pack-man.gr/anazitisi-apostolis.html?code={trackingNumber}",
     "linkRules": [
@@ -21976,6 +21979,12 @@ export const CARRIER_CAPABILITIES = {
         "params": [
           "code"
         ]
+      },
+      {
+        "domains": [
+          "pack-man.gr"
+        ],
+        "path": "^/t/([^/?#]+)/?$"
       },
       {
         "domains": [
@@ -22628,7 +22637,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bratislava",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "go4",
+      "recognitionRank": 863
     },
     "trackingUrlTemplate": "https://zona.go4.eu/status/?parcelId={trackingNumber}",
     "linkRules": [
@@ -26145,6 +26155,51 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://ukr.tmm-express.com/en/callback"
+  },
+  "j-and-t-middle-east": {
+    "displayName": "J&T Express Middle East",
+    "aliases": [
+      "J&T Express (SA)",
+      "J&T Express Saudi Arabia",
+      "J&T Express KSA",
+      "J&T Express UAE",
+      "J&T Express (UAE)",
+      "J&T Express Kuwait"
+    ],
+    "countries": [
+      "SA",
+      "AE",
+      "KW"
+    ],
+    "color": "#e60000",
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.jtexpress.me/KSA/trajectoryList?waybillNo={trackingNumber}&type=0",
+    "linkRules": [
+      {
+        "domains": [
+          "www.jtexpress.me",
+          "jtexpress.me",
+          "www.jtexpress.ae",
+          "jtexpress.ae"
+        ],
+        "pathPattern": "^/(?:KSA|UAE|KW)/(?:trajectoryList|trajectoryQuery|subBillCode)/?$",
+        "params": [
+          "waybillNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JTE\\d{12}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.jtexpress.me/KSA/trackOrder"
   }
 } as const;
 
@@ -26857,7 +26912,8 @@ export const CARRIER_IDS = [
   "urvaam",
   "gofo-nl",
   "next-level-delivery",
-  "tmm-express"
+  "tmm-express",
+  "j-and-t-middle-east"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
