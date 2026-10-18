@@ -147,6 +147,9 @@
   "asyad-express": {
     "decal": "asyad-express"
   },
+  "atlantic-courier": {
+    "decal": "atlantic-courier"
+  },
   "australia-post": {
     "decal": "australia-post"
   },
@@ -493,6 +496,9 @@
   "daewoo-fastex": {
     "decal": "daewoo-fastex"
   },
+  "daily-xpress": {
+    "decal": "daily-xpress"
+  },
   "danske-fragtmaend": {
     "decal": "danske-fragtmaend"
   },
@@ -587,6 +593,9 @@
   },
   "direx": {
     "decal": "direx"
+  },
+  "dnx-cargo": {
+    "decal": "dnx-cargo"
   },
   "dobropost": {
     "decal": "dobropost",
@@ -925,6 +934,9 @@
   "gls-pl": {
     "family": "gls"
   },
+  "gms-worldwide": {
+    "decal": "gms-worldwide"
+  },
   "go-express": {
     "decal": "go-express"
   },
@@ -1064,6 +1076,9 @@
   },
   "icc-worldwide": {
     "decal": "icc-worldwide"
+  },
+  "icl-express": {
+    "decal": "icl-express"
   },
   "ics-courier": {
     "decal": "ics-courier"
@@ -1488,6 +1503,9 @@
   "ocasa": {
     "decal": "ocasa"
   },
+  "ocs-ana": {
+    "decal": "ocs-ana"
+  },
   "old-dominion": {
     "decal": "old-dominion"
   },
@@ -1764,6 +1782,9 @@
       "edge": "#22387d",
       "accent": "#da322a"
     }
+  },
+  "pushpak-courier": {
+    "decal": "pushpak-courier"
   },
   "quantium-solutions": {
     "decal": "quantium-solutions"
@@ -2214,6 +2235,9 @@
   },
   "united-delivery-service": {
     "decal": "united-delivery-service"
+  },
+  "united-worldwide-couriers": {
+    "decal": "united-worldwide-couriers"
   },
   "uniuni": {
     "decal": "uniuni"

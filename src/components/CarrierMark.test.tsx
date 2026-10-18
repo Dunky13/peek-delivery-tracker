@@ -117,6 +117,8 @@ describe('carrier mark', () => {
     'c3x', 'eco-express-ae', 'logistiq', 'quicksilver-sa', 'skyex-ae', 'team-express-ae', 'tfm-express',
     'transcorp', 'air-star-xpress', 'first-fly-express', 'flyking', 'goodluck-courier', 'grand-slam-express',
     'jetline-couriers', 'pavan-courier', 'sahara-express', 'shree-mahabali-express', 'speed-and-safe',
+    'ocs-ana', 'icl-express', 'atlantic-courier', 'gms-worldwide', 'pushpak-courier',
+    'united-worldwide-couriers', 'dnx-cargo', 'daily-xpress',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

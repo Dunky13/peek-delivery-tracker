@@ -58,6 +58,7 @@ and [`truck.json`](truck.json).
 | `arrow-xl` | [arrowxl.co.uk](https://www.arrowxl.co.uk/Images/arrowxl-logo-grey.svg) — logo SVG fill #57328a; favicon purple #572b80 |
 | `asendia` | [asendia.com](https://www.asendia.com/) |
 | `asyad-express` | [asyadexpress.om](https://web.archive.org/web/20251231194331/https://www.asyadexpress.om/) — header logo PNG: navy #221a37 lettering, cyan #00baeb dot and EXPRESS (approximate; archived, the live site refuses connections here) |
+| `atlantic-courier` | [atlanticcourier.net](https://atlanticcourier.net/static/imgs/atlantic-logo.svg) — logo SVG wordmark fill #E31E24, also the nav CSS button colour |
 | `australia-post` | [auspost.com.au](https://auspost.com.au/) |
 | `austrian-post` | [post.at](https://www.post.at/) |
 | `averitt` | [averitt.com](https://www.averitt.com/hs-fs/hubfs/Averitt_logo_250_PNG.png) — logo PNG red #c21f38 (approximate) |
@@ -155,6 +156,7 @@ and [`truck.json`](truck.json).
 | `cyprus-post` | [cypruspost.post](https://www.cypruspost.post/themes/post-office/css/style1000.css) — #e4a50e in the site CSS, matching the horn in the logo JPEG (approximate) |
 | `d-express` | [dexpress.rs](https://www.dexpress.rs/files/images/Daily_Express_doo/logo/DExpress_logo_sa_sloganom.png) — logo red #ff0000 (approximate) |
 | `daewoo-fastex` | [fastex.pk](https://fastex.pk/) — site CSS primary #0066b3 (buttons, active menu, header shape); the logo samples FASTEX #1774ba and the fan #179edd (approximate) |
+| `daily-xpress` | [dailyxpress.in](https://www.dailyxpress.in/assets/img/logo/dailyxpress.png) — purple of the logo lettering and the site CSS, #953995 |
 | `danske-fragtmaend` | [fragt.dk](https://www.fragt.dk/dist/images/df-logo.svg) — logo SVG background fill #009ADA |
 | `dao` | [dao.as stylesheet](https://dao.as/wp-content/themes/dao-wp/public/app.css) — .bg-daoRed #e30613 |
 | `day-ross` | [dayross.com, archived](https://web.archive.org/web/20260821021605/https://dayross.com/) — logo SVG fills: ampersand `#FF5F14`, wordless mark `#FF5F14` and `#1A1919`; `theme-color` `#000000` |
@@ -170,6 +172,7 @@ and [`truck.json`](truck.json).
 | `direct-couriers` | [directcouriers.com.au](https://www.directcouriers.com.au/css/main.css?v=2.1.283) — site CSS #f3852e, the header background; app icon orange #f3852e |
 | `direct-freight-express` | [directfreight.com.au](https://www.directfreight.com.au/images/dfelogo_desktop.svg) — logo SVG navy rgb(11.8%,26.7%,53.3%) #1e4488, orange #f16924 |
 | `direx` | [direx.bg](https://direx.bg/) — theme CSS --color-primary #6B4597; icon SVG fill #6b4598 |
+| `dnx-cargo` | [dnxindia.com](https://dnxindia.com/wp-content/uploads/2023/11/DNX-Logo-Color-1.webp) — logo letters #102663 on 60 % of its pixels (approximate) |
 | `dobropost` | [dobropost.com](https://dobropost.com/images/dobrologo.svg) — logo SVG box fill #FFBE2E and letter fill #1D2B37 (favicon #ffbb22 on #112233); site CSS --number-orange is #ffc33a |
 | `dohrn-transfer` | [dohrn.com](https://www.dohrn.com/) — site theme variable --primaryColor #ee3631; logo SVG red #ed3424 |
 | `domain-logistics` | [domainlogistics.ca](https://domainlogistics.ca/tracking/) — logo SVG fill #6abf4b (the green plane of the corner mark), also the tracking page's button background |
@@ -247,6 +250,7 @@ and [`truck.json`](truck.json).
 | `ghn` | [ghn.vn](https://cdn.hstatic.net/themes/200000472237/1001423864/14/logo.png) — logo PNG dominant orange #ff5200 (approximate) |
 | `ghtk` | [ghtk.vn](https://ghtk.vn/assets/logo.svg) — logo SVG fill #01B53B |
 | `globalpost` | [goglobalpost.com](https://www.goglobalpost.com/wp-content/uploads/2025/01/globalpostlogo.svg) — header logo SVG fill #11003A (icon square and wordmark); the site's deep-indigo preset and footer background are #11003A |
+| `gms-worldwide` | [gmsworldwide.com](https://www.gmsworldwide.com/wp-content/uploads/2023/07/gms-logo.svg) — logo SVG letter fill #006634 |
 | `go-express` | [general-overnight.com](https://www.general-overnight.com/) (inline header logo fill #B9242B, CSS --bs-primary) |
 | `go4` | [go4.sk](https://www.go4.sk/) — site CSS #EF1F23 for the red 4 and accents; logo and vans black #111111 |
 | `gobolt` | [gobolt.com](https://www.gobolt.com/) — site CSS --e-global-color-primary #00282b, the wordmark colour of the primary logo; bolt #ffbd5d and #b27330 sampled from the logo PNG |
@@ -280,6 +284,7 @@ and [`truck.json`](truck.json).
 | `hunter-express` | [hunterexpress.com.au](https://www.hunterexpress.com.au/wp-content/uploads/2025/05/NEW-Hunter-Logo-with-Slogan-scaled.jpg) — logo JPG wordmark orange #f7aa3a, oval blue #0053a1 (approximate) |
 | `hywl` | [szhywl.it.com](https://www.szhywl.it.com/assets/logo-huiyi.svg) — logo SVG fill and arc stroke #0b8f91 ('HUIYI LOGISTICS'), styles.css --teal #0b8f91 |
 | `icc-worldwide` | [iccworld.com](https://www.iccworld.com/css/custom.css) — custom.css #bd0607 (buttons and heading bars); logo red ≈ #ca0505 (approximate) |
+| `icl-express` | [iclexpress.in](https://iclexpress.in/wp-content/uploads/2024/01/logo-2.png) — logo PNG flat fill #2e3192 on 87 % of its pixels, same as the tracker CSS comment 'Blue: 2E3192' |
 | `ics-courier` | [icscourier.ca](https://www.icscourier.ca/rcdesign/styles/main.css) — logo CSS: .letters fill #004B8E, .swoosh fill #D93835 |
 | `idexpress` | [idexpress.com](https://www.idexpress.com/images/logo.svg) — logo SVG fill red (#ff0000) |
 | `ids-logistik` | [ids-logistik.de](https://www.ids-logistik.de/assets/images/h/Logo_IDS-enhm9snaty2njcm.svg) — logo SVG fill #006BAB |
@@ -403,6 +408,7 @@ and [`truck.json`](truck.json).
 | `oak-harbor` | [oakh.com](https://www.oakh.com/css/mainNav.css) — nav CSS navy #1e2251 (border and gradient start); leaf gold #fdbf38 sampled from the logo PNG (approximate) |
 | `oca` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:OCA_logo.svg) — logo SVG fills #592c82 and #f3912d; site favicon matches |
 | `ocasa` | [ocasa.com](https://ocasa.com/img/ocasa-logo.svg) — logo SVG arrow fill #0099A8 |
+| `ocs-ana` | [ocs.co.jp](https://www.ocs.co.jp/) — header logo PNG, flat fill #0a3382 on 52 % of its pixels; the site's nav bar uses #003b82 (approximate) |
 | `old-dominion` | [odfl.com](https://www.odfl.com/) |
 | `olva-courier` | [olvacourier.com](https://www.olvacourier.com/) — CSS #FCB414 commented as Olva yellow; header bar is that yellow |
 | `omniva` | [logo SVG](https://www.omniva.ee/wp-content/themes/omniva/assets/dist/assets/img/logo/logo-horizontal.svg) |
@@ -479,6 +485,7 @@ and [`truck.json`](truck.json).
 | `ptt` | [ptt.gov.tr](https://www.ptt.gov.tr/_next/static/css/17a9f22f71c05d50.css) — --pttYellowColor #ffc72c for the body, --pttGreenAccessible #007a99 for the bird |
 | `pullman-cargo` | [pullmancargo.cl](https://pullmancargo.cl/logo_cargo.svg) — logo SVG fill #003fa2, also site CSS --color-primary |
 | `purolator` | [purolator.com](https://www.purolator.com/) (approximate) |
+| `pushpak-courier` | [pushpakcourier.net](https://www.pushpakcourier.net/assets/images/logo.png) — lit face of the red lettering in the logo PNG, #f62c2c; the bevelled letters average #e21e1d (approximate) |
 | `quantium-solutions` | [quantiumsolutions.com](https://www.quantiumsolutions.com/homesource/Quantium_Solutions_Logo.png) — logo wordmark teal #00474f and symbol lime #7fbc03 (approximate, flat PNG); site headings #004750 |
 | `quicksilver-sa` | [quick-silver.express](https://quick-silver.express/assets/logo%201-h7PlWKoD.svg) — logo SVG fill #805FA4; the S's upper hook is grey #BEBBBA |
 | `quiqup` | [quiqup.com](https://cdn.prod.website-files.com/659d50aa6b5dee07e990053a/659e462164d15ff126e9b6cb_Quiqup_Master_Logos_RGB_Horizontal_Ghost%20(3).png) — logo PNG symbol fill #6c65f7, chevron #ffd100, wordmark #23005b |
@@ -608,6 +615,7 @@ and [`truck.json`](truck.json).
 | `ues-uy` | [ues.com.uy](https://www.ues.com.uy/img/new-logo-ues-color.svg) — logo SVG letter fill #00295C (also the site overlay rgba(0,41,92)); tag #F47521 |
 | `ukrposhta` | [ukrposhta.ua](https://www.ukrposhta.ua/en) |
 | `united-delivery-service` | [uniteddeliveryservice.com](https://www.uniteddeliveryservice.com/img/logo/logo.png) — logo PNG blue #1e4691 and grey #cdcdcd (approximate); the main stylesheet uses #2752a2 |
+| `united-worldwide-couriers` | [unitedcouriers.biz](https://www.unitedcouriers.biz/css/style.css) — main colour of the site stylesheet #0099ff (buttons, links, accents); the logo JPEG is black and white |
 | `uniuni` | [uniuni.com](https://www.uniuni.com/) |
 | `upaya` | [upaya.com.np](https://upaya.com.np/) — tracking page CSS --ux-navy #003d87, also the logo PNG navy; orange #ff5527 (--ux-orange) |
 | `urbano` | [urbano.com.pe](https://www.urbano.com.pe/) — Nuxt bundle app bar and buttons #5c068c |
@@ -1307,3 +1315,11 @@ and [`truck.json`](truck.json).
 | `sahara-express` | Orange and white ring with an orange swoosh arrow on navy | [saharaexpress.com](https://saharaexpress.com/images/logo.png) — ring and arrow |
 | `shree-mahabali-express` | White M over a blue bowl on red | [shreemahabaliexpress.com](https://shreemahabaliexpress.com/img/logo-5.png) — M globe; the red globe is the body |
 | `speed-and-safe` | Blue italic S cut out of a white slanted tile, on blue | [gokulamspeedandsafe.com](https://www.gokulamspeedandsafe.com/wp-content/uploads/2021/10/logo-icon.png) — S emblem |
+| `ocs-ana` | White bold italic OCS on blue | [ocs.co.jp](https://ferret-one.akamaized.net/images/63a96c97382a1d0001f00c1f/original.png) — header logo, OCS ANA GROUP wordmark beside its cube |
+| `icl-express` | White block ICL with two stripe cuts on indigo | [iclexpress.in](https://iclexpress.in/wp-content/uploads/2024/01/logo-2.png) — header logo, block ICL letters striped across the lower part |
+| `atlantic-courier` | White globe with two diagonal bands on red | [atlanticcourier.net](https://atlanticcourier.net/static/imgs/atlantic-logo-favicon.png) — favicon, the banded globe that dots the i of the red wordmark |
+| `gms-worldwide` | White GMS under a striped sun on green | [gmsworldwide.com](https://www.gmsworldwide.com/wp-content/uploads/2023/07/gms-logo.svg) — logo, green GMS over a red striped sun |
+| `pushpak-courier` | White C ring around a P on red | [pushpakcourier.net](https://www.pushpakcourier.net/assets/images/logo.png) — emblem, a blue C around a red P ringed by small planes (planes left out) |
+| `united-worldwide-couriers` | White globe and dove on blue | [unitedcouriers.biz](https://www.unitedcouriers.biz/img/LOGO.jpg) — header logo, a wire globe with a dove flying from it |
+| `dnx-cargo` | White italic DNX between red bars on navy | [dnxindia.com](https://dnxindia.com/wp-content/uploads/2023/11/DNX-Logo-Color-1.webp) — header logo, navy italic DNX with a red bar above and below |
+| `daily-xpress` | White D crossed by a swoosh on purple | [dailyxpress.in](https://www.dailyxpress.in/assets/img/logo/loder.png) — favicon emblem, a red D cut by a purple swoosh |

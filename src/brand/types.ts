@@ -128,7 +128,9 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'mongol-infinity-post' | 'peqasus-az' | 'c3x' | 'eco-express-ae' | 'logistiq' | 'quicksilver-sa'
   | 'skyex-ae' | 'team-express-ae' | 'tfm-express' | 'transcorp' | 'air-star-xpress'
   | 'first-fly-express' | 'flyking' | 'goodluck-courier' | 'grand-slam-express' | 'jetline-couriers'
-  | 'pavan-courier' | 'sahara-express' | 'shree-mahabali-express' | 'speed-and-safe';
+  | 'pavan-courier' | 'sahara-express' | 'shree-mahabali-express' | 'speed-and-safe' | 'ocs-ana'
+  | 'icl-express' | 'atlantic-courier' | 'gms-worldwide' | 'pushpak-courier'
+  | 'united-worldwide-couriers' | 'dnx-cargo' | 'daily-xpress';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {
