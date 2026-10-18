@@ -1465,7 +1465,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Paris",
     "tracking": {
       "mode": "automatic",
-      "adapter": "c-chez-vous"
+      "adapter": "c-chez-vous",
+      "recognitionRank": 345
     },
     "trackingUrlTemplate": "https://www.cchezvous.fr/suivi-colis/{trackingNumber}",
     "linkRules": [
@@ -1479,7 +1480,7 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^[A-Z]{4}\\d{2}[A-Z0-9]{4}$",
-        "confidence": "high"
+        "confidence": "low"
       }
     ],
     "aliases": [
@@ -26200,6 +26201,96 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.jtexpress.me/KSA/trackOrder"
+  },
+  "hovership": {
+    "displayName": "Hovership",
+    "aliases": [
+      "Hovership Delivery",
+      "Hovership Logistics"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#6768fe",
+    "selectable": true,
+    "timezone": "America/Los_Angeles",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.hovership.com/track/{trackingNumber}/",
+    "linkRules": [
+      {
+        "domains": [
+          "www.hovership.com",
+          "hovership.com"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.hovership.com/track/"
+  },
+  "pdn-express": {
+    "displayName": "PDN Express",
+    "aliases": [
+      "PDN",
+      "PDN Express B.V.",
+      "PDN Express Nederland"
+    ],
+    "countries": [
+      "NL"
+    ],
+    "color": "#0b63f6",
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://pdn.express/en/track/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "pdn.express",
+          "tracking.pdn.express"
+        ],
+        "path": "^/(?:en|nl|de|fr)/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^PDN\\d{10}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://pdn.express/en/track/"
+  },
+  "x-trac": {
+    "displayName": "X-TRAC",
+    "aliases": [
+      "XTRAC",
+      "X-TRAC Express",
+      "XTRAC Express"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#082799",
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^EXTRA\\d{11}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.xtrac-express.com/tracking"
   }
 } as const;
 
@@ -26913,7 +27004,10 @@ export const CARRIER_IDS = [
   "gofo-nl",
   "next-level-delivery",
   "tmm-express",
-  "j-and-t-middle-east"
+  "j-and-t-middle-east",
+  "hovership",
+  "pdn-express",
+  "x-trac"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
