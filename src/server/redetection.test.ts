@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { rerouteAskable, rerouteCarrier } from './redetection';
 import { catalogRules } from './trackingRouting';
 import type { JsonObject } from './types';
@@ -146,4 +146,48 @@ it('ranks the checks most likely to change the answer first', async () => {
     .toEqual({ carrier: 'ups', rank: 2 });
   expect(await lead({ tracking_number: '1234567891', current_stage: 'pending' }, { tracking_provider: undefined }))
     .toEqual({ carrier: 'dhl-express', rank: 2 });
+});
+
+it('asks a carrier the parcel already asked again only once the parcel has gone half a day without a check', () => {
+  const now = Date.parse('2026-09-10T12:00:00Z');
+  const probe = { count: 7, retry_at: '2026-09-10T11:00:00Z' };
+  const unseen = (checked: string, probes: JsonObject) => parcel({ tracking_number: '1234567891', current_stage: 'pending',
+    last_synced_at: checked }, { tracking_provider: undefined, routing: { candidate_probes: probes } });
+  // Asked an hour ago: the next carrier its recognition would ask, never asked yet.
+  expect(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe }), 'newer', now)).toBe('relais-colis');
+  expect(['dhl-express', 'relais-colis'])
+    .not.toContain(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe, 'relais-colis': probe }), 'newer', now));
+  // Half a day later, it is asked again.
+  expect(rerouteCarrier(unseen('2026-09-09T23:00:00Z', { 'dhl-express': probe }), 'newer', now)).toBe('dhl-express');
+  // So is a detected carrier whose failure's wait is over.
+  const failed = (checked: string) => parcel({ last_synced_at: checked },
+    { routing: { failures: { ups: { kind: 'not_found', count: 3, retry_at: '2026-09-10T11:30:00Z' } } } });
+  expect(rerouteCarrier(failed('2026-09-10T11:00:00Z'), 'newer', now)).not.toBe('ups');
+  expect(rerouteCarrier(failed('2026-09-09T23:00:00Z'), 'newer', now)).toBe('ups');
+});
+
+describe('a carrier whose answer was set aside as older than the parcel', () => {
+  const now = Date.parse('2026-10-08T12:00:00Z');
+  // An S10 item the catalog now points to Australia Post, a provider's misread clock ahead of its scans.
+  const aside = { 'australia-post': { checked_at: '2026-10-08T11:00:00.000Z', newest: '2026-10-07T23:01:00.000Z',
+    watermark: '2026-10-08T05:46:00.000Z', count: 3 } };
+  const item = (watermark: string, values: JsonObject = {}) => parcel({ carrier: 'intl-post', tracking_number: 'EY123456785AU',
+    last_synced_at: '2026-10-08T11:00:00Z', ...values }, { routing: { configured_carrier: 'intl-post', last_event_at: watermark, set_aside: aside } });
+
+  it('is asked again once the same answer would no longer be set aside', async () => {
+    const lead = (watermark: string, values?: JsonObject) => rerouteAskable(item(watermark, values), 'newer', now, async () => false);
+    // The same answer would be set aside again within the hour.
+    expect(await lead('2026-10-08T05:46:00.000Z')).toBeNull();
+    expect(await lead('2026-10-08T05:46:00.000Z', { last_synced_at: '2026-10-07T23:00:00Z' })).toEqual({ carrier: 'australia-post', rank: 2 });
+    // The provider's corrected clock brought the parcel's newest scan back to the carrier's.
+    expect(await lead('2026-10-07T23:01:00.000Z')).toEqual({ carrier: 'australia-post', rank: 0 });
+  });
+
+  it('counts as asked for a parcel filed under a carrier', () => {
+    const filed = (routing: JsonObject) => rerouteCarrier(parcel({ carrier: 'dhl' }, { routing: { failures: { dhl: { kind: 'not_found' } }, ...routing } }), 'newer', now);
+    expect(filed({})).toBe('ups');
+    expect(filed({ last_event_at: '2026-09-10T11:00:00.000Z',
+      set_aside: { ups: { checked_at: '2026-10-08T11:00:00.000Z', newest: '2026-09-10T03:00:00.000Z', watermark: '2026-09-10T11:00:00.000Z', count: 1 } } }))
+      .toBeNull();
+  });
 });

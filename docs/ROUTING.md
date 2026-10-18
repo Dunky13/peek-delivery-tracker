@@ -352,14 +352,19 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   teach an adapter a number, and a rate limit or outage passes. A carrier whose adapter
   refuses the number by its own check, which sends nothing, is passed over until a release
   whose adapter takes it. One that refused the number under an older release counts as not
-  asked, the filed carrier and a provider's name the parcel already holds included. The checks
-  most likely to change the answer go first (a carrier's answer the catalog now dates, or a
-  number it refused under an older release, then a carrier never asked, then one asked again),
-  50 at a time: the next batch goes once the last one's checks are done. One still in its
-  cooldown is queued by the first scheduled run after the cooldown ends. These checks wait
-  behind every other job, a lookup's own check too, and keep the scheduled cadence; they are
-  recorded with the `release` trigger. Asking for the parcel's check moves a queued one up. Only parcels filed under no carrier, or showing a provider's history, are
-  looked at. A lookup nobody follows any more gets this one check.
+  asked, the filed carrier and a provider's name the parcel already holds included. One whose
+  answer was set aside as older than the parcel counts as asked. A carrier the parcel already
+  asked is asked again only once the parcel has gone 12 hours without a check: its answer
+  would most likely be the same, and some lookups open a browser. A set-aside answer that the
+  parcel's newest scan has since come back to doesn't wait. The checks most likely to change
+  the answer go first (a carrier's answer the catalog now dates, a number it refused under an
+  older release, or a set-aside answer that would now be taken, then a carrier never asked,
+  then one asked again), 50 at a time: the next batch goes once the last one's checks are
+  done. One still in its cooldown is queued by the first scheduled run after the cooldown
+  ends. These checks wait behind every other job, a lookup's own check too, and keep the
+  scheduled cadence; they are recorded with the `release` trigger. Asking for the parcel's
+  check moves a queued one up. Only parcels filed under no carrier, or showing a provider's
+  history, are looked at. A lookup nobody follows any more gets this one check.
 
 ## Handoffs (two carriers)
 
