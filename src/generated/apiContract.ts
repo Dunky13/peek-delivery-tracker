@@ -12935,7 +12935,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shree-maruti",
+      "recognitionRank": 822
     },
     "trackingUrlTemplate": "https://shreemaruti.com/track-shipment/?awb={trackingNumber}",
     "linkRules": [
@@ -14395,7 +14396,6 @@ export const CARRIER_CAPABILITIES = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "trackingUrlTemplate": "https://www.deprisa.com/Tracking/?track={trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -14407,7 +14407,8 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.deprisa.com/es/rastrea"
   },
   "envia-colombia": {
     "displayName": "Envía",
@@ -19481,7 +19482,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ampm"
     },
     "trackingUrlTemplate": "https://grupoampm.com/rastreador/?tracking-id={trackingNumber}",
     "linkRules": [
@@ -22029,7 +22030,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Belgrade",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "m-one",
+      "recognitionRank": 825
     },
     "trackingUrlTemplate": "https://m-one.rs/en?{trackingNumber}",
     "linkRules": [
@@ -22042,7 +22044,13 @@ export const CARRIER_CAPABILITIES = {
         "query": "^([A-Za-z0-9]+)$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}RS$",
+        "confidence": "low",
+        "checksum": "s10"
+      }
+    ],
     "trackingSearchUrl": "https://m-one.rs/en"
   },
   "pack-man": {
@@ -27012,7 +27020,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Almaty",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jet-logistic",
+      "recognitionRank": 823
     },
     "linkRules": [],
     "detectionRules": [],
@@ -27034,7 +27043,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "l-post",
+      "recognitionRank": 808
     },
     "trackingUrlTemplate": "https://l-post.ru/tracking?id={trackingNumber}",
     "linkRules": [
@@ -28467,7 +28477,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "exmate"
     },
     "trackingUrlTemplate": "https://pod.exmate.net/pod/?exmno={trackingNumber}",
     "linkRules": [
@@ -28636,7 +28646,7 @@ export const CARRIER_CAPABILITIES = {
       "CN",
       "AU"
     ],
-    "color": "#d6151f",
+    "color": "#ec3a43",
     "selectable": true,
     "timezone": "Asia/Singapore",
     "tracking": {
@@ -28768,7 +28778,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AU"
     ],
-    "color": "#012148",
+    "color": "#0071a6",
     "selectable": true,
     "timezone": "Australia/Sydney",
     "tracking": {
@@ -28789,6 +28799,114 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.mrlglobal.com/tracking/"
+  },
+  "montenegro-post": {
+    "displayName": "Pošta Crne Gore",
+    "aliases": [
+      "Montenegro Post",
+      "Posta Crne Gore",
+      "Post of Montenegro"
+    ],
+    "countries": [
+      "ME"
+    ],
+    "color": "#fab900",
+    "selectable": true,
+    "timezone": "Europe/Podgorica",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://webpostar.postacg.me/web_services/track_and_trace?tracking_number={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "webpostar.postacg.me"
+        ],
+        "pathPattern": "^/web_services/track_and_trace/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://webpostar.postacg.me/web_services/track_and_trace"
+  },
+  "rpx-hk": {
+    "displayName": "RPX Online",
+    "aliases": [
+      "RPX Ltd",
+      "RPX Hong Kong",
+      "RPX eCommerce"
+    ],
+    "countries": [
+      "HK"
+    ],
+    "color": "#eb1d4d",
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking.rpxonline.com/?trackNo={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.rpxonline.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "trackNo",
+          "trackingNumber"
+        ]
+      },
+      {
+        "domains": [
+          "www.rpxonline.com",
+          "rpxonline.com"
+        ],
+        "path": "^/component/track/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^HKGL\\d{10}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://tracking.rpxonline.com/"
+  },
+  "vitran-express": {
+    "displayName": "Vitran Express",
+    "aliases": [
+      "Vitran"
+    ],
+    "countries": [
+      "CA"
+    ],
+    "color": "#004bac",
+    "selectable": true,
+    "timezone": "America/Toronto",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.vitran.com/quicktrack.aspx?p={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.vitran.com",
+          "vitran.com"
+        ],
+        "pathPattern": "^/quicktrack\\.aspx$",
+        "params": [
+          "p"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.vitran.com/quicktrack.aspx"
   }
 } as const;
 
@@ -29575,7 +29693,10 @@ export const CARRIER_IDS = [
   "dpex",
   "fliway",
   "morning-global",
-  "mrl-global"
+  "mrl-global",
+  "montenegro-post",
+  "rpx-hk",
+  "vitran-express"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
