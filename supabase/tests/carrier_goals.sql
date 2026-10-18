@@ -36,8 +36,8 @@ insert into auth.users (id, email) values ('f4000000-0000-4000-8000-000000000001
 -- stale: an account's parcel its carrier last answered 30 h ago; captcha since.
 -- waiting: no scan yet. finished: delivered. dormant: a lookup nobody followed for days.
 -- set aside, not asked: lookups ParcelsApp answers, filed under a carrier whose answer was set
--- aside as older than the parcel, without movement or on local clocks, and under one that was
--- not asked; none part of the gap.
+-- aside as older than the parcel, without movement, on local clocks or behind a delivered or
+-- returned stage, and under one that was not asked; none part of the gap.
 -- released: a lookup nobody followed for days, its carrier last answering 30 h ago, that only
 -- a scraper release's check, failing, asked since: not followed, so not part of the gap.
 insert into public.packages (id, user_id, one_off, tracking_number, carrier, current_stage, sync_status, created_at, last_synced_at, carrier_data)
@@ -68,6 +68,10 @@ values
   ('f4000000-0000-4000-8000-000000000013', null, true, 'GOALS0010', 'la-poste',
     'in_transit', 'ok', now() - interval '3 days', now() - interval '6 minutes',
     '{"tracking_provider": "ParcelsApp", "routing": {"set_aside": {"la-poste": {"reason": "local_clock",
+      "checked_at": "2026-10-08T11:00:00Z", "count": 1}}}}'),
+  ('f4000000-0000-4000-8000-000000000015', null, true, 'GOALS0012', 'la-poste',
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '6 minutes',
+    '{"tracking_provider": "ParcelsApp", "routing": {"set_aside": {"la-poste": {"reason": "behind_final",
       "checked_at": "2026-10-08T11:00:00Z", "count": 1}}}}'),
   ('f4000000-0000-4000-8000-000000000014', null, true, 'GOALS0011', 'la-poste',
     'in_transit', 'error', now() - interval '3 days', now() - interval '7 minutes', '{}');
@@ -170,18 +174,19 @@ end;
 $$;
 
 -- The review tells a carrier whose answer was set aside as older than the parcel, without
--- movement or on local clocks, from one not asked.
+-- movement, on local clocks or behind a delivered or returned stage, from one not asked.
 do $$
 begin
   if (select array_agg(row(tracking_number, why, reason, lane, gap is true)::text order by tracking_number)
-      from private.tracking_gaps where tracking_number in ('GOALS0007', 'GOALS0008', 'GOALS0009', 'GOALS0010'))
+      from private.tracking_gaps where tracking_number in ('GOALS0007', 'GOALS0008', 'GOALS0009', 'GOALS0010', 'GOALS0012'))
       is distinct from array[
         row('GOALS0007', 'answer older than parcel', 'answer set aside as older', 'delivery-tracker', false)::text,
         row('GOALS0008', 'carrier not asked', 'carrier not asked', 'delivery-tracker', false)::text,
         row('GOALS0009', 'answer shows no movement', 'answer without movement', 'adapters', false)::text,
-        row('GOALS0010', 'answer on local clocks', 'answer on local clocks', 'adapters', false)::text] then
+        row('GOALS0010', 'answer on local clocks', 'answer on local clocks', 'adapters', false)::text,
+        row('GOALS0012', 'answer behind delivered or returned', 'answer behind a final stage', 'adapters', false)::text] then
     raise exception 'A set-aside answer was not told from a carrier not asked: %', (select array_agg(row(tracking_number, why, reason, lane, gap)::text)
-      from private.tracking_gaps where tracking_number in ('GOALS0007', 'GOALS0008', 'GOALS0009', 'GOALS0010'));
+      from private.tracking_gaps where tracking_number in ('GOALS0007', 'GOALS0008', 'GOALS0009', 'GOALS0010', 'GOALS0012'));
   end if;
 end;
 $$;

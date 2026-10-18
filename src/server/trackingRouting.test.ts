@@ -411,6 +411,18 @@ describe('persistent tracking routing', () => {
     expect(result.result.tracking_provider).toBe('ParcelsApp');
     expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
   });
+  it('records a named carrier\'s answer behind the provider\'s delivered stage it sets aside', async () => {
+    const { router, direct, universal } = setup();
+    universal.mockResolvedValue({ ...history(), discovered_carrier: 'ups', current_stage: 'delivered', status: 'delivered' });
+    const first = await router.fetch(parcel(), false);
+    expect(first.result.current_stage).toBe('delivered');
+    expect(first.result.routing).toMatchObject({ set_aside: { ups: { reason: 'behind_final', checked_at: time.toISOString(), count: 1 } } });
+    const setAside = (first.result.routing as JsonObject).set_aside as JsonObject;
+    expect(setAside.ups).not.toHaveProperty('newest');
+    const again = await router.fetch(parcel({ carrier_data: { routing: state({ set_aside: setAside }) } }), false);
+    expect(again.result.routing).toMatchObject({ set_aside: { ups: { reason: 'behind_final', count: 2 } } });
+    expect(direct).toHaveBeenCalledTimes(2);
+  });
   describe('a named carrier older than the parcel\'s newest scan', () => {
     // The provider's copies of the carrier's scans, read hours late, set the watermark.
     const named = (routing: JsonObject = {}) => parcel({ current_stage: 'in_transit', carrier_data: { routing: state({

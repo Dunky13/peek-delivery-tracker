@@ -44,8 +44,11 @@ export interface RoutedResult {
   earlierFollowUp?: boolean;
 }
 interface Failure { count: number; retry_at: string; kind: RoutingFailureKind; user_error?: string }
-/** Older than the parcel's newest scan; no movement; or dated only by a local clock. Absent: older. */
-export type SetAsideReason = 'older' | 'no_movement' | 'local_clock';
+/**
+ * Older than the parcel's newest scan; no movement; dated only by a local clock; or behind a
+ * provider's delivered or returned stage. Absent: older.
+ */
+export type SetAsideReason = 'older' | 'no_movement' | 'local_clock' | 'behind_final';
 export interface SetAside { reason?: SetAsideReason; checked_at: string; newest?: string; watermark?: string; count: number }
 export interface RoutingState extends JsonObject {
   version: 1;
@@ -73,10 +76,10 @@ export interface RoutingState extends JsonObject {
   /** The filed carrier's local-clock answer that a provider's history last matched, adding no scan or stage. */
   provider_copy?: { carrier: string; number: string; scans: number; stage: string | null; provider: string; checked_at: string };
   /**
-   * Carriers asked as candidates whose answer was set aside: why, when, how many checks in a
-   * row set that same answer aside, and for one older than the parcel's newest scan, the
-   * answer's newest scan and the watermark it lost to. Asking the carrier again replaces it,
-   * and an answer on local clocks the check then takes leaves nothing.
+   * Carriers whose answer a check set aside: why, when, how many checks in a row set that same
+   * answer aside, and for one older than the parcel's newest scan, the answer's newest scan and
+   * the watermark it lost to. Asking the carrier again replaces it, and an answer on local
+   * clocks the check then takes leaves nothing.
    */
   set_aside?: Record<string, SetAside>;
   probe_cursor: number;
@@ -589,8 +592,12 @@ export class TrackingRouter {
           setAsideAs('older', iso(latest(value)));
           return null;
         }
+        // The provider's delivered or returned answer stands.
         if (terminalStage && ['delivered', 'returned'].includes(terminalStage)
-          && value.result.current_stage !== terminalStage) return null;
+          && value.result.current_stage !== terminalStage) {
+          setAsideAs('behind_final');
+          return null;
+        }
         if (capturedHistory) localHistory = capturedHistory;
         // It shows the parcel until the filed carrier has it, and is neither
         // confirmed in its place nor reported as a detection gap.

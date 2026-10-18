@@ -361,8 +361,8 @@ Each row names the lane that acts on it:
   carrier missing from the catalog, a reader's answer about a parcel with no carrier or the
   wrong one;
 - **adapters**: a carrier without an adapter, a failing adapter or provider, an adapter that
-  refuses a number its carrier issues or answers it only in part, without movement or on
-  local clocks only, wording no map reads, a reader's answer that a carrier's status, steps,
+  refuses a number its carrier issues or answers it only in part, without movement, on
+  local clocks only or behind a provider's delivered or returned stage, wording no map reads, a reader's answer that a carrier's status, steps,
   times or places are off;
 - **captcha**: an adapter stopped by a verification or captcha page;
 - **delivery-tracker**: the app's routing, such as parcels left with a provider although
