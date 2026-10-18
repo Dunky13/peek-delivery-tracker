@@ -187,6 +187,9 @@
   "bex-express": {
     "decal": "bex-express"
   },
+  "big-smart": {
+    "decal": "big-smart"
+  },
   "bjs-home-delivery": {
     "decal": "bjs-home-delivery",
     "palette": {
@@ -719,6 +722,9 @@
   "europochta": {
     "decal": "europochta"
   },
+  "evdemo-lojistik": {
+    "decal": "evdemo-lojistik"
+  },
   "evri": {
     "palette": {
       "accent": "#53efef"
@@ -917,6 +923,9 @@
   },
   "gs-postbox": {
     "decal": "gs-postbox"
+  },
+  "gta-airskip": {
+    "decal": "gta-airskip"
   },
   "gtl-goto": {
     "decal": "gtl-goto"
@@ -1387,6 +1396,9 @@
   "northline": {
     "decal": "northline"
   },
+  "nova-global": {
+    "decal": "nova-poshta"
+  },
   "nova-poshta": {
     "decal": "nova-poshta"
   },
@@ -1659,6 +1671,12 @@
   "pronto-lanka": {
     "decal": "pronto-lanka"
   },
+  "proships": {
+    "decal": "proships"
+  },
+  "pts-worldwide-express": {
+    "decal": "pts-worldwide-express"
+  },
   "ptt": {
     "decal": "ptt",
     "palette": {
@@ -1803,6 +1821,9 @@
   },
   "shipblu": {
     "decal": "shipblu"
+  },
+  "shipentegra": {
+    "decal": "shipentegra"
   },
   "shipup": {
     "decal": "shipup",

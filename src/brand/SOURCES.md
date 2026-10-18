@@ -70,6 +70,7 @@ and [`truck.json`](truck.json).
 | `best-transport` | [besttransport.se](https://www.besttransport.se/) — CSS --primary-color #ef7d00; logo PNG #ef7d00 |
 | `better-trucks` | [bettertrucks.com](https://www.bettertrucks.com/hubfs/Better-Trucks%20(1)-1.png) — header logo PNG blue #218cee (approximate) |
 | `bex-express` | [bexexpress.rs](https://bexexpress.rs/) — most used site colour #468e42, matching the leaf in meta-logo.png |
+| `big-smart` | [bigsmart.mx](https://bigsmart.mx/) — background #2f2f5e in the home page's inline CSS, the navy of its hero (sampled #30315c), with the menu bar at #232446; the logo SVG is white with a #F0BD18 chevron, drawn for that navy ([big-logo__white.svg](https://bigsmart.mx/wp-content/uploads/2021/01/big-logo__white.svg)) |
 | `bjs-home-delivery` | [track.bjshomedelivery.com](https://track.bjshomedelivery.com/assets/img/BJSTypeLogo.svg) — BJSTypeLogo.svg fill #FEBA30, the same as the site favicon; the tracker CSS uses #fdba30 |
 | `blue-dart` | [bluedart.com](https://www.bluedart.com/) |
 | `blue-express` | [blue.cl](https://www.blue.cl/) — favicon and inline logo fill #0032A0, dot #41b6e6 |
@@ -199,6 +200,7 @@ and [`truck.json`](truck.json).
 | `eurodis` | [eurodis.com](https://eurodis.com/wp-content/themes/eurodis/layouts/images/logo.png) — header logo PNG, flat lid fill #0b418b (the same blue fills the 270 px site icon); site CSS main.css also uses #0b418b, with #00428c for links and headings |
 | `euroexpress-ba` | [euroexpress.ba](https://www.euroexpress.ba/static/css/main.48a626ff.chunk.css) — site CSS #da212e (42 uses); logo SVG red #db353d and blue #2f629c |
 | `europochta` | [evropochta.by](https://web.archive.org/web/20251205001851/https://evropochta.by/) — site CSS blue #225ba8 (most used colour) and favicon blue #225daa; logo SVG has red #d91c18 for ЕВРО and blue #214480 for ПОЧТА (archived; the live site answers 403 here) |
+| `evdemo-lojistik` | [evdemolojistik.com](https://www.evdemolojistik.com/image/catalog/logo-evdemolojistik.png) — the orange of 'lojistik' in the logo PNG, a flat #e3590f (approximate) |
 | `evri` | [evri.com](https://www.evri.com/) |
 | `evropat` | [evropat.bg](https://evropat.bg/wp-content/uploads/2026/08/cropped-logo-full-2-1024x360.png) — logo PNG #103683 and red #eb2c1b (two-colour palette); site CSS primary #103683 |
 | `ewe` | [ewe.com.au](https://www.ewe.com.au/) — header CSS #0036a9 behind the yellow logo; logo yellow #f3e127 (approximate), site icon blue #013cbc (approximate) |
@@ -241,6 +243,7 @@ and [`truck.json`](truck.json).
 | `gogo-xpress` | [gogoxpress.com](https://cdn.gogoxpress.com/brand_icons/gogo-xpress-logo.svg) — logo SVG fills #23a3dd (blue letters) and #c21f44 (red letters) |
 | `groupe-guilbault` | [groupeguilbault.com](https://www.groupeguilbault.com/css/main.css?v=4) — site CSS red #c32d30 and yellow #fcdf15; red cabs with yellow lettering in the site photos |
 | `gs-postbox` | [cvsnet.co.kr](https://www.cvsnet.co.kr/common/images/logo_on.png) — logo orange #e36808 and favicon #e56a00 (approximate); site CSS buttons #f36523 |
+| `gta-airskip` | [gtaairskip.com](https://gtaairskip.com/wp-content/uploads/2026/08/Logo-Menu-Bar-6.png) — flat #1081c4 in the logo PNG (approximate), also the most used colour in the home page markup (28 uses) |
 | `gtl-goto` | [gtl.id](https://www.gtl.id/) — logo SVG fill #14922C inlined in the site bundle (main.js), the theme colour texasGreen.500 of the navigation bar, and the favicon's green |
 | `guatex` | [guatex.com](https://guatex.com/wp-content/uploads/2022/11/logo_guatex_25_aniversario.png) — logo PNG flat navy #282f6a (approximate; site CSS #141b49) |
 | `gzyl` | [yunlianhouyun.com](http://yunlianhouyun.com/skin/logistics/css/style.css) — CSS --blue #4e79e1; every opaque logo pixel #4e79e1 |
@@ -374,6 +377,7 @@ and [`truck.json`](truck.json).
 | `nord-wheel` | [nordw.ru](https://nordw.ru/images/build/nordw-logo-new.svg) — header logo SVG fill #0c55ff (red #fe0002 for the slash and right arc) |
 | `norsk-global` | [norsk.global](https://norsk.global/img/norsk-global-logo.webp) — NORSK wordmark about #114634 (approximate, sampled from the WebP logo); the site CSS uses #114433 (43 uses) |
 | `northline` | [northline.com.au](https://www.northline.com.au/app/themes/northline/images/N-icon.png) — N icon black #000000, red #e51937 (approximate); theme-color #000000; logo SVG accent #e3173e |
+| `nova-global` | [nova.global](https://nova.global/) — inline logo SVG fill #DA291C, Nova Poshta's four-arrow mark beside a NOVA GLOBAL wordmark |
 | `nox` | [nox.eu](https://www.nox.eu/_nuxt/logo.DMSz3kyv.svg) — logo SVG fill #FADB00 beside #111113 lettering |
 | `nz-couriers` | [nzcouriers.co.nz](https://assets-nzcouriers.ep-prod.freightways.co.nz/uploads/2022/12/nzc_logo.svg) — logo SVG fill #ffc900, outline #1a1818 |
 | `nz-post` | [nzpost.co.nz](https://www.nzpost.co.nz/) |
@@ -448,6 +452,8 @@ and [`truck.json`](truck.json).
 | `professional-couriers` | [tpcindia.com](https://web.archive.org/web/2025/https://www.tpcindia.com/images/logo.png) — logo PNG red #e92429, swooshes #ffcb05 and #f48020 (approximate) |
 | `prompt-xpress` | [promptxpress.lk](https://promptxpress.lk/Images/iconlogo.png) — logo PNG XP #24408f with red #ed1c24 (approximate); navbar CSS #254091 |
 | `pronto-lanka` | [prontolanka.lk](https://www.prontolanka.lk/dist/img/pronto_logo.png) — logo PNG #ec1b24 (approximate) |
+| `proships` | [proships.com](https://proships.com/wp-content/uploads/2025/07/logo-proships.png) — the logo PNG's yellow, a flat #f8b909 (approximate); the site theme uses #fcb00c |
+| `pts-worldwide-express` | [pts.net](https://wp.pts.net/Content/css/main) — #be1722 is the main stylesheet's most used colour (69 uses); the logo PNG samples #bd1521 |
 | `ptt` | [ptt.gov.tr](https://www.ptt.gov.tr/_next/static/css/17a9f22f71c05d50.css) — --pttYellowColor #ffc72c for the body, --pttGreenAccessible #007a99 for the bird |
 | `pullman-cargo` | [pullmancargo.cl](https://pullmancargo.cl/logo_cargo.svg) — logo SVG fill #003fa2, also site CSS --color-primary |
 | `purolator` | [purolator.com](https://www.purolator.com/) (approximate) |
@@ -488,6 +494,7 @@ and [`truck.json`](truck.json).
 | `shadowfax` | [shadowfax.in](https://www.shadowfax.in/) — CSS .bg-theme-green rgb(0 138 113); theme yellow rgb(241 238 27) |
 | `shipa` | [shipa.com](https://shipa.com/static/6add25daa42f483a2844655b94664348/footer_shipa_delivery_logo_spaced_b650c90d74.svg.svg) — Shipa Delivery logo SVG slash fill #00f; shipa.com marks the Shipa Delivery card color="#0000ff" |
 | `shipblu` | [shipblu.com](https://shipblu.com/assets/img/navlogo.972e5b91.svg) — the logo's bird and "Blu" fill #1c5bfe (PNG embedded in the nav logo SVG, approximate), also the most used colour in the site stylesheet; the navy #0a3266 is the "Ship" text, the bird's tail and the footer |
+| `shipentegra` | [shipentegra.com](https://www.shipentegra.com/) — button background rgb(13, 182, 220) = #0db6dc on the home page, and the logo SVG's 'Ship' fill #0eb6dc ([se-logo.svg](https://www.shipentegra.com/img/logos/se-logo.svg)) |
 | `shipup` | [shipup.co](https://www.shipup.co/) (sampled from the site icon) |
 | `shree-anjani` | [shreeanjanicourier.com](https://shreeanjanicourier.com/img/logo.svg) — logo SVG fill #F58220; site CSS --critical-primary #f58220 |
 | `shree-mahavir` | [shreemahavircourier.com](https://www.shreemahavircourier.com/) — text colour #e31e25 in the site stylesheet, matching the logo red; wing indigo #393186 |
@@ -642,7 +649,7 @@ and [`truck.json`](truck.json).
 | `bpost` | White swoosh on red | [bpost.be](https://www.bpost.be/) |
 | `austrian-post` | Black outline of the horn and its mouthpiece on yellow | [post.at](https://www.post.at/) |
 | `hermes` (`hermes-de`, `hermes`, `hermes-at`) | White wing of speed lines on blue | [myhermes.de](https://www.myhermes.de/) |
-| `nova-poshta` | White arrows pointing four ways on red | [novaposhta.ua](https://novaposhta.ua/) |
+| `nova-poshta` (`nova-poshta`, `nova-global`) | White arrows pointing four ways on red | [novaposhta.ua](https://novaposhta.ua/) |
 | `korea-post` | White ribbon of a swallow ahead of three chevrons on red; the chevrons' orange and yellow are approximations | [koreapost.go.kr](https://postman.koreapost.go.kr/kpost/subIndex/4263.do) |
 | `nz-post` | White striped loop in a ring on red | [nzpost.co.nz](https://www.nzpost.co.nz/) |
 | `poczta-polska` | White post horn on red | [poczta-polska.pl](https://www.poczta-polska.pl/) |
@@ -1230,3 +1237,9 @@ and [`truck.json`](truck.json).
 | `pdn-express` | White PDN with the sail-cut D over a tapering swoosh on blue | [pdn.express](https://pdn.express/_astro/favicon.D__E9G2A.png) — favicon and header logo (white wordmark; EXPRESS dropped) |
 | `x-trac` | White X with a red triangle for its upper-left arm and a pixel bar above its upper-right arm, on navy | [xtrac-express.com](https://www.xtrac-express.com/) — header logo's X (pixel trail reduced to one bar) |
 | `hovership` | White striped globe with stepped round band ends on violet | [hovership.com](https://www.hovership.com/favicon.svg) — favicon and apple-touch-icon sphere |
+| `shipentegra` | Two open hexagon links forming an S, the upper white and the lower dark grey, on cyan | [shipentegra.com](https://www.shipentegra.com/img/logos/se-logo.svg) — the logo symbol: two rounded hexagon links forming an S, the upper one blue-to-green, the lower one #444f60 |
+| `pts-worldwide-express` | White italic PTS over a white swoosh on red | [pts.net](https://wp.pts.net/Content/images/logo.png) — the logo: white italic PTS and a swoosh on a red disc |
+| `evdemo-lojistik` | White hand truck carrying four square boxes, tilted, on orange | [evdemolojistik.com](https://www.evdemolojistik.com/image/catalog/logo-evdemolojistik.png) — the logo symbol: a hand truck with four coloured squares; the four squares alone are the favicon |
+| `big-smart` | White big with a yellow chevron on navy | [bigsmart.mx](https://bigsmart.mx/wp-content/uploads/2021/01/big-logo__white.svg) — the logo: white lowercase big and a yellow > chevron |
+| `proships` | Bold dark grey P on yellow | [proships.com](https://proships.com/wp-content/uploads/2025/07/logo-proships.png) — the header logo's P, a thick rounded outline beside a dark grey truck cab; the site icon is a yellow P too |
+| `gta-airskip` | White airliner seen from above, nose up, on blue | [gtaairskip.com](https://gtaairskip.com/wp-content/uploads/2026/08/Logo-Menu-Bar-6.png) — the airliner that replaces the I in the AIRSKIP wordmark |

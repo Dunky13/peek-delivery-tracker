@@ -121,7 +121,8 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'packs' | 'tdn' | 'cbl-logistica' | 'inter-courier' | 'sp-express' | 'dragon-star-curier'
   | 'connect-couriers' | 'fastdrop' | 'pro-carrier' | 'teleship' | 'a-tu-hora-express' | 'transaher'
   | 'urvaam' | 'closer-logistics' | 'chronodiali' | 'cst-italia' | 'tmm-express'
-  | 'next-level-delivery' | 'pdn-express' | 'x-trac' | 'hovership';
+  | 'next-level-delivery' | 'pdn-express' | 'x-trac' | 'hovership' | 'shipentegra'
+  | 'pts-worldwide-express' | 'evdemo-lojistik' | 'big-smart' | 'proships' | 'gta-airskip';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {
