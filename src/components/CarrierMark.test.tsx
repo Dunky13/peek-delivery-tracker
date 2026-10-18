@@ -100,6 +100,8 @@ describe('carrier mark', () => {
     'tforce-logistics', 'globalpost', 'united-delivery-service', 'best-overnite-express', 'estes-forwarding',
     'ajex', 'exelot', 'kwick-box', 'labaih', 'shipblu', 'starlinks', 'gtl-goto', 'paxel', 'pickupp',
     '247express',
+    'fleetoptics', 'straightship', 'apple-express', 'ab-courier', 'lightning-express', 'kyoungdong',
+    'yc-delivery', 'sagawa-global', 'copa-courier', 'hound-express', 'pdq-chile', 'skyking', 'veloces',
   ] as const)(
     'renders the declared decoration for %s', (id) => {
       const { container } = render(<CarrierMark carrier={carrierInfo(id)} />);

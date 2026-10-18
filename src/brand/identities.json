@@ -32,6 +32,9 @@
   "aaa-cooper": {
     "decal": "aaa-cooper"
   },
+  "ab-courier": {
+    "decal": "ab-courier"
+  },
   "abf-freight": {
     "decal": "abf-freight"
   },
@@ -116,6 +119,9 @@
   },
   "apc-postal-logistics": {
     "decal": "apc-postal-logistics"
+  },
+  "apple-express": {
+    "decal": "apple-express"
   },
   "aramex": {
     "decal": "aramex"
@@ -345,6 +351,9 @@
   },
   "coordinadora": {
     "decal": "coordinadora"
+  },
+  "copa-courier": {
+    "decal": "copa-courier"
   },
   "corre": {
     "decal": "corre"
@@ -743,6 +752,9 @@
   "flash-express-ph": {
     "decal": "flash-express-ph"
   },
+  "fleetoptics": {
+    "decal": "fleetoptics"
+  },
   "followmont": {
     "decal": "followmont"
   },
@@ -927,6 +939,9 @@
   "horoz": {
     "decal": "horoz"
   },
+  "hound-express": {
+    "decal": "hound-express"
+  },
   "hp-mostar": {
     "decal": "hp-mostar",
     "palette": {
@@ -1106,6 +1121,9 @@
   "kwick-box": {
     "decal": "kwick-box"
   },
+  "kyoungdong": {
+    "decal": "kyoungdong"
+  },
   "kyrgyz-post": {
     "decal": "kyrgyz-post"
   },
@@ -1160,6 +1178,9 @@
     "palette": {
       "accent": "#000000"
     }
+  },
+  "lightning-express": {
+    "decal": "lightning-express"
   },
   "line-clear": {
     "decal": "line-clear"
@@ -1421,6 +1442,9 @@
   "pbt": {
     "decal": "pbt"
   },
+  "pdq-chile": {
+    "decal": "pdq-chile"
+  },
   "pecom": {
     "decal": "pecom"
   },
@@ -1630,6 +1654,9 @@
   "sagawa": {
     "decal": "sagawa"
   },
+  "sagawa-global": {
+    "decal": "sagawa-global"
+  },
   "saia": {
     "decal": "saia"
   },
@@ -1720,6 +1747,9 @@
   },
   "skroutz-last-mile": {
     "decal": "skroutz-last-mile"
+  },
+  "skyking": {
+    "decal": "skyking"
   },
   "skynet-sa": {
     "decal": "skynet-worldwide"
@@ -1813,6 +1843,9 @@
   },
   "sto": {
     "decal": "sto"
+  },
+  "straightship": {
+    "decal": "straightship"
   },
   "sundarban-courier": {
     "decal": "sundarban-courier"
@@ -1992,6 +2025,9 @@
   "vasp-expresso": {
     "decal": "vasp-expresso"
   },
+  "veloces": {
+    "decal": "veloces"
+  },
   "venipak": {
     "decal": "venipak"
   },
@@ -2066,6 +2102,9 @@
   },
   "yanwen": {
     "decal": "yanwen"
+  },
+  "yc-delivery": {
+    "decal": "yc-delivery"
   },
   "yilong-logistics": {
     "decal": "yilong-logistics"
