@@ -42,12 +42,15 @@ list, SMTP, templates). The hosted dashboard doesn't configure a self-hosted Aut
 
 Turn off the methods the apps don't use. The self-hosted template turns on phone sign-up
 with auto-confirm, which hands out a confirmed account for any phone number and a
-password, with no text message. It also turns on anonymous sign-ins:
+password, with no text message. It also turns on anonymous sign-ins, and manual linking,
+which lets a signed-in session attach another sign-in method. Peek never links by hand: a
+sign-in whose email the provider has verified joins the account with that email by itself.
 
 ```dotenv
 GOTRUE_EXTERNAL_PHONE_ENABLED=false
 GOTRUE_SMS_AUTOCONFIRM=false
 GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED=false
+GOTRUE_SECURITY_MANUAL_LINKING_ENABLED=false
 ```
 
 Web sign-in with Google, Apple or OIDC returns to the origin it started on, which must be the
