@@ -567,7 +567,8 @@ new fields scalar and bounded.
 ## Sentry
 
 The SDK is enabled only when `SENTRY_DSN` is set. Default integrations are on and tracing is
-off by default. Reports keep original errors, their causes and custom fields; `beforeSend`
+off by default. Outgoing requests carry no `sentry-trace` or `baggage` header
+(`tracePropagationTargets: []`): carriers' bot protection refuses a request with `baggage`. Reports keep original errors, their causes and custom fields; `beforeSend`
 and `beforeBreadcrumb` only shorten addresses and take tracking numbers out (below).
 Sentry's own limits and project-side scrubbing still apply. Automatic lookups wrap each
 provider failure in an `AggregateError` so every cause is visible.

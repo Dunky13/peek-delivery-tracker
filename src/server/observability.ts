@@ -288,6 +288,10 @@ export function initObservability(): boolean {
     // untyped exception, and its issue is titled after a minified frame ("Object.l").
     attachStacktrace: false,
     tracesSampleRate: parseSampleRate(process.env.SENTRY_TRACES_SAMPLE_RATE),
+    // On a server the SDK adds `sentry-trace` and `baggage` to every outgoing request.
+    // Nothing this server calls reads them, and bot protection refuses a request that
+    // carries `baggage`: Australia Post's gateway answered every lookup with a captcha.
+    tracePropagationTargets: [],
     // Sentry 11.2 drops an error captured right after an identical one. Two parcels
     // failing alike are two events with their own tags; the fingerprint groups them.
     integrations: (defaults) => [

@@ -1,3 +1,5 @@
+import { createServer, type IncomingHttpHeaders } from 'node:http';
+import type { AddressInfo } from 'node:net';
 import { afterEach, expect, it, vi } from 'vitest';
 import * as Sentry from '@sentry/node';
 import type { Event } from '@sentry/node';
@@ -299,4 +301,22 @@ it('names a parcel by the shape of its number and cuts addresses down in reports
   expect(logLine!.data).toEqual({ logger: 'console' });
   const call = report.breadcrumbs?.find((crumb) => crumb.category === 'http' && crumb.data?.status_code === 404);
   expect(call!.data).toEqual({ url: 'https://carrier.example/v1/track/:id/events', 'http.method': 'GET', status_code: 404 });
+});
+
+it('sends carriers no trace headers', async () => {
+  vi.stubEnv('SENTRY_DSN', 'https://public@example.test/1');
+  expect(initObservability()).toBe(true);
+  const received: IncomingHttpHeaders[] = [];
+  const server = createServer((request, response) => { received.push(request.headers); response.end('{}'); });
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  try {
+    const { port } = server.address() as AddressInfo;
+    // A carrier is asked from inside a refresh, which runs in a span of its own.
+    await Sentry.startSpan({ name: 'carrier lookup' }, () => fetch(`http://127.0.0.1:${port}/track`).then((response) => response.text()));
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+  expect(received).toHaveLength(1);
+  expect(received[0]).not.toHaveProperty('baggage');
+  expect(received[0]).not.toHaveProperty('sentry-trace');
 });
