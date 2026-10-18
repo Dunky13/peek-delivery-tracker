@@ -1620,6 +1620,11 @@
           "confidence": "high"
         },
         {
+          "pattern": "^5340\\d{14}$",
+          "confidence": "low",
+          "preferred": true
+        },
+        {
           "pattern": "^[CE]2\\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{8}$",
           "confidence": "low"
         }
@@ -2196,7 +2201,8 @@
       "tracking": {
         "mode": "automatic",
         "adapter": "bpost",
-        "recognitionRank": 810
+        "recognitionRank": 810,
+        "recognitionPattern": "^(?:3232\\d{14}|(?:3232|3299)\\d{20}|[A-Z]{2}\\d{9}BE|JJBE[A-Z]\\d{18}(?:\\d{4})?)$"
       },
       "linkRules": [],
       "detectionRules": [
@@ -4281,6 +4287,11 @@
         },
         {
           "pattern": "^ZC\\d{11}$",
+          "confidence": "low",
+          "preferred": true
+        },
+        {
+          "pattern": "^ZA\\d{11}$",
           "confidence": "low",
           "preferred": true
         }
@@ -25489,10 +25500,23 @@
       "timezone": "Europe/London",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "one-world-express",
+        "recognitionRank": 846
       },
       "trackingUrlTemplate": "https://www.smarttrack.co/tracking.php?tracking_number={trackingNumber}",
-      "linkRules": [],
+      "linkRules": [
+        {
+          "domains": [
+            "www.smarttrack.co",
+            "smarttrack.co"
+          ],
+          "pathPattern": "^/tracking\\.php$",
+          "params": [
+            "tracking_number"
+          ],
+          "ownNumbersOnly": true
+        }
+      ],
       "detectionRules": [
         {
           "pattern": "^OWE\\d{12}$",
@@ -25604,10 +25628,23 @@
       "timezone": "Europe/Madrid",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "cbl-logistica",
+        "recognitionRank": 851
       },
-      "linkRules": [],
-      "detectionRules": []
+      "linkRules": [
+        {
+          "domains": [
+            "clientes.cbl-logistica.com"
+          ],
+          "pathPattern": "^/public/consultaenvio\\.aspx$",
+          "params": [
+            "id"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingUrlTemplate": "https://clientes.cbl-logistica.com/public/consultaenvio.aspx?id={trackingNumber}",
+      "trackingSearchUrl": "https://clientes.cbl-logistica.com/public/consultaenvio.aspx"
     },
     "connect-couriers": {
       "displayName": "Connect Couriers",
@@ -25838,7 +25875,9 @@
       "timezone": "Europe/Madrid",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "a-tu-hora-express",
+        "recognitionRank": 847,
+        "recognitionPattern": "^\\d{24}$"
       },
       "linkRules": [],
       "detectionRules": [
@@ -25903,7 +25942,8 @@
       "timezone": "Europe/Madrid",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "closer-logistics",
+        "recognitionRank": 849
       },
       "trackingUrlTemplate": "https://tracking.closerlogistics.com/tracking/{trackingNumber}",
       "linkRules": [
@@ -26032,7 +26072,8 @@
       "timezone": "Europe/Madrid",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "transaher",
+        "recognitionRank": 852
       },
       "trackingUrlTemplate": "https://clientes.transaher.es/webclient/htracking/-5,0,{trackingNumber}",
       "linkRules": [
@@ -26065,7 +26106,8 @@
       "timezone": "Europe/Madrid",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "urvaam",
+        "recognitionRank": 848
       },
       "trackingUrlTemplate": "https://www.urvaam.es/track/result?no={trackingNumber}",
       "linkRules": [
@@ -26645,7 +26687,7 @@
       "countries": [
         "CA"
       ],
-      "color": "#2563eb",
+      "color": "#572aee",
       "selectable": true,
       "timezone": "America/Toronto",
       "tracking": {
@@ -26672,7 +26714,7 @@
       "countries": [
         "AU"
       ],
-      "color": "#dc143c",
+      "color": "#e73100",
       "selectable": true,
       "timezone": "Australia/Melbourne",
       "tracking": {
@@ -26697,7 +26739,7 @@
       "countries": [
         "NL"
       ],
-      "color": "#fe5f55",
+      "color": "#002b53",
       "selectable": true,
       "timezone": "Europe/Amsterdam",
       "tracking": {
@@ -26718,6 +26760,286 @@
       ],
       "detectionRules": [],
       "trackingSearchUrl": "https://post.plus/"
+    },
+    "4sides": {
+      "displayName": "4Sides",
+      "aliases": [
+        "4 SIDES",
+        "FOUR SIDES",
+        "Four Sides"
+      ],
+      "countries": [
+        "RU"
+      ],
+      "color": "#bd4d47",
+      "selectable": true,
+      "timezone": "Europe/Moscow",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://4sides.ru/tracking?number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "4sides.ru",
+            "www.4sides.ru"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://4sides.ru/tracking"
+    },
+    "dobropost": {
+      "displayName": "DobroPost",
+      "aliases": [
+        "ДоброПост",
+        "Добропост",
+        "Dobropost",
+        "DobroPost International Logistics"
+      ],
+      "countries": [
+        "RU",
+        "CN",
+        "BY"
+      ],
+      "color": "#ffc33a",
+      "selectable": true,
+      "timezone": "Europe/Moscow",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://tracking.dobropost.com/?trackNumber={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.dobropost.com"
+          ],
+          "pathPattern": "^/?$",
+          "params": [
+            "trackNumber"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^DBRPST\\d{10}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://tracking.dobropost.com/"
+    },
+    "flippost": {
+      "displayName": "Flip Post",
+      "aliases": [
+        "FLIPPOST",
+        "FlipPost",
+        "Флиппост",
+        "Флип Пост",
+        "Flip Post Worldwide Express"
+      ],
+      "countries": [
+        "RU"
+      ],
+      "color": "#2f4e77",
+      "selectable": true,
+      "timezone": "Europe/Moscow",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://flippost.com/instruments/online/?number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "flippost.com",
+            "www.flippost.com"
+          ],
+          "pathPattern": "^/instruments/online/?$",
+          "params": [
+            "number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://flippost.com/instruments/online/"
+    },
+    "jet-logistic": {
+      "displayName": "Jet Logistic",
+      "aliases": [
+        "Джет Логистик",
+        "JetLogistic",
+        "ТОО «Jet Logistic»"
+      ],
+      "countries": [
+        "KZ",
+        "RU",
+        "KG",
+        "BY"
+      ],
+      "color": "#00a8e8",
+      "selectable": true,
+      "timezone": "Asia/Almaty",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://jetlogistic.kz/"
+    },
+    "l-post": {
+      "displayName": "L-POST",
+      "aliases": [
+        "Л-Пост",
+        "Лабиринт-Пост",
+        "Labirint Post",
+        "L Post"
+      ],
+      "countries": [
+        "RU"
+      ],
+      "color": "#5b2599",
+      "selectable": true,
+      "timezone": "Europe/Moscow",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://l-post.ru/tracking?id={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "l-post.ru"
+          ],
+          "pathPattern": "^/tracking(?:/order)?/?$",
+          "params": [
+            "id"
+          ]
+        }
+      ],
+      "detectionRules": [
+        {
+          "pattern": "^ABC\\d{8}$",
+          "confidence": "high"
+        }
+      ],
+      "trackingSearchUrl": "https://l-post.ru/tracking"
+    },
+    "mongol-infinity-post": {
+      "displayName": "Mongol Infinity Post",
+      "aliases": [
+        "Монгол Инфинити Шуудан",
+        "Инфинити Шуудан",
+        "Infinity Post",
+        "Mongol Infinity Post LLC"
+      ],
+      "countries": [
+        "MN"
+      ],
+      "color": "#404b9b",
+      "selectable": true,
+      "timezone": "Asia/Ulaanbaatar",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": []
+    },
+    "peqasus-az": {
+      "displayName": "Peqasus",
+      "aliases": [
+        "PEQASUS",
+        "Peqasus MMC"
+      ],
+      "countries": [
+        "AZ"
+      ],
+      "color": "#3665b5",
+      "selectable": true,
+      "timezone": "Asia/Baku",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://peqasus.az/search?lang=en&parcel_tracking_number={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "peqasus.az"
+          ],
+          "pathPattern": "^/search/?$",
+          "params": [
+            "parcel_tracking_number"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://peqasus.az/search"
+    },
+    "starex-az": {
+      "displayName": "Starex",
+      "aliases": [
+        "Starex MMC",
+        "Starex Global"
+      ],
+      "countries": [
+        "AZ",
+        "UZ"
+      ],
+      "color": "#005aff",
+      "selectable": true,
+      "timezone": "Asia/Baku",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://starexglobal.com/az/tracking/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "starexglobal.com"
+          ],
+          "path": "^/(?:az|en|ru)/tracking/([^/?#]+)/?$"
+        },
+        {
+          "domains": [
+            "starex.az"
+          ],
+          "pathPattern": "^/baglama/?$",
+          "params": [
+            "parcelNumber"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://starexglobal.com/az/"
+    },
+    "vestovoy": {
+      "displayName": "Vestovoy",
+      "aliases": [
+        "Вестовой",
+        "Vestovoi"
+      ],
+      "countries": [
+        "RU"
+      ],
+      "color": "#00a3d3",
+      "selectable": true,
+      "timezone": "Europe/Moscow",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://vestovoi.ru/monitoring_dostavki/"
     }
   }
 }

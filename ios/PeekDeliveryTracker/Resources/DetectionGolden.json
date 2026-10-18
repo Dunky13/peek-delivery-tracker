@@ -86,9 +86,6 @@
     "candidates": [
       "bpost",
       "ecoscooting"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -122,9 +119,9 @@
       "a-tu-hora-express"
     ],
     "asked": [
+      "a-tu-hora-express",
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -189,9 +186,9 @@
       "a-tu-hora-express"
     ],
     "asked": [
+      "a-tu-hora-express",
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -207,9 +204,9 @@
       "a-tu-hora-express"
     ],
     "asked": [
+      "a-tu-hora-express",
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -464,9 +461,6 @@
     "candidates": [
       "bpost",
       "ecoscooting"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -546,7 +540,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -563,7 +556,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -2657,6 +2649,31 @@
     ]
   },
   {
+    "input": "005731156836",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "00573132901652718107",
     "carrier": "unknown",
     "confidence": "low",
@@ -3003,6 +3020,34 @@
     ]
   },
   {
+    "input": "008030155517",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "008243062",
     "carrier": "unknown",
     "confidence": "none",
@@ -3110,6 +3155,35 @@
     "confidence": "high",
     "candidates": [
       "ctt-express"
+    ]
+  },
+  {
+    "input": "008631211185",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "purolator",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "purolator",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -3302,7 +3376,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -3377,6 +3450,31 @@
       "canada-post",
       "tnt",
       "dhl-ecommerce"
+    ]
+  },
+  {
+    "input": "010310586873",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
     ]
   },
   {
@@ -5426,6 +5524,35 @@
     ]
   },
   {
+    "input": "026130182201",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "poste-italiane",
+      "brt",
+      "japan-post",
+      "sf-express",
+      "sto",
+      "zto",
+      "yamato",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse",
+      "sagawa"
+    ],
+    "asked": [
+      "poste-italiane",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
+    ]
+  },
+  {
     "input": "02656A088018",
     "carrier": "mrw",
     "confidence": "high",
@@ -5563,6 +5690,56 @@
     ]
   },
   {
+    "input": "027760559730",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
+    "input": "027800613808",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "0280010280017024953690",
     "carrier": "unknown",
     "confidence": "low",
@@ -5638,6 +5815,31 @@
     ]
   },
   {
+    "input": "029110131034",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "02912620404",
     "carrier": "unknown",
     "confidence": "low",
@@ -5658,6 +5860,31 @@
       "gls-ch",
       "postlogistics",
       "dhl-ecommerce-pl"
+    ]
+  },
+  {
+    "input": "029210751390",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
     ]
   },
   {
@@ -6096,7 +6323,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -6282,6 +6508,31 @@
     "asked": [
       "relais-colis",
       "dhl-ecommerce-es"
+    ]
+  },
+  {
+    "input": "037980282135",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
     ]
   },
   {
@@ -7410,9 +7661,6 @@
     "candidates": [
       "bpost",
       "ecoscooting"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -7422,9 +7670,6 @@
     "candidates": [
       "bpost",
       "ecoscooting"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -8154,6 +8399,34 @@
     ]
   },
   {
+    "input": "070490343171",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "sf-express",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "preferred": [
+      "sf-express"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "07109160247",
     "carrier": "unknown",
     "confidence": "low",
@@ -8727,9 +9000,6 @@
     "candidates": [
       "bpost",
       "ecoscooting"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -9473,6 +9743,14 @@
       "gls-ch",
       "purolator",
       "brt"
+    ]
+  },
+  {
+    "input": "1000540",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
     ]
   },
   {
@@ -10776,7 +11054,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -13413,9 +13690,6 @@
     "candidates": [
       "bpost",
       "ecoscooting"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -13832,7 +14106,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -13917,7 +14190,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -13934,7 +14206,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -14715,7 +14986,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16728,7 +16998,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16745,7 +17014,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16762,7 +17030,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16779,7 +17046,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16796,7 +17062,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16813,7 +17078,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16830,7 +17094,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16847,7 +17110,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -16864,7 +17126,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -18869,7 +19130,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -18886,7 +19146,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -19491,7 +19750,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -20493,7 +20751,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -20510,7 +20767,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -23619,7 +23875,6 @@
       "nox",
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -25295,6 +25550,16 @@
     "asked": [
       "la-poste",
       "delhivery"
+    ]
+  },
+  {
+    "input": "2422-4540",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -28901,7 +29166,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -33131,9 +33395,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33147,9 +33408,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33179,9 +33437,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33195,9 +33450,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33215,8 +33467,7 @@
       "helthjem"
     ],
     "asked": [
-      "helthjem",
-      "bpost"
+      "helthjem"
     ]
   },
   {
@@ -33234,8 +33485,7 @@
       "helthjem"
     ],
     "asked": [
-      "helthjem",
-      "bpost"
+      "helthjem"
     ]
   },
   {
@@ -33253,8 +33503,7 @@
       "helthjem"
     ],
     "asked": [
-      "helthjem",
-      "bpost"
+      "helthjem"
     ]
   },
   {
@@ -33272,8 +33521,7 @@
       "helthjem"
     ],
     "asked": [
-      "helthjem",
-      "bpost"
+      "helthjem"
     ]
   },
   {
@@ -33291,8 +33539,7 @@
       "helthjem"
     ],
     "asked": [
-      "helthjem",
-      "bpost"
+      "helthjem"
     ]
   },
   {
@@ -33310,8 +33557,7 @@
       "helthjem"
     ],
     "asked": [
-      "helthjem",
-      "bpost"
+      "helthjem"
     ]
   },
   {
@@ -33325,9 +33571,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33341,9 +33584,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33357,9 +33597,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33373,9 +33610,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33545,7 +33779,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -33585,9 +33818,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33601,9 +33831,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33617,9 +33844,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33633,9 +33857,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33649,9 +33870,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33690,9 +33908,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -33706,9 +33921,6 @@
     ],
     "preferred": [
       "bring-posten"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -36506,7 +36718,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -37104,6 +37315,16 @@
     ]
   },
   {
+    "input": "4607-1850",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "461011156937000013601054",
     "carrier": "unknown",
     "confidence": "low",
@@ -37116,7 +37337,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -37253,7 +37473,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -39296,7 +39515,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -40774,11 +40992,12 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "paack",
       "bpost",
       "ecoscooting"
     ],
-    "asked": [
-      "bpost"
+    "preferred": [
+      "paack"
     ]
   },
   {
@@ -40786,11 +41005,12 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "paack",
       "bpost",
       "ecoscooting"
     ],
-    "asked": [
-      "bpost"
+    "preferred": [
+      "paack"
     ]
   },
   {
@@ -41544,7 +41764,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -41561,7 +41780,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -41578,7 +41796,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -41698,7 +41915,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -42484,7 +42700,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -43179,7 +43394,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -43946,7 +44160,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -43963,7 +44176,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -44258,7 +44470,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -45109,7 +45320,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -45210,7 +45420,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -46081,7 +46290,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -48835,6 +49043,14 @@
     "candidates": []
   },
   {
+    "input": "738-3044",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "73800244620101503002000732",
     "carrier": "mondial-relay",
     "confidence": "high",
@@ -49416,6 +49632,46 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "77-000-032",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "77-000-045",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "77-000-987",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
+    "input": "77-001-068",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
   },
   {
     "input": "770585926102",
@@ -50372,9 +50628,6 @@
     "candidates": [
       "bpost",
       "ecoscooting"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -51269,9 +51522,6 @@
     "candidates": [
       "bpost",
       "ecoscooting"
-    ],
-    "asked": [
-      "bpost"
     ]
   },
   {
@@ -53620,7 +53870,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -55886,7 +56135,6 @@
     "asked": [
       "austrian-post",
       "inpost",
-      "bpost",
       "ciblex"
     ]
   },
@@ -57262,6 +57510,12 @@
     ]
   },
   {
+    "input": "99-0087856",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "99.34.123456.12345678",
     "carrier": "swiss-post",
     "confidence": "high",
@@ -58264,6 +58518,30 @@
     ]
   },
   {
+    "input": "999935360776",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
+    ]
+  },
+  {
     "input": "9999366661603",
     "carrier": "unknown",
     "confidence": "low",
@@ -58840,6 +59118,102 @@
       "gls-fr",
       "gls-de",
       "gls-ch"
+    ]
+  },
+  {
+    "input": "ABC26197473",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC31545586",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC35864375",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC41257863",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC49882484",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC53832318",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC58162633",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC61872752",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC75211956",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC81521332",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC92739222",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
+    ]
+  },
+  {
+    "input": "ABC93372693",
+    "carrier": "l-post",
+    "confidence": "high",
+    "candidates": [
+      "l-post"
     ]
   },
   {
@@ -64353,6 +64727,70 @@
     ]
   },
   {
+    "input": "DBRPST0000000278",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST3000001549",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST5032002859",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST5032002860",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST5032003031",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST6032004207",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST6052043122",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
+    "input": "DBRPST6062045367",
+    "carrier": "dobropost",
+    "confidence": "high",
+    "candidates": [
+      "dobropost"
+    ]
+  },
+  {
     "input": "DC010822S3ZDUD",
     "carrier": "pathao-courier",
     "confidence": "high",
@@ -64628,6 +65066,12 @@
   },
   {
     "input": "DPK212604897303",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "DPV 0016700348",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
@@ -67721,6 +68165,17 @@
     ]
   },
   {
+    "input": "FS026362381RU",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "chronopost"
+    ]
+  },
+  {
     "input": "FSLS260900001711954",
     "carrier": "fleetoptics",
     "confidence": "high",
@@ -68004,6 +68459,12 @@
     "candidates": [
       "amazon-logistics"
     ]
+  },
+  {
+    "input": "GBS3032083843",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
   },
   {
     "input": "GCMURL1854800",
@@ -81551,6 +82012,14 @@
     ]
   },
   {
+    "input": "STR059449783",
+    "carrier": "purolator",
+    "confidence": "high",
+    "candidates": [
+      "purolator"
+    ]
+  },
+  {
     "input": "STRCA6096486792700",
     "carrier": "straightship",
     "confidence": "high",
@@ -85442,6 +85911,22 @@
     "confidence": "high",
     "candidates": [
       "hongkong-post"
+    ]
+  },
+  {
+    "input": "ZA10000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "china-post",
+      "la-poste"
+    ],
+    "preferred": [
+      "china-post"
+    ],
+    "asked": [
+      "china-post",
+      "la-poste"
     ]
   },
   {
