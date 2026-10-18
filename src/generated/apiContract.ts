@@ -25562,7 +25562,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "packs",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "Packs shows a shipment only with the recipient's postcode.",
+          "pattern": "^(?:[1-9][0-9]{3} ?[A-Za-z]{2}|(?:(?:[Bb][Ee]?|[Ll][Uu]?)[ \\-]?)?[1-9][0-9]{3})$",
+          "maxLength": 7,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "linkRules": [
       {
@@ -25594,7 +25607,21 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "transmission",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postcode",
+          "type": "text",
+          "placeholder": "1234 AB",
+          "help": "TransMission shows a shipment only with the recipient's postcode.",
+          "pattern": "^[1-9][0-9]{3} ?(?:[A-Za-z]{2})?$",
+          "maxLength": 7,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "linkRules": [
       {
@@ -25626,16 +25653,29 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "xlcourier",
+      "recognitionRank": 841
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "www.xlcourier.com",
+          "xlcourier.com"
+        ],
+        "pathPattern": "^/trackOrder(?:\\.html)?$",
+        "params": [
+          "number"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^XLC\\d{10,12}$",
         "confidence": "high"
       }
     ],
-    "trackingSearchUrl": "https://www.xlcourier.com/trackOrder"
+    "trackingSearchUrl": "https://www.xlcourier.com/trackOrder",
+    "trackingUrlTemplate": "https://www.xlcourier.com/trackOrder?number={trackingNumber}"
   },
   "cbl-logistica": {
     "displayName": "CBL Logística",
@@ -25815,7 +25855,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Warsaw",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sp-express",
+      "recognitionRank": 839
     },
     "trackingUrlTemplate": "https://en.sp.express/tt/{trackingNumber}",
     "linkRules": [
@@ -25830,6 +25871,7 @@ export const CARRIER_CAPABILITIES = {
       {
         "domains": [
           "sp.express",
+          "en.sp.express",
           "swiatprzesylek.pl"
         ],
         "path": "^/tt-cainiao/([^/?#]+)/?$"
@@ -26029,7 +26071,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pro-carrier",
+      "recognitionRank": 843
     },
     "trackingUrlTemplate": "https://tracking.weareprocarrier.com/?tn={trackingNumber}",
     "linkRules": [
@@ -26064,7 +26107,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "teleship",
+      "recognitionRank": 842
     },
     "trackingUrlTemplate": "https://teleship.com/tracking?number={trackingNumber}",
     "linkRules": [
@@ -26080,7 +26124,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^TSGB[A-Z]{2}[A-Z0-9]{15}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://teleship.com/tracking"
   },
   "transaher": {
@@ -26209,7 +26258,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "next-level-delivery"
     },
     "trackingUrlTemplate": "https://nextlevel.delivery/track?awb={trackingNumber}",
     "linkRules": [
@@ -26348,7 +26397,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Amsterdam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pdn-express",
+      "recognitionRank": 838
     },
     "trackingUrlTemplate": "https://pdn.express/en/track/{trackingNumber}",
     "linkRules": [
@@ -27076,7 +27126,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#007038",
+    "color": "#227337",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -27139,7 +27189,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#e83030",
+    "color": "#ed3237",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -27160,7 +27210,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#dd4b4b",
+    "color": "#da251d",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -27180,7 +27230,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#081858",
+    "color": "#091b5f",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -27378,7 +27428,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#203870",
+    "color": "#203a73",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -27421,7 +27471,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#d91900",
+    "color": "#ff0020",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -27452,7 +27502,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AE"
     ],
-    "color": "#0080c0",
+    "color": "#0067aa",
     "selectable": true,
     "timezone": "Asia/Dubai",
     "tracking": {
@@ -27485,7 +27535,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IN"
     ],
-    "color": "#203088",
+    "color": "#2e3192",
     "selectable": true,
     "timezone": "Asia/Kolkata",
     "tracking": {
@@ -27536,7 +27586,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AE"
     ],
-    "color": "#ef4129",
+    "color": "#0001ef",
     "selectable": true,
     "timezone": "Asia/Dubai",
     "tracking": {
@@ -27564,7 +27614,7 @@ export const CARRIER_CAPABILITIES = {
       "KW",
       "OM"
     ],
-    "color": "#142763",
+    "color": "#252d60",
     "selectable": true,
     "timezone": "Asia/Dubai",
     "tracking": {
