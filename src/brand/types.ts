@@ -133,7 +133,8 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'united-worldwide-couriers' | 'dnx-cargo' | 'daily-xpress' | 'best-express-my'
   | 'royal-express-mm' | 'airpak-express' | 'makati-express' | 'indah-logistik' | 'pandu-logistics'
   | 'pcp-express' | 'houng-ah-loun' | 'netpost-vn' | 'tp-logistics-th' | 'pcs-logistics-vn'
-  | 'rr-express-sg';
+  | 'rr-express-sg' | 'eparcel-kr' | 'aci-express-kr' | 'gsi-express' | 'today-kr' | 'exmate'
+  | 'winion-logis' | 'last-one-mile-coop';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

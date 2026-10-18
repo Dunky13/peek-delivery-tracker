@@ -29,6 +29,7 @@ and [`truck.json`](truck.json).
 | `aaa-cooper` | [aaacooper.com](https://web.archive.org/web/2025/https://www.aaacooper.com/) — site CSS #113C77; app icon (act-favicon-192.png) navy-blue field around #06365c (approximate) |
 | `ab-courier` | [abcourier.com](https://abcourier.com/img/logo.svg) — logo SVG single fill #004890 |
 | `abf-freight` | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:ABF_Freight_System_logo.svg) — fills #1e6630 (ABF) and #faca05 (bar) |
+| `aci-express-kr` | [aciexpress.net](https://www.aciexpress.net/source/image/common/desk_logo.png) — pink #db2e6e of the logo ribbon, also the site CSS button colour; navy #00043c sampled from the logo lettering |
 | `acs-courier` | [acscourier.net](https://www.acscourier.net/lib/cms/img/logo.svg) — logo fills #e42229 (swoosh) and #1d1d1b (shadow) |
 | `aeropost` | [aeropost.com](https://aeropost.com/images/redesign/Logo.svg) — logo SVG fill #0b3e9d, also the most used colour in the home page |
 | `aex-paraguay` | [aex.com.py](https://www.aex.com.py/public/images/logos/aex.svg) — logo SVG fill #4a9fdc |
@@ -203,6 +204,7 @@ and [`truck.json`](truck.json).
 | `energo` | [energologistic.it](https://www.energologistic.it/) — site CSS colour #e30613 (headings and accents); logo PNG disc #e2212b (approximate) |
 | `envia-colombia` | [envia.co](https://envia.co/) — CSS --red #ba0020; favicon red #ba0020 |
 | `envialia` | [envialia.com](https://www.envialia.com/) — the logo PNG's single flat fill is `#ff5a00` (14,892 pixels exactly that value); the theme stylesheet's orange is the close `#f66013` |
+| `eparcel-kr` | [eparcel.kr](https://www.eparcel.kr/Content/css/your_style_glokay.25.css) — site theme blue #286aff (primary buttons, links); the site has no logo image, only the name eParcel.kr in text |
 | `epost-global` | [epostglobalshipping.com](https://epostglobalshipping.com/wp-content/uploads/2025/12/Logo-Full-Color.svg) — globe fill #27967A |
 | `equick` | [equick.cn](http://www.equick.cn/favicon.ico) — favicon background #a70707 (flat), site CSS #a70707 |
 | `estafeta` | [estafeta.com](https://www.estafeta.com/) |
@@ -218,6 +220,7 @@ and [`truck.json`](truck.json).
 | `ewe` | [ewe.com.au](https://www.ewe.com.au/) — header CSS #0036a9 behind the yellow logo; logo yellow #f3e127 (approximate), site icon blue #013cbc (approximate) |
 | `exelot` | [exelot.com](https://cdn.prod.website-files.com/6675710ddb951bbeffc6998f/667574dff5674853e52f2e25_excelot-logo.svg) — logo SVG main fill #2E00AB (wordmark and chevron tip), with #F68C38 and #0056FF facets |
 | `exline-kz` | [exline.kz](https://exline.kz/logo.png) — logo PNG globe #0535ef, band #f3311d (approximate) |
+| `exmate` | [exmate.net](https://www.exmate.net/) — site CSS #3855c7 (sections, buttons), the same blue as the app icon disc |
 | `express-one` | [expressone.hu](https://expressone.hu/assets/images/logo-black.svg) — swoosh fill #ec6500 |
 | `fan-courier` | [fancourier.ro](https://www.fancourier.ro/wp-content/uploads/2023/03/logo.svg) — dominant fill #0F2345 |
 | `fargo-courier` | [fargocourier.co.ke](https://www.fargocourier.co.ke/wp-content/uploads/2024/02/fargo-courier-logo.png) — logo PNG green #0a4436 and gold #c79b46 (approximate); the theme CSS also uses #0a4436 |
@@ -262,6 +265,7 @@ and [`truck.json`](truck.json).
 | `grand-slam-express` | [grandslamexpress.in](https://www.grandslamexpress.in/Assets/images/mainlogo.png) — logo PNG flat fill #f1592a (approximate) |
 | `groupe-guilbault` | [groupeguilbault.com](https://www.groupeguilbault.com/css/main.css?v=4) — site CSS red #c32d30 and yellow #fcdf15; red cabs with yellow lettering in the site photos |
 | `gs-postbox` | [cvsnet.co.kr](https://www.cvsnet.co.kr/common/images/logo_on.png) — logo orange #e36808 and favicon #e56a00 (approximate); site CSS buttons #f36523 |
+| `gsi-express` | [gsiexpress.com](https://www.gsiexpress.com/images/s01_3_logo.png) — flat outer blue #386cac of the coloured GSI logo (approximate, sampled from the PNG; the letters shade to cyan in the middle) |
 | `gta-airskip` | [gtaairskip.com](https://gtaairskip.com/wp-content/uploads/2026/08/Logo-Menu-Bar-6.png) — flat #1081c4 in the logo PNG (approximate), also the most used colour in the home page markup (28 uses) |
 | `gtl-goto` | [gtl.id](https://www.gtl.id/) — logo SVG fill #14922C inlined in the site bundle (main.js), the theme colour texasGreen.500 of the navigation bar, and the favicon's green |
 | `guatex` | [guatex.com](https://guatex.com/wp-content/uploads/2022/11/logo_guatex_25_aniversario.png) — logo PNG flat navy #282f6a (approximate; site CSS #141b49) |
@@ -350,6 +354,7 @@ and [`truck.json`](truck.json).
 | `labaih` | [mylabaih.com](https://mylabaih.com/assets/images/logo.png) — logo PNG orange #f8931d for the "h" and the cart line (approximate); the site CSS uses #ff8e00 and the header shows the logo in white on orange |
 | `landmark-global` | [landmarkglobal.com](https://landmarkglobal.com/) |
 | `lao-post` | [laopost.com.la](https://www.laopost.com.la/logo/logo_laopost_nav.svg) — logo SVG fill #F6871F |
+| `last-one-mile-coop` | [lastonemile.org](https://lastonemile.org/lom24/wp-content/themes/lom2024/img/apple-touch-icon.png) — box orange #eb690b (approximate, sampled from the PNG) in the logo and icon |
 | `latvijas-pasts` | [pasts.lv](https://pasts.lv/) — --color-header-logo #0C72BA; the mans.pasts.lv icon blue is #0072bb |
 | `leopards-courier` | [pk.leopardscourier.com](https://pk.leopardscourier.com/leopardcourier_dubai/css/custome.css) — site CSS #ffcb05 (105 uses); favicon is a yellow tile |
 | `libanpost` | [libanpost.com](https://www.libanpost.com/styles/css-EN?v=1510261716) — site CSS #006db7 (91 uses), also the logo wordmark blue; wing yellow #fed300 |
@@ -606,6 +611,7 @@ and [`truck.json`](truck.json).
 | `tirupati-courier` | [shreetirupaticourier.net](https://www.shreetirupaticourier.net/images/logo-company1.png) — logo PNG #f4791f (approximate); favicon and site CSS #f47f22 |
 | `tmm-express` | [ukr.tmm-express.com](https://ukr.tmm-express.com/sites/default/files/tmm_logo_0.png) — every opaque pixel of the logo PNG is #650360, the same as the site's theme-color meta #650360 |
 | `tnt` | [tnt.com](https://www.tnt.com/express/en_gb/site/home.html) |
+| `today-kr` | [amazing.today](https://amazing.today/) — black #000000 app icon, og image and theme-color, black site header, and a black van box with the white wordmark on the about page |
 | `toptrans` | [toptrans.cz](https://www.toptrans.cz/_nuxt/logo.e9ca4bc8.svg) — logo SVG fill #005DAA, stripe #EE3124 |
 | `torrestir` | [torrestir.com](https://www.torrestir.com/wp-content/uploads/2018/11/cropped-Favicon-Torrestir-website-2-1-192x192.png) — site icon disc #417c47 and gold #ffc629 (approximate); site CSS #417d48 (135 uses) |
 | `total-express` | [totalexpress.com.br](https://web.archive.org/web/2025/https://www.totalexpress.com.br/themes/custom/total_express/logo.svg) — logo SVG fill #E11E25, swoosh #22315E |
@@ -650,6 +656,7 @@ and [`truck.json`](truck.json).
 | `wanbexpress` | [AfterShip's copy of the logo](https://assets.aftership.com/couriers/svg/wanbexpress.svg) — `fill="#DA381B"` on the W and B |
 | `ward-trucking` | [wardtlc.com](https://www.wardtlc.com/wp-content/uploads/2023/02/Ward-TLC-Logo-1.png) — logo PNG green #185640 (approximate) |
 | `whistl` | [whistl.co.uk](https://www.whistl.co.uk/) — theme-color #fd4f00, also the favicon disc |
+| `winion-logis` | [winionlogistics.com](https://winionlogistics.com/img/new_logo.png) — logo blue #006ecd (approximate, sampled from the PNG) |
 | `winit` | [winit.com.cn](https://cnres.winit.com.cn/winit/logo/svg/logo_full.svg) — logo SVG fill #a07647 |
 | `x-express-ba` | [x-express.ba](https://www.x-express.ba/templates/cassiopeia/images/logo-x-express-brza-posta.webp) — logo flat orange #f15921 (approximate) |
 | `x-trac` | [xtrac-express.com](https://www.xtrac-express.com/) — logo PNG, flat fills #082799 (blue) and #da251d (red) |
@@ -1347,3 +1354,10 @@ and [`truck.json`](truck.json).
 | `tp-logistics-th` | White TP on green | [thaiparcels.com](https://thaiparcels.com/wp-content/uploads/2021/08/logo-tp-c-183x81.png) — red TP with green Logistics |
 | `pcs-logistics-vn` | White crescent and PCS on orange-red | [pcs-logistics.com](https://pcs-logistics.com/images/logo.svg) — PCS inside the opening of a crescent ring (blue crescent, orange-red PCS in colour) |
 | `rr-express-sg` | Red and white italic RR on navy | [rrexpress.com.sg](https://rrexpress.com.sg/img/logo/veritcal-on-white-removebg-preview.png) — interlocked red and navy italic RR over navy EXPRESS |
+| `eparcel-kr` | White 'eP' on blue | [eparcel.kr](https://www.eparcel.kr/) — the header shows the name eParcel.kr as text; no emblem exists, so the decal uses the initials |
+| `aci-express-kr` | White ring ribbon with a navy swoosh on pink | [aciexpress.net](https://www.aciexpress.net/source/image/common/desk_logo.png) — the ring symbol beside the aci lettering |
+| `gsi-express` | White blocky 'GSI' on steel blue | [gsiexpress.com](https://www.gsiexpress.com/images/s01_3_logo.png) — the GSI express logo, white on blue in the site header |
+| `today-kr` | White 'To' on black | [amazing.today](https://amazing.today/about) — the To-Day wordmark as on its app icon and van |
+| `exmate` | White X crossed by a long spike on indigo | [exmate.net](https://cdn.imweb.me/thumbnail/20230418/c759825849e90.png) — the X with its slash spike from the EXMATE logo |
+| `winion-logis` | Two white slanted strokes with a grey wedge on blue | [winionlogistics.com](https://winionlogistics.com/img/new_logo.png) — the W of grey and blue slanted bars in the header logo |
+| `last-one-mile-coop` | Black hand truck with white boxes on orange | [lastonemile.org](https://lastonemile.org/lom24/wp-content/themes/lom2024/img/apple-touch-icon.png) — the hand truck with two boxes from the co-op logo |

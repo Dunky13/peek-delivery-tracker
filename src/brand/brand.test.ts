@@ -180,6 +180,8 @@ describe('carrier brand', () => {
       'best-express-my', 'royal-express-mm', 'airpak-express', 'makati-express', 'indah-logistik',
       'pandu-logistics', 'pcp-express', 'houng-ah-loun', 'netpost-vn', 'tp-logistics-th', 'pcs-logistics-vn',
       'rr-express-sg',
+      'eparcel-kr', 'aci-express-kr', 'gsi-express', 'today-kr', 'exmate', 'winion-logis',
+      'last-one-mile-coop',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

@@ -44,6 +44,9 @@
   "abf-freight": {
     "decal": "abf-freight"
   },
+  "aci-express-kr": {
+    "decal": "aci-express-kr"
+  },
   "acs-courier": {
     "decal": "acs-courier"
   },
@@ -731,6 +734,9 @@
   "envialia": {
     "decal": "envialia"
   },
+  "eparcel-kr": {
+    "decal": "eparcel-kr"
+  },
   "epost-global": {
     "decal": "epost-global"
   },
@@ -787,6 +793,9 @@
   },
   "exline-kz": {
     "decal": "exline-kz"
+  },
+  "exmate": {
+    "decal": "exmate"
   },
   "express-one": {
     "decal": "express-one"
@@ -983,6 +992,9 @@
   },
   "gs-postbox": {
     "decal": "gs-postbox"
+  },
+  "gsi-express": {
+    "decal": "gsi-express"
   },
   "gta-airskip": {
     "decal": "gta-airskip"
@@ -1298,6 +1310,9 @@
   },
   "lao-post": {
     "decal": "lao-post"
+  },
+  "last-one-mile-coop": {
+    "decal": "last-one-mile-coop"
   },
   "latvijas-pasts": {
     "decal": "latvijas-pasts"
@@ -2199,6 +2214,9 @@
   "tnt": {
     "decal": "tnt"
   },
+  "today-kr": {
+    "decal": "today-kr"
+  },
   "toptrans": {
     "decal": "toptrans"
   },
@@ -2368,6 +2386,9 @@
   },
   "whistl": {
     "decal": "whistl"
+  },
+  "winion-logis": {
+    "decal": "winion-logis"
   },
   "winit": {
     "decal": "winit"
