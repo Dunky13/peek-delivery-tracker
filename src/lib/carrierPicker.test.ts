@@ -142,6 +142,10 @@ describe('carrier check', () => {
     // One carrier failing is not "could not check"; every one failing is.
     expect(answered({ asked, unanswered: ['dpd'] })).toEqual({ status: 'none', asked });
     expect(answered({ asked, unanswered: asked })).toEqual({ status: 'failed', asked });
+    // Tracking services that answered give the status, whatever the carriers said.
+    expect(answered({ asked, providers: [{ provider: 'Ship24', outcome: 'no_history' }, { provider: 'ParcelsApp', outcome: 'unavailable' }] }))
+      .toEqual({ status: 'none', asked, services: true });
+    expect(answered({ asked, providers: [{ provider: 'Ship24', outcome: 'unavailable' }] })).toEqual({ status: 'failed', asked, services: true });
     // A server that asked nobody leaves the number to routing.
     expect(answered({})).toEqual({ status: 'unasked' });
   });

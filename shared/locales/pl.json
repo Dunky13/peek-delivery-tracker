@@ -858,6 +858,8 @@
   "picker.auto.several": "Ten numer znają: {{carriers}}. Wybierz jednego albo Peek zapyta ponownie po dodaniu.",
   "picker.auto.none": "Jeszcze nie znaleziono u: {{carriers}}. Peek będzie sprawdzać dalej po dodaniu.",
   "picker.auto.failed": "Brak odpowiedzi od: {{carriers}}. Peek spróbuje ponownie po dodaniu.",
+  "picker.auto.servicesNone": "Jeszcze nie znaleziono w usługach śledzenia. Peek będzie sprawdzać dalej po dodaniu.",
+  "picker.auto.servicesFailed": "Brak odpowiedzi od usług śledzenia. Peek spróbuje ponownie po dodaniu.",
   "picker.auto.later": "Peek poszuka po dodaniu.",
   "picker.section.fits": "Pasują do numeru",
   "picker.section.detected": "Wykryty",

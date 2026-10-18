@@ -858,6 +858,8 @@
   "picker.auto.several": "{{carriers}} know this number. Choose one, or Peek will ask again after you add it.",
   "picker.auto.none": "Not found at {{carriers}} yet. Peek will keep checking after you add it.",
   "picker.auto.failed": "No answer from {{carriers}}. Peek will try again after you add it.",
+  "picker.auto.servicesNone": "Not found by tracking services yet. Peek will keep checking after you add it.",
+  "picker.auto.servicesFailed": "No answer from tracking services. Peek will try again after you add it.",
   "picker.auto.later": "Peek will look it up after you add it.",
   "picker.section.fits": "Fits this number",
   "picker.section.detected": "Detected",

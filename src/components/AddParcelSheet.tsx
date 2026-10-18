@@ -254,8 +254,8 @@ export function AddParcelSheet({
   // otherwise what the carrier check has found so far.
   const lineCarrier = carrier && carrier.id !== 'unknown' ? carrier : null;
   const numberCarrier = shapeCarrier(parsedTracking);
-  const preflightDetail = recognition?.carrier !== 'unknown' ? undefined : recognition?.trackingFound ? t('add.historyFound')
-    : recognition?.providers?.some(({ outcome }) => outcome === 'input_required') ? t('add.providerInputNeeded') : undefined;
+  const preflightDetail = currentRecognition?.carrier !== 'unknown' ? undefined : currentRecognition.trackingFound ? t('add.historyFound')
+    : currentRecognition.providers?.some(({ outcome }) => outcome === 'input_required') ? t('add.providerInputNeeded') : undefined;
   const lineDetail = automatic && preflightDetail ? preflightDetail : !automatic ? t('add.line.chosen')
     : check.status === 'found' ? t('add.line.found')
       : amazonNumber || (lineCarrier && lineCarrier.id !== 'intl-post') ? t('add.detectedCarrier')
@@ -271,8 +271,9 @@ export function AddParcelSheet({
   const autoDescription = preflightDetail ?? (check.status === 'asking' ? t('add.checkingServices')
     : check.status === 'found' ? t('add.recognized', { carrier: carrierInfo(check.carrier, locale).name })
       : check.status === 'several' ? t('picker.auto.several', { carriers: carrierNames(check.carriers) })
-        : check.status === 'none' ? t('picker.auto.none', { carriers: carrierNames(check.asked) })
-          : check.status === 'failed' ? check.asked.length ? t('picker.auto.failed', { carriers: carrierNames(check.asked) }) : t('add.line.failed')
+        : check.status === 'none' ? check.services ? t('picker.auto.servicesNone') : t('picker.auto.none', { carriers: carrierNames(check.asked) })
+          : check.status === 'failed' ? (check.services ? t('picker.auto.servicesFailed')
+            : check.asked.length ? t('picker.auto.failed', { carriers: carrierNames(check.asked) }) : t('add.line.failed'))
             : numberCarrier ? t('picker.auto.detected', { carrier: carrierInfo(numberCarrier, locale).name })
               : t('picker.auto.later'));
 

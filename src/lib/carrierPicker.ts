@@ -176,10 +176,13 @@ export type CarrierCheck =
   | { status: 'found'; carrier: CarrierId }
   /** Unrelated carriers all know the number: the user chooses. */
   | { status: 'several'; carriers: readonly CarrierId[] }
-  /** Every carrier answered and none knows it yet, which is normal for a new label. */
-  | { status: 'none'; asked: readonly CarrierId[] }
-  /** No carrier could answer; the first sync asks again. */
-  | { status: 'failed'; asked: readonly CarrierId[] };
+  /**
+   * Every carrier answered and none knows it yet, which is normal for a new label.
+   * `services` when tracking services gave this answer rather than the carriers asked.
+   */
+  | { status: 'none'; asked: readonly CarrierId[]; services?: true }
+  /** No carrier could answer, or no tracking service with `services`; the first sync asks again. */
+  | { status: 'failed'; asked: readonly CarrierId[]; services?: true };
 
 export function carrierCheck({ applies, settled, answer, failed = false }: {
   applies: boolean;
@@ -196,8 +199,8 @@ export function carrierCheck({ applies, settled, answer, failed = false }: {
   if (!answer) return { status: 'asking', asked: [] };
   const answered = answer.asked ?? [];
   if (answer.providers?.length) {
-    if (answer.trackingFound || answer.providers.some(({ outcome }) => outcome === 'input_required' || outcome === 'no_history')) return { status: 'none', asked: answered };
-    return { status: 'failed', asked: answered };
+    if (answer.trackingFound || answer.providers.some(({ outcome }) => outcome === 'input_required' || outcome === 'no_history')) return { status: 'none', asked: answered, services: true };
+    return { status: 'failed', asked: answered, services: true };
   }
   if (answered.length === 0) return { status: 'unasked' };
   if ((answer.unanswered?.length ?? 0) >= answered.length) return { status: 'failed', asked: answered };

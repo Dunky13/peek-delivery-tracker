@@ -379,6 +379,14 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertEqual(recognition.status(for: number, applies: true), .notFound(asked))
         recognition.answer = CarrierDetectionResponse(trackingNumber: number, carrier: .unknown, asked: asked, unanswered: asked)
         XCTAssertEqual(recognition.status(for: number, applies: true), .failed(asked))
+        // Tracking services that answered give the status, whatever the carriers said.
+        recognition.answer = CarrierDetectionResponse(trackingNumber: number, carrier: .unknown, asked: asked, providers: [
+            TrackingProviderCheck(provider: "Ship24", outcome: .noHistory), TrackingProviderCheck(provider: "ParcelsApp", outcome: .unavailable),
+        ])
+        XCTAssertEqual(recognition.status(for: number, applies: true), .notFound(asked, services: true))
+        recognition.answer = CarrierDetectionResponse(trackingNumber: number, carrier: .unknown, asked: asked, unanswered: [.glsDe],
+                                                      providers: [TrackingProviderCheck(provider: "Ship24", outcome: .unavailable)])
+        XCTAssertEqual(recognition.status(for: number, applies: true), .failed(asked, services: true))
         // A server that asked nobody leaves the number to routing.
         recognition.answer = CarrierDetectionResponse(trackingNumber: number, carrier: .unknown, recognized: [.glsDe])
         XCTAssertEqual(recognition.status(for: number, applies: true), .unasked)

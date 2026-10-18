@@ -314,7 +314,8 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   parcel. Several answers ask the user to choose. Automatic detection stays a valid
   choice throughout, and the check never holds the Add button.
   When dedicated carriers cannot confirm the number, preflight also asks the fast universal
-  providers. Saving continues the full provider chain. Only a newly created parcel's first
+  providers. Once they answer, their outcomes tell "not found yet" from "could not check",
+  and the sheet names tracking services instead of the carriers asked. Saving continues the full provider chain. Only a newly created parcel's first
   saved check can ask a second batch of unqueried HTTP candidates when the first found
   none. Both batches share the existing HTTP budget; detection and later refreshes ask
   one batch. Reused universal history still takes precedence over speculative confirmation.

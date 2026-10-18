@@ -234,6 +234,33 @@ describe('DPD carrier lookup', () => {
     expect(await screen.findByText('couldn’t check · Peek will retry after you add it')).toBeInTheDocument();
   });
 
+  it.each([
+    ['no_history', 'Not found by tracking services yet. Peek will keep checking after you add it.'],
+    ['unavailable', 'No answer from tracking services. Peek will try again after you add it.'],
+  ] as const)('names tracking services when they answered %s', async (outcome, description) => {
+    vi.mocked(lookupCarrier).mockResolvedValue({
+      trackingNumber: '06080000000002', carrier: 'unknown', asked: ['dpd', 'ciblex'], providers: [{ provider: 'Ship24', outcome }],
+    });
+    const user = userEvent.setup();
+    render(<AddParcelSheet apiAuth={apiAuth} onAdd={vi.fn()} onClose={vi.fn()} initialTrackingInput="06080000000002" />);
+    await waitFor(() => expect(lookupCarrier).toHaveBeenCalledOnce());
+    await user.click(await screen.findByRole('button', { name: /^Detect automatically (not found|couldn’t check)/ }));
+    expect(within(carrierPicker()).getByRole('option', { name: /^Detect automatically/ })).toHaveTextContent(description);
+  });
+
+  it('keeps tracking history found to the number it was found for', async () => {
+    vi.mocked(lookupCarrier).mockResolvedValue({
+      trackingNumber: '06080000000002', carrier: 'unknown', asked: ['dpd'], providers: [{ provider: 'Ship24', outcome: 'history' }], trackingFound: true,
+    });
+    const user = userEvent.setup();
+    render(<AddParcelSheet apiAuth={apiAuth} onAdd={vi.fn()} onClose={vi.fn()} initialTrackingInput="06080000000002" />);
+    const found = 'Tracking history found. Peek will confirm the carrier after saving.';
+    expect(await screen.findByText(found)).toBeInTheDocument();
+    const input = screen.getByRole('textbox', { name: /tracking number/i });
+    await user.clear(input); await user.type(input, '1Z999AA10123456784');
+    expect(screen.queryByText(found)).not.toBeInTheDocument();
+  });
+
   it('checks tracking services even when no dedicated carrier fits', () => {
     render(<AddParcelSheet apiAuth={apiAuth} onAdd={vi.fn()} onClose={vi.fn()} initialTrackingInput="12345678" />);
     expect(carrierLine(/^Detect automatically Checking tracking services/)).toBeInTheDocument();

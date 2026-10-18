@@ -636,11 +636,19 @@ struct AddParcelView: View {
         parsed.confidence == .high && parsed.carrier != .unknown && parsed.carrier != .internationalPost ? parsed.carrier : nil
     }
 
+    /// What tracking services said about the number in the field while no carrier knows it.
+    private var preflightDetail: String? {
+        guard recognizable, let answer = recognition.answer, answer.trackingNumber == normalizedNumber,
+              answer.carrier == .unknown else { return nil }
+        if answer.trackingFound == true { return localizer.text("add.historyFound") }
+        if answer.providers?.contains(where: { $0.outcome == .inputRequired }) == true { return localizer.text("add.providerInputNeeded") }
+        return nil
+    }
+
     private var lineDetail: String? {
         if carrierOverride != nil { return localizer.text("add.line.chosen") }
         if case .recognized = recognitionStatus { return localizer.text("add.line.found") }
-        if recognition.answer?.trackingFound == true { return localizer.text("add.historyFound") }
-        if recognition.answer?.providers?.contains(where: { $0.outcome == .inputRequired }) == true { return localizer.text("add.providerInputNeeded") }
+        if let preflightDetail { return preflightDetail }
         if amazonNumber || (lineCarrier != nil && lineCarrier != .internationalPost) { return localizer.text("add.detectedCarrier") }
         return switch recognitionStatus {
         case .asking: localizer.text("add.checkingServices")
@@ -653,17 +661,16 @@ struct AddParcelView: View {
     }
 
     private var automaticDescription: String {
-        if recognition.answer?.carrier == .unknown {
-            if recognition.answer?.trackingFound == true { return localizer.text("add.historyFound") }
-            if recognition.answer?.providers?.contains(where: { $0.outcome == .inputRequired }) == true { return localizer.text("add.providerInputNeeded") }
-        }
+        if let preflightDetail { return preflightDetail }
         switch recognitionStatus {
         case .asking: return localizer.text("add.checkingServices")
         case .recognized(let carrier):
             return localizer.text("add.recognized", ["carrier": catalog.info(for: carrier, language: localizer.language).displayName])
         case .several(let carriers): return localizer.text("picker.auto.several", ["carriers": carrierNames(carriers)])
-        case .notFound(let carriers): return localizer.text("picker.auto.none", ["carriers": carrierNames(carriers)])
-        case .failed(let carriers):
+        case .notFound(_, services: true): return localizer.text("picker.auto.servicesNone")
+        case .notFound(let carriers, _): return localizer.text("picker.auto.none", ["carriers": carrierNames(carriers)])
+        case .failed(_, services: true): return localizer.text("picker.auto.servicesFailed")
+        case .failed(let carriers, _):
             return carriers.isEmpty ? localizer.text("add.line.failed")
                 : localizer.text("picker.auto.failed", ["carriers": carrierNames(carriers)])
         case .idle, .unasked:

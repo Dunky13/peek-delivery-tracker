@@ -858,6 +858,8 @@
   "picker.auto.several": "{{carriers}} conocen este número. Elige uno o Peek volverá a preguntar cuando lo añadas.",
   "picker.auto.none": "Aún no aparece en {{carriers}}. Peek seguirá comprobando cuando lo añadas.",
   "picker.auto.failed": "Sin respuesta de {{carriers}}. Peek lo reintentará cuando lo añadas.",
+  "picker.auto.servicesNone": "Aún no aparece en los servicios de seguimiento. Peek seguirá comprobando cuando lo añadas.",
+  "picker.auto.servicesFailed": "Sin respuesta de los servicios de seguimiento. Peek lo reintentará cuando lo añadas.",
   "picker.auto.later": "Peek lo buscará cuando lo añadas.",
   "picker.section.fits": "Encaja con este número",
   "picker.section.detected": "Detectado",
