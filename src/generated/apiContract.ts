@@ -19756,7 +19756,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Caracas",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tealca"
     },
     "trackingUrlTemplate": "https://www.tealca.com/rastrear-envio/?tracking={trackingNumber}",
     "linkRules": [
@@ -25121,7 +25121,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bombino",
+      "recognitionRank": 836
     },
     "trackingUrlTemplate": "https://www.bombinoexp.com/track?tracking_no={trackingNumber}",
     "linkRules": [
@@ -26291,7 +26292,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tmm-express",
+      "recognitionRank": 837
     },
     "trackingUrlTemplate": "https://ukr.tmm-express.com/en/trackparcels?num={trackingNumber}&mark=is_code",
     "linkRules": [
@@ -26299,7 +26301,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "tmm-express.com"
         ],
-        "pathPattern": "^/(?:en|ru|uk)/trackparcels/?$",
+        "pathPattern": "^/(?:en|ru|uk|pl)/trackparcels/?$",
         "params": [
           "num"
         ]
@@ -27644,6 +27646,252 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://app.elite-co.com/shipments/track"
+  },
+  "atlantic-courier": {
+    "displayName": "Atlantic International Express",
+    "aliases": [
+      "Atlantic International Express Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#0066b3",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://atlanticcourier.net/track/{trackingNumber}/",
+    "linkRules": [
+      {
+        "domains": [
+          "atlanticcourier.net",
+          "www.atlanticcourier.net"
+        ],
+        "path": "^/track/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "atlanticcourier.net",
+          "www.atlanticcourier.net"
+        ],
+        "pathPattern": "^/track\\.php$",
+        "params": [
+          "awbno"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://atlanticcourier.net/track/"
+  },
+  "daily-xpress": {
+    "displayName": "Daily Xpress",
+    "aliases": [
+      "Daily Xpress Courier & Cargo",
+      "Daily Xpress Courier Cargo"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#953995",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.dailyxpress.in/searchAwb.php?awb={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.dailyxpress.in",
+          "dailyxpress.in"
+        ],
+        "pathPattern": "^/searchAwb\\.php$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.dailyxpress.in/"
+  },
+  "dnx-cargo": {
+    "displayName": "DNX Cargo",
+    "aliases": [
+      "DNX Cargo India Pvt Ltd"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#102663",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://dnxerp.in/NewPages/Tracking/Website_Tracking_New.aspx"
+  },
+  "gms-worldwide": {
+    "displayName": "GMS Worldwide Express",
+    "aliases": [
+      "GMS Worldwide Express Pvt Ltd",
+      "GMS Courier",
+      "GMS Worldwide"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#006634",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.gmsworldwide.com/shipment-tracking?tracking_no={trackingNumber}&tracking_type=cnno",
+    "linkRules": [
+      {
+        "domains": [
+          "www.gmsworldwide.com",
+          "gmsworldwide.com"
+        ],
+        "pathPattern": "^/shipment-tracking/?$",
+        "params": [
+          "tracking_no"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.gmsworldwide.com/"
+  },
+  "icl-express": {
+    "displayName": "ICL Express",
+    "aliases": [
+      "ICL Integrated Couriers & Logistics",
+      "Integrated Couriers & Logistics",
+      "ICL International"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#2e3192",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "www.iclinternational.in",
+          "iclinternational.in"
+        ],
+        "pathPattern": "^/Tracking\\.aspx$",
+        "params": [
+          "txtawbno"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://iclexpress.in/tracking/"
+  },
+  "ocs-ana": {
+    "displayName": "OCS ANA Group",
+    "aliases": [
+      "OCS",
+      "Overseas Courier Service",
+      "OCS Worldwide",
+      "OCS Japan"
+    ],
+    "countries": [
+      "JP"
+    ],
+    "color": "#004c9a",
+    "selectable": true,
+    "timezone": "Asia/Tokyo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.php?cwbno={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www2.ocsworldwide.net"
+        ],
+        "pathPattern": "^/ExpTracking/cwbCheck\\.php$",
+        "params": [
+          "cwbno"
+        ]
+      },
+      {
+        "domains": [
+          "webcsw.ocs.co.jp"
+        ],
+        "pathPattern": "^/csw/ECSWG0201R00003P\\.do$",
+        "params": [
+          "cwbno"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.html"
+  },
+  "pushpak-courier": {
+    "displayName": "Pushpak Courier",
+    "aliases": [
+      "PUSHPAK COURIER",
+      "Pushpak Courier Service"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#f62c2c",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://pushpakcourier.net/query.php"
+  },
+  "united-worldwide-couriers": {
+    "displayName": "United Worldwide Couriers",
+    "aliases": [
+      "United Worldwide Couriers Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#0099ff",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "www.unitedcouriers.biz",
+          "unitedcouriers.biz"
+        ],
+        "pathPattern": "^/TrackDetails\\.asp$",
+        "params": [
+          "afno"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.unitedcouriers.biz/Track.aspx"
   }
 } as const;
 
@@ -28399,7 +28647,15 @@ export const CARRIER_IDS = [
   "speed-and-safe",
   "team-express-ae",
   "tfm-express",
-  "transcorp"
+  "transcorp",
+  "atlantic-courier",
+  "daily-xpress",
+  "dnx-cargo",
+  "gms-worldwide",
+  "icl-express",
+  "ocs-ana",
+  "pushpak-courier",
+  "united-worldwide-couriers"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
