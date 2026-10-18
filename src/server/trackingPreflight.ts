@@ -111,7 +111,9 @@ async function lookup(number: string, health: ProviderHealth, signal: AbortSigna
       // Missing recipient data is an answer about one parcel, never an upstream outage.
       if (failure === 'input_required') { kind = 'not_found'; return { provider, outcome: plausibleInputRequest(number) ? 'input_required' : 'no_history' }; }
       if (failure === 'not_found' || failure === 'indeterminate') { kind = 'not_found'; return { provider, outcome: 'no_history' }; }
-      kind = failure === 'rate_limited' ? 'rate_limited' : failure === 'challenge' ? 'verification' : failure === 'schema' ? 'schema' : 'transport';
+      // A refused number is an answer about this number too: it keeps the provider's circuit closed.
+      kind = failure === 'invalid_input' ? 'not_found' : failure === 'rate_limited' ? 'rate_limited'
+        : failure === 'challenge' ? 'verification' : failure === 'schema' ? 'schema' : 'transport';
       return { provider, outcome: 'unavailable' };
     } finally {
       await withinSignal(health.finishTrackingProvider(provider, lease.token, kind, retryAfterMs, performance.now() - started), bounded).catch(() => undefined);

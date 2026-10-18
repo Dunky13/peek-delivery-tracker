@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { InputRequiredError, NotFoundError, RateLimitedError, type CarrierResult, type UniversalSource } from 'universal-parcel-scraper';
+import { InputRequiredError, InvalidInputError, NotFoundError, RateLimitedError, type CarrierResult, type UniversalSource } from 'universal-parcel-scraper';
 import { UniversalTracker } from 'universal-parcel-scraper/node';
 import type { ProviderHealth } from './trackingRouting';
 import { preflightInputNeeded, preflightTracking, takePreflightHistory } from './trackingPreflight';
@@ -38,6 +38,14 @@ it('keeps input requirements actionable without opening the provider circuit', a
   expect(await preflightTracking('9876000046', service)).toEqual({ providers: [{ provider: 'Ship24', outcome: 'no_history' }, { provider: 'ParcelsApp', outcome: 'input_required' }] });
   expect(service.finishTrackingProvider.mock.calls.map((call) => call[2])).toEqual(['not_found', 'not_found']);
   expect(preflightInputNeeded('9876000046')).toEqual({ provider: 'ParcelsApp', field: 'dpdPostcode' });
+});
+it('keeps the provider circuit closed when a provider refuses the number', async () => {
+  vi.spyOn(UniversalTracker.prototype, 'fetchSource').mockImplementation(async (source) => {
+    throw new InvalidInputError(source, `Invalid ${source} tracking number`);
+  });
+  const service = health();
+  await preflightTracking('9876000061', service);
+  expect(service.finishTrackingProvider.mock.calls.map((call) => call[2])).toEqual(['not_found', 'not_found']);
 });
 it('takes a postcode request for a number no carrier issues in that shape as no history', async () => {
   vi.spyOn(UniversalTracker.prototype, 'fetchSource').mockImplementation(async (source) => {

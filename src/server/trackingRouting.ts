@@ -27,10 +27,11 @@ import { getRecognitionPriorities } from './recognitionRanking';
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
 // no_history: a universal provider, or the carrier listing the parcel without scans, answered without any history.
-export type RoutingFailureKind = 'rate_limited' | 'not_found' | 'no_history' | 'input_required' | 'verification' | 'schema' | 'transport';
+// invalid_input: the source refused the number or an input as one it does not issue.
+export type RoutingFailureKind = 'rate_limited' | 'not_found' | 'no_history' | 'input_required' | 'invalid_input' | 'verification' | 'schema' | 'transport';
 export interface ProviderHealth {
   acquireTrackingProvider(provider: string): Promise<{ token: string | null; retry_at: string }>;
-  finishTrackingProvider(provider: string, token: string, kind: Exclude<RoutingFailureKind, 'no_history' | 'input_required'> | null, retryAfterMs: number, durationMs: number): Promise<void>;
+  finishTrackingProvider(provider: string, token: string, kind: Exclude<RoutingFailureKind, 'no_history' | 'input_required' | 'invalid_input'> | null, retryAfterMs: number, durationMs: number): Promise<void>;
 }
 export interface RoutedResult {
   correction?: { carrier: string; trackingUrl: string | null; postcode: string | null };
@@ -144,8 +145,8 @@ export function routingFailure(error: unknown): { kind: RoutingFailureKind; retr
     if (kind === 'not_found') return { kind: 'not_found', retryAfterMs: 0 };
     if (kind === 'challenge') return { kind: 'verification', retryAfterMs: 0 };
     if (kind === 'input_required') return { kind: 'input_required', retryAfterMs: 0 };
-    // A number the carrier does not issue waits as a missing input does: no sooner retry can succeed.
-    if (kind === 'schema' || kind === 'invalid_input') return { kind: 'schema', retryAfterMs: 0 };
+    // A number the carrier does not issue waits as a parser failure does: no sooner retry can succeed.
+    if (kind === 'schema' || kind === 'invalid_input') return { kind, retryAfterMs: 0 };
     return { kind: 'transport', retryAfterMs };
   }
   let current = error;
@@ -388,7 +389,7 @@ export class TrackingRouter {
       // A provider's "not found" holds for a day. A carrier often doesn't know a
       // label before its first scan, so its own "not found" is asked again within hours.
       const daily = kind === 'not_found' && universalSource;
-      const base = daily ? DAY : kind === 'verification' || kind === 'schema' || kind === 'not_found' ? HOUR : 15 * 60_000;
+      const base = daily ? DAY : ['verification', 'schema', 'invalid_input', 'not_found'].includes(kind) ? HOUR : 15 * 60_000;
       const userError = trackingFailureCode(error);
       const failure = { count, kind, ...(userError ? { user_error: userError } : {}), retry_at: iso(now().getTime() + Math.max(retryAfterMs, Math.min(daily ? DAY : 6 * HOUR, base * 2 ** (count - 1)))) };
       state.failures[provider] = failure;
@@ -901,8 +902,8 @@ export class TrackingRouter {
             recordProviderInput(source, step);
             report('provider_input_lookup', source, step);
           }
-          // An answer about this number keeps the provider's circuit closed, like not-found.
-          try { await this.options.health.finishTrackingProvider(source, token, kind === 'no_history' || kind === 'input_required' ? 'not_found' : kind, retryAfterMs, performance.now() - before); }
+          // An answer about this number, a refusal included, keeps the provider's circuit closed, like not-found.
+          try { await this.options.health.finishTrackingProvider(source, token, kind === 'no_history' || kind === 'input_required' || kind === 'invalid_input' ? 'not_found' : kind, retryAfterMs, performance.now() - before); }
           catch { report('health_store_unavailable', source, 'transport'); }
         }
       }

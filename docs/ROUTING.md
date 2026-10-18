@@ -116,7 +116,7 @@ A failed source waits before it is retried for that parcel:
 | Failure | First wait | Backs off to |
 | --- | --- | --- |
 | Transport, and `no_history` (a provider answered but has nothing, or the carrier lists the parcel without scans or does not know it yet) | 15 min | 6 h |
-| Verification or schema; not found by a carrier's own adapter | 1 h | 6 h |
+| Verification, schema, or a number or input the source refuses (`invalid_input`); not found by a carrier's own adapter | 1 h | 6 h |
 | Not found by a universal provider | 24 h | 24 h |
 
 A longer `Retry-After` is honoured, up to 7 days. A carrier often doesn't know a label
@@ -496,7 +496,8 @@ guessed.
   lookup budget, rather than recording a cooldown and moving on;
 - cooldowns: 429 → at least 15 min, verification → 1 h, other failures → 1 min to 1 h
   (exponential);
-- not-found and `no_history` are per-parcel and never open a global cooldown.
+- not-found, `no_history` and a refused number (`invalid_input`) are per-parcel and never
+  open a global cooldown.
 
 If coordination fails, universal calls fail closed. A failed completion write never throws
 away data already retrieved.
@@ -513,7 +514,7 @@ detection or the adapters could act on: each check saves them for the hourly rev
 | `decision` | Meaning |
 | --- | --- |
 | `transport_fallback` | A direct path needed browser/TRAWL recovery, even if it then succeeded |
-| `provider_failed` | A provider failed for a parcel: `category` `rate_limited` needs less traffic, `schema` parser work |
+| `provider_failed` | A provider failed for a parcel: `category` `rate_limited` needs less traffic, `schema` parser work, `invalid_input` a number the source refuses |
 | `all_providers_unavailable` | Uncovered parcel or broad outage |
 | `health_store_unavailable` | Migration or database coordination problem (Sentry issue) |
 | `carrier_auto_swapped` | A carrier correction was committed. A signal, unless detection already names the new carrier for the number or lists it first among the carriers to ask: then the line has `category` `detected` |

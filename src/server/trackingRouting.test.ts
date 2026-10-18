@@ -554,7 +554,7 @@ describe('persistent tracking routing', () => {
     const result = await router.fetch(parcel({ carrier_data: { routing: state({ discovered_carrier: 'dhl-express' }) } }), false);
     expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier: 'dhl-express' }), 'dhl-express');
     expect(result.result.routing).not.toHaveProperty('discovered_carrier');
-    expect(result.result.routing).toMatchObject({ failures: { 'dhl-express': { kind: 'schema', user_error: 'carrier:invalid_input' } } });
+    expect(result.result.routing).toMatchObject({ failures: { 'dhl-express': { kind: 'invalid_input', user_error: 'carrier:invalid_input' } } });
     // Once its cooldown is over, nothing asks it again.
     direct.mockClear();
     await router.fetch(parcel({ carrier_data: { routing: { ...result.result.routing as JsonObject, failures: {} } } }), false);
@@ -979,6 +979,14 @@ describe('persistent tracking routing', () => {
     expect(health.finishTrackingProvider.mock.calls.map(([source, , kind]) => [source, kind])).toEqual([
       ['ParcelsApp', 'not_found'], ['Ship24', 'not_found'], ['17TRACK', 'transport'],
     ]);
+  });
+  it('keeps provider circuits closed when providers refuse the number', async () => {
+    const { router, universal, health } = setup();
+    universal.mockImplementation(async (source: string) => { throw new InvalidInputError(source, `Invalid ${source} tracking number`); });
+    await expect(router.fetch(parcel(), false)).rejects.toMatchObject({ routing: { failures: {
+      Ship24: { kind: 'invalid_input', user_error: 'carrier:invalid_input' } } } });
+    expect(health.finishTrackingProvider).toHaveBeenCalled();
+    expect(health.finishTrackingProvider.mock.calls.every((call) => call[2] === 'not_found')).toBe(true);
   });
   it('reaches 17TRACK in the same check after the first two providers fail, then remembers it', async () => {
     const first = setup();
@@ -1754,7 +1762,7 @@ describe('routingFailure with carrier package errors', () => {
     expect(routingFailure(new errors.ChallengeError('UPS'))).toEqual({ kind: 'verification', retryAfterMs: 0 });
     expect(routingFailure(new errors.SchemaError('DHL'))).toEqual({ kind: 'schema', retryAfterMs: 0 });
     expect(routingFailure(new errors.InputRequiredError('Heppner', 'the delivery postcode'))).toEqual({ kind: 'input_required', retryAfterMs: 0 });
-    expect(routingFailure(new errors.InvalidInputError('Evri', 'Evri requires a 16-character tracking number'))).toEqual({ kind: 'schema', retryAfterMs: 0 });
+    expect(routingFailure(new errors.InvalidInputError('Evri', 'Evri requires a 16-character tracking number'))).toEqual({ kind: 'invalid_input', retryAfterMs: 0 });
     expect(routingFailure(new errors.IndeterminateError('Colisweb'))).toEqual({ kind: 'transport', retryAfterMs: 0 });
     expect(routingFailure(new Error('wrapped', { cause: new errors.NotFoundError('CTT') }))).toEqual({ kind: 'not_found', retryAfterMs: 0 });
     // Errors outside the taxonomy keep the historical status-based classification.
