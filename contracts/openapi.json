@@ -24797,6 +24797,159 @@
       ],
       "detectionRules": [],
       "trackingSearchUrl": "https://www.e1.yc-otodoke.com/inquiry/"
+    },
+    "copa-courier": {
+      "displayName": "Copa Airlines Courier",
+      "aliases": [
+        "Copa Courier"
+      ],
+      "countries": [
+        "PA",
+        "BO",
+        "CL",
+        "CO",
+        "CR",
+        "CU",
+        "DO",
+        "EC",
+        "GT",
+        "HN",
+        "MX",
+        "NI",
+        "PE",
+        "PR",
+        "PY",
+        "SV",
+        "US",
+        "UY",
+        "VE"
+      ],
+      "color": "#233e93",
+      "selectable": true,
+      "timezone": "America/Panama",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^H\\d{7}$",
+          "confidence": "low"
+        }
+      ],
+      "trackingSearchUrl": "https://www.copacourier.com/"
+    },
+    "hound-express": {
+      "displayName": "Hound Express",
+      "aliases": [
+        "HoundExpress"
+      ],
+      "countries": [
+        "MX",
+        "US"
+      ],
+      "color": "#18233e",
+      "selectable": true,
+      "timezone": "America/Mexico_City",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "linkRules": [],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.hound-express.com/tracking.html"
+    },
+    "pdq-chile": {
+      "displayName": "PDQ Cargo Trader",
+      "aliases": [
+        "PDQ",
+        "Cargo Trader PDQ",
+        "Transportes PDQ"
+      ],
+      "countries": [
+        "CL"
+      ],
+      "color": "#ed1c24",
+      "selectable": true,
+      "timezone": "America/Santiago",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://www.pdq.cl/tracking?q={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "www.pdq.cl",
+            "pdq.cl"
+          ],
+          "pathPattern": "^/tracking/?$",
+          "params": [
+            "q"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://www.pdq.cl/tracking"
+    },
+    "skyking": {
+      "displayName": "SkyKing",
+      "aliases": [
+        "Skyking",
+        "SkyKing Courier Services"
+      ],
+      "countries": [
+        "IN"
+      ],
+      "color": "#007dc6",
+      "selectable": true,
+      "timezone": "Asia/Kolkata",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://skyking.co/track?cno={trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "skyking.co"
+          ],
+          "pathPattern": "^/track/?$",
+          "params": [
+            "cno"
+          ]
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://skyking.co/track"
+    },
+    "veloces": {
+      "displayName": "Veloces",
+      "countries": [
+        "CO",
+        "MX",
+        "EC",
+        "CL"
+      ],
+      "color": "#fd026f",
+      "selectable": true,
+      "timezone": "America/Bogota",
+      "tracking": {
+        "mode": "automatic",
+        "adapter": "universal"
+      },
+      "trackingUrlTemplate": "https://tracking.veloces.app/tracking-client/{trackingNumber}",
+      "linkRules": [
+        {
+          "domains": [
+            "tracking.veloces.app"
+          ],
+          "path": "^/tracking-client/([^/?#]+)/?$"
+        }
+      ],
+      "detectionRules": [],
+      "trackingSearchUrl": "https://tracking.veloces.app/"
     }
   },
   "servers": [
@@ -27917,7 +28070,12 @@
           "straightship",
           "kyoungdong",
           "sagawa-global",
-          "yc-delivery"
+          "yc-delivery",
+          "copa-courier",
+          "hound-express",
+          "pdq-chile",
+          "skyking",
+          "veloces"
         ]
       },
       "Stage": {
