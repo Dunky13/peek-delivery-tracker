@@ -539,6 +539,11 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "s10"
       },
       {
+        "pattern": "^R[A-Z]\\d{9}DE$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
+      {
         "pattern": "^JJD(?!\\d{16}$)(?!0146\\d{14}$)[A-Z0-9]{8,}$",
         "confidence": "high"
       },
@@ -1942,7 +1947,7 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CL][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -9282,7 +9287,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "apc-postal-logistics"
     },
     "trackingUrlTemplate": "https://tracking.apc-pli.com/{trackingNumber}",
     "linkRules": [
@@ -20550,7 +20555,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Sofia",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "evropat"
     },
     "trackingUrlTemplate": "https://evropat.bg/track/?barcode={trackingNumber}",
     "linkRules": [
@@ -21962,9 +21967,20 @@ export const CARRIER_CAPABILITIES = {
       "mode": "automatic",
       "adapter": "universal"
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.kronosexpress.com"
+        ],
+        "pathPattern": "^/tracking_system(?:_en)?\\.aspx$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx"
+    "trackingSearchUrl": "https://tracking.kronosexpress.com/tracking_system_en.aspx",
+    "trackingUrlTemplate": "https://tracking.kronosexpress.com/tracking_system_en.aspx?tracking_number={trackingNumber}"
   },
   "m-one": {
     "displayName": "M-ONE",
@@ -24248,7 +24264,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jerusalem",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "exelot",
+      "recognitionRank": 865
     },
     "trackingUrlTemplate": "https://go.exelot.com/tracking?barcodes={trackingNumber}",
     "linkRules": [
@@ -25423,7 +25440,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bjs-home-delivery",
+      "recognitionRank": 844
     },
     "trackingUrlTemplate": "https://track.bjshomedelivery.com/?parcel-id={trackingNumber}",
     "linkRules": [
@@ -25472,7 +25490,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "norsk-global",
+      "recognitionRank": 845
     },
     "trackingUrlTemplate": "https://norsk.trackmyparcel.info/gb/tracking/{trackingNumber}",
     "linkRules": [
@@ -25483,7 +25502,12 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^PKG\\d{12}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://norsk.trackmyparcel.info/"
   },
   "one-world-express": {
@@ -26772,7 +26796,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "RU"
     ],
-    "color": "#bd4d47",
+    "color": "#d4534d",
     "selectable": true,
     "timezone": "Europe/Moscow",
     "tracking": {
@@ -26808,7 +26832,7 @@ export const CARRIER_CAPABILITIES = {
       "CN",
       "BY"
     ],
-    "color": "#ffc33a",
+    "color": "#ffbe2e",
     "selectable": true,
     "timezone": "Europe/Moscow",
     "tracking": {
@@ -27031,7 +27055,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "RU"
     ],
-    "color": "#00a3d3",
+    "color": "#0e7aa5",
     "selectable": true,
     "timezone": "Europe/Moscow",
     "tracking": {
@@ -27041,6 +27065,535 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [],
     "trackingSearchUrl": "https://vestovoi.ru/monitoring_dostavki/"
+  },
+  "air-star-xpress": {
+    "displayName": "Air Star Xpress",
+    "aliases": [
+      "Air Star Xpress Couriers",
+      "Air Star Express",
+      "Air Star Express Courier Service"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#007038",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://authorcodesoftware.in/airstarxpresscourier/newmastertracking.aspx"
+  },
+  "c3x": {
+    "displayName": "C3X",
+    "aliases": [
+      "C3Xpress",
+      "C3X Delivery Services"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "color": "#2ca2c6",
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://c3xpress.com/"
+  },
+  "eco-express-ae": {
+    "displayName": "Eco Express",
+    "aliases": [
+      "ECO EXPRESS"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "color": "#1d447d",
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://app.ecofreight.ae/en/tracking/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "app.ecofreight.ae"
+        ],
+        "path": "^/en/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://app.ecofreight.ae/en/tracking"
+  },
+  "first-fly-express": {
+    "displayName": "First Fly Express",
+    "countries": [
+      "IN"
+    ],
+    "color": "#e83030",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://firstflyexpress.com/track.asp"
+  },
+  "flyking": {
+    "displayName": "Flyking Courier Services",
+    "aliases": [
+      "Flyking",
+      "Fly King",
+      "Flyking Courier Services Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#dd4b4b",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": []
+  },
+  "goodluck-courier": {
+    "displayName": "Goodluck Courier Service",
+    "aliases": [
+      "Goodluck Courier Services",
+      "Goodluck Courier",
+      "Good Luck Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#081858",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.goodluckcourier.com/index.php?consignment={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "goodluckcourier.com",
+          "www.goodluckcourier.com"
+        ],
+        "pathPattern": "^/index\\.php$",
+        "params": [
+          "consignment"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.goodluckcourier.com/"
+  },
+  "grand-slam-express": {
+    "displayName": "Grand Slam Express",
+    "aliases": [
+      "Grandslam Express"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#f1592a",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.grandslamexpress.in/Web/Track?AwbNo={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "grandslamexpress.in",
+          "www.grandslamexpress.in"
+        ],
+        "pathPattern": "^/Web/Track/?$",
+        "params": [
+          "AwbNo"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.grandslamexpress.in/Web/Track"
+  },
+  "jetline-couriers": {
+    "displayName": "Jetline Couriers",
+    "aliases": [
+      "Jetline Couriers Pvt. Ltd.",
+      "Jetline Couriers Private Limited",
+      "Jetline Courier"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#e00000",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.jetlinecouriers.in/"
+  },
+  "logistiq": {
+    "displayName": "Logistiq",
+    "countries": [
+      "AE",
+      "SA"
+    ],
+    "color": "#2e65f3",
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://gecko.logistiq.io/#/order/tracking?awb={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "gecko.logistiq.io"
+        ],
+        "pathPattern": "^/?$",
+        "fragment": "^/order/tracking\\?(?:[^#]*&)?awb=([^&]+)"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://logistiq.io/track/"
+  },
+  "pavan-courier": {
+    "displayName": "Pavan Courier Service",
+    "aliases": [
+      "Pavan Courier",
+      "Pavan Courier Service Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#eb1c22",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://pavancourierservice.com/Home/Tracking?TrackingNo={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "pavancourierservice.com"
+        ],
+        "pathPattern": "^/Home/Tracking$",
+        "params": [
+          "TrackingNo"
+        ]
+      },
+      {
+        "domains": [
+          "pavancourier.com",
+          "www.pavancourier.com"
+        ],
+        "pathPattern": "^/Tracking\\.aspx$",
+        "params": [
+          "txtawbno"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://pavancourierservice.com/Home/Tracking"
+  },
+  "quicksilver-sa": {
+    "displayName": "Quicksilver",
+    "aliases": [
+      "Quick Silver Express",
+      "QuickSilver",
+      "Quicksilver company for transportation and storage",
+      "كويك سيلفر",
+      "كويك سلفر",
+      "شركة كويك سيلفر للنقل والتخزين"
+    ],
+    "countries": [
+      "SA"
+    ],
+    "color": "#805fa4",
+    "selectable": true,
+    "timezone": "Asia/Riyadh",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://erp.quick-silver.express/v2/tracking/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "erp.quick-silver.express"
+        ],
+        "path": "^/v2/tracking/([^/?#]+)/?$"
+      },
+      {
+        "domains": [
+          "quick-silver.express",
+          "www.quick-silver.express"
+        ],
+        "pathPattern": "^/Tracking/?$",
+        "params": [
+          "tracking_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^QS\\d{9}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://quick-silver.express/Tracking"
+  },
+  "sahara-express": {
+    "displayName": "Sahara Express",
+    "aliases": [
+      "Sahara Express Private Limited",
+      "Sahara Express Courier Private Limited"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#203870",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://saharaexpress.com/showDetails1.php?taTrackNumber={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "saharaexpress.com",
+          "www.saharaexpress.com"
+        ],
+        "pathPattern": "^/showDetails1\\.php$",
+        "params": [
+          "taTrackNumber"
+        ]
+      },
+      {
+        "domains": [
+          "saharaexpress.com",
+          "www.saharaexpress.com"
+        ],
+        "pathPattern": "^/confirm_rpt\\.php$",
+        "params": [
+          "txtship_no"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://saharaexpress.com/"
+  },
+  "shree-mahabali-express": {
+    "displayName": "Shree Mahabali Express",
+    "aliases": [
+      "Mahabali Express",
+      "Mahabali Express Pvt. Ltd.",
+      "Shree Mahabali Express Pvt. Ltd."
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#d91900",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://shreemahabaliexpress.com/Frm_DocTrack.aspx?No={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "shreemahabaliexpress.com",
+          "www.shreemahabaliexpress.com"
+        ],
+        "pathPattern": "^/Frm_DocTrack\\.aspx$",
+        "params": [
+          "No"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://shreemahabaliexpress.com/"
+  },
+  "skyex-ae": {
+    "displayName": "Sky Express International",
+    "aliases": [
+      "Sky Express International LLC"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "color": "#0080c0",
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.skyexpressinternational.com/Home/Tracking?trackingType=AWB&tid={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "skyexpressinternational.com",
+          "www.skyexpressinternational.com"
+        ],
+        "pathPattern": "^/Home/Tracking/?$",
+        "params": [
+          "tid"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://skyexpressinternational.com/Home/Tracking"
+  },
+  "speed-and-safe": {
+    "displayName": "Gokulam Speed & Safe",
+    "aliases": [
+      "Speed & Safe",
+      "Speed and Safe",
+      "Speed And Safe Courier Service"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#203088",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.gokulamspeedandsafe.com/speedandsafe-tracking/"
+  },
+  "team-express-ae": {
+    "displayName": "Team Express",
+    "aliases": [
+      "Team Express Services",
+      "Team Express Services, LLC"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "color": "#e94e1e",
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://teamexpressme.com/tracking?trackno={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "teamexpressme.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "trackno"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://teamexpressme.com/tracking"
+  },
+  "tfm-express": {
+    "displayName": "TFM Express",
+    "aliases": [
+      "TFM Express Shipping L.L.C",
+      "TFM EXPRESS LLC"
+    ],
+    "countries": [
+      "AE"
+    ],
+    "color": "#ef4129",
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://customer.tfmex.com/Skybill/TrackSkybill"
+  },
+  "transcorp": {
+    "displayName": "Transcorp",
+    "aliases": [
+      "Transcorp International",
+      "Transcorp International Logistics LLC",
+      "Elite Co.",
+      "Elite Airborne Express L.L.C.",
+      "Elite Express Cargo"
+    ],
+    "countries": [
+      "AE",
+      "SA",
+      "QA",
+      "BH",
+      "KW",
+      "OM"
+    ],
+    "color": "#142763",
+    "selectable": true,
+    "timezone": "Asia/Dubai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://app.elite-co.com/shipments/track?references={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "app.elite-co.com"
+        ],
+        "pathPattern": "^/shipments/track/?$",
+        "params": [
+          "references",
+          "awbno"
+        ]
+      },
+      {
+        "domains": [
+          "transcorpuae.suitefleet.com",
+          "transcorp.suitefleet.com",
+          "transcorpqatar.suitefleet.com"
+        ],
+        "path": "^/task/tracking/([^/?#]+)/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://app.elite-co.com/shipments/track"
   }
 } as const;
 
@@ -27778,7 +28331,25 @@ export const CARRIER_IDS = [
   "mongol-infinity-post",
   "peqasus-az",
   "starex-az",
-  "vestovoy"
+  "vestovoy",
+  "air-star-xpress",
+  "c3x",
+  "eco-express-ae",
+  "first-fly-express",
+  "flyking",
+  "goodluck-courier",
+  "grand-slam-express",
+  "jetline-couriers",
+  "logistiq",
+  "pavan-courier",
+  "quicksilver-sa",
+  "sahara-express",
+  "shree-mahabali-express",
+  "skyex-ae",
+  "speed-and-safe",
+  "team-express-ae",
+  "tfm-express",
+  "transcorp"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 

@@ -739,6 +739,24 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
     static let peqasusAz = CarrierID(rawValue: "peqasus-az")
     static let starexAz = CarrierID(rawValue: "starex-az")
     static let vestovoy = CarrierID(rawValue: "vestovoy")
+    static let airStarXpress = CarrierID(rawValue: "air-star-xpress")
+    static let c3x = CarrierID(rawValue: "c3x")
+    static let ecoExpressAe = CarrierID(rawValue: "eco-express-ae")
+    static let firstFlyExpress = CarrierID(rawValue: "first-fly-express")
+    static let flyking = CarrierID(rawValue: "flyking")
+    static let goodluckCourier = CarrierID(rawValue: "goodluck-courier")
+    static let grandSlamExpress = CarrierID(rawValue: "grand-slam-express")
+    static let jetlineCouriers = CarrierID(rawValue: "jetline-couriers")
+    static let logistiq = CarrierID(rawValue: "logistiq")
+    static let pavanCourier = CarrierID(rawValue: "pavan-courier")
+    static let quicksilverSa = CarrierID(rawValue: "quicksilver-sa")
+    static let saharaExpress = CarrierID(rawValue: "sahara-express")
+    static let shreeMahabaliExpress = CarrierID(rawValue: "shree-mahabali-express")
+    static let skyexAe = CarrierID(rawValue: "skyex-ae")
+    static let speedAndSafe = CarrierID(rawValue: "speed-and-safe")
+    static let teamExpressAe = CarrierID(rawValue: "team-express-ae")
+    static let tfmExpress = CarrierID(rawValue: "tfm-express")
+    static let transcorp = CarrierID(rawValue: "transcorp")
 
     static let allCases: [CarrierID] = [
         .swissPost,
@@ -1442,6 +1460,24 @@ struct CarrierID: RawRepresentable, Codable, CaseIterable, Hashable, Sendable, I
         .peqasusAz,
         .starexAz,
         .vestovoy,
+        .airStarXpress,
+        .c3x,
+        .ecoExpressAe,
+        .firstFlyExpress,
+        .flyking,
+        .goodluckCourier,
+        .grandSlamExpress,
+        .jetlineCouriers,
+        .logistiq,
+        .pavanCourier,
+        .quicksilverSa,
+        .saharaExpress,
+        .shreeMahabaliExpress,
+        .skyexAe,
+        .speedAndSafe,
+        .teamExpressAe,
+        .tfmExpress,
+        .transcorp,
     ]
 
     init(from decoder: Decoder) throws {
