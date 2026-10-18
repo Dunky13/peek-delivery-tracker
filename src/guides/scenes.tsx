@@ -1057,6 +1057,20 @@ function Shelves() {
   </>;
 }
 
+function FlatPack() {
+  return <>
+    <path d="M40 248H600" stroke={line} strokeWidth="4" strokeLinecap="round" />
+    <Truck x={40} y={172} tone="blue" scale={4} />
+    {/* Long flat-pack boxes, stacked, and the key that builds what's inside. */}
+    <Box x={222} y={212} width={268} height={36} />
+    <Box x={238} y={180} width={236} height={32} />
+    <Box x={230} y={150} width={252} height={30} />
+    <Box x={256} y={124} width={200} height={26} />
+    <path d="M522 238H584V198" stroke="var(--blue)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+    <Pip x={356} ground={124} width={112} mood="joy" side={-1} />
+  </>;
+}
+
 const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'tracking-number-formats': { tone: 'blue', draw: Formats },
   'tracking-statuses': { tone: 'green', draw: Statuses },
@@ -1082,6 +1096,7 @@ const SCENES: Record<string, { tone: string; draw: () => ReactNode }> = {
   'pccomponentes-orders': { tone: 'rose', draw: Tower },
   'worten-orders': { tone: 'rose', draw: Appliance },
   'galaxus-orders': { tone: 'lilac', draw: Shelves },
+  'ikea-orders': { tone: 'blue', draw: FlatPack },
   'find-tracking-number': { tone: 'ochre', draw: FindNumber },
   'universal-tracker': { tone: 'green', draw: Universal },
   'christmas-posting-dates': { tone: 'blue', draw: Christmas },

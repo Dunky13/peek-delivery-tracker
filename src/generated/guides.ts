@@ -127,6 +127,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Galaxus order tracking: carriers, delivery and problems"
     },
     {
+      "id": "ikea-orders",
+      "slug": "ikea-order-tracking",
+      "title": "IKEA order tracking: parcels, truck delivery and problems"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "how-to-find-tracking-number",
       "title": "How to find your tracking number, or track without one"
@@ -312,6 +317,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "galaxus-orders",
       "slug": "galaxus-sendungsverfolgung",
       "title": "Galaxus Sendungsverfolgung: Wo ist meine Bestellung?"
+    },
+    {
+      "id": "ikea-orders",
+      "slug": "ikea-sendungsverfolgung",
+      "title": "IKEA Sendungsverfolgung: Paket, Spedition und Probleme"
     },
     {
       "id": "find-tracking-number",
@@ -501,6 +511,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Suivi de commande Galaxus\u00a0: où est mon colis\u202f?"
     },
     {
+      "id": "ikea-orders",
+      "slug": "suivi-commande-ikea",
+      "title": "Suivi de commande IKEA\u00a0: colis, camion et problèmes"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "ou-trouver-numero-de-suivi",
       "title": "Où trouver son numéro de suivi, et comment faire sans"
@@ -686,6 +701,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "galaxus-orders",
       "slug": "tracking-ordine-galaxus",
       "title": "Tracking ordine Galaxus: dov'è il mio pacco?"
+    },
+    {
+      "id": "ikea-orders",
+      "slug": "tracciamento-ordine-ikea",
+      "title": "Tracciamento ordine IKEA: pacchi, camion e problemi"
     },
     {
       "id": "find-tracking-number",
@@ -875,6 +895,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Pedidos Galaxus: seguimiento, entrega y problemas"
     },
     {
+      "id": "ikea-orders",
+      "slug": "seguimiento-pedido-ikea",
+      "title": "Seguimiento de pedidos IKEA: paquetes, camión y problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "localizar-paquete-sin-numero-de-seguimiento",
       "title": "Cómo localizar un paquete sin número de seguimiento"
@@ -1062,6 +1087,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "title": "Encomendas Galaxus: seguimento, entrega e problemas"
     },
     {
+      "id": "ikea-orders",
+      "slug": "seguimento-encomenda-ikea",
+      "title": "Seguimento da encomenda IKEA: DPD, camião e problemas"
+    },
+    {
       "id": "find-tracking-number",
       "slug": "onde-encontrar-numero-de-seguimento",
       "title": "Onde encontrar o número de seguimento da encomenda"
@@ -1247,6 +1277,11 @@ export const GUIDE_LINKS: Record<Locale, readonly GuideLink[]> = {
       "id": "galaxus-orders",
       "slug": "sledzenie-zamowienia-galaxus",
       "title": "Zamówienie z Galaxus: śledzenie, dostawa i problemy"
+    },
+    {
+      "id": "ikea-orders",
+      "slug": "sledzenie-zamowienia-ikea",
+      "title": "Śledzenie zamówienia IKEA: GLS, InPost, transport i problemy"
     },
     {
       "id": "find-tracking-number",
