@@ -132,6 +132,9 @@
   "anousith": {
     "decal": "anousith"
   },
+  "anserx": {
+    "decal": "anserx"
+  },
   "anteraja": {
     "decal": "anteraja"
   },
@@ -361,6 +364,9 @@
       "truck": "#ffffff",
       "edge": "#0056a7"
     }
+  },
+  "chukou1": {
+    "decal": "chukou1"
   },
   "chunghwa-post": {
     "decal": "chunghwa-post"
@@ -1272,6 +1278,9 @@
   },
   "jrt": {
     "decal": "jrt"
+  },
+  "jumppoint": {
+    "decal": "jumppoint"
   },
   "kargoist": {
     "decal": "kargoist"
@@ -2500,6 +2509,9 @@
   },
   "yc-delivery": {
     "decal": "yc-delivery"
+  },
+  "ycs-logistics": {
+    "decal": "ycs-logistics"
   },
   "yilong-logistics": {
     "decal": "yilong-logistics"

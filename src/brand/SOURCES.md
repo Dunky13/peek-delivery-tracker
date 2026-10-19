@@ -53,6 +53,7 @@ and [`truck.json`](truck.json).
 | `andreani` | [andreani.com](https://www.andreani.com/) — theme-color and --primary #d71920 (archived page; the live site blocks this network) |
 | `anjun` | [anjuntrack.com](https://anjuntrack.com/img/logo.bf7702a9.png) — logo PNG green #009944 (approximate); site CSS #009b4c |
 | `anousith` | [app.anousith.express](https://app.anousith.express/logo.jpeg) — app icon red #e0353a (approximate); logo PNG chevron #fe0000 |
+| `anserx` | [anserx.com](https://www.anserx.com/css/style.css) — main site CSS #2478be (14 uses: active nav, product tabs), the exact fill of the logo PNG's light-blue wing; the wing green #9cca2c is in the same CSS and logo |
 | `anteraja` | [anteraja.id](https://anteraja.id/) — app CSS .magenta #ed0677; logo PNG #ec0b78 (approximate) |
 | `ap-cargo` | [apcargo.com.ph](https://apcargo.com.ph/wp-content/uploads/2024/10/apcargo-main-logo.png) — logo PNG symbol #fcaf17, wordmark #41463f (two-colour palette) |
 | `apc-overnight` | [apc.co.uk](https://apc.co.uk/wp-content/uploads/2026/02/Company-Logo.svg) — logo fills #243269 (APC) and #13b5ea (band) |
@@ -120,6 +121,7 @@ and [`truck.json`](truck.json).
 | `china-post` | [chinapost.com.cn](https://www.chinapost.com.cn/) |
 | `chit-chats` | [chitchats.com](https://chitchats.com/) — mask-icon colour #dc2b35 and btn-primary #db2b35 (the catalog colour); logo crown #f32735 |
 | `chronodiali` | [chronodiali.ma](https://chronodiali.ma/assets/logofr.png) — logo cube and 'diali' #009adf (flat PNG fill; the favicon cube is the same); the site's buttons and headings are #0060a2 |
+| `chukou1` | [chukou1.com](https://pic.chukou1.com/0/0_c5e81d.png) — header logo PNG flat fill #0b4da2 of the 出口易 wordmark and the globe rim (approximate) |
 | `chunghwa-post` | [post.gov.tw](https://www.post.gov.tw/post/internet/Group/images/Logo.jpg) — emblem red sampled from the site logo (approximate) |
 | `chunil` | [chunilps.co.kr](http://www.chunilps.co.kr/img/2015/main_logo.gif) — logo GIF navy #000080, dots #ff092c |
 | `ciblex` | [ciblex.fr](https://www.ciblex.fr/) (sampled from the site icon) |
@@ -340,6 +342,7 @@ and [`truck.json`](truck.json).
 | `jordan-post` | [jordanpost.com.jo](https://jordanpost.com.jo/wp-content/uploads/2023/03/jpc-logo-large.png) — logo PNG crimson #a42035 (approximate), the same hex as the site CSS; tracker 212.35.69.84 uses #9c0000 |
 | `jrs-express` | [jrs-express.com](https://jrs-express.com/) — site CSS and bundle #046a38 (162 uses); header logo PNG #14692e (approximate) |
 | `jrt` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/192125.png) — icon pixels navy #023053, orange #e66926 (approximate) |
+| `jumppoint` | [jumppoint.io](https://cdn.prod.website-files.com/625fc6e7f6a0fbc4cd3a3246/6446da72e77910eee6b44c6d_jumppoint.svg) — logo SVG fill #0F4AE1, also the site CSS --jumppoint-blue #0f4ae1 (36 uses) |
 | `kargoist` | [kargoist.com](https://kargoist.com/wp-content/uploads/2022/07/cropped-android-chrome-512x512-1-270x270.png) — site icon PNG flat cyan #18b6d6, grey #5a5b5e (approximate) |
 | `kazpost` | [post.kz](https://post.kz/react/static/css/main.a6b7127e.chunk.css) — site CSS yellow #fed201 with logo blue #0157a5 |
 | `kerry-tj` | [zh.wikipedia.org](https://upload.wikimedia.org/wikipedia/zh/8/80/Kerry_TJ_Logistics_logo.svg) — logo SVG fill #ec6900; orange trucks on Commons photos |
@@ -687,6 +690,7 @@ and [`truck.json`](truck.json).
 | `yamato` | [kuronekoyamato.co.jp](https://www.kuronekoyamato.co.jp/) |
 | `yanwen` | [yw56.com.cn](https://www.yw56.com.cn/) |
 | `yc-delivery` | [yc-otodoke.com](https://yc-otodoke.com/edit/wp-content/themes/yc-otodoke/css/common.css) — theme CSS #004092 for the header rule, links, buttons and footer; the logo C is #1c50a1 |
+| `ycs-logistics` | [ycs-express.com](https://www.ycs-express.com/_nuxt/img/ycsLogo.b70f538.svg) — logo SVG fill #CF3339 (all the lettering); the site favicon is a red truck |
 | `yilong-logistics` | [yxhlexpress.com](http://www.yxhlexpress.com/Files/Site/SiteLogo/faa54a40-c672-4766-b82a-767e7b20486f.png) — logo PNG flat red #ec0307, its most frequent pixel (approximate) |
 | `yimidida` | [yimidida.com](https://web.archive.org/web/2023/https://www.yimidida.com/img/logooo.87b9e3ac.png) — logo bar #f5a91a (approximate, archived PNG); site CSS primary #fabe00 |
 | `yto` | [yto.net.cn](https://www.yto.net.cn/) (sampled from the footer logo) |
@@ -1399,3 +1403,7 @@ and [`truck.json`](truck.json).
 | `ait-worldwide` | White italic AIT on blue | [aitworldwide.com](https://www.aitworldwide.com/getContentAsset/d6b3e14f-8291-4048-9df8-9779a70ab445/dfc3d011-8f63-43f6-9ed8-4b444333a1d0/logo-ait.png?language=en-US) — logo: bold italic AIT crossed by an orbit ellipse in front of a wire globe; the truck keeps the letters, with a crossbar on the A in place of the orbit |
 | `team-worldwide` | White TW monogram on red | [teamww.com](https://www.teamww.com/favicon.ico) — favicon: a blue T beside a lower red W with rounded bottoms |
 | `huahan` | White and green roundel of two interlocking hooks on blue | [hh-exp.cn](https://www.hh-exp.cn/images/app_logo/logo.png) — the round symbol of the 华翰速递 logo: a blue hook (top left) and a green hook (bottom right) split by an S-shaped gap |
+| `anserx` | White and green folded wings on blue | [anserx.com](https://www.anserx.com/u_file/weblogo/s_3fd80b3822.png) — header logo, a blue wing above two green wings |
+| `chukou1` | White globe with an orbit band on blue | [chukou1.com](https://pic.chukou1.com/0/0_c5e81d.png) — header logo globe, its orbit band and the band's tail at lower left |
+| `jumppoint` | White slanted bars between light blue pins on blue | [jumppoint.io](https://cdn.prod.website-files.com/625fc6e7f6a0fbc4cd3a3246/6446da72e77910eee6b44c6d_jumppoint.svg) — header logo symbol: pin, two slanted bars, drop |
+| `ycs-logistics` | White YCS on red | [ycs-express.com](https://www.ycs-express.com/_nuxt/img/ycsLogo.b70f538.svg) — the YCS of the header wordmark |

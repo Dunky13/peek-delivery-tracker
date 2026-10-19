@@ -137,7 +137,8 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'winion-logis' | 'last-one-mile-coop' | 'dpex' | 'mrl-global' | 'fliway' | 'morning-global'
   | 'rpx-hk' | 'montenegro-post' | 'vitran-express' | 'am-home-delivery' | 'american-west-express'
   | 'ccfs' | 'custom-companies' | 'hercules-freight' | 'gaash' | 'orian' | 'qwintry' | 'skypostal'
-  | 'ait-worldwide' | 'team-worldwide' | 'huahan';
+  | 'ait-worldwide' | 'team-worldwide' | 'huahan' | 'anserx' | 'chukou1' | 'jumppoint'
+  | 'ycs-logistics';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {
