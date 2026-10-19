@@ -12744,7 +12744,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sendex",
+      "recognitionRank": 794
     },
     "linkRules": [
       {
@@ -16740,7 +16741,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sapx-express",
+      "recognitionRank": 795
     },
     "trackingUrlTemplate": "https://www.sapx.id/id/cek-awb/{trackingNumber}",
     "linkRules": [
@@ -17562,7 +17564,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Algiers",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "zr-express",
+      "recognitionRank": 801
     },
     "trackingUrlTemplate": "https://www.zrexpress.net/suivi?tn={trackingNumber}",
     "linkRules": [
@@ -19523,7 +19526,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Lima",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chazki"
     },
     "trackingUrlTemplate": "https://nintendo.chazki.com/trackcodeTracking/{trackingNumber}",
     "linkRules": [
@@ -20624,7 +20627,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Almaty",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "exline-kz",
+      "recognitionRank": 803
     },
     "trackingUrlTemplate": "https://exline.kz/ru/tracking?id={trackingNumber}",
     "linkRules": [
@@ -20655,7 +20659,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Tashkent",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fargo-uz",
+      "recognitionRank": 802
     },
     "trackingUrlTemplate": "https://fargo.uz/track?id={trackingNumber}",
     "linkRules": [
@@ -24418,7 +24423,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Riyadh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "labaih",
+      "recognitionRank": 788
     },
     "trackingUrlTemplate": "https://track.mylabaih.com/track/?cn={trackingNumber}",
     "linkRules": [
@@ -24426,7 +24432,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "track.mylabaih.com"
         ],
-        "pathPattern": "^/track/?$",
+        "pathPattern": "^/track(?:/en)?/?$",
         "params": [
           "cn"
         ]
@@ -24576,7 +24582,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Cairo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shipblu",
+      "recognitionRank": 789
     },
     "trackingUrlTemplate": "https://go.shipblu.com/en/{trackingNumber}",
     "linkRules": [
@@ -29104,7 +29111,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "IL"
     ],
-    "color": "#153d6b",
+    "color": "#115ca1",
     "selectable": true,
     "timezone": "Asia/Jerusalem",
     "tracking": {
@@ -29170,6 +29177,38 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://tracking-ecom.orian.com/CargoTracking/public-tracking/search"
+  },
+  "fedex-freight": {
+    "displayName": "FedEx Freight",
+    "aliases": [
+      "FedEx Freight LTL"
+    ],
+    "countries": [
+      "US",
+      "CA",
+      "MX"
+    ],
+    "color": "#de002e",
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.fedexfreight.com/fedextrack/?trknbr={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.fedexfreight.com"
+        ],
+        "pathPattern": "^/fedextrack/?$",
+        "params": [
+          "trknbr"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.fedexfreight.com/en-us/tracking"
   }
 } as const;
 
@@ -29966,7 +30005,8 @@ export const CARRIER_IDS = [
   "custom-companies",
   "hercules-freight",
   "gaash",
-  "orian"
+  "orian",
+  "fedex-freight"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
