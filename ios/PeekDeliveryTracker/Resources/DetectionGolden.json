@@ -12060,6 +12060,16 @@
     ]
   },
   {
+    "input": "10769898",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "1080110716496",
     "carrier": "unknown",
     "confidence": "low",
@@ -18681,16 +18691,6 @@
     ]
   },
   {
-    "input": "17086729",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colisweb",
-      "heppner"
-    ]
-  },
-  {
     "input": "171009132742",
     "carrier": "unknown",
     "confidence": "low",
@@ -21476,6 +21476,16 @@
     "confidence": "high",
     "candidates": [
       "ups"
+    ]
+  },
+  {
+    "input": "20000002",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
     ]
   },
   {
@@ -25139,31 +25149,6 @@
       "relais-colis",
       "packeta",
       "dhl-ecommerce-es"
-    ]
-  },
-  {
-    "input": "22372527262",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "postlogistics",
-      "gls-ch",
-      "gls-fr",
-      "gls-de",
-      "blue-dart",
-      "japan-post",
-      "aramex",
-      "dhl-ecommerce-pl",
-      "gls-at",
-      "gls-pl",
-      "ppl"
-    ],
-    "asked": [
-      "gls-fr",
-      "gls-de",
-      "gls-ch",
-      "postlogistics",
-      "dhl-ecommerce-pl"
     ]
   },
   {
@@ -44611,16 +44596,6 @@
     ]
   },
   {
-    "input": "59486062",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colisweb",
-      "heppner"
-    ]
-  },
-  {
     "input": "59500007231597",
     "carrier": "unknown",
     "confidence": "low",
@@ -60879,6 +60854,14 @@
     ]
   },
   {
+    "input": "9882658",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "988397715",
     "carrier": "unknown",
     "confidence": "none",
@@ -69877,17 +69860,6 @@
     ]
   },
   {
-    "input": "EE500080033MZ",
-    "carrier": "intl-post",
-    "confidence": "high",
-    "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
-    ]
-  },
-  {
     "input": "EE503826142CA",
     "carrier": "canada-post",
     "confidence": "high",
@@ -75422,6 +75394,46 @@
     "candidates": []
   },
   {
+    "input": "JP135264631722",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
+    "input": "JP319037069928",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
+    "input": "JP319037076156",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
+    "input": "JP319037076955",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
+    "input": "JP319037077743",
+    "carrier": "jumppoint",
+    "confidence": "high",
+    "candidates": [
+      "jumppoint"
+    ]
+  },
+  {
     "input": "JP319037378197",
     "carrier": "jumppoint",
     "confidence": "high",
@@ -78460,6 +78472,19 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "MC14202161",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "prompt-xpress",
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it",
+      "prompt-xpress"
     ]
   },
   {
@@ -84185,7 +84210,8 @@
       "tnt-it"
     ],
     "asked": [
-      "tnt-it"
+      "tnt-it",
+      "prompt-xpress"
     ]
   },
   {
@@ -84225,6 +84251,19 @@
     "confidence": "high",
     "candidates": [
       "singapore-post"
+    ]
+  },
+  {
+    "input": "RP23248557",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "prompt-xpress",
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it",
+      "prompt-xpress"
     ]
   },
   {
@@ -86381,6 +86420,17 @@
     "confidence": "high",
     "candidates": [
       "spee-dee"
+    ]
+  },
+  {
+    "input": "SP10826762",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
     ]
   },
   {
@@ -91835,7 +91885,8 @@
       "tnt-it"
     ],
     "asked": [
-      "tnt-it"
+      "tnt-it",
+      "prompt-xpress"
     ]
   },
   {
@@ -91937,6 +91988,17 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "sp10424752",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "tnt-it"
+    ],
+    "asked": [
+      "tnt-it"
+    ]
   },
   {
     "input": "spxid047927535711",

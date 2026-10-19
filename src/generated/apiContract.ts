@@ -15273,7 +15273,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Colombo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "domex",
+      "recognitionRank": 643
     },
     "trackingUrlTemplate": "https://domex.lk/Order-Details.php?wbno={trackingNumber}",
     "linkRules": [
@@ -16248,7 +16249,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "madhur-courier"
     },
     "linkRules": [
       {
@@ -16262,7 +16263,7 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://madhurcouriers.in/CNoteTracking.aspx"
+    "trackingSearchUrl": "https://madhurcouriers.in/CNoteTracking"
   },
   "mds-collivery": {
     "displayName": "MDS Collivery",
@@ -16668,16 +16669,28 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Colombo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "prompt-xpress",
+      "recognitionRank": 583
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "web.promptxpress.lk"
+        ],
+        "pathPattern": "^/PublicTracking/TrackingStatus/?$",
+        "params": [
+          "trackingNo"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^(?:(?:MC|NC|RP)\\d{8}|SP\\d{9})$",
         "confidence": "low"
       }
     ],
-    "trackingSearchUrl": "https://promptxpress.lk/TrackItem.aspx"
+    "trackingSearchUrl": "https://promptxpress.lk/TrackItem.aspx",
+    "trackingUrlTemplate": "https://web.promptxpress.lk/PublicTracking/TrackingStatus?trackingNo={trackingNumber}"
   },
   "pronto-lanka": {
     "displayName": "Pronto Lanka",
@@ -20854,7 +20867,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "franch-express"
     },
     "linkRules": [
       {
@@ -21023,7 +21036,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "integral-pack",
+      "recognitionRank": 644
     },
     "trackingUrlTemplate": "https://www.integralpack.com.ar/seguimiento?codigo={trackingNumber}",
     "linkRules": [
@@ -22414,7 +22428,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Maputo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "corre",
+      "recognitionRank": 587
     },
     "trackingUrlTemplate": "https://www.corremz.com/cgi-bin/tracktrace.cgi?OBJ={trackingNumber}",
     "linkRules": [
@@ -24166,7 +24181,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "best-overnite-express",
+      "recognitionRank": 551
     },
     "linkRules": [
       {
@@ -27542,7 +27558,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jetline-couriers"
     },
     "linkRules": [],
     "detectionRules": [],
@@ -27784,7 +27800,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "speed-and-safe"
     },
     "linkRules": [],
     "detectionRules": [],
@@ -28766,7 +28782,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "last-one-mile-coop",
+      "recognitionRank": 585
     },
     "trackingUrlTemplate": "https://y-track.jp/ytrack/inqservlet?cd=81118&id=02116&number01={trackingNumber}",
     "linkRules": [
@@ -29189,7 +29206,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "american-west-express"
     },
     "trackingUrlTemplate": "https://awest.freightgate.com/cgi-bin/tarifftrek5.1/itrek.cgi?database=awest&type=submit&interface=pltx&open_interface_search=Search+Now&open_text={trackingNumber}&SearchOn=open_billno",
     "linkRules": [
@@ -29751,7 +29768,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Hong_Kong",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "jumppoint",
+      "recognitionRank": 586
     },
     "trackingUrlTemplate": "https://tracking.jumppoint.io/?q={trackingNumber}",
     "linkRules": [
