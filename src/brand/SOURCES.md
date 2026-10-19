@@ -322,6 +322,7 @@ and [`truck.json`](truck.json).
 | `iran-post` | [tracking.post.ir](https://tracking.post.ir/) — #08317d, the background the tracker script paints behind its white logo (read by the spec curator; the host is unreachable from here); logo bird #fcd603 (approximate) |
 | `israel-post` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Israel_Postal_Company_logo_in_Hebrew.png) — logo PNG red #ca151d (approximate) |
 | `j-and-t` | [jtexpress.ph](https://www.jtexpress.ph/) |
+| `j-and-t-au` | [jtexpress.au](https://www.jtexpress.au/favicon.svg) — favicon fill #e60000 |
 | `j-and-t-br` | [jtexpress.com.br](https://www.jtexpress.com.br/css/app.13c40106.css) — site CSS #e60000 |
 | `j-and-t-cargo` | [jtcargo.id](https://www.jtcargo.id/) |
 | `j-and-t-cn` | [jtexpress.com.cn](https://www.jtexpress.com.cn/css/base.css) — site CSS --swiper-theme-color #e62019; logo PNG #e50113 |
@@ -1074,7 +1075,7 @@ and [`truck.json`](truck.json).
 | `tracx-logis` | White X of two back-to-back arcs on blue | [tracxlogis.com](https://www.tracxlogis.com/image/home/logo_tracxlogis.svg) — the X of TRACX LOGIS, two opposed arcs; also the site icon |
 | `quantium-solutions` | Lime corner arrow with a starburst on dark teal | [quantiumsolutions.com](https://www.quantiumsolutions.com/homesource/Quantium_Solutions_Logo.png) — logo symbol: lime cut square pointing up-right with an eight-point burst |
 | `janio` | White disc with a triangle cut out on navy | [janio.asia](https://www.janio.asia/brand/janio-icon.png) — brand icon: the o of janio, a disc split by a triangular cut |
-| `j-and-t-cn` (`j-and-t-cn`, `j-and-t-br`, `j-and-t-middle-east`, `j-and-t-mx`) | White slanted J&T on red, the J on its foot | [jtexpress.com.cn](https://www.jtexpress.com.cn/images/v3/index/logo_red@2x.png) — J&T wordmark, drawn as the fleet's j-and-t truck |
+| `j-and-t-cn` (`j-and-t-cn`, `j-and-t-au`, `j-and-t-br`, `j-and-t-middle-east`, `j-and-t-mx`) | White slanted J&T on red, the J on its foot | [jtexpress.com.cn](https://www.jtexpress.com.cn/images/v3/index/logo_red@2x.png) — J&T wordmark, drawn as the fleet's j-and-t truck |
 | `equick` | White E with a double chevron on dark red | [equick.cn](http://www.equick.cn/favicon.ico) — favicon: white Equick wordmark with a double chevron on dark red; the E is the logo's large rounded capital |
 | `pfc-express` | White crown over PFC on blue | [pfctrack.com](https://www.pfctrack.com/images/logo.png) — logo: white crown above bold PFC on blue |
 | `ecms-express` | White italic ECMS on green | [ecmsglobal.com](https://www.ecmsglobal.com/static/img/logo.638720d1.png) — green ECMS wordmark beside a navy runner carrying a red parcel |
