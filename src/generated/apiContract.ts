@@ -3259,7 +3259,7 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^80\\d{9}$",
-        "confidence": "high",
+        "confidence": "low",
         "checksum": "luhn"
       },
       {
@@ -9803,7 +9803,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Mexico_City",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "castores"
     },
     "trackingUrlTemplate": "https://www.castores.com.mx/rastrear.html?guide_numbers={trackingNumber}",
     "linkRules": [
@@ -25121,7 +25121,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skyking",
+      "recognitionRank": 792
     },
     "trackingUrlTemplate": "https://skyking.co/track?cno={trackingNumber}",
     "linkRules": [
@@ -27640,7 +27641,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "team-express-ae"
     },
     "trackingUrlTemplate": "https://teamexpressme.com/tracking?trackno={trackingNumber}",
     "linkRules": [
@@ -27699,7 +27700,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "transcorp",
+      "recognitionRank": 787
     },
     "trackingUrlTemplate": "https://app.elite-co.com/shipments/track?references={trackingNumber}",
     "linkRules": [
@@ -29294,7 +29296,7 @@ export const CARRIER_CAPABILITIES = {
       "MX",
       "PE"
     ],
-    "color": "#fcc94f",
+    "color": "#088aea",
     "selectable": true,
     "timezone": "America/New_York",
     "tracking": {
@@ -29333,7 +29335,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "US"
     ],
-    "color": "#9c1d1d",
+    "color": "#cf152d",
     "selectable": true,
     "timezone": "America/Chicago",
     "tracking": {
@@ -29365,6 +29367,74 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.teamww.com/tracking/team-trac/"
+  },
+  "dpd-ro": {
+    "displayName": "DPD Romania",
+    "aliases": [
+      "DPD Romania",
+      "DPD România",
+      "DPD (RO)",
+      "DPD RO"
+    ],
+    "countries": [
+      "RO"
+    ],
+    "color": "#dc0032",
+    "selectable": true,
+    "timezone": "Europe/Bucharest",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.dpd.ro"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      },
+      {
+        "domains": [
+          "services.dpd.ro"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "shipmentNumber"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.dpd.com/ro/ro/"
+  },
+  "huahan": {
+    "displayName": "HuaHan Logistics",
+    "aliases": [
+      "HuaHan Express",
+      "华翰速递",
+      "华翰物流"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#438eb9",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^HHW[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html"
   }
 } as const;
 
@@ -30166,7 +30236,9 @@ export const CARRIER_IDS = [
   "ait-worldwide",
   "qwintry",
   "skypostal",
-  "team-worldwide"
+  "team-worldwide",
+  "dpd-ro",
+  "huahan"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
