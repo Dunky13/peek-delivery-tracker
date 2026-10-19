@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { InvalidInputError } from 'universal-parcel-scraper';
+import { IndeterminateError, InvalidInputError } from 'universal-parcel-scraper';
 import { TrackingSyncAudit } from './trackingAudit';
+import { healthStepRecorder } from './trackingHealth';
 import { SupabaseServiceClient } from './supabase';
 import { trackingSupportEvidence } from './trackingSupport';
 import { captureOperationalError, captureTrackingHealth, logOperationalEvent, reportRoutingEvent } from './observability';
@@ -155,6 +156,27 @@ describe('a check of a number its carrier does not issue', () => {
     await direct.finish({ outcome: 'error', sourceCarrier: 'nacex', error: refusal });
     expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(direct.attemptId, 'synthetic-package',
       [expect.objectContaining({ kind: 'refresh', subject: 'nacex', healthy: true })]);
+  });
+});
+
+describe('a check of a number that names several parcels', () => {
+  it('is an answer the owner must act on, and still a failure when the carrier failed otherwise', async () => {
+    const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),
+      recordTrackingHealth: vi.fn().mockResolvedValue([]), ackTrackingHealth: vi.fn() };
+    const check = async (error: Error) => {
+      const audit = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+        'synthetic-package', 'TEST1234', 'australia-post', 'pending', { trigger: 'scheduled' });
+      await audit.observeFetch(async () => healthStepRecorder.lookup({ carrier: 'australia-post', finalStep: 'direct',
+        outcome: 'indeterminate', errorType: 'IndeterminateError', durationMs: 1, attempts: 1, error }));
+      audit.record('fetch', 'failed', 100, {}, new Error('Every tier deferred'));
+      await audit.finish({ outcome: 'error', sourceCarrier: 'australia-post',
+        providerFailures: { 'australia-post': { kind: 'transport', count: 1, user_error: 'carrier:indeterminate' } } });
+      return client.recordTrackingHealth.mock.lastCall![2] as { kind: string; healthy: boolean; details: { category?: string } }[];
+    };
+    const several = await check(new IndeterminateError('Australia Post', undefined, { reason: 'several_parcels' }));
+    expect(several.find((sample) => sample.kind === 'refresh')).toMatchObject({ healthy: true, details: { category: 'input_required' } });
+    const failed = await check(new IndeterminateError('Australia Post'));
+    expect(failed.find((sample) => sample.kind === 'refresh')).toMatchObject({ healthy: false });
   });
 });
 

@@ -37,7 +37,9 @@ failures age out of the window; a new failure meanwhile reminds as usual.
   and the hand-off probes of mail bound for Ukraine can't open an incident either.
 - A number the parcel's own carrier refuses as one it does not issue is the owner's to
   correct. The check stays an error or `waiting` for the parcel, and its refresh sample is
-  healthy, filed as missing input, whether or not routing made the check.
+  healthy, filed as missing input, whether or not routing made the check. So is a number
+  that names several parcels (inconclusive with the reason `several_parcels`, such as an
+  Australia Post consignment of several articles): the owner has to give one parcel's number.
 - A step skipped during a cooldown is not a success. A check that contacted nobody because
   everything was cooling down records nothing.
 - A parcel whose own carrier says not-found stays `waiting` even if every fallback fails.

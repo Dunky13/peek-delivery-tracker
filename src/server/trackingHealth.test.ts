@@ -53,6 +53,20 @@ describe('tracking health evidence', () => {
     ]);
   });
 
+  it('files a number that names several parcels with the missing inputs', async () => {
+    const samples = new Map<string, HealthSample>();
+    const several = new IndeterminateError('Australia Post', 'Australia Post lists several articles under this consignment', { reason: 'several_parcels' });
+    await observeTrackingHealth(samples, async () => {
+      healthStepRecorder.step({ ...step, carrier: 'australia-post', outcome: 'indeterminate', errorType: 'IndeterminateError', error: several });
+      healthStepRecorder.lookup({ carrier: 'australia-post', finalStep: 'direct', outcome: 'indeterminate', errorType: 'IndeterminateError',
+        durationMs: 1, attempts: 1, error: new Error('lookup failed', { cause: several }) });
+    });
+    expect([...samples.values()].map(({ kind, healthy, details }) => [kind, healthy, details.category])).toEqual([
+      ['direct', true, 'input_required'],
+      ['provider', true, 'input_required'],
+    ]);
+  });
+
   it('counts a provider with no history for a new parcel as an answer, and a capture failure as a failure', async () => {
     const samples = new Map<string, HealthSample>();
     const noHistory = new NoHistoryError('Postal Ninja', 'Postal Ninja has no available tracking history');

@@ -32,7 +32,11 @@ function category(record: StepRecord | LookupRecord): string {
   let current = record.error;
   for (let depth = 0; current instanceof Error && depth < 8; depth++, current = current.cause) {
     if (current instanceof CarrierError) {
-      return current instanceof NoHistoryError || UNKNOWN_ITEM_REASONS.has(current.reason ?? '') ? 'not_found' : outcome;
+      if (current instanceof NoHistoryError || UNKNOWN_ITEM_REASONS.has(current.reason ?? '')) return 'not_found';
+      // So is a number that names several parcels, such as an Australia Post consignment of
+      // two articles: the owner has to give one parcel's number. Counted as a failure, one such
+      // parcel checked hourly kept the carrier's direct incident open.
+      return current.reason === 'several_parcels' ? 'input_required' : outcome;
     }
   }
   return outcome;

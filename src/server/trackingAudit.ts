@@ -340,7 +340,11 @@ export class TrackingSyncAudit {
       // A number the carrier does not issue is the owner's to correct. Like a missing input, the
       // refresh was answered, and it says nothing about the carrier's health, whether the check
       // ended as an error or still waits for the carrier's first scan.
-      const refused = (completion.outcome === 'error' || failedFetch) && refusedNumber(completion, this.configuredCarrier);
+      // So is a number the carrier's own lookup filed with the missing inputs, such as an
+      // Australia Post consignment of several articles: the owner has to give one parcel's number.
+      const ownAnswer = this.#healthSamples.get(`provider:${this.configuredCarrier}`);
+      const refused = (completion.outcome === 'error' || failedFetch) && (refusedNumber(completion, this.configuredCarrier)
+        || (ownAnswer?.healthy === true && ownAnswer.details.category === 'input_required'));
       const healthy = refused || (completion.outcome !== 'error' && !failedFetch);
       const samples: JsonObject[] = [...this.#healthSamples.values(), {
         kind: 'refresh', subject: this.configuredCarrier, healthy,
