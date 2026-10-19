@@ -1153,6 +1153,30 @@ describe('TrackingSyncService', () => {
     expect(values.current_stage).toBeUndefined();
     expect(values.carrier_data.routing.last_event_at).toBe('2026-09-10T11:00:00Z');
   });
+  it('keeps the stage its carrier gave while a provider answering in its place shows no newer scan', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    // The provider reads the carrier's last scan as an exception.
+    const copy = (time: string, stage: string) => ({ status: stage, current_stage: stage, last_status_text: 'Delivery change',
+      last_update: time, events: [{ time, description: 'Delivery change', stage }] });
+    const adapter = { fetch: vi.fn().mockRejectedValue(new Error('UPS tracking endpoint is unavailable')), fetchUniversal: vi.fn()
+      .mockResolvedValueOnce(copy('2026-09-10T11:00:00Z', 'exception'))
+      .mockResolvedValueOnce(copy('2026-09-10T11:30:00Z', 'exception')) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    const parcel = { id: 'ups-down', carrier: 'ups', tracking_number: '1Z0000000000000000', current_stage: 'out_for_delivery',
+      carrier_data: { last_status_text: 'Out for delivery', routing: { version: 1, configured_carrier: 'ups', last_event_at: '2026-09-10T11:00:00Z' } } };
+    await service.syncPackage(parcel);
+    const held = client.updatePackage.mock.calls.at(-1)![1];
+    expect(held.current_stage).toBeUndefined();
+    expect(held.carrier_data).toMatchObject({ last_status_text: 'Out for delivery', routing: { last_event_at: '2026-09-10T11:00:00Z' } });
+    expect(held.carrier_data.tracking_provider).toBeUndefined();
+    // A scan the carrier has not shown yet updates it.
+    await service.syncPackage(parcel);
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'exception' });
+  });
   it('reads a naive local snapshot in its carrier\'s zone before comparing it with the watermark', async () => {
     // India Post reports Kolkata wall time without an offset; routing writes the watermark from that reading.
     const client = { ...fakeClient(),
@@ -4601,12 +4625,14 @@ describe('scans a carrier and a universal provider both report', () => {
         .mockResolvedValueOnce(answer('Asia/Shanghai', [departed('2026-01-03T18:30:10.000Z'), sorted])) };
       const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
       let watermark: unknown;
+      let savedProvider: unknown;
       const sync = async (stage: string) => {
         await service.syncPackage({ ...parcel, current_stage: stage,
-          ...(watermark ? { carrier_data: { routing: { version: 1, configured_carrier: 'gofo', last_event_at: watermark } } } : {}),
+          ...(watermark ? { carrier_data: { tracking_provider: savedProvider, routing: { version: 1, configured_carrier: 'gofo', last_event_at: watermark } } } : {}),
           [STORED_EVENT_IDENTITIES]: store.identities() });
         const values = store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject;
         watermark = ((values.carrier_data as JsonObject).routing as JsonObject).last_event_at;
+        savedProvider = (values.carrier_data as JsonObject).tracking_provider;
         return { values, anomalies: client.completeSyncAttempt.mock.calls.at(-1)![1].anomaly_codes };
       };
       const lateDeparture = universal(departed('2026-01-04T02:30:10Z'));

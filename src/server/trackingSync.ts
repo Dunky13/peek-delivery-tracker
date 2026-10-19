@@ -1464,7 +1464,12 @@ export class TrackingSyncService {
         || (sameLocalSource && result.summary_only === true && Array.isArray(previousLocalHistory.events) && previousLocalHistory.events.length > 0)
         || (sameLocalSource && directLocalSnapshotIsOlder(previousLocalHistory, result))
       );
-      const preserveSummary = keepSaved || olderSnapshot || unprovenUpuSummary || unprovenLocalSummary
+      // A provider answering while the parcel's own carrier is down (UPS's 500s) copies the carrier's
+      // scans, often in another stage. Over the carrier's summary, only a scan the carrier has not shown counts.
+      const unprovenProviderSummary = typeof result.tracking_provider === 'string' && !fetched.correction
+        && directCarrier(String(parcel.carrier)) && answeredByCarrier(parcel) && previousStage !== 'pending'
+        && Number.isFinite(previousEventTime) && !(returnedEventTime > previousEventTime);
+      const preserveSummary = keepSaved || olderSnapshot || unprovenUpuSummary || unprovenLocalSummary || unprovenProviderSummary
         || (['delivered', 'returned'].includes(previousStage) && selectedStage !== previousStage);
       const carrierData: JsonObject = Object.fromEntries(
         Object.entries(result).filter(([key, value]) => key !== 'events' && value != null),
@@ -1473,7 +1478,7 @@ export class TrackingSyncService {
       const routing = isRecord(result.routing) ? { ...result.routing } : null;
       if (routing) {
         // A fallback's scan that is kept out must not make the carrier's next reply look older.
-        const keepWatermark = olderSnapshot || keepSaved;
+        const keepWatermark = olderSnapshot || keepSaved || unprovenProviderSummary;
         const watermark = keepWatermark ? previousEventTime : withoutCopyDrift(
           Date.parse(String(routing.last_event_at ?? '')), events, stored, matches, { also: [returnedEventTime,
             fetched.earlierResult && !fetched.earlierFollowUp
