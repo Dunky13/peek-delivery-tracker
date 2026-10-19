@@ -841,6 +841,9 @@
     },
     "decal": "fedex"
   },
+  "fedex-freight": {
+    "family": "fedex"
+  },
   "fedex-pl": {
     "family": "fedex"
   },
