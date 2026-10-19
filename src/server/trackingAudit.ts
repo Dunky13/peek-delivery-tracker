@@ -18,8 +18,19 @@ import { isRecord, type JsonObject } from './types';
 import { trackingFailureCode } from './trackingFailure';
 import { trackingSupportContext } from './trackingSupport';
 
-/** A check someone asked for (or a lookup's), a scheduled run's, or a scraper release's re-check. */
-export type SyncTrigger = 'package' | 'scheduled' | 'release';
+/**
+ * What began a check: the scheduled run, a scraper release's re-check, or a reader adding the
+ * parcel (a lookup too), refreshing it, opening its link, or changing its carrier or inputs.
+ * `package` is a reader's check queued before checks named their reason.
+ */
+export type SyncTrigger = 'scheduled' | 'release' | 'added' | 'refresh' | 'opened' | 'changed' | 'package';
+/** Why a parcel's own check was queued (`sync_jobs.reason`). */
+export type SyncReason = Exclude<SyncTrigger, 'scheduled' | 'package'>;
+
+/** Whether someone asked for the check, or a lookup's own check: neither the schedule nor a release. */
+export function askedForCheck(trigger: SyncTrigger): boolean {
+  return trigger !== 'scheduled' && trigger !== 'release';
+}
 export type SyncStep =
   | 'selected'
   | 'fetch'
@@ -159,6 +170,9 @@ function noteHealthIncident(incident: JsonObject): void {
   }, healthReviewSignal(incident) ? 'info' : 'warning');
 }
 
+/** Lookup tiers that open a browser: a local Chromium, the browser service, or a page it solves. */
+const BROWSER_STEPS = new Set(['browser', 'trawl', 'page']);
+
 export class TrackingSyncAudit {
   readonly attemptId = randomUUID();
   readonly #startedAt = performance.now();
@@ -175,6 +189,9 @@ export class TrackingSyncAudit {
     this.#signals.set(key, { signal: signal.signal, carrier: signal.carrier.slice(0, 100), subject: signal.subject.slice(0, 100) });
     try { recordRoutingSignal(signal.signal, signal.carrier, signal.subject); } catch { /* metrics only */ }
   };
+  /** Whether the check's lookups went through a browser; null while no lookup tier ran. */
+  #browser: boolean | null = null;
+  readonly #step = (step: string): void => { this.#browser = this.#browser === true || BROWSER_STEPS.has(step); };
 
   constructor(
     readonly client: SupabaseServiceClient,
@@ -191,7 +208,15 @@ export class TrackingSyncAudit {
   }
 
   observeFetch<T>(operation: () => Promise<T>): Promise<T> {
-    return withTrackingAttempt(this.attemptId, () => observeTrackingHealth(this.#healthSamples, operation), this.#signal);
+    return withTrackingAttempt(this.attemptId, () => observeTrackingHealth(this.#healthSamples, operation), this.#signal, this.#step);
+  }
+
+  /**
+   * Whether a lookup of the check opened a browser. Null when none ran, as when the check
+   * took an answer another copy of the number got in the same run.
+   */
+  get browserLookup(): boolean | null {
+    return this.#browser;
   }
 
   /** A routing decision taken after the fetch, such as a carrier correction, for this check. */

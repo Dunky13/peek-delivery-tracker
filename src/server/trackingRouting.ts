@@ -88,6 +88,8 @@ export interface RoutingState extends JsonObject {
   failures: Record<string, Failure>;
   /** The catalog rules of the scraper release that last routed the parcel (`catalogRules`). */
   rules?: string;
+  /** The last check that ran a lookup opened a browser: its own or the browser service. */
+  browser_check?: true;
 }
 
 let rules: string | undefined;
@@ -117,7 +119,7 @@ export function routingState(parcel: JsonObject): RoutingState {
     discovery_cursor: Number.isSafeInteger(state.discovery_cursor) ? state.discovery_cursor! : 0,
     consecutive_failures: !changed && Number.isSafeInteger(state.consecutive_failures) && state.consecutive_failures! > 0
       ? Math.min(20, state.consecutive_failures!) : 0,
-    ...(changed ? { direct_retry_at: undefined, next_check_at: undefined } : {}),
+    ...(changed ? { direct_retry_at: undefined, next_check_at: undefined, browser_check: undefined } : {}),
     // Migration compatibility: an ok fetch is a success; failed attempts are not.
     last_success_at: typeof state.last_success_at === 'string' ? state.last_success_at
       : parcel.sync_status === 'ok' && typeof parcel.last_synced_at === 'string' ? parcel.last_synced_at : undefined,

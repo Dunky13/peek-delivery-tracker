@@ -17,7 +17,7 @@ export const POST = apiRoute(async (context) => {
   let queued = false;
   for (const parcel of await requireUserClient(context).listActivePackages()) {
     if (typeof parcel.id !== 'string') continue;
-    const job = await service.enqueueSyncJob({ userId, packageId: parcel.id });
+    const job = await service.enqueueSyncJob({ userId, packageId: parcel.id, reason: 'refresh' });
     queued ||= job.queued;
     if (typeof job.row.id === 'string' && !jobIds.includes(job.row.id)) jobIds.push(job.row.id);
   }

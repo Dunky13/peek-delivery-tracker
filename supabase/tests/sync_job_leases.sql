@@ -198,3 +198,35 @@ begin
 end;
 $$;
 rollback;
+
+begin;
+delete from public.sync_jobs;
+insert into public.packages (id, user_id, tracking_number, carrier)
+values ('97000000-0000-0000-0000-000000000005', '10000000-0000-0000-0000-000000000001', 'REASONTEST1234', 'ups');
+-- A parcel's job names why it was queued, and its check is logged under that reason.
+do $$
+declare
+  job_id uuid;
+begin
+  insert into public.sync_jobs(user_id, package_id, kind, dedupe_key, reason)
+  values ('10000000-0000-0000-0000-000000000001', '97000000-0000-0000-0000-000000000005', 'package', 'reason-test', 'opened')
+  returning id into job_id;
+  if (select reason from public.claim_sync_job('reason-worker')) <> 'opened' then raise exception 'claim lost the reason'; end if;
+  if not public.start_leased_sync_attempt(gen_random_uuid(), job_id, 'reason-worker', jsonb_build_object(
+    'package_id','97000000-0000-0000-0000-000000000005', 'trigger','opened',
+    'configured_carrier','ups', 'previous_stage','pending', 'started_at',clock_timestamp())) then
+    raise exception 'a check opened by a link was not logged';
+  end if;
+  begin
+    insert into public.sync_jobs(kind, dedupe_key, reason) values ('scheduled', 'scheduled-reason', 'refresh');
+    raise exception 'a scheduled job took a reason';
+  exception when check_violation then null;
+  end;
+  begin
+    update public.sync_jobs set reason = 'polled' where id = job_id;
+    raise exception 'a job took an unknown reason';
+  exception when check_violation then null;
+  end;
+end;
+$$;
+rollback;

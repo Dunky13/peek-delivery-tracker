@@ -5,7 +5,7 @@ import type { LookupRecord, StepRecord, StepRecorder } from 'universal-parcel-sc
 import { combineRecorders } from 'universal-parcel-scraper/node';
 import { healthStepRecorder } from './trackingHealth';
 import { prometheusStepRecorder, stepOutcome } from './metrics';
-import { initObservability, logOperationalEvent, reportRoutingEvent, trackingAttemptId } from './observability';
+import { initObservability, logOperationalEvent, reportRoutingEvent, reportTrackingStep, trackingAttemptId } from './observability';
 
 /**
  * The host's telemetry sinks for the scraper's `StepRecorder`.
@@ -76,6 +76,12 @@ export const sentryStepRecorder: StepRecorder = {
   },
 };
 
+/** Tells the running check which tiers its lookups went through, such as a browser's. */
+const attemptStepRecorder: StepRecorder = {
+  step(record: StepRecord) { reportTrackingStep(record.step); },
+  lookup() { /* The steps say it all. */ },
+};
+
 const extraRecorders: StepRecorder[] = [];
 
 /** Register another sink once at startup. */
@@ -84,11 +90,11 @@ export function addStepRecorder(recorder: StepRecorder): void {
 }
 
 /**
- * The recorder handed to every adapter: health, Sentry and Prometheus plus any
- * registered sinks, each failure-isolated. Prometheus is wired here rather than
+ * The recorder handed to every adapter: health, Sentry, Prometheus and the running
+ * check plus any registered sinks, each failure-isolated. Prometheus is wired here rather than
  * registered from a side-effect import, because every bundle that records a
  * lookup evaluates its own copy of this module and must reach the sink.
  */
 export function hostStepRecorder(): StepRecorder {
-  return combineRecorders(healthStepRecorder, sentryStepRecorder, prometheusStepRecorder, ...extraRecorders);
+  return combineRecorders(healthStepRecorder, sentryStepRecorder, prometheusStepRecorder, attemptStepRecorder, ...extraRecorders);
 }

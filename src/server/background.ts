@@ -21,7 +21,7 @@ import { FriendshipPushService, FriendshipPushWorker } from './friendshipPush';
 import { ReviewQueueReplay } from './reviewQueues';
 import { serviceClient } from './runtime';
 import { BACKGROUND_SYNC_PRIORITY, SyncJobLeaseLost, type SupabaseServiceClient } from './supabase';
-import { WorkerShutdown } from './trackingAudit';
+import { WorkerShutdown, type SyncReason, type SyncTrigger } from './trackingAudit';
 import { TrackingSyncService, type SyncSummary } from './trackingSync';
 import type { JsonObject } from './types';
 
@@ -319,8 +319,10 @@ export class SyncJobWorker {
           logOperationalEvent('sync_job_dropped', { job_id: jobId, kind, reason: 'parcel_deleted' });
           return true;
         }
-        // A job queued behind every other one is a scraper release's re-check, which nobody asked for.
-        const trigger = Number(job.priority) === BACKGROUND_SYNC_PRIORITY ? 'release' : 'package';
+        // A job names why it was queued. Of those queued before, one behind every other job is a
+        // scraper release's re-check, which nobody asked for.
+        const trigger: SyncTrigger = typeof job.reason === 'string' ? job.reason as SyncReason
+          : Number(job.priority) === BACKGROUND_SYNC_PRIORITY ? 'release' : 'package';
         summary = await this.service.syncPackage(parcel, { ...context, trigger });
       } else if (kind === 'scheduled') {
         const saved = job.check_in as Partial<ScheduledCheckIn> | null | undefined;

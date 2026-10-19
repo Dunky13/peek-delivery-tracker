@@ -64,7 +64,7 @@ it('keeps each link under the caller\'s own token and queues a check for every k
     ['quotaLink234', null, ''],
     ['unknownLink2', null, ''],
   ]);
-  expect(enqueue).toHaveBeenCalledExactlyOnceWith({ userId, packageId: kept });
+  expect(enqueue).toHaveBeenCalledExactlyOnceWith({ userId, packageId: kept, reason: 'added' });
   expect(wake).toHaveBeenCalledOnce();
   expect(counted.mock.calls.map(([outcome]) => outcome)).toEqual(['kept', 'already', 'quota', 'unavailable', 'unavailable']);
 });

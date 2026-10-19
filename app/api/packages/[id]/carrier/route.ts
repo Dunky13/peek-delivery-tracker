@@ -83,6 +83,7 @@ export const PATCH = apiRoute<PackageParameters>(async (context) => {
       const job = await service.enqueueSyncJob({
         userId: requireUser(context).id,
         packageId,
+        reason: 'changed',
       });
       wakeSyncWorker();
       if (typeof job.row.id === 'string') jobIds.push(job.row.id);

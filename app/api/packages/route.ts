@@ -75,6 +75,7 @@ export const POST = apiRoute(async (context) => {
     const job = await service.enqueueSyncJob({
       userId: requireUser(context).id,
       packageId: String(parcel.id),
+      reason: 'added',
     });
     wakeSyncWorker();
     if (typeof job.row.id === 'string') jobIds.push(job.row.id);

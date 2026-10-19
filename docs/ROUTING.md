@@ -183,7 +183,7 @@ parcels followed without an account that nobody watches (below).
 
 | Parcels | Daytime |
 | --- | --- |
-| Out for delivery (direct adapter) | every 2 min |
+| Out for delivery (direct adapter) | every 2 min; every 5 min while its lookups open a browser |
 | Out for delivery, until 30 min before its delivery window opens | every 10 min |
 | Other stages (direct adapter) | every 10 min |
 | Served by a universal provider, out for delivery too | every 15 min |
@@ -218,7 +218,9 @@ open parcel is checked hourly
 **Out for delivery**, the news is the delivery. A carrier's own adapter is cheap and as
 fresh as the carrier, so a parcel it answers for is checked every 2 minutes whether or not
 anyone is looking, unless nobody is waiting for it or the carrier sets a longer interval of
-its own. A universal provider has quotas, costs more and lags behind the carrier: its
+its own. While its lookups open a browser, as FedEx's and UPS's do, each takes seconds of
+the browser service, so it is checked every 5 minutes: the last check that ran a lookup
+says which (`browser_check` in its routing). A universal provider has quotas, costs more and lags behind the carrier: its
 parcels keep the regular cadence, and the 15 minutes routing waits after each of its
 answers, even while someone is looking. A parcel counts as served by a universal provider
 while the summary it shows came from one (`tracking_provider` in `carrier_data`).
@@ -240,7 +242,8 @@ to the list. Archived or not, a delivered or returned parcel is not checked.
 **Parcels followed without an account** are checked only while one of their links was
 opened in the last 24 hours or has an alert on. Otherwise a parcel waits until a link is
 opened again; that read queues a check at once when the schedule would run one, and never
-more often than the schedule, however often the link is polled. One whose number nobody
+more often than the schedule, however often the link is polled. A scheduled check made while
+that one waits stands in for it. One whose number nobody
 has seen 6 h after it was added leaves the schedule too; opening a link still queues a
 check at its cadence, daily rather than weekly after 7 days, since someone is looking. One whose links nobody opened in the last hour and that has no alert
 on is checked every 3 hours by day and waits for the morning overnight: nobody reads it,

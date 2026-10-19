@@ -23,7 +23,7 @@ export const POST = apiRoute<PackageParameters>(async (context) => {
   const parcel = await requireUserClient(context).getPackage(packageId);
   if (!parcel) throw new HttpError(404, 'Package not found');
   const service = requireService(context);
-  const job = await service.enqueueSyncJob({ userId: requireUser(context).id, packageId });
+  const job = await service.enqueueSyncJob({ userId: requireUser(context).id, packageId, reason: 'refresh' });
   wakeSyncWorker();
   return json({
     queued: job.queued,

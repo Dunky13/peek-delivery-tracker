@@ -61,7 +61,7 @@ async function lookUp(context: ApiContext, progress: { stage: LookupStage }): Pr
   if (created.created) await rememberLookupCountry(service, created.package, context.request, body.lookupCountryHint);
   recordLookup(created.created ? 'created' : 'reused', context.requestId);
   try {
-    await service.enqueueSyncJob({ packageId: String(created.package.id) });
+    await service.enqueueSyncJob({ packageId: String(created.package.id), reason: 'added' });
     wakeSyncWorker();
   } catch (error) {
     // The first read of the link queues the check again.

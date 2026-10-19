@@ -50,7 +50,7 @@ export const POST = apiRoute(async (context) => {
     results.push({ id: link.id, outcome, ...(claimed?.packageId ? { packageId: claimed.packageId } : {}) });
     if (claimed?.outcome !== 'kept' || !claimed.packageId) continue;
     try {
-      await service.enqueueSyncJob({ userId, packageId: claimed.packageId });
+      await service.enqueueSyncJob({ userId, packageId: claimed.packageId, reason: 'added' });
       queued = true;
     } catch (error) {
       // The parcel is kept; the scheduled run checks it.

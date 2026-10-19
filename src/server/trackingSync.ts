@@ -35,6 +35,7 @@ import { PushDispatchError, type CompositePushNotificationService } from './push
 import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
 import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, UNIVERSAL_PROVIDER, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
+  askedForCheck,
   providerFailureSummary,
   TrackingSyncAudit,
   WorkerShutdown,
@@ -70,6 +71,11 @@ const VALID_STAGES = new Set<string>(STAGES);
  * own adapter answers for it and the carrier sets no longer interval of its own.
  */
 const LAST_MILE_MINUTES = 2;
+/**
+ * The same, while the parcel's lookups open a browser: each takes several seconds of the
+ * browser service or a local Chromium, so it is not asked every 2 minutes.
+ */
+const BROWSER_LAST_MILE_MINUTES = 5;
 /**
  * A parcel out for delivery with a delivery window keeps the regular cadence
  * until this long before the window opens.
@@ -197,6 +203,11 @@ function answeredByCarrier(parcel: JsonObject): boolean {
   return !isRecord(parcel.carrier_data) || typeof parcel.carrier_data.tracking_provider !== 'string';
 }
 
+/** Whether the parcel's last check that ran a lookup opened a browser (`browser_check` in its routing). */
+function checkedInBrowser(parcel: JsonObject): boolean {
+  return isRecord(parcel.carrier_data) && isRecord(parcel.carrier_data.routing) && parcel.carrier_data.routing.browser_check === true;
+}
+
 /**
  * When a parcel's delivery window ("2026-10-08 13:00–15:00") opens. Its times
  * are the clock of the carrier that answered: the zone its answer declares,
@@ -269,15 +280,17 @@ function isScheduledTrackingSyncDue(
     return lastChecked < hourStart.minus({ hours: unseenIntervalHours(unseen, opened) - 1 }).toMillis();
   }
   // Out for delivery, the news is the delivery. A carrier's own adapter is cheap and as fresh as
-  // the carrier, so it is asked every 2 minutes, unless the carrier sets a longer interval of its
-  // own. A universal provider has quotas and publishes scans late, so it keeps the regular cadence.
-  // Until shortly before a delivery window opens, the regular cadence still catches a changed slot.
+  // the carrier, so it is asked every 2 minutes, every 5 while its lookups open a browser, unless
+  // the carrier sets a longer interval of its own. A universal provider has quotas and publishes
+  // scans late, so it keeps the regular cadence. Until shortly before a delivery window opens, the
+  // regular cadence still catches a changed slot.
   const minimum = CARRIER_DEFINITIONS[String(parcel.carrier) as CarrierId]?.tracking.refresh?.minMinutes;
   const delivering = parcel.current_stage === 'out_for_delivery';
   const opens = delivering ? deliveryWindowOpens(parcel) : null;
   const lastMile = delivering && !minimum && answeredByCarrier(parcel)
     && (opens === null || now.getTime() >= opens - BEFORE_WINDOW_MS);
-  const intervalMinutes = lastMile ? LAST_MILE_MINUTES : Math.max(10, minimum ?? 0);
+  const intervalMinutes = !lastMile ? Math.max(10, minimum ?? 0)
+    : checkedInBrowser(parcel) ? BROWSER_LAST_MILE_MINUTES : LAST_MILE_MINUTES;
   const activity = lastActivity(parcel);
   const idleAfter = NOT_YET_MOVING.has(String(parcel.current_stage)) ? EARLY_IDLE_AFTER_MS : IDLE_AFTER_MS;
   const idle = unwatched || (activity !== null && now.getTime() - activity >= idleAfter);
@@ -840,6 +853,13 @@ export class TrackingSyncService {
     return await this.exclusive(async () => {
       context.signal?.throwIfAborted();
       const summary = emptySyncSummary();
+      // A link read queued this check because one was due. The scheduled run this check waited
+      // for may have checked the parcel meanwhile, which stands in for it.
+      if (context.trigger === 'opened') {
+        const current = await this.client.getPackage(String(parcel.id));
+        if (!current || !isOpenedParcelSyncDue(current, this.now())) return summary;
+        parcel = current;
+      }
       // Manual refreshes share the persisted cooldown with scheduled checks.
       if (isTrackingSyncDue(parcel, this.now())) {
         summary.checked = 1;
@@ -1248,7 +1268,7 @@ export class TrackingSyncService {
       try {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
           ? await new TrackingRouter({
-            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks, context.trigger === 'package'),
+            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks, askedForCheck(context.trigger)),
             universal: (source, number, timeout, postcode, timezone, carrier) => once(universalLookupKey(source, number, postcode, timezone, carrier),
               () => this.adapter.fetchUniversal!(source, number, timeout, postcode, timezone, carrier)),
             ...(checks ? { reusedUniversal: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null, carrier: string | null) =>
@@ -1261,8 +1281,8 @@ export class TrackingSyncService {
             ...(this.adapter.recognizeBrowser ? { recognizeBrowser: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) =>
               once(recognitionKey('browser', carrier, number), () => this.adapter.recognizeBrowser!(carrier, number, context, previousError)) } : {}),
             enablePostalNinja: process.env.TRACKING_ENABLE_POSTAL_NINJA === 'true',
-          }).fetch(subject, context.trigger !== 'package', context.signal, addition)
-          : await this.fetchResult(subject, carrierId, checks, context.trigger === 'package'));
+          }).fetch(subject, !askedForCheck(context.trigger), context.signal, addition)
+          : await this.fetchResult(subject, carrierId, checks, askedForCheck(context.trigger)));
       } catch (error) {
         if (carrierId === 'amazon-shipping' && error instanceof CarrierError && error.reason === 'history_expired') {
           audit.skip('normalize', 'history_expired');
@@ -1462,6 +1482,9 @@ export class TrackingSyncService {
         const saved = keepWatermark ? previousRouting.last_event_at : routing.last_event_at;
         if (Number.isFinite(watermark) && Date.parse(String(saved ?? '')) !== watermark) routing.last_event_at = new Date(watermark).toISOString();
         else if (saved !== undefined || keepWatermark) routing.last_event_at = saved;
+        // A parcel whose lookups open a browser is checked less often on its last mile (see the schedule).
+        if (audit.browserLookup) routing.browser_check = true;
+        else if (audit.browserLookup === false) delete routing.browser_check;
         carrierData.routing = routing;
       }
       const postalHistory = upuHistory(parcel, result, now);

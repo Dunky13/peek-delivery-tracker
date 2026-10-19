@@ -4,6 +4,7 @@ import type { DpdSession } from 'universal-parcel-scraper/node';
 import type { ApiGiftWords } from '../generated/apiContract';
 import { ALL_NOTIFICATION_STAGES } from '../lib/notificationPresets';
 import { EMAIL_STAGES, type DeliveredTime, type EmailStage } from './email/types';
+import type { SyncReason } from './trackingAudit';
 import { isRecord, type JsonObject } from './types';
 
 const REQUEST_TIMEOUT_MS = 20_000;
@@ -1349,11 +1350,14 @@ export class SupabaseServiceClient extends SupabaseClient {
     scheduled?: boolean;
     /** A re-check nobody asked for, such as a scraper release's: it waits behind every other job. */
     background?: boolean;
+    /** Why a reader's check is queued, which the check log records as its trigger. */
+    reason?: Exclude<SyncReason, 'release'>;
   }): Promise<{ row: JsonObject; queued: boolean }> {
     const scheduled = options.scheduled ?? false;
     let kind: string;
     let dedupeKey: string;
     let priority: number;
+    let reason: SyncReason | null = null;
     if (scheduled) {
       if (options.userId != null || options.packageId != null) {
         throw new TypeError('Scheduled sync jobs cannot target an account');
@@ -1368,6 +1372,7 @@ export class SupabaseServiceClient extends SupabaseClient {
       // A one-off parcel has no owner. Its check waits behind every account's
       // refresh and the scheduled run, so lookups cannot starve accounts.
       priority = options.background ? BACKGROUND_SYNC_PRIORITY : options.userId ? 10 : -20;
+      reason = options.background ? 'release' : options.reason ?? null;
     }
 
     const created = rows(await this.request('/rest/v1/sync_jobs?on_conflict=dedupe_key', {
@@ -1378,6 +1383,7 @@ export class SupabaseServiceClient extends SupabaseClient {
         kind,
         dedupe_key: dedupeKey,
         priority,
+        ...(kind === 'package' ? { reason } : {}),
       },
       prefer: 'resolution=ignore-duplicates,return=representation',
     }));
@@ -1391,9 +1397,12 @@ export class SupabaseServiceClient extends SupabaseClient {
     const existing = rows(await this.request(`/rest/v1/sync_jobs?${params}`));
     if (!existing[0]) throw new SupabaseError('The durable sync job could not be queued');
     // Asking for a check already queued behind others, such as a release's re-check, moves it up.
-    if (existing[0].state === 'queued' && Number(existing[0].priority) < priority) {
+    // A reader's check takes over one a link queued, which is dropped once the parcel is not due.
+    const claims = reason !== null && reason !== 'opened' && existing[0].reason === 'opened';
+    if (existing[0].state === 'queued' && (Number(existing[0].priority) < priority || claims)) {
       const raised = rows(await this.request(`/rest/v1/sync_jobs?${query({ id: `eq.${existing[0].id}`, state: 'eq.queued' })}`, {
-        method: 'PATCH', body: { priority }, prefer: 'return=representation',
+        method: 'PATCH', body: { priority: Math.max(priority, Number(existing[0].priority)), ...(claims ? { reason } : {}) },
+        prefer: 'return=representation',
       }));
       if (raised[0]) return { row: raised[0], queued: false };
     }

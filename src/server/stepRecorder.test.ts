@@ -4,7 +4,7 @@ import { IndeterminateError, NoHistoryError } from 'universal-parcel-scraper';
 const metrics = { distribution: vi.fn(), count: vi.fn() };
 const observability = {
   initObservability: vi.fn(() => true), logOperationalEvent: vi.fn(), reportRoutingEvent: vi.fn(),
-  trackingAttemptId: vi.fn((): string | undefined => undefined),
+  trackingAttemptId: vi.fn((): string | undefined => undefined), reportTrackingStep: vi.fn(),
 };
 
 vi.mock('@sentry/node', () => ({ metrics }));
@@ -94,6 +94,12 @@ describe('sentryStepRecorder', () => {
     // A new series reads 0 on its first scrape; the second carries the count.
     await metricsText();
     expect(await metricsText()).toContain('carrier_lookup_total{carrier="gls-de",final_step="direct",outcome="ok",attempts="1"} 1');
+  });
+
+  it('tells the running check which tier its lookup went through', () => {
+    hostStepRecorder().step({ carrier: 'ups', step: 'trawl', attempt: 1, outcome: 'ok', errorType: null, durationMs: 1,
+      fallbackFrom: null, fallbackReason: null, fallbackErrorType: null });
+    expect(observability.reportTrackingStep).toHaveBeenCalledExactlyOnceWith('trawl');
   });
 
   it('fans out to registered sinks', () => {

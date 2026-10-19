@@ -199,7 +199,7 @@ describe('looking up a parcel without an account', () => {
     expect(claim).toHaveBeenCalledExactlyOnceWith({
       bucket: expect.stringMatching(/^[0-9a-f]{64}$/), limit: 15, overall: { bucket: 'global', limit: 300 }, network: null,
     });
-    expect(enqueue).toHaveBeenCalledExactlyOnceWith({ packageId });
+    expect(enqueue).toHaveBeenCalledExactlyOnceWith({ packageId, reason: 'added' });
     expect(wake).toHaveBeenCalledOnce();
     expect(counted).toHaveBeenCalledExactlyOnceWith('created');
     expect(authenticate).not.toHaveBeenCalled();
@@ -632,7 +632,7 @@ describe('reading a parcel link', () => {
     vi.useFakeTimers({ toFake: ['Date'], now: new Date('2026-10-02T10:35:00Z') });
     find({}, { last_synced_at: '2026-10-02T09:50:00+00:00' });
     expect((await open()).status).toBe(200);
-    expect(enqueue).toHaveBeenCalledExactlyOnceWith({ packageId });
+    expect(enqueue).toHaveBeenCalledExactlyOnceWith({ packageId, reason: 'opened' });
     expect(wake).toHaveBeenCalledOnce();
 
     // Checked a minute ago, delivered, or owned by an account: reading queues nothing.

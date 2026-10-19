@@ -216,12 +216,15 @@ describe('one-off parcels and their links', () => {
     await client.enqueueSyncJob({ scheduled: true });
     await client.enqueueSyncJob({ userId: 'owner-1', packageId: 'package-2', background: true });
     const queued = request.mock.calls.map(([, options]) => options!.body as Record<string, unknown>);
-    expect(queued[0]).toEqual({ user_id: null, package_id: 'package-1', kind: 'package', dedupe_key: 'package:package-1', priority: -20 });
+    expect(queued[0]).toEqual({ user_id: null, package_id: 'package-1', kind: 'package', dedupe_key: 'package:package-1', priority: -20, reason: null });
     expect(queued[1]).toMatchObject({ user_id: 'owner-1', priority: 10 });
     expect(queued[2]).toMatchObject({ kind: 'scheduled', priority: -10 });
     expect(queued[0].priority).toBeLessThan(queued[2].priority as number);
     // A re-check nobody asked for waits behind everything else, a lookup's check too.
-    expect(queued[3]).toMatchObject({ user_id: 'owner-1', priority: -30 });
+    expect(queued[3]).toMatchObject({ user_id: 'owner-1', priority: -30, reason: 'release' });
+    expect(queued[2]).not.toHaveProperty('reason');
+    await client.enqueueSyncJob({ userId: 'owner-1', packageId: 'package-1', reason: 'refresh' });
+    expect(request.mock.calls.at(-1)![1]!.body).toMatchObject({ priority: 10, reason: 'refresh' });
     await expect(client.enqueueSyncJob({ userId: 'owner-1' })).rejects.toThrow('require a package');
     await expect(client.enqueueSyncJob({ scheduled: true, packageId: 'package-1' })).rejects.toThrow('cannot target');
   });
@@ -242,6 +245,24 @@ describe('one-off parcels and their links', () => {
     // A check queued in the background again leaves it where it is.
     request.mockReset().mockResolvedValueOnce([]).mockResolvedValueOnce([queued]);
     await client.enqueueSyncJob({ userId: 'owner-1', packageId: 'package-1', background: true });
+    expect(request).toHaveBeenCalledTimes(2);
+  });
+
+  it('gives a queued check to the reader who asks for it, unless they only opened its link', async () => {
+    const client = service();
+    const release = { id: 'job', state: 'queued', priority: -30, reason: 'release' };
+    const request = vi.spyOn(client, 'request').mockResolvedValueOnce([]).mockResolvedValueOnce([release]).mockResolvedValueOnce([release]);
+    await client.enqueueSyncJob({ packageId: 'package-1', reason: 'opened' });
+    // A link opened moves a release's re-check up and leaves it the release's.
+    expect(request.mock.calls[2][1]).toMatchObject({ method: 'PATCH', body: { priority: -20 } });
+    expect(request.mock.calls[2][1]!.body).not.toHaveProperty('reason');
+    const opened = { ...release, priority: -20, reason: 'opened' };
+    request.mockReset().mockResolvedValueOnce([]).mockResolvedValueOnce([opened]).mockResolvedValueOnce([opened]);
+    await client.enqueueSyncJob({ packageId: 'package-1', reason: 'added' });
+    // Adding the parcel takes over the check its link queued, at the same priority.
+    expect(request.mock.calls[2][1]).toMatchObject({ method: 'PATCH', body: { priority: -20, reason: 'added' } });
+    request.mockReset().mockResolvedValueOnce([]).mockResolvedValueOnce([opened]);
+    await client.enqueueSyncJob({ packageId: 'package-1', reason: 'opened' });
     expect(request).toHaveBeenCalledTimes(2);
   });
 

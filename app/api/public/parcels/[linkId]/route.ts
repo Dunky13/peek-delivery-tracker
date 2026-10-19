@@ -53,7 +53,7 @@ export const GET = apiRoute<LinkParameters>(async (context) => {
   }
   if (found.package.one_off === true && isOpenedParcelSyncDue(found.package, new Date())) {
     try {
-      await service.enqueueSyncJob({ packageId: String(found.package.id) });
+      await service.enqueueSyncJob({ packageId: String(found.package.id), reason: 'opened' });
       wakeSyncWorker();
     } catch (error) {
       // The parcel is still readable; the next read asks again.

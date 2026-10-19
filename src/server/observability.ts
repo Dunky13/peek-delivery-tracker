@@ -27,18 +27,29 @@ export interface RoutingSignal {
 interface TrackingAttempt {
   id: string;
   signal?: (signal: RoutingSignal) => void;
+  step?: (step: string) => void;
 }
 
 /** The tracking check whose lookups are running, so their scrape and routing lines name its attempt. */
 const trackingAttempts = new AsyncLocalStorage<TrackingAttempt>();
 
-/** `signal` receives the routing signals reported while the operation runs. */
-export function withTrackingAttempt<T>(attemptId: string, operation: () => T, signal?: (signal: RoutingSignal) => void): T {
-  return trackingAttempts.run({ id: attemptId, signal }, operation);
+/**
+ * `signal` receives the routing signals reported while the operation runs, and `step`
+ * each lookup tier that runs (`direct`, `trawl` and the like).
+ */
+export function withTrackingAttempt<T>(
+  attemptId: string, operation: () => T, signal?: (signal: RoutingSignal) => void, step?: (step: string) => void,
+): T {
+  return trackingAttempts.run({ id: attemptId, signal, step }, operation);
 }
 
 export function trackingAttemptId(): string | undefined {
   return trackingAttempts.getStore()?.id;
+}
+
+/** Tells the running check which lookup tier ran. */
+export function reportTrackingStep(step: string): void {
+  trackingAttempts.getStore()?.step?.(step);
 }
 
 /**

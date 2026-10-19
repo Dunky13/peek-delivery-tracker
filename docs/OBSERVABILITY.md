@@ -58,8 +58,10 @@ logged without its query, and its error reports leave the request out.
 
 All tables and views here are service-role only.
 
-- `tracking_sync_attempts`: one row per check. It holds its `trigger` (`package` for a check
-  someone asked for or a lookup's, `scheduled`, `release` for a scraper release's re-check),
+- `tracking_sync_attempts`: one row per check. It holds its `trigger`: `added` for a parcel
+  added or a lookup, `refresh`, `opened` for a link read, `changed` for a carrier or input
+  changed, `scheduled`, `release` for a scraper release's re-check, and `package` for a check
+  someone asked for before checks named their reason. It also holds
   the configured and actual carrier, job and package, previous and selected stage, provider status, event counts, outcome,
   error class, anomaly codes and a bounded private `status_text`. A check that stored a
   scan for the first time, moved the parcel's stage or restaged a stored scan into news
