@@ -10471,7 +10471,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dayton-freight",
+      "recognitionRank": 735
     },
     "trackingUrlTemplate": "https://tools.daytonfreight.com/tracking/detail/{trackingNumber}",
     "linkRules": [
@@ -12574,9 +12575,10 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "roadrunner",
+      "recognitionRank": 733
     },
-    "trackingUrlTemplate": "https://freight.rrts.com/Tools/Tracking/Pages/MultipleResults.aspx?PROS={trackingNumber}",
+    "trackingUrlTemplate": "https://tools.rrts.com/LTLTrack/?searchValues={trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -14371,7 +14373,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "daylight-transport",
+      "recognitionRank": 732
     },
     "trackingUrlTemplate": "https://mydaylight.dylt.com/external/shipment?probill={trackingNumber}",
     "linkRules": [
@@ -14561,7 +14564,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "oak-harbor"
     },
     "trackingUrlTemplate": "https://www.oakh.com/quicktrace&PRO={trackingNumber}",
     "linkRules": [
@@ -16245,7 +16248,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mds-collivery",
+      "recognitionRank": 705
     },
     "trackingUrlTemplate": "https://collivery.net/tracking?waybill={trackingNumber}",
     "linkRules": [
@@ -18100,7 +18104,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Brisbane",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "followmont"
     },
     "trackingUrlTemplate": "https://www.followmont.com.au/?page=fmt_template&fmt_template=track-trace&track-trace=track-trace-start-unsecured-user&consignmentNumber={trackingNumber}",
     "linkRules": [
@@ -19598,11 +19602,23 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "cruz-del-sur",
+      "recognitionRank": 722
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "cruzdelsur.com"
+        ],
+        "pathPattern": "^/herramientas_seguimiento_resultado\\.php$",
+        "params": [
+          "nic"
+        ]
+      }
+    ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://www.cruzdelsur.com/herramientas_seguimiento.php"
+    "trackingSearchUrl": "https://www.cruzdelsur.com/herramientas_seguimiento.php",
+    "trackingUrlTemplate": "https://www.cruzdelsur.com/herramientas_seguimiento_resultado.php?nic={trackingNumber}"
   },
   "forza-delivery": {
     "displayName": "Forza Delivery Express",
@@ -21129,10 +21145,17 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mailplus-au",
+      "recognitionRank": 699
     },
-    "trackingUrlTemplate": "https://track.mailplus.com.au/old/{trackingNumber}",
+    "trackingUrlTemplate": "https://track.mailplus.com.au/{trackingNumber}",
     "linkRules": [
+      {
+        "domains": [
+          "track.mailplus.com.au"
+        ],
+        "path": "^/(?=[A-Za-z]*\\d)([A-Za-z0-9]+)/?$"
+      },
       {
         "domains": [
           "track.mailplus.com.au"
@@ -23908,7 +23931,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "precision-deliveries",
+      "recognitionRank": 696
     },
     "trackingUrlTemplate": "https://track.precisiondeliveries.com/{trackingNumber}",
     "linkRules": [
@@ -26845,7 +26869,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "bringer-parcel",
+      "recognitionRank": 639
     },
     "trackingUrlTemplate": "https://www.bringerparcel.com/tracking/{trackingNumber}",
     "linkRules": [
@@ -26878,7 +26903,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "domain-logistics"
     },
     "trackingUrlTemplate": "https://domainlogistics.ca/tracking/?tracking={trackingNumber}",
     "linkRules": [
@@ -26937,12 +26962,13 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Melbourne",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "micro-express",
+      "recognitionRank": 697
     },
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^ME\\d{13}[A-Z]{3}$",
+        "pattern": "^ME\\d{13}[A-Z0-9]{3}$",
         "confidence": "high"
       }
     ]
@@ -27978,7 +28004,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ocs-ana",
+      "recognitionRank": 706
     },
     "trackingUrlTemplate": "https://www2.ocsworldwide.net/ExpTracking/cwbCheck.php?cwbno={trackingNumber}",
     "linkRules": [
@@ -28371,7 +28398,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Yangon",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "royal-express-mm",
+      "recognitionRank": 723
     },
     "linkRules": [],
     "detectionRules": [],
@@ -29351,7 +29379,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "qwintry",
+      "recognitionRank": 707
     },
     "trackingUrlTemplate": "https://logistics.qwintry.com/track?tracking={trackingNumber}",
     "linkRules": [
