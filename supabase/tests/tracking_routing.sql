@@ -62,6 +62,35 @@ begin
   if public.apply_tracking_sync(parcel_id, old_generation, '{"current_stage":"delivered"}') then raise exception 'Old worker overwrote new selection'; end if;
 end;
 $$;
+
+-- The postcode the parcel's own carrier asked for ends that carrier's wait, not the providers'.
+insert into public.packages(id, user_id, tracking_number, carrier, current_stage, sync_status, carrier_data)
+values ('96000000-0000-0000-0000-000000000006', '10000000-0000-0000-0000-000000000001',
+  'ROUTING5678', 'dpd', 'pending', 'error', '{"routing":{"version":1,"configured_carrier":"dpd",
+    "consecutive_failures":2,"probe_cursor":0,"discovery_cursor":0,"next_check_at":"2099-01-01T00:00:00Z",
+    "direct_retry_at":"2099-01-01T00:00:00Z","failures":{
+      "dpd":{"count":3,"kind":"input_required","user_error":"carrier:input_required","retry_at":"2099-01-01T00:00:00Z"},
+      "Ship24":{"count":1,"kind":"not_found","retry_at":"2099-01-01T00:00:00Z"}}}}');
+do $$
+declare parcel_id uuid := '96000000-0000-0000-0000-000000000006';
+begin
+  perform set_config('request.jwt.claim.sub', '10000000-0000-0000-0000-000000000001', true);
+  perform public.change_owned_package_carrier(parcel_id, 'dpd');
+  if not exists (select 1 from public.packages where packages.id = parcel_id
+      and carrier_data#>>'{routing,failures,dpd,kind}' = 'input_required'
+      and carrier_data#>>'{routing,next_check_at}' is not null) then
+    raise exception 'Saving the same carrier details ended the carrier wait';
+  end if;
+  perform public.change_owned_package_carrier(parcel_id, 'dpd', null, '8000');
+  if not exists (select 1 from public.packages where packages.id = parcel_id and dpd_postcode = '8000'
+      and carrier_data#>'{routing,failures,dpd}' is null
+      and carrier_data#>'{routing,direct_retry_at}' is null and carrier_data#>'{routing,next_check_at}' is null
+      and carrier_data#>>'{routing,failures,Ship24,kind}' = 'not_found'
+      and carrier_data#>>'{routing,consecutive_failures}' = '2') then
+    raise exception 'A postcode for the parcel''s own carrier kept its wait or ended the providers''';
+  end if;
+end;
+$$;
 do $$
 declare
   parcel_id uuid := '96000000-0000-0000-0000-000000000005';
