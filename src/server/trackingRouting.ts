@@ -90,6 +90,11 @@ export interface RoutingState extends JsonObject {
   rules?: string;
   /** The last check that ran a lookup opened a browser: its own or the browser service. */
   browser_check?: true;
+  /**
+   * When a provider filed the parcel under a carrier with an adapter of its own that the
+   * check did not ask: the next run asks it (see the schedule). The next check clears it.
+   */
+  carrier_named_at?: string;
 }
 
 let rules: string | undefined;
@@ -320,6 +325,7 @@ export class TrackingRouter {
     const now = () => this.options.now?.() ?? new Date();
     const state = routingState(parcel);
     state.rules = catalogRules();
+    delete state.carrier_named_at;
     const previousFailures = state.consecutive_failures;
     const declared = String(parcel.carrier);
     const number = String(parcel.tracking_number ?? '');
@@ -473,6 +479,12 @@ export class TrackingRouter {
           clearSetAside(answered);
         }
         value.correction = { carrier: named, trackingUrl: null, postcode: null };
+      }
+      // A carrier with an adapter of its own that this check did not ask (an Add preflight's
+      // history skips confirming it) is asked at the next run, not after the provider's spacing.
+      if (named && directCarrier(named) && !attemptedDirect.has(named) && millis(state.failures[named]?.retry_at) <= now().getTime()) {
+        delete state.next_check_at;
+        state.carrier_named_at = now().toISOString();
       }
       return { ...value, result: { ...value.result, routing: state,
         ...(history ? { direct_local_history: history } : {}),

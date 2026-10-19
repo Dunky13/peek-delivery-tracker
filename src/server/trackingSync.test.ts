@@ -1871,6 +1871,28 @@ describe('TrackingSyncService', () => {
   });
 
   it.each([
+    // The check that filed it at 10:00 under a carrier a provider named did not ask that carrier: the next run does.
+    { checkedAt: '10:00:15', time: '10:02:00', checked: 1 },
+    { checkedAt: '10:00:15', time: '10:02:00', overnight: true, checked: 1 },
+    // A check that left the mark in place keeps the parcel due for 15 minutes at most.
+    { checkedAt: '10:12:00', time: '10:14:00', checked: 1 },
+    { checkedAt: '10:12:00', time: '10:16:00', checked: 0 },
+  ])('asks at the next run the carrier a provider named, last checked at $checkedAt, at $time (overnight: $overnight): $checked checks', async ({ checkedAt, time, overnight, checked }) => {
+    const day = overnight ? '2026-09-09T22' : '2026-09-09T10';
+    const at = (clock: string) => `${day}${clock.slice(2)}Z`;
+    const parcel = {
+      id: 'named', carrier: 'dhl-express', current_stage: 'in_transit', tracking_number: 'TEST1234',
+      last_synced_at: at(checkedAt), sync_status: 'ok', carrier_data: { tracking_provider: 'Ship24',
+        routing: { version: 1, configured_carrier: 'dhl-express', carrier_named_at: at('10:00:10') } },
+    };
+    const client = fakeClient([parcel]);
+    const adapter = { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+      adapter, null, () => new Date(at(time)));
+    await expect(service.sync()).resolves.toMatchObject({ checked });
+  });
+
+  it.each([
     { name: 'idle for three days', created: '2026-08-30T09:00:00Z', lastEvent: '2026-09-06T09:00:00Z', stage: 'in_transit', time: '10:10:00', checked: 0 },
     { name: 'idle for three days', created: '2026-08-30T09:00:00Z', lastEvent: '2026-09-06T09:00:00Z', stage: 'in_transit', time: '11:00:00', checked: 1 },
     { name: 'stuck out for delivery', created: '2026-08-30T09:00:00Z', lastEvent: '2026-09-06T09:00:00Z', stage: 'out_for_delivery', time: '10:02:00', checked: 0 },

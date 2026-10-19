@@ -1811,6 +1811,25 @@ describe('universal preflight and recipient input', () => {
     expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
     expect(result.result).not.toHaveProperty('auto_changed_from');
     expect(value.direct).not.toHaveBeenCalled();
+    // The carrier is asked at the next run, not after the provider's spacing.
+    expect(result.result.routing).not.toHaveProperty('next_check_at');
+    expect(result.result.routing).toMatchObject({ carrier_named_at: expect.any(String) });
+    value.direct.mockImplementation(async (_parcel, carrier) => directValue(carrier));
+    const next = await value.router.fetch(parcel({ carrier: 'dhl-express', tracking_number: '1234567891',
+      carrier_data: { routing: result.result.routing as JsonObject } }), true);
+    expect(value.direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier: 'dhl-express' }), 'dhl-express');
+    expect(next.sourceCarrierId).toBe('dhl-express');
+    expect(next.result.routing).not.toHaveProperty('carrier_named_at');
+  });
+  it('keeps the provider spacing when the check asked the carrier the provider named', async () => {
+    const value = setup();
+    value.direct.mockRejectedValue(new Error('carrier blocked'));
+    value.universal.mockResolvedValue({ ...history(), discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express'] });
+    const result = await value.router.fetch(parcel({ tracking_number: '1234567891' }), false);
+    expect(result.correction?.carrier).toBe('dhl-express');
+    expect(value.direct).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'dhl-express' }), 'dhl-express');
+    expect(result.result.routing).toMatchObject({ next_check_at: expect.any(String) });
+    expect(result.result.routing).not.toHaveProperty('carrier_named_at');
   });
   it('does not file prefetched history under a named carrier whose adapter refuses the number', async () => {
     const value = setup();

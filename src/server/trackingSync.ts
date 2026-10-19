@@ -76,6 +76,8 @@ const LAST_MILE_MINUTES = 2;
  * browser service or a local Chromium, so it is not asked every 2 minutes.
  */
 const BROWSER_LAST_MILE_MINUTES = 5;
+/** How long a carrier a provider named and the check did not ask keeps the parcel due at every run. */
+const NAMED_CARRIER_DUE_MS = 15 * 60_000;
 /**
  * A parcel out for delivery with a delivery window keeps the regular cadence
  * until this long before the window opens.
@@ -268,6 +270,10 @@ function isScheduledTrackingSyncDue(
   const hourStart = parcelHourStart(parcel, local);
   // Archived, daily around the clock.
   if (archived) return lastChecked < hourStart.minus({ hours: 23 }).toMillis();
+  // A provider filed the parcel under a carrier with an adapter of its own that the check did
+  // not ask: the next run asks that carrier. That check clears the mark; failing that, it lapses.
+  const sinceNamed = now.getTime() - Date.parse(String(routingState(parcel).carrier_named_at ?? ''));
+  if (sinceNamed >= 0 && sinceNamed < NAMED_CARRIER_DUE_MS) return true;
   // A lookup without an account that nobody opened in the last hour and that has no alert on:
   // every 3 hours by day, and not overnight, when nobody reads it. A number no carrier is known
   // for asks every provider in turn. Opening its link still queues a check at once.
