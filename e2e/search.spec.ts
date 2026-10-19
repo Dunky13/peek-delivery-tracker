@@ -15,6 +15,11 @@ async function firstByte(request: APIRequestContext, address: string, headers: R
   const response = await request.get(address, { headers, maxRedirects: 0 });
   return { response, html: await response.text() };
 }
+/** Runs `check` on every item, a few at a time. */
+async function fewAtATime<T>(items: readonly T[], check: (item: T) => Promise<void>, at = 6) {
+  let next = 0;
+  await Promise.all(Array.from({ length: at }, async () => { while (next < items.length) await check(items[next++]); }));
+}
 const tag = (html: string, pattern: RegExp) => pattern.exec(html)?.[1]?.replaceAll('&amp;', '&') ?? null;
 const languages = ['de', 'fr', 'it', 'es', 'pt', 'pl'] as const;
 const questions: Record<string, string> = {
@@ -46,6 +51,9 @@ test('robots.txt lets everything be fetched and names the sitemap by its whole a
 });
 
 test('sitemap.xml lists the landing, the guides and the carriers’ pages in every language, the privacy notice and the help page, dating only the guides and the carriers’ pages', async ({ request, baseURL }) => {
+  test.skip(test.info().project.name !== 'desktop-chromium', 'The server answers the same whatever the browser.');
+  // Hundreds of pages, each drawn when it is asked for.
+  test.setTimeout(120_000);
   const response = await request.get('/sitemap.xml');
   expect(response.status()).toBe(200);
   expect(response.headers()['content-type']).toContain('application/xml');
@@ -99,7 +107,7 @@ test('sitemap.xml lists the landing, the guides and the carriers’ pages in eve
     expect(entry).not.toContain('<lastmod>');
   }
   // Every address in it answers.
-  for (const address of addresses) expect((await request.get(address)).status(), address).toBe(200);
+  await fewAtATime(addresses, async (address) => { expect((await request.get(address)).status(), address).toBe(200); });
 });
 
 test('the demo, the sample and the offline page stay out of search results, with their links followed', async ({ request, baseURL }) => {
