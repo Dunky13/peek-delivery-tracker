@@ -12,6 +12,7 @@
       "for": "5m",
       "severity": "critical",
       "noDataState": "Alerting",
+      "execErrState": "KeepLast",
       "summary": "Prometheus has not reached Peek for 5 minutes: the site is down or unreachable.",
       "description": "The scrape of /api/metrics through the public address has failed for 5 minutes. A deploy restarts the app for a minute or two, never five. Look at the Coolify application and its last deploy, the app's logs in Loki ({app=\"delivery-tracker\"}) and Sentry. \"Peek stopped checking parcels\" stays quiet meanwhile."
     },
@@ -19,12 +20,13 @@
       "uid": "peek-checks-failing",
       "title": "Peek checks failing across carriers",
       "datasource": "metrics",
-      "sql": "select now() as time, case when (failed_checks_3h >= 10 and failed_checks_3h >= 0.05 * checks_3h and failed_carriers_3h >= 3) or open_health_incidents >= 5 then 1 else 0 end as value from metrics.health",
+      "sql": "select now() as time, case when (failed_checks_3h >= 10 and failed_checks_3h >= 0.05 * checks_3h and failed_carriers_3h >= 3) or failing_health_incidents >= 5 then 1 else 0 end as value from metrics.health",
       "for": "15m",
       "severity": "critical",
       "noDataState": "Alerting",
+      "execErrState": "KeepLast",
       "summary": "Checks are failing for several carriers or providers at once: probably on Peek's side.",
-      "description": "Over the last three hours, ten checks or more failed, 5% of them or more, across three carriers or more; or five health incidents or more are open. One carrier or provider failing on its own is a Sentry health incident and does not fire this. Several at once point to Peek's side: the network or its outgoing address, Chromium, the database, or a provider many carriers share. Look at the refresh outcomes on the \"Peek — Carrier scrapers\" dashboard and the open tracking_health_incident issues in Sentry. metrics.health holds the counts."
+      "description": "Over the last three hours, ten checks or more failed, 5% of them or more, across three carriers or more; or five health incidents or more are open and failed in the last three hours. One carrier or provider failing on its own is a Sentry health incident and does not fire this. Several at once point to Peek's side: the network or its outgoing address, Chromium, the database, or a provider many carriers share. Look at the refresh outcomes on the \"Peek — Carrier scrapers\" dashboard and the open tracking_health_incident issues in Sentry. metrics.health holds the counts."
     },
     {
       "uid": "peek-scheduled-sync-slow",
@@ -35,6 +37,7 @@
       "for": "0s",
       "severity": "warning",
       "noDataState": "Alerting",
+      "execErrState": "KeepLast",
       "summary": "A scheduled sync took over 5 minutes, half its 10-minute limit.",
       "description": "A scheduled sync that finished in the last two hours took more than 300 seconds. Daytime runs take seconds; overnight runs check more parcels and take up to a few minutes. Sentry's cron monitors report a sync that is missed, fails or passes 10 minutes; this warns before that. The sync_job_completed lines in Loki ({app=\"delivery-tracker\", event=\"sync_job_completed\"}) say how many parcels each run checked, and the dashboard's step durations which carrier is slow. Clears two hours after the last slow run."
     },
@@ -50,6 +53,7 @@
       "for": "0s",
       "severity": "critical",
       "noDataState": "Alerting",
+      "execErrState": "KeepLast",
       "summary": "No parcel check has finished for 30 minutes by day, or 2 hours at night, although Peek is up.",
       "description": "From 08:00 to 22:00 Zurich time a scheduled sync runs every two minutes, and new parcels are checked as they are added; overnight, syncs run hourly. The 30-minute limit holds from 09:00 to 22:00, the 2-hour one otherwise. Sentry's cron monitors see whether the sync runs, not whether it checks anything: here it runs and checks nothing, or every check hangs. It stays quiet while \"Peek unreachable\" fires. Look at the sync_job_completed lines in Loki ({app=\"delivery-tracker\", event=\"sync_job_completed\"}) and at the sync_jobs queue."
     },
@@ -62,6 +66,7 @@
       "for": "0s",
       "severity": "warning",
       "noDataState": "OK",
+      "execErrState": "KeepLast",
       "summary": "Five API requests or more failed with a server error in 15 minutes.",
       "description": "Sentry reports each server error but alerts only on a new or regressed issue, so a known error that starts repeating stays quiet there. Health checks and metric scrapes are left out. Find the requests with {app=\"delivery-tracker\", event=\"http_request\"} | json | status >= 500, then their request_id in Sentry; a 502 names the upstream failure behind it in error_cause."
     },
@@ -73,6 +78,7 @@
       "for": "30m",
       "severity": "warning",
       "noDataState": "Alerting",
+      "execErrState": "KeepLast",
       "summary": "Sign in with Apple on the website stops working within 14 days, or Apple already refuses its client secret.",
       "description": "Apple accepts a web client secret for 6 months at most. A daily job on the production host checks the secret supabase-auth uses with Apple, publishes its expiry and the outcome (peek_apple_web_client_secret_expiry_timestamp_seconds, peek_apple_web_client_secret_accepted), and renews it 30 days before it expires, so this fires only once renewals have failed for two weeks or Apple refuses the secret. Run the job and read its journal (peek-apple-web-secret.service). It signs the secret with the Sign in with Apple key in the app's environment (APPLE_SIGN_IN_*); if Apple refuses it, check that key and the Services ID in the Apple Developer portal. Sign in with Apple in the iPhone app does not use this secret."
     }

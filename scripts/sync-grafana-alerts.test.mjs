@@ -14,6 +14,7 @@ describe('the alert rules', () => {
       assert.match(rule.severity, /^(critical|warning)$/, rule.uid);
       assert.match(rule.for, /^\d+[smh]$/, rule.uid);
       assert.match(rule.noDataState, /^(Alerting|OK|NoData|KeepLast)$/, rule.uid);
+      assert.match(rule.execErrState, /^(Alerting|OK|Error|KeepLast)$/, rule.uid);
     }
   });
 

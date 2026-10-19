@@ -125,7 +125,8 @@ end;
 $$;
 
 -- The alert rules' view counts the last three hours' checks, failures and the carriers they
--- failed for, the time since a check finished, slow scheduled syncs and open incidents.
+-- failed for, the time since a check finished, slow scheduled syncs, open incidents and
+-- those of them that failed in the last three hours.
 do $$
 declare
   parcel constant uuid := 'f3000000-0000-4000-8000-000000000003';
@@ -148,7 +149,14 @@ begin
     ('scheduled', 'failed', now() - interval '3 hours', now() - interval '150 minutes'),
     ('scheduled', 'running', now() - interval '30 minutes', null);
   insert into public.tracking_health_incidents (kind, subject, active)
-  values ('provider', 'health-open', true), ('provider', 'health-closed', false);
+  values ('provider', 'health-open', true), ('provider', 'health-closed', false),
+    ('provider', 'health-failed-earlier', true), ('provider', 'health-healthy-since', true);
+  insert into public.tracking_health_samples (attempt_id, kind, subject, healthy, observed_at) values
+    (gen_random_uuid(), 'provider', 'health-open', false, now() - interval '2 hours'),
+    (gen_random_uuid(), 'provider', 'health-closed', false, now() - interval '2 hours'),
+    (gen_random_uuid(), 'provider', 'health-failed-earlier', false, now() - interval '4 hours'),
+    (gen_random_uuid(), 'provider', 'health-failed-earlier', true, now() - interval '1 hour'),
+    (gen_random_uuid(), 'provider', 'health-healthy-since', true, now() - interval '1 hour');
   select * into strict after from metrics.health;
 
   if after.checks_3h <> before.checks_3h + 3 or after.failed_checks_3h <> before.failed_checks_3h + 2
@@ -161,8 +169,11 @@ begin
   if after.longest_scheduled_sync_2h < 400 or after.longest_scheduled_sync_2h >= 1800 then
     raise exception 'The longest scheduled sync of the last two hours was missed: %', after;
   end if;
-  if after.open_health_incidents <> before.open_health_incidents + 1 then
+  if after.open_health_incidents <> before.open_health_incidents + 3 then
     raise exception 'Open health incidents were miscounted: % then %', before, after;
+  end if;
+  if after.failing_health_incidents <> before.failing_health_incidents + 1 then
+    raise exception 'Open incidents that failed in the last three hours were miscounted: % then %', before, after;
   end if;
 end;
 $$;
@@ -172,7 +183,7 @@ set local role metrics_reader;
 select accounts, active_day, parcels_open_account, link_alerts from metrics.live;
 select stage, account, lookup from metrics.open_parcels;
 select day, carrier, parcels from metrics.carriers where carrier = 'unknown' limit 1;
-select checks_3h, failed_carriers_3h, seconds_since_check, open_health_incidents from metrics.health;
+select checks_3h, failed_carriers_3h, seconds_since_check, open_health_incidents, failing_health_incidents from metrics.health;
 do $$
 begin
   perform 1 from public.packages;

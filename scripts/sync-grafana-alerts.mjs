@@ -58,7 +58,7 @@ export function provisionedRule(rule, alerts, datasources) {
     condition: 'C',
     data,
     noDataState: rule.noDataState,
-    execErrState: 'Error',
+    execErrState: rule.execErrState,
     for: rule.for,
     annotations: { summary: rule.summary, description: rule.description },
     labels: { service: 'delivery-tracker', severity: rule.severity },
