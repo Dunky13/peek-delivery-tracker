@@ -26937,6 +26937,16 @@
     ]
   },
   {
+    "input": "24986507",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colisweb",
+      "heppner"
+    ]
+  },
+  {
     "input": "24A322FR13WRG7",
     "carrier": "redx",
     "confidence": "high",
@@ -65486,6 +65496,21 @@
     ]
   },
   {
+    "input": "CD2702223035",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ],
+    "asked": [
+      "colis-prive",
+      "aramex-au",
+      "aramex-nz"
+    ]
+  },
+  {
     "input": "CD656914836NO",
     "carrier": "bring-posten",
     "confidence": "high",
@@ -75702,6 +75727,14 @@
     ]
   },
   {
+    "input": "JTAU900000000001",
+    "carrier": "j-and-t-au",
+    "confidence": "high",
+    "candidates": [
+      "j-and-t-au"
+    ]
+  },
+  {
     "input": "JTE000013652109",
     "carrier": "j-and-t-middle-east",
     "confidence": "high",
@@ -82877,6 +82910,9 @@
     "confidence": "low",
     "candidates": [
       "ram-hand-to-hand"
+    ],
+    "asked": [
+      "ram-hand-to-hand"
     ]
   },
   {
@@ -82885,6 +82921,9 @@
     "confidence": "low",
     "candidates": [
       "ram-hand-to-hand"
+    ],
+    "asked": [
+      "ram-hand-to-hand"
     ]
   },
   {
@@ -82892,6 +82931,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "ram-hand-to-hand"
+    ],
+    "asked": [
       "ram-hand-to-hand"
     ]
   },
@@ -86853,6 +86895,83 @@
     "confidence": "high",
     "candidates": [
       "purolator"
+    ]
+  },
+  {
+    "input": "STRAZ081640880601",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "STRAZ138329507612",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "STRAZ430998201049",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "STRAZ563624013879",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "STRAZ592307056266",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "STRAZ605859592152",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
+    ]
+  },
+  {
+    "input": "STRAZ704204234019",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "colis-prive"
+    ],
+    "asked": [
+      "colis-prive"
     ]
   },
   {

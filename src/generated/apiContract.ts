@@ -12535,7 +12535,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ram-hand-to-hand",
+      "recognitionRank": 728
     },
     "trackingUrlTemplate": "https://www.ram.co.za/track/{trackingNumber}",
     "linkRules": [
@@ -15937,7 +15938,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Hong_Kong",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kex-express-hk",
+      "recognitionRank": 771
     },
     "trackingUrlTemplate": "https://www.kex.kln.com/en/track?track={trackingNumber}",
     "linkRules": [
@@ -18796,11 +18798,19 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "quiqup"
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "track-parcel.quiqup.com"
+        ],
+        "path": "^/([1-9]\\d{6,7})/?$"
+      }
+    ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://track-parcel.quiqup.com/"
+    "trackingSearchUrl": "https://track-parcel.quiqup.com/",
+    "trackingUrlTemplate": "https://track-parcel.quiqup.com/{trackingNumber}"
   },
   "roadie": {
     "displayName": "Roadie",
@@ -19851,7 +19861,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Hermosillo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tufesa",
+      "recognitionRank": 726
     },
     "linkRules": [
       {
@@ -20833,7 +20844,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gobolt",
+      "recognitionRank": 765
     },
     "trackingUrlTemplate": "https://track.gobolt.com/tracking/{trackingNumber}",
     "linkRules": [
@@ -25333,11 +25345,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Algiers",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "noest",
+      "recognitionRank": 767
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "app.noest-dz.com"
+        ],
+        "path": "^/(?:list/t|tracking)/([^/?#]+)/?$"
+      }
+    ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://app.noest-dz.com/list/t"
+    "trackingSearchUrl": "https://app.noest-dz.com/list/t",
+    "trackingUrlTemplate": "https://app.noest-dz.com/list/t/{trackingNumber}"
   },
   "rivigo": {
     "displayName": "Rivigo",
@@ -26048,7 +26069,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Casablanca",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chronodiali",
+      "recognitionRank": 781
     },
     "trackingUrlTemplate": "https://chronodiali.ma/suivi_colis.html?id={trackingNumber}",
     "linkRules": [
@@ -27165,7 +27187,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Baku",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "starex-az",
+      "recognitionRank": 785
     },
     "trackingUrlTemplate": "https://starexglobal.com/az/tracking/{trackingNumber}",
     "linkRules": [
@@ -27408,7 +27431,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "logistiq",
+      "recognitionRank": 768
     },
     "trackingUrlTemplate": "https://gecko.logistiq.io/#/order/tracking?awb={trackingNumber}",
     "linkRules": [
@@ -29131,7 +29155,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jerusalem",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gaash",
+      "recognitionRank": 769
     },
     "trackingUrlTemplate": "https://gaashwd.com/track-parcel/?TrackingNumber={trackingNumber}",
     "linkRules": [
@@ -29461,12 +29486,13 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CN"
     ],
-    "color": "#167ed4",
+    "color": "#2478be",
     "selectable": true,
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anserx",
+      "recognitionRank": 759
     },
     "trackingUrlTemplate": "https://oms.anserx.com/tracking?nos={trackingNumber}",
     "linkRules": [
@@ -29499,7 +29525,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CN"
     ],
-    "color": "#3a77c9",
+    "color": "#0b4da2",
     "selectable": true,
     "timezone": "Asia/Shanghai",
     "tracking": {
@@ -29532,7 +29558,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "HK"
     ],
-    "color": "#104ada",
+    "color": "#0f4ae1",
     "selectable": true,
     "timezone": "Asia/Hong_Kong",
     "tracking": {
@@ -29579,6 +29605,45 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [],
     "trackingSearchUrl": "https://system.ycs-express.com/search_track"
+  },
+  "j-and-t-au": {
+    "displayName": "J&T Express Australia",
+    "aliases": [
+      "J&T Express (AU)",
+      "J&T Express AU",
+      "J&T Australia",
+      "JT Express Australia"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "color": "#e60012",
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.jtexpress.au/tracking?q={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.jtexpress.au",
+          "jtexpress.au"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JTAU\\d{12}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.jtexpress.au/tracking"
   }
 } as const;
 
@@ -30386,7 +30451,8 @@ export const CARRIER_IDS = [
   "anserx",
   "chukou1",
   "jumppoint",
-  "ycs-logistics"
+  "ycs-logistics",
+  "j-and-t-au"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
