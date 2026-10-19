@@ -9584,7 +9584,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "better-trucks",
+      "recognitionRank": 738
     },
     "trackingUrlTemplate": "https://tracking.bettertrucks.com/tracking?trackingNumber={trackingNumber}",
     "linkRules": [
@@ -14532,7 +14533,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Moncton",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "midland-transport"
     },
     "trackingUrlTemplate": "https://ship.midlandtransport.com/Tracking/TrackClientTrackings?TrackingNumber={trackingNumber}&Lang=0",
     "linkRules": [
@@ -15222,7 +15223,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chunil",
+      "recognitionRank": 621
     },
     "trackingUrlTemplate": "https://www.chunil.co.kr/HTrace/HTrace.jsp?transNo={trackingNumber}",
     "linkRules": [
@@ -15743,7 +15745,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ilyang-logis",
+      "recognitionRank": 703
     },
     "trackingUrlTemplate": "https://www.ilyanglogis.co.kr/page/TrackingResult.do?trackingType=0&blNum={trackingNumber}",
     "linkRules": [
@@ -16049,7 +16052,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kunyoung",
+      "recognitionRank": 622
     },
     "trackingUrlTemplate": "https://mj.kunyoung.com/?invoiceNumber={trackingNumber}",
     "linkRules": [
@@ -16067,7 +16071,7 @@ export const CARRIER_CAPABILITIES = {
           "www.kunyoung.com",
           "kunyoung.com"
         ],
-        "pathPattern": "^/goods/goods_0[12]\\.php$",
+        "pathPattern": "^/goods/goods_0[12](?:__)?\\.php$",
         "params": [
           "mulno"
         ]
@@ -18674,7 +18678,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Pacific/Auckland",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pbt",
+      "recognitionRank": 623
     },
     "trackingUrlTemplate": "https://www.pbt.nz/tracking-result/?consignmentNumber={trackingNumber}",
     "linkRules": [
@@ -19358,7 +19363,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tst-cf-express"
     },
     "trackingUrlTemplate": "https://www.tst-cfexpress.com/tracing/by-url?lang=e&PRO={trackingNumber}",
     "linkRules": [
@@ -20775,7 +20780,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fastfrate"
     },
     "trackingUrlTemplate": "https://apps.fastfrate.com/fastnet/FastNet.aspx?ProbillNo={trackingNumber}",
     "linkRules": [
@@ -29564,7 +29569,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "huahan"
     },
     "linkRules": [],
     "detectionRules": [
