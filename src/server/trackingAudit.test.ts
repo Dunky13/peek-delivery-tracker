@@ -180,6 +180,22 @@ describe('a check of a number that names several parcels', () => {
   });
 });
 
+describe('a check while the carrier waits for the owner', () => {
+  it('is an answer when the carrier, not asked again yet, last asked for an input or found several parcels', async () => {
+    const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),
+      recordTrackingHealth: vi.fn().mockResolvedValue([]), ackTrackingHealth: vi.fn() };
+    for (const userError of ['carrier:input_required', 'carrier:several_parcels']) {
+      const audit = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+        'synthetic-package', 'TEST1234', 'heppner', 'pending', { trigger: 'scheduled' });
+      audit.record('fetch', 'failed', 100, {}, new Error('Every tier deferred'));
+      await audit.finish({ outcome: 'error', sourceCarrier: 'heppner', providerFailures: {
+        heppner: { kind: 'input_required', count: 1, user_error: userError }, Ship24: { kind: 'not_found', count: 1 } } });
+      expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(audit.attemptId, 'synthetic-package',
+        [expect.objectContaining({ kind: 'refresh', subject: 'heppner', healthy: true, details: expect.objectContaining({ category: 'input_required' }) })]);
+    }
+  });
+});
+
 describe('review signals', () => {
   it('saves the routing signals a check reported, once each, after the check itself', async () => {
     const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true), recordTrackingRoutingSignals: vi.fn() };

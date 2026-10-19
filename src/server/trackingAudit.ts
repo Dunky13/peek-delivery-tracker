@@ -113,11 +113,17 @@ export function providerFailureSummary(failures: unknown): string | null {
   return pairs.length ? pairs.join(',').slice(0, 300) : null;
 }
 
-/** Whether the check failed on the carrier's refusal of the number as one it does not issue, through routing or not. */
+/** The carrier's answers only the owner can act on: a missing input, a number it does not issue, one naming several parcels. */
+const OWNER_TO_CORRECT: ReadonlySet<string> = new Set(['carrier:input_required', 'carrier:invalid_input', 'carrier:several_parcels']);
+
+/**
+ * Whether the check failed on the carrier's answer for the owner to act on, through routing or not,
+ * including one routing still waits out before asking the carrier again.
+ */
 function refusedNumber(completion: SyncAuditCompletion, carrier: string): boolean {
   const failure = isRecord(completion.providerFailures) ? completion.providerFailures[carrier] : undefined;
-  return (isRecord(failure) && failure.user_error === 'carrier:invalid_input')
-    || trackingFailureCode(completion.error) === 'carrier:invalid_input';
+  return (isRecord(failure) && OWNER_TO_CORRECT.has(String(failure.user_error)))
+    || OWNER_TO_CORRECT.has(String(trackingFailureCode(completion.error)));
 }
 
 /**

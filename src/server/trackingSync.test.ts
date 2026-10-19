@@ -39,7 +39,7 @@ import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { NOOP_RECORDER } from 'universal-parcel-scraper/node';
-import { BudgetExceededError, IndeterminateError, NoHistoryError, NotFoundError, SchemaError } from 'universal-parcel-scraper';
+import { BudgetExceededError, IndeterminateError, InputRequiredError, NoHistoryError, NotFoundError, SchemaError } from 'universal-parcel-scraper';
 import * as scraper from 'universal-parcel-scraper';
 
 // Keep the published plan configurable without changing the scraper's other exports.
@@ -3405,6 +3405,29 @@ describe('TrackingSyncService', () => {
     await expect(service.syncPackage({ ...parcel, id: 'carrier-down' }, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 0, errors: 1 });
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error',
       carrier_data: { routing: { failures: { ecoscooting: { kind: 'transport' } } } } });
+  });
+
+  it('asks the owner for the input its carrier needs, though no provider has history for the parcel either', async () => {
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch: vi.fn().mockRejectedValue(new InputRequiredError('Heppner', 'the delivery postcode')),
+      fetchUniversal: vi.fn(async (source: string) => {
+        throw source === 'Ship24' ? new NotFoundError(source) : new IndeterminateError(source, `${source} has no usable shipment history`);
+      }) };
+    // The previous check already missed, so another missed check shows why.
+    const parcel = { id: 'needs-input', carrier: 'heppner', tracking_number: 'TEST1234', current_stage: 'pending',
+      carrier_data: { routing: { version: 1, configured_carrier: 'heppner', consecutive_failures: 1, probe_cursor: 0, discovery_cursor: 0 } } };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    await expect(service.syncPackage(parcel, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: 0, errors: 1 });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error', sync_error: 'carrier:input_required',
+      carrier_data: { routing: { consecutive_failures: 2, failures: {
+        heppner: { kind: 'input_required', user_error: 'carrier:input_required', retry_at: '2026-09-10T12:15:00.000Z' },
+        Ship24: { kind: 'not_found' } } } } });
+    // The owner has to supply it: the carrier answered.
+    expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'needs-input',
+      expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: true })]));
   });
 
   it('records no health sample for a scheduled check that contacted no provider', async () => {

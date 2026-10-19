@@ -116,7 +116,7 @@ A failed source waits before it is retried for that parcel:
 
 | Failure | First wait | Backs off to |
 | --- | --- | --- |
-| Transport, and `no_history` (a provider answered but has nothing, or the carrier lists the parcel without scans or does not know it yet) | 15 min | 6 h |
+| Transport, a missing input, and `no_history` (a provider answered but has nothing, or the carrier lists the parcel without scans or does not know it yet) | 15 min | 6 h |
 | Verification, schema, or a number or input the source refuses (`invalid_input`), as one it does not issue or one it finds several parcels under; not found by a carrier's own adapter | 1 h | 6 h |
 | Not found by a universal provider | 24 h | 24 h |
 
@@ -124,7 +124,8 @@ A longer `Retry-After` is honoured, up to 7 days. A carrier often doesn't know a
 before its first scan, hence its shorter not-found wait. When a universal provider shows
 progress the parcel hasn't had yet and names a carrier that said not found, that carrier is
 asked again in the same check. A pending parcel whose failures are all not-found or
-`no_history` shows as waiting, not as an outage. A provider resting on a rate limit was
+`no_history` shows as waiting, not as an outage, unless its own carrier asks for an input:
+as with a refused number, the missed checks then show that request. A provider resting on a rate limit was
 not asked, and a universal provider that failed (transport, verification, an unreadable
 answer) did not answer, so neither changes that; a carrier's own adapter failing does. When a failed direct adapter recovers, it
 takes over from the universal provider again.

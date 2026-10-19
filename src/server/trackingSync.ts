@@ -1251,13 +1251,16 @@ export class TrackingSyncService {
         // Without a carrier to ask, every provider answering without history means the same.
         // A provider resting on a rate limit was not asked, and a universal provider that failed
         // (transport, challenge, unreadable answer) did not answer: neither says anything about
-        // the number. A carrier's own adapter failing does.
+        // the number. A carrier's own adapter failing does. So does the parcel's own carrier asking
+        // for an input: only the owner can supply it, so the missed checks show that request, as a
+        // refused number does.
         const failures = error instanceof RoutingDeferred
           ? Object.entries(error.routing.failures).filter(([source, failure]) => failure.kind !== 'rate_limited'
             && (directCarrier(source) || ['not_found', 'no_history', 'input_required'].includes(failure.kind)))
             .map(([, failure]) => failure)
           : [];
         const routingUnannounced = error instanceof RoutingDeferred
+          && error.routing.failures[carrierId]?.kind !== 'input_required'
           && (Boolean(error.routing.provider_input_needed) || error.routing.failures[carrierId]?.kind === 'not_found'
             || (failures.length > 0 && failures.every((failure) => ['not_found', 'no_history', 'input_required'].includes(failure.kind))));
         if (!hasProgress && (isUnannouncedTrackingError(error) || routingUnannounced)) {
