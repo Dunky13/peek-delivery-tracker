@@ -71,5 +71,8 @@ pacco,spedizione,spedizioni,tracking,traccia,tracciare,consegna,segui,ordine,pos
 ## What's new
 
 ```text
-Aggiornamenti dei corrieri e piccole correzioni.
+• Peek conosce 225 corrieri in più e disegna ciascuno con i suoi colori.
+• Gli ordini Amazon si aprono nel negozio Amazon giusto, anche dai Paesi che non ne hanno uno.
+• Incolla un numero d’ordine Temu: Peek ti mostra dove Temu indica i codici di tracciamento.
+• Se un numero copre più pacchi, Peek te lo dice: aggiungi ciascuno con il suo numero.
 ```

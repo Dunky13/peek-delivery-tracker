@@ -71,5 +71,8 @@ rastrear,rastreo,rastreador,localizar,seguir,paquete,envíos,pedido,pedidos,entr
 ## What's new
 
 ```text
-Actualizaciones de transportistas y pequeñas correcciones.
+• Peek conoce 225 transportistas más y dibuja cada uno con sus colores.
+• Los pedidos de Amazon se abren en la tienda de Amazon correcta, también desde países sin tienda propia.
+• Pega un número de pedido de Temu y Peek te muestra dónde da Temu los números de seguimiento.
+• Si un número cubre varios paquetes, Peek te lo dice: añade cada uno con su propio número.
 ```

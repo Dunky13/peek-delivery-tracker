@@ -71,5 +71,8 @@ paczka,paczki,paczek,przesyłka,przesyłki,kurier,poczta,tracking,status,dostawa
 ## What's new
 
 ```text
-Aktualizacje przewoźników i drobne poprawki.
+• Peek zna o 225 przewoźników więcej i rysuje każdego w jego barwach.
+• Zamówienia Amazon otwierają się we właściwym sklepie Amazon, także w krajach bez własnego sklepu.
+• Wklej numer zamówienia Temu, a Peek pokaże, gdzie Temu podaje numery śledzenia.
+• Gdy jeden numer obejmuje kilka paczek, Peek Ci o tym powie: dodaj każdą z jej własnym numerem.
 ```

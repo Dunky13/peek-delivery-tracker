@@ -73,5 +73,8 @@ livraison,suivre,paquet,commande,poste,courrier,envoi,tracking,tracker,relais,le
 ## What's new
 
 ```text
-Mises à jour des transporteurs et petites corrections.
+• Peek connaît 225 transporteurs de plus et dessine chacun dans ses couleurs.
+• Les commandes Amazon s’ouvrent dans la bonne boutique Amazon, même depuis un pays qui n’a pas la sienne.
+• Colle un numéro de commande Temu : Peek te montre où Temu donne les numéros de suivi.
+• Quand un numéro couvre plusieurs colis, Peek te le dit : ajoute chacun avec son propre numéro.
 ```

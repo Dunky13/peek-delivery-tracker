@@ -71,5 +71,8 @@ paket,pakete,paketverfolgung,tracker,tracking,verfolgen,sendung,lieferung,post,v
 ## What's new
 
 ```text
-Aktualisierungen für die Paketdienste und kleine Verbesserungen.
+• Peek kennt 225 weitere Paketdienste und zeichnet jeden in seinen eigenen Farben.
+• Amazon-Bestellungen öffnen sich im richtigen Amazon-Shop, auch aus Ländern ohne eigenen Shop.
+• Füge eine Temu-Bestellnummer ein, und Peek zeigt dir, wo Temu die Sendungsnummern auflistet.
+• Gehören zu einer Nummer mehrere Pakete, sagt Peek es dir: Füge jedes mit seiner eigenen Nummer hinzu.
 ```
