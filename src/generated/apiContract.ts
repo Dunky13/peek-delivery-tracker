@@ -17014,7 +17014,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "slgtrax",
+      "recognitionRank": 561
     },
     "linkRules": [
       {
@@ -17049,7 +17050,8 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://sonic.pk/tracking"
+    "trackingSearchUrl": "https://sonic.pk/tracking",
+    "trackingUrlTemplate": "https://sonic.pk/tracking?tracking_number={trackingNumber}"
   },
   "spx-br": {
     "displayName": "SPX Express Brazil",
@@ -27525,7 +27527,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "grand-slam-express"
     },
     "trackingUrlTemplate": "https://www.grandslamexpress.in/Web/Track?AwbNo={trackingNumber}",
     "linkRules": [
@@ -27931,7 +27933,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "atlantic-courier"
     },
     "trackingUrlTemplate": "https://atlanticcourier.net/track/{trackingNumber}/",
     "linkRules": [
@@ -29851,6 +29853,43 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.jtexpress.au/tracking"
+  },
+  "lingdong": {
+    "displayName": "Lingdong International",
+    "aliases": [
+      "LDGJ",
+      "Lingdong",
+      "Shenzhen Lingdong International Freight Forwarding",
+      "领东国际",
+      "深圳市领东国际货运代理有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#0171bb",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "lingdong"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "tms.lingdong56.com"
+        ],
+        "pathPattern": "^/trackIndex\\.htm$",
+        "params": [
+          "documentCode"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SZLD\\d{10}$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -30659,7 +30698,8 @@ export const CARRIER_IDS = [
   "chukou1",
   "jumppoint",
   "ycs-logistics",
-  "j-and-t-au"
+  "j-and-t-au",
+  "lingdong"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
