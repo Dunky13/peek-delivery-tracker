@@ -4486,6 +4486,42 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(adapter.fetchUniversal).toHaveBeenCalledTimes(2);
   });
 
+  it('leaves out and absorbs a provider\'s copy that reads a carrier\'s scan as another stage', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    // 17TRACK reads UPS's out-for-delivery scan as an exception.
+    const ups: Scan = { time: '2026-01-05T09:05:52Z', location: 'Example City, EX', description: 'Out For Delivery Today', stage: 'out_for_delivery' };
+    const reread: Scan = { ...ups, description: 'Delivery change requested', stage: 'exception' };
+    const down = new Error('UPS tracking endpoint is unavailable');
+    const adapter = {
+      fetch: vi.fn().mockResolvedValueOnce(result([ups])).mockRejectedValueOnce(down).mockResolvedValueOnce(result([ups])),
+      fetchUniversal: vi.fn().mockResolvedValue({ ...result([reread]), tracking_provider: '17TRACK' }),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    const sync = async () => {
+      await service.syncPackage({ id: 'ups-copy', user_id: 'owner', carrier: 'ups', tracking_number: '1Z0000000000000001',
+        current_stage: 'out_for_delivery', [STORED_EVENT_IDENTITIES]: store.identities() });
+      return ids(store.batch());
+    };
+    const own = providerEventId('ups', ups.time, ups.location!, ups.description);
+    const copy = providerEventId('unknown', reread.time, reread.location!, reread.description);
+
+    expect(await sync()).toEqual([own]);
+    // UPS is down: the copy stays out of the timeline.
+    expect(await sync()).toEqual([]);
+    expect([...store.rows.keys()]).toEqual([own]);
+    // A copy stored before goes with UPS's next answer.
+    store.rows.set(copy, { provider_event_id: copy, occurred_at: ups.time, stage: reread.stage, description: reread.description,
+      location: reread.location, raw_data: { universal_provider: '17TRACK' } });
+    expect(await sync()).toEqual([own]);
+    expect((client.applyTrackingSync.mock.calls.at(-1) as unknown[] | undefined)?.[4]).toEqual([copy]);
+    expect([...store.rows.keys()]).toEqual([own]);
+  });
+
   it('stores once a scan a provider words its own way on a clock two hours early, and records the offset', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const store = eventStore();

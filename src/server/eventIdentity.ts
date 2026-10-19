@@ -340,10 +340,12 @@ function heldByCarrier(row: JsonObject): boolean {
   return source !== '' && source !== 'app' && (source !== UNIVERSAL || providerOf(row) === '');
 }
 
-/** The other source's copy of a classified scan at its instant: stages that agree and no conflicting place. */
+/**
+ * The other source's copy of a classified scan at its instant, from no conflicting place, in
+ * whatever stage it reads the scan (17TRACK's exception for UPS's out for delivery).
+ */
 function copies(scan: JsonObject, row: JsonObject): boolean {
-  return instantOf(scan) === instantOf(row) && stageOf(scan) !== '' && stagesAgree(stageOf(row), stageOf(scan))
-    && !placesConflict(placeWords(scan), placeWords(row));
+  return instantOf(scan) === instantOf(row) && stageOf(scan) !== '' && !placesConflict(placeWords(scan), placeWords(row));
 }
 
 /**
@@ -359,8 +361,8 @@ function copies(scan: JsonObject, row: JsonObject): boolean {
  * an instant no scan of the batch shows matches when one of the two is dated
  * to the second or minute the other falls in (UPS to the second, a provider to
  * the minute): with the same wording, or else alone in other wording when a
- * provider's copy to the minute meets a carrier's scan to the second, with a
- * stage that agrees and no conflicting place (FedEx's own wording of a scan a
+ * provider's copy to the minute meets a carrier's scan to the second, in any
+ * stage and from no conflicting place (FedEx's own wording of a scan a
  * provider copied). Failing that, the same wording matches a
  * whole number of quarter hours up to 14 h away: the same scan read in the
  * wrong zone. Failing that, a carrier's row for a universal scan, or a
@@ -379,10 +381,11 @@ function copies(scan: JsonObject, row: JsonObject): boolean {
  * its time. At the same instant a universal scan still rewrites its own row,
  * so a row DPD took over follows whichever source answered last.
  *
- * At each instant of the batch's carrier scans, every other universal row with
- * a stage that agrees with one of those classified scans, and no conflicting
- * place, copies one of them: a provider that reads a scan twice (Speedaf's
- * ParcelsApp rows), or two providers that each copied it (InPost). A scan
+ * At each instant of the batch's classified carrier scans, every other
+ * universal row from no conflicting place copies one of them, in whatever
+ * stage it reads it: a provider that reads a scan twice (Speedaf's ParcelsApp
+ * rows), two providers that each copied it (InPost), or one that reads it as
+ * another stage (17TRACK's exception for UPS's out for delivery). A scan
  * that matched no row takes one over, in its own stage when one is, and the
  * others are absorbed. Which of several scans at the instant takes which copy
  * does not matter, as the scan rewrites the row; the carrier's own scans there
@@ -447,11 +450,11 @@ export function sharedScans(
     const place = placeWords(event);
     const truncated = occupied.has(at) ? [] : eligible.filter((row) => sameTruncated(at, instantOf(row)) && !shown.has(instantOf(row)));
     const minuted = truncated.filter((row) => sameWording(wordingOf(row), wording));
-    // Other wording only for a provider's copy to the minute of a carrier's scan to the second.
+    // Other wording, and any stage, only for a provider's copy to the minute of a carrier's scan to the second.
     // An earlier carrier's relay of a delivery scan (India Post's, Nova Poshta's) is no such pair.
     const restaged = stageOf(event) === '' ? [] : truncated.filter((row) => (
       (sourceOf(identity(row)) === UNIVERSAL) !== universal && (universal ? at : instantOf(row)) % MINUTE_MS === 0
-      && stagesAgree(stageOf(row), stageOf(event)) && !placesConflict(place, placeWords(row))
+      && !placesConflict(place, placeWords(row))
     ));
     const zoned = occupied.has(at) ? [] : eligible.filter((row) => (
       zoneApart(at, instantOf(row)) && !shown.has(instantOf(row)) && !placesConflict(place, placeWords(row))
