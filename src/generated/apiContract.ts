@@ -24191,7 +24191,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "united-delivery-service",
+      "recognitionRank": 793
     },
     "trackingUrlTemplate": "https://www.uniteddeliveryservice.com/track/barcode/{trackingNumber}",
     "linkRules": [
@@ -29209,6 +29210,161 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [],
     "trackingSearchUrl": "https://www.fedexfreight.com/en-us/tracking"
+  },
+  "ait-worldwide": {
+    "displayName": "AIT Worldwide Logistics",
+    "aliases": [
+      "AIT",
+      "AIT Worldwide"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#0055a5",
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://fastrak.aitworldwide.com/?trackingnumber={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "fastrak.aitworldwide.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "trackingnumber"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://fastrak.aitworldwide.com/"
+  },
+  "qwintry": {
+    "displayName": "Qwintry",
+    "aliases": [
+      "Qwintry Logistics",
+      "Qwintry Air"
+    ],
+    "countries": [
+      "US",
+      "RU"
+    ],
+    "color": "#ef7d00",
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://logistics.qwintry.com/track?tracking={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "logistics.qwintry.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "tracking"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^QR\\d{8}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://logistics.qwintry.com/"
+  },
+  "skypostal": {
+    "displayName": "SkyPostal",
+    "aliases": [
+      "Sky Postal"
+    ],
+    "countries": [
+      "US",
+      "BR",
+      "CL",
+      "CO",
+      "CR",
+      "EC",
+      "MX",
+      "PE"
+    ],
+    "color": "#fcc94f",
+    "selectable": true,
+    "timezone": "America/New_York",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking.skypostal.com/?trck_number={trackingNumber}&lng_code=ENG",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.skypostal.com"
+        ],
+        "pathPattern": "^/(?:single-tracking\\.aspx)?$",
+        "params": [
+          "trck_number"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SKAMZUS\\d{10}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^SP\\d{11}BR$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://tracking.skypostal.com/"
+  },
+  "team-worldwide": {
+    "displayName": "Team Worldwide",
+    "aliases": [
+      "TeamWW"
+    ],
+    "countries": [
+      "US"
+    ],
+    "color": "#9c1d1d",
+    "selectable": true,
+    "timezone": "America/Chicago",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.teamww.com",
+          "teamww.com"
+        ],
+        "pathPattern": "^/wp-content/tracking/teamTrac\\.php$",
+        "params": [
+          "hbl"
+        ]
+      },
+      {
+        "domains": [
+          "www.teamww.com",
+          "teamww.com"
+        ],
+        "pathPattern": "^/tracking/team_trac_results\\.php$",
+        "params": [
+          "hbl"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://www.teamww.com/tracking/team-trac/"
   }
 } as const;
 
@@ -30006,7 +30162,11 @@ export const CARRIER_IDS = [
   "hercules-freight",
   "gaash",
   "orian",
-  "fedex-freight"
+  "fedex-freight",
+  "ait-worldwide",
+  "qwintry",
+  "skypostal",
+  "team-worldwide"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
