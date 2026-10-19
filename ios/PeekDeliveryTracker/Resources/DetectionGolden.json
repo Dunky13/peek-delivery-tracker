@@ -10915,6 +10915,19 @@
     ]
   },
   {
+    "input": "1021107502202813903809",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "austrian-post",
+      "usps",
+      "estafeta"
+    ],
+    "asked": [
+      "austrian-post"
+    ]
+  },
+  {
     "input": "102161766907",
     "carrier": "unknown",
     "confidence": "low",
@@ -11469,6 +11482,19 @@
   },
   {
     "input": "1044860547245344525223",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "austrian-post",
+      "usps",
+      "estafeta"
+    ],
+    "asked": [
+      "austrian-post"
+    ]
+  },
+  {
+    "input": "1046752500242253902768",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -13903,26 +13929,6 @@
       "sto",
       "j-and-t",
       "zto"
-    ]
-  },
-  {
-    "input": "1191001292",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "dhl",
-      "mondial-relay",
-      "relais-colis",
-      "tipsa",
-      "estafeta",
-      "packeta",
-      "dhl-ecommerce-es",
-      "gls-es"
-    ],
-    "asked": [
-      "relais-colis",
-      "packeta",
-      "dhl-ecommerce-es"
     ]
   },
   {
@@ -33214,30 +33220,6 @@
     "confidence": "high",
     "candidates": [
       "australia-post"
-    ]
-  },
-  {
-    "input": "340100005756",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colis-prive",
-      "mrw",
-      "brt",
-      "sf-express",
-      "sto",
-      "zto",
-      "j-and-t",
-      "lbc-express",
-      "metropolitan-warehouse"
-    ],
-    "asked": [
-      "brt",
-      "colis-prive",
-      "sto",
-      "j-and-t",
-      "zto"
     ]
   },
   {
@@ -76159,6 +76141,17 @@
     ]
   },
   {
+    "input": "KTMKTM12345-1234567",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "upaya"
+    ],
+    "asked": [
+      "upaya"
+    ]
+  },
+  {
     "input": "KTMKTM8304-1658055",
     "carrier": "unknown",
     "confidence": "low",
@@ -76167,7 +76160,8 @@
       "upaya"
     ],
     "asked": [
-      "colis-prive"
+      "colis-prive",
+      "upaya"
     ]
   },
   {

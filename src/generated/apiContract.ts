@@ -16862,7 +16862,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Kyiv",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sat-ukraine",
+      "recognitionRank": 564
     },
     "trackingUrlTemplate": "https://www.sat.ua/tracking/?number={trackingNumber}",
     "linkRules": [
@@ -17365,7 +17366,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tirupati-courier",
+      "recognitionRank": 711
     },
     "linkRules": [
       {
@@ -21640,7 +21642,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kathmandu",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "upaya",
+      "recognitionRank": 562
     },
     "trackingUrlTemplate": "https://upaya.com.np/track/?tracking={trackingNumber}",
     "linkRules": [
