@@ -3009,7 +3009,7 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BNI|BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ],
@@ -18508,7 +18508,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Bangkok",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "nim-express",
+      "recognitionRank": 631
     },
     "trackingUrlTemplate": "https://www.nimexpress.com/web/p/tracking?h_i={trackingNumber}",
     "linkRules": [
@@ -19520,7 +19521,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Asuncion",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "aex-paraguay",
+      "recognitionRank": 937
     },
     "trackingUrlTemplate": "https://www.aex.com.py/web/tracking.php?guia={trackingNumber}",
     "linkRules": [
@@ -19654,7 +19656,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Guatemala",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "forza-delivery",
+      "recognitionRank": 633
     },
     "trackingUrlTemplate": "https://rastreo.forzadelivery.com/{trackingNumber}",
     "linkRules": [
@@ -19849,7 +19852,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pullman-cargo",
+      "recognitionRank": 638
     },
     "trackingUrlTemplate": "https://pullmancargo.cl/seguimiento/{trackingNumber}",
     "linkRules": [
@@ -22582,7 +22586,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Ouagadougou",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "la-poste-burkina-faso",
+      "recognitionRank": 635
     },
     "linkRules": [
       {
@@ -23916,7 +23921,20 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "postmedia-parcel-services",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "validator": "internationalPostcode",
+          "label": "Delivery postal code",
+          "type": "text",
+          "help": "Postmedia Parcel Services shows a parcel only with the recipient's postal code.",
+          "pattern": "^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$",
+          "maxLength": 7,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ]
     },
     "linkRules": [
       {
@@ -23924,7 +23942,7 @@ export const CARRIER_CAPABILITIES = {
           "postmediaparcelservices.com",
           "www.postmediaparcelservices.com"
         ],
-        "pathPattern": "^/?$",
+        "pathPattern": "^/(?:fr/?)?(?:track-your-shipment/?)?$",
         "params": [
           "bniTrackingID"
         ]
@@ -25338,7 +25356,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "icc-worldwide",
+      "recognitionRank": 628
     },
     "trackingUrlTemplate": "https://www.iccworld.com/track-result.php?track_no={trackingNumber}",
     "linkRules": [
@@ -28278,7 +28297,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "makati-express",
+      "recognitionRank": 632
     },
     "linkRules": [],
     "detectionRules": [
@@ -28287,7 +28307,8 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       }
     ],
-    "trackingSearchUrl": "https://makati-express.com/tracking/"
+    "trackingSearchUrl": "https://makati-express.com/tracking/",
+    "trackingUrlTemplate": "https://makati-express.com/tracking/?awbnumber={trackingNumber}"
   },
   "netpost-vn": {
     "displayName": "Netpost",
@@ -29083,7 +29104,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "am-home-delivery",
+      "recognitionRank": 626
     },
     "trackingUrlTemplate": "https://www.amtrucking.com/track-number.php?cnumber={trackingNumber}",
     "linkRules": [
@@ -29487,7 +29509,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "team-worldwide",
+      "recognitionRank": 627
     },
     "trackingUrlTemplate": "https://www.teamww.com/wp-content/tracking/teamTrac.php?hbl={trackingNumber}",
     "linkRules": [
