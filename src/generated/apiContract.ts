@@ -11738,11 +11738,12 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "maritime-ontario"
     },
     "linkRules": [],
     "detectionRules": [],
-    "trackingSearchUrl": "https://www.m-o.com/quick-track-form/"
+    "trackingSearchUrl": "https://www.m-o.com/quick-track-form/",
+    "trackingUrlTemplate": "https://www.m-o.com/quick-track-form/?t={trackingNumber}"
   },
   "naqel": {
     "displayName": "Naqel Express",
@@ -26541,7 +26542,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Los_Angeles",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "hovership",
+      "recognitionRank": 687
     },
     "trackingUrlTemplate": "https://www.hovership.com/track/{trackingNumber}/",
     "linkRules": [
@@ -28583,7 +28585,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "eparcel-kr",
+      "recognitionRank": 624
     },
     "trackingUrlTemplate": "https://www.eparcel.kr/Track/Result?mode=0&ids={trackingNumber}&lang=en-US",
     "linkRules": [
@@ -28945,7 +28948,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mrl-global"
     },
     "trackingUrlTemplate": "https://www.mrlglobal.com/tracking/?connoteno={trackingNumber}",
     "linkRules": [
@@ -29368,7 +29371,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ait-worldwide",
+      "recognitionRank": 625
     },
     "trackingUrlTemplate": "https://fastrak.aitworldwide.com/?trackingnumber={trackingNumber}",
     "linkRules": [
@@ -29636,10 +29640,21 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "chukou1",
+      "recognitionRank": 688
     },
-    "trackingUrlTemplate": "https://www.chukou1.com/LogistictsTrack.aspx?trackNo={trackingNumber}",
+    "trackingUrlTemplate": "https://ec.chukou1.com/track?track_number={trackingNumber}",
     "linkRules": [
+      {
+        "domains": [
+          "ec.chukou1.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "track_number"
+        ],
+        "ownNumbersOnly": true
+      },
       {
         "domains": [
           "www.chukou1.com",
@@ -29648,7 +29663,8 @@ export const CARRIER_CAPABILITIES = {
         "pathPattern": "^/LogistictsTrack\\.aspx$",
         "params": [
           "trackNo"
-        ]
+        ],
+        "ownNumbersOnly": true
       }
     ],
     "detectionRules": [
@@ -29657,7 +29673,7 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       }
     ],
-    "trackingSearchUrl": "https://www.chukou1.com/LogistictsTrack.aspx"
+    "trackingSearchUrl": "https://ec.chukou1.com/"
   },
   "jumppoint": {
     "displayName": "Jumppoint",
