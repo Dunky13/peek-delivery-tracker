@@ -25,6 +25,7 @@ final class LocalizationTests: XCTestCase {
             XCTAssertEqual(localizer.eventDescription("Shipment arrived at a Dachser facility"), localizer.text("event.carrier.facilityArrival", ["carrier": "Dachser"]))
             XCTAssertEqual(localizer.eventDescription("Scanned by Sophie at dock 12"), "Scanned by Sophie at dock 12")
             XCTAssertEqual(localizer.trackingFailureMessage("carrier:input_required"), localizer.text("tracking.failure.input"))
+            XCTAssertEqual(localizer.trackingFailureMessage("carrier:several_parcels"), localizer.text("tracking.failure.severalParcels"))
             XCTAssertEqual(localizer.trackingFailureMessage("HTTP 403 private diagnostic"), localizer.text("detail.trackingUnavailable"))
             XCTAssertEqual(localizer.trackingFailureMessage("carrier:new_kind"), localizer.text("detail.trackingUnavailable"))
         }

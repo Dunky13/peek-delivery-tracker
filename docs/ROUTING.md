@@ -117,7 +117,7 @@ A failed source waits before it is retried for that parcel:
 | Failure | First wait | Backs off to |
 | --- | --- | --- |
 | Transport, and `no_history` (a provider answered but has nothing, or the carrier lists the parcel without scans or does not know it yet) | 15 min | 6 h |
-| Verification, schema, or a number or input the source refuses (`invalid_input`); not found by a carrier's own adapter | 1 h | 6 h |
+| Verification, schema, or a number or input the source refuses (`invalid_input`), as one it does not issue or one it finds several parcels under; not found by a carrier's own adapter | 1 h | 6 h |
 | Not found by a universal provider | 24 h | 24 h |
 
 A longer `Retry-After` is honoured, up to 7 days. A carrier often doesn't know a label

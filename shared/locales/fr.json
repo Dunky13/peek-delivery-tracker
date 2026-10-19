@@ -823,6 +823,7 @@
   "tracking.failure.maintenance": "Le service de suivi du transporteur est en maintenance. Réessaie plus tard.",
   "tracking.failure.notFound": "Le transporteur ne trouve pas encore ce colis. Vérifie les informations de suivi ou réessaie plus tard.",
   "tracking.failure.rateLimited": "Le transporteur limite les consultations du suivi. Patiente avant de réessayer.",
+  "tracking.failure.severalParcels": "Ce numéro de suivi regroupe plusieurs colis. Ajoute chaque colis avec son propre numéro.",
   "event.carrier.incomplete": "Informations de livraison incomplètes",
   "event.carrier.lockerFailed": "Livraison en consigne infructueuse",
   "event.carrier.shopFailed": "Livraison en point de retrait infructueuse",

@@ -28,5 +28,7 @@ classifying carrier wording in the UI. See [LOCALIZATION.md](../../docs/LOCALIZA
 ## Carrier errors
 
 Typed carrier failures are stored as `carrier:<kind>` in `sync_error`, and the map picks
-localized guidance for each. Unknown codes get generic copy. Full diagnostics stay in the
-server audit. Only offer "edit input" when the carrier actually has editable inputs.
+localized guidance for each. A number the carrier finds several parcels under is stored as
+`carrier:several_parcels`, so the owner is asked to add each parcel's own number. Unknown
+codes get generic copy. Full diagnostics stay in the server audit. Only offer "edit input"
+when the carrier actually has editable inputs.

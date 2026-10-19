@@ -823,6 +823,7 @@
   "tracking.failure.maintenance": "El servicio de seguimiento está en mantenimiento. Inténtalo más tarde.",
   "tracking.failure.notFound": "El transportista aún no encuentra este envío. Revisa los datos o inténtalo más tarde.",
   "tracking.failure.rateLimited": "El transportista está limitando las consultas. Espera antes de volver a intentarlo.",
+  "tracking.failure.severalParcels": "Este número de seguimiento agrupa varios paquetes. Añade cada paquete con su propio número.",
   "event.carrier.incomplete": "Información de entrega incompleta",
   "event.carrier.lockerFailed": "Entrega en taquilla fallida",
   "event.carrier.shopFailed": "Entrega en punto de recogida fallida",

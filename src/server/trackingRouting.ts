@@ -27,7 +27,7 @@ import { getRecognitionPriorities } from './recognitionRanking';
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
 // no_history: a universal provider, or the carrier listing the parcel without scans, answered without any history.
-// invalid_input: the source refused the number or an input as one it does not issue.
+// invalid_input: the source refused the number or an input as one it does not issue, or found several parcels under it.
 export type RoutingFailureKind = 'rate_limited' | 'not_found' | 'no_history' | 'input_required' | 'invalid_input' | 'verification' | 'schema' | 'transport';
 export interface ProviderHealth {
   acquireTrackingProvider(provider: string): Promise<{ token: string | null; retry_at: string }>;
@@ -147,6 +147,8 @@ export function routingFailure(error: unknown): { kind: RoutingFailureKind; retr
     if (kind === 'input_required') return { kind: 'input_required', retryAfterMs: 0 };
     // A number the carrier does not issue waits as a parser failure does: no sooner retry can succeed.
     if (kind === 'schema' || kind === 'invalid_input') return { kind, retryAfterMs: 0 };
+    // So does one it finds several parcels under, until the owner adds each parcel's own number.
+    if (trackingFailureCode(error) === 'carrier:several_parcels') return { kind: 'invalid_input', retryAfterMs: 0 };
     return { kind: 'transport', retryAfterMs };
   }
   let current = error;

@@ -541,6 +541,21 @@ describe('persistent tracking routing', () => {
     expect(direct).toHaveBeenCalledOnce();
     expect(result.correction).toBeUndefined();
   });
+  it('waits an hour, as for a refused number, on a number its carrier finds several parcels under', async () => {
+    const { router, direct, universal } = setup();
+    direct.mockRejectedValue(new IndeterminateError('Australia Post', 'Several articles', { reason: 'several_parcels' }));
+    universal.mockRejectedValue(new NotFoundError('Provider'));
+    const deferred = await router.fetch(parcel({ carrier: 'australia-post' }), false).catch((error: unknown) => error);
+    expect(deferred).toBeInstanceOf(RoutingDeferred);
+    const routing = (deferred as RoutingDeferred).routing;
+    expect(routing.failures['australia-post']).toEqual({ kind: 'invalid_input', count: 1,
+      user_error: 'carrier:several_parcels', retry_at: '2026-09-10T13:00:00.000Z' });
+    // Not asked again before then.
+    const next = setup(new Date('2026-09-10T12:30:00Z'));
+    next.universal.mockRejectedValue(new NotFoundError('Provider'));
+    await next.router.fetch(parcel({ carrier: 'australia-post', carrier_data: { routing } }), false).catch(() => null);
+    expect(next.direct).not.toHaveBeenCalled();
+  });
   it('uses a universal carrier hint only after a matching direct lookup succeeds', async () => {
     const { router, direct } = setup();
     const result = await router.fetch(parcel({ carrier_data: { routing: state({ discovered_carrier: 'ups' }) } }), false);
@@ -1764,6 +1779,7 @@ describe('routingFailure with carrier package errors', () => {
     expect(routingFailure(new errors.InputRequiredError('Heppner', 'the delivery postcode'))).toEqual({ kind: 'input_required', retryAfterMs: 0 });
     expect(routingFailure(new errors.InvalidInputError('Evri', 'Evri requires a 16-character tracking number'))).toEqual({ kind: 'invalid_input', retryAfterMs: 0 });
     expect(routingFailure(new errors.IndeterminateError('Colisweb'))).toEqual({ kind: 'transport', retryAfterMs: 0 });
+    expect(routingFailure(new errors.IndeterminateError('Australia Post', undefined, { reason: 'several_parcels' }))).toEqual({ kind: 'invalid_input', retryAfterMs: 0 });
     expect(routingFailure(new Error('wrapped', { cause: new errors.NotFoundError('CTT') }))).toEqual({ kind: 'not_found', retryAfterMs: 0 });
     // Errors outside the taxonomy keep the historical status-based classification.
     expect(routingFailure(Object.assign(new Error('legacy'), { status: 429, retryAfterMs: 1_000 }))).toEqual({ kind: 'rate_limited', retryAfterMs: 1_000 });
