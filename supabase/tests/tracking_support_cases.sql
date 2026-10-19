@@ -278,3 +278,42 @@ begin
 end;
 $$;
 rollback;
+
+-- An Add-sheet case left for a carrier recognition asks only through a browser waits an hour
+-- for that carrier's checks; one it tracks directly within the hour, leaving no gap, is ignored.
+begin;
+do $$
+declare
+  pending jsonb := '{"configured_carrier":"unknown", "detection_carrier":"unknown", "detection_candidates":["fedex","dhl"], "reasons":["ambiguous_shape","recognition_unknown"], "browser_pending":true}';
+  settled jsonb := '{"outcome":"updated", "source_carrier":"fedex", "support_lookup_number":"HELDTEST1234", "support_direct_progress":true, "support_settled":true}';
+begin
+  perform public.record_tracking_support_observation('HELDTEST1234', pending, '{}', '2026-10-19T10:00:00Z', 'detection:held');
+  assert (select held_until = '2026-10-19T11:00:00Z'::timestamptz and fix_status = 'open'
+    from public.tracking_support_cases where tracking_number = 'HELDTEST1234'), 'A pending browser recognition holds the case';
+  -- Progress that settles nothing, or comes from a provider, leaves it open.
+  perform public.record_tracking_support_observation('HELDTEST1234', '{"configured_carrier":"fedex"}',
+    settled - 'support_settled', '2026-10-19T10:10:00Z', 'test:held-unsettled');
+  perform public.record_tracking_support_observation('HELDTEST1234', '{"configured_carrier":"fedex"}',
+    settled || '{"support_provider":"test-provider"}', '2026-10-19T10:12:00Z', 'test:held-provider');
+  assert (select fix_status = 'open' from public.tracking_support_cases where tracking_number = 'HELDTEST1234');
+  perform public.record_tracking_support_observation('HELDTEST1234', '{"configured_carrier":"fedex"}',
+    settled, '2026-10-19T10:16:00Z', 'test:held-settled');
+  assert (select fix_status = 'ignored' and notes like 'fedex, %' and direct_verified_carrier = 'fedex'
+    from public.tracking_support_cases where tracking_number = 'HELDTEST1234'), 'The carrier confirming it within the hour closes it';
+
+  -- After the hour, the case stays open for review.
+  perform public.record_tracking_support_observation('LATETEST1234', pending, '{}', '2026-10-19T10:00:00Z', 'detection:late');
+  perform public.record_tracking_support_observation('LATETEST1234', '{"configured_carrier":"fedex"}',
+    settled || '{"support_lookup_number":"LATETEST1234"}', '2026-10-19T11:01:00Z', 'test:late-settled');
+  assert (select fix_status = 'open' and direct_verified_carrier = 'fedex'
+    from public.tracking_support_cases where tracking_number = 'LATETEST1234'), 'A hold ends after an hour';
+
+  -- Without a pending browser recognition, a case is not held, and the same progress leaves it open.
+  perform public.record_tracking_support_observation('OPENTEST1234', pending - 'browser_pending', '{}', '2026-10-19T10:00:00Z', 'detection:open');
+  perform public.record_tracking_support_observation('OPENTEST1234', '{"configured_carrier":"fedex"}',
+    settled || '{"support_lookup_number":"OPENTEST1234"}', '2026-10-19T10:16:00Z', 'test:open-settled');
+  assert (select held_until is null and fix_status = 'open'
+    from public.tracking_support_cases where tracking_number = 'OPENTEST1234'), 'Only a pending browser recognition holds a case';
+end;
+$$;
+rollback;

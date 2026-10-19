@@ -41,6 +41,35 @@ describe('detection support retention', () => {
   });
 });
 
+describe('a case held for a carrier recognition asks through a browser', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  // A 12-digit number: FedEx's shape, which recognition asks FedEx about only through a browser.
+  it.each([
+    { name: 'FedEx was not asked, as when a provider already tracks the number', asked: undefined, unanswered: undefined, held: true },
+    { name: 'FedEx could not answer', asked: ['fedex'], unanswered: ['fedex'], held: true },
+    { name: 'FedEx answered it does not know the number', asked: ['fedex'], unanswered: undefined, held: false },
+  ] as const)('holds the case when $name: $held', async ({ asked, unanswered, held }) => {
+    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const client = new SupabaseServiceClient('https://database.example', 'service-key');
+    const retain = vi.spyOn(client, 'recordTrackingSupportObservation').mockResolvedValue(undefined);
+    await retainDetectionSupport(client, { trackingNumber: '123456789012', carrier: 'unknown',
+      ...(asked ? { asked: [...asked] } : {}), ...(unanswered ? { unanswered: [...unanswered] } : {}) });
+    expect(retain.mock.calls[0][1].browser_pending).toBe(held || undefined);
+  });
+
+  it('settles it when such a carrier tracks the number directly and leaves no gap', () => {
+    const fedex = { tracking_number: '123456789012', carrier: 'fedex' };
+    expect(trackingSupportEvidence(fedex, progress, 'fedex', 'updated', false).support_settled).toBe(true);
+    // DHL is asked over HTTP: its progress on a number recognition missed is a gap.
+    expect(trackingSupportEvidence({ ...fedex, carrier: 'dhl' }, progress, 'dhl', 'updated', false).support_settled).toBe(false);
+    // A number whose shape no rule claims stays a gap whoever tracks it.
+    expect(trackingSupportEvidence({ tracking_number: 'ZZTEST1234', carrier: 'fedex' }, progress, 'fedex', 'updated', false)
+      .support_settled).toBe(false);
+    expect(trackingSupportEvidence(fedex, progress, 'fedex', 'waiting', false).support_settled).toBe(false);
+  });
+});
+
 describe('tracking support context', () => {
   it('keeps an unknown shape visible even when a carrier was selected manually', () => {
     expect(trackingSupportContext('zz-test 1234', 'ups')).toEqual({
@@ -117,13 +146,13 @@ describe('tracking support context', () => {
 describe('tracking support evidence', () => {
   it.each(['updated', 'unchanged'])('verifies accepted direct progress with a source timestamp when %s', (outcome) => {
     expect(trackingSupportEvidence(parcel, progress, 'ups', outcome, false)).toEqual({
-      support_lookup_number: number, support_provider: null, support_direct_progress: true,
+      support_lookup_number: number, support_provider: null, support_direct_progress: true, support_settled: true,
     });
   });
 
   it('keeps successful provider tracking from verifying a direct fix', () => {
     expect(trackingSupportEvidence(parcel, { ...progress, tracking_provider: 'ParcelsApp' }, 'unknown', 'updated', false))
-      .toEqual({ support_lookup_number: number, support_provider: 'ParcelsApp', support_direct_progress: false });
+      .toEqual({ support_lookup_number: number, support_provider: 'ParcelsApp', support_direct_progress: false, support_settled: false });
     expect(trackingSupportEvidence(parcel, { ...progress, tracking_provider: 'ParcelsApp' }, 'ups', 'updated', false)
       .support_direct_progress).toBe(false);
   });
@@ -146,7 +175,7 @@ describe('tracking support evidence', () => {
   it('counts persisted Royal Mail history as direct progress', () => {
     const royalParcel = { tracking_number: 'RR123456785GB', carrier: 'royal-mail' };
     expect(trackingSupportEvidence(royalParcel, progress, 'royal-mail', 'updated', false)).toEqual({
-      support_lookup_number: royalParcel.tracking_number, support_provider: null, support_direct_progress: true,
+      support_lookup_number: royalParcel.tracking_number, support_provider: null, support_direct_progress: true, support_settled: true,
     });
   });
 
@@ -165,7 +194,7 @@ describe('tracking support evidence', () => {
     ] as const) {
       const evidence = trackingSupportEvidence(input, result, 'swiss-post', 'updated', false);
       expect(evidence).toEqual({
-        support_lookup_number: deliveryNumber, support_provider: null, support_direct_progress: true,
+        support_lookup_number: deliveryNumber, support_provider: null, support_direct_progress: true, support_settled: true,
       });
       expect(evidence.support_lookup_number).not.toBe(input.tracking_number);
     }

@@ -1,9 +1,9 @@
 import 'server-only';
 
 import { randomUUID } from 'node:crypto';
-import type { CarrierResult } from 'universal-parcel-scraper';
+import { CARRIER_DEFINITIONS, recognitionCandidates, type CarrierId, type CarrierResult } from 'universal-parcel-scraper';
 import { latestResultTime } from 'universal-parcel-scraper/app';
-import type { ApiCarrierDetectionResponse } from '../generated/apiContract';
+import type { ApiCarrierDetectionResponse, ApiCarrierId } from '../generated/apiContract';
 import { detectCarrierMatch } from '../lib/carriers';
 import { directHistoryNumber } from './directLocalHistory';
 import { captureOperationalError, errorType, logOperationalEvent } from './observability';
@@ -51,6 +51,11 @@ export function trackingSupportContext(trackingNumber: string, configuredCarrier
   };
 }
 
+/** Whether the Add sheet's recognition asks the carrier over plain HTTP; any other it asks through a browser, if at all. */
+function recognizedOverHttp(carrier: string): boolean {
+  return CARRIER_DEFINITIONS[carrier as CarrierId]?.tracking.recognitionRank != null;
+}
+
 /** Keep unresolved submissions even when the visitor never saves a parcel. */
 export async function retainDetectionSupport(
   client: SupabaseServiceClient,
@@ -60,6 +65,13 @@ export async function retainDetectionSupport(
   const choice = (answer.recognized?.length ?? 0) > 1;
   const context = trackingSupportContext(answer.trackingNumber, answer.carrier);
   context.reasons = [...context.reasons as string[], choice ? 'recognition_choice' : 'recognition_unknown'];
+  // A carrier recognition asks only through a browser, which it skips once a universal provider
+  // tracks the number, went unasked or could not answer: the parcel's own checks of it may still
+  // confirm the number, so the case is held for them.
+  if (!choice && recognitionCandidates(answer.trackingNumber, { phase: 'browser' }).some(({ carrier }) =>
+    !answer.asked?.includes(carrier as ApiCarrierId) || answer.unanswered?.includes(carrier as ApiCarrierId))) {
+    context.browser_pending = true;
+  }
   const outcome = choice ? 'detection_choice' : 'detection_unknown';
   logOperationalEvent('carrier_detection_support', {
     tracking_number: answer.trackingNumber, outcome,
@@ -89,11 +101,16 @@ export function trackingSupportEvidence(
 ): JsonObject {
   const number = directHistoryNumber(parcel, result);
   const provider = typeof result.tracking_provider === 'string' ? result.tracking_provider.slice(0, 80) : null;
+  const directProgress = ['updated', 'unchanged'].includes(outcome) && !preserveSummary && !provider
+    && directCarrier(sourceCarrier) && hasRoutingProgress(result)
+    && latestResultTime(result, sourceCarrier) > 0;
   return {
     support_lookup_number: typeof number === 'string' ? number : null,
     support_provider: provider,
-    support_direct_progress: ['updated', 'unchanged'].includes(outcome) && !preserveSummary && !provider
-      && directCarrier(sourceCarrier) && hasRoutingProgress(result)
-      && latestResultTime(result, sourceCarrier) > 0,
+    support_direct_progress: directProgress,
+    // A carrier the Add sheet's recognition could not ask over HTTP tracked the number, which, filed
+    // under it, leaves no gap: what a held case waits for.
+    support_settled: directProgress && typeof number === 'string' && !recognizedOverHttp(sourceCarrier)
+      && (trackingSupportContext(number, sourceCarrier, sourceCarrier).reasons as string[]).length === 0,
   };
 }

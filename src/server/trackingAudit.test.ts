@@ -54,7 +54,7 @@ describe('tracking support audit persistence', () => {
         p_steps: [expect.objectContaining({
           step: 'complete', status: 'succeeded', details: {
             outcome: 'updated', support_lookup_number: 'HL123456789FR',
-            support_provider: null, support_direct_progress: true,
+            support_provider: null, support_direct_progress: true, support_settled: false,
           },
         })],
       },
@@ -95,6 +95,7 @@ describe('tracking support audit persistence', () => {
         p_attempt_id: audit.attemptId, p_values: expect.objectContaining({ outcome: 'updated', source_carrier: 'unknown' }),
         p_steps: [expect.objectContaining({ details: {
           outcome: 'updated', support_lookup_number: number, support_provider: 'ParcelsApp', support_direct_progress: false,
+          support_settled: false,
         } })],
       }),
     });

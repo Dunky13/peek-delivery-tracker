@@ -155,13 +155,20 @@ Invalid, refused and cancelled checks do not create observations. A failed backl
 does not change the detection answer. `carrier_detection_support` logs the number and
 the carriers asked, unanswered or offered as choices.
 
+Recognition asks some carriers, FedEx among them, only through a browser, and skips them
+once a universal provider already tracks the number. A case an unrecognized number opens
+while such a carrier went unasked or could not answer is held for an hour (`held_until`),
+so the parcel's first checks can ask it. If a carrier recognition does not ask over plain
+HTTP tracks the number directly within that hour, leaving no shape or carrier gap, the case
+is marked `ignored` with a note. Otherwise it is reviewed once the hour is over.
+
 Review open cases:
 
 ```sql
 select id, tracking_number, reasons, detection_candidates, seen_count, fallback_count,
        last_outcome, last_provider, first_seen, last_seen, fix_status, fix_reference
 from public.tracking_support_cases
-where fix_status = 'open'
+where fix_status = 'open' and (held_until is null or held_until <= now())
 order by last_seen desc;
 ```
 

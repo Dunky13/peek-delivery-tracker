@@ -47,7 +47,7 @@ where reviewed_at is null and first_seen >= :since
 order by count desc, carrier, wording
 limit 50;
 
-\echo '== Support cases: opened in the window and still open'
+\echo '== Support cases: opened in the window, or held until then, and still open'
 select configured_carrier as carrier, detection_carrier as detected, array_to_string(reasons, ',') as reasons,
        array_to_string(array_remove(array[
          case when reasons && array['unknown_shape', 'ambiguous_shape', 'generic_postal', 'carrier_mismatch',
@@ -56,7 +56,8 @@ select configured_carrier as carrier, detection_carrier as detected, array_to_st
        count(*) as cases,
        array_to_string((array_agg(distinct private.tracking_number_pattern(tracking_number)))[1:3], '; ') as patterns
 from public.tracking_support_cases
-where first_seen >= :since and fix_status = 'open'
+-- A case held for a carrier recognition asks only through a browser waits until its hold ends.
+where coalesce(held_until, first_seen) >= :since and coalesce(held_until, first_seen) <= now() and fix_status = 'open'
 group by 1, 2, 3, 4
 order by cases desc, carrier;
 
