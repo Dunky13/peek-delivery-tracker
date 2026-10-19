@@ -9085,7 +9085,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "a-duie-pyle",
+      "recognitionRank": 736
     },
     "trackingUrlTemplate": "https://aduiepyle.com/resources/shipment-status/?tracking={trackingNumber}",
     "linkRules": [
@@ -10794,7 +10795,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "forward-air",
+      "recognitionRank": 755
     },
     "trackingUrlTemplate": "https://www.forwardair.com/tracking?numbers={trackingNumber}",
     "linkRules": [
@@ -11117,7 +11119,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ics-courier"
     },
     "trackingUrlTemplate": "https://www.icscourier.ca/online-services/parcel-tracking.aspx?trackNums={trackingNumber}",
     "linkRules": [
@@ -12149,7 +12151,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pitt-ohio",
+      "recognitionRank": 737
     },
     "trackingUrlTemplate": "https://pittohio.com/myPittOhio/Shipping/LTL/TraceRequest?pro={trackingNumber}",
     "linkRules": [
@@ -15115,7 +15118,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "blueex",
+      "recognitionRank": 747
     },
     "trackingUrlTemplate": "https://www.blue-ex.com/tracking?trackno={trackingNumber}",
     "linkRules": [
@@ -15382,7 +15386,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ecourier",
+      "recognitionRank": 743
     },
     "trackingUrlTemplate": "https://ecourier.com.bd/tracking?tracking_no={trackingNumber}",
     "linkRules": [
@@ -16107,11 +16112,24 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "line-clear",
+      "recognitionRank": 741
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "www.lineclearexpress.com",
+          "lineclearexpress.com"
+        ],
+        "pathPattern": "^/tracker/?$",
+        "params": [
+          "id"
+        ]
+      }
+    ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://www.lineclearexpress.com/tracker"
+    "trackingSearchUrl": "https://www.lineclearexpress.com/tracker",
+    "trackingUrlTemplate": "https://www.lineclearexpress.com/tracker?id={trackingNumber}"
   },
   "lion-parcel": {
     "displayName": "Lion Parcel",
@@ -16166,7 +16184,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "m-and-p",
+      "recognitionRank": 746
     },
     "trackingUrlTemplate": "https://www.mulphilog.com/tracking/{trackingNumber}",
     "linkRules": [
@@ -16338,7 +16357,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "paperfly",
+      "recognitionRank": 742
     },
     "trackingUrlTemplate": "https://go.paperfly.com.bd/track/order/{trackingNumber}",
     "linkRules": [
@@ -16356,6 +16376,10 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^(?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{2}\\d{4,6}[A-Z]\\d[A-Z]\\d$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^Z(?:0[1-9]|[12]\\d|3[01])(?:0[1-9]|1[0-2])\\d{2}\\d{4,6}[A-Z]\\d[A-Z]\\d$",
         "confidence": "high"
       }
     ],
@@ -16577,7 +16601,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Karachi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "postex",
+      "recognitionRank": 745
     },
     "trackingUrlTemplate": "https://postex.pk/tracking?cn={trackingNumber}",
     "linkRules": [
@@ -17057,7 +17082,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "st-courier",
+      "recognitionRank": 753
     },
     "linkRules": [
       {
@@ -18494,7 +18520,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "northline"
     },
     "trackingUrlTemplate": "https://track.northline.com.au/status/{trackingNumber}",
     "linkRules": [
@@ -21465,7 +21491,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "shree-anjani",
+      "recognitionRank": 752
     },
     "trackingUrlTemplate": "https://shreeanjani.co.in/tracking?awb={trackingNumber}",
     "linkRules": [
@@ -22812,7 +22839,7 @@ export const CARRIER_CAPABILITIES = {
       "adapter": "happy-post",
       "recognitionRank": 888
     },
-    "trackingUrlTemplate": "https://happy-post.com/fr/suivi/?id={trackingNumber}",
+    "trackingUrlTemplate": "https://happy-post.com/en/track/?id={trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -22834,7 +22861,7 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://happy-post.com/fr/suivi/"
+    "trackingSearchUrl": "https://happy-post.com/en/track/"
   },
   "hp-mostar": {
     "displayName": "Hrvatska pošta Mostar",
@@ -23644,7 +23671,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "parcelpoint"
     },
     "trackingUrlTemplate": "https://parcelpoint.com.au/track-your-parcel/?trackingnumber={trackingNumber}",
     "linkRules": [
@@ -24091,7 +24118,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "estes-forwarding",
+      "recognitionRank": 754
     },
     "trackingUrlTemplate": "https://efwtrack.com/track/{trackingNumber}",
     "linkRules": [
@@ -24763,7 +24791,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "apple-express",
+      "recognitionRank": 761
     },
     "trackingUrlTemplate": "https://track.appleexpress.com/orderNumber/{trackingNumber}",
     "linkRules": [
@@ -24815,7 +24844,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fleetoptics",
+      "recognitionRank": 763
     },
     "trackingUrlTemplate": "https://track.fleetopticsinc.com/?tracking_number={trackingNumber}",
     "linkRules": [
@@ -24898,7 +24928,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Vancouver",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "straightship",
+      "recognitionRank": 764
     },
     "trackingUrlTemplate": "https://www.straightship.com/track-your-shipment/tracking-id/{trackingNumber}/",
     "linkRules": [
@@ -24984,7 +25015,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Tokyo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sagawa-global",
+      "recognitionRank": 749
     },
     "trackingUrlTemplate": "https://tracking.sagawa-sgx.com/sgx/trackeng.asp?ENC=JPN&CAT=AWB&AWB={trackingNumber}",
     "linkRules": [
@@ -26622,7 +26654,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gta-airskip",
+      "recognitionRank": 762
     },
     "trackingUrlTemplate": "https://gtaairskip.com/tracking/?trackingid={trackingNumber}",
     "linkRules": [
@@ -27266,7 +27299,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "c3x",
+      "recognitionRank": 757
     },
     "linkRules": [],
     "detectionRules": [],
@@ -27707,11 +27741,23 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dubai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tfm-express",
+      "recognitionRank": 756
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "customer.tfmex.com"
+        ],
+        "pathPattern": "^/Skybill/TrackSkybill/?$",
+        "params": [
+          "awb"
+        ]
+      }
+    ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://customer.tfmex.com/Skybill/TrackSkybill"
+    "trackingSearchUrl": "https://customer.tfmex.com/Skybill/TrackSkybill",
+    "trackingUrlTemplate": "https://customer.tfmex.com/Skybill/TrackSkybill?awb={trackingNumber}"
   },
   "transcorp": {
     "displayName": "Transcorp",
@@ -28264,7 +28310,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pcp-express",
+      "recognitionRank": 709
     },
     "trackingUrlTemplate": "https://pcpexpress.com/lacak_detailv2.php?awb={trackingNumber}",
     "linkRules": [
@@ -28710,7 +28757,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpex",
+      "recognitionRank": 772
     },
     "trackingUrlTemplate": "https://dpex.com/track-and-trace/?cn={trackingNumber}",
     "linkRules": [
@@ -28733,6 +28781,13 @@ export const CARRIER_CAPABILITIES = {
         "params": [
           "cn"
         ]
+      },
+      {
+        "domains": [
+          "tracking.frontierforce.com"
+        ],
+        "pathPattern": "^/(?:tracking(?:_search)?\\.aspx|go/plm-tracking(?:_search)?)/?$",
+        "query": "^(?=(?:[^&]*&)*stid=dpexwwe(?:&|$))(?:[^&]*&)*?cn=([^&]+)"
       },
       {
         "domains": [
@@ -29338,7 +29393,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skypostal",
+      "recognitionRank": 729
     },
     "trackingUrlTemplate": "https://tracking.skypostal.com/?trck_number={trackingNumber}&lng_code=ENG",
     "linkRules": [
@@ -29600,7 +29656,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Taipei",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ycs-logistics",
+      "recognitionRank": 718
     },
     "linkRules": [],
     "detectionRules": [],
@@ -29617,7 +29674,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "AU"
     ],
-    "color": "#e60012",
+    "color": "#e60000",
     "selectable": true,
     "timezone": "Australia/Sydney",
     "tracking": {
