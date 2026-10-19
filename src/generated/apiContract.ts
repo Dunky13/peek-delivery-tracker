@@ -15504,7 +15504,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Nairobi",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fargo-courier"
     },
     "trackingUrlTemplate": "https://www.fargocourier.co.ke/waybill-viewer/?wayBill={trackingNumber}",
     "linkRules": [
@@ -15536,6 +15536,15 @@ export const CARRIER_CAPABILITIES = {
         "pathPattern": "^/?$",
         "params": [
           "waybill_number"
+        ]
+      },
+      {
+        "domains": [
+          "portal.fargocourier.co.ke"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "wayBillNumber"
         ]
       }
     ],
@@ -15606,7 +15615,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gs-postbox",
+      "recognitionRank": 634
     },
     "trackingUrlTemplate": "https://www.cvsnet.co.kr/invoice/tracking.do?invoice_no={trackingNumber}",
     "linkRules": [
@@ -17967,7 +17977,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dohrn-transfer",
+      "recognitionRank": 731
     },
     "trackingUrlTemplate": "https://facts.dohrn.com/scripts/cgiip.exe/protraceext.htm?wpro={trackingNumber}",
     "linkRules": [
@@ -18351,7 +18362,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Indian/Mauritius",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mauritius-post"
     },
     "trackingUrlTemplate": "https://www.mauritiuspost.mu/track-trace/?tracking_code={trackingNumber}",
     "linkRules": [
@@ -20167,7 +20178,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "amerijet",
+      "recognitionRank": 636
     },
     "linkRules": [],
     "detectionRules": [
@@ -20177,7 +20189,7 @@ export const CARRIER_CAPABILITIES = {
         "rawPattern": "^810-\\d{8}$"
       }
     ],
-    "trackingSearchUrl": "https://www.amerijet.com/air-waybill-tracking/"
+    "trackingSearchUrl": "https://amerijet.com/air-waybill-tracking/"
   },
   "anousith": {
     "displayName": "Anousith Logistics",
@@ -21620,7 +21632,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Santo_Domingo",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vimenpaq",
+      "recognitionRank": 713
     },
     "linkRules": [],
     "detectionRules": [],
@@ -22528,7 +22541,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Bishkek",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kyrgyz-post",
+      "recognitionRank": 702
     },
     "linkRules": [
       {
@@ -22862,7 +22876,7 @@ export const CARRIER_CAPABILITIES = {
       "adapter": "happy-post",
       "recognitionRank": 888
     },
-    "trackingUrlTemplate": "https://happy-post.com/en/track/?id={trackingNumber}",
+    "trackingUrlTemplate": "https://uk.happy-post.com/track/?id={trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -22884,7 +22898,7 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://happy-post.com/en/track/"
+    "trackingSearchUrl": "https://uk.happy-post.com/track/"
   },
   "hp-mostar": {
     "displayName": "Hrvatska pošta Mostar",
@@ -28079,7 +28093,7 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [],
-    "trackingSearchUrl": "https://www.unitedcouriers.biz/Track.aspx"
+    "trackingSearchUrl": "https://www.unitedcouriers.biz/tracking"
   },
   "airpak-express": {
     "displayName": "Airpak Express",
@@ -28180,7 +28194,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Vientiane",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "houng-ah-loun",
+      "recognitionRank": 637
     },
     "trackingUrlTemplate": "https://halexpress.la/parcel/{trackingNumber}",
     "linkRules": [
@@ -29132,7 +29147,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ccfs",
+      "recognitionRank": 739
     },
     "trackingUrlTemplate": "https://auth.ccfs.com/track/detail/{trackingNumber}",
     "linkRules": [
@@ -29140,7 +29156,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "auth.ccfs.com"
         ],
-        "path": "^/track/detail/([^/?#]+)/?$"
+        "path": "^/track/detail/([A-Za-z0-9]+)(?:-\\d+)?/?$"
       }
     ],
     "detectionRules": [],
