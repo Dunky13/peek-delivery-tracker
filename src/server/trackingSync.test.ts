@@ -2064,6 +2064,34 @@ describe('TrackingSyncService', () => {
     expect(client.updatePackage.mock.calls.at(-1)![1].carrier_data.original_carrier).toBe('la-poste');
   });
 
+  it('asks the post of the country an outbound postal item is looked up from, when its origin names no destination', async () => {
+    const parcel = { id: 'looked-up-handoff', carrier: 'an-post', tracking_number: 'LX123456785IE', current_stage: 'in_transit',
+      carrier_data: { lookup_country_hint: 'FI', routing: { version: 1, configured_carrier: 'an-post', last_event_at: '2026-01-12T09:23:00.000Z' } } };
+    // An Post's own clocks are offset-less, and it names neither the destination nor the partner.
+    const origin: CarrierResult = { status: 'out_for_delivery', current_stage: 'ready_for_pickup', last_update: null,
+      last_update_local: '2026-01-12T09:23:00', events: [
+        { local_time: '2026-01-12T09:23:00', description: 'Your item is now available for collection', stage: 'ready_for_pickup' },
+        { local_time: '2026-01-10T10:17:00', description: 'Your item arrived abroad', stage: 'in_transit' }] };
+    const delivery: CarrierResult = { status: 'out_for_delivery', current_stage: 'ready_for_pickup', destination_country: 'FI',
+      last_update: '2026-01-12T09:42:00Z', events: [
+        { time: '2026-01-12T09:42:00Z', description: 'Arrived at post office', location: 'Example post office', stage: 'ready_for_pickup' }] };
+    const client = fakeClient();
+    const adapter = { fetch: vi.fn().mockResolvedValueOnce(origin).mockResolvedValue(delivery) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-01-12T10:00:00Z'));
+    await service.syncPackage(parcel);
+    expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['an-post', 'posti']);
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'ready_for_pickup', carrier_data: {
+      active_tracking_carrier: 'posti', original_carrier: 'an-post', destination_country: 'FI' } });
+
+    // Looked up from the issuer's country, or with no country, nothing proposes a post.
+    for (const carrier_data of [{ ...parcel.carrier_data, lookup_country_hint: 'IE' }, { routing: parcel.carrier_data.routing }]) {
+      const quiet = { fetch: vi.fn().mockResolvedValue(origin) };
+      await new TrackingSyncService(fakeClient() as unknown as SupabaseServiceClient, quiet, null, () => new Date('2026-01-12T10:00:00Z'))
+        .syncPackage({ ...parcel, carrier_data });
+      expect(quiet.fetch.mock.calls.map((call) => call[0])).not.toContain('posti');
+    }
+  });
+
   it('asks the earlier carrier hourly for a day after a handoff, for its late scans only', async () => {
     const client = { ...fakeClient(), acquireTrackingProvider: vi.fn(), finishTrackingProvider: vi.fn() };
     let now = new Date('2026-01-12T10:30:00Z');

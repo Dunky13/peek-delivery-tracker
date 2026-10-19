@@ -83,7 +83,8 @@ For new lookups, the iPhone's device region takes precedence over a trusted Clou
 `CF-IPCountry` header as a country hint.
 A destination reported by a carrier takes precedence. The hint puts that country's carriers
 first when recognition asks carriers whether they know the number. It does not establish
-the carrier, set the delivery destination or change scan clocks. Universal providers receive neither the hint nor the visitor's IP address. Reopening a shared parcel does not change its hint.
+the carrier, set the delivery destination or change scan clocks, though it can name the post a
+postal item is handed to, as under Handoffs below. Universal providers receive neither the hint nor the visitor's IP address. Reopening a shared parcel does not change its hint.
 
 **Affinity.** A provider that returns history is saved with its lookup number in
 `carrier_data.routing`. The next check starts there, whatever its place in the order, as
@@ -382,7 +383,9 @@ A parcel often changes carrier at the border. The origin history is always kept.
   partner link. Names and links are resolved through the carrier catalog.
 - With no named partner, a checksum-valid S10 number and a reported destination country can
   propose **one** national-post lookup ([catalog hints](https://github.com/plhery/universal-parcel-scraper/blob/main/core/catalog/hints.ts)).
-  The issuer suffix and transit scans never pick the operator.
+  When the origin reports no destination, as An Post's doesn't, the country hint stands in
+  unless it is the country that issued the number. The issuer suffix and transit scans never
+  pick the operator.
 - AliExpress follows some parcels under the delivery carrier's own number, such as an SDA
   waybill in Italy, and names no partner for it. The proposal is then the one carrier at
   home in the destination country whose number rule fits beside AliExpress's, asked with

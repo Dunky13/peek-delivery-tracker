@@ -18,6 +18,7 @@ import type { AdapterRegistry, Recognition, TrackingContext } from 'universal-pa
 import { trackCarrier } from 'universal-parcel-scraper/node';
 import type { StepRecorder } from 'universal-parcel-scraper/node';
 import { createAdapterRegistry, hostAdapterEnvironment } from './adapterRegistry';
+import { normalizedLookupCountry } from './lookupCountry';
 import { preflightInputNeeded, takePreflightHistory } from './trackingPreflight';
 import { refusesNumber } from './numberRefusal';
 import { recognizeBrowser, takeBrowserHistory } from './browserRecognition';
@@ -1753,7 +1754,8 @@ export class TrackingSyncService {
         origin = { delivery_carrier: savedPartner.carrier, delivery_tracking_number: savedPartner.number };
       }
       let fallbackError: string | null = null;
-      const candidate = savedPartner ?? deliveryHandoff(carrierId, trackingNumber, origin);
+      // The country the parcel was looked up from proposes a postal item's destination post only when nothing names one.
+      const candidate = savedPartner ?? deliveryHandoff(carrierId, trackingNumber, origin, normalizedLookupCountry(metadata.lookup_country_hint));
       const previousProbe = candidate ? previousDeliveryProbe(parcel, candidate.carrier, candidate.number) : null;
       const originUpdate = typeof origin.last_update === 'string' ? origin.last_update : previousProbe?.origin_update ?? null;
       const sinceProbe = previousProbe ? this.now().getTime() - Date.parse(previousProbe.at) : Number.NaN;
