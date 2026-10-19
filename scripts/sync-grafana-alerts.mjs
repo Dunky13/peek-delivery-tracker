@@ -122,7 +122,10 @@ function required(name) {
 }
 
 function ssh(command, input = '') {
-  const result = spawnSync('ssh', ['-o', 'BatchMode=yes', required('GRAFANA_SSH_HOST'), command], { input, encoding: 'utf8' });
+  // The rule list covers every folder in Grafana, well over spawnSync's default 1 MB.
+  const result = spawnSync('ssh', ['-o', 'BatchMode=yes', required('GRAFANA_SSH_HOST'), command],
+    { input, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  if (result.error) throw new Error(`ssh failed: ${result.error.message}`);
   if (result.status !== 0) throw new Error(`ssh failed: ${(result.stderr || result.stdout).trim()}`);
   return result.stdout;
 }
