@@ -189,6 +189,7 @@ describe('carrier brand', () => {
       'qwintry', 'skypostal', 'ait-worldwide', 'team-worldwide',
       'huahan',
       'anserx', 'chukou1', 'jumppoint', 'ycs-logistics',
+      'lingdong',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

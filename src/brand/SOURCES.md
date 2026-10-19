@@ -376,6 +376,7 @@ and [`truck.json`](truck.json).
 | `lietuvos-pastas` | [logo SVG](https://www.post.lt/themes/posttheme/images/logo.svg) |
 | `lightning-express` | [lightningexpressca.com](https://www.lightningexpressca.com/144x144.png) — main blue of the logo cube gradient, about #4898e0 (approximate, from the PNG) |
 | `line-clear` | [lineclearexpress.com](https://lineclearexpress.com/my/public/assets/images/lineclearlogo.png) — logo PNG #3fc0f0 with navy #1d3a8f (approximate) |
+| `lingdong` | [lingdong56.com](http://www.lingdong56.com/static/picture/logo.png) — logo PNG flat blue #0171bb, its most frequent pixel (approximate) |
 | `lion-parcel` | [lionparcel.com](https://stg-website-lionparcel.s3.ap-southeast-1.amazonaws.com/assets/logo/lp_logo_footer_new.svg) — logo SVG fill #ff0000 |
 | `logen` | [ilogen.com](https://www.ilogen.com/static/css/style.css) — site CSS main colour #ffa200; logo swoosh #61553e (footer_logo.png, approximate) |
 | `loggi` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Logologgi.png) — logo #00baff, also in loggi.com CSS (approximate) |
@@ -1408,3 +1409,4 @@ and [`truck.json`](truck.json).
 | `chukou1` | White globe with an orbit band on blue | [chukou1.com](https://pic.chukou1.com/0/0_c5e81d.png) — header logo globe, its orbit band and the band's tail at lower left |
 | `jumppoint` | White slanted bars between light blue pins on blue | [jumppoint.io](https://cdn.prod.website-files.com/625fc6e7f6a0fbc4cd3a3246/6446da72e77910eee6b44c6d_jumppoint.svg) — header logo symbol: pin, two slanted bars, drop |
 | `ycs-logistics` | White YCS on red | [ycs-express.com](https://www.ycs-express.com/_nuxt/img/ycsLogo.b70f538.svg) — the YCS of the header wordmark |
+| `lingdong` | White ring around a swept bird whose two wings break out at the upper right, on blue | [lingdong56.com](http://www.lingdong56.com/static/picture/logo.png) — header logo symbol: a ring around three tapering swooshes, open where the two upper ones fly out |
