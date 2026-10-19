@@ -47,7 +47,7 @@ import type { UniversalSource } from 'universal-parcel-scraper';
 import { answeredWithoutHistory, catalogRules, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { REDETECTION_WINDOW_MS, rerouteAskable } from './redetection';
 import { upuHistory } from './upuHistory';
-import { UNSEEN_HOURLY_MS, unseenFor } from './unseenLookup';
+import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent } from './directLocalHistory';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
@@ -84,8 +84,6 @@ const IDLE_AFTER_MS = 48 * 60 * 60 * 1_000;
  */
 const EARLY_IDLE_AFTER_MS = 12 * 60 * 60 * 1_000;
 const NOT_YET_MOVING = new Set(['registered', 'accepted']);
-/** After this long unseen, a number is checked daily. */
-const UNSEEN_DAILY_AFTER_MS = 48 * 60 * 60 * 1_000;
 /** By day, a lookup without an account that nobody watches is checked this often. */
 const UNWATCHED_ONE_OFF_HOURS = 3;
 /**
@@ -236,12 +234,14 @@ interface ScheduleContext {
   oneOff?: boolean;
   /** Someone the parcel was shared with gets its link's alerts, so archiving it keeps the regular cadence. */
   sharedAlerts?: boolean;
+  /** One of the parcel's links was just opened: a number nobody has seen is checked daily rather than weekly. */
+  opened?: boolean;
 }
 
 function isScheduledTrackingSyncDue(
   parcel: JsonObject,
   now: Date,
-  { unwatched = false, oneOff = false, sharedAlerts = false }: ScheduleContext = {},
+  { unwatched = false, oneOff = false, sharedAlerts = false, opened = false }: ScheduleContext = {},
 ): boolean {
   if (!isTrackingSyncDue(parcel, now)) return false;
   const unseen = unseenFor(parcel, now);
@@ -265,9 +265,8 @@ function isScheduledTrackingSyncDue(
       && lastChecked < hourStart.minus({ hours: UNWATCHED_ONE_OFF_HOURS - 1 }).toMillis();
   }
   if (unseen !== null) {
-    // Hourly, then every 6 h, then daily, around the clock.
-    const hours = unseen < UNSEEN_HOURLY_MS ? 1 : unseen < UNSEEN_DAILY_AFTER_MS ? 6 : 24;
-    return lastChecked < hourStart.minus({ hours: hours - 1 }).toMillis();
+    // Hourly, then every 6 h, daily, then weekly, around the clock.
+    return lastChecked < hourStart.minus({ hours: unseenIntervalHours(unseen, opened) - 1 }).toMillis();
   }
   // Out for delivery, the news is the delivery. A carrier's own adapter is cheap and as fresh as
   // the carrier, so it is asked every 2 minutes, unless the carrier sets a longer interval of its
@@ -292,13 +291,14 @@ function isScheduledTrackingSyncDue(
 /**
  * Whether opening a one-off parcel's link should queue a check: only when the
  * schedule's cadence for the parcel has come round, including for a lookup
- * that left the schedule because nobody has seen its number. Reading a link
- * never checks a carrier more often than that, however often it is polled.
+ * that left the schedule because nobody has seen its number, which someone
+ * looking gets daily rather than weekly. Reading a link never checks a carrier
+ * more often than that, however often it is polled.
  */
 export function isOpenedParcelSyncDue(parcel: JsonObject, now: Date): boolean {
   const open = !['delivered', 'returned'].includes(String(parcel.current_stage))
     || parcel.last_status_text === 'TO_BE_DELIVERED';
-  return open && parcel.archived_at == null && isScheduledTrackingSyncDue(parcel, now);
+  return open && parcel.archived_at == null && isScheduledTrackingSyncDue(parcel, now, { opened: true });
 }
 
 export interface TrackingAdapter {
@@ -856,9 +856,10 @@ export class TrackingSyncService {
    * carrier its routing never asked, such as a lookup added before a scraper release
    * brought the number's detection rule, the name a provider gives or the carrier's
    * adapter, whose link nobody opens any more, and of each unfiled one with a carrier
-   * to recognize it (redetection.ts). The checks most likely to change the parcel's
-   * answer go first, 50 at a time: the next batch waits until the last one's checks are
-   * done. A parcel still in its cooldown is queued by the first run after it ends.
+   * to recognize it (redetection.ts): a number nobody has seen only once its own cadence
+   * has come round, unless the catalog points it to a carrier it never asked. The checks
+   * most likely to change the parcel's answer go first, 50 at a time: the next batch
+   * waits until the last one's checks are done. A parcel still in its cooldown is queued by the first run after it ends.
    * Returns how many checks were queued; they wait behind every other job, a lookup's
    * check too.
    */
@@ -867,7 +868,8 @@ export class TrackingSyncService {
     if (this.#redetections?.rules !== rules) this.#redetections = { rules, listed: false, waiting: [], batch: [] };
     const redetections = this.#redetections;
     if (redetections.listed && !redetections.waiting.length) return 0;
-    const now = this.now().getTime();
+    const date = this.now();
+    const now = date.getTime();
     let queued = 0;
     try {
       if (!redetections.listed) {
@@ -878,6 +880,9 @@ export class TrackingSyncService {
           for (const parcel of candidates) {
             const lead = await rerouteAskable(parcel, rules, now);
             if (!lead) continue;
+            // A number nobody has seen is asked again only once its own cadence has come
+            // round, unless the release points it to a carrier it never asked.
+            if (lead.rank === 2 && unseenFor(parcel, date) !== null && !isScheduledTrackingSyncDue(parcel, date)) continue;
             const dueAt = trackingSyncDueAt(parcel);
             if (dueAt === Infinity) continue;
             leads.push({ packageId: String(parcel.id), userId: typeof parcel.user_id === 'string' ? parcel.user_id : null, dueAt, rank: lead.rank });

@@ -193,7 +193,7 @@ parcels followed without an account that nobody watches (below).
 | No new event for 48 h (from when it was added) | hourly around the clock; manual refresh still allowed |
 | Nobody waiting for it | hourly around the clock; manual refresh still allowed |
 | Followed without an account, no link opened for an hour and no alert on | every 3 h, not overnight; opening a link queues a check at once |
-| Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, around the clock; manual refresh still allowed |
+| Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, weekly after 7 days, around the clock; manual refresh still allowed |
 | Archived, with a new event in the last 30 days (from when it was added), and no alert on a link shared with someone | daily around the clock; manual refresh still allowed |
 
 A parcel checked hourly or less often has an hour of its own, opening at a minute its
@@ -242,7 +242,7 @@ opened in the last 24 hours or has an alert on. Otherwise a parcel waits until a
 opened again; that read queues a check at once when the schedule would run one, and never
 more often than the schedule, however often the link is polled. One whose number nobody
 has seen 6 h after it was added leaves the schedule too; opening a link still queues a
-check at its cadence. One whose links nobody opened in the last hour and that has no alert
+check at its cadence, daily rather than weekly after 7 days, since someone is looking. One whose links nobody opened in the last hour and that has no alert
 on is checked every 3 hours by day and waits for the morning overnight: nobody reads it,
 and a number no carrier is known for asks every provider in turn. A scheduled run checks at most ten of them, after every
 account's share, the least recently checked first. Their own checks queue behind every account's
@@ -357,7 +357,9 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   its scans: its own answer can now serve the parcel. A parcel
   filed under no carrier is also queued when its detected or named carrier, or else a
   carrier its recognition would ask, has no wait left, asked before or not: a release can
-  teach an adapter a number, and a rate limit or outage passes. A carrier whose adapter
+  teach an adapter a number, and a rate limit or outage passes. A number no carrier or
+  provider has seen is queued only once its cadence has come round, unless the release
+  points it to a carrier it never asked. A carrier whose adapter
   refuses the number by its own check, which sends nothing, is passed over until a release
   whose adapter takes it. One that refused the number under an older release counts as not
   asked, the filed carrier and a provider's name the parcel already holds included. One whose

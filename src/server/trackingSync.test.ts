@@ -1674,6 +1674,25 @@ describe('TrackingSyncService', () => {
     expect(client.listRedetectionCandidates).toHaveBeenCalledOnce();
   });
 
+  it('asks a number nobody has seen again after a release on its own cadence, unless it points to a carrier never asked', async () => {
+    const parcel = (id: string, last: string, routing: JsonObject = {}) => ({ id, user_id: 'a', carrier: 'unknown',
+      tracking_number: '1Z999AA10123456784', current_stage: 'pending', created_at: '2026-09-01T09:00:00Z', last_synced_at: last,
+      sync_status: 'waiting', carrier_data: { routing: { version: 1, configured_carrier: 'unknown', failures: {}, probe_cursor: 0,
+        discovery_cursor: 0, rules: 'older', ...routing } } });
+    const asked = { candidate_probes: { ups: { count: 6, retry_at: '2026-09-09T09:00:00Z' } } };
+    const client = { ...fakeClient(), packageSyncJobsPending: vi.fn().mockResolvedValue(false),
+      listRedetectionCandidates: vi.fn().mockResolvedValue([
+        // Added eight days ago and UPS asked already: weekly.
+        parcel('checked-yesterday', '2026-09-08T12:00:15Z', asked), parcel('checked-last-week', '2026-09-02T09:00:15Z', asked),
+        // UPS never asked: the release may have taught it the number.
+        parcel('never-asked', '2026-09-09T09:00:15Z')]),
+      enqueueSyncJob: vi.fn().mockResolvedValue({ id: 'job' }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() }, null,
+      () => new Date('2026-09-09T10:00:00Z'));
+    await expect(service.queueRedetections()).resolves.toBe(2);
+    expect(client.enqueueSyncJob.mock.calls.map(([job]) => job.packageId)).toEqual(['never-asked', 'checked-last-week']);
+  });
+
   it('lists every page of the parcels the catalog may point elsewhere', async () => {
     const parcel = (id: string, created_at: string, stage = 'in_transit') => ({ id, user_id: 'a', carrier: 'unknown',
       tracking_number: '1Z999AA10123456784', current_stage: stage, created_at, carrier_data: { tracking_provider: 'ParcelsApp',
@@ -1894,6 +1913,11 @@ describe('TrackingSyncService', () => {
     { name: 'unseen, added a day ago', created: '2026-09-08T10:00:00Z', last: '2026-09-09T06:00:15Z', at: '2026-09-09T12:00:00Z', checked: 1 },
     { name: 'unseen, added three days ago', created: '2026-09-06T09:00:00Z', last: '2026-09-08T12:00:15Z', at: '2026-09-09T11:00:00Z', checked: 0 },
     { name: 'unseen, added three days ago', created: '2026-09-06T09:00:00Z', last: '2026-09-08T12:00:15Z', at: '2026-09-09T12:00:00Z', checked: 1 },
+    { name: 'unseen, added eight days ago', created: '2026-09-01T09:00:00Z', last: '2026-09-08T12:00:15Z', at: '2026-09-09T12:00:00Z', checked: 0 },
+    { name: 'unseen, added eight days ago', created: '2026-09-01T09:00:00Z', last: '2026-09-02T12:00:15Z', at: '2026-09-09T11:00:00Z', checked: 0 },
+    { name: 'unseen, added eight days ago', created: '2026-09-01T09:00:00Z', last: '2026-09-02T12:00:15Z', at: '2026-09-09T12:00:00Z', checked: 1 },
+    { name: 'a provider answered, eight days ago', created: '2026-09-01T09:00:00Z', last: '2026-09-09T10:00:15Z', at: '2026-09-09T11:00:00Z', checked: 1,
+      routing: { last_success_at: '2026-09-01T10:00:00Z', last_event_at: '2026-09-01T10:00:00Z' } },
     { name: 'a provider answered', created: '2026-09-06T09:00:00Z', last: '2026-09-09T10:00:15Z', at: '2026-09-09T10:10:00Z', checked: 1,
       routing: { last_success_at: '2026-09-09T09:00:00Z', last_event_at: '2026-09-09T09:00:00Z' } },
     { name: 'a carrier needs input', created: '2026-09-06T09:00:00Z', last: '2026-09-09T10:00:15Z', at: '2026-09-09T11:00:00Z', checked: 1,
@@ -1934,6 +1958,10 @@ describe('TrackingSyncService', () => {
     const twoDays = { ...unseen, created_at: '2026-09-07T05:30:00Z' };
     expect(isOpenedParcelSyncDue(twoDays, new Date('2026-09-09T16:00:00Z'))).toBe(false);
     expect(isOpenedParcelSyncDue(twoDays, new Date('2026-09-10T10:00:00Z'))).toBe(true);
+    // A week on, the schedule and releases ask weekly, but someone opening the link still gets a daily check.
+    const eightDays = { ...unseen, created_at: '2026-09-01T05:30:00Z', last_synced_at: '2026-09-08T10:00:15Z' };
+    expect(isOpenedParcelSyncDue(eightDays, new Date('2026-09-09T09:00:00Z'))).toBe(false);
+    expect(isOpenedParcelSyncDue(eightDays, new Date('2026-09-09T10:00:00Z'))).toBe(true);
   });
 
   it('keeps out-for-delivery parcels hourly overnight and allows manual refreshes', async () => {

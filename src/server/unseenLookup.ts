@@ -8,6 +8,26 @@ import { isRecord, type JsonObject } from './types';
  */
 export const UNSEEN_HOURLY_MS = 6 * 60 * 60 * 1_000;
 
+/** After this long unseen, a number is checked daily. */
+const UNSEEN_DAILY_AFTER_MS = 48 * 60 * 60 * 1_000;
+
+/**
+ * After this long unseen, the checks nobody asked for, the schedule's and a scraper
+ * release's, come weekly: hardly any number gets its first answer this late.
+ */
+const UNSEEN_WEEKLY_AFTER_MS = 7 * 24 * 60 * 60 * 1_000;
+
+/**
+ * How many hours apart a number nobody has seen for `unseen` milliseconds is checked:
+ * hourly, then every 6 h, daily after 48 h and weekly after 7 days. `opened`: one of
+ * its links was just opened, and someone looking gets a daily check rather than a weekly one.
+ */
+export function unseenIntervalHours(unseen: number, opened = false): number {
+  if (unseen < UNSEEN_HOURLY_MS) return 1;
+  if (unseen < UNSEEN_DAILY_AFTER_MS) return 6;
+  return opened || unseen < UNSEEN_WEEKLY_AFTER_MS ? 24 : 7 * 24;
+}
+
 /**
  * How long ago a parcel was added when no carrier or provider has answered
  * for its number yet: no carrier identified or recognised, no history and
