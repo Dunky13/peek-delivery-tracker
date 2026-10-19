@@ -13040,13 +13040,19 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [
       {
         "domains": [
-          "tracking.skynetexpress.com",
-          "tracking.frontierforce.com"
+          "tracking.skynetexpress.com"
         ],
         "pathPattern": "^/go/plm-tracking/?$",
         "params": [
           "cn"
         ]
+      },
+      {
+        "domains": [
+          "tracking.frontierforce.com"
+        ],
+        "pathPattern": "^/go/plm-tracking/?$",
+        "query": "^(?=(?:[^&]*&)*stid=skynet(?:&|$))(?:[^&]*&)*?cn=([^&]+)"
       }
     ],
     "detectionRules": []
@@ -14189,9 +14195,9 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "border-express"
     },
-    "trackingUrlTemplate": "https://www.borderexpress.com.au/tracking/?cn={trackingNumber}",
+    "trackingUrlTemplate": "https://bexonline.borderexpress.com.au/bxo/track?consignmentNumber={trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -14712,7 +14718,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vrl-logistics",
+      "recognitionRank": 935
     },
     "linkRules": [
       {
@@ -17317,7 +17324,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tracx-logis",
+      "recognitionRank": 777
     },
     "trackingUrlTemplate": "https://www.tracxlogis.com/tracking?trackingNo={trackingNumber}",
     "linkRules": [
@@ -17463,7 +17471,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Manila",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "xde-logistics"
     },
     "trackingUrlTemplate": "https://www.xde.com.ph/?tn={trackingNumber}",
     "linkRules": [
@@ -18976,7 +18984,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Johannesburg",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "skynet-sa"
     },
     "trackingUrlTemplate": "https://web.skynet.co.za:5002/T?R={trackingNumber}",
     "linkRules": [
@@ -19229,7 +19237,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Dar_es_Salaam",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "tanzania-posts"
     },
     "linkRules": [
       {
@@ -19874,7 +19882,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Argentina/Buenos_Aires",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "via-cargo",
+      "recognitionRank": 936
     },
     "trackingUrlTemplate": "https://formularios.viacargo.com.ar/seguimiento-envio/{trackingNumber}",
     "linkRules": [
@@ -25043,7 +25052,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Panama",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "copa-courier",
+      "recognitionRank": 773
     },
     "linkRules": [],
     "detectionRules": [
@@ -26929,7 +26939,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "4sides",
+      "recognitionRank": 783
     },
     "trackingUrlTemplate": "https://4sides.ru/tracking?number={trackingNumber}",
     "linkRules": [
@@ -27989,7 +28000,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Singapore",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "airpak-express",
+      "recognitionRank": 776
     },
     "trackingUrlTemplate": "https://tracking.airpak-express.com/tracking_search.aspx?stid=airpak&cn={trackingNumber}",
     "linkRules": [
@@ -28007,7 +28019,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "tracking.airpak-express.com"
         ],
-        "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking)$",
+        "pathPattern": "^/(?:tracking_search\\.aspx|tracking\\.aspx|go/plm-tracking(?:_search)?)$",
         "params": [
           "cn"
         ]
@@ -28537,7 +28549,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gsi-express"
     },
     "trackingUrlTemplate": "https://www.gsiexpress.com/track_pop.php?textfield={trackingNumber}&track_type=invoice_no",
     "linkRules": [
@@ -29384,7 +29396,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Bucharest",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "dpd-ro",
+      "recognitionRank": 934
     },
     "trackingUrlTemplate": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
     "linkRules": [
@@ -29420,7 +29433,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CN"
     ],
-    "color": "#438eb9",
+    "color": "#0069e8",
     "selectable": true,
     "timezone": "Asia/Shanghai",
     "tracking": {
@@ -29435,6 +29448,137 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.hh-exp.cn/WebTrack/CargoTrack.html"
+  },
+  "anserx": {
+    "displayName": "AnserX",
+    "aliases": [
+      "斑头雁",
+      "斑头雁国际物流",
+      "深圳斑头雁国际物流科技有限公司",
+      "Anserx",
+      "AnserX International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#167ed4",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://oms.anserx.com/tracking?nos={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "oms.anserx.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "nos"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^BTYCN\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://oms.anserx.com/tracking"
+  },
+  "chukou1": {
+    "displayName": "Chukou1",
+    "aliases": [
+      "出口易",
+      "CK1",
+      "Chukou1 Logistics",
+      "ChuKou1"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#3a77c9",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.chukou1.com/LogistictsTrack.aspx?trackNo={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.chukou1.com",
+          "chukou1.com"
+        ],
+        "pathPattern": "^/LogistictsTrack\\.aspx$",
+        "params": [
+          "trackNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{3}\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])[A-Z][A-Z0-9]{2,3}\\d{6,7}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://www.chukou1.com/LogistictsTrack.aspx"
+  },
+  "jumppoint": {
+    "displayName": "Jumppoint",
+    "countries": [
+      "HK"
+    ],
+    "color": "#104ada",
+    "selectable": true,
+    "timezone": "Asia/Hong_Kong",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://tracking.jumppoint.io/?q={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "tracking.jumppoint.io"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JP\\d{12}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://tracking.jumppoint.io/"
+  },
+  "ycs-logistics": {
+    "displayName": "YCS Logistics",
+    "aliases": [
+      "YCS音速物流",
+      "音速物流",
+      "YCS音速國際物流"
+    ],
+    "countries": [
+      "TW"
+    ],
+    "color": "#cf3339",
+    "selectable": true,
+    "timezone": "Asia/Taipei",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://system.ycs-express.com/search_track"
   }
 } as const;
 
@@ -30238,7 +30382,11 @@ export const CARRIER_IDS = [
   "skypostal",
   "team-worldwide",
   "dpd-ro",
-  "huahan"
+  "huahan",
+  "anserx",
+  "chukou1",
+  "jumppoint",
+  "ycs-logistics"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
