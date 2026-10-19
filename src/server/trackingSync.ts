@@ -678,6 +678,26 @@ export function stageToSave(previousStage: string, selectedStage: string): strin
   return selected >= 0 && previous > selected ? previousStage : selectedStage;
 }
 
+/**
+ * The saved stage `stageToSave` may hold: the saved one while a scan the
+ * parcel keeps still shows it, else the furthest stage one shows. A scraper
+ * fix can re-read the scan that moved the parcel as an earlier stage, and then
+ * nothing holds the saved stage over the carrier's. A parcel loaded without
+ * its rows proves nothing.
+ */
+export function heldStage(parcel: JsonObject, previousStage: string, rows: readonly JsonObject[]): string {
+  const rank = (stage: string) => MOVING_STAGES.has(stage) ? EARLY_STAGES.length : EARLY_STAGES.indexOf(stage);
+  const target = rank(previousStage);
+  if (target < 0 || !Array.isArray(parcel[STORED_EVENT_IDENTITIES])) return previousStage;
+  let furthest = 'pending';
+  for (const row of rows) {
+    const stage = String(row.stage ?? '');
+    if (rank(stage) >= target) return previousStage;
+    if (rank(stage) > rank(furthest)) furthest = stage;
+  }
+  return furthest;
+}
+
 export function detectSyncAnomalies(
   parcel: JsonObject,
   result: CarrierResult,
@@ -1497,13 +1517,24 @@ export class TrackingSyncService {
           earlier_checked_at: result.earlier_checked_at,
         };
       }
+      const eventsToPersist = keepSaved || (preserveSummary && (result.tracking_provider === 'UPU' || localOnlyFallback)) ? [] : events;
+      const persistedIds = new Set(eventsToPersist.map((event) => String(event.provider_event_id)));
+      // The copies the carrier's scans absorbed go with the batch that holds those scans.
+      const absorbed = eventsToPersist.length > 0 ? [...shared.absorbed] : [];
+      const persistedEvents = withIdentities(
+        eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))), matches.reused, stored,
+      );
       if (!preserveSummary) {
         values.last_status_text = result.last_status_text || null;
         values.expected_delivery = result.expected_delivery ? String(result.expected_delivery) : null;
         values.carrier_data = carrierData;
         if (selectedStage && (hasUpdate || !swissPostReady)) {
+          // The parcel's rows once this check is saved.
+          const written = new Set([...persistedEvents.map((event) => String(event.provider_event_id)), ...absorbed]);
+          const rows = [...stored.filter((row) => !written.has(String(row.provider_event_id))
+            && !deleteDescriptions.includes(String(row.description))), ...persistedEvents];
           // A carrier the router swapped to may rightly know less than a mistaken one did.
-          values.current_stage = fetched.correction ? selectedStage : stageToSave(previousStage, selectedStage);
+          values.current_stage = fetched.correction ? selectedStage : stageToSave(heldStage(parcel, previousStage, rows), selectedStage);
           if (values.current_stage !== selectedStage) anomalies = [...anomalies, 'early_stage_regression'];
         }
         // A parcel collected from its pickup point keeps the point once the carrier stops naming it.
@@ -1526,13 +1557,6 @@ export class TrackingSyncService {
         const kept = isRecord(values.carrier_data) ? values.carrier_data : previousData;
         if (kept.destination_country == null) values.carrier_data = { ...kept, destination_country: result.destination_country };
       }
-      const eventsToPersist = keepSaved || (preserveSummary && (result.tracking_provider === 'UPU' || localOnlyFallback)) ? [] : events;
-      const persistedIds = new Set(eventsToPersist.map((event) => String(event.provider_event_id)));
-      // The copies the carrier's scans absorbed go with the batch that holds those scans.
-      const absorbed = eventsToPersist.length > 0 ? [...shared.absorbed] : [];
-      const persistedEvents = withIdentities(
-        eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))), matches.reused, stored,
-      );
       // A provider naming an unknown parcel's carrier identifies the number, however old its
       // copy of the history looks: the parcel is filed under it and keeps the newer summary.
       const identifiedOnOlderCopy = preserveSummary && olderSnapshot && !keepSaved && !unprovenUpuSummary

@@ -18,6 +18,7 @@ import {
   collectStatusObservations,
   detectSyncAnomalies,
   fairSyncPackages,
+  heldStage,
   inferStage,
   mergeableLegs,
   MAX_STATUS_OBSERVATIONS_PER_SYNC,
@@ -1079,6 +1080,48 @@ describe('TrackingSyncService', () => {
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'registered' });
     expect(client.completeSyncAttempt).toHaveBeenLastCalledWith(expect.any(String),
       expect.objectContaining({ anomaly_codes: [] }), expect.any(Array));
+  });
+
+  it('follows the carrier once no scan the parcel keeps shows the stage it was held at', async () => {
+    // A scraper fix re-reads the scan that moved the parcel as a booked
+    // collection (synthetic wording and times): no scan is in transit any more.
+    const label = { time: '2026-09-09T13:00:00Z', description: 'Label data received', stage: 'registered' };
+    const booked = { time: '2026-09-09T22:00:00Z', description: 'Collection booked for the next working day' };
+    const collected = { time: '2026-09-10T08:00:00Z', description: 'Collected from the sender', stage: 'accepted' };
+    const row = (event: { time: string; description: string }, stage: string) => ({ stage, description: event.description,
+      occurred_at: new Date(event.time).toISOString(), provider_event_id: providerEventId('dhl', event.time, '', event.description) });
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'accepted',
+      last_status_text: collected.description, last_update: collected.time,
+      events: [collected, { ...booked, stage: 'registered' }, label] }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    const parcel = { id: 'restaged', carrier: 'dhl', tracking_number: 'TEST1234', current_stage: 'in_transit',
+      [STORED_EVENT_IDENTITIES]: [row(label, 'registered'), row(booked, 'in_transit')] };
+    await service.syncPackage(parcel);
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'accepted' });
+    expect(client.completeSyncAttempt).toHaveBeenLastCalledWith(expect.any(String),
+      expect.objectContaining({ anomaly_codes: [] }), expect.any(Array));
+    // A scan in transit that the answer leaves out still holds the stage.
+    const sorted = { time: '2026-09-10T06:00:00Z', description: 'Sorted at the hub' };
+    await service.syncPackage({ ...parcel, [STORED_EVENT_IDENTITIES]: [...parcel[STORED_EVENT_IDENTITIES], row(sorted, 'in_transit')] });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'in_transit' });
+    expect(client.completeSyncAttempt).toHaveBeenLastCalledWith(expect.any(String),
+      expect.objectContaining({ anomaly_codes: ['early_stage_regression'] }), expect.any(Array));
+  });
+
+  it('holds a saved stage only as far as the scans the parcel keeps show it', () => {
+    const parcel = { [STORED_EVENT_IDENTITIES]: [] };
+    const rows = (...stages: string[]) => stages.map((stage) => ({ stage }));
+    expect(heldStage(parcel, 'out_for_delivery', rows('registered', 'in_transit'))).toBe('out_for_delivery');
+    expect(heldStage(parcel, 'in_transit', rows('registered', 'accepted', 'pending'))).toBe('accepted');
+    expect(heldStage(parcel, 'accepted', rows('registered'))).toBe('registered');
+    expect(heldStage(parcel, 'in_transit', rows())).toBe('pending');
+    // Without its rows, a parcel holds its stage; delivered and returned have their own rule.
+    expect(heldStage({}, 'in_transit', rows())).toBe('in_transit');
+    expect(heldStage(parcel, 'delivered', rows())).toBe('delivered');
   });
 
   it('keeps the progress of earlier scans when the newest scan has wording no rule reads', async () => {
