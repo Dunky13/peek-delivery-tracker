@@ -297,6 +297,7 @@ and [`truck.json`](truck.json).
 | `hp-mostar` | [post.ba](https://www.post.ba/) — site CSS --bs-post-main #ffed00; logo PNG yellow #fff200 (approximate) |
 | `hr-parcel` | [hrparcel.com](https://www.hrparcel.com/wp-content/uploads/2022/07/HR-PARCEL.svg) — logo SVG disc fill #FFD512; site buttons #ffd512 |
 | `hrvatska-posta` | [logo SVG](https://posiljka.posta.hr/assets/icons/hp-full-logo.svg) |
+| `huahan` | [hh-exp.cn](https://www.hh-exp.cn/images/app_logo/logo.png) — logo PNG, mean of the symbol's blue gradient (#0050ca to #007cff), #0069e8 (approximate); the green #00c480 is the green of hh-exp.com's own page CSS, the light end of the logo's green half |
 | `hunter-express` | [hunterexpress.com.au](https://www.hunterexpress.com.au/wp-content/uploads/2025/05/NEW-Hunter-Logo-with-Slogan-scaled.jpg) — logo JPG wordmark orange #f7aa3a, oval blue #0053a1 (approximate) |
 | `hywl` | [szhywl.it.com](https://www.szhywl.it.com/assets/logo-huiyi.svg) — logo SVG fill and arc stroke #0b8f91 ('HUIYI LOGISTICS'), styles.css --teal #0b8f91 |
 | `icc-worldwide` | [iccworld.com](https://www.iccworld.com/css/custom.css) — custom.css #bd0607 (buttons and heading bars); logo red ≈ #ca0505 (approximate) |
@@ -704,7 +705,7 @@ and [`truck.json`](truck.json).
 | Decal (carriers) | Mark | Reference |
 | --- | --- | --- |
 | `fedex` | Orange forward arrow on purple | [fedex.com](https://www.fedex.com/) |
-| `dpd` (`dpd`, `dpd-fr`, `dpd-de`, `dpd-uk`, `dpd-ie`, `dpd-za`, `dpd-at`, `brt`) | White parcel cube on red; BRT's own logo carries the same cube | [dpd.com](https://www.dpd.com/), [brt.it](https://www.brt.it/) |
+| `dpd` (`dpd`, `dpd-fr`, `dpd-de`, `dpd-uk`, `dpd-ie`, `dpd-za`, `dpd-at`, `dpd-ro`, `brt`) | White parcel cube on red; BRT's own logo carries the same cube | [dpd.com](https://www.dpd.com/), [brt.it](https://www.brt.it/) |
 | `amazon` (`amazon-logistics`, `amazon-shipping`) | Orange smile on a dark truck | [shipping.amazon.com](https://shipping.amazon.com/) |
 | `japan-post` | White postal mark on red | [post.japanpost.jp](https://www.post.japanpost.jp/) |
 | `swiss-post` (Swiss Post, Swiss Post Cargo, PostLogistics) | Red Swiss cross and black P on yellow | [Swiss Post brand](https://site.post.ch/en/about-us/company/the-brand-swiss-post) |
@@ -1397,3 +1398,4 @@ and [`truck.json`](truck.json).
 | `skypostal` | White S sphere with two side leaves on blue | [skypostal.com](https://cdn.prod.website-files.com/65b7a40df0b6bd112d4e6b1f/65d2e68271047512b610e520_webflow.png) — apple-touch icon: a sphere cut into a blue S, two thin blue leaves on its rim and grey pieces in the hooks (left out) |
 | `ait-worldwide` | White italic AIT on blue | [aitworldwide.com](https://www.aitworldwide.com/getContentAsset/d6b3e14f-8291-4048-9df8-9779a70ab445/dfc3d011-8f63-43f6-9ed8-4b444333a1d0/logo-ait.png?language=en-US) — logo: bold italic AIT crossed by an orbit ellipse in front of a wire globe; the truck keeps the letters, with a crossbar on the A in place of the orbit |
 | `team-worldwide` | White TW monogram on red | [teamww.com](https://www.teamww.com/favicon.ico) — favicon: a blue T beside a lower red W with rounded bottoms |
+| `huahan` | White and green roundel of two interlocking hooks on blue | [hh-exp.cn](https://www.hh-exp.cn/images/app_logo/logo.png) — the round symbol of the 华翰速递 logo: a blue hook (top left) and a green hook (bottom right) split by an S-shaped gap |

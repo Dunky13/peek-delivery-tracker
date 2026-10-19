@@ -665,6 +665,9 @@
   "dpd-pt": {
     "family": "dpd"
   },
+  "dpd-ro": {
+    "family": "dpd"
+  },
   "dpd-uk": {
     "family": "dpd"
   },
@@ -1123,6 +1126,9 @@
     "palette": {
       "accent": "#1d1d1b"
     }
+  },
+  "huahan": {
+    "decal": "huahan"
   },
   "hunter-express": {
     "decal": "hunter-express"

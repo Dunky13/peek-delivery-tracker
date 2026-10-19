@@ -21,6 +21,7 @@ export const CARRIER_FAMILIES: Record<string, string> = {
   "dpd-ie": "dpd",
   "dpd-nl": "dpd",
   "dpd-pt": "dpd",
+  "dpd-ro": "dpd",
   "dpd-uk": "dpd",
   "dpd-za": "dpd",
   "evri-uk": "evri",
@@ -716,6 +717,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "dpd-ie": "dpd",
   "dpd-nl": "dpd",
   "dpd-pt": "dpd",
+  "dpd-ro": "dpd",
   "dpd-uk": "dpd",
   "dpd-za": "dpd",
   "dpex": "dpex",
@@ -850,6 +852,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "hp-mostar": "hp-mostar",
   "hr-parcel": "hr-parcel",
   "hrvatska-posta": "hrvatska-posta",
+  "huahan": "huahan",
   "hunter-express": "hunter-express",
   "hywl": "hywl",
   "icc-worldwide": "icc-worldwide",
@@ -14359,6 +14362,18 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "type": "polygon",
         "d": "M14.76 7.14L15.91 7.14L15.91 12.57L14.76 12.57Z",
         "fill": "truck"
+      }
+    ],
+    "huahan": [
+      {
+        "type": "polygon",
+        "d": "M12.38 4.18L11.47 4.02L10.53 4.02L9.62 4.18L8.74 4.5L7.93 4.97L7.22 5.57L6.62 6.28L6.15 7.09L5.83 7.97L5.67 8.88L5.67 9.82L5.83 10.73L6.15 11.61L6.62 12.42L7.22 13.13L7.93 13.73L8.74 14.2L8.56 13.75L7.88 13.14L7.41 12.4L7.14 11.45L7.07 10.5L7.28 9.55L7.61 8.81L8.16 8.06L9.04 7.39L9.51 8L10.19 8.81L11.07 8.54L11.88 8.13L12.49 7.59L12.9 6.98L13.1 6.17L13.03 5.42L12.76 4.74Z",
+        "fill": "accent"
+      },
+      {
+        "type": "polygon",
+        "d": "M9.62 14.52L10.53 14.68L11.47 14.68L12.38 14.52L13.26 14.2L14.07 13.73L14.78 13.13L15.38 12.42L15.85 11.61L16.17 10.73L16.33 9.82L16.33 8.88L16.17 7.97L15.85 7.09L15.38 6.28L14.78 5.57L14.07 4.97L13.26 4.5L13.44 4.95L14.12 5.56L14.59 6.3L14.86 7.25L14.93 8.2L14.72 9.15L14.39 9.89L13.84 10.64L12.96 11.31L12.49 10.7L11.81 9.89L10.93 10.16L10.12 10.57L9.51 11.11L9.1 11.72L8.9 12.53L8.97 13.28L9.24 13.96Z",
+        "fill": "#00c480"
       }
     ]
   }

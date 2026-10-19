@@ -187,6 +187,7 @@ describe('carrier brand', () => {
       'am-home-delivery', 'american-west-express', 'ccfs', 'custom-companies', 'hercules-freight',
       'gaash', 'orian',
       'qwintry', 'skypostal', 'ait-worldwide', 'team-worldwide',
+      'huahan',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {
