@@ -65,6 +65,9 @@
   "airpak-express": {
     "decal": "airpak-express"
   },
+  "ait-worldwide": {
+    "decal": "ait-worldwide"
+  },
   "ajex": {
     "decal": "ajex"
   },
@@ -1887,6 +1890,9 @@
   "quiqup": {
     "decal": "quiqup"
   },
+  "qwintry": {
+    "decal": "qwintry"
+  },
   "raben": {
     "decal": "raben"
   },
@@ -2062,6 +2068,9 @@
   "skynet-worldwide": {
     "decal": "skynet-worldwide"
   },
+  "skypostal": {
+    "decal": "skypostal"
+  },
   "slgtrax": {
     "decal": "slgtrax"
   },
@@ -2221,6 +2230,9 @@
     "palette": {
       "accent": "#cbff55"
     }
+  },
+  "team-worldwide": {
+    "decal": "team-worldwide"
   },
   "tej-couriers": {
     "decal": "tej-couriers"

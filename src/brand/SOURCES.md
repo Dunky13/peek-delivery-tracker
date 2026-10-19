@@ -36,6 +36,7 @@ and [`truck.json`](truck.json).
 | `afghan-post` | [afghanpost.gov.af](https://afghanpost.gov.af/) — header bar CSS `.main-navigation{background:#115ea4}` |
 | `air-star-xpress` | [airstarxpress.com](https://www.airstarxpress.com/img/logo/logo_airstar.svg) — logo SVG fill #227337, 54% of the logo; red #c5251f is the rest |
 | `airpak-express` | [airpak-express.com](https://airpak-express.com/apps/airpak/img/logo.png) — logo PNG fill #f5333f |
+| `ait-worldwide` | [aitworldwide.com](https://www.aitworldwide.com/) — site CSS: the top bar and page banners are rgb(0, 85, 165) #0055a5, the most-used colour after white; the logo PNG is grey #b1b1b1 |
 | `ajex` | [aj-ex.com](https://www.aj-ex.com/) — site CSS --primarys #ec171c, the header bar behind the white logo |
 | `akash-ganga` | [akashganga.info](https://www.akashganga.info/images/logo-compnay.png) — logo PNG #024182 with orange #e77817 (approximate) |
 | `aks-express` | [aks.rs](https://www.aks.rs/wp-content/themes/aks/assets/images/svg/logo.svg) — logo SVG fills #2b0299 (letters) and #ee2329 (speed lines) |
@@ -515,6 +516,7 @@ and [`truck.json`](truck.json).
 | `quantium-solutions` | [quantiumsolutions.com](https://www.quantiumsolutions.com/homesource/Quantium_Solutions_Logo.png) — logo wordmark teal #00474f and symbol lime #7fbc03 (approximate, flat PNG); site headings #004750 |
 | `quicksilver-sa` | [quick-silver.express](https://quick-silver.express/assets/logo%201-h7PlWKoD.svg) — logo SVG fill #805FA4; the S's upper hook is grey #BEBBBA |
 | `quiqup` | [quiqup.com](https://cdn.prod.website-files.com/659d50aa6b5dee07e990053a/659e462164d15ff126e9b6cb_Quiqup_Master_Logos_RGB_Horizontal_Ghost%20(3).png) — logo PNG symbol fill #6c65f7, chevron #ffd100, wordmark #23005b |
+| `qwintry` | [qwintry.com](https://qwintry.com/images/static/logo-en.svg) — logo SVG fills: #ef7d00 (main orange), with #f39200 and #fab334 shading the same hexagon |
 | `raben` | [raben-group.com](https://www.raben-group.com/raben-logo.svg) — logo SVG fill #DF0020 |
 | `ram-hand-to-hand` | [ram.co.za](https://www.ram.co.za/) — header logo SVG fill #e51813 |
 | `redpack` | [redpack.com.mx](https://www.redpack.com.mx/) — red `#e2211c` and navy `#062f87` are the palette entries of the indexed logo PNG and of the favicon |
@@ -568,6 +570,7 @@ and [`truck.json`](truck.json).
 | `skyking` | [skyking.co](https://skyking.co/images/icon.png) — site icon fill #ed1c24 (the running figure), the same red as the logo's King and the iOS app icon's figure |
 | `skynet-sa` | [web.skynet.co.za](https://web.skynet.co.za:5002/images/Skynet-Logo-Icon-01.jpg) — logo JPEG red about #ff0d00 (approximate); same red as skynet-worldwide #fe0000 |
 | `skynet-worldwide` | [ffdx.net](https://www.ffdx.net/v2/images/logos/skynet_logo.jpg) — logo used by the SkyNet tracker, red #fe0000 (approximate, JPEG) |
+| `skypostal` | [skypostal.com](https://cdn.prod.website-files.com/65b7a40df0b6bd112d4e6b1f/65d09dd93468e1a2dff3f82c_Skypostal-logo---Solutions---Horizontal.png) — logo PNG: the S symbol and SKYPOSTAL wordmark are #088aea (approximate; flat fill, the favicon and apple-touch icon are the same blue, and the home page hero panel is rgb(8, 138, 234)) |
 | `slgtrax` | [slgtrax.com](https://slgtrax.com/) — site bundle bg-[#2d7a52] (Track buttons); logo green #499c6e and trailer green are close (approximate) |
 | `slovak-parcel-service` | [logo SVG](https://www.sps-sro.sk/images/logo.svg) |
 | `slovenska-posta` | [posta.sk](https://www.posta.sk/sledovanie-zasielok) (meta theme-color) |
@@ -611,6 +614,7 @@ and [`truck.json`](truck.json).
 | `tealca` | [tealca.com](https://www.tealca.com/wp-content/uploads/2021/06/001_LOGO_HEADER.svg) — logo SVG fill #00559e |
 | `team-express-ae` | [teamexpressme.com](https://teamexpressme.com/wp-content/uploads/2016/05/logo-tes3.png) — logo PNG orange #e94e1e (approximate) |
 | `team-global-express` | [teamglobalexp.com](https://teamglobalexp.com/image/layout_set_logo?img_id=5087020) — logo PNG #143200 (approximate), site CSS #143200 and wattle #cbff55 |
+| `team-worldwide` | [teamww.com](https://www.teamww.com/favicon.ico) — favicon: TW monogram, W #cf152d (the larger part) and T #011689 (approximate; sampled from the ICO) |
 | `tej-couriers` | [tejcouriers.com](https://www.tejcouriers.com/) — page style .red-button #d2232a; logo COURIERS red #ed3237 |
 | `teleship` | [teleship.com](https://teleship.com/teleship-logo.png) — logo cube tops #ff66d2 (flat PNG fill); side faces #aaf2ad and #a3c8f0, outlines and wordmark #1c1e1e |
 | `tfm-express` | [tfmex.com](https://tfmex.com/wp-content/uploads/2022/01/TFM-Express-Copy-Logo.png) — logo PNG and favicon blue #0001ef (approximate); the envelope is orange #e83e05 |
@@ -1389,3 +1393,7 @@ and [`truck.json`](truck.json).
 | `hercules-freight` | White italic H under a red arc on blue | [herculesfreight.com](https://herculesfreight.com/assets-v2/images/hercules-logo.svg) — the bold italic Hercules wordmark under a red arc, reduced to its H |
 | `gaash` | White hexagon of corner brackets with three orange outward arrows on blue | [gaashwd.com](https://gaashwd.com/wp-content/uploads/2018/10/gaash-icon.png) — site icon: hexagon of corner brackets, orange arrows at the top and lower corners, blue sphere inside (left out) |
 | `orian` | White pixel bar breaking into squares on red | [orian.com](https://www.orian.com/templates/Orian2019/favicon.png) — favicon and logo bar: a red band that dissolves into square pixels at its right end |
+| `qwintry` | White hexagonal Q ring around an isometric cube on orange | [qwintry.com](https://qwintry.com/images/static/logo-en.svg) — the hexagon symbol: an isometric box inside a hexagonal ring cut at its lower right into a Q |
+| `skypostal` | White S sphere with two side leaves on blue | [skypostal.com](https://cdn.prod.website-files.com/65b7a40df0b6bd112d4e6b1f/65d2e68271047512b610e520_webflow.png) — apple-touch icon: a sphere cut into a blue S, two thin blue leaves on its rim and grey pieces in the hooks (left out) |
+| `ait-worldwide` | White italic AIT on blue | [aitworldwide.com](https://www.aitworldwide.com/getContentAsset/d6b3e14f-8291-4048-9df8-9779a70ab445/dfc3d011-8f63-43f6-9ed8-4b444333a1d0/logo-ait.png?language=en-US) — logo: bold italic AIT crossed by an orbit ellipse in front of a wire globe; the truck keeps the letters, with a crossbar on the A in place of the orbit |
+| `team-worldwide` | White TW monogram on red | [teamww.com](https://www.teamww.com/favicon.ico) — favicon: a blue T beside a lower red W with rounded bottoms |
