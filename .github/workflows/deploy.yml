@@ -76,6 +76,16 @@ jobs:
           SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
         run: scripts/check-production-migrations.sh
+      # IndexNow hears of the pages this deploy adds to the sitemap or redates: the live one is
+      # kept to compare with. Without it, IndexNow is told nothing.
+      - name: Save the sitemap before the deploy
+        if: steps.current.outputs.deploy != 'false'
+        env:
+          DEPLOY_URL: ${{ vars.DEPLOY_URL }}
+        run: |
+          curl --silent --show-error --fail --max-time 20 -H 'Cache-Control: no-cache' \
+            -o "$RUNNER_TEMP/sitemap-before.xml" "${DEPLOY_URL%/}/sitemap.xml" \
+            || { rm -f "$RUNNER_TEMP/sitemap-before.xml"; echo '::warning::The sitemap could not be saved: IndexNow will hear of no pages.'; }
       - name: Deploy this commit
         if: steps.current.outputs.deploy != 'false'
         env:
@@ -103,6 +113,15 @@ jobs:
         env:
           DEPLOY_URL: ${{ vars.DEPLOY_URL }}
         run: scripts/smoke-url.sh "$DEPLOY_URL"
+      # The pages new or redated in the sitemap go to IndexNow, which Bing and the engines that use
+      # its index read (scripts/indexnow.mjs). A refusal is shown but never fails the deploy.
+      - name: Tell IndexNow about new and redated pages
+        if: steps.current.outputs.deploy != 'false'
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          DEPLOY_URL: ${{ vars.DEPLOY_URL }}
+        run: node scripts/indexnow.mjs "--before=$RUNNER_TEMP/sitemap-before.xml" "$DEPLOY_URL"
       # The app names its Sentry release after the image's commit (IMAGE_COMMIT). Where the
       # SENTRY_AUTH_TOKEN secret and the SENTRY_PROJECT variable are set (and SENTRY_ORG,
       # unless the token is an organization token), that release gets its commits and a

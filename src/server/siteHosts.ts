@@ -89,8 +89,9 @@ export function movedOrigin(headers: HeaderReader, env: NodeJS.ProcessEnv = proc
 // own: the API (a redirect to another host drops the bearer token), health
 // checks, assets, the service workers and what they precache, the manifests,
 // app-association files, the sign-in email template the Auth server reads, and
-// the files written for crawlers, which name the canonical origin themselves.
-const staysOnItsHost = /^\/(?:api|health|_next|icons|fonts|auth-emails|\.well-known|share-target)(?:\/|$)|^\/(?:sw\.js|push-sw\.js|(?:[a-z]{2}\/)?manifest\.webmanifest|og(?:-[a-z]{2})?\.png|og\.svg|favicon\.ico|robots\.txt|sitemap\.xml|privacy\.css|theme\.css)$/;
+// the files written for crawlers: robots.txt and the sitemap name the canonical
+// origin themselves, and the IndexNow key, named after itself, vouches for its host.
+const staysOnItsHost = /^\/(?:api|health|_next|icons|fonts|auth-emails|\.well-known|share-target)(?:\/|$)|^\/(?:sw\.js|push-sw\.js|(?:[a-z]{2}\/)?manifest\.webmanifest|og(?:-[a-z]{2})?\.png|og\.svg|favicon\.ico|robots\.txt|sitemap\.xml|[0-9a-f]{32}\.txt|privacy\.css|theme\.css)$/;
 
 /**
  * Where a page request that reached a legacy host is sent: the same path and

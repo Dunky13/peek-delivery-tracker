@@ -104,7 +104,7 @@ describe('legacyHostRedirect', () => {
     '/api/packages', '/api/public/parcels/k7Qm2xW9bTfR', '/api/friends/invite-image?preview=abc', '/api',
     '/health', '/health/live',
     '/_next/static/chunks/main-app-0123.js', '/_next/image?url=%2Fog.png', '/icons/icon-192.png', '/fonts/gelasio/regular.woff2',
-    '/favicon.ico', '/robots.txt', '/sitemap.xml', '/privacy.css', '/theme.css',
+    '/favicon.ico', '/robots.txt', '/sitemap.xml', '/0123456789abcdef0123456789abcdef.txt', '/privacy.css', '/theme.css',
     '/sw.js', '/push-sw.js', '/manifest.webmanifest', '/de/manifest.webmanifest',
     '/.well-known/apple-app-site-association', '/.well-known/assetlinks.json',
     '/auth-emails/magic-link.html', '/og.png', '/og.png?v=73229339', '/og.svg',

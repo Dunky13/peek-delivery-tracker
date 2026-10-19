@@ -1,0 +1,190 @@
+import assert from 'node:assert/strict';
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { after, describe, it } from 'node:test';
+import {
+  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, decodeXml, pagesToSubmit, parseSitemap, requestBodies, run, submit,
+} from './indexnow.mjs';
+
+const origin = 'https://peek.example.test';
+const host = 'peek.example.test';
+const page = (url, lastmod = null) => ({ url, lastmod });
+const sitemap = pages => '<?xml version="1.0" encoding="UTF-8"?>\n'
+  + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+  + pages.map(({ url, lastmod }) => `<url>\n<loc>${url}</loc>\n<xhtml:link rel="alternate" hreflang="de" href="${url}/de" />\n`
+    + (lastmod ? `<lastmod>${lastmod}</lastmod>\n` : '') + '</url>\n').join('')
+  + '</urlset>\n';
+
+/** A fetch that serves `xml` as the live sitemap and answers IndexNow with `status`. */
+function engine(xml, status = 200) {
+  const posts = [];
+  const gets = [];
+  const fetchImpl = async (url, init = {}) => {
+    if (init.method === 'POST') {
+      posts.push({ url, body: JSON.parse(init.body) });
+      return new Response(null, { status });
+    }
+    gets.push(url);
+    return xml === null ? new Response('gone', { status: 503 }) : new Response(xml, { status: 200 });
+  };
+  return { fetchImpl, posts, gets };
+}
+
+describe('the key', () => {
+  it('is served as is from the root, named after itself, where it vouches for every page', () => {
+    assert.match(INDEXNOW_KEY, /^[0-9a-f]{32}$/);
+    const publicDirectory = new URL('../public/', import.meta.url);
+    assert.equal(readFileSync(new URL(`${INDEXNOW_KEY}.txt`, publicDirectory), 'utf8'), INDEXNOW_KEY);
+    assert.deepEqual(readdirSync(publicDirectory).filter(name => /^[0-9a-f]{32}\.txt$/.test(name)), [`${INDEXNOW_KEY}.txt`]);
+  });
+
+  // proxy.ts leaves it alone and every host answers it itself, like robots.txt (siteHosts.ts).
+  it('is left to every host, like the other files written for crawlers', () => {
+    const read = file => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
+    assert.ok(read('proxy.ts').includes('|[0-9a-f]{32}\\\\.txt|'));
+    assert.ok(read('src/server/siteHosts.ts').includes('|[0-9a-f]{32}\\.txt|'));
+  });
+});
+
+describe('reading a sitemap', () => {
+  it('reads each page and its date, decoding what XML escapes', () => {
+    assert.equal(decodeXml('a&amp;b &lt;&gt; &quot;&apos; &#38;&#x26; &amp;amp;'), 'a&b <> "\' && &amp;');
+    assert.deepEqual(parseSitemap(sitemap([
+      page('https://peek.example.test/'),
+      page('https://peek.example.test/de/guides/r&amp;d?a=1&amp;b=&apos;2&apos;', '2026-10-17'),
+    ])), [
+      page('https://peek.example.test/'),
+      page("https://peek.example.test/de/guides/r&d?a=1&b='2'", '2026-10-17'),
+    ]);
+    assert.deepEqual(parseSitemap('<html>Bad gateway</html>'), []);
+  });
+});
+
+describe('choosing the pages', () => {
+  const before = [
+    page(`${origin}/`),
+    page(`${origin}/guides/a`, '2026-10-01'),
+    page(`${origin}/guides/b`, '2026-10-01'),
+    page(`${origin}/guides/gone`, '2026-10-01'),
+  ];
+  const afterDeploy = [
+    page(`${origin}/`),
+    page(`${origin}/guides/a`, '2026-10-01'),
+    page(`${origin}/guides/b`, '2026-10-17'),
+    page(`${origin}/guides/new`, '2026-10-17'),
+    page(`${origin}/carriers/undated`),
+    page('https://other.example.test/guides/new', '2026-10-17'),
+    page('not an address'),
+  ];
+
+  it('submits the pages that are new or redated, on the site\'s host only', () => {
+    assert.deepEqual(pagesToSubmit(afterDeploy, before, host), [
+      `${origin}/guides/b`, `${origin}/guides/new`, `${origin}/carriers/undated`,
+    ]);
+  });
+
+  it('submits a page that gains or loses its date, and each page once', () => {
+    assert.deepEqual(pagesToSubmit([page(`${origin}/a`, '2026-10-17'), page(`${origin}/b`)], [page(`${origin}/a`), page(`${origin}/b`, '2026-10-01')], host),
+      [`${origin}/a`, `${origin}/b`]);
+    assert.deepEqual(pagesToSubmit([page(`${origin}/a`), page(`${origin}/a`)], [], host), [`${origin}/a`]);
+  });
+
+  it('submits every page of the host without a sitemap to compare with', () => {
+    assert.equal(pagesToSubmit(afterDeploy, null, host).length, 5);
+  });
+});
+
+describe('submitting', () => {
+  it('sends the pages with the key and where to find it', () => {
+    assert.deepEqual(requestBodies([`${origin}/guides/new`], `${origin}`), [{
+      host,
+      key: INDEXNOW_KEY,
+      keyLocation: `${origin}/${INDEXNOW_KEY}.txt`,
+      urlList: [`${origin}/guides/new`],
+    }]);
+  });
+
+  it('sends at most ten thousand pages a request', async () => {
+    const urls = Array.from({ length: MAX_URLS_PER_REQUEST * 2 + 1 }, (_, index) => `${origin}/p${index}`);
+    assert.deepEqual(requestBodies(urls, origin).map(body => body.urlList.length), [10_000, 10_000, 1]);
+    const { fetchImpl, posts } = engine('', 202);
+    const lines = [];
+    assert.equal(await submit(urls, origin, { fetchImpl, log: line => lines.push(line) }), urls.length);
+    assert.deepEqual(posts.map(post => post.url), [DEFAULT_ENDPOINT, DEFAULT_ENDPOINT, DEFAULT_ENDPOINT]);
+    assert.deepEqual(posts.flatMap(post => post.body.urlList), urls);
+    assert.deepEqual(lines, [10_000, 10_000, 1].map(count => `${DEFAULT_ENDPOINT} answered HTTP 202 to ${count} pages`));
+  });
+
+  it('reports a refusal or an unreachable engine instead of throwing, and stops there', async () => {
+    const urls = Array.from({ length: MAX_URLS_PER_REQUEST + 1 }, (_, index) => `${origin}/p${index}`);
+    const refused = engine('', 403);
+    const lines = [];
+    assert.equal(await submit(urls, origin, { fetchImpl: refused.fetchImpl, log: line => lines.push(line) }), 0);
+    assert.equal(refused.posts.length, 1);
+    assert.deepEqual(lines, [`${DEFAULT_ENDPOINT} answered HTTP 403 to 10000 pages`]);
+
+    const offline = async () => { throw new TypeError('fetch failed', { cause: new Error('getaddrinfo ENOTFOUND') }); };
+    lines.length = 0;
+    assert.equal(await submit(urls, origin, { fetchImpl: offline, log: line => lines.push(line) }), 0);
+    assert.deepEqual(lines, [`${DEFAULT_ENDPOINT} could not be reached with 10000 pages: fetch failed: getaddrinfo ENOTFOUND`]);
+  });
+});
+
+describe('the command', () => {
+  const directory = mkdtempSync(path.join(tmpdir(), 'indexnow-'));
+  after(() => rmSync(directory, { recursive: true, force: true }));
+  const saved = (name, text) => {
+    const file = path.join(directory, name);
+    writeFileSync(file, text);
+    return file;
+  };
+  const live = sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-17'), page(`${origin}/guides/new`, '2026-10-17')]);
+  const command = async (args, xml = live, status = 200) => {
+    const lines = [];
+    const io = engine(xml, status);
+    const code = await run(args, { fetchImpl: io.fetchImpl, log: line => lines.push(line) });
+    return { code, lines, ...io };
+  };
+
+  it('submits what changed since the sitemap saved before the deploy', async () => {
+    const before = saved('before.xml', sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-01')]));
+    const { code, lines, gets, posts } = await command([`--before=${before}`, `${origin}/`]);
+    assert.equal(code, 0);
+    assert.deepEqual(gets, [`${origin}/sitemap.xml`]);
+    assert.deepEqual(posts.map(post => post.body.urlList), [[`${origin}/guides/a`, `${origin}/guides/new`]]);
+    assert.equal(lines.at(-1), `Submitted 2 of 2 pages to ${DEFAULT_ENDPOINT}.`);
+  });
+
+  it('submits nothing, and says so, without a saved sitemap', async () => {
+    for (const before of [path.join(directory, 'missing.xml'), saved('empty.xml', ''), saved('error.html', '<html>Bad gateway</html>')]) {
+      const { code, lines, gets, posts } = await command([`--before=${before}`, origin]);
+      assert.equal(code, 0);
+      assert.equal(gets.length + posts.length, 0);
+      assert.match(lines.join('\n'), /nothing is submitted/);
+    }
+  });
+
+  it('submits every page with --all, to the engine asked', async () => {
+    const { code, posts } = await command(['--all', '--endpoint=https://www.bing.com/indexnow', origin]);
+    assert.equal(code, 0);
+    assert.equal(posts[0].url, 'https://www.bing.com/indexnow');
+    assert.equal(posts[0].body.urlList.length, 3);
+  });
+
+  it('lists the pages without sending them on a dry run', async () => {
+    const { code, lines, posts } = await command(['--all', '--dry-run', origin]);
+    assert.equal(code, 0);
+    assert.equal(posts.length, 0);
+    assert.match(lines.at(-1), /^Dry run: 3 pages would go to .* in 1 requests\. Nothing was sent\.$/);
+  });
+
+  it('exits with 1 when IndexNow refuses or the sitemap cannot be read, and 2 when misused', async () => {
+    assert.equal((await command(['--all', origin], live, 429)).code, 1);
+    assert.equal((await command(['--all', origin], null)).code, 1);
+    for (const args of [[origin], ['--all', `--before=${path.join(directory, 'x')}`, origin], ['--all'],
+      ['--all', 'peek.example.test'], ['--all', '--endpoint=nowhere', origin], ['--all', '--everything', origin]]) {
+      assert.equal((await command(args)).code, 2, args.join(' '));
+    }
+  });
+});

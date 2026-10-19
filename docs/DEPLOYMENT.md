@@ -174,6 +174,12 @@ runs `deploy <commit>` over SSH on the target and the smoke test on `DEPLOY_URL`
 the key on the host to a command that accepts only that request and starts the published
 image.
 
+Once the site answers, the pages the deploy added to the sitemap or redated go to IndexNow
+([indexnow.mjs](../scripts/indexnow.mjs)), which Bing and the engines using its index read.
+Its key is public by design, in a file of its name at the root of `public`. A refusal is
+shown but never fails the deploy. To submit every page of the sitemap, run
+`node scripts/indexnow.mjs --all https://peektracker.com`.
+
 ## Delivery email
 
 Optional. With mail settings, an account can ask for an email when a parcel is ready to
