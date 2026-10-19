@@ -1947,7 +1947,7 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -6743,6 +6743,11 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
+        "pattern": "^[CELR][A-Z]\\d{9}LV$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}LV$",
         "confidence": "low",
         "checksum": "s10",
@@ -8263,6 +8268,11 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
+        "pattern": "^[CELR][A-Z]\\d{9}HR$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
+      {
         "pattern": "^[A-Z]{2}\\d{9}HR$",
         "confidence": "low",
         "checksum": "s10",
@@ -8922,6 +8932,10 @@ export const CARRIER_CAPABILITIES = {
         "pattern": "^1[78]\\d{14}$",
         "confidence": "low",
         "checksum": "luhn"
+      },
+      {
+        "pattern": "^VGS\\d{14}$",
+        "confidence": "high"
       }
     ],
     "trackingSearchUrl": "https://vintedgo.com/en/tracking?region=europe"
@@ -12116,7 +12130,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/New_York",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pilot-freight",
+      "recognitionRank": 572
     },
     "trackingUrlTemplate": "https://delivers.maersk.com/tracking/{trackingNumber}",
     "linkRules": [
@@ -19811,7 +19826,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Guayaquil",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "laar-courier",
+      "recognitionRank": 648
     },
     "trackingUrlTemplate": "https://fenix.laarcourier.com/Tracking/?guia={trackingNumber}",
     "linkRules": [
@@ -20217,7 +20233,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Vientiane",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "anousith",
+      "recognitionRank": 649
     },
     "trackingUrlTemplate": "https://app.anousith.express/landing/search_tracking/search_item?_bill_detail={trackingNumber}&n_home=2",
     "linkRules": [
@@ -21951,7 +21968,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/El_Salvador",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correos-el-salvador",
+      "recognitionRank": 577
     },
     "linkRules": [
       {
@@ -23899,7 +23917,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "homexpress"
     },
     "linkRules": [],
     "detectionRules": [],
@@ -24812,7 +24830,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ab-courier",
+      "recognitionRank": 573
     },
     "trackingUrlTemplate": "https://abcourier.com/CCWebClient/General/TrackingInfo/{trackingNumber}",
     "linkRules": [
@@ -24960,7 +24979,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "lightning-express"
     },
     "trackingUrlTemplate": "https://www.lightningexpressca.com/track.html?id={trackingNumber}",
     "linkRules": [
@@ -25205,7 +25224,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pdq-chile",
+      "recognitionRank": 646
     },
     "trackingUrlTemplate": "https://www.pdq.cl/tracking?q={trackingNumber}",
     "linkRules": [
@@ -25400,7 +25420,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "maruti-air",
+      "recognitionRank": 575
     },
     "linkRules": [
       {
@@ -25423,7 +25444,9 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [],
+    "trackingUrlTemplate": "https://erp.marutiair.com/TrackpageWeb/WebAWBTracking.aspx?AWB={trackingNumber}",
+    "trackingSearchUrl": "https://www.marutiair.com/tracking.html"
   },
   "noest": {
     "displayName": "NOEST Express",
@@ -25470,13 +25493,15 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "rivigo",
+      "recognitionRank": 574
     },
     "trackingUrlTemplate": "https://zoom.rivigo.com/#/trackconsignment/{trackingNumber}",
     "linkRules": [
       {
         "domains": [
-          "zoom.rivigo.com"
+          "zoom.rivigo.com",
+          "zoom-ops.rivigo.com"
         ],
         "pathPattern": "^/?$",
         "fragment": "^/trackconsignment/([^/?#]+)"
@@ -26975,7 +27000,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Toronto",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fleetex",
+      "recognitionRank": 571
     },
     "trackingUrlTemplate": "https://tracking.fleetexpress.ca/tracking/en/{trackingNumber}",
     "linkRules": [
@@ -26983,7 +27009,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "tracking.fleetexpress.ca"
         ],
-        "path": "^/tracking/(?:[a-z]{2,3})/([^/?#]+)/?$"
+        "path": "^/(?:tracking|oteptrack)/(?:[a-z]{2,3})/([^/?#]+)/?$"
       }
     ],
     "detectionRules": [],
@@ -27235,10 +27261,12 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Ulaanbaatar",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "mongol-infinity-post",
+      "recognitionRank": 681
     },
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [],
+    "trackingSearchUrl": "https://mypost.mn/"
   },
   "peqasus-az": {
     "displayName": "Peqasus",
@@ -28359,7 +28387,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pandu-logistics",
+      "recognitionRank": 683
     },
     "linkRules": [],
     "detectionRules": [],
@@ -28414,7 +28443,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Ho_Chi_Minh",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "pcs-logistics-vn",
+      "recognitionRank": 686
     },
     "trackingUrlTemplate": "https://pcs-logistics.com/en/track-trace?code={trackingNumber}",
     "linkRules": [
@@ -28528,9 +28558,10 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "aci-express-kr",
+      "recognitionRank": 684
     },
-    "trackingUrlTemplate": "https://acieshop.com/aci_pod/pod.php?BL={trackingNumber}",
+    "trackingUrlTemplate": "https://www.acieshop.com/pod.php?OrderNo={trackingNumber}",
     "linkRules": [
       {
         "domains": [
@@ -28540,6 +28571,16 @@ export const CARRIER_CAPABILITIES = {
         "pathPattern": "^/aci_pod/pod\\.php$",
         "params": [
           "BL"
+        ]
+      },
+      {
+        "domains": [
+          "acieshop.com",
+          "www.acieshop.com"
+        ],
+        "pathPattern": "^/pod\\.php$",
+        "params": [
+          "OrderNo"
         ]
       },
       {
@@ -28756,7 +28797,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Seoul",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "today-kr",
+      "recognitionRank": 712
     },
     "trackingUrlTemplate": "https://my.amazing.today/track/{trackingNumber}",
     "linkRules": [
@@ -28928,7 +28970,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Hong_Kong",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "morning-global",
+      "recognitionRank": 682
     },
     "trackingUrlTemplate": "https://www.morninglobal.com/trace-track/?tracking_number={trackingNumber}",
     "linkRules": [

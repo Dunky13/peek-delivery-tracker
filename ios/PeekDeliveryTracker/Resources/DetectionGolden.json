@@ -8218,12 +8218,6 @@
     ]
   },
   {
-    "input": "064081081",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
-  },
-  {
     "input": "0642231309",
     "carrier": "unknown",
     "confidence": "low",
@@ -8238,22 +8232,6 @@
     "asked": [
       "relais-colis",
       "dhl-ecommerce-es"
-    ]
-  },
-  {
-    "input": "064342773",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "tnt",
-      "xpo-ltl"
-    ],
-    "preferred": [
-      "tnt"
-    ],
-    "asked": [
-      "tnt",
-      "xpo-ltl"
     ]
   },
   {
@@ -8744,12 +8722,6 @@
       "postlogistics",
       "dhl-ecommerce-pl"
     ]
-  },
-  {
-    "input": "080515093",
-    "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
   },
   {
     "input": "08080f060880",
@@ -9381,6 +9353,23 @@
     ]
   },
   {
+    "input": "1000000000009",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd-fr",
+      "la-poste",
+      "correos-chile",
+      "delhivery",
+      "yunda",
+      "korea-post"
+    ],
+    "asked": [
+      "la-poste",
+      "delhivery"
+    ]
+  },
+  {
     "input": "100000000001",
     "carrier": "unknown",
     "confidence": "low",
@@ -9833,14 +9822,6 @@
     ]
   },
   {
-    "input": "1000540",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "seur"
-    ]
-  },
-  {
     "input": "10008230099342",
     "carrier": "unknown",
     "confidence": "low",
@@ -9879,6 +9860,32 @@
     ],
     "preferred": [
       "fedex"
+    ]
+  },
+  {
+    "input": "100200300400",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "dpd-fr",
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "dhl",
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t"
     ]
   },
   {
@@ -15714,6 +15721,26 @@
     "asked": [
       "la-poste",
       "delhivery"
+    ]
+  },
+  {
+    "input": "1400080342",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dhl",
+      "mondial-relay",
+      "relais-colis",
+      "tipsa",
+      "estafeta",
+      "packeta",
+      "dhl-ecommerce-es",
+      "gls-es"
+    ],
+    "asked": [
+      "relais-colis",
+      "packeta",
+      "dhl-ecommerce-es"
     ]
   },
   {
@@ -49698,6 +49725,14 @@
     ]
   },
   {
+    "input": "7000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "seur"
+    ]
+  },
+  {
     "input": "700000947978",
     "carrier": "unknown",
     "confidence": "low",
@@ -52863,6 +52898,30 @@
     "confidence": "high",
     "candidates": [
       "old-dominion"
+    ]
+  },
+  {
+    "input": "777701055551",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "colis-prive",
+      "mrw",
+      "brt",
+      "sf-express",
+      "sto",
+      "zto",
+      "j-and-t",
+      "lbc-express",
+      "metropolitan-warehouse"
+    ],
+    "asked": [
+      "brt",
+      "colis-prive",
+      "sto",
+      "j-and-t",
+      "zto"
     ]
   },
   {
@@ -56296,21 +56355,6 @@
     ]
   },
   {
-    "input": "8707221950159",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "la-poste",
-      "correos-chile",
-      "delhivery",
-      "yunda"
-    ],
-    "asked": [
-      "la-poste",
-      "delhivery"
-    ]
-  },
-  {
     "input": "8717377014720",
     "carrier": "unknown",
     "confidence": "low",
@@ -57083,30 +57127,6 @@
     ],
     "asked": [
       "brt"
-    ]
-  },
-  {
-    "input": "893180958012",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "mondial-relay",
-      "colis-prive",
-      "mrw",
-      "brt",
-      "sf-express",
-      "sto",
-      "zto",
-      "j-and-t",
-      "lbc-express",
-      "metropolitan-warehouse"
-    ],
-    "asked": [
-      "brt",
-      "colis-prive",
-      "sto",
-      "j-and-t",
-      "zto"
     ]
   },
   {
@@ -58077,14 +58097,6 @@
     ]
   },
   {
-    "input": "9104518",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "seur"
-    ]
-  },
-  {
     "input": "9107345678",
     "carrier": "unknown",
     "confidence": "low",
@@ -58117,14 +58129,6 @@
     "asked": [
       "tnt",
       "xpo-ltl"
-    ]
-  },
-  {
-    "input": "9111953",
-    "carrier": "unknown",
-    "confidence": "low",
-    "candidates": [
-      "seur"
     ]
   },
   {
@@ -65238,38 +65242,26 @@
   },
   {
     "input": "CC606660538LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "CC606787410LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "CC606791768LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
@@ -68085,14 +68077,10 @@
   },
   {
     "input": "CX712034439LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
@@ -70513,14 +70501,10 @@
   },
   {
     "input": "EM146631045HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -72978,7 +72962,7 @@
     ]
   },
   {
-    "input": "GYE1389369062",
+    "input": "GYE0000000000",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
@@ -76532,14 +76516,10 @@
   },
   {
     "input": "LA008713489HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -76725,14 +76705,10 @@
   },
   {
     "input": "LD084931122HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -76745,14 +76721,10 @@
   },
   {
     "input": "LD241044973HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -76807,14 +76779,10 @@
   },
   {
     "input": "LE565787894HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -77881,14 +77849,10 @@
   },
   {
     "input": "LW225825809HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -77901,14 +77865,10 @@
   },
   {
     "input": "LW260370397HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -78112,110 +78072,74 @@
   },
   {
     "input": "LY070390210LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY073326286LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075313991LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075573930LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075711110LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075712163LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075718360LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075722673LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
     "input": "LY075724232LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
@@ -83541,26 +83465,18 @@
   },
   {
     "input": "RG229353469HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
     "input": "RG523729391HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -83654,14 +83570,10 @@
   },
   {
     "input": "RH030544536HR",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -85175,14 +85087,10 @@
   },
   {
     "input": "RS901829385LV",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
@@ -86892,13 +86800,19 @@
     "candidates": []
   },
   {
-    "input": "SR585479158593",
+    "input": "SR621079457793",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
   },
   {
     "input": "SR662910478770",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "SR904227449186",
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
@@ -89524,6 +89438,14 @@
     ]
   },
   {
+    "input": "VGS90000000000001",
+    "carrier": "vinted-go",
+    "confidence": "high",
+    "candidates": [
+      "vinted-go"
+    ]
+  },
+  {
     "input": "VH101334",
     "carrier": "unknown",
     "confidence": "low",
@@ -90843,6 +90765,48 @@
     "candidates": []
   },
   {
+    "input": "YYZ121 20251212 5271",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "YYZ122 20251212 3256",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "YYZ225 20251212 3279",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "YYZ362 20251212 1995",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "YYZ362 20251212 3000",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "YYZ363 20251212 7483",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
+    "input": "YYZ364 20251212 6679",
+    "carrier": "unknown",
+    "confidence": "none",
+    "candidates": []
+  },
+  {
     "input": "YZ125824615BR",
     "carrier": "correios-br",
     "confidence": "high",
@@ -91942,14 +91906,10 @@
   },
   {
     "input": "rg357685487hr",
-    "carrier": "intl-post",
+    "carrier": "hrvatska-posta",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "hrvatska-posta",
-      "chronopost"
+      "hrvatska-posta"
     ]
   },
   {
@@ -91966,14 +91926,10 @@
   },
   {
     "input": "rs072786167lv",
-    "carrier": "intl-post",
+    "carrier": "latvijas-pasts",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "latvijas-pasts",
-      "chronopost"
+      "latvijas-pasts"
     ]
   },
   {
