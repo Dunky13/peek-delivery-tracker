@@ -903,8 +903,13 @@ describe('carrier detection', () => {
     // OSS EXAMPLE freight PROs (lower parcel priority, but the repo already supports
     // freight; upstream Luhn-validates while bare numerics stay collision-prone).
     // Source: https://github.com/jkeen/tracking_number_data/blob/main/couriers/old_dominion.json
-    for (const number of ['07209562763', '77767553207', '77806528897', '78045768393', '80003280379', '80993847369']) {
+    for (const number of ['07209562763', '77767553207', '77806528897', '78045768393']) {
       expect(detectCarrier(number)).toBe('old-dominion');
+    }
+    // DPD Romania's eleven-digit waybills start with 80 too, so these stay suggestions.
+    for (const number of ['80003280379', '80993847369']) {
+      const match = detectCarrierMatch(number);
+      expect([match.carrier, ...(match.candidates ?? [])]).toContain('old-dominion');
     }
     expectDirectTracking('old-dominion');
   });
