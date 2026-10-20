@@ -676,6 +676,10 @@ without a DSN report nothing.
   (`IGNORED_ERRORS` in `src/lib/errorReporter.ts`), so is a repeat of the last report,
   and a page sends five reports at most. An error rendered on the server reaches the page with only
   a `digest`: the server reported it. No tracing, replay, breadcrumbs or user.
+- **Translated pages**: a browser translating the page, or an extension, swaps the text
+  React wrote for nodes of its own. From before the app renders, React's later changes
+  around those nodes land as near as the page allows (`src/lib/pageTranslation.ts`)
+  instead of throwing a `NotFoundError` that would bring up the error screen.
 - **Through the site**: the SDK posts to `/api/errors` (Sentry's `tunnel`), so the CSP
   names no other host and blockers leave reports alone. The route forwards a report only
   to the project of `SENTRY_DSN`, without the browser's address, cookies or headers. It
