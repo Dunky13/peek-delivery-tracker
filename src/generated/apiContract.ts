@@ -21991,6 +21991,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^BCM[A-Z]{1,3}\\d{7,9}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^BCM[A-Z]{2}\\d{13}CN$",
+        "confidence": "high"
       }
     ],
     "trackingSearchUrl": "https://www.citymail.se/spara-paket/"
