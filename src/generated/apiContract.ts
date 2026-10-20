@@ -30045,6 +30045,47 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ]
+  },
+  "j-and-t-de": {
+    "displayName": "J&T Express Germany",
+    "aliases": [
+      "J&T Express (DE)",
+      "J&T Express DE",
+      "J&T Express Deutschland",
+      "J&T Germany",
+      "J&T Express Germany GmbH",
+      "极兔速递 · 德国区"
+    ],
+    "countries": [
+      "DE"
+    ],
+    "color": "#e60000",
+    "selectable": true,
+    "timezone": "Europe/Berlin",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "j-and-t-de"
+    },
+    "trackingUrlTemplate": "https://www.jtexpress.de/tracking?q={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "www.jtexpress.de",
+          "jtexpress.de"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JTDE\\d{12}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.jtexpress.de/tracking"
   }
 } as const;
 
@@ -30857,7 +30898,8 @@ export const CARRIER_IDS = [
   "lingdong",
   "jcex",
   "shiprocket",
-  "first-line"
+  "first-line",
+  "j-and-t-de"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
