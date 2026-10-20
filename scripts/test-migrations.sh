@@ -310,6 +310,8 @@ psql "$database_url" -X -v ON_ERROR_STOP=1 \
   -f "$repo_root/supabase/tests/whole_hour_provider_copies.sql"
 psql "$database_url" -X -v ON_ERROR_STOP=1 \
   -f "$repo_root/supabase/tests/misread_clock_provider_copies.sql"
+psql "$database_url" -X -v ON_ERROR_STOP=1 \
+  -f "$repo_root/supabase/tests/universal_provider_notices.sql"
 
 # The hourly review reads every queue: it must still run on the schema.
 psql "$database_url" -X -v hours=24 -f "$repo_root/ops/review/signals.sql" > /dev/null
