@@ -1089,11 +1089,11 @@ describe('persistent tracking routing', () => {
     const { router, direct, universal } = setup();
     direct.mockRejectedValue(new Error('carrier down'));
     universal.mockRejectedValue(new Error('down'));
-    await expect(router.fetch(parcel({ carrier: 'ups' }), false)).rejects.toMatchObject({ attempted: 4 });
-    const cooling = Object.fromEntries(['ups', 'Ship24', 'ParcelsApp', '17TRACK']
+    await expect(router.fetch(parcel({ carrier: 'la-poste' }), false)).rejects.toMatchObject({ attempted: 4 });
+    const cooling = Object.fromEntries(['la-poste', 'Ship24', 'ParcelsApp', '17TRACK']
       .map((provider) => [provider, { count: 1, kind: 'transport', retry_at: '2026-09-10T13:00:00.000Z' }]));
     direct.mockClear(); universal.mockClear();
-    await expect(router.fetch(parcel({ carrier: 'ups', carrier_data: { routing: state({ configured_carrier: 'ups', failures: cooling }) } }), false))
+    await expect(router.fetch(parcel({ carrier: 'la-poste', carrier_data: { routing: state({ configured_carrier: 'la-poste', failures: cooling }) } }), false))
       .rejects.toMatchObject({ attempted: 0, stale: false });
     expect(direct).not.toHaveBeenCalled();
     expect(universal).not.toHaveBeenCalled();
@@ -1760,9 +1760,9 @@ describe('coverage-based provider order', () => {
   it('asks a fuller provider before the one a parcel stays with, within its own backoff', async () => {
     const { router, direct, universal } = setup();
     direct.mockRejectedValue(new Error('carrier down'));
-    // Ship24 was label-only for a UPS reference.
-    const pinned = (extra: JsonObject = {}) => parcel({ carrier: 'ups', carrier_data: { routing: state({
-      configured_carrier: 'ups', preferred_provider: 'Ship24', preferred_number: 'TEST1234', ...extra }) } });
+    // Ship24 was label-only for a La Poste reference.
+    const pinned = (extra: JsonObject = {}) => parcel({ carrier: 'la-poste', carrier_data: { routing: state({
+      configured_carrier: 'la-poste', preferred_provider: 'Ship24', preferred_number: 'TEST1234', ...extra }) } });
     const moved = await router.fetch(pinned(), false);
     expect(sources(universal)).toEqual(['ParcelsApp']);
     expect(moved.result.routing).toMatchObject({ preferred_provider: 'ParcelsApp' });
@@ -1774,17 +1774,17 @@ describe('coverage-based provider order', () => {
     expect(kept.result.routing).toMatchObject({ preferred_provider: 'Ship24', failures: {
       ParcelsApp: { kind: 'no_history', retry_at: '2026-09-10T12:15:00.000Z' }, '17TRACK': { kind: 'no_history' } } });
     universal.mockClear();
-    await router.fetch(parcel({ carrier: 'ups', carrier_data: kept.result }), false);
+    await router.fetch(parcel({ carrier: 'la-poste', carrier_data: kept.result }), false);
     expect(sources(universal)).toEqual(['Ship24']);
   });
   it('compares only with providers whose history for the carrier is as full', async () => {
     const { router, direct, universal } = setup();
     direct.mockRejectedValue(new Error('carrier down'));
-    const routing = state({ configured_carrier: 'ups', preferred_provider: 'ParcelsApp', preferred_number: 'TEST1234',
+    const routing = state({ configured_carrier: 'la-poste', preferred_provider: 'ParcelsApp', preferred_number: 'TEST1234',
       last_probe_at: '2026-09-08T12:00:00Z' });
     for (const cursor of [0, 1]) {
       universal.mockClear();
-      await router.fetch(parcel({ carrier: 'ups', carrier_data: { routing: { ...routing, probe_cursor: cursor } } }), true);
+      await router.fetch(parcel({ carrier: 'la-poste', carrier_data: { routing: { ...routing, probe_cursor: cursor } } }), true);
       // Never the label-only Ship24.
       expect(sources(universal)).toEqual(['ParcelsApp', '17TRACK']);
     }
@@ -1903,7 +1903,7 @@ describe('universal preflight and recipient input', () => {
     expect(result.correction).toEqual({ carrier: 'j-and-t-mx', trackingUrl: null, postcode: null });
     expect(result.result.tracking_provider).toBeDefined();
   });
-  it.each(['unknown', 'ups'])('keeps provider history and changes only an unknown carrier: %s', async (carrier) => {
+  it.each(['unknown', 'la-poste'])('keeps provider history and changes only an unknown carrier: %s', async (carrier) => {
     const value = setup();
     value.direct.mockRejectedValue(new Error('carrier blocked'));
     value.universal.mockResolvedValue({ ...history(), discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express'] });

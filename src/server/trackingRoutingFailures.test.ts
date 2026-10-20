@@ -7,9 +7,9 @@ import * as monitoring from './observability';
 const HOUR = 3_600_000;
 const success = '2026-09-10T10:00:00.000Z';
 const parcel = (routing: JsonObject = {}): JsonObject => ({
-  id: 'hourly', carrier: 'ups', tracking_number: 'TEST1234', current_stage: 'in_transit',
+  id: 'hourly', carrier: 'la-poste', tracking_number: 'TEST1234', current_stage: 'in_transit',
   sync_status: 'ok', last_synced_at: success,
-  carrier_data: { routing: { version: 1, configured_carrier: 'ups', last_success_at: success, ...routing } },
+  carrier_data: { routing: { version: 1, configured_carrier: 'la-poste', last_success_at: success, ...routing } },
 });
 function setup(time = '2026-09-10T11:00:00.000Z') {
   vi.spyOn(monitoring, 'reportRoutingEvent').mockImplementation(() => undefined);
@@ -39,7 +39,7 @@ it('keeps an hourly parcel clear after one missed check, shows the chip after tw
   expect(second).toMatchObject({ stale: true, routing: { consecutive_failures: 2, last_success_at: success } });
   run.advance(HOUR);
   run.direct.mockResolvedValue({ result: { status: 'in_transit', current_stage: 'in_transit' },
-    sourceCarrierId: 'ups', swissPostReady: null, handoffFallbackErrorType: null });
+    sourceCarrierId: 'la-poste', swissPostReady: null, handoffFallbackErrorType: null });
   const recovered = await run.router().fetch(parcel(second.routing), false);
   expect(recovered.result.routing).toMatchObject({ consecutive_failures: 0, last_success_at: '2026-09-10T13:00:00.000Z' });
   run.advance(HOUR);
@@ -66,7 +66,7 @@ it.each([
 
 it.each([0, 1, 2])('leaves a streak of %s unchanged when no source is contacted', async (streak) => {
   const run = setup();
-  const failures = Object.fromEntries(['ups', 'ParcelsApp', 'Ship24', '17TRACK'].map(source => [source,
+  const failures = Object.fromEntries(['la-poste', 'ParcelsApp', 'Ship24', '17TRACK'].map(source => [source,
     { count: 1, kind: 'transport', retry_at: '2026-09-10T13:00:00Z' }]));
   expect(await missed(run.router(), parcel({ consecutive_failures: streak, failures })))
     .toMatchObject({ stale: streak >= 2, attempted: 0, routing: { consecutive_failures: streak } });
@@ -76,7 +76,7 @@ it.each([0, 1, 2])('leaves a streak of %s unchanged when no source is contacted'
 
 it('counts an early rate-limit deferral and resets the streak when a fallback succeeds', async () => {
   const run = setup('2026-09-10T10:15:00Z');
-  run.direct.mockRejectedValue(new UpstreamHttpError('UPS', 429));
+  run.direct.mockRejectedValue(new UpstreamHttpError('La Poste', 429));
   const first = await missed(run.router(), parcel());
   expect(first).toMatchObject({ stale: false, attempted: 1, routing: { consecutive_failures: 1 } });
   expect(run.universal).not.toHaveBeenCalled();
@@ -88,7 +88,7 @@ it('counts an early rate-limit deferral and resets the streak when a fallback su
 
 it('gives a parcel with no previous success one missed check of grace', async () => {
   const run = setup();
-  expect(await missed(run.router(), { id: 'new', carrier: 'ups', tracking_number: 'TEST1234', current_stage: 'pending' }))
+  expect(await missed(run.router(), { id: 'new', carrier: 'la-poste', tracking_number: 'TEST1234', current_stage: 'pending' }))
     .toMatchObject({ stale: false, routing: { consecutive_failures: 1 } });
 });
 
