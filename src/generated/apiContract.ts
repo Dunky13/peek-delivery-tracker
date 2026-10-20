@@ -2095,6 +2095,12 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
+        "pattern": "^[HT][0-9A-Z]{4}C\\d{10}$",
+        "confidence": "low",
+        "checksum": "evri",
+        "preferred": true
+      },
+      {
         "pattern": "^[HT][0-9A-Z]{5}\\d{10}$",
         "confidence": "low",
         "checksum": "evri"
@@ -5065,6 +5071,12 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^[HT][0-9A-Z]{4}[AD]\\d{10}$",
+        "confidence": "low",
+        "checksum": "evri",
+        "preferred": true
+      },
       {
         "pattern": "^[HT][0-9A-Z]{5}\\d{10}$",
         "confidence": "low",
@@ -30000,6 +30012,39 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.shiprocket.in/shipment-tracking/"
+  },
+  "first-line": {
+    "displayName": "FIRST LINE",
+    "aliases": [
+      "1ST",
+      "1ST Group",
+      "Yidai International",
+      "ONE LINE",
+      "一代国际",
+      "一代集团",
+      "壹代國際",
+      "一代国际集团",
+      "深圳市一代国际物流（集团）有限公司",
+      "壹号专线",
+      "深圳市壹号专线供应链有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#683088",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "first-line"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^1ST\\d{11}$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -30811,7 +30856,8 @@ export const CARRIER_IDS = [
   "j-and-t-au",
   "lingdong",
   "jcex",
-  "shiprocket"
+  "shiprocket",
+  "first-line"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
