@@ -1452,8 +1452,19 @@ export class TrackingSyncService {
       const returnedEventTime = withoutCopyDrift(
         Date.parse(eventTimestamp(result.last_update, resultTimezone(sourceCarrierId, result)) ?? ''), events, stored, matches,
       );
+      // Rows past the answer's newest scan that only its own provider wrote, and that its answer
+      // no longer shows, are no scans: a notice the provider dated at the lookup, which a scraper
+      // fix now leaves out. Over a summary without movement, an answer that moved is then not
+      // older. A reused number's older history is: a row past it is another source's, or shown.
+      const shown = new Set([...events.map((event) => String(event.provider_event_id)), ...matches.reused.values(), ...matches.skipped.values()]);
+      const ahead = stored.filter((row) => !String(row.provider_event_id).startsWith('app:')
+        && row.observed_without_provider_timestamp !== true && Date.parse(String(row.occurred_at)) > returnedEventTime);
+      const answeredBy = result.tracking_provider;
+      const retracted = previousStage === 'pending' && hasRoutingProgress(result) && typeof answeredBy === 'string'
+        && ahead.length > 0 && Math.max(...ahead.map((row) => Date.parse(String(row.occurred_at)))) >= previousEventTime
+        && ahead.every((row) => row.universal_provider === answeredBy && !shown.has(String(row.provider_event_id)));
       const olderSnapshot = Number.isFinite(previousEventTime) && Number.isFinite(returnedEventTime)
-        && returnedEventTime < previousEventTime;
+        && returnedEventTime < previousEventTime && !retracted;
       // UPU wall time cannot prove freshness against another source. It may
       // establish initial progress, or update its own saved local-time summary.
       const unprovenUpuSummary = result.tracking_provider === 'UPU' && (

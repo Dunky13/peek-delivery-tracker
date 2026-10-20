@@ -1153,6 +1153,36 @@ describe('TrackingSyncService', () => {
     expect(values.current_stage).toBeUndefined();
     expect(values.carrier_data.routing.last_event_at).toBe('2026-09-10T11:00:00Z');
   });
+  it('moves a pending parcel on once its provider drops the notice row that held the watermark', async () => {
+    // ParcelsApp dated a notice at the lookup, past the parcel's real scans, and every later
+    // answer looked older until a scraper fix left the notice out (synthetic wording and times).
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch: vi.fn(), fetchUniversal: vi.fn().mockResolvedValue({ status: 'delivered', current_stage: 'delivered',
+      last_status_text: 'Delivered', last_update: '2026-09-10T05:50:00Z', events: [
+        { time: '2026-09-10T05:50:00Z', description: 'Delivered', stage: 'delivered' },
+        { time: '2026-09-09T18:00:00Z', description: 'In transit', stage: 'in_transit' }] }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    const notice = (provider: string) => ({ provider_event_id: 'unknown:notice', occurred_at: '2026-09-10T11:30:00.000Z', stage: 'pending',
+      description: 'Check the number', universal_provider: provider });
+    const added = { provider_event_id: 'app:pending', occurred_at: '2026-09-10T10:40:00.000Z', stage: 'pending', description: 'Tracking added' };
+    const locked = (row: JsonObject) => ({ id: 'locked', carrier: 'unknown', tracking_number: 'TEST1234', current_stage: 'pending',
+      last_status_text: 'Check the number', carrier_data: { tracking_provider: 'ParcelsApp', routing: { version: 1, configured_carrier: 'unknown',
+        preferred_provider: 'ParcelsApp', preferred_number: 'TEST1234', last_event_at: '2026-09-10T11:30:00.000Z' } },
+      [STORED_EVENT_IDENTITIES]: [added, row] });
+    await service.syncPackage(locked(notice('ParcelsApp')));
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'delivered', last_status_text: 'Delivered',
+      carrier_data: { routing: { last_event_at: '2026-09-10T05:50:00.000Z' } } });
+    // Another source's newer row, a reused number's new label say, still makes this history older.
+    for (const row of [notice('Ship24'), { ...notice('ParcelsApp'), universal_provider: undefined }]) {
+      await service.syncPackage(locked(row));
+      const kept = client.updatePackage.mock.calls.at(-1)![1];
+      expect(kept.current_stage).toBeUndefined();
+      expect(kept.carrier_data.routing.last_event_at).toBe('2026-09-10T11:30:00.000Z');
+    }
+  });
   it('keeps the stage its carrier gave while a provider answering in its place shows no newer scan', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const client = { ...fakeClient(),

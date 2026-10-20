@@ -471,6 +471,10 @@ in a row,
 and for an older one its newest scan and the watermark it lost to. The app's "Tracking added"
 row is no scan, so a parcel added after its newest scan keeps that scan's time. Nor is a row stamped when it was
 observed, such as a UPU milestone: its observation time never holds the watermark ahead.
+Over a parcel still pending, an answer that moved is not older for rows its provider wrote
+and no longer shows, such as a notice it dated at the lookup, when every row past its newest
+scan is one of those. A row from another source past it, a reused number's new label for
+instance, keeps a reused number's older history out.
 
 When a scraper fix changes a stored scan's instant, a row only a universal provider wrote
 moves on that provider's next answer. Other rows need a data migration that repairs the
