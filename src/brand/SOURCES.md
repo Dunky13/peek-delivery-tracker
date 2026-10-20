@@ -239,6 +239,7 @@ and [`truck.json`](truck.json).
 | `fg-delivery` | [fgdelivery.it](https://fgdelivery.it/) — Elementor primary colour #393D78; logo PNG #393d78 (approximate) |
 | `first-delivery-tn` | [firstdeliverygroup.com](https://www.firstdeliverygroup.com/wp-content/uploads/2023/08/Logo_First-e1692977453756.png) — logo PNG palette green #51b045 |
 | `first-fly-express` | [firstflyexpress.com](https://firstflyexpress.com/images/ffelogo.png) — logo PNG red #ed3237 (approximate) |
+| `first-line` | [firstline56.com](http://www.firstline56.com/uploadfiles/20221019-165927.png) — header logo PNG purple #55207a, the O and the Chinese name, with an orange #f0832e NE, each about half the pixels; the catalog colour #683088 is a lighter purple from the site |
 | `flash-express` | [flashexpress.co.th](https://www.flashexpress.co.th/) — site CSS #FFEA33 (132 uses); logo bolt #fcee20 |
 | `flash-express-ph` | [flashexpress.ph](https://www.flashexpress.ph/) — header background CSS rgb(255, 234, 51) #ffea33 |
 | `fleetex` | [fleetexpress.ca](https://fleetexpress.ca/logo.png) — logo PNG #572aee (approximate), same violet in the favicon |
@@ -1414,3 +1415,4 @@ and [`truck.json`](truck.json).
 | `lingdong` | White ring around a swept bird whose two wings break out at the upper right, on blue | [lingdong56.com](http://www.lingdong56.com/static/picture/logo.png) — header logo symbol: a ring around three tapering swooshes, open where the two upper ones fly out |
 | `jcex` | Orange Jc and white italic EX on blue | [jcex.com](https://www.jcex.com/template/1/jcex/images/jcCts2.png) — the JcEX of the header wordmark: a J and a c cut at its tips, in orange, then a blue italic EX |
 | `shiprocket` | White play-button bands around a green play triangle, on purple | [shiprocket.in](https://sr-website-01.shiprocket.in/sr-website/shiprocket_logo-1-TWLqUy.svg) — the header logo symbol: nested play-button outlines cut into bands, the green triangle at their centre; the favicon shows it white on purple |
+| `first-line` | White O around a slanted figure one, and orange italic NE, on purple | [firstline56.com](http://www.firstline56.com/uploadfiles/20221019-165927.png) — the ONE of the header logo: an O whose swoosh rises into a flagged one, open beside a crescent, then the orange NE |
