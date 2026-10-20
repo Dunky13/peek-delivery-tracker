@@ -757,7 +757,7 @@ or a carrier's tracking that does not know the item, is `no_history` rather than
 | `carrier_refresh_total` (carrier, served_by, outcome) | Who served each refresh: `adapter`, `other_adapter`, `provider` or `none`, and how it ended: `updated` (a new scan or stage), `unchanged`, `waiting`, `error` or `superseded` |
 | `tracking_routing_signal_total` (signal, carrier, subject) | Routing signals for the review: `subject` is the carrier the signal is about, `uncatalogued` for a name a provider gave |
 | `tracking_sync_anomaly_total` (carrier, anomaly) | Suspicious decisions of checks, by anomaly code |
-| `tracking_health_incident_total` (kind, subject, state) | Health incidents that opened or still fail six hours on (`open`), `recovered`, or `closed` with no sample left or a direct step the carrier no longer runs |
+| `tracking_health_incident_total` (kind, subject, state) | Health incidents that opened or still fail six hours on (`open`), `recovered`, or `closed` with no sample left or a direct step the carrier has not run for six hours |
 | `carrier_checksum_rejection_total` (carrier, rule) | Parcels a carrier's own lookup first confirmed although detection had left that carrier out on a failed check digit. `rule` is the failing rule's id in the scraper's `carrier.json` |
 | `public_lookup_total` (outcome) | Lookups without an account: `created`, `reused` (the number was already stored), `limited_burst`, `limited_daily` (the client's day is used up), `limited_network` (its IPv6 /48's day), `limited_global` |
 | `public_detection_total` (outcome) | Detections without an account that needed a carrier's answer: `asked`, or refused first as `limited_burst`, `limited_daily` or `limited_global` |

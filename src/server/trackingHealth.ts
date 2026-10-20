@@ -91,7 +91,7 @@ export function healthMessage(incident: JsonObject): { title: string; nextSteps:
   const scope = refresh ? 'Shipment refreshes' : incident.kind === 'direct' ? 'Direct tracking' : 'Provider lookups';
   if (incident.state === 'closed' && incident.reason === 'bypassed') {
     return { title: `${scope} closed: ${subject} answers through another step`,
-      nextSteps: 'The carrier\'s three latest lookups answered without its direct step, which no longer runs (an adapter that goes straight to its browser step). Fresh direct failures open a new incident.',
+      nextSteps: 'The carrier\'s three latest lookups answered without its direct step, which has not run for six hours (an adapter that goes straight to its browser step). Fresh direct failures open a new incident.',
       impact: 'This describes one direct transport the carrier no longer uses.' };
   }
   if (incident.state === 'closed') {

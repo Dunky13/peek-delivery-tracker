@@ -49,7 +49,9 @@ failures age out of the window; a new failure meanwhile reminds as usual.
   of that tier notifies at once.
 - A direct incident whose carrier stopped running its direct step (an adapter that goes
   straight to its browser step) closes once the carrier's three latest lookups, all after
-  its last direct attempt, answered: a `closed` notice with the reason `bypassed`.
+  its last direct attempt, answered and that attempt is six hours old: a `closed` notice
+  with the reason `bypassed`. A direct step paused for less, as DHL Express's is for half
+  an hour after a CAPTCHA, keeps its incident until it recovers.
 
 ## Delivery
 

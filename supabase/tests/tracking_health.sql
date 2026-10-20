@@ -117,7 +117,7 @@ begin
   -- A direct step the carrier no longer runs closes once three lookups in a row answered after it.
   for i in 1..10 loop result := pg_temp.health_sample('bypassed-tier',false,'direct'); end loop;
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
-  update public.tracking_health_samples set observed_at=now()-interval '1 hour' where subject='bypassed-tier';
+  update public.tracking_health_samples set observed_at=now()-interval '7 hours' where subject='bypassed-tier';
   for i in 1..3 loop
     assert pg_temp.health_sample('bypassed-tier',true)='[]', 'Fewer than three later lookups must keep a direct incident open';
   end loop;
@@ -129,13 +129,22 @@ begin
   -- A failed lookup among the three keeps it open.
   for i in 1..10 loop result := pg_temp.health_sample('flaky-tier',false,'direct'); end loop;
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
-  update public.tracking_health_samples set observed_at=now()-interval '1 hour' where subject='flaky-tier';
+  update public.tracking_health_samples set observed_at=now()-interval '7 hours' where subject='flaky-tier';
   perform pg_temp.health_sample('flaky-tier',true);
   perform pg_temp.health_sample('flaky-tier',false);
   perform pg_temp.health_sample('flaky-tier',true);
   assert pg_temp.health_sample('flaky-tier',true)='[]';
   assert (select active and pending is null from public.tracking_health_incidents where kind='direct' and subject='flaky-tier'),
     'A failed lookup after the direct step must keep its incident open';
+  -- So does a direct step paused for less than six hours, as DHL Express's is after a CAPTCHA.
+  for i in 1..10 loop result := pg_temp.health_sample('paused-tier',false,'direct'); end loop;
+  perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
+  update public.tracking_health_samples set observed_at=now()-interval '40 minutes' where subject='paused-tier';
+  for i in 1..4 loop
+    assert pg_temp.health_sample('paused-tier',true)='[]', 'A paused direct step must keep its incident open';
+  end loop;
+  assert (select active and pending is null from public.tracking_health_incidents where kind='direct' and subject='paused-tier'),
+    'A paused direct step must keep its incident open';
   -- A direct step that still runs and fails beside a fallback that answers stays open.
   for i in 1..13 loop
     result := public.record_tracking_health(gen_random_uuid(),null,jsonb_build_array(
