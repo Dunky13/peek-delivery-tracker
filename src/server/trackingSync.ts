@@ -33,7 +33,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
-import { datedObservations, restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, UNIVERSAL_PROVIDER, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { datedObservations, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   askedForCheck,
   providerFailureSummary,
@@ -448,12 +448,6 @@ export function providerEventId(
     description.trim(),
   ]);
   return `${carrierId}:${createHash('sha256').update(material).digest('hex')}`;
-}
-
-/** The day a scan gives as its local time with no clock, when it has no time of its own. */
-function scanDay(raw: JsonObject): string | null {
-  return typeof raw.local_time === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw.local_time)
-    && DateTime.fromISO(raw.local_time).isValid ? raw.local_time : null;
 }
 
 export function buildEvents(

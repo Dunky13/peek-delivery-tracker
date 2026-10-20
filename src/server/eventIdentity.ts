@@ -51,7 +51,7 @@
  *   universal copy (`relayedScans`).
  */
 import { DateTime } from 'luxon';
-import { sameInstantIdentityPolicy, trackingPlace, type SameInstantIdentityPolicy, type SameInstantScan } from 'universal-parcel-scraper/app';
+import { eventTimestamp, sameInstantIdentityPolicy, trackingPlace, type SameInstantIdentityPolicy, type SameInstantScan } from 'universal-parcel-scraper/app';
 import { isRecord, type JsonObject } from './types';
 
 /**
@@ -714,6 +714,20 @@ export function sharedScans(
     if (events.some((event) => identity(event) === id)) shared.skipped.set(id, storedById.has(identity(carrier)) ? identity(carrier) : id);
   }
   return shared;
+}
+
+const BARE_DATES = ['yyyy-MM-dd', 'dd.MM.yyyy', 'dd/MM/yyyy'];
+/**
+ * The day of a scan the carrier dated without a clock time: a bare date given as its time, or
+ * its local time when that is a bare date and its time gives no instant (NACEX's calendar headings).
+ */
+export function scanDay(scan: JsonObject): string | null {
+  const time = typeof scan.time === 'string' ? scan.time.trim() : '';
+  const day = time ? BARE_DATES.map((format) => DateTime.fromFormat(time, format)).find((date) => date.isValid) : undefined;
+  if (day) return day.toISODate();
+  if (eventTimestamp(time)) return null;
+  const local = typeof scan.local_time === 'string' ? DateTime.fromFormat(scan.local_time, 'yyyy-MM-dd') : undefined;
+  return local?.isValid ? local.toISODate() : null;
 }
 
 /** The wall clock a row kept (`local_time`), with or without the time of day. */

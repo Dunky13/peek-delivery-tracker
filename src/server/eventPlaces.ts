@@ -1,21 +1,12 @@
 import 'server-only';
 
-import { DateTime } from 'luxon';
 import { captureOperationalError } from './observability';
 import { placesForEvents, type EventPoint } from 'universal-parcel-scraper/places';
+import { scanDay } from './eventIdentity';
 import { relayCopies } from './relayCopies';
 import { isRecord, type JsonObject } from './types';
 
 let reported = false;
-
-/** The day of a scan the carrier dated without a clock time: a bare date, given as its time or its local time. */
-function scanDay(event: JsonObject): string | null {
-  if (event.observed === true) return null;
-  const time = typeof event.time === 'string' ? event.time.trim() : '';
-  const day = time ? ['yyyy-MM-dd', 'dd.MM.yyyy', 'dd/MM/yyyy'].map((format) => DateTime.fromFormat(time, format)).find((date) => date.isValid)
-    : typeof event.local_time === 'string' ? DateTime.fromFormat(event.local_time, 'yyyy-MM-dd') : undefined;
-  return day?.isValid ? day.toISODate() : null;
-}
 
 /**
  * The stored point only feeds the place, and the source only tells Peek's own
@@ -31,7 +22,7 @@ function served(event: JsonObject, relayOf?: string): JsonObject {
 
 /** A scan with the times it was stored with read: the day it names, if any, and nothing else of them. */
 function dated(event: JsonObject): JsonObject {
-  const day = scanDay(event);
+  const day = event.observed === true ? null : scanDay(event);
   const rest: JsonObject = { ...event, ...(day ? { day } : {}) };
   for (const key of ['time', 'local_time', 'observed']) delete rest[key];
   return rest;

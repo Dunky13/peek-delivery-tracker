@@ -165,11 +165,12 @@ it('names the day of a scan the carrier dated without a clock time, and serves n
     stored('local-day', { local_time: '2026-10-19' }),
     stored('day', { time: '18/10/2026' }),
     stored('clock', { time: '2026-10-18T09:30:00Z' }),
+    stored('clock-and-day', { time: '2026-10-18T09:30:00Z', local_time: '2026-10-18' }),
     stored('local-clock', { local_time: '2026-10-17T09:30:00', observed: true }),
     stored('observed', { local_time: '2026-10-17', observed: true }),
   ] };
   const days = (served: { tracking_events: Array<Record<string, unknown>> }) => served.tracking_events.map((scan) => [scan.id, scan.day]);
-  const expected = [['local-day', '2026-10-19'], ['day', '2026-10-18'], ['clock', undefined], ['local-clock', undefined], ['observed', undefined]];
+  const expected = [['local-day', '2026-10-19'], ['day', '2026-10-18'], ['clock', undefined], ['clock-and-day', undefined], ['local-clock', undefined], ['observed', undefined]];
   const served = withEventPlaces(row) as { tracking_events: Array<Record<string, unknown>> };
   expect(days(served)).toEqual(expected);
   expect(days(withoutEventSources(row) as typeof served)).toEqual(expected);
