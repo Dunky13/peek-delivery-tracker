@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { timeline } from './eventPlaces';
+import { shownEvents } from './eventPlaces';
 import { recordParcelFeedback } from './metrics';
 import { logOperationalEvent } from './observability';
 import { deployedVersion } from './reviewQueues';
@@ -24,11 +24,12 @@ function cut(value: unknown, limit: number): string | null {
 /**
  * What the service holds about a parcel when an answer arrives: its status,
  * its last check and its newest scans, as its timeline shows them: without
- * Peek's own "Tracking added" once carrier scans reach back to it. A private
+ * a provider's copies of its carrier's scans, or Peek's own "Tracking added"
+ * once carrier scans reach back to it. A private
  * tracking link, a postcode and a name the reader gave the parcel are left out.
  */
 export function shownParcel(row: JsonObject): JsonObject {
-  const events = timeline(Array.isArray(row.tracking_events) ? row.tracking_events.filter(isRecord) : [])
+  const events = shownEvents(row)
     .sort((a, b) => Date.parse(String(b.occurred_at)) - Date.parse(String(a.occurred_at)));
   const carrierData = isRecord(row.carrier_data) ? row.carrier_data : {};
   return {

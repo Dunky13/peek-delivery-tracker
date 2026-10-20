@@ -3,14 +3,16 @@ import 'server-only';
 import { captureOperationalError } from './observability';
 import { placesForEvents, type EventPoint } from 'universal-parcel-scraper/places';
 import { scanDay, UNWORDED_STEP } from './eventIdentity';
+import { DIRECT_HISTORY, providerCopies } from './providerCopies';
 import { relayCopies } from './relayCopies';
 import { isRecord, type JsonObject } from './types';
 
 let reported = false;
 
 /**
- * The stored point only feeds the place, and the source only tells Peek's own
- * rows and relay copies apart: the API returns neither. A relay copy names the
+ * The stored point only feeds the place, and the source and provider only tell
+ * Peek's own rows, relay copies and provider copies apart: the API returns none
+ * of them. A relay copy names the
  * scan it repeats instead. A scan dated by its day alone names that day. A stage
  * change Peek saw with no words from the carrier (AliExpress's undated record) is
  * served without Peek's stand-in, so the apps name the stage.
@@ -20,6 +22,7 @@ function served(event: JsonObject, relayOf?: string): JsonObject {
     ...(event.observed === true && event.description === UNWORDED_STEP ? { description: '' } : {}) };
   delete rest.point;
   delete rest.provider_event_id;
+  delete rest.universal_provider;
   return rest;
 }
 
@@ -49,8 +52,26 @@ export function timeline(events: JsonObject[]): JsonObject[] {
   return events.filter((event) => !isOwnRow(event) || !(firstScan <= time(event)));
 }
 
+/** A package row without the carrier data that only the service reads. */
+function withoutServiceData(row: JsonObject): JsonObject {
+  const stored = isRecord(row.carrier_data) ? row.carrier_data : null;
+  if (!stored || !('add_recognition_pending' in stored || DIRECT_HISTORY in stored)) return row;
+  const data = { ...stored };
+  delete data.add_recognition_pending;
+  delete data[DIRECT_HISTORY];
+  return { ...row, carrier_data: data };
+}
+
+/** The scans of a stored package row its timeline shows: without a provider's copies of its carrier's scans, then as `timeline` keeps them. */
+export function shownEvents(row: JsonObject): JsonObject[] {
+  const copied = providerCopies(row);
+  return timeline((Array.isArray(row.tracking_events) ? row.tracking_events.filter(isRecord) : [])
+    .filter((event) => !copied.has(String(event.id))));
+}
+
 /** A stored package row with its events' sources left out, every row kept: the account's export. */
 export function withoutEventSources(row: JsonObject): JsonObject {
+  row = withoutServiceData(row);
   if (!Array.isArray(row.tracking_events)) return row;
   return {
     ...row,
@@ -58,6 +79,7 @@ export function withoutEventSources(row: JsonObject): JsonObject {
       if (!isRecord(event)) return event;
       const rest = dated(event);
       delete rest.provider_event_id;
+      delete rest.universal_provider;
       return rest;
     }),
   };
@@ -73,19 +95,17 @@ function eventPoint(value: unknown): EventPoint | null {
  * An API package row as it is served. Every scan gets a `place`: where its
  * free text locates it, or null. Places are worked out when the package is
  * served, so improving the gazetteer improves every parcel, old ones
- * included. Peek's own opening row is left out once carrier scans reach back
- * to it (see `timeline`), and an earlier carrier's relay copy of a scan names
- * that scan (`relay_of`, see relayCopies.ts).
+ * included. A universal provider's copy of a confirmed carrier's scan is left
+ * out (providerCopies.ts), so is Peek's own opening row once carrier scans
+ * reach back to it (see `timeline`), and an earlier carrier's relay copy of a
+ * scan names that scan (`relay_of`, see relayCopies.ts).
  */
 export function withEventPlaces(row: JsonObject): JsonObject {
-  if (isRecord(row.carrier_data) && 'add_recognition_pending' in row.carrier_data) {
-    const data = { ...row.carrier_data };
-    delete data.add_recognition_pending;
-    row = { ...row, carrier_data: data };
-  }
+  const stored = row;
+  row = withoutServiceData(row);
   if (!Array.isArray(row.tracking_events) || !row.tracking_events.length) return row;
-  const events = timeline(row.tracking_events.filter(isRecord));
-  const relays = relayCopies(row);
+  const events = shownEvents(stored);
+  const relays = relayCopies({ ...row, tracking_events: events });
   const shown = (event: JsonObject) => served(event, relays.get(String(event.id)));
   const carrierData = isRecord(row.carrier_data) ? row.carrier_data : {};
   try {

@@ -4737,6 +4737,37 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(adapter.fetchUniversal).toHaveBeenCalledTimes(2);
   });
 
+  it('keeps the universal rows GOFO\'s scans hold and the time they cover, across a fallback', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = {
+      fetch: vi.fn().mockResolvedValueOnce(result([hub, label])).mockRejectedValueOnce(new Error('GOFO tracking endpoint is unavailable'))
+        .mockResolvedValueOnce(result([delivered, out, hub, label])),
+      fetchUniversal: vi.fn().mockResolvedValue(result([out, hub, label].map(copied))),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    const history = () => (client.updatePackage.mock.calls.at(-1)?.[1] as JsonObject).carrier_data as JsonObject;
+    // Only the history goes from one check to the next, so the router asks GOFO first every time.
+    const sync = async (stage: string) => service.syncPackage({ ...parcel, current_stage: stage,
+      carrier_data: { direct_history: client.updatePackage.mock.calls.length ? history().direct_history : undefined },
+      [STORED_EVENT_IDENTITIES]: store.identities() });
+
+    await sync('pending');
+    const covered = { from: '2026-01-02T12:30:00.000Z', to: '2026-01-03T13:15:42.000Z', held: [] };
+    expect(history().direct_history).toEqual(covered);
+    // The provider's answer keeps the carrier's history as it was.
+    await sync('in_transit');
+    expect(store.rows.has(copy(out))).toBe(true);
+    expect(history().direct_history).toEqual(covered);
+    // GOFO's scan takes over the provider's row, which its history then holds.
+    await sync('out_for_delivery');
+    expect(history().direct_history).toEqual({ from: '2026-01-02T12:30:00.000Z', to: '2026-01-04T21:58:30.000Z', held: [copy(out)] });
+  });
+
   it('absorbs every copy at a carrier scan\'s instant and keeps them out of later fallbacks', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const store = eventStore();

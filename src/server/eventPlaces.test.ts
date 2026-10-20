@@ -146,6 +146,36 @@ describe('withEventPlaces', () => {
       .some((scan) => 'relay_of' in scan)).toBe(false);
   });
 
+  it('leaves out a provider\'s copy of a confirmed carrier\'s scan, and pairs relay copies without it', () => {
+    const scan = (id: string, source: string, occurredAt: string, extra: Record<string, unknown> = {}) => ({
+      ...event(id, null, occurredAt), provider_event_id: `${source}:${id}`, ...extra,
+    });
+    const history = { from: '2026-10-20T09:00:00.000Z', to: '2026-10-20T10:00:30.000Z', held: [] };
+    const row = {
+      id: 'parcel', carrier: 'royal-mail', carrier_data: {
+        original_carrier: 'royal-mail', active_tracking_carrier: 'ctt', routing: { confirmed_carrier: 'ctt' }, direct_history: history,
+      },
+      tracking_events: [
+        scan('departed', 'ctt', '2026-10-20T10:00:30+00:00'),
+        scan('relay', 'royal-mail', '2026-10-20T10:00:00+00:00'),
+        // The provider's copy at the carrier's minute would be the relay's closer pair.
+        scan('copy', 'unknown', '2026-10-20T10:00:00+00:00', { universal_provider: 'ParcelsApp', description: 'Item departed' }),
+        scan('accepted', 'unknown', '2026-10-19T08:00:00+00:00', { universal_provider: 'ParcelsApp', stage: 'accepted' }),
+      ],
+    };
+    const served = withEventPlaces(row) as { carrier_data: Record<string, unknown>; tracking_events: Record<string, unknown>[] };
+    expect(served.tracking_events.map(({ id, relay_of }) => [id, relay_of])).toEqual([
+      ['departed', undefined], ['relay', 'departed'], ['accepted', undefined],
+    ]);
+    expect(served.tracking_events.every((scan) => !('universal_provider' in scan))).toBe(true);
+    expect(served.carrier_data).not.toHaveProperty('direct_history');
+    // The export keeps every row, without the provider or the carrier's history.
+    const exported = withoutEventSources(row) as typeof served;
+    expect(exported.tracking_events.map((scan) => scan.id)).toEqual(['departed', 'relay', 'copy', 'accepted']);
+    expect(exported.tracking_events.every((scan) => !('universal_provider' in scan))).toBe(true);
+    expect(exported.carrier_data).not.toHaveProperty('direct_history');
+  });
+
   it('serves the parcel without places when the gazetteer fails, and reports it once', () => {
     vi.spyOn(places, 'placesForEvents').mockImplementation(() => {
       throw new Error('missing gazetteer');

@@ -51,6 +51,7 @@ import { upuHistory } from './upuHistory';
 import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent } from './directLocalHistory';
+import { DIRECT_HISTORY, directHistory } from './providerCopies';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
 import { trackingSupportEvidence } from './trackingSupport';
 import { deployedVersion, statusMapClosings, universalMapAgrees } from './reviewQueues';
@@ -1535,7 +1536,7 @@ export class TrackingSyncService {
       // Linked journey identity, the postcode the owner gave a provider, and the delivery partner's probe belong to the
       // parcel, not an individual carrier response: a provider answering while the origin is down keeps the probe's gap.
       if (isRecord(parcel.carrier_data)) {
-        for (const key of ['lookup_country_hint', 'universal_input', 'original_carrier', 'original_tracking_number', 'original_tracking_url', 'original_package_id', 'active_tracking_carrier', 'active_tracking_number', 'original_canonical_tracking_number', 'auto_changed_from', 'auto_changed_to', 'auto_changed_at', 'handed_over_at', 'earlier_checked_at', 'delivery_probe']) {
+        for (const key of ['lookup_country_hint', 'universal_input', 'original_carrier', 'original_tracking_number', 'original_tracking_url', 'original_package_id', 'active_tracking_carrier', 'active_tracking_number', 'original_canonical_tracking_number', 'auto_changed_from', 'auto_changed_to', 'auto_changed_at', 'handed_over_at', 'earlier_checked_at', 'delivery_probe', DIRECT_HISTORY]) {
           if (parcel.carrier_data[key] != null && carrierData[key] == null) carrierData[key] = parcel.carrier_data[key];
         }
       }
@@ -1602,11 +1603,12 @@ export class TrackingSyncService {
       const dated = datedObservations(eventsToPersist.filter((event) => !normalized.relays.has(String(event.provider_event_id))),
         stored, matches);
       const absorbed = eventsToPersist.length > 0 ? [...new Set([...shared.absorbed, ...undated, ...dated.absorbed])] : [];
-      const persistedEvents = withIdentities(
-        eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))
-          && !dated.skipped.has(String(event.provider_event_id))),
-        new Map([...matches.reused, ...dated.reused]), stored,
-      );
+      const keptEvents = eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))
+        && !dated.skipped.has(String(event.provider_event_id)));
+      const persistedEvents = withIdentities(keptEvents, new Map([...matches.reused, ...dated.reused]), stored);
+      // The universal rows the carriers' scans hold, so the timeline tells a provider's copies from them (providerCopies.ts).
+      const history = directHistory(keptEvents, persistedEvents, previousData[DIRECT_HISTORY], stored);
+      if (history) carrierData[DIRECT_HISTORY] = history;
       if (!preserveSummary) {
         values.last_status_text = result.last_status_text || null;
         values.expected_delivery = result.expected_delivery ? String(result.expected_delivery) : null;
@@ -1634,6 +1636,9 @@ export class TrackingSyncService {
         values.carrier_data = {
           ...(isRecord(values.carrier_data) ? values.carrier_data : previousData), direct_local_history: localHistory,
         };
+      }
+      if (preserveSummary && history) {
+        values.carrier_data = { ...(isRecord(values.carrier_data) ? values.carrier_data : previousData), [DIRECT_HISTORY]: history };
       }
       // An older reply still says where the parcel is going, when the newer summary kept does not.
       if (preserveSummary && !keepSaved && !fetched.correction && typeof result.destination_country === 'string') {
