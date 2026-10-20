@@ -193,6 +193,7 @@ describe('carrier brand', () => {
       'jcex',
       'shiprocket',
       'first-line',
+      'kun-express',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

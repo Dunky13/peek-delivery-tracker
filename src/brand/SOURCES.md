@@ -358,6 +358,7 @@ and [`truck.json`](truck.json).
 | `kronos-express` | [kronosexpress.com](https://www.kronosexpress.com/) — Elementor primary colour #24297a; logo PNG navy #2c2c83 and orange #ee7d00 (approximate) |
 | `ktd` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/190522.png) — icon pixels #01234d (approximate) |
 | `kuehne-nagel` | [kuehne-nagel.com](https://www.kuehne-nagel.com/) |
+| `kun-express` | [kun-express.com](http://www.kun-express.com/public/static/images/logo.png) — header logo PNG flat blue #0761ff, the K and un of KunExpress; Express is navy #202538 |
 | `kunyoung` | [kunyoung.com](http://www.kunyoung.com/css/style.css) — site CSS #04378c (most used), header logo navy #01378d (approximate) |
 | `kwick-box` | [kwick-box.com](https://www.kwick-box.com/) — the site's theme-main-blue rgb(37, 75, 102) behind the home page hero, matching the KwickBox app icon's dark blue; the logo's BOX is #246081 |
 | `kyoungdong` | [kdexp.com](https://www.kdexp.com/common/img/logo_kd.png) — flat navy #2f308d of the logo tiles (approximate, from the PNG); the site CSS --sub-color is #141991 |
@@ -1417,3 +1418,4 @@ and [`truck.json`](truck.json).
 | `jcex` | Orange Jc and white italic EX on blue | [jcex.com](https://www.jcex.com/template/1/jcex/images/jcCts2.png) — the JcEX of the header wordmark: a J and a c cut at its tips, in orange, then a blue italic EX |
 | `shiprocket` | White play-button bands around a green play triangle, on purple | [shiprocket.in](https://sr-website-01.shiprocket.in/sr-website/shiprocket_logo-1-TWLqUy.svg) — the header logo symbol: nested play-button outlines cut into bands, the green triangle at their centre; the favicon shows it white on purple |
 | `first-line` | White O around a slanted figure one, and orange italic NE, on purple | [firstline56.com](http://www.firstline56.com/uploadfiles/20221019-165927.png) — the ONE of the header logo: an O whose swoosh rises into a flagged one, open beside a crescent, then the orange NE |
+| `kun-express` | White K whose arms cross and close into a loop around the stem, on blue | [kun-express.com](http://www.kun-express.com/public/static/images/logo.png) — the K of the header wordmark: a stem through a fish-shaped loop whose two strokes cross and run on as the arms |
