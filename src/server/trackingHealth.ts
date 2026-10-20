@@ -68,8 +68,9 @@ function save(kind: 'provider' | 'direct', record: StepRecord | LookupRecord): v
 export const healthStepRecorder = {
   step(record: StepRecord) { if (record.step === 'direct') save('direct', record); },
   lookup(record: LookupRecord) {
-    // With direct as the only tier, the direct sample would duplicate the provider sample.
-    if (record.stepsAvailable === 1) observations.getStore()?.delete(`direct:${record.carrier}`);
+    // With direct as the only tier, the direct sample would duplicate the provider sample. A
+    // carrier whose one step is another (dpd-fr's browser) keeps a direct sample it recorded.
+    if (record.stepsAvailable === 1 && record.finalStep === 'direct') observations.getStore()?.delete(`direct:${record.carrier}`);
     save('provider', record);
   },
 };

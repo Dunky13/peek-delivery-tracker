@@ -114,6 +114,19 @@ describe('tracking health evidence', () => {
     expect([...samples.values()]).toEqual([expect.objectContaining({ kind: 'provider', subject: 'swiss-post', healthy: false })]);
   });
 
+  it('keeps the direct sample when the one step a lookup had is not direct', async () => {
+    const samples = new Map<string, HealthSample>();
+    await observeTrackingHealth(samples, async () => {
+      healthStepRecorder.step({ ...step, carrier: 'dpd-fr' });
+      healthStepRecorder.lookup({ carrier: 'dpd-fr', finalStep: 'trawl', outcome: 'ok',
+        errorType: null, durationMs: 200, attempts: 1, stepsAvailable: 1 });
+    });
+    expect([...samples.values()]).toEqual([
+      expect.objectContaining({ kind: 'direct', subject: 'dpd-fr', healthy: false }),
+      expect.objectContaining({ kind: 'provider', subject: 'dpd-fr', healthy: true }),
+    ]);
+  });
+
   it('reads an HTTP status only from a response a provider sent', async () => {
     const samples = new Map<string, HealthSample>();
     await observeTrackingHealth(samples, async () => {
