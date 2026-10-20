@@ -1225,6 +1225,9 @@
   "j-and-t-br": {
     "decal": "j-and-t-cn"
   },
+  "j-and-t-de": {
+    "family": "j-and-t-cn"
+  },
   "j-and-t-cargo": {
     "decal": "j-and-t-cargo"
   },
