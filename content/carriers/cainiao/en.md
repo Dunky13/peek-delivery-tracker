@@ -3,7 +3,7 @@ title: Cainiao tracking: numbers, statuses and who to contact
 description: Track a Cainiao parcel from AliExpress: which numbers are Cainiao's, what each status means, where a missed parcel waits and who to ask when it stalls.
 slug: cainiao-tracking
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-20
 ---
 
 Cainiao is Alibaba's logistics group: it ships parcels abroad for sellers on platforms such as AliExpress, and its tracking site, [global.cainiao.com](https://global.cainiao.com/), follows Cainiao and AliExpress parcels only. Type the number there or in the box above. On AliExpress, the number is under My Orders: find the order and click Tracking.
@@ -15,8 +15,7 @@ No Cainiao page gives the LP, CNG, DOFR or CNFR shapes. Its site takes letters a
 | Number | Whose it is |
 | --- | --- |
 | `LP12345678901234` | LP and 14 digits: likely Cainiao, though not certain. |
-| `CNG12345678900000` | CNG and 14 digits: likely Cainiao. |
-| `CNG12345678975001` | The same, ending in what looks like a French postcode: Cainiao, or possibly [Colis Privé](carrier:colis-prive). |
+| `CNG12345678900000` | CNG and 14 digits: Cainiao. |
 | `DOFR1234567890123HD` | DOFR or CNFR, 13 digits, then HD: Cainiao. |
 | `RR123456785CN` | A [postal number](guide:tracking-number-formats): Cainiao's site tracks this shape, but so does the post, here China Post. |
 | `YT1234567890123456` | Not Cainiao but [YunExpress](carrier:yunexpress). |

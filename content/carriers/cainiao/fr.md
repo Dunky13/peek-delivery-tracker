@@ -3,7 +3,7 @@ title: Cainiao suivi : numéros, statuts et qui contacter
 description: Suivre un colis Cainiao venu d'AliExpress : à quoi ressemble le numéro, ce que veut dire chaque statut, où il t'attend en France et qui contacter s'il bloque.
 slug: cainiao-suivi
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-20
 ---
 
 Cainiao est le groupe logistique d'Alibaba : il achemine à l'étranger les colis de vendeurs de plateformes comme AliExpress et, en France, il a aussi son propre réseau de livraison. Pour suivre ton colis, saisis son numéro sur [global.cainiao.com](https://global.cainiao.com/), le site de suivi de Cainiao, qui ne suit que les colis Cainiao et AliExpress, ou colle-le dans le champ ci-dessus. Sur AliExpress, le numéro se trouve dans le suivi de ta commande : l'aide d'AliExpress indique « My Orders », puis la commande, puis « Tracking ».
@@ -15,8 +15,7 @@ Aucune page de Cainiao ne donne la forme des numéros LP, CNG, DOFR ou CNFR. Son
 | Numéro | À qui il appartient |
 | --- | --- |
 | `LP12345678901234` | LP et 14 chiffres : probablement Cainiao, sans certitude. |
-| `CNG12345678900000` | CNG et 14 chiffres : probablement Cainiao. |
-| `CNG12345678975001` | Le même, terminé par ce qui ressemble à un code postal français : Cainiao, ou peut-être [Colis Privé](carrier:colis-prive). |
+| `CNG12345678900000` | CNG et 14 chiffres : Cainiao. |
 | `DOFR1234567890123HD` | DOFR ou CNFR, 13 chiffres, puis HD : Cainiao. |
 | `RR123456785CN` | Un numéro postal : le site de Cainiao suit cette forme, mais la poste aussi, ici China Post. |
 | `YT1234567890123456` | Pas Cainiao, mais [YunExpress](carrier:yunexpress). |

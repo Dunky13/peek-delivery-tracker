@@ -3,7 +3,7 @@ title: Cainiao Sendungsverfolgung: Nummern, Status und Kontakt
 description: AliExpress-Paket mit Cainiao verfolgen: welche Nummern dazugehören, was die englischen Status bedeuten und wen du in Deutschland, Österreich und der Schweiz fragst.
 slug: cainiao-sendungsverfolgung
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-20
 ---
 
 Cainiao ist die Logistiksparte der Alibaba-Gruppe und verschickt Pakete über Grenzen hinweg, für Händler auf Plattformen wie AliExpress. Seine Tracking-Seite [global.cainiao.com](https://global.cainiao.com/) verfolgt nur Cainiao- und AliExpress-Pakete: Gib die Nummer dort ein oder füg sie oben ins Feld ein. Bei AliExpress steht sie in der Bestellung, laut AliExpress-Hilfe unter „My Orders“ und dann „Tracking“.
@@ -15,8 +15,7 @@ Die Formen LP, CNG, DOFR und CNFR beschreibt keine Cainiao-Seite. Die Tracking-S
 | Nummer | Wem sie gehört |
 | --- | --- |
 | `LP12345678901234` | LP und 14 Ziffern: wahrscheinlich Cainiao, aber nicht sicher. |
-| `CNG12345678900000` | CNG und 14 Ziffern: wahrscheinlich Cainiao. |
-| `CNG12345678975001` | Dasselbe, nur sehen die letzten fünf Ziffern aus wie eine französische Postleitzahl: Cainiao oder vielleicht Colis Privé. |
+| `CNG12345678900000` | CNG und 14 Ziffern: Cainiao. |
 | `DOFR1234567890123HD` | DOFR oder CNFR, 13 Ziffern, dann HD: Cainiao. |
 | `RR123456785CN` | Eine Postnummer, hier von China Post. Cainiaos Seite verfolgt diese Form auch. |
 | `LP123456785HK` | Ebenfalls eine Postnummer (Hongkong Post), trotz LP keine LP-Nummer von Cainiao. |

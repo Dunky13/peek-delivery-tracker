@@ -3,7 +3,7 @@ title: Cainiao śledzenie przesyłki: numery, statusy i kontakt
 description: Paczka z AliExpress wysłana przez Cainiao: jakie numery są Cainiao, co znaczą angielskie statusy, co z doręczeniem w Polsce i gdzie pytać, gdy utknie.
 slug: cainiao-sledzenie
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-20
 ---
 
 Cainiao to grupa logistyczna Alibaby: wysyła za granicę paczki sprzedawców z platform takich jak AliExpress, a jej strona śledzenia, [global.cainiao.com](https://global.cainiao.com/), pokazuje tylko przesyłki Cainiao i AliExpress. Wpisz numer na global.cainiao.com albo wklej go w pole na samej górze tej strony. Na AliExpress numer jest przy zamówieniu: pomoc AliExpress, także w wersji polskiej, opisuje to po angielsku jako „My Orders”, potem zamówienie i „Tracking”.
@@ -15,8 +15,7 @@ Cainiao nie publikuje jednego formatu numeru. Jego strona przyjmuje tylko litery
 | Numer | Czyj to numer |
 | --- | --- |
 | `LP12345678901234` | LP i 14 cyfr: prawdopodobnie Cainiao, ale nie na pewno. |
-| `CNG12345678900000` | CNG i 14 cyfr: prawdopodobnie Cainiao. |
-| `CNG12345678975001` | To samo, ale końcówka wygląda jak francuski kod pocztowy: Cainiao albo francuskie Colis Privé. |
+| `CNG12345678900000` | CNG i 14 cyfr: Cainiao. |
 | `DOFR1234567890123HD` | DOFR albo CNFR, 13 cyfr i HD: Cainiao. |
 | `RR123456785CN` | Numer pocztowy, tu China Post. Strona Cainiao śledzi też taki kształt. |
 | `LP123456785HK` | Też numer pocztowy (Hongkong Post): mimo LP to nie numer LP Cainiao. |

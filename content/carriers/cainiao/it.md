@@ -3,7 +3,7 @@ title: Cainiao tracking: numero, stati e pacco che non arriva
 description: Tracking Cainiao per i pacchi AliExpress: quale numero usare, cosa vogliono dire gli stati in inglese e a chi scrivere se il pacco non arriva in Italia.
 slug: cainiao-tracking
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-20
 ---
 
 Cainiao è il gruppo logistico di Alibaba: spedisce all'estero i pacchi dei venditori di piattaforme come AliExpress. Il suo sito di tracciamento, [global.cainiao.com](https://global.cainiao.com/), segue solo i pacchi Cainiao e AliExpress: inserisci lì il numero, oppure incollalo nel box qui sopra. Su AliExpress parti da «My Orders»: trova l'ordine e clicca «Tracking».
@@ -15,8 +15,7 @@ Il sito di Cainiao chiede solo lettere e cifre, accetta fino a 100 numeri in una
 | Numero | Di chi è |
 | --- | --- |
 | `LP12345678901234` | LP e 14 cifre: probabilmente Cainiao, ma non è sicuro. |
-| `CNG12345678900000` | CNG e 14 cifre: probabilmente Cainiao. |
-| `CNG12345678975001` | Come sopra, ma finisce con quello che sembra un CAP francese: Cainiao, o forse Colis Privé. |
+| `CNG12345678900000` | CNG e 14 cifre: Cainiao. |
 | `DOFR1234567890123HD` | DOFR o CNFR, 13 cifre e HD: Cainiao. |
 | `RR123456785CN` | Numero postale: il sito di Cainiao traccia questa forma, ma la traccia anche la posta, qui China Post. |
 | `YT1234567890123456` | Non è Cainiao ma [YunExpress](carrier:yunexpress). |
