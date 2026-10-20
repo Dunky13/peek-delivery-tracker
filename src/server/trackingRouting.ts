@@ -46,10 +46,10 @@ export interface RoutedResult {
 }
 interface Failure { count: number; retry_at: string; kind: RoutingFailureKind; user_error?: string }
 /**
- * Older than the parcel's newest scan; no movement; dated only by a local clock; or behind a
- * provider's delivered or returned stage. Absent: older.
+ * Older than the parcel's newest scan; no movement; dated only by a local clock; not dated at
+ * all; or behind a provider's delivered or returned stage. Absent: older.
  */
-export type SetAsideReason = 'older' | 'no_movement' | 'local_clock' | 'behind_final';
+export type SetAsideReason = 'older' | 'no_movement' | 'local_clock' | 'undated' | 'behind_final';
 export interface SetAside { reason?: SetAsideReason; checked_at: string; newest?: string; watermark?: string; count: number }
 export interface RoutingState extends JsonObject {
   version: 1;
@@ -516,10 +516,12 @@ export class TrackingRouter {
     // A candidate whose newest scan is older than the parcel's newest is no
     // fresher source, unless the provider's copies of the candidate's own
     // scans set that watermark on a misread clock (ParcelsApp reads 4PX's and
-    // Evri's local times as UTC). `provider` is the answer of this check.
+    // Evri's local times as UTC). `provider` is the answer of this check. An
+    // answer without a date is neither older nor newer.
     const olderThanParcel = (value: RoutedResult, provider?: CarrierResult) => {
       const watermark = millis(state.last_event_at);
-      return latest(value) < watermark && latest(value) < (this.options.withoutCopies?.(watermark, value, provider) ?? watermark);
+      const newest = latest(value);
+      return newest > 0 && newest < watermark && newest < (this.options.withoutCopies?.(watermark, value, provider) ?? watermark);
     };
     const tryDirect = async (carrier: string, candidate = false, terminalStage?: string, probe = false, provider?: CarrierResult): Promise<RoutedResult | null> => {
       signal?.throwIfAborted();
@@ -612,6 +614,12 @@ export class TrackingRouter {
         }
         if (candidate && !moved) {
           setAsideAs('no_movement');
+          return null;
+        }
+        // An answer without a date is neither older nor newer than the parcel's dated progress,
+        // so it cannot displace it either.
+        if (candidate && !latest(value) && millis(state.last_event_at)) {
+          setAsideAs('undated');
           return null;
         }
         if (candidate && olderThanParcel(value, provider)) {

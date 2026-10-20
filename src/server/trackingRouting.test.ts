@@ -501,6 +501,25 @@ describe('persistent tracking routing', () => {
       expect(other.result.routing).toMatchObject({ set_aside: { ups: { reason: 'older', newest: '2026-09-10T03:00:00.000Z', count: 1 } } });
     });
 
+    it('sets aside an answer without a date as undated, neither older nor newer than the parcel', async () => {
+      const withoutCopies = vi.fn().mockReturnValue(Date.parse('2026-09-10T03:00:00Z'));
+      const { router, direct } = setup(time, { withoutCopies });
+      direct.mockResolvedValue({ ...directValue(), result: { status: 'in_transit', current_stage: 'in_transit', last_update: null,
+        events: [{ description: 'In transit', stage: 'in_transit' }] } });
+      const first = await router.fetch(named(), false);
+      expect(first.correction).toBeUndefined();
+      expect(first.result.tracking_provider).toBe('ParcelsApp');
+      expect(first.result.routing).not.toHaveProperty('confirmed_carrier');
+      expect(first.result.routing).toMatchObject({ last_event_at: '2026-09-10T11:00:00.000Z',
+        set_aside: { ups: { reason: 'undated', checked_at: time.toISOString(), count: 1 } } });
+      const setAside = (first.result.routing as JsonObject).set_aside as JsonObject;
+      expect(setAside.ups).not.toHaveProperty('newest');
+      expect(setAside.ups).not.toHaveProperty('watermark');
+      expect(withoutCopies).not.toHaveBeenCalled();
+      const again = await router.fetch(named({ set_aside: setAside }), false);
+      expect(again.result.routing).toMatchObject({ set_aside: { ups: { reason: 'undated', count: 2 } } });
+    });
+
     it('holds the carrier against the copies in the answer of the provider that names it', async () => {
       const withoutCopies = vi.fn((watermark: number) => watermark > Date.parse('2026-09-10T11:00:00Z') ? Date.parse('2026-09-10T03:00:00Z') : watermark);
       const { router, direct, universal } = setup(time, { withoutCopies });
