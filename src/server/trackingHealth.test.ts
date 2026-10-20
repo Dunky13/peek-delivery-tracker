@@ -137,6 +137,8 @@ describe('tracking health evidence', () => {
     expect(healthMessage({ subject: 'ups', state: 'recovered' }).nextSteps).toContain('No action needed');
     expect(healthMessage({ subject: 'ups', kind: 'refresh', state: 'closed' })).toMatchObject({
       title: 'Shipment refreshes closed without a recent check: ups', nextSteps: expect.stringContaining('no recovery was observed') });
+    expect(healthMessage({ subject: 'dpd-fr', kind: 'direct', state: 'closed', reason: 'bypassed' })).toMatchObject({
+      title: 'Direct tracking closed: dpd-fr answers through another step', nextSteps: expect.stringContaining('no longer runs') });
   });
 });
 

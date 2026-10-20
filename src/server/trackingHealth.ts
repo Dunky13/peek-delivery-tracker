@@ -88,6 +88,11 @@ export function healthMessage(incident: JsonObject): { title: string; nextSteps:
   const recovered = incident.state === 'recovered';
   const evidence = incident.evidence as JsonObject | undefined;
   const scope = refresh ? 'Shipment refreshes' : incident.kind === 'direct' ? 'Direct tracking' : 'Provider lookups';
+  if (incident.state === 'closed' && incident.reason === 'bypassed') {
+    return { title: `${scope} closed: ${subject} answers through another step`,
+      nextSteps: 'The carrier\'s three latest lookups answered without its direct step, which no longer runs (an adapter that goes straight to its browser step). Fresh direct failures open a new incident.',
+      impact: 'This describes one direct transport the carrier no longer uses.' };
+  }
   if (incident.state === 'closed') {
     return { title: `${scope} closed without a recent check: ${subject}`,
       nextSteps: 'Nothing was checked for 24 hours, so no recovery was observed. If it should still be checked, find out why it is not; fresh failures open a new incident.',
