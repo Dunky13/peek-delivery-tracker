@@ -2012,7 +2012,7 @@ describe('universal preflight and recipient input', () => {
     const value = setup();
     value.router.options.refuses = vi.fn(async (carrier: string) => carrier === 'poste-italiane');
     value.universal.mockResolvedValue({ ...history(), discovered_carrier: 'poste-italiane', reported_carriers: ['Italy Post'] });
-    const result = await value.router.fetch(parcel({ carrier: 'intl-post', tracking_number: 'RR123456785IT' }), false);
+    const result = await value.router.fetch(parcel({ carrier: 'intl-post', tracking_number: 'RR123456785MG' }), false);
     expect(value.direct).not.toHaveBeenCalledWith(expect.anything(), 'poste-italiane');
     expect(result.result.tracking_provider).toBeDefined();
     expect(result.result.routing).not.toHaveProperty('discovered_carrier');
