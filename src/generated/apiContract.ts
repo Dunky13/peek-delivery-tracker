@@ -30098,6 +30098,34 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.jtexpress.de/tracking"
+  },
+  "kun-express": {
+    "displayName": "Kun Express",
+    "aliases": [
+      "KUN",
+      "KUNEXPRESS",
+      "KunExpress",
+      "鲲辰",
+      "鯤辰",
+      "杭州鲲辰跨境供应链管理有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#0761ff",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "kun-express"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^KUN\\d{10}$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -30911,7 +30939,8 @@ export const CARRIER_IDS = [
   "jcex",
   "shiprocket",
   "first-line",
-  "j-and-t-de"
+  "j-and-t-de",
+  "kun-express"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
