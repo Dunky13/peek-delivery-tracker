@@ -70,6 +70,17 @@ it('waits in a job a newer commit replaces, and deploys in one that is never cut
   }
 });
 
+// A live deploy whose smoke check failed still tells IndexNow: the next deploy compares with the
+// sitemap this one put there, so its pages would never be sent.
+it('tells IndexNow about a live deploy even when the smoke check fails, without ever failing it', () => {
+  const deploy = job(read('.github/workflows/deploy.yml'), 'deploy');
+  assert.match(step(deploy, DEPLOY_STEP), /\n {8}id: deploy\n/);
+  const indexNow = step(deploy, 'Tell IndexNow about new and redated pages');
+  assert.ok(deploy.indexOf('- name: Tell IndexNow') > deploy.indexOf('- name: Check the public site'));
+  assert.match(indexNow, /\n {8}if: \$\{\{ !cancelled\(\) && steps\.deploy\.outcome == 'success' \}\}\n/);
+  assert.match(indexNow, /\n {8}continue-on-error: true\n/);
+});
+
 // The app names its Sentry release after the image's commit; telling Sentry about a deploy is
 // optional, and must never fail or precede it.
 it('records the deployed commit in Sentry after the deploy, without ever failing it', () => {

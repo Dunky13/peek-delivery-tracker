@@ -87,6 +87,7 @@ jobs:
             -o "$RUNNER_TEMP/sitemap-before.xml" "${DEPLOY_URL%/}/sitemap.xml" \
             || { rm -f "$RUNNER_TEMP/sitemap-before.xml"; echo '::warning::The sitemap could not be saved: IndexNow will hear of no pages.'; }
       - name: Deploy this commit
+        id: deploy
         if: steps.current.outputs.deploy != 'false'
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
@@ -114,9 +115,11 @@ jobs:
           DEPLOY_URL: ${{ vars.DEPLOY_URL }}
         run: scripts/smoke-url.sh "$DEPLOY_URL"
       # The pages new or redated in the sitemap go to IndexNow, which Bing and the engines that use
-      # its index read (scripts/indexnow.mjs). A refusal is shown but never fails the deploy.
+      # its index read (scripts/indexnow.mjs). A refusal is shown but never fails the deploy. It
+      # runs even when the smoke check failed: the deploy is live, and the next one compares with
+      # the sitemap this one put there, so these pages would never be sent.
       - name: Tell IndexNow about new and redated pages
-        if: steps.current.outputs.deploy != 'false'
+        if: ${{ !cancelled() && steps.deploy.outcome == 'success' }}
         continue-on-error: true
         timeout-minutes: 2
         env:
