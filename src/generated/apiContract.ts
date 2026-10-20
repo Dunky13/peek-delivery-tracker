@@ -212,7 +212,7 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^CNG\\d{14}$",
-        "confidence": "low"
+        "confidence": "high"
       },
       {
         "pattern": "^LP\\d{14}$",
@@ -1385,7 +1385,7 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^(?!YW[A-Z]{3}\\d{12}$|(?:GF|CI)[A-Z]{2}\\d{13}$)[A-Z0-9]{12}(?:(?:0[1-9]|[1-8]\\d|9[0-5]|97|98)\\d{3}|[BL][1-9]\\d{3})$",
+        "pattern": "^(?!YW[A-Z]{3}\\d{12}$|(?:GF|CI)[A-Z]{2}\\d{13}$|CNG\\d{14}$)[A-Z0-9]{12}(?:(?:0[1-9]|[1-8]\\d|9[0-5]|97|98)\\d{3}|[BL][1-9]\\d{3})$",
         "confidence": "low"
       },
       {
@@ -29954,6 +29954,42 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://track.jcex.com/"
+  },
+  "shiprocket": {
+    "displayName": "Shiprocket",
+    "aliases": [
+      "ShiprocketX",
+      "Shiprocket X",
+      "Shiprocket Cross Border"
+    ],
+    "countries": [
+      "IN"
+    ],
+    "color": "#735ae5",
+    "selectable": true,
+    "timezone": "Asia/Kolkata",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "shiprocket",
+      "recognitionRank": 592
+    },
+    "trackingUrlTemplate": "https://shiprocket.co/tracking/{trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "shiprocket.co"
+        ],
+        "path": "^/tracking/([A-Za-z0-9]{8,30})/?$"
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^832\\d{10}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ],
+    "trackingSearchUrl": "https://www.shiprocket.in/shipment-tracking/"
   }
 } as const;
 
@@ -30764,7 +30800,8 @@ export const CARRIER_IDS = [
   "ycs-logistics",
   "j-and-t-au",
   "lingdong",
-  "jcex"
+  "jcex",
+  "shiprocket"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
