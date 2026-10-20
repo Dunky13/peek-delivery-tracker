@@ -1659,7 +1659,11 @@ export class TrackingSyncService {
       // A parcel left under unknown keeps no carrier confirmed for it, such as one whose
       // local-clock answer could not replace the saved summary: routing would stop filing it
       // any other way, and the database files a parcel a provider names only while none is.
+      // What was confirmed stays apart (`cleared_confirmation`): confirming it again is no news.
       if (!values.carrier && carrierId === 'unknown' && routing) {
+        if (typeof routing.confirmed_carrier === 'string' && typeof routing.confirmed_number === 'string') {
+          routing.cleared_confirmation = { carrier: routing.confirmed_carrier, number: routing.confirmed_number };
+        }
         delete routing.confirmed_carrier; delete routing.confirmed_number;
         delete routing.confirmed_tracking_url; delete routing.confirmed_postcode;
       }

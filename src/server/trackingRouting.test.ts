@@ -400,6 +400,25 @@ describe('persistent tracking routing', () => {
     await handoff.router.fetch(parcel({ carrier: 'fedex', tracking_number: '123456789013' }), false);
     expect(recorded).not.toHaveBeenCalled();
   });
+  it.each([
+    ['the same carrier and number', 'fedex', '123456789013', false],
+    ['another carrier', 'yamato', '123456789013', true],
+    ['the carrier for another number', 'fedex', '123456789000', true],
+  ])('reports and counts a confirmation the sync cleared before only when it is new: %s', async (_label, carrier, number, news) => {
+    const recorded = vi.spyOn(metrics, 'recordChecksumRejection').mockImplementation(() => undefined);
+    const { router, direct, universal } = setup();
+    universal.mockResolvedValue({ ...history(), discovered_carrier: 'fedex' });
+    direct.mockImplementation(async (_parcel, asked) => directValue(asked));
+    const result = await router.fetch(parcel({ tracking_number: '123456789013',
+      carrier_data: { routing: state({ cleared_confirmation: { carrier, number } }) } }), false);
+    // Filed as a parcel never confirmed would be.
+    expect(result.correction?.carrier).toBe('fedex');
+    expect(result.result.routing).toMatchObject({ confirmed_carrier: 'fedex', confirmed_number: '123456789013' });
+    expect(result.result.routing).not.toHaveProperty('cleared_confirmation');
+    expect(recorded.mock.calls).toEqual(news ? [['fedex', 'fedex-1']] : []);
+    expect(vi.mocked(monitoring.reportRoutingEvent).mock.calls.filter(([code]) => code === 'carrier_mismatch_confirmed'))
+      .toHaveLength(news ? 1 : 0);
+  });
   it('confirms a newly returned universal hint in the same sync and then uses only direct', async () => {
     const { router, direct, universal } = setup();
     universal.mockResolvedValue({ ...history(), discovered_carrier: 'ups' });
@@ -1738,13 +1757,14 @@ describe('persistent tracking routing', () => {
       const trackingNumber = '123456789012';
       const dating = (time = '2026-09-10T01:00:00Z', stage = 'in_transit', description = 'In transit'): CarrierResult => ({
         status: 'in_transit', current_stage: stage, last_update: time, events: [{ time, description, stage }] });
-      const check = async (known: string[], provider: CarrierResult) => {
+      const check = async (known: string[], provider: CarrierResult, routing: JsonObject = {}) => {
         fixedPlan('Postal Ninja');
         const { router, direct, universal, recognize } = setup();
         recognize.mockImplementation(async (asked: string) => ({ known: known.includes(asked) }));
         direct.mockImplementation(async (_parcel, asked: string) => local(asked));
         universal.mockResolvedValue(provider);
-        const result = await router.fetch(filed({ last_event_at: '2026-09-10T01:00:00.000Z' }, { tracking_number: trackingNumber }), false);
+        const result = await router.fetch(filed({ last_event_at: '2026-09-10T01:00:00.000Z', ...routing },
+          { tracking_number: trackingNumber }), false);
         expect(direct.mock.calls.map(([, carrier]) => carrier).sort()).toEqual([...known].sort());
         return result;
       };
@@ -1762,6 +1782,14 @@ describe('persistent tracking routing', () => {
         expect(result.result.routing).not.toHaveProperty('set_aside');
         expect(result.result.routing).not.toHaveProperty('discovered_carrier');
         expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('candidate_probe_confirmed', expect.objectContaining({ carrier: 'unknown', provider: 'sto' }));
+      });
+
+      it('files the parcel under it again, without reporting it again, once the sync cleared that confirmation', async () => {
+        const result = await check(['sto'], dating(), { cleared_confirmation: { carrier: 'sto', number: trackingNumber } });
+        expect(result).toMatchObject({ correction: { carrier: 'sto' },
+          result: { routing: { configured_carrier: 'sto', confirmed_carrier: 'sto', confirmed_number: trackingNumber } } });
+        expect(result.result.routing).not.toHaveProperty('cleared_confirmation');
+        expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('candidate_probe_confirmed', expect.anything());
       });
 
       it.each([

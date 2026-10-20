@@ -10,9 +10,9 @@ import { isRecord, type JsonObject } from './types';
  * streak, freshness watermark and next check.
  */
 const NUMBER_ROUTING = ['preferred_provider', 'preferred_number', 'confirmed_carrier', 'confirmed_number',
-  'confirmed_tracking_url', 'confirmed_postcode', 'discovered_carrier', 'direct_retry_at', 'last_probe_at',
-  'candidate_probes', 'input_needed', 'provider_input_needed', 'probe_cursor', 'discovery_cursor', 'failures',
-  'reported_carriers_seen'];
+  'confirmed_tracking_url', 'confirmed_postcode', 'cleared_confirmation', 'discovered_carrier', 'direct_retry_at',
+  'last_probe_at', 'candidate_probes', 'input_needed', 'provider_input_needed', 'probe_cursor', 'discovery_cursor',
+  'failures', 'reported_carriers_seen'];
 /** When a delivery partner of the number, or its earlier carrier after a handoff, was last asked. */
 const NUMBER_DATA = ['delivery_probe', 'swiss_post_probe', 'earlier_checked_at'];
 

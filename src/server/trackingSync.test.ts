@@ -35,6 +35,7 @@ import {
 } from './trackingSync';
 import type { JsonObject } from './types';
 import * as observability from './observability';
+import * as metrics from './metrics';
 import { catalogRules, routingFailure, TrackingRouter } from './trackingRouting';
 import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
@@ -1105,6 +1106,39 @@ describe('TrackingSyncService', () => {
     expect(adapter.fetch.mock.calls.map(([carrier]) => carrier)).toEqual(['17feia', '17feia']);
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ carrier: '17feia', carrier_data: {
       discovered_carrier: '17feia', routing: { configured_carrier: '17feia', discovered_carrier: '17feia' } } });
+  });
+
+  it('reports and counts a carrier it keeps from filing a parcel once, however many checks confirm it again', async () => {
+    const report = vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const recorded = vi.spyOn(metrics, 'recordChecksumRejection').mockImplementation(() => undefined);
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    // A synthetic number whose FedEx check digit fails. A provider named FedEx, whose own lookup
+    // still shows the parcel in transit: the sync keeps the saved delivered summary and the parcel unknown.
+    const number = '123456789013';
+    const adapter = {
+      fetch: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-09-10T11:00:00Z',
+        events: [{ time: '2026-09-10T11:00:00Z', description: 'In transit', stage: 'in_transit' }] }),
+      fetchUniversal: vi.fn().mockRejectedValue(new NotFoundError('ParcelsApp')),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null,
+      () => new Date('2026-09-10T12:00:00Z'));
+    let parcel: JsonObject = { id: 'kept-unknown', carrier: 'unknown', tracking_number: number, current_stage: 'delivered',
+      carrier_data: { tracking_provider: 'ParcelsApp', routing: { version: 1, configured_carrier: 'unknown',
+        discovered_carrier: 'fedex', last_event_at: '2026-09-10T10:00:00.000Z' } } };
+    for (let check = 0; check < 2; check++) {
+      await service.syncPackage(parcel);
+      const saved = client.updatePackage.mock.calls.at(-1)![1];
+      expect(saved).not.toHaveProperty('carrier');
+      expect(saved.carrier_data.routing).toMatchObject({ configured_carrier: 'unknown', cleared_confirmation: { carrier: 'fedex', number } });
+      expect(saved.carrier_data.routing).not.toHaveProperty('confirmed_carrier');
+      parcel = { ...parcel, ...saved };
+    }
+    expect(adapter.fetch.mock.calls.map(([carrier]) => carrier)).toEqual(['fedex', 'fedex']);
+    expect(recorded.mock.calls).toEqual([['fedex', 'fedex-1']]);
+    expect(report.mock.calls.filter(([code]) => code === 'carrier_mismatch_confirmed')).toEqual([
+      ['carrier_mismatch_confirmed', expect.objectContaining({ carrier: 'unknown', provider: 'fedex' })]]);
   });
 
   it('persists routing for a universal-only carrier and respects it on the next manual check', async () => {

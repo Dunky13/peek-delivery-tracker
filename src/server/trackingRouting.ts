@@ -61,6 +61,12 @@ export interface RoutingState extends JsonObject {
   confirmed_number?: string;
   confirmed_tracking_url?: string | null;
   confirmed_postcode?: string | null;
+  /**
+   * The carrier and number last confirmed, kept when the sync clears the confirmation of a
+   * parcel it leaves under unknown. That confirmation was reported and counted: confirming
+   * them again is no news. It files nothing, and the next confirmation takes its place.
+   */
+  cleared_confirmation?: { carrier: string; number: string };
   discovered_carrier?: string;
   last_success_at?: string;
   consecutive_failures: number;
@@ -445,6 +451,9 @@ export class TrackingRouter {
       state.support_opportunity = carrier;
       report('direct_support_opportunity', carrier);
     };
+    // The carrier confirmed for the number before the sync cleared it: confirming it again is no news.
+    const confirmedBefore = (carrier: string) => state.cleared_confirmation?.carrier === carrier
+      && state.cleared_confirmation.number === number;
     const fail = (provider: string, error: unknown, universalSource = false): Failure => {
       const classified = routingFailure(error);
       const kind = classified.kind === 'transport' && answeredWithoutHistory(error, !universalSource)
@@ -539,7 +548,7 @@ export class TrackingRouter {
         // database's guard requires of a parcel a provider's history files.
         if (answered) state.discovered_carrier = answered;
         if (dated) {
-          report('candidate_probe_confirmed', dated);
+          if (!confirmedBefore(dated)) report('candidate_probe_confirmed', dated);
           recognizedAnswer!.confirm();
         }
         if (taken) clearSetAside(taken);
@@ -628,13 +637,14 @@ export class TrackingRouter {
           // the rules whose failed check digit kept it out of detection's
           // suggestions. The carrier and rule ids are recorded, never the number.
           if (value.sourceCarrierId === carrier && !metadata.original_carrier
-            && (state.confirmed_carrier !== carrier || state.confirmed_number !== number)) {
+            && (state.confirmed_carrier !== carrier || state.confirmed_number !== number) && !confirmedBefore(carrier)) {
             for (const rejection of checksumRejections(number)) {
               if (rejection.carrier === carrier) recordChecksumRejection(carrier, rejection.rule);
             }
           }
           state.confirmed_carrier = carrier;
           state.confirmed_number = number;
+          delete state.cleared_confirmation;
           if (candidate && !ownInputs) {
             state.confirmed_tracking_url = null;
             state.confirmed_postcode = null;
@@ -696,7 +706,7 @@ export class TrackingRouter {
         // A probe finding the carrier its number points to is the expected
         // outcome, not a detection gap: log it without raising an alert. The
         // same holds when detection already names the confirming carrier.
-        if (carrier !== declared && state.confirmed_carrier !== carrier) {
+        if (carrier !== declared && state.confirmed_carrier !== carrier && !confirmedBefore(carrier)) {
           report(probe ? 'candidate_probe_confirmed'
             : detectionExpects(number, carrier) ? 'detected_carrier_confirmed' : 'carrier_mismatch_confirmed', carrier);
         }
