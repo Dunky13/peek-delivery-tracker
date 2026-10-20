@@ -998,6 +998,7 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         case "saia": isValidSaiaPro(number)
         case "magyar-posta": isValidMagyarPostaNumber(number)
         case "poste-italiane": isValidPosteItalianeRegisteredNumber(number)
+        case "frankier-id": isValidFrankierId(number)
         default: nil
         }
     }
@@ -1087,6 +1088,22 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         }
         let digitSum = String(11 * sums.even + sums.odd).compactMap(\.wholeNumberValue).reduce(0, +)
         return digitSum % 10 == digits[11]
+    }
+
+    /// Deutsche Post's Frankier-ID: nineteen characters and a hexadecimal check character, the
+    /// CRC-4 (polynomial x⁴ + x + 1, from zero) of the nineteen as ASCII bytes, most significant
+    /// bit first.
+    static func isValidFrankierId(_ value: String) -> Bool {
+        guard matches(value, pattern: "^[0-9A-Z]{19}[0-9A-F]$"), let check = value.last?.hexDigitValue else { return false }
+        var crc = 0
+        for byte in value.utf8.prefix(19) {
+            for bit in (0..<8).reversed() {
+                let carry = (crc >> 3) ^ (Int(byte >> UInt8(bit)) & 1)
+                crc = (crc << 1) & 0xF
+                if carry == 1 { crc ^= 0x3 }
+            }
+        }
+        return crc == check
     }
 
     /// GS1 mod 10: counted from the check digit, the digits before it weigh 3, 1, 3, …

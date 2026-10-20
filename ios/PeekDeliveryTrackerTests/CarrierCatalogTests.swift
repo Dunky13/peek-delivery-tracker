@@ -1216,6 +1216,24 @@ final class CarrierCatalogTests: XCTestCase {
         }
     }
 
+    /// Made-up Deutsche Post Frankier-IDs and the specification's own example: the last character
+    /// is the CRC-4 of the nineteen before it as ASCII bytes.
+    func testFrankierIdsCheckTheirCrc4() {
+        for number in ["A0123456789ABCDEF01F", "A000000000000000000A", "RA51251496FC301A6903"] {
+            XCTAssertTrue(CarrierCatalog.isValidFrankierId(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("frankier-id", number), true, number)
+        }
+        for number in [
+            "A0123456789ABCDEF010", "A000000000000000000F", "RA51251496FC301A6902",
+            // A check past F, lower case, a character short or over, a separator and a trailing newline.
+            "A0123456789ABCDEF01G", "a0123456789abcdef01f", "A0123456789ABCDEF01", "A0123456789ABCDEF01F0",
+            "A012-3456789ABCDEF01F", "A0123456789ABCDEF01F\n",
+        ] {
+            XCTAssertFalse(CarrierCatalog.isValidFrankierId(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("frankier-id", number), false, number)
+        }
+    }
+
     func testPostlogisticsPrintedReferenceAndTrackingLink() throws {
         let printed = "12345678-001"
         let compact = "12345678001"
