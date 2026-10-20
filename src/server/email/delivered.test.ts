@@ -80,6 +80,16 @@ describe('deliveredWhen, told what the scan knows', () => {
     expect(deliveredWhen(parcel('dhl', [scan('2026-10-02T22:07:30+00:00')]), { ...reader, known: 'date' })).toEqual({ kind: 'day', date: '03.10.2026' });
   });
 
+  it('names the day a scan is served with, wherever its time falls', () => {
+    const late = { ...reader, now: new Date('2026-10-19T15:00:00Z') };
+    // A second into the carrier's day, to keep its order, in a zone the parcel does not name.
+    const ordered = parcel('unknown', [scan('2026-10-18T22:00:01Z', { day: '2026-10-19' })]);
+    expect(deliveredWhen(ordered, { ...late, known: 'date' })).toEqual({ kind: 'day', date: '19.10.2026' });
+    // Still the 18th in Los Angeles.
+    const nacex = parcel('nacex', [scan('2026-10-19T00:00:00Z', { day: '2026-10-19' })]);
+    expect(deliveredWhen(nacex, { ...late, timezone: 'America/Los_Angeles' })).toEqual({ kind: 'day', date: '19.10.2026' });
+  });
+
   it('says no time for a delivery the app only noticed', () => {
     expect(deliveredWhen(parcel('dhl', [scan('2026-10-03T12:12:00Z')]), { ...reader, known: 'none' })).toEqual({ kind: 'plain' });
   });

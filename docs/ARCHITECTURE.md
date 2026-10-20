@@ -315,8 +315,8 @@ and nothing typed is sent.
   mid-journey or after its delivery shows the carrier's scans alone. The row never sets
   the stage, an alert or an email. An earlier carrier's relay copy of a scan is served
   under that scan ([handoffs](ROUTING.md#handoffs-two-carriers)). A scan the carrier dated
-  by its day alone is served with that `day`, and the apps list it under that day without a
-  time. `src/server/eventPlaces.ts` applies this to every parcel and link the API serves; the
+  by its day alone is served with that `day`: the apps list it under that day without a
+  time, and the delivery email names that day. `src/server/eventPlaces.ts` applies this to every parcel and link the API serves; the
   account export keeps every stored row.
 - **A pickup point** is named by most carriers only while the parcel waits there. A
   delivered parcel keeps the point it was collected from once the carrier stops naming it,

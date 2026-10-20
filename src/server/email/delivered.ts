@@ -77,8 +77,9 @@ function guessedTime(at: DateTime, zones: readonly string[]): DeliveredTime {
 
 /**
  * When the parcel was delivered, or reached its pickup point when `stage` says
- * so, for a reader in `timezone` at `now`. `known` is what the sender read in
- * the carrier's own data; left out, the scan is judged by its timestamp. A
+ * so, for a reader in `timezone` at `now`. A scan served with its `day` is that
+ * day. Else `known` is what the sender read in the carrier's own data; left
+ * out, the scan is judged by its timestamp. A
  * scan later than `now`, or without a readable time, says nothing. Dates are
  * written as push notifications write them.
  */
@@ -92,9 +93,12 @@ export function deliveredWhen(parcel: ParcelWithEvents, { stage = 'delivered', k
   const scan = deliveredScan(parcel, stage);
   const at = scan ? DateTime.fromISO(scan.occurredAt, { setZone: true }) : null;
   if (!scan || !at?.isValid || at.toMillis() > now.getTime()) return { kind: 'plain' };
+  const written = (day: DateTime) => day.setLocale(languageTag).toLocaleString(DateTime.DATE_SHORT);
+  // A scan the carrier dated by its day alone is served with that day: its time only orders it.
+  const given = scan.day ? DateTime.fromISO(scan.day) : null;
+  if (given?.isValid) return { kind: 'day', date: written(given) };
   const zones = scanZones(parcel, scan);
   const time = known ?? guessedTime(at, zones);
-  const written = (day: DateTime) => day.setLocale(languageTag).toLocaleString(DateTime.DATE_SHORT);
   if (time === 'none') return { kind: 'plain' };
   if (time === 'date') return { kind: 'day', date: written(scanDay(at, zones)) };
   const zone = IANAZone.isValidZone(timezone) ? timezone : 'Europe/Zurich';
