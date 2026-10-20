@@ -239,7 +239,7 @@ and [`truck.json`](truck.json).
 | `fg-delivery` | [fgdelivery.it](https://fgdelivery.it/) — Elementor primary colour #393D78; logo PNG #393d78 (approximate) |
 | `first-delivery-tn` | [firstdeliverygroup.com](https://www.firstdeliverygroup.com/wp-content/uploads/2023/08/Logo_First-e1692977453756.png) — logo PNG palette green #51b045 |
 | `first-fly-express` | [firstflyexpress.com](https://firstflyexpress.com/images/ffelogo.png) — logo PNG red #ed3237 (approximate) |
-| `first-line` | [firstline56.com](http://www.firstline56.com/uploadfiles/20221019-165927.png) — header logo PNG purple #55207a, the O and the Chinese name, with an orange #f0832e NE, each about half the pixels; the catalog colour #683088 is a lighter purple from the site |
+| `first-line` | [firstline56.com](http://www.firstline56.com/uploadfiles/20221019-165927.png) — header logo PNG purple #55207a, the O and the Chinese name, with an orange #f0832e NE, each about half the pixels |
 | `flash-express` | [flashexpress.co.th](https://www.flashexpress.co.th/) — site CSS #FFEA33 (132 uses); logo bolt #fcee20 |
 | `flash-express-ph` | [flashexpress.ph](https://www.flashexpress.ph/) — header background CSS rgb(255, 234, 51) #ffea33 |
 | `fleetex` | [fleetexpress.ca](https://fleetexpress.ca/logo.png) — logo PNG #572aee (approximate), same violet in the favicon |
