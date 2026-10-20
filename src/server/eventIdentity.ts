@@ -39,9 +39,9 @@
  *   (`UNIVERSAL_PROVIDER`), and follows the provider's clock when a scraper
  *   fix moves it. A carrier's scan writes the row without the name, so the
  *   row keeps the carrier's instant from then on.
- * - A universal copy stored a whole number of hours from a carrier's row of
- *   the scan, before a fix read the provider's clock right, goes with any
- *   check (`sharedScans`).
+ * - A universal copy stored a zone away from a carrier's row of the scan,
+ *   before a fix read the provider's clock right, goes with any check
+ *   (`sharedScans`).
  * - A stage change the sync stored at the time it saw it goes once a scan
  *   dates it, a scan new to the parcel taking its row over, and a new one a
  *   stored row dates is not stored (`datedObservations`).
@@ -377,6 +377,18 @@ function hoursApart(copy: number, scan: number): boolean {
 }
 
 /**
+ * How far a copy is from a scan read in another zone: a nonzero number of
+ * quarter hours up to 14 h, compared to the minute when either is in whole
+ * minutes (17TRACK adds seconds of its own to a carrier's minute) and to the
+ * second otherwise. Zero for any other gap.
+ */
+function zoneShift(copy: number, scan: number): number {
+  const unit = copy % MINUTE_MS === 0 || scan % MINUTE_MS === 0 ? MINUTE_MS : 1_000;
+  const shift = Math.floor(copy / unit) * unit - Math.floor(scan / unit) * unit;
+  return shift % QUARTER_HOUR_MS === 0 && Math.abs(shift) <= MAX_ZONE_SHIFT_MS ? shift : 0;
+}
+
+/**
  * The words of a scan's place, without accents, case or countries ("Paris, FR"
  * and "PARIS CDG" share paris), umlauts spelt out (ZUERICH is Zürich). A word
  * with letters beyond a to z (Cyrillic, Chinese, ł) is left out.
@@ -484,10 +496,13 @@ function copies(scan: JsonObject, row: JsonObject): boolean {
  * and provider codes that agree, is a copy an earlier release read on the
  * wrong clock: it is absorbed, and a universal scan that matches a stored
  * carrier row that way is left out. A copy in whole minutes is compared to
- * the carrier's minute. A row of the scan at the copy's own minute, the
- * carrier's or one written before rows named their provider, the provider's
- * reading of the scan at the carrier row's minute, a scan that takes the row
- * over or repeats it, or a second copy of the carrier row keeps it.
+ * the carrier's minute. So is one, in any wording or stage, at the carrier
+ * row's place by the shift in whole quarter hours that most of the
+ * provider's copies of the parcel show, two at least. A row at the copy's
+ * own minute and place, the carrier's or one written before rows named their
+ * provider, the provider's reading at the carrier row's minute, a scan that
+ * takes the row over or repeats it, or a second copy of the carrier row from
+ * the provider keeps it.
  */
 export function sharedScans(
   events: readonly JsonObject[],
@@ -629,46 +644,72 @@ export function sharedScans(
       && sameWording(wordingOf(event), wordingOf(row)) && !placesConflict(placeWords(event), placeWords(row)));
     if (copy && answer.some((event) => event !== copy && instantOf(event) < instantOf(row))) shared.absorbed.add(id);
   }
-  // A provider's copy of a carrier's row a whole number of hours away, in the same wording and
-  // place, stored before a fix read the provider's clock right (ParcelsApp's copy of UPS's
-  // customs scan, 11 h late), goes, and the provider's copies at that time stay out. A carrier
-  // row of the scan at the copy's own minute, the provider's reading of the scan at the carrier
-  // row's minute, or a second copy of the row makes it another scan. A universal scan is matched
-  // with stored rows alone.
+  // A provider's copy of a carrier's row stored before a fix read the provider's clock right goes,
+  // and the provider's copies at that time stay out: one a whole number of hours away in the same
+  // wording and place (ParcelsApp's copy of UPS's customs scan, 11 h late), or one at the shift in
+  // whole quarter hours that most of the provider's copies of the parcel show, two at least, in
+  // any wording or stage at the carrier row's place (17TRACK's copies of Shiprocket's scans, India's
+  // clock read as US Eastern). A row at the copy's own minute and place, the provider's reading at
+  // the carrier row's minute, or a second copy of the row from the provider makes it another scan.
+  // A universal scan is matched with stored rows alone.
   const carrierRows = stored.filter((row) => !taken.has(identity(row)) && heldByCarrier(row) && !observedOnly(row)
     && Number.isFinite(instantOf(row)));
   const batchScans = events.filter((event) => heldByCarrier(event) && !observedOnly(event) && Number.isFinite(instantOf(event)));
   const minute = (at: number) => Math.floor(at / MINUTE_MS);
-  const carrierRowOf = (copy: JsonObject, among: readonly JsonObject[]): JsonObject | undefined => {
-    const same = (row: JsonObject) => wordingOf(copy) !== '' && wordingOf(row) === wordingOf(copy)
-      && placeOf(row) === placeOf(copy) && codesAgree(copy, row) && stagesAgree(stageOf(row), stageOf(copy));
-    const scans = among.filter(same);
-    const apart = scans.filter((row) => sourceOf(identity(row)) !== UNIVERSAL && hoursApart(instantOf(copy), instantOf(row)));
-    if (apart.length !== 1 || scans.some((row) => minute(instantOf(row)) === minute(instantOf(copy)))) return undefined;
-    const carrier = apart[0]!;
-    return events.some((event) => providerOf(event) === providerOf(copy) && same(event)
-      && minute(instantOf(event)) === minute(instantOf(carrier))) ? undefined : carrier;
-  };
-  const stale = new Map<string, JsonObject>();
+  const own = (row: JsonObject) => sourceOf(identity(row)) !== UNIVERSAL;
+  const sameScan = (copy: JsonObject, row: JsonObject) => wordingOf(copy) !== '' && wordingOf(row) === wordingOf(copy)
+    && placeOf(row) === placeOf(copy) && codesAgree(copy, row) && stagesAgree(stageOf(row), stageOf(copy));
+  // Each copy, with the rows it is matched with.
+  const candidates = new Map<string, readonly [JsonObject, readonly JsonObject[]]>();
   for (const event of events) {
     const id = identity(event);
     if (sourceOf(id) !== UNIVERSAL || providerOf(event) === '' || reused.has(id) || shared.reused.has(id)
       || shared.skipped.has(id) || observedOnly(event) || !Number.isFinite(instantOf(event))) continue;
-    const carrier = carrierRowOf(event, carrierRows);
-    if (carrier) stale.set(id, carrier);
+    candidates.set(id, [event, carrierRows]);
   }
   // A row another scan takes over or repeats holds that scan.
   const holding = new Set([...shared.reused.values(), ...shared.skipped.values(), ...shared.absorbed]);
   for (const row of rows) {
     const id = identity(row);
-    if (sourceOf(id) !== UNIVERSAL || providerOf(row) === '' || holding.has(id) || stale.has(id)) continue;
-    const carrier = carrierRowOf(row, [...carrierRows, ...batchScans]);
+    if (sourceOf(id) !== UNIVERSAL || providerOf(row) === '' || holding.has(id) || candidates.has(id)) continue;
+    candidates.set(id, [row, [...carrierRows, ...batchScans]]);
+  }
+  // The shift most of a provider's copies show from carrier rows of the same scan, when two do and no other shift as many.
+  const shiftsOf = new Map<string, Map<number, Set<string>>>();
+  for (const [id, [copy, among]] of candidates) {
+    const shifts = shiftsOf.get(providerOf(copy)) ?? new Map<number, Set<string>>();
+    shiftsOf.set(providerOf(copy), shifts);
+    for (const row of among) {
+      const shift = own(row) && sameScan(copy, row) ? zoneShift(instantOf(copy), instantOf(row)) : 0;
+      if (shift !== 0) shifts.set(shift, (shifts.get(shift) ?? new Set()).add(id));
+    }
+  }
+  const clocks = new Map<string, number>();
+  for (const [provider, shifts] of shiftsOf) {
+    const [first, second] = [...shifts].sort(([, left], [, right]) => right.size - left.size);
+    if (first && first[1].size >= 2 && (!second || second[1].size < first[1].size)) clocks.set(provider, first[0]);
+  }
+  const carrierRowOf = (copy: JsonObject, among: readonly JsonObject[]): JsonObject | undefined => {
+    const clock = clocks.get(providerOf(copy));
+    const apart = among.filter((row) => own(row) && (clock === undefined
+      ? sameScan(copy, row) && hoursApart(instantOf(copy), instantOf(row))
+      : placeOf(row) === placeOf(copy) && codesAgree(copy, row) && zoneShift(instantOf(copy), instantOf(row)) === clock));
+    if (apart.length !== 1) return undefined;
+    const carrier = apart[0]!;
+    const at = (row: JsonObject, instant: number) => placeOf(row) === placeOf(copy) && minute(instantOf(row)) === minute(instant);
+    return among.some((row) => at(row, instantOf(copy)))
+      || events.some((event) => providerOf(event) === providerOf(copy) && at(event, instantOf(carrier))) ? undefined : carrier;
+  };
+  const stale = new Map<string, JsonObject>();
+  for (const [id, [copy, among]] of candidates) {
+    const carrier = carrierRowOf(copy, among);
     if (carrier) stale.set(id, carrier);
   }
-  const copiesOf = new Map<JsonObject, number>();
-  for (const carrier of stale.values()) copiesOf.set(carrier, (copiesOf.get(carrier) ?? 0) + 1);
+  const copiesOf = new Map<string, number>();
+  const key = (id: string, carrier: JsonObject) => `${identity(carrier)}\n${providerOf(candidates.get(id)![0])}`;
+  for (const [id, carrier] of stale) copiesOf.set(key(id, carrier), (copiesOf.get(key(id, carrier)) ?? 0) + 1);
   for (const [id, carrier] of stale) {
-    if (copiesOf.get(carrier) !== 1) continue;
+    if (copiesOf.get(key(id, carrier)) !== 1) continue;
     if (storedById.has(id)) shared.absorbed.add(id);
     if (events.some((event) => identity(event) === id)) shared.skipped.set(id, storedById.has(identity(carrier)) ? identity(carrier) : id);
   }

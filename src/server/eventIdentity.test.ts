@@ -948,6 +948,46 @@ describe('a provider\'s copy a whole number of hours from the carrier\'s row', (
   });
 });
 
+describe('a provider\'s copies on a clock read in another zone', () => {
+  // A carrier gives India's wall clock to the minute; a provider read it as US Eastern and added seconds of its own.
+  const hub = { location: 'Example Hub, MH' };
+  const own = (id: string, at: string, description: string, stage = 'in_transit') => ({ ...row(`shiprocket:${id}`, at, description, stage), ...hub });
+  const copy = (id: string, at: string, description: string, stage = 'in_transit', provider = '17TRACK') =>
+    ({ ...row(`unknown:${id}`, at, description, stage), ...hub, universal_provider: provider });
+  const carrier = [
+    own('booked', '2026-10-13T04:04:00+00:00', 'Shipment booked', 'registered'),
+    own('picked', '2026-10-13T08:56:00+00:00', 'Picked up', 'accepted'),
+    own('hub', '2026-10-13T12:33:00+00:00', 'Reached hub'),
+    own('sorted', '2026-10-13T13:05:00+00:00', 'Sorted'),
+  ];
+  const booked = copy('booked', '2026-10-13T13:34:01+00:00', 'Shipment booked', 'registered');
+  const sorted = copy('sorted', '2026-10-13T22:35:21+00:00', 'Sorted');
+  // Read as another stage, or in other words.
+  const picked = copy('picked', '2026-10-13T18:26:21+00:00', 'Picked up');
+  const reached = copy('hub', '2026-10-13T22:03:41+00:00', 'Arrived at hub');
+  const delivered = scan('shiprocket:delivered', '2026-10-16T10:00:00Z', 'Delivered', 'delivered');
+  const left = (stored: JsonObject[]) => [...sharedScans([delivered], [...carrier, ...stored]).absorbed].sort();
+
+  it('go once two of the provider\'s copies show the shift, in any wording or stage at the carrier row\'s place', () => {
+    expect(left([booked, sorted, picked, reached])).toEqual(['unknown:booked', 'unknown:hub', 'unknown:picked', 'unknown:sorted']);
+    // Another provider's copies of the same rows go too.
+    const again = [copy('booked-again', '2026-10-13T13:34:00+00:00', 'Shipment booked', 'registered', 'Ship24'),
+      copy('sorted-again', '2026-10-13T22:35:00+00:00', 'Sorted', 'in_transit', 'Ship24')];
+    expect(left([booked, sorted, ...again])).toEqual(['unknown:booked', 'unknown:booked-again', 'unknown:sorted', 'unknown:sorted-again']);
+  });
+
+  it('stay when the shift is one copy\'s, or nothing the carrier holds sits there', () => {
+    expect(left([booked, picked, reached])).toEqual([]);
+    expect(left([booked, sorted, copy('extra', '2026-10-13T23:30:06+00:00', 'Out of hub')])).toEqual(['unknown:booked', 'unknown:sorted']);
+    // Another place, or a carrier row at the copy's own minute and place.
+    expect(left([booked, sorted, { ...reached, location: 'Other Hub, MH' }])).toEqual(['unknown:booked', 'unknown:sorted']);
+    expect(left([booked, sorted, reached, own('late', '2026-10-13T22:03:00+00:00', 'Departed hub')])).toEqual(['unknown:booked', 'unknown:sorted']);
+    // Two shifts shown as often: neither is the provider's clock.
+    const early = [copy('picked', '2026-10-13T16:26:21+00:00', 'Picked up', 'accepted'), copy('hub', '2026-10-13T20:03:41+00:00', 'Reached hub')];
+    expect(left([booked, sorted, ...early])).toEqual([]);
+  });
+});
+
 describe('a stage change the sync saw without a time', () => {
   const sighting = { ...row('dpd-uk:observed', '2026-10-20T16:11:32.240+00:00', 'Order details received', 'registered'),
     location: null, observed_without_provider_timestamp: true };
