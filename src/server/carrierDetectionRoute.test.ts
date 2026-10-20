@@ -1,8 +1,10 @@
 import { NextRequest } from 'next/server';
+import { recognitionCandidates, type RecognitionOptions } from 'universal-parcel-scraper';
+import type { TrackingContext } from 'universal-parcel-scraper/node';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { POST } from '../../app/api/carriers/detect/route';
 import { POST as detectWithoutAccount } from '../../app/api/public/detect/route';
-import { detectCarrierMatch, recognitionAskedCarriers } from '../lib/carriers';
+import { detectCarrierMatch, MAX_RECOGNITIONS, recognitionAskedCarriers } from '../lib/carriers';
 import { preflightTracking } from './trackingPreflight';
 import * as amazon from './amazonShippingEligibility';
 import { SupabaseAuthenticator } from './auth';
@@ -14,7 +16,9 @@ vi.mock('./trackingPreflight', () => ({ preflightTracking: vi.fn().mockResolvedV
 // The route asks carriers through the adapter registry; no test reaches a carrier.
 const recognize = vi.hoisted(() => vi.fn());
 vi.mock('./adapterRegistry', () => ({
-  createAdapterRegistry: () => ({ for: (carrier: string) => ({ recognize: (number: string) => recognize(carrier, number) }) }),
+  createAdapterRegistry: () => ({ for: (carrier: string) => ({
+    recognize: (number: string, context: TrackingContext) => recognize(carrier, number, context),
+  }) }),
 }));
 
 const request = (trackingNumber: unknown, authenticated = true) => POST(new NextRequest('https://delivery.example/api/carriers/detect', {
@@ -46,6 +50,9 @@ afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllEnvs(); 
 // The scraper decides which carriers share the fourteen-digit shape, and in what order;
 // these tests need several of them, DPD first for its Swiss depot prefix.
 const fourteen = recognitionAskedCarriers('06080000000002');
+// When none of the first five knows a number, the next five are asked too.
+const bothBatches = (number: string, options?: RecognitionOptions) =>
+  recognitionCandidates(number, options).slice(0, 2 * MAX_RECOGNITIONS).map(({ carrier }) => carrier);
 
 // Answers are cached per number for a few minutes, so every test uses its own numbers.
 
@@ -80,8 +87,8 @@ it('uses a trusted visitor country for recognition, not universal preflight, wit
   }), { params: Promise.resolve({}) });
   expect(response.status).toBe(200);
   const answer = await response.json();
-  expect(answer.asked).toEqual(recognitionAskedCarriers(number, { countryHint: 'FR' }));
-  expect(asked()).toHaveLength(5);
+  expect(answer.asked).toEqual(bothBatches(number, { countryHint: 'FR' }));
+  expect(asked()).toEqual(answer.asked);
   expect(preflightTracking).toHaveBeenCalledWith(number, expect.any(SupabaseServiceClient), expect.any(AbortSignal));
 });
 
@@ -178,6 +185,8 @@ it('lets the user choose between unrelated carriers that both know the number', 
     trackingNumber: '12345678901231', carrier: 'unknown',
     recognized: asked().filter((carrier) => carrier === 'dpd' || carrier === 'hermes-de'), asked: asked(),
   });
+  // A choice ends the asking with the first five.
+  expect(asked()).toEqual(recognitionAskedCarriers('12345678901231'));
 });
 
 it('ignores an answer about an old parcel that reused the number', async () => {
@@ -200,17 +209,71 @@ it('answers unknown when no carrier knows the number or one fails, and asks agai
   });
   // The sheet tells a carrier that could not answer from one that said no.
   expect(await (await request('06080000000027')).json()).toEqual({
-    trackingNumber: '06080000000027', carrier: 'unknown', asked: fourteen, unanswered: ['dpd'],
+    trackingNumber: '06080000000027', carrier: 'unknown', asked: bothBatches('06080000000027'), unanswered: ['dpd'],
   });
   recognize.mockClear();
   // A carrier that could not answer is asked again on the next focus-out.
   await request('06080000000027');
-  expect(asked()).toEqual(fourteen);
+  expect(asked()).toEqual(bothBatches('06080000000027'));
   // A complete answer is reused.
   recognize.mockReset().mockImplementation(knows());
-  expect(await (await request('06080000000035')).json()).toEqual({ trackingNumber: '06080000000035', carrier: 'unknown', asked: fourteen });
+  expect(await (await request('06080000000035')).json()).toEqual({ trackingNumber: '06080000000035', carrier: 'unknown', asked: bothBatches('06080000000035') });
   await request('06080000000035');
-  expect(asked()).toEqual(fourteen);
+  expect(asked()).toEqual(bothBatches('06080000000035'));
+});
+
+it('asks the next five carriers only when none of the first five knows the number', async () => {
+  // The carrier the scraper ranks sixth: SEUR, for many fourteen-digit numbers outside Spain and Portugal.
+  const number = '12345678901262';
+  const candidates = bothBatches(number);
+  const sixth = candidates[MAX_RECOGNITIONS];
+  expect(sixth, 'more than five carriers can be asked about the number').toBeDefined();
+  recognize.mockImplementation(knows(sixth));
+  expect(await (await request(number)).json()).toEqual({ trackingNumber: number, carrier: sixth, asked: candidates });
+  expect(asked()).toEqual(candidates);
+  // Each batch has three seconds of its own.
+  expect(recognize.mock.calls.map(([, , context]) => context.budgetMs)).toEqual(candidates.map(() => 3_000));
+
+  // One of the first five that knows the number ends the asking there.
+  recognize.mockClear();
+  const settled = '12345678901270';
+  const [first] = recognitionAskedCarriers(settled);
+  recognize.mockImplementation(knows(first, ...bothBatches(settled).slice(MAX_RECOGNITIONS)));
+  expect(await (await request(settled)).json()).toEqual({ trackingNumber: settled, carrier: first, asked: recognitionAskedCarriers(settled) });
+  expect(asked()).toEqual(recognitionAskedCarriers(settled));
+});
+
+it('gives the next five only what is left of the route\'s time, and asks them again once none was left', async () => {
+  // A slow allowance claim spends the route's time: its 25 seconds start before it.
+  let now = 0;
+  let claiming = 24_990;
+  vi.spyOn(performance, 'now').mockImplementation(() => now);
+  vi.mocked(SupabaseServiceClient.prototype.claimAccountTracking).mockImplementation(async () => {
+    now += claiming;
+    return { allowed: true, scope: null, overallUsed: 0 };
+  });
+  const number = '12345678901288';
+  const [first, next] = [recognitionAskedCarriers(number), bothBatches(number).slice(MAX_RECOGNITIONS)];
+  expect(next.length).toBeGreaterThan(0);
+  // The first five answer at once; the next five stop only when their budget ends.
+  recognize.mockImplementation(async (carrier: string, _number: string, context: TrackingContext) => {
+    if (first.includes(carrier)) return { known: false };
+    return await new Promise((_resolve, reject) => context.signal?.addEventListener('abort', () => reject(new Error('cancelled'))));
+  });
+  expect(await (await request(number)).json()).toEqual({ trackingNumber: number, carrier: 'unknown', asked: [...first, ...next], unanswered: next });
+  expect(recognize.mock.calls.filter(([carrier]) => next.includes(carrier)).map(([, , context]) => context.budgetMs))
+    .toEqual(next.map(() => 10));
+
+  // Past the deadline they are not asked and go unanswered, so the next focus-out asks again.
+  claiming = 30_000;
+  recognize.mockReset().mockImplementation(knows());
+  const late = '12345678901296';
+  expect(await (await request(late)).json()).toEqual({
+    trackingNumber: late, carrier: 'unknown', asked: bothBatches(late), unanswered: bothBatches(late).slice(MAX_RECOGNITIONS),
+  });
+  expect(asked()).toEqual(recognitionAskedCarriers(late));
+  await request(late);
+  expect(asked()).toEqual([...recognitionAskedCarriers(late), ...recognitionAskedCarriers(late)]);
 });
 
 it('does not ask carriers for selected shapes, formats without candidates or unauthenticated callers', async () => {
@@ -250,10 +313,11 @@ it('keeps unrelated BRT and Colis Privé answers ambiguous', async () => {
     recognized: ['brt', 'colis-prive'], asked: recognitionAskedCarriers(number) });
 });
 
-it.each(['06080000000076', '12345678901234', '12345678909', '1234567890', '12345678'])('asks the carriers the Add sheets name for %s', async (number) => {
+it.each(['06080000000076', '12345678901234', '12345678909', '1234567890', '12345678'])('asks the carriers the Add sheets name for %s, then the next five', async (number) => {
   const response = await (await request(number)).json();
-  expect(asked()).toEqual(recognitionAskedCarriers(number));
-  expect(response.asked ?? []).toEqual(recognitionAskedCarriers(number));
+  expect(asked().slice(0, MAX_RECOGNITIONS)).toEqual(recognitionAskedCarriers(number));
+  expect(asked()).toEqual(bothBatches(number));
+  expect(response.asked ?? []).toEqual(bothBatches(number));
 });
 
 it('counts served detections by confidence, including a recognized carrier', async () => {

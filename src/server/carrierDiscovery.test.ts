@@ -1,8 +1,7 @@
 import { beforeEach, expect, it, vi } from 'vitest';
-import { IndeterminateError } from 'universal-parcel-scraper';
+import { IndeterminateError, MAX_RECOGNITIONS, recognitionCandidates } from 'universal-parcel-scraper';
 import { detectCarrier } from './carrierDetection';
 import { SupabaseServiceClient } from './supabase';
-import { discoveryAskedCarriers } from '../lib/carriers';
 
 const mocks = vi.hoisted(() => ({ http: vi.fn(), browser: vi.fn() }));
 vi.mock('./adapterRegistry', () => ({ createAdapterRegistry: () => ({ for: (carrier: string) => ({
@@ -18,8 +17,11 @@ beforeEach(() => {
 
 it('confirms FedEx after HTTP misses and charges the allowance once', async () => {
   const allowance = vi.fn();
+  // Both HTTP batches miss before the browser is asked.
+  const http = recognitionCandidates('000000000011').slice(0, 2 * MAX_RECOGNITIONS).map(({ carrier }) => carrier);
+  expect(http.length, 'the number has a second batch').toBeGreaterThan(MAX_RECOGNITIONS);
   expect(await detectCarrier({ trackingNumber: '000000000011' }, allowance)).toEqual({
-    trackingNumber: '000000000011', carrier: 'fedex', asked: discoveryAskedCarriers('000000000011'),
+    trackingNumber: '000000000011', carrier: 'fedex', asked: [...http, 'fedex'],
   });
   expect(allowance).toHaveBeenCalledOnce();
   expect(mocks.http).toHaveBeenCalledWith('colis-prive', '000000000011', expect.objectContaining({ budgetMs: 3_000, signal: expect.any(AbortSignal) }));

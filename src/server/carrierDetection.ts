@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { AdapterRegistry } from 'universal-parcel-scraper/node';
+import type { AdapterRegistry, TrackingContext } from 'universal-parcel-scraper/node';
 import type { ApiCarrierDetectionResponse, ApiCarrierId } from '../generated/apiContract';
 import { isAmazonTrackingNumber } from '../lib/amazon';
 import { detectCarrierMatch, normalizeTrackingNumber, validTrackingNumber } from '../lib/carriers';
@@ -17,7 +17,7 @@ import { retainDetectionSupport } from './trackingSupport';
 import type { JsonObject } from './types';
 import { getRecognitionPriorities } from './recognitionRanking';
 
-/** The Add sheet waits this long for the carriers it asks; the first sync asks again after saving. */
+/** The Add sheet waits this long for each batch of carriers it asks; the first sync asks again after saving. */
 const RECOGNITION_BUDGET_MS = 3_000;
 /** A focus-out repeated on the same number reuses the answer instead of asking the carriers again. */
 const ANSWER_TTL_MS = 10 * 60_000;
@@ -33,17 +33,25 @@ async function recognize(trackingNumber: string, beforeAsking?: () => Promise<vo
   const cacheKey = `${trackingNumber}:${countryHint ?? ''}:${JSON.stringify(priorities ?? {})}`;
   const cached = answers.get(cacheKey);
   if (cached && Date.now() - cached.at < (cached.answer.carrier === 'unknown' ? 30_000 : ANSWER_TTL_MS)) return cached.answer;
-  const candidates = recognitionCandidates(trackingNumber, ordering).slice(0, MAX_RECOGNITIONS);
+  const candidates = recognitionCandidates(trackingNumber, ordering).slice(0, 2 * MAX_RECOGNITIONS);
   const browserCandidates = recognitionCandidates(trackingNumber, { ...ordering, phase: 'browser' }).slice(0, MAX_BROWSER_RECOGNITIONS);
   const deadline = performance.now() + 25_000;
   await beforeAsking?.();
   const errors = new Map<string, unknown>();
-  const outcomes = await recognizeAll(candidates, async (carrier, context) => {
+  const ask = async (carrier: string, context: TrackingContext) => {
     const adapter = (registry ??= createAdapterRegistry()).for(carrier);
     if (!adapter?.recognize) throw new RangeError(`${carrier} cannot recognize a number`);
     try { return await adapter.recognize(trackingNumber, context); }
     catch (error) { errors.set(carrier, error); throw error; }
-  }, RECOGNITION_BUDGET_MS, signal);
+  };
+  const outcomes = await recognizeAll(candidates.slice(0, MAX_RECOGNITIONS), ask, RECOGNITION_BUDGET_MS, signal);
+  const first = settleRecognition(outcomes);
+  // The next five are asked only when none of the first knows the number, for another three
+  // seconds at most: past the deadline they go unanswered.
+  if (!first.carrier && !first.choices.length) {
+    outcomes.push(...await recognizeAll(candidates.slice(MAX_RECOGNITIONS), ask,
+      Math.min(RECOGNITION_BUDGET_MS, Math.floor(deadline - performance.now())), signal));
+  }
   const cheap = settleRecognition(outcomes);
   const preflight = !cheap.carrier && !cheap.choices.length && health
     ? await preflightTracking(trackingNumber, health, signal) : undefined;
