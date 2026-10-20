@@ -564,6 +564,7 @@ and [`truck.json`](truck.json).
 | `shipa` | [shipa.com](https://shipa.com/static/6add25daa42f483a2844655b94664348/footer_shipa_delivery_logo_spaced_b650c90d74.svg.svg) — Shipa Delivery logo SVG slash fill #00f; shipa.com marks the Shipa Delivery card color="#0000ff" |
 | `shipblu` | [shipblu.com](https://shipblu.com/assets/img/navlogo.972e5b91.svg) — the logo's bird and "Blu" fill #1c5bfe (PNG embedded in the nav logo SVG, approximate), also the most used colour in the site stylesheet; the navy #0a3266 is the "Ship" text, the bird's tail and the footer |
 | `shipentegra` | [shipentegra.com](https://www.shipentegra.com/) — button background rgb(13, 182, 220) = #0db6dc on the home page, and the logo SVG's 'Ship' fill #0eb6dc ([se-logo.svg](https://www.shipentegra.com/img/logos/se-logo.svg)) |
+| `shiprocket` | [shiprocket.in](https://sr-website-01.shiprocket.in/sr-website/shiprocket_logo-1-TWLqUy.svg) — header logo SVG symbol fill #46237a with a green #18f040 play triangle; the site links and buttons use the lighter #735ae5, the most used colour in the home page CSS and the catalog colour |
 | `shipup` | [shipup.co](https://www.shipup.co/) (sampled from the site icon) |
 | `shree-anjani` | [shreeanjanicourier.com](https://shreeanjanicourier.com/img/logo.svg) — logo SVG fill #F58220; site CSS --critical-primary #f58220 |
 | `shree-mahabali-express` | [shreemahabaliexpress.com](https://shreemahabaliexpress.com/img/logo-5.png) — logo PNG red #ff0020 (approximate); the bowl is blue #1429a8 |
@@ -1412,3 +1413,4 @@ and [`truck.json`](truck.json).
 | `ycs-logistics` | White YCS on red | [ycs-express.com](https://www.ycs-express.com/_nuxt/img/ycsLogo.b70f538.svg) — the YCS of the header wordmark |
 | `lingdong` | White ring around a swept bird whose two wings break out at the upper right, on blue | [lingdong56.com](http://www.lingdong56.com/static/picture/logo.png) — header logo symbol: a ring around three tapering swooshes, open where the two upper ones fly out |
 | `jcex` | Orange Jc and white italic EX on blue | [jcex.com](https://www.jcex.com/template/1/jcex/images/jcCts2.png) — the JcEX of the header wordmark: a J and a c cut at its tips, in orange, then a blue italic EX |
+| `shiprocket` | White play-button bands around a green play triangle, on purple | [shiprocket.in](https://sr-website-01.shiprocket.in/sr-website/shiprocket_logo-1-TWLqUy.svg) — the header logo symbol: nested play-button outlines cut into bands, the green triangle at their centre; the favicon shows it white on purple |
