@@ -1538,9 +1538,10 @@ export class TrackingSyncService {
       if (postalHistory) carrierData.upu_history = postalHistory;
       const localHistory = directLocalHistory(parcel, result);
       if (localHistory) carrierData.direct_local_history = localHistory;
-      // Linked journey identity, and the postcode the owner gave a provider, belong to the parcel, not an individual carrier response.
+      // Linked journey identity, the postcode the owner gave a provider, and the delivery partner's probe belong to the
+      // parcel, not an individual carrier response: a provider answering while the origin is down keeps the probe's gap.
       if (isRecord(parcel.carrier_data)) {
-        for (const key of ['lookup_country_hint', 'universal_input', 'original_carrier', 'original_tracking_number', 'original_tracking_url', 'original_package_id', 'active_tracking_carrier', 'active_tracking_number', 'original_canonical_tracking_number', 'auto_changed_from', 'auto_changed_to', 'auto_changed_at', 'handed_over_at', 'earlier_checked_at']) {
+        for (const key of ['lookup_country_hint', 'universal_input', 'original_carrier', 'original_tracking_number', 'original_tracking_url', 'original_package_id', 'active_tracking_carrier', 'active_tracking_number', 'original_canonical_tracking_number', 'auto_changed_from', 'auto_changed_to', 'auto_changed_at', 'handed_over_at', 'earlier_checked_at', 'delivery_probe']) {
           if (parcel.carrier_data[key] != null && carrierData[key] == null) carrierData[key] = parcel.carrier_data[key];
         }
       }
