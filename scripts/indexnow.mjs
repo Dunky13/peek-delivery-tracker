@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url';
  * The key that shows IndexNow the site is ours. It is public by design: the file of its name in
  * `public` holds it, at the root, where it vouches for every page.
  */
-export const INDEXNOW_KEY = 'dba8d6fc9878f88c622a3c7363b75bed';
+export const INDEXNOW_KEY = 'dba8d6fc9878f88c622a3c7363b75bed'; // gitleaks:allow -- public by design, served from public/
 export const DEFAULT_ENDPOINT = 'https://api.indexnow.org/indexnow';
 export const MAX_URLS_PER_REQUEST = 10_000;
 const TIMEOUT_MS = 30_000;
