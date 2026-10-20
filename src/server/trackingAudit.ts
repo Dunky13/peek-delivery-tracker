@@ -388,7 +388,8 @@ export class TrackingSyncAudit {
       await this.writeAudit('evaluate_health', async () => {
         const incidents = await this.client.recordTrackingHealth(this.attemptId, this.packageId, samples);
         for (const incident of incidents) noteHealthIncident(incident);
-        // A recovery or a closing is a review signal: Postgres keeps it once acknowledged, Sentry never sees it.
+        // A recovery, a closing or a rescued direct step is a review signal: Postgres keeps it once
+        // acknowledged, Sentry never sees it.
         const signals = incidents.filter(healthReviewSignal);
         const reported = incidents.filter(incident => !healthReviewSignal(incident) && captureTrackingHealth(incident));
         const ids = [...signals, ...(reported.length && await flushObservability() ? reported : [])]

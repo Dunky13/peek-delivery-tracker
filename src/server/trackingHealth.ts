@@ -78,9 +78,13 @@ export function observeTrackingHealth<T>(samples: Map<string, HealthSample>, ope
   return observations.run(samples, operation);
 }
 
-/** A recovery, or a closing once no sample is left: logged and counted, never sent to Sentry. */
+/**
+ * A recovery, a closing, or a direct step failing only in checks whose refresh a fallback step
+ * answered (`rescued`): logged and counted, never sent to Sentry. Sentry gets the failures that
+ * left a parcel without a fresh answer.
+ */
 export function healthReviewSignal(incident: JsonObject): boolean {
-  return incident.state === 'recovered' || incident.state === 'closed';
+  return incident.state === 'recovered' || incident.state === 'closed' || incident.rescued === true;
 }
 
 export function healthMessage(incident: JsonObject): { title: string; nextSteps: string; impact: string } {
@@ -101,7 +105,7 @@ export function healthMessage(incident: JsonObject): { title: string; nextSteps:
         : 'This describes one provider or direct transport that was not used for 24 hours.' };
   }
   const title = recovered ? `${scope} recovered: ${subject}`
-    : `${scope} repeatedly failing: ${subject} (${incident.failures}/${incident.attempts} in ${incident.window_hours}h${incident.consecutive_failures ? '; 3 consecutive checks failed for a parcel' : ''})`;
+    : `${scope} repeatedly failing: ${subject} (${incident.failures}/${incident.attempts} in ${incident.window_hours}h${incident.consecutive_failures ? '; 3 consecutive checks failed for a parcel' : ''}${incident.rescued === true ? '; every refresh answered through another step' : ''})`;
   let nextSteps = 'Inspect the carrier scraper dashboard and the latest error type. Check the provider response and adapter parsing; retain the working fallback and scheduled backoff.';
   if (evidence?.http_status === 429 || evidence?.category === 'rate_limited') nextSteps = 'Honor Retry-After and inspect provider cooldowns. Reduce request frequency; do not increase retries or browser parallelism.';
   else if (['input_required','not_found'].includes(String(evidence?.category))) nextSteps = 'Check whether the shipment has been announced and whether its required postcode or tracking credentials were supplied. Do not retry invalid inputs immediately.';

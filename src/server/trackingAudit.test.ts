@@ -119,6 +119,28 @@ describe('a check that found nothing new', () => {
   });
 });
 
+describe('a direct step a fallback step rescued', () => {
+  it('is a review signal: logged, counted and acknowledged without Sentry', async () => {
+    const rescued = { id: 'rescued-notice', kind: 'direct', subject: 'dhl-express', state: 'open', rescued: true,
+      attempts: 12, failures: 10, window_hours: 24 };
+    const failing = { id: 'refresh-notice', kind: 'refresh', subject: 'dhl-express', state: 'open',
+      attempts: 6, failures: 5, window_hours: 1 };
+    vi.mocked(captureTrackingHealth).mockReturnValueOnce('synthetic-event');
+    const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),
+      recordTrackingHealth: vi.fn().mockResolvedValue([rescued, failing]), ackTrackingHealth: vi.fn() };
+    const audit = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'dhl-express', 'in_transit', { trigger: 'scheduled' });
+    await audit.finish({ outcome: 'unchanged', sourceCarrier: 'dhl-express' });
+    // Only the failure that left a parcel without a fresh answer reaches Sentry.
+    expect(captureTrackingHealth).toHaveBeenCalledTimes(1);
+    expect(captureTrackingHealth).toHaveBeenCalledWith(failing);
+    expect(client.ackTrackingHealth).toHaveBeenCalledWith(['rescued-notice', 'refresh-notice']);
+    expect(recordHealthIncident).toHaveBeenCalledWith('direct', 'dhl-express', 'open');
+    expect(logOperationalEvent).toHaveBeenCalledWith('tracking_health_incident',
+      expect.objectContaining({ kind: 'direct', state: 'open' }), 'info');
+  });
+});
+
 describe('a check of a number its carrier does not issue', () => {
   it('is an answer the owner must act on, not a failed refresh of the carrier', async () => {
     const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true),

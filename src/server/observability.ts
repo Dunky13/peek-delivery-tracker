@@ -486,7 +486,8 @@ export function reportRoutingEvent(code: string, context: {
 
 /**
  * An incident that opened, or still fails six hours on, reaches Sentry; the event
- * title states the impact. A recovery or a closing is a review signal and stays out (null).
+ * title states the impact. A recovery, a closing or a rescued direct step is a review
+ * signal and stays out (null).
  */
 export function captureTrackingHealth(incident: JsonObject): string | null {
   if (healthReviewSignal(incident) || !initObservability()) return null;

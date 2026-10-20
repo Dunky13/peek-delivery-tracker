@@ -6,6 +6,17 @@ returns jsonb language sql as $$
   select public.record_tracking_health(attempt_id,package_id,jsonb_build_array(jsonb_build_object(
     'kind',kind,'subject',subject,'healthy',healthy,'details',jsonb_build_object('error_type','TransportError'))));
 $$;
+-- One check of a carrier: its direct step and the parcel's refresh.
+create function pg_temp.direct_check(subject text, direct boolean, refresh boolean)
+returns jsonb language sql as $$
+  select public.record_tracking_health(gen_random_uuid(),'10000000-0000-4000-8000-000000000001',jsonb_build_array(
+    jsonb_build_object('kind','direct','subject',subject,'healthy',direct,'details','{}'::jsonb),
+    jsonb_build_object('kind','refresh','subject',subject,'healthy',refresh,'details','{}'::jsonb)));
+$$;
+create function pg_temp.direct_notice(result jsonb, subject text)
+returns jsonb language sql as $$
+  select n from jsonb_array_elements(result) n where n->>'kind'='direct' and n->>'subject'=subject;
+$$;
 create function pg_temp.answered_sample(subject text)
 returns jsonb language sql as $$
   select public.record_tracking_health(gen_random_uuid(),null,jsonb_build_array(jsonb_build_object(
@@ -154,6 +165,26 @@ begin
   end loop;
   assert (select active and pending is null from public.tracking_health_incidents where kind='direct' and subject='rescued-tier'),
     'A direct step that still fails must keep its incident open while a fallback answers';
+  -- A direct step failing only in checks whose refresh answered through another step is rescued.
+  for i in 1..10 loop result := pg_temp.direct_check('rescued-direct',false,true); end loop;
+  assert pg_temp.direct_notice(result,'rescued-direct')->>'state'='open'
+    and (pg_temp.direct_notice(result,'rescued-direct')->'rescued')::boolean,
+    'A direct step every refresh survived must be rescued';
+  perform public.ack_tracking_health(array[(pg_temp.direct_notice(result,'rescued-direct')->>'id')::uuid]);
+  assert (select active and pending is null from public.tracking_health_incidents where kind='direct' and subject='rescued-direct'),
+    'A rescued direct incident must stay open for the review';
+  -- One failure that left its parcel without a fresh answer, now or earlier in the window, is not.
+  for i in 1..9 loop perform pg_temp.direct_check('unrescued-now',false,true); end loop;
+  result := pg_temp.direct_check('unrescued-now',false,false);
+  assert pg_temp.direct_notice(result,'unrescued-now')->>'state'='open'
+    and not (pg_temp.direct_notice(result,'unrescued-now')->'rescued')::boolean,
+    'A direct failure whose refresh failed must not be rescued';
+  perform public.ack_tracking_health(array[(pg_temp.direct_notice(result,'unrescued-now')->>'id')::uuid]);
+  perform pg_temp.direct_check('unrescued-earlier',false,false);
+  for i in 1..9 loop result := pg_temp.direct_check('unrescued-earlier',false,true); end loop;
+  assert not (pg_temp.direct_notice(result,'unrescued-earlier')->'rescued')::boolean,
+    'An earlier direct failure whose refresh failed must keep the incident from being rescued';
+  perform public.ack_tracking_health(array[(pg_temp.direct_notice(result,'unrescued-earlier')->>'id')::uuid]);
   -- A tier still failing when traffic resumes opens a new incident at once.
   for i in 1..10 loop result := pg_temp.health_sample('retired-tier',false,'direct'); end loop;
   assert result->0->>'state'='open', 'A closed incident must reopen on fresh failures';

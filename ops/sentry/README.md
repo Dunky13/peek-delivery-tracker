@@ -52,18 +52,23 @@ failures age out of the window; a new failure meanwhile reminds as usual.
   its last direct attempt, answered and that attempt is six hours old: a `closed` notice
   with the reason `bypassed`. A direct step paused for less, as DHL Express's is for half
   an hour after a CAPTCHA, keeps its incident until it recovers.
+- A direct step whose failures in the window all came from checks whose refresh still
+  answered, through the carrier's browser step or a provider, left no parcel without a fresh
+  answer. Its opening and reminders say `rescued` and are review signals; the incident, its
+  samples and its reminders are otherwise unchanged. One failure that left its parcel without
+  an answer sends the next one to Sentry.
 
 ## Delivery
 
 Postgres serializes transitions. A repeated incident notifies at most once per 6 hours;
 recovery at once. An opening or reminder is acknowledged once the SDK has flushed its event,
 so it is delivered at least once (2-minute lease), and duplicates group under the same
-fingerprint. A recovery or a closing is acknowledged at once.
+fingerprint. A recovery, a closing or a rescued notice is acknowledged at once.
 
 Events carry `component:tracking-health`, `incident_kind`, `incident_state` and `provider`
 tags, plus a `tracking_health` context with counts, impact, evidence and next steps.
 Opening and reminders share one issue per incident kind and provider. Every notification,
-recoveries and closings included, is also a `tracking_health_incident` log line and counts in
+recoveries, closings and rescued notices included, is also a `tracking_health_incident` log line and counts in
 `tracking_health_incident_total`, and the hourly review
 ([ops/review/signals.sql](../review/signals.sql)) lists it. Resolve the outage's issue once
 its recovery shows there; the next outage of the same kind and provider then shows as a

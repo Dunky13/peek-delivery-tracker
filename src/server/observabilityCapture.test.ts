@@ -219,12 +219,14 @@ it('retains original exceptions, provider causes, and SDK diagnostic context', a
   expect(incident.tags).toMatchObject({ component: 'tracking-health', incident_state: 'open' });
   expect(incident.contexts?.tracking_health?.next_steps).toContain('maintenance');
   expect(incident.fingerprint).toEqual(['delivery-tracker', 'tracking-health', 'direct', 'la-poste']);
-  // A recovery or a closing is a review signal, not an issue.
+  // A recovery, a closing or a rescued direct step is a review signal, not an issue.
   const before = captured.events.length;
   expect(captureTrackingHealth({ id: 'test-recovery', kind: 'direct', subject: 'la-poste', state: 'recovered',
     attempts: 3, failures: 0, window_hours: 24 })).toBeNull();
   expect(captureTrackingHealth({ id: 'test-closing', kind: 'direct', subject: 'la-poste', state: 'closed',
     attempts: 0, failures: 0, window_hours: 24 })).toBeNull();
+  expect(captureTrackingHealth({ id: 'test-rescued', kind: 'direct', subject: 'la-poste', state: 'open', rescued: true,
+    attempts: 12, failures: 8, window_hours: 24 })).toBeNull();
   await flushObservability();
   expect(captured.events).toHaveLength(before);
   // A later error-free routing event must not inherit the refusal's HTTP context,

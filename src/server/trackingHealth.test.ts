@@ -150,6 +150,8 @@ describe('tracking health evidence', () => {
     expect(healthMessage({ subject: 'ups', state: 'recovered' }).nextSteps).toContain('No action needed');
     expect(healthMessage({ subject: 'ups', kind: 'refresh', state: 'closed' })).toMatchObject({
       title: 'Shipment refreshes closed without a recent check: ups', nextSteps: expect.stringContaining('no recovery was observed') });
+    expect(healthMessage({ subject: 'dhl-express', kind: 'direct', state: 'open', attempts: 12, failures: 10, window_hours: 24,
+      rescued: true }).title).toBe('Direct tracking repeatedly failing: dhl-express (10/12 in 24h; every refresh answered through another step)');
     expect(healthMessage({ subject: 'dpd-fr', kind: 'direct', state: 'closed', reason: 'bypassed' })).toMatchObject({
       title: 'Direct tracking closed: dpd-fr answers through another step', nextSteps: expect.stringContaining('has not run for six hours') });
   });

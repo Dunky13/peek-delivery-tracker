@@ -498,8 +498,8 @@ Key JSON events:
   `tracking_status_observation_write_failed`;
 - `tracking_sync_anomaly` (warning, by `attempt_id`): one per anomaly code of a check,
   with the previous, reported and selected stage, the provider status and the event counts;
-- `tracking_health_incident`: a health incident opened, still fails six hours on (warning),
-  recovered, or closed once no sample of it was left or the carrier answers without its
+- `tracking_health_incident`: a health incident opened, still fails six hours on (warning,
+  info for a direct step whose every failure a fallback step covered), recovered, or closed once no sample of it was left or the carrier answers without its
   direct step (info), with its `kind`, `subject`,
   `title`, `failures` and `attempts`;
 - `dpd_app_session`: the scraper took up a saved session at start (`outcome` `taken_up`,
@@ -603,9 +603,10 @@ provider failure in an `AggregateError` so every cause is visible.
 - **Alerts**: notify on new issues and regressions in `production`, and keep the Cron
   alerts. Avoid "more than 0 times in 5 minutes" rules: they fire on every failed check.
 - **Incidents**: carrier and provider outages open once, from thresholds computed in
-  Postgres, and remind every six hours while they last. A recovery is only logged and
-  counted. See [ops/sentry](../ops/sentry/README.md).
-- **Review signals**: routing signals, sync anomalies and health recoveries open no issue;
+  Postgres, and remind every six hours while they last. A recovery, or a direct step whose
+  every failure a fallback step covered, is only logged and counted. See [ops/sentry](../ops/sentry/README.md).
+- **Review signals**: routing signals, sync anomalies, health recoveries and covered direct
+  failures open no issue;
   see [Review signals](#review-signals).
 - **Input requirements**: requests for a postcode or other tracking input stay in logs
   and breadcrumbs without opening Sentry issues. Each lookup made with a postcode the
@@ -837,7 +838,7 @@ renewals instead of openings.
 
 [ops/grafana/alerts.json](../ops/grafana/alerts.json) holds the alert rules Grafana
 evaluates every minute, in its "Peek alerts" folder. They notify through Grafana's default
-contact point. Sentry already reports each error, each carrier or provider health incident,
+contact point. Sentry already reports each error, each carrier or provider outage,
 and a scheduled sync that is missed, fails or passes its 10-minute limit (its cron
 monitors). The rules cover what none of those show:
 
