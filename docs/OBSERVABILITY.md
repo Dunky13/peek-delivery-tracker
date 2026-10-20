@@ -539,8 +539,9 @@ Key JSON events:
   `public_lookup_total` counts it, or `failed` with the `reason`, the stage it stopped at:
   `input`, `verification` (the browser proof), `allowance`, `amazon` or `saving`. A
   refusal adds its `status`; `error_class` names any failure. It never has the number;
-- `carrier_recognition`: how many carriers the Add sheet's recognition asked, how many
-  knew the number or failed, and what it settled on (a carrier, `choice` or `none`).
+- `carrier_recognition`: how many carriers the Add sheet's recognition asked, whether it
+  asked a `second_batch` because none of the first five knew the number, how many knew the
+  number or failed, and what it settled on (a carrier, `choice` or `none`).
 - `tracking_redetections_queued`: how many parcels added in the last 30 days were queued for
   a check because a scraper release's catalog now points them to a carrier they never asked
   (`queued`, at most 50 a batch) and how many wait for a later batch or their cooldown to end

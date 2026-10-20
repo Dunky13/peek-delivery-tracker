@@ -4,7 +4,6 @@ import { canAskCarrier, carrierCheck, type CarrierCheck } from '../../lib/carrie
 import {
   carrierRequirements,
   normalizeTrackingNumber,
-  discoveryAskedCarriers,
   requirementSatisfied,
   type CarrierInputField,
   type CarrierInputRequirement,
@@ -175,7 +174,6 @@ export function survey(state: LookupState, device: readonly DeviceParcel[] = [],
   const check = carrierCheck({
     applies: recognizable && (state.carrier === 'auto' || answer !== undefined),
     settled: settledForAsking,
-    asked: recognizable ? discoveryAskedCarriers(normalized) as CarrierId[] : [],
     answer,
     failed: answer?.checkFailed,
   });

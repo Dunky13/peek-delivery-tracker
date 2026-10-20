@@ -11,7 +11,6 @@ import {
   formatTrackingNumber,
   normalizeTrackingNumber,
   parseTrackingInput,
-  discoveryAskedCarriers,
   requirementSatisfied,
   tracksAutomatically,
   typedRequirementValue,
@@ -170,12 +169,10 @@ export function AddParcelSheet({
   // The check keeps running when a carrier is picked by hand meanwhile: its
   // answer then only says when another carrier has the parcel.
   const recognizable = Boolean(apiAuth) && !amazonNumber && canAskCarrier(parsedTracking, normalizedNumber);
-  const askedCarriers = (recognizable ? discoveryAskedCarriers(normalizedNumber) : []) as CarrierId[];
   const currentRecognition = recognizable && recognition?.trackingNumber === normalizedNumber ? recognition : undefined;
   const check = carrierCheck({
     applies: recognizable,
     settled: recognitionNumber === normalizedNumber,
-    asked: askedCarriers,
     answer: currentRecognition,
     failed: recognitionFailure === normalizedNumber,
   });

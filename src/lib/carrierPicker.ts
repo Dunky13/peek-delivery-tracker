@@ -187,8 +187,6 @@ export type CarrierCheck =
 export function carrierCheck({ applies, settled, answer, failed = false }: {
   applies: boolean;
   settled: boolean;
-  /** Shape candidates supplied by callers; actual attempts come from the answer. */
-  asked: readonly CarrierId[];
   answer?: ApiCarrierDetectionResponse;
   failed?: boolean;
 }): CarrierCheck {

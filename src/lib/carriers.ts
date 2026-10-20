@@ -5,8 +5,6 @@ import {
   type CarrierId,
   type CarrierInputField as ScraperInputField,
   type CarrierInputRequirement as ScraperInputRequirement,
-  MAX_RECOGNITIONS,
-  recognitionCandidates,
 } from 'universal-parcel-scraper';
 import {
   activeTrackingCarrierId,
@@ -27,6 +25,7 @@ export {
   SELECTABLE_CARRIERS,
   carrierInfo,
   localizedCarrierUrl,
+  MAX_RECOGNITIONS,
   requirementSatisfied,
   tracksAutomatically,
 } from 'universal-parcel-scraper';
@@ -36,15 +35,6 @@ export {
   displayedCarrierId,
   recognitionAskedCarriers,
 } from 'universal-parcel-scraper/app';
-export { MAX_RECOGNITIONS };
-
-/** The HTTP candidates followed by the bounded, optional browser candidates. */
-export function discoveryAskedCarriers(number: string): string[] {
-  return [...new Set([
-    ...recognitionCandidates(number).slice(0, MAX_RECOGNITIONS),
-    ...recognitionCandidates(number, { phase: 'browser' }).slice(0, 2),
-  ].map(({ carrier }) => carrier))];
-}
 
 /**
  * Each carrier's page under its own number: the followed page under the first number, and an earlier or a named

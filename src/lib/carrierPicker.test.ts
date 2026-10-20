@@ -119,21 +119,20 @@ describe('carrier check', () => {
   });
 
   it('follows the number from settled to answered', () => {
-    expect(carrierCheck({ applies: true, settled: false, asked })).toEqual({ status: 'idle' });
-    expect(carrierCheck({ applies: false, settled: true, asked })).toEqual({ status: 'idle' });
-    expect(carrierCheck({ applies: true, settled: true, asked })).toEqual({ status: 'asking', asked: [] });
-    expect(carrierCheck({ applies: true, settled: true, asked: [] })).toEqual({ status: 'asking', asked: [] });
+    expect(carrierCheck({ applies: true, settled: false })).toEqual({ status: 'idle' });
+    expect(carrierCheck({ applies: false, settled: true })).toEqual({ status: 'idle' });
+    expect(carrierCheck({ applies: true, settled: true })).toEqual({ status: 'asking', asked: [] });
   });
 
   it('keeps a transport failure separate from the server list of checked carriers', () => {
-    expect(carrierCheck({ applies: true, settled: true, asked, failed: true })).toEqual({ status: 'failed', asked: [] });
-    expect(carrierCheck({ applies: true, settled: true, asked,
+    expect(carrierCheck({ applies: true, settled: true, failed: true })).toEqual({ status: 'failed', asked: [] });
+    expect(carrierCheck({ applies: true, settled: true,
       answer: { trackingNumber: number, carrier: 'unknown', asked: ['ciblex'] } })).toEqual({ status: 'none', asked: ['ciblex'] });
   });
 
   it('reads the answer', () => {
     const answered = (answer: object) => carrierCheck({
-      applies: true, settled: true, asked, answer: { trackingNumber: number, carrier: 'unknown', ...answer },
+      applies: true, settled: true, answer: { trackingNumber: number, carrier: 'unknown', ...answer },
     });
     expect(answered({ carrier: 'dpd', asked })).toEqual({ status: 'found', carrier: 'dpd' });
     expect(answered({ carrier: 'intl-post', asked })).toEqual({ status: 'none', asked });

@@ -48,8 +48,9 @@ async function recognize(trackingNumber: string, beforeAsking?: () => Promise<vo
   const first = settleRecognition(outcomes);
   // The next five are asked only when none of the first knows the number, for another three
   // seconds at most: past the deadline they go unanswered.
-  if (!first.carrier && !first.choices.length) {
-    outcomes.push(...await recognizeAll(candidates.slice(MAX_RECOGNITIONS), ask,
+  const next = !first.carrier && !first.choices.length ? candidates.slice(MAX_RECOGNITIONS) : undefined;
+  if (next) {
+    outcomes.push(...await recognizeAll(next, ask,
       Math.min(RECOGNITION_BUDGET_MS, Math.floor(deadline - performance.now())), signal));
   }
   const cheap = settleRecognition(outcomes);
@@ -75,6 +76,7 @@ async function recognize(trackingNumber: string, beforeAsking?: () => Promise<vo
   if (outcomes.length) {
     logOperationalEvent('carrier_recognition', {
       asked: asked.length,
+      second_batch: Boolean(next?.length),
       known: outcomes.filter((outcome) => outcome.status === 'known').length,
       failed: unanswered.length,
       settled: carrier ?? preflight?.carrier ?? (choices.length > 1 ? 'choice' : 'none'),
