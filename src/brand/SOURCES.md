@@ -332,6 +332,7 @@ and [`truck.json`](truck.json).
 | `jamaica-post` | [jamaicapost.gov.jm](https://jamaicapost.gov.jm/wp-content/uploads/2021/09/jp_logo.png) — logo PNG red #e3352e (approximate) |
 | `janio` | [janio.asia](https://www.janio.asia/brand/janio-icon.png) — brand icon and logo navy #0a1f5c (flat PNG); the j dot is teal #1fceca |
 | `japan-post` | [post.japanpost.jp](https://www.post.japanpost.jp/) |
+| `jcex` | [jcex.com](https://www.jcex.com/template/1/jcex/images/jcCts2.png) — header logo PNG flat blue #0080cc (EX), its most frequent pixel; the Jc is orange #f08200 |
 | `jd-logistics` | [jingdonglogistics.com](https://www.jingdonglogistics.com/) |
 | `jeebly` | [jeebly.com](https://jeebly.com/wp-content/uploads/2021/12/logo.svg) — logo SVG badge fill #db124b |
 | `jersey-post` | [jerseypost.com](https://www.jerseypost.com/public/img/icons/icon180.png) — app icon red #e72b37 (approximate); site CSS #ee3d44 |
@@ -1410,3 +1411,4 @@ and [`truck.json`](truck.json).
 | `jumppoint` | White slanted bars between light blue pins on blue | [jumppoint.io](https://cdn.prod.website-files.com/625fc6e7f6a0fbc4cd3a3246/6446da72e77910eee6b44c6d_jumppoint.svg) — header logo symbol: pin, two slanted bars, drop |
 | `ycs-logistics` | White YCS on red | [ycs-express.com](https://www.ycs-express.com/_nuxt/img/ycsLogo.b70f538.svg) — the YCS of the header wordmark |
 | `lingdong` | White ring around a swept bird whose two wings break out at the upper right, on blue | [lingdong56.com](http://www.lingdong56.com/static/picture/logo.png) — header logo symbol: a ring around three tapering swooshes, open where the two upper ones fly out |
+| `jcex` | Orange Jc and white italic EX on blue | [jcex.com](https://www.jcex.com/template/1/jcex/images/jcCts2.png) — the JcEX of the header wordmark: a J and a c cut at its tips, in orange, then a blue italic EX |
