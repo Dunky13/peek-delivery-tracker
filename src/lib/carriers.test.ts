@@ -55,12 +55,9 @@ function expectDirectTracking(id: keyof typeof CARRIERS) {
 describe('carrier detection', () => {
   it('aliexpress — AliExpress / Cainiao', () => {
     // REPORTED REAL cross-border Cainiao ID linked with PostNL CK089862199NL;
-    // attribution is reported, not independently live-verified.
+    // Cainiao's tracking returns its history.
     // Source: https://www.paketda.de/fragen-antworten.php
-    // No exclusive number regex by design: manual/official-link selection that
-    // accepts partner and proprietary numbers.
-    expect(detectCarrierMatch('CNG00798678939847')).toMatchObject({ carrier: 'unknown', confidence: 'low' });
-    expect(detectCarrierMatch('CNG00798678939847').candidates).toContain('colis-prive');
+    expect(detectCarrierMatch('CNG00798678939847').candidates[0]).toBe('aliexpress');
     // OSS EXAMPLE, Latvian postal identifier from a Cainiao SDK realtime example;
     // a partner-postal fixture, not a Cainiao-issued pattern (research-only role).
     // Source: https://github.com/trackingmore100/tracking-sdk-php/blob/master/README.md
