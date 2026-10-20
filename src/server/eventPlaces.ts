@@ -2,7 +2,7 @@ import 'server-only';
 
 import { captureOperationalError } from './observability';
 import { placesForEvents, type EventPoint } from 'universal-parcel-scraper/places';
-import { scanDay } from './eventIdentity';
+import { scanDay, UNWORDED_STEP } from './eventIdentity';
 import { relayCopies } from './relayCopies';
 import { isRecord, type JsonObject } from './types';
 
@@ -11,10 +11,13 @@ let reported = false;
 /**
  * The stored point only feeds the place, and the source only tells Peek's own
  * rows and relay copies apart: the API returns neither. A relay copy names the
- * scan it repeats instead. A scan dated by its day alone names that day.
+ * scan it repeats instead. A scan dated by its day alone names that day. A stage
+ * change Peek saw with no words from the carrier (AliExpress's undated record) is
+ * served without Peek's stand-in, so the apps name the stage.
  */
 function served(event: JsonObject, relayOf?: string): JsonObject {
-  const rest: JsonObject = { ...dated(event), ...(relayOf ? { relay_of: relayOf } : {}) };
+  const rest: JsonObject = { ...dated(event), ...(relayOf ? { relay_of: relayOf } : {}),
+    ...(event.observed === true && event.description === UNWORDED_STEP ? { description: '' } : {}) };
   delete rest.point;
   delete rest.provider_event_id;
   return rest;

@@ -63,6 +63,9 @@ import { isRecord, type JsonObject } from './types';
  */
 export const UNIVERSAL_PROVIDER = 'universal_provider';
 
+/** Peek's words for a step its source gave none for. */
+export const UNWORDED_STEP = 'Tracking update';
+
 function providerCode(row: JsonObject): string {
   const code = row.provider_code ?? (isRecord(row.raw_data) ? row.raw_data.provider_code : undefined);
   return typeof code === 'string' ? code : '';

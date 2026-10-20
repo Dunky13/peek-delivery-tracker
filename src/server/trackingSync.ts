@@ -33,7 +33,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
-import { datedObservations, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { datedObservations, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, UNWORDED_STEP, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   askedForCheck,
   providerFailureSummary,
@@ -489,7 +489,7 @@ export function buildEvents(
     older = at;
   }
   for (const [index, raw] of scans.entries()) {
-    const description = String(raw.description ?? 'Tracking update').trim();
+    const description = String(raw.description ?? UNWORDED_STEP).trim();
     const location = String(raw.location ?? '').trim();
     const occurredAt = instants[index];
     if (!occurredAt) continue;
@@ -550,8 +550,8 @@ export function buildEvents(
         === current;
     });
     const description = String(
-      matchingEvent?.description ?? result.last_status_text ?? 'Tracking update',
-    ).trim() || 'Tracking update';
+      matchingEvent?.description ?? result.last_status_text ?? UNWORDED_STEP,
+    ).trim() || UNWORDED_STEP;
     const location = String(matchingEvent?.location ?? '').trim();
     const occurredAt = observedAt.toISOString();
     const declaredCurrent = String(result.current_stage ?? '');
