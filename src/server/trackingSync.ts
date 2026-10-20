@@ -903,7 +903,7 @@ export class TrackingSyncService {
   }
 
   /**
-   * Once per catalog: one check of each open parcel the catalog's rules point to a
+   * Once per scraper release: one check of each open parcel the catalog's rules point to a
    * carrier its routing never asked, such as a lookup added before a scraper release
    * brought the number's detection rule, the name a provider gives or the carrier's
    * adapter, whose link nobody opens any more, and of each unfiled one with a carrier

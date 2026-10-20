@@ -22,6 +22,7 @@ import { MAX_RECOGNITIONS, recognitionCandidates, recognizeAll, settleRecognitio
 import { BROWSER_RECOGNITION_BUDGET_MS, MAX_BROWSER_RECOGNITIONS } from './browserRecognition';
 import { providerCarrier } from './providerCarrier';
 import { normalizedLookupCountry } from './lookupCountry';
+import manifest from '../../package.json';
 import { getRecognitionPriorities } from './recognitionRanking';
 
 const HOUR = 3_600_000;
@@ -86,7 +87,7 @@ export interface RoutingState extends JsonObject {
   probe_cursor: number;
   discovery_cursor: number;
   failures: Record<string, Failure>;
-  /** The catalog rules of the scraper release that last routed the parcel (`catalogRules`). */
+  /** The scraper release and catalog rules that last routed the parcel (`catalogRules`). */
   rules?: string;
   /** The last check that ran a lookup opened a browser: its own or the browser service. */
   browser_check?: true;
@@ -101,17 +102,36 @@ export interface RoutingState extends JsonObject {
 
 let rules: string | undefined;
 /**
- * What the catalog says about numbers and names, as a short digest: each
- * carrier's detection rules, names, whether it has an adapter of its own and
- * whether that adapter's clocks are local. A scraper release that adds a rule,
- * an alias or an adapter, or dates an adapter's scans, changes it.
+ * The scraper release and what its catalog says about numbers and names, as a
+ * short digest: the release's version, each carrier's detection rules, names,
+ * whether it has an adapter of its own and whether that adapter's clocks are
+ * local. Every release changes it: one can change what an adapter answers with
+ * its catalog entry unchanged (Mayi Yinfu's came to date the scans it gave on
+ * local clocks).
  */
 export function catalogRules(): string {
-  rules ??= createHash('sha256').update(JSON.stringify(Object.entries(CARRIER_DEFINITIONS).map(([id, definition]) => [id,
-    definition.displayName, definition.aliases, definition.detectionRules, definition.tracking.mode, definition.tracking.adapter,
-    definition.tracking.localClocks === true])))
+  rules ??= createHash('sha256').update(JSON.stringify([manifest.dependencies['universal-parcel-scraper'],
+    Object.entries(CARRIER_DEFINITIONS).map(([id, definition]) => [id,
+      definition.displayName, definition.aliases, definition.detectionRules, definition.tracking.mode, definition.tracking.adapter,
+      definition.tracking.localClocks === true])]))
     .digest('base64url').slice(0, 16);
   return rules;
+}
+
+/** Carriers whose lookup can open a browser (the catalog's `tracking.browser`). */
+const BROWSER_CARRIERS = new Set(Object.entries(CARRIER_DEFINITIONS).filter(([, carrier]) => carrier.tracking.browser).map(([id]) => id));
+export function opensBrowser(carrier: string): boolean {
+  return BROWSER_CARRIERS.has(carrier);
+}
+
+/**
+ * Whether a scraper release ends a carrier's wait after this failure: its
+ * adapter refused the number or could not read the answer, a verdict the
+ * release's adapter may not repeat. A carrier whose lookup can open a browser
+ * keeps its wait.
+ */
+export function releaseLapses(carrier: string, failure: { kind?: unknown } | undefined): boolean {
+  return directCarrier(carrier) && !opensBrowser(carrier) && (failure?.kind === 'invalid_input' || failure?.kind === 'schema');
 }
 
 export function routingState(parcel: JsonObject): RoutingState {
@@ -326,7 +346,14 @@ export class TrackingRouter {
   async fetch(parcel: JsonObject, scheduled: boolean, signal?: AbortSignal, addition = false): Promise<RoutedResult> {
     const now = () => this.options.now?.() ?? new Date();
     const state = routingState(parcel);
+    // Last routed under another scraper release, whose adapters may have answered otherwise.
+    const released = state.rules !== catalogRules();
     state.rules = catalogRules();
+    if (released) {
+      for (const [carrier, failure] of Object.entries(state.failures)) {
+        if (releaseLapses(carrier, failure)) failure.retry_at = now().toISOString();
+      }
+    }
     delete state.carrier_named_at;
     const previousFailures = state.consecutive_failures;
     const declared = String(parcel.carrier);
@@ -668,6 +695,10 @@ export class TrackingRouter {
     if (changed) { delete state.failures[declared]; report('manual_carrier_change', declared); }
     const primary = !changed && state.confirmed_number === number && state.confirmed_carrier
       ? state.confirmed_carrier : declared;
+    // The wait an older release's answer set while a provider serves the parcel ends: this
+    // release's adapter may date the scans it gave on local clocks. A carrier whose lookup can
+    // open a browser keeps it, and a failure's own retry time still holds.
+    if (released && !opensBrowser(primary)) delete state.direct_retry_at;
     if (!state.preferred_provider || changed || millis(state.direct_retry_at) <= now().getTime()) {
       const value = await tryDirect(primary, primary !== declared);
       // Providers are asked for the rest at their own cadence, and on the next check after one held it.

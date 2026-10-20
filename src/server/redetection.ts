@@ -1,11 +1,11 @@
 import 'server-only';
-import { CARRIER_DEFINITIONS, recognitionCandidates } from 'universal-parcel-scraper';
+import { recognitionCandidates } from 'universal-parcel-scraper';
 import { universalCarrierHints } from 'universal-parcel-scraper/app';
 import { detectCarrierMatch } from '../lib/carriers';
 import { AUTOMATIC_CARRIER_IDS } from './carriers';
 import { localClockCarrier } from './directLocalHistory';
 import { refusesNumber } from './numberRefusal';
-import { catalogRules, directCarrier, routingState } from './trackingRouting';
+import { catalogRules, directCarrier, opensBrowser, releaseLapses, routingState } from './trackingRouting';
 import { isRecord, type JsonObject } from './types';
 
 /** Only parcels added this recently are looked at again, as carrier recognition only asks for them. */
@@ -18,9 +18,6 @@ export const REDETECTION_WINDOW_MS = 30 * 24 * 60 * 60 * 1_000;
  */
 export const RELEASE_REASK_MS = 12 * 60 * 60 * 1_000;
 
-/** Carriers whose lookup can open a browser (the catalog's `tracking.browser`). */
-const BROWSER_CARRIERS = new Set(Object.entries(CARRIER_DEFINITIONS).filter(([, carrier]) => carrier.tracking.browser).map(([id]) => id));
-
 /**
  * The carrier the catalog's current rules point an open parcel to, when the
  * parcel was last routed with other rules and has not asked that carrier yet:
@@ -28,7 +25,8 @@ const BROWSER_CARRIERS = new Set(Object.entries(CARRIER_DEFINITIONS).filter(([, 
  * a carrier name or an adapter, which nobody may check any more (a lookup
  * whose link nobody opens), one filed under a carrier that only
  * recognition asked before, or one whose filed carrier answered on local
- * clocks that the catalog now dates. A parcel filed under no carrier gets its detected
+ * clocks that the catalog now dates, or that the release may date, once the
+ * parcel has gone RELEASE_REASK_MS without a check. A parcel filed under no carrier gets its detected
  * or named carrier, or else the first carrier its check's recognition would
  * ask, asked before or not, once that carrier's wait is over: a release may
  * have taught it the number, and its last answer may have been a passing
@@ -50,7 +48,8 @@ export function rerouteCarrier(parcel: JsonObject, rules = catalogRules(), now =
  * parcel's answer, the most likely first: 0, the carrier's own answer is now dated, it
  * refused the number under an older release, or the answer it gave that was set aside would
  * now be taken; 1, a carrier the parcel never asked; 2, one a parcel filed under no carrier
- * asks again, or the first its recognition would ask.
+ * asks again, the first its recognition would ask, or the filed carrier whose answer on
+ * local clocks the release may date.
  */
 export interface RerouteLead { carrier: string; rank: 0 | 1 | 2 }
 
@@ -77,9 +76,10 @@ function rerouteLead(parcel: JsonObject, rules: string, now: number, refused: Re
   const asked = (carrier: string) => carrier === routing.confirmed_carrier || Boolean(routing.set_aside?.[carrier])
     || (Boolean(routing.failures[carrier]) && !refusedBefore(carrier)) || Boolean(routing.candidate_probes?.[carrier]);
   const checkedRecently = now - Date.parse(String(parcel.last_synced_at ?? '')) < RELEASE_REASK_MS;
+  // A refusal or an unreadable answer waits no longer: the check this release queues asks again.
   const waiting = (carrier: string) => Date.parse(routing.candidate_probes?.[carrier]?.retry_at ?? '') > now
-    || Date.parse(routing.failures[carrier]?.retry_at ?? '') > now
-    || (checkedRecently && BROWSER_CARRIERS.has(carrier) && asked(carrier) && !fits(carrier));
+    || (Date.parse(routing.failures[carrier]?.retry_at ?? '') > now && !releaseLapses(carrier, routing.failures[carrier]))
+    || (checkedRecently && opensBrowser(carrier) && asked(carrier) && !fits(carrier));
   // A carrier with an adapter of its own that the parcel never asked, or an unfiled parcel
   // can ask again, or one an unfiled parcel's check asks the providers about.
   const leads = (carrier: string | undefined): carrier is string => carrier !== undefined && carrier !== filed
@@ -107,7 +107,12 @@ function rerouteLead(parcel: JsonObject, rules: string, now: number, refused: Re
   // answer on local clocks, which the filed carrier's own lookup keeps. Or the filed
   // carrier answered on local clocks, which the provider dated, and now dates its scans.
   if (!provider || unfiled || !directCarrier(filed) || refused.has(filed)) return null;
-  if (isRecord(data.direct_local_history) && data.direct_local_history.carrier === filed && !localClockCarrier(filed)) return lead(filed, 0);
+  const localHistory = isRecord(data.direct_local_history) && data.direct_local_history.carrier === filed;
+  if (localHistory && !localClockCarrier(filed)) return lead(filed, 0);
+  // A release can also date such an answer with the catalog's flag unchanged (Mayi Yinfu's
+  // came to date the scans whose place settles their zone): asked again once the parcel
+  // has gone RELEASE_REASK_MS without a check.
+  if (localHistory && !checkedRecently && !waiting(filed)) return lead(filed, 2);
   return filed !== routing.confirmed_carrier && (!routing.failures[filed] || refusedBefore(filed)) ? lead(filed, 1) : null;
 }
 

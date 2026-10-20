@@ -81,10 +81,31 @@ it('points a parcel a provider dates back to its own carrier once the catalog da
     routing: { configured_carrier: carrier, confirmed_carrier: carrier, confirmed_number: tracking_number, preferred_provider: '17TRACK' },
   });
   expect(rerouteCarrier(answered('thhy', 'AT0000000001TH'))).toBe('thhy');
-  expect(rerouteCarrier(answered('brt', '000000000001'))).toBeNull();
+  // Checked within half a day.
+  expect(rerouteCarrier({ ...answered('brt', '000000000001'), last_synced_at: new Date().toISOString() })).toBeNull();
   // The carrier already answers it directly.
   expect(rerouteCarrier(parcel({ carrier: 'thhy', tracking_number: 'AT0000000001TH' },
     { tracking_provider: undefined, routing: { confirmed_carrier: 'thhy' } }))).toBeNull();
+});
+
+it('asks a parcel\'s own carrier again after a release once its answer on local clocks is half a day old', async () => {
+  // The catalog still gives BRT's clocks as local; the release's adapter may date its scans all the same.
+  const now = Date.parse('2026-09-10T12:00:00Z');
+  const answered = (last_synced_at: string, failures: JsonObject = {}) =>
+    parcel({ carrier: 'brt', tracking_number: '000000000001', last_synced_at }, {
+      tracking_provider: '17TRACK', carrier_answered: true,
+      direct_local_history: { carrier: 'brt', number: '000000000001', events: [] },
+      routing: { configured_carrier: 'brt', confirmed_carrier: 'brt', confirmed_number: '000000000001', preferred_provider: '17TRACK', failures },
+    });
+  const lead = (item: JsonObject) => rerouteAskable(item, 'newer', now, async () => false);
+  expect(await lead(answered('2026-09-10T08:00:00Z'))).toBeNull();
+  expect(await lead(answered('2026-09-09T20:00:00Z'))).toEqual({ carrier: 'brt', rank: 2 });
+  // A passing failure's wait holds; a refusal under the older release does not.
+  const failure = (kind: string) => ({ brt: { kind, count: 1, retry_at: '2026-09-10T13:00:00Z' } });
+  expect(await lead(answered('2026-09-09T20:00:00Z', failure('transport')))).toBeNull();
+  expect(await lead(answered('2026-09-09T20:00:00Z', failure('invalid_input')))).toEqual({ carrier: 'brt', rank: 2 });
+  // Not once the release's rules have routed it.
+  expect(await rerouteAskable(answered('2026-09-09T20:00:00Z'), 'older', now, async () => false)).toBeNull();
 });
 
 it.each<[string, JsonObject, JsonObject]>([

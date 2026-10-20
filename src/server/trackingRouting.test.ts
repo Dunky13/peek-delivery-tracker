@@ -1403,6 +1403,31 @@ describe('persistent tracking routing', () => {
     expect(later.universal).toHaveBeenCalledOnce();
   });
 
+  it('asks the filed carrier again on the first check under another scraper release', async () => {
+    fixedPlan('Ship24', '17TRACK');
+    const filed = (routing: JsonObject) => parcel({ carrier: 'yamato', tracking_number: '123456789012', carrier_data: { routing } });
+    // Its answer on local clocks set a wait; a refusal set another.
+    const answered = (rules: string) => state({ configured_carrier: 'yamato', preferred_provider: 'Ship24', rules,
+      confirmed_carrier: 'yamato', confirmed_number: '123456789012', direct_retry_at: '2026-09-10T18:00:00.000Z' });
+    const refused = (rules: string) => state({ configured_carrier: 'yamato', preferred_provider: 'Ship24', rules,
+      failures: { yamato: { kind: 'invalid_input', count: 1, retry_at: '2026-09-10T13:00:00.000Z' } } });
+    for (const saved of [answered, refused]) {
+      const same = setup();
+      same.direct.mockResolvedValue(yearlessYamato());
+      const first = await same.router.fetch(filed(saved('older')), true);
+      expect(same.direct).toHaveBeenCalledOnce();
+      expect(first.result.routing).toMatchObject({ direct_retry_at: '2026-09-10T18:00:00.000Z' });
+      const next = setup(new Date('2026-09-10T12:30:00Z'));
+      await next.router.fetch(filed(first.result.routing as JsonObject), true);
+      expect(next.direct).not.toHaveBeenCalled();
+    }
+    // A passing failure's wait holds.
+    const failed = setup();
+    await failed.router.fetch(filed(state({ configured_carrier: 'yamato', preferred_provider: 'Ship24', rules: 'older',
+      failures: { yamato: { kind: 'transport', count: 1, retry_at: '2026-09-10T13:00:00.000Z' } } })), true);
+    expect(failed.direct).not.toHaveBeenCalled();
+  });
+
   it('confirms the filed carrier from its local-clock answer, so a provider naming it does not ask it again', async () => {
     fixedPlan('Ship24', '17TRACK');
     const { router, direct, universal } = setup();

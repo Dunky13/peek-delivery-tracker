@@ -362,15 +362,22 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   the health evidence of the check. The next check waits 1, 2, 4, then 6 hours, since a
   parcel appears once it is handed over, and a day after six misses.
 - **After a scraper release.** A parcel keeps a digest of the catalog that last routed it
-  (`routing.rules`: each carrier's detection rules, names, whether it has an adapter of
-  its own and whether that adapter's clocks are local). After each deploy, once the first scheduled run is over, the open parcels added
+  (`routing.rules`: the scraper release, each carrier's detection rules, names, whether it
+  has an adapter of its own and whether that adapter's clocks are local), so every release
+  changes it: one can change what an adapter answers with its catalog entry unchanged. The
+  first check under another release asks the parcel's own carrier again, whatever wait its
+  answer on local clocks set, and a carrier with an adapter of its own that refused the
+  number or gave an unreadable answer (`invalid_input`, `schema`) has no wait left, unless
+  its lookup can open a browser. After each deploy, once the first scheduled run is over, the open parcels added
   in the last 30 days that were routed with another catalog are read again, with nothing
   sent ([`redetection.ts`](../src/server/redetection.ts)). A check is queued for each one the new catalog points to a carrier it has not asked yet: the carrier its
   number is now detected as, the one a provider's saved carrier names now read as, or the
   filed carrier's new adapter. A filed carrier only recognition asked, before the parcel was
   filed under it, counts as not asked: a probe drops an answer on local clocks. So does a
   filed carrier that answered on local clocks a provider then dated, once the catalog dates
-  its scans: its own answer can now serve the parcel. A parcel
+  its scans: its own answer can now serve the parcel. A carrier the catalog still gives as
+  answering on local clocks is asked again once the parcel has gone 12 hours without a
+  check: the release may date its scans. A parcel
   filed under no carrier is also queued when its detected or named carrier, or else a
   carrier its recognition would ask, has no wait left, asked before or not: a release can
   teach an adapter a number, and a rate limit or outage passes. A number no carrier or
