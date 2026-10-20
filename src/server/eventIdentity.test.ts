@@ -1,15 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
-
-// India Post's policy names the zone it once read every clock in from the next scraper release;
-// until the app takes that version, its tests add the zone themselves.
-vi.mock('universal-parcel-scraper/app', async (importOriginal) => {
-  const scraper = await importOriginal<typeof import('universal-parcel-scraper/app')>();
-  return { ...scraper, sameInstantIdentityPolicy: (...args: Parameters<typeof scraper.sameInstantIdentityPolicy>) => {
-    const policy = scraper.sameInstantIdentityPolicy(...args);
-    return args[0] === 'india-post' && policy ? { relabelledFrom: 'Asia/Kolkata', ...policy } : policy;
-  } };
-});
 
 // New events carry the sync's ISO spelling; stored rows come back from
 // PostgREST with an explicit +00:00 offset. Both name the same instant.
@@ -277,6 +267,65 @@ describe('scans a source once read on one zone\'s clock', () => {
 
   it('leaves the same-instant match first', () => {
     expect([...sameInstantIdentities([abroad], [labelled, own], 'india-post')]).toEqual([['india-post:abroad', 'india-post:own']]);
+  });
+});
+
+describe('a scan whose source\'s feeds put different offsets on its wall clock', () => {
+  // DHL Express's customs record: its global portal labels the wall clock +01:00 and gives
+  // the record's code, its mobile API reads the clock on the facility's +02:00 and gives none.
+  const location = 'EXAMPLE CITY - ITALY';
+  const description = 'Customs clearance status updated';
+  const portal = { provider_event_id: 'dhl-express:portal', occurred_at: '2026-10-05T10:00:00+00:00', time: '2026-10-05T11:00:00+01:00',
+    stage: 'customs', description, location, provider_code: 'RR' };
+  const mobile = { package_id: 'package-1', provider_event_id: 'dhl-express:mobile', occurred_at: '2026-10-05T09:00:00.000Z',
+    stage: 'customs', description, location, raw_data: { time: '2026-10-05T11:00:00+02:00' } };
+  // The record stored from the mobile API, and the portal's answer meeting it.
+  const mobileRow = { provider_event_id: 'dhl-express:mobile-row', occurred_at: '2026-10-05T09:00:00+00:00', time: '2026-10-05T11:00:00+02:00',
+    stage: 'customs', description, location };
+  const portalScan = { ...mobile, provider_event_id: 'dhl-express:portal-scan', occurred_at: '2026-10-05T10:00:00.000Z',
+    raw_data: { time: '2026-10-05T11:00:00+01:00', provider_code: 'RR' } };
+
+  it('lets the record from one feed take over the row the other stored, both ways', () => {
+    expect([...sameInstantIdentities([mobile], [portal], 'dhl-express')]).toEqual([['dhl-express:mobile', 'dhl-express:portal']]);
+    expect([...sameInstantIdentities([portalScan], [mobileRow], 'dhl-express')])
+      .toEqual([['dhl-express:portal-scan', 'dhl-express:mobile-row']]);
+    // Under UTC's label, in other case and spacing, and with the same code on both sides.
+    const utc = { ...portal, occurred_at: '2026-10-05T11:00:00+00:00', time: '2026-10-05T11:00:00Z', description: 'CUSTOMS CLEARANCE  STATUS UPDATED ' };
+    expect(sameInstantIdentities([mobile], [utc], 'dhl-express').size).toBe(1);
+    expect(sameInstantIdentities([{ ...mobile, raw_data: { ...mobile.raw_data, provider_code: 'RR' } }], [portal], 'dhl-express').size).toBe(1);
+  });
+
+  it('needs the same wall clock to the second, location and wording, codes that agree, and a row no scan of the batch carries', () => {
+    for (const different of [
+      { ...portal, occurred_at: '2026-10-05T10:01:00+00:00', time: '2026-10-05T11:01:00+01:00' },
+      { ...portal, occurred_at: '2026-10-05T10:00:30+00:00', time: '2026-10-05T11:00:30+01:00' },
+      { ...portal, time: '2026-10-05T11:00:00' },
+      { ...portal, time: undefined },
+      { ...portal, location: 'ANOTHER CITY - ITALY' },
+      { ...portal, location: null },
+      { ...portal, description: 'Clearance processing complete at EXAMPLE CITY - ITALY' },
+      { ...portal, observed_without_provider_timestamp: true },
+      { ...portal, provider_event_id: 'unknown:portal' },
+    ]) expect(sameInstantIdentities([mobile], [different], 'dhl-express').size).toBe(0);
+    expect(sameInstantIdentities([{ ...mobile, raw_data: { ...mobile.raw_data, provider_code: 'SD' } }], [portal], 'dhl-express').size).toBe(0);
+    expect(sameInstantIdentities([{ ...mobile, description: '' }], [{ ...portal, description: '' }], 'dhl-express').size).toBe(0);
+    expect(sameInstantIdentities([mobile, { ...portal, package_id: 'package-1' }], [portal], 'dhl-express').size).toBe(0);
+    // A scan without an offset of its own has no wall clock to compare.
+    expect(sameInstantIdentities([{ ...mobile, raw_data: { time: '2026-10-05T11:00:00' } }], [portal], 'dhl-express').size).toBe(0);
+  });
+
+  it('keeps ambiguous scans and rows unmatched, and other sources out', () => {
+    expect(sameInstantIdentities([mobile], [portal, { ...portal, provider_event_id: 'dhl-express:twin' }], 'dhl-express').size).toBe(0);
+    expect(sameInstantIdentities([mobile, { ...mobile, provider_event_id: 'dhl-express:twin' }], [portal], 'dhl-express').size).toBe(0);
+    const as = (source: string, row: Record<string, unknown>) => ({ ...row, provider_event_id: String(row.provider_event_id).replace('dhl-express', source) });
+    for (const source of ['dpd', 'india-post', 'dhl']) {
+      expect(sameInstantIdentities([as(source, mobile)], [as(source, portal)], source).size).toBe(0);
+    }
+  });
+
+  it('leaves the same-instant match first', () => {
+    const own = { ...mobileRow, provider_event_id: 'dhl-express:own' };
+    expect([...sameInstantIdentities([mobile], [portal, own], 'dhl-express')]).toEqual([['dhl-express:mobile', 'dhl-express:own']]);
   });
 });
 

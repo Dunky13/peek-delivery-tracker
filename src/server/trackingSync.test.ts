@@ -45,15 +45,6 @@ import * as scraper from 'universal-parcel-scraper';
 
 // Keep the published plan configurable without changing the scraper's other exports.
 vi.mock(import('universal-parcel-scraper'), async importOriginal => ({ ...await importOriginal() }));
-// India Post's policy names the zone it once read every clock in from the next scraper release;
-// until the app takes that version, its tests add the zone themselves.
-vi.mock('universal-parcel-scraper/app', async (importOriginal) => {
-  const scraper = await importOriginal<typeof import('universal-parcel-scraper/app')>();
-  return { ...scraper, sameInstantIdentityPolicy: (...args: Parameters<typeof scraper.sameInstantIdentityPolicy>) => {
-    const policy = scraper.sameInstantIdentityPolicy(...args);
-    return args[0] === 'india-post' && policy ? { relabelledFrom: 'Asia/Kolkata', ...policy } : policy;
-  } };
-});
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -4401,6 +4392,34 @@ describe('India Post scans abroad', () => {
     expect(rows(store).slice(0, 2)).toEqual([
       { ...received, occurred_at: eventTimestamp('2026-07-14T07:50:00+02:00', 'UTC') }, transferred]);
     expect(rows(store)).toHaveLength(3);
+  });
+});
+
+describe('DHL Express records from either feed', () => {
+  // The mobile API reads a customs record's wall clock on the facility's +02:00 and gives no
+  // code; the global portal labels the same wall clock +01:00 and gives the record's code.
+  const pickup = { time: '2026-10-04T08:00:00+02:00', stage: 'in_transit', description: 'Shipment picked up', location: 'EXAMPLE TOWN - ITALY' };
+  const answer = (time: string, providerCode?: string): CarrierResult => ({ status: 'in_transit', current_stage: 'customs',
+    last_update: time, last_status_text: 'Customs clearance status updated', events: [{ time, stage: 'customs',
+      description: 'Customs clearance status updated', location: 'EXAMPLE CITY - ITALY', ...(providerCode ? { provider_code: providerCode } : {}) }, pickup] });
+  const mobile = () => answer('2026-10-05T11:00:00+02:00');
+  const portal = () => answer('2026-10-05T11:00:00+01:00', 'RR');
+  const load = (store: ReturnType<typeof eventStore>) => ({ id: 'dhl-express-parcel', user_id: 'owner', carrier: 'dhl-express',
+    tracking_number: '1234567891', current_stage: 'in_transit', [STORED_EVENT_IDENTITIES]: store.identities() });
+  const rows = (store: ReturnType<typeof eventStore>) => [...store.rows.values()]
+    .map(({ id, provider_event_id, occurred_at }) => ({ id, provider_event_id, occurred_at }));
+
+  it('keeps one row for a record the other feed stored, on the clock of the feed that answered last', async () => {
+    const store = eventStore();
+    const adapter = { fetch: vi.fn().mockResolvedValueOnce(mobile()).mockResolvedValue(portal()) };
+    const service = new TrackingSyncService(store.client as unknown as SupabaseServiceClient, adapter, null,
+      () => new Date('2026-10-06T12:00:00Z'));
+    await service.syncPackage(load(store));
+    const [customs, pickedUp] = rows(store);
+    expect(customs).toMatchObject({ occurred_at: eventTimestamp('2026-10-05T11:00:00+02:00', 'UTC') });
+    await service.syncPackage(load(store));
+    await service.syncPackage(load(store));
+    expect(rows(store)).toEqual([{ ...customs, occurred_at: eventTimestamp('2026-10-05T11:00:00+01:00', 'UTC') }, pickedUp]);
   });
 });
 

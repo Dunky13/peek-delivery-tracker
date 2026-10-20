@@ -18,7 +18,10 @@
  *   scan takes over the stored row at its instant (`sameInstantIdentities`).
  *   A policy that names the zone its source once read every wall clock in
  *   lets a scan whose wall clock now carries its own offset take over the row
- *   stored under the old label (India Post's scans abroad).
+ *   stored under the old label (India Post's scans abroad). One whose feeds
+ *   put different offsets on a scan's wall clock lets the scan take over the
+ *   row showing that wall clock under another offset (DHL Express's mobile API
+ *   and global portal).
  * - A row taken over keeps its old identity while its strings follow the
  *   scan. When a later check meets the scan again, a policy that matched the
  *   old strings (AliExpress's town in brackets) no longer matches, so a scan
@@ -94,8 +97,9 @@ function byInstant(rows: readonly JsonObject[]): Map<number, JsonObject[]> {
  * without required codes or a per-scan evidence matcher still require exactly
  * one new scan and one candidate there. Ambiguous scans are inserted as before.
  *
- * A policy's `relabelledFrom` zone adds a second pass for the scans and rows
- * left, matched by `relabelled`.
+ * A policy's `relabelledFrom` zone adds a pass for the scans and rows left,
+ * matched by `relabelled`, and its `matchWallClock` another, matched by
+ * `sameWallClock`.
  */
 export function sameInstantIdentities(
   events: readonly JsonObject[],
@@ -132,18 +136,28 @@ export function sameInstantIdentities(
     }
   }
   const zone = relabelledFrom(policy);
-  if (!zone) return reused;
+  if (zone) matchLeft(reused, unmatched, candidates, (scan, row) => relabelled(zone, scan, row));
+  if (matchesWallClock(policy)) matchLeft(reused, unmatched, candidates, sameWallClock);
+  return reused;
+}
+
+/** Each scan left whose one matching row left matches no other scan left takes that row over. */
+function matchLeft(
+  reused: Map<string, string>,
+  unmatched: ReadonlyMap<number, JsonObject[]>,
+  candidates: ReadonlyMap<number, JsonObject[]>,
+  matches: (scan: JsonObject, row: JsonObject) => boolean,
+): void {
   const taken = new Set(reused.values());
   const scans = [...unmatched.values()].flat().filter((scan) => !reused.has(identity(scan)));
   const rows = [...candidates.values()].flat().filter((row) => !taken.has(identity(row)));
   for (const scan of scans) {
-    const matching = rows.filter((row) => relabelled(zone, scan, row));
+    const matching = rows.filter((row) => matches(scan, row));
     if (matching.length !== 1) continue;
     const saved = matching[0]!;
-    if (scans.filter((other) => relabelled(zone, other, saved)).length !== 1) continue;
+    if (scans.filter((other) => matches(other, saved)).length !== 1) continue;
     reused.set(identity(scan), identity(saved));
   }
-  return reused;
 }
 
 /** The zone a policy's source once read every wall clock in. Policies from scraper releases before the field name none. */
@@ -188,6 +202,40 @@ function relabelled(zone: string, scan: JsonObject, row: JsonObject): boolean {
   const shown = ownWallClock(zone, scan);
   const saved = ownWallClock(zone, row);
   return (shown !== null && shown === zoneWallClock(zone, row)) || (saved !== null && saved === zoneWallClock(zone, scan));
+}
+
+/** Whether a policy's source can put different offsets on one scan's wall clock. Policies from scraper releases before the field say nothing. */
+function matchesWallClock(policy: SameInstantIdentityPolicy): boolean {
+  return (policy as { matchWallClock?: unknown }).matchWallClock === true;
+}
+
+const EXPLICIT_OFFSET = /(?:Z|[+-]\d{2}:?\d{2})$/i;
+
+/** A row's time as its source labelled it, when the label names an offset (UTC's included). */
+function labelledTime(row: JsonObject): DateTime | null {
+  const time = timeOf(row);
+  if (!EXPLICIT_OFFSET.test(time)) return null;
+  const shown = DateTime.fromISO(time, { setZone: true });
+  return shown.isValid ? shown : null;
+}
+
+/**
+ * One scan whose source's feeds label its wall clock with different offsets
+ * (DHL Express's mobile API reads it on the facility's zone, its global portal
+ * gives the offset of the system that wrote the record): the same date and
+ * time, to the second, under another offset, the same location, the same
+ * wording apart from case and spacing, and the same provider code when both
+ * carry one.
+ */
+function sameWallClock(scan: JsonObject, row: JsonObject): boolean {
+  const shown = labelledTime(scan);
+  const saved = labelledTime(row);
+  if (!shown || !saved || shown.offset === saved.offset || shown.toFormat(WALL_CLOCK) !== saved.toFormat(WALL_CLOCK)) return false;
+  const code = providerCode(scan);
+  const savedCode = providerCode(row);
+  if (code && savedCode && code !== savedCode) return false;
+  return wordingOf(scan) !== '' && wordingOf(scan) === wordingOf(row)
+    && String(scan.location ?? '').trim() === String(row.location ?? '').trim();
 }
 
 function stringsOf(row: JsonObject): string {
