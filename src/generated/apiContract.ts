@@ -2647,7 +2647,11 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       },
       {
-        "pattern": "^(?:[13]UW[A-Z0-9]{10}|5P[A-Z0-9]{11})$",
+        "pattern": "^(?:[138]UW[A-Z0-9]{10}|5P[A-Z0-9]{11})$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^JJITA[A-Z0-9]{13}$",
         "confidence": "high"
       },
       {
@@ -3443,7 +3447,10 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "BR"
     ],
-    "trackingSearchUrl": "https://rastreamento.correios.com.br/app/index.php"
+    "trackingSearchUrl": "https://rastreamento.correios.com.br/app/index.php",
+    "aliases": [
+      "Brazil Post"
+    ]
   },
   "correos-chile": {
     "displayName": "Correos de Chile",
@@ -4970,7 +4977,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/London",
     "tracking": {
       "mode": "automatic",
-      "adapter": "dpd-uk"
+      "adapter": "dpd-uk",
+      "recognitionRank": 858
     },
     "trackingUrlTemplate": "https://track.dpd.co.uk/?reference={trackingNumber}",
     "linkRules": [
@@ -4987,12 +4995,12 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^1550\\d{10}$",
+        "pattern": "^15(?:50|97)\\d{10}$",
         "confidence": "low",
         "preferred": true
       },
       {
-        "pattern": "^1550\\d{10}[0-9A-Z]$",
+        "pattern": "^15(?:50|97)\\d{10}[0-9A-Z]$",
         "confidence": "low",
         "checksum": "dpd",
         "preferred": true
@@ -7349,7 +7357,7 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       },
       {
-        "pattern": "^1[A-Z][A-Z0-9]{2}LN\\d{9}$",
+        "pattern": "^1[A-Z][A-Z0-9]{2}L[LN]\\d{9,12}$",
         "confidence": "low"
       }
     ],
