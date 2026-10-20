@@ -1,25 +1,41 @@
+import type { TrackingEvent } from '../types';
+
 const MINUTE = 60_000;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 
+/** A YYYY-MM-DD day as the start of that day on the reader's calendar, or null when it is no such day. */
+function calendarDay(value: string): Date | null {
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!dateOnly) return null;
+  const year = Number(dateOnly[1]);
+  const month = Number(dateOnly[2]) - 1;
+  const day = Number(dateOnly[3]);
+  const parsed = new Date(year, month, day);
+  return parsed.getFullYear() === year &&
+    parsed.getMonth() === month &&
+    parsed.getDate() === day
+    ? parsed
+    : null;
+}
+
 function parseDeliveryDate(value: string): Date | null {
   const trimmed = value.trim();
-  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmed);
-
-  if (dateOnly) {
-    const year = Number(dateOnly[1]);
-    const month = Number(dateOnly[2]) - 1;
-    const day = Number(dateOnly[3]);
-    const parsed = new Date(year, month, day);
-    return parsed.getFullYear() === year &&
-      parsed.getMonth() === month &&
-      parsed.getDate() === day
-      ? parsed
-      : null;
-  }
-
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return calendarDay(trimmed);
   const parsed = new Date(trimmed);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+/**
+ * When a scan happened, on the reader's calendar. A scan the carrier dated by
+ * its day alone is that day, with no time (`timed` false): its `occurredAt`
+ * only puts it in order.
+ */
+export function scanDate(event: Pick<TrackingEvent, 'occurredAt' | 'day'>): { date: Date; timed: boolean } | null {
+  const day = event.day ? calendarDay(event.day) : null;
+  if (day) return { date: day, timed: false };
+  const date = new Date(event.occurredAt);
+  return Number.isNaN(date.getTime()) ? null : { date, timed: true };
 }
 
 function isSameCalendarDay(a: Date, b: Date): boolean {

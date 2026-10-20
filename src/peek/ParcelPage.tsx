@@ -450,7 +450,7 @@ function Parcel({ linkId, entrance, state, view, onHome }: {
     entrance={entrance}
     live={live}
     news={!!news}
-    banner={offline && <p className="peekp-offline" role="status"><Glyph name="offline" />{t('link.offline', { time: momentLabel(scan?.occurredAt ?? seenAt ?? '', wording) })}</p>}
+    banner={offline && <p className="peekp-offline" role="status"><Glyph name="offline" />{t('link.offline', { time: momentLabel(scan ?? seenAt ?? '', wording) })}</p>}
     controls={present ? undefined : <>
       <button type="button" className="icon-button" aria-label={t('app.trackAnother')} onClick={onHome}><Icon name="search" /></button>
       <button type="button" className="icon-button peekp-header__share" aria-label={t('link.shareAria')} onClick={() => void share()}><Icon name="share" /><span>{t('link.share')}</span></button>

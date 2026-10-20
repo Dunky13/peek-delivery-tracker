@@ -143,6 +143,27 @@ describe('how fresh a parcel is', () => {
   });
 });
 
+describe('a scan the carrier dated by its day alone', () => {
+  // Its time only orders it: west of the carrier's zone, the start of its day is the evening before.
+  const dayOnly = (stage: Stage): ParcelWithEvents => {
+    const dated = parcel([['in_transit', at(1, 8)], [stage, at(1, 23)]], { lastSyncedAt: at(2, 11, 58) });
+    return { ...dated, events: [dated.events[0], { ...dated.events[1], day: '2026-10-02' }] };
+  };
+  const base = { checking: false, offline: false, trouble: false, seenAt: null };
+
+  it('says the day, never a time of it or how long ago the day began', () => {
+    const delivered = dayOnly('delivered');
+    expect(parcelDetail(delivered, wording)).toBe('Today');
+    expect(parcelDetail(dayOnly('returned'), wording)).toBe('On its way back since today');
+    expect(momentLabel(delivered.events[1], wording)).toBe('today');
+    expect(momentLabel(delivered.events[1], { ...wording, now: NOW + 86_400_000 })).toBe('yesterday');
+    expect(parcelFreshness({ ...base, parcel: delivered }, wording)).toEqual({ kind: 'ended', label: 'Today', dot: false });
+    expect(parcelTabTitle({ parcel: delivered }, wording)).toBe('Delivered · Peek');
+    // A gift's card then gives the day itself.
+    expect(giftDelivered(delivered, wording)).toBeNull();
+  });
+});
+
 describe('the tab’s title and the link preview', () => {
   it('follows the parcel: the hours when it comes today, the app’s name when there is no estimate', () => {
     expect(parcelTabTitle({ parcel: moving({ expectedDelivery: '2026-10-02 13:00-17:00' }) }, wording)).toBe('In transit · 13:00–17:00');

@@ -450,6 +450,12 @@ export function providerEventId(
   return `${carrierId}:${createHash('sha256').update(material).digest('hex')}`;
 }
 
+/** The day a scan gives as its local time with no clock, when it has no time of its own. */
+function scanDay(raw: JsonObject): string | null {
+  return typeof raw.local_time === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw.local_time)
+    && DateTime.fromISO(raw.local_time).isValid ? raw.local_time : null;
+}
+
 export function buildEvents(
   parcel: JsonObject,
   result: CarrierResult,
@@ -469,12 +475,31 @@ export function buildEvents(
   // The stage change seen without a provider time names it too: no copy or clock rule reads that row.
   const provider = carrierId === 'unknown' && typeof result.tracking_provider === 'string'
     ? { [UNIVERSAL_PROVIDER]: result.tracking_provider } : {};
-  for (const raw of result.events ?? []) {
+  // A scan the carrier dates by its day alone, with no clock (NACEX's calendar headings), is
+  // dated in the carrier's order, newest first: a second after the scan listed after it when
+  // that one is of the same day, else at the start of its day in the result's zone. Scans that
+  // join the day later leave those dates as they are.
+  const scans = result.events ?? [];
+  const days = scans.map((raw) => eventTimestamp(raw.time, timezone) ? null : scanDay(raw));
+  const instants = new Array<string | null>(scans.length).fill(null);
+  let older: DateTime | null = null;
+  for (let index = scans.length - 1; index >= 0; index -= 1) {
+    const day = days[index];
+    const timed = day ? null : eventTimestamp(scans[index].time, timezone);
+    if (!day && !timed) continue;
+    const start = day ? DateTime.fromISO(day, { zone: timezone }) : null;
+    const at: DateTime = start
+      ? older && older >= start && older < start.plus({ days: 1 }) ? older.plus({ seconds: 1 }) : start
+      : DateTime.fromISO(timed!, { zone: timezone });
+    instants[index] = start ? at.toUTC().toISO({ suppressMilliseconds: true }) : timed;
+    older = at;
+  }
+  for (const [index, raw] of scans.entries()) {
     const description = String(raw.description ?? 'Tracking update').trim();
     const location = String(raw.location ?? '').trim();
-    const occurredAt = eventTimestamp(raw.time, timezone);
+    const occurredAt = instants[index];
     if (!occurredAt) continue;
-    const identity = providerEventId(carrierId, raw.time, location, description);
+    const identity = providerEventId(carrierId, days[index] ?? raw.time, location, description);
     if (identities.has(identity)) continue;
     identities.add(identity);
     const declaredStage = String(raw.stage ?? '');
@@ -1569,8 +1594,15 @@ export class TrackingSyncService {
       }
       const eventsToPersist = keepSaved || (preserveSummary && (result.tracking_provider === 'UPU' || localOnlyFallback)) ? [] : events;
       const persistedIds = new Set(eventsToPersist.map((event) => String(event.provider_event_id)));
-      // The copies the carrier's scans absorbed go with the batch that holds those scans.
-      const absorbed = eventsToPersist.length > 0 ? [...shared.absorbed] : [];
+      // The copies the carrier's scans absorbed go with the batch that holds those scans. So does a
+      // stage change this carrier was seen to make without a time, once it dates that scan by its day.
+      const daysDated = new Set(eventsToPersist.filter((event) => isRecord(event.raw_data)
+        && event.raw_data.observed_without_provider_timestamp !== true && scanDay(event.raw_data) && !event.raw_data.time)
+        .map((event) => JSON.stringify([event.stage, event.description])));
+      const undated = stored.filter((row) => row.observed_without_provider_timestamp === true
+        && String(row.provider_event_id).startsWith(`${sourceCarrierId}:`) && daysDated.has(JSON.stringify([row.stage, row.description])))
+        .map((row) => String(row.provider_event_id));
+      const absorbed = eventsToPersist.length > 0 ? [...shared.absorbed, ...undated] : [];
       const persistedEvents = withIdentities(
         eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))), matches.reused, stored,
       );
@@ -1650,7 +1682,7 @@ export class TrackingSyncService {
         events_new: eventsNew,
         identities_reused: [...matches.reused.keys()].filter((id) => persistedIds.has(id)).length,
         copies_skipped: [...matches.skipped.keys()].filter((id) => persistedIds.has(id)).length,
-        copies_absorbed: absorbed.length,
+        copies_absorbed: absorbed.length - undated.length,
         atomic_with_package: true,
         ...reannounced,
       });

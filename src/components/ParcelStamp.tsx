@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { scanDate } from '../lib/format';
 import { currentEvent, sortEventsDesc } from '../lib/stages';
 import type { ParcelWithEvents } from '../types';
 
@@ -37,8 +38,8 @@ export function stampOrigin(parcel: ParcelWithEvents): string | null {
 export function stampDeliveryDate(parcel: ParcelWithEvents): string | null {
   const current = currentEvent(parcel.events);
   if (current?.stage !== 'delivered') return null;
-  const date = new Date(current.occurredAt);
-  if (Number.isNaN(date.getTime())) return null;
+  const date = scanDate(current)?.date;
+  if (!date) return null;
   return `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}`;
 }
 

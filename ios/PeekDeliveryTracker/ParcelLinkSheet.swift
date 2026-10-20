@@ -538,19 +538,22 @@ private extension VerticalAlignment {
 
 extension Localizer {
     /// Where a shared parcel waits and when it is expected, or the day it arrived. It is a line of its own, so it starts with a capital.
-    func sharedParcelDetail(_ parcel: Parcel) -> String? {
-        let line = [parcel.pickupPlace, parcelCompletionDate(parcel) ?? parcelDeliveryEstimate(parcel)]
+    func sharedParcelDetail(_ parcel: Parcel, now: Date = Date()) -> String? {
+        let line = [parcel.pickupPlace, parcelCompletionDate(parcel, now: now) ?? parcelDeliveryEstimate(parcel, now: now)]
             .compactMap { $0 }.joined(separator: " · ")
         return (line.prefix(1).uppercased(with: language.locale) + line.dropFirst()).nonEmpty
     }
 
     /// "Arrives today, 13:00–17:00" while a gift is on its way; "Delivered today at 14:12" once it is there.
-    func giftDetail(_ parcel: Parcel, opened: Bool) -> String? {
+    /// Without a clock time the card's own line gives the day ("Today").
+    func giftDetail(_ parcel: Parcel, opened: Bool, now: Date = Date()) -> String? {
         if opened {
-            guard let event = parcel.currentEvent, event.stage == .delivered, let date = DateParser.date(event.occurredAt) else { return nil }
-            return text("share.gift.delivered", ["date": deliveryDate(date), "time": clockTime(date)])
+            guard let event = parcel.currentEvent, event.stage == .delivered else { return nil }
+            if event.calendarDay != nil { return sharedParcelDetail(parcel, now: now) }
+            guard let date = DateParser.date(event.occurredAt) else { return nil }
+            return text("share.gift.delivered", ["date": deliveryDate(date, now: now), "time": clockTime(date)])
         }
-        return parcelDeliveryEstimate(parcel).map { text("share.gift.arrives", ["date": $0]) }
+        return parcelDeliveryEstimate(parcel, now: now).map { text("share.gift.arrives", ["date": $0]) }
     }
 }
 

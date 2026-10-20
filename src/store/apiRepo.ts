@@ -104,6 +104,7 @@ export function toEvent(row: ApiTrackingEventRow): TrackingEvent {
     location: row.location ?? undefined,
     place: row.place ?? undefined,
     occurredAt: row.occurred_at,
+    day: row.day ?? undefined,
     relayOf: row.relay_of ?? undefined,
   };
 }

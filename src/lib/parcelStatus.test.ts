@@ -121,6 +121,12 @@ describe('relative completion dates', () => {
     expect(localizedParcelCompletionDate(saved, 'en-CH', (key) => en[key], now)).toBeNull();
   });
 
+  it('dates a completion the carrier dated by its day alone by that day', () => {
+    const saved = parcel('ok');
+    saved.events[0] = { ...saved.events[0], stage: 'delivered', occurredAt: new Date(2026, 8, 8, 23).toISOString(), day: '2026-09-09' };
+    expect(localizedParcelCompletionDate(saved, 'en-CH', (key) => en[key], new Date(2026, 8, 9, 12).getTime())).toBe('today');
+  });
+
   it('does not show completion dates for active parcels', () => {
     expect(localizedParcelCompletionDate(parcel('ok', 'in_transit'), 'en-CH', (key) => en[key])).toBeNull();
   });

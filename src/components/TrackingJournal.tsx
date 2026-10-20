@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { localizedCalendarDate } from '../lib/format';
+import { localizedCalendarDate, scanDate } from '../lib/format';
 import { countryFlag, countryName, trackingPlace } from 'universal-parcel-scraper/app';
 import { localizedEventDescription, stageLabel, useI18n } from '../i18n';
 import { currentEvent, sortEventsDesc } from '../lib/stages';
@@ -41,10 +41,9 @@ export function TrackingJournal({ events: allEvents, syncing = false, fold = fal
   const wording = (event: TrackingEvent) => localizedEventDescription(event.description, t) || stageLabel(t, event.stage);
   const groups = new Map<string, { date: Date | null; events: TrackingEvent[] }>();
   for (const event of sortEventsDesc(events)) {
-    const date = new Date(event.occurredAt);
-    const valid = Number.isFinite(date.getTime());
-    const key = valid ? `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}` : event.occurredAt;
-    if (!groups.has(key)) groups.set(key, { date: valid ? date : null, events: [] });
+    const date = scanDate(event)?.date ?? null;
+    const key = date ? `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}` : event.occurredAt;
+    if (!groups.has(key)) groups.set(key, { date, events: [] });
     groups.get(key)!.events.push(event);
   }
   const now = new Date();
@@ -55,20 +54,22 @@ export function TrackingJournal({ events: allEvents, syncing = false, fold = fal
       : localizedCalendarDate(date, languageTag) + (date.getFullYear() !== now.getFullYear() ? ` ${date.getFullYear()}` : '');
   const updates = (count: number) => t(count === 1 ? 'detail.updateCount.one' : 'detail.updateCount.many', { count });
 
-  const days = [...groups];
+  // A scan dated by its day alone can sort among the day before's scans, west of the carrier's zone.
+  const days = [...groups].sort(([, a], [, b]) => (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0));
   const folded = fold && events.length > FOLD_FROM_EVENTS && days.length > OPEN_DAYS;
   const listed = folded && !oldestShown ? days.slice(0, OPEN_DAYS + LISTED_DAYS) : days;
   const oldest = days.slice(listed.length).reduce((count, [, group]) => count + group.events.length, 0);
 
   const scans = (group: { events: TrackingEvent[] }) => <ol className="tracking-journal__events">
     {group.events.map(event => {
-      const date = new Date(event.occurredAt);
-      const valid = Number.isFinite(date.getTime());
+      const when = scanDate(event);
       const isCurrent = event.id === current?.id;
       // A copy's words stay in sight, in case it was a scan of its own.
       const relayed = [...new Set((relays.get(event.id) ?? []).map(wording))].filter(line => line !== wording(event));
       return <li key={event.id} className={isCurrent ? 'tracking-journal__current' : undefined} aria-current={isCurrent ? 'step' : undefined}>
-        <time dateTime={valid ? event.occurredAt : undefined}>{valid ? new Intl.DateTimeFormat(languageTag, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(date) : '—'}</time>
+        {/* A scan dated by its day alone has no time to show. */}
+        {when && !when.timed ? <time dateTime={event.day} />
+          : <time dateTime={when ? event.occurredAt : undefined}>{when ? new Intl.DateTimeFormat(languageTag, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(when.date) : '—'}</time>}
         <div><p>{syncing && isCurrent && event.stage === 'pending' ? t('timeline.syncing') : wording(event)}</p>
           {event.location?.trim() && <EventPlace location={event.location} />}
           {relayed.map(line => <p key={line} className="tracking-journal__relay">{line}</p>)}

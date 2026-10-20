@@ -1,14 +1,16 @@
+import { scanDate } from '../../lib/format';
 import {
   localizedDeliveryDate,
   localizedDeliveryWindow,
   localizedRelativeTime,
+  localizedScanAge,
   type MessageKey,
   type Translate,
 } from '../../lib/messages';
 import { parcelAttention, type ParcelAttention } from '../../lib/parcelPriority';
 import { parcelDeliveryEstimate, parcelDisplayStatusKey, parcelHasCarrierUpdate } from '../../lib/parcelStatus';
 import { currentEvent, isFinal } from '../../lib/stages';
-import type { ParcelWithEvents, Stage } from '../../types';
+import type { ParcelWithEvents, Stage, TrackingEvent } from '../../types';
 
 /**
  * What a parcel's card, its tab and its link preview say. Nothing here needs
@@ -37,10 +39,15 @@ function sameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
-/** A moment inside a sentence: the time when it is today, else the day and the time ("yesterday, 08:12"). */
-export function momentLabel(iso: string, { t, languageTag, now = Date.now() }: Wording): string {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return '';
+/**
+ * A moment inside a sentence: the time when it is today, else the day and the
+ * time ("yesterday, 08:12"). A scan dated by its day alone gives the day.
+ */
+export function momentLabel(at: string | Pick<TrackingEvent, 'occurredAt' | 'day'>, { t, languageTag, now = Date.now() }: Wording): string {
+  const when = scanDate(typeof at === 'string' ? { occurredAt: at } : at);
+  if (!when) return '';
+  const { date, timed } = when;
+  if (!timed) return localizedDeliveryDate(date, t, languageTag, now);
   return sameDay(date, new Date(now)) ? clock(date, languageTag)
     : `${localizedDeliveryDate(date, t, languageTag, now)}, ${clock(date, languageTag)}`;
 }
@@ -72,12 +79,12 @@ export function parcelDetail(parcel: ParcelWithEvents, wording: Wording, clockTi
   const { t, languageTag, now = Date.now() } = wording;
   const current = currentEvent(parcel.events);
   const stage = parcelStage(parcel);
-  const at = current ? new Date(current.occurredAt) : null;
-  const dated = at && !Number.isNaN(at.getTime()) ? at : null;
+  const when = current ? scanDate(current) : null;
+  const dated = when?.date ?? null;
   if (stage === 'delivered') {
     if (!dated) return null;
     const day = capitalized(localizedDeliveryDate(dated, t, languageTag, now), languageTag);
-    return clockTime ? `${day}, ${clock(dated, languageTag)}` : day;
+    return clockTime && when?.timed ? `${day}, ${clock(dated, languageTag)}` : day;
   }
   if (stage === 'returned') {
     return dated ? t('link.returnedSince', { date: localizedDeliveryDate(dated, t, languageTag, now) }) : null;
@@ -152,7 +159,7 @@ export function parcelFreshness({ parcel, checking, offline, trouble, seenAt }: 
   const current = currentEvent(parcel.events);
   const stage = parcelStage(parcel);
   if (stage && isFinal(stage) && current) {
-    return { kind: 'ended', label: capitalized(localizedRelativeTime(current.occurredAt, t, languageTag, now), languageTag), dot: false };
+    return { kind: 'ended', label: capitalized(localizedScanAge(current, t, languageTag, now), languageTag), dot: false };
   }
   const checkedAt = parcel.lastSyncedAt ?? seenAt;
   if (checking || !checkedAt || Number.isNaN(Date.parse(checkedAt))) {
@@ -195,9 +202,9 @@ export function parcelTabTitle({ parcel, name, checking, unseen = 0 }: {
   const app = t('app.title');
   if (checking) return `${t('link.title.checking')} · ${app}`;
   const current = currentEvent(parcel.events);
-  const at = current ? new Date(current.occurredAt) : null;
-  const deliveredToday = parcelStage(parcel) === 'delivered' && at && sameDay(at, new Date(now));
-  const status = deliveredToday ? t('link.title.delivered', { time: clock(at, languageTag) }) : parcelHeadline(parcel, t);
+  const when = current ? scanDate(current) : null;
+  const deliveredToday = parcelStage(parcel) === 'delivered' && when?.timed && sameDay(when.date, new Date(now));
+  const status = deliveredToday ? t('link.title.delivered', { time: clock(when.date, languageTag) }) : parcelHeadline(parcel, t);
   const estimate = shortEstimate(parcel, wording);
   const title = [name, status, estimate ?? app].filter(Boolean).join(' · ');
   return unseen > 0 ? `(${unseen}) ${title}` : title;
@@ -223,13 +230,13 @@ export function giftArrival(parcel: ParcelWithEvents, wording: Wording): string 
   return estimate ? t('share.gift.arrives', { date: localizedDeliveryWindow(parcel.expectedDeliveryFrom, estimate, t, languageTag, now) }) : null;
 }
 
-/** "Delivered today at 14:12", for a gift that has arrived. */
+/** "Delivered today at 14:12", for a gift that has arrived. Without a time the card's own line gives the day. */
 export function giftDelivered(parcel: ParcelWithEvents, wording: Wording): string | null {
   const { t, languageTag, now = Date.now() } = wording;
   const current = currentEvent(parcel.events);
-  const at = current?.stage === 'delivered' ? new Date(current.occurredAt) : null;
-  if (!at || Number.isNaN(at.getTime())) return null;
-  return t('share.gift.delivered', { date: localizedDeliveryDate(at, t, languageTag, now), time: clock(at, languageTag) });
+  const when = current?.stage === 'delivered' ? scanDate(current) : null;
+  if (!when?.timed) return null;
+  return t('share.gift.delivered', { date: localizedDeliveryDate(when.date, t, languageTag, now), time: clock(when.date, languageTag) });
 }
 
 /**

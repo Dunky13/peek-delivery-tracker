@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { DateTime } from 'luxon';
 import { captureOperationalError } from './observability';
 import { placesForEvents, type EventPoint } from 'universal-parcel-scraper/places';
 import { relayCopies } from './relayCopies';
@@ -7,16 +8,32 @@ import { isRecord, type JsonObject } from './types';
 
 let reported = false;
 
+/** The day of a scan the carrier dated without a clock time: a bare date, given as its time or its local time. */
+function scanDay(event: JsonObject): string | null {
+  if (event.observed === true) return null;
+  const time = typeof event.time === 'string' ? event.time.trim() : '';
+  const day = time ? ['yyyy-MM-dd', 'dd.MM.yyyy', 'dd/MM/yyyy'].map((format) => DateTime.fromFormat(time, format)).find((date) => date.isValid)
+    : typeof event.local_time === 'string' ? DateTime.fromFormat(event.local_time, 'yyyy-MM-dd') : undefined;
+  return day?.isValid ? day.toISODate() : null;
+}
+
 /**
  * The stored point only feeds the place, and the source only tells Peek's own
  * rows and relay copies apart: the API returns neither. A relay copy names the
- * scan it repeats instead.
+ * scan it repeats instead. A scan dated by its day alone names that day.
  */
 function served(event: JsonObject, relayOf?: string): JsonObject {
-  if (!('point' in event) && !('provider_event_id' in event) && !relayOf) return event;
-  const rest: JsonObject = { ...event, ...(relayOf ? { relay_of: relayOf } : {}) };
+  const rest: JsonObject = { ...dated(event), ...(relayOf ? { relay_of: relayOf } : {}) };
   delete rest.point;
   delete rest.provider_event_id;
+  return rest;
+}
+
+/** A scan with the times it was stored with read: the day it names, if any, and nothing else of them. */
+function dated(event: JsonObject): JsonObject {
+  const day = scanDay(event);
+  const rest: JsonObject = { ...event, ...(day ? { day } : {}) };
+  for (const key of ['time', 'local_time', 'observed']) delete rest[key];
   return rest;
 }
 
@@ -44,8 +61,8 @@ export function withoutEventSources(row: JsonObject): JsonObject {
   return {
     ...row,
     tracking_events: row.tracking_events.map((event) => {
-      if (!isRecord(event) || !('provider_event_id' in event)) return event;
-      const rest = { ...event };
+      if (!isRecord(event)) return event;
+      const rest = dated(event);
       delete rest.provider_event_id;
       return rest;
     }),

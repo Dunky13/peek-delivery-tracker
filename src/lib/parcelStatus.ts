@@ -1,3 +1,4 @@
+import { scanDate } from './format';
 import { localizedDeliveryDate, type MessageKey, type Translate } from './messages';
 import type { ParcelWithEvents } from '../types';
 import { currentEvent, stageMeta } from './stages';
@@ -92,10 +93,8 @@ export function localizedParcelCompletionDate(
 ): string | null {
   const current = currentEvent(parcel.events);
   if (current?.stage === 'delivered' || current?.stage === 'returned') {
-    const occurredAt = new Date(current.occurredAt);
-    if (!Number.isNaN(occurredAt.getTime())) {
-      return localizedDeliveryDate(occurredAt, t, languageTag, now);
-    }
+    const when = scanDate(current);
+    if (when) return localizedDeliveryDate(when.date, t, languageTag, now);
   }
   return null;
 }

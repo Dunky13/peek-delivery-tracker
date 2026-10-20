@@ -159,6 +159,23 @@ describe('withEventPlaces', () => {
   });
 });
 
+it('names the day of a scan the carrier dated without a clock time, and serves none of its stored times', () => {
+  const stored = (id: string, times: Record<string, unknown>) => ({ ...event(id, null, '2026-10-19T00:00:00+00:00'), ...times });
+  const row = { id: 'parcel', carrier: 'nacex', tracking_events: [
+    stored('local-day', { local_time: '2026-10-19' }),
+    stored('day', { time: '18/10/2026' }),
+    stored('clock', { time: '2026-10-18T09:30:00Z' }),
+    stored('local-clock', { local_time: '2026-10-17T09:30:00', observed: true }),
+    stored('observed', { local_time: '2026-10-17', observed: true }),
+  ] };
+  const days = (served: { tracking_events: Array<Record<string, unknown>> }) => served.tracking_events.map((scan) => [scan.id, scan.day]);
+  const expected = [['local-day', '2026-10-19'], ['day', '2026-10-18'], ['clock', undefined], ['local-clock', undefined], ['observed', undefined]];
+  const served = withEventPlaces(row) as { tracking_events: Array<Record<string, unknown>> };
+  expect(days(served)).toEqual(expected);
+  expect(days(withoutEventSources(row) as typeof served)).toEqual(expected);
+  expect(served.tracking_events.some((scan) => 'local_time' in scan || 'observed' in scan || 'time' in scan)).toBe(false);
+});
+
 describe('withoutEventSources', () => {
   it('keeps every stored row, Peek\'s own included, without its source', () => {
     const row = { id: 'parcel', tracking_events: [

@@ -3,7 +3,7 @@ import contractFixture from '../../contracts/fixtures/delivery-api.json';
 import { ApiAuthenticationError } from '../lib/apiClient';
 import { RateLimiter } from '../server/rateLimit';
 import { ParcelAlreadyExistsError, RefreshTimeoutError } from '../types';
-import { API_CACHE_KEY, browserStorage, clearApiCache, createApiRepo, SERVER_UPDATE_MESSAGE } from './apiRepo';
+import { API_CACHE_KEY, browserStorage, clearApiCache, createApiRepo, SERVER_UPDATE_MESSAGE, toEvent } from './apiRepo';
 
 const packageRow = contractFixture.packageList.packages[0];
 
@@ -643,4 +643,12 @@ it('rejects stale collection data after a mutation without regressing the offlin
   await rejection;
   expect(repo.cachedList?.()?.[0].label).toBe('Renamed offline too');
   vi.unstubAllGlobals();
+});
+
+describe('toEvent', () => {
+  it('keeps the day of a scan the carrier dated by its day alone', () => {
+    const row = { ...packageRow.tracking_events[0], occurred_at: '2026-10-01T22:00:00.000Z' };
+    expect(toEvent({ ...row, day: '2026-10-02' } as Parameters<typeof toEvent>[0]).day).toBe('2026-10-02');
+    expect(toEvent(row as Parameters<typeof toEvent>[0]).day).toBeUndefined();
+  });
 });

@@ -24,7 +24,7 @@ function trackingState(parcel: ParcelWithEvents | undefined): string | undefined
   return parcel && JSON.stringify([
     parcel.lastStatusText,
     parcel.expectedDelivery,
-    parcel.events.map((event) => [event.id, event.stage, event.description, event.location, event.occurredAt]),
+    parcel.events.map((event) => [event.id, event.stage, event.description, event.location, event.occurredAt, event.day]),
   ]);
 }
 

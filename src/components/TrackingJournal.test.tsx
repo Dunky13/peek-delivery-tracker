@@ -66,6 +66,18 @@ describe('TrackingJournal', () => {
     expect(rows[0]).toHaveAttribute('aria-current', 'step');
   });
 
+  it('lists a scan dated by its day alone under that day, with no time', () => {
+    const { container } = render(<TrackingJournal events={[
+      event('sorted', '2024-09-07T22:30:00', 'Sorted'),
+      // West of the carrier's zone, the start of its day is the evening before.
+      { ...event('delivered', '2024-09-07T22:00:00', 'Delivered'), day: '2024-09-08' },
+    ]} />);
+    const groups = within(screen.getByRole('list', { name: 'Tracking history' })).getAllByRole('heading');
+    expect(groups.map(group => group.textContent)).toEqual(['Sun 8 Sep 2024', 'Sat 7 Sep 2024']);
+    const times = [...container.querySelectorAll('.tracking-journal__events time')];
+    expect(times.map(time => [time.getAttribute('datetime'), time.textContent])).toEqual([['2024-09-08', ''], ['2024-09-07T22:30:00', '22:30']]);
+  });
+
   it('handles missing descriptions, invalid scan times and empty syncing history', () => {
     const { rerender } = render(<TrackingJournal events={[event('invalid', 'Unknown date', '')]} />);
     expect(screen.getByText('Unknown date')).toBeInTheDocument();

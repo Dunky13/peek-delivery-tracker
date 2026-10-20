@@ -1028,6 +1028,37 @@ final class ParcelLogicTests: XCTestCase {
         XCTAssertNil(localizer.giftDetail(moving, opened: true))
     }
 
+    @MainActor
+    func testAScanDatedByItsDayAloneShowsThatDayAndNoClockTime() throws {
+        let localizer = Localizer()
+        localizer.language = .en
+        let id = UUID()
+        let today = try XCTUnwrap(DateParser.deliveryDate("2026-09-21"))
+        let now = today.addingTimeInterval(15 * 3_600)
+        // The instant only orders the scan: the start of the day in a zone two hours ahead of UTC,
+        // which falls on the day before for a reader west of it.
+        func dayScan(_ day: String, _ occurredAt: String) -> TrackingEvent {
+            var scan = event(id, .delivered, occurredAt)
+            scan.day = day
+            return scan
+        }
+        let scan = dayScan("2026-09-21", "2026-09-20T22:00:00Z")
+        XCTAssertEqual(scan.calendarDay, today)
+        XCTAssertEqual(localizer.relativeTime(of: scan, now: now), "today")
+        let arrived = makeParcel(id: id, events: [scan])
+        XCTAssertEqual(localizer.parcelCompletionDate(arrived, now: now), "today")
+        XCTAssertEqual(arrived.stampDeliveryDate, "21.09")
+        // A gift's card then gives the day as the card's own line does.
+        XCTAssertEqual(localizer.giftDetail(arrived, opened: true, now: now), "Today")
+        let earlier = makeParcel(id: id, events: [dayScan("2026-09-12", "2026-09-11T22:00:00Z")])
+        XCTAssertEqual(localizer.giftDetail(earlier, opened: true, now: now), "Sat 12 Sep")
+
+        // A scan with a clock time keeps it.
+        let timed = event(id, .inTransit, DateParser.isoString(now.addingTimeInterval(-2 * 3_600)))
+        XCTAssertNil(timed.calendarDay)
+        XCTAssertEqual(localizer.relativeTime(of: timed, now: now), "2 h ago")
+    }
+
     func testPassportNewStampsUseExplicitScansAndLocalCompletionDates() throws {
         func shipment(_ scans: [(TrackingStage, String, String?)]) -> Parcel {
             let id = UUID()

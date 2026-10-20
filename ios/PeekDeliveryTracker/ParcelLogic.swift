@@ -150,7 +150,7 @@ extension Parcel {
 
     /// The day and month the parcel was delivered, as a postmark shows it: 28.09.
     var stampDeliveryDate: String? {
-        guard isDelivered, let event = currentEvent, let date = DateParser.date(event.occurredAt) else { return nil }
+        guard isDelivered, let event = currentEvent, let date = event.displayDate else { return nil }
         let parts = Calendar.current.dateComponents([.day, .month], from: date)
         return String(format: "%02d.%02d", parts.day ?? 0, parts.month ?? 0)
     }

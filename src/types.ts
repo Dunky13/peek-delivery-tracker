@@ -78,6 +78,8 @@ export interface TrackingEvent {
   location?: string;
   place?: EventPlace;
   occurredAt: string; // ISO timestamp
+  /** The day (YYYY-MM-DD) of a scan the carrier dated by its day alone; `occurredAt` then only puts it in order. */
+  day?: string;
   /** The scan of the new carrier this scan of the earlier one repeats; the timeline shows it under that scan. */
   relayOf?: string;
 }

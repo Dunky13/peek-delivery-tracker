@@ -2227,7 +2227,7 @@ private struct ExperimentalArchivedParcelRow: View {
 private extension Parcel {
     var experimentalCompletionDate: Date? {
         guard let event = currentEvent, event.stage.isFinal else { return nil }
-        return DateParser.date(event.occurredAt)
+        return event.displayDate
     }
 
     var experimentalArchivedDisplayDate: Date? {

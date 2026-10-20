@@ -293,6 +293,12 @@ final class Localizer: ObservableObject {
         return shortDate(date)
     }
 
+    /// How long ago a scan happened, or its day when the carrier gave no clock time.
+    func relativeTime(of event: TrackingEvent, now: Date = Date()) -> String {
+        if let day = event.calendarDay { return deliveryDate(day, now: now) }
+        return relativeTime(from: event.occurredAt, now: now)
+    }
+
     private static let deliveryWindowPattern = try? NSRegularExpression(
         pattern: "^(\\d{4}-\\d{2}-\\d{2})[ T]+(\\d{2}:\\d{2})(?:[–-](\\d{2}:\\d{2}))?$"
     )
@@ -402,7 +408,7 @@ final class Localizer: ObservableObject {
     func parcelCompletionDate(_ parcel: Parcel, now: Date = Date()) -> String? {
         if let event = parcel.currentEvent,
            event.stage.isFinal,
-           let date = DateParser.date(event.occurredAt) {
+           let date = event.displayDate {
             return deliveryDate(date, now: now)
         }
         return nil
@@ -412,6 +418,15 @@ final class Localizer: ObservableObject {
 extension Parcel {
     var trackingSource: CarrierID? { carrierData?.activeTrackingCarrier }
     var swissPostReady: Bool { carrierData?.swissPostReady == true }
+}
+
+extension TrackingEvent {
+    /// The day of a scan the carrier dated by its day alone, as a local calendar day. Its
+    /// `occurredAt` then only places it in order, from the start of that day in the carrier's zone.
+    var calendarDay: Date? { day.flatMap(DateParser.deliveryDate) }
+
+    /// The date to show for the scan: its day when it has no clock time, else its moment.
+    var displayDate: Date? { calendarDay ?? DateParser.date(occurredAt) }
 }
 
 enum DateParser {

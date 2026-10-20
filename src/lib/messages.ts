@@ -1,7 +1,7 @@
 import trackingMessages from '../../shared/tracking-messages.json';
 import type en from '../../shared/locales/en.json';
-import type { Stage } from '../types';
-import { localizedCalendarDate } from './format';
+import type { Stage, TrackingEvent } from '../types';
+import { localizedCalendarDate, scanDate } from './format';
 import type { Locale } from './locale';
 
 /**
@@ -59,6 +59,18 @@ export function localizedRelativeTime(
   const days = Math.floor(hours / 24);
   if (days < 7) return t('time.daysAgo', { count: days });
   return localizedCalendarDate(new Date(iso), languageTag);
+}
+
+/** How long ago a scan was ("3 h ago"); a scan dated by its day alone gives that day ("yesterday"). */
+export function localizedScanAge(
+  event: Pick<TrackingEvent, 'occurredAt' | 'day'>,
+  t: Translate,
+  languageTag: string,
+  now: number = Date.now(),
+): string {
+  const when = scanDate(event);
+  if (!when) return '';
+  return when.timed ? localizedRelativeTime(event.occurredAt, t, languageTag, now) : localizedDeliveryDate(when.date, t, languageTag, now);
 }
 
 /** Relative labels for nearby local calendar days, otherwise a compact date. */

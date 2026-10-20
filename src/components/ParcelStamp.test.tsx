@@ -26,6 +26,9 @@ describe('parcel stamp', () => {
     expect(travelling.container.querySelector('.parcel-stamp__postmark')).toBeNull();
     const arrived = render(<ParcelStamp parcel={parcel([event(11, 'accepted', kyoto), event(21, 'delivered', zurich)])} />);
     expect(arrived.container.querySelector('.parcel-stamp__postmark')).toHaveTextContent('21.09');
+    // A delivery dated by its day alone carries that day, whatever the reader's zone makes of its start.
+    const dayOnly = render(<ParcelStamp parcel={parcel([event(11, 'accepted', kyoto), { ...event(21, 'delivered', zurich), occurredAt: new Date(2026, 8, 20, 23).toISOString(), day: '2026-09-21' }])} />);
+    expect(dayOnly.container.querySelector('.parcel-stamp__postmark')).toHaveTextContent('21.09');
   });
 
   it('shows the globe alone before any scan has a place', () => {

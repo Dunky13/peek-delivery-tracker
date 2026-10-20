@@ -30809,6 +30809,7 @@ export interface ApiTrackingEventRow {
   "description": string;
   "location": string | null;
   "occurred_at": string;
+  "day"?: string;
   "place"?: ApiEventPlace | null;
   "relay_of"?: string;
 }

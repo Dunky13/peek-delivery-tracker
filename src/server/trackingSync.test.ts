@@ -119,6 +119,39 @@ describe('tracking event normalization', () => {
     });
   });
 
+  it('dates scans a carrier gives by their day alone at that day, in its order, with no observed row', () => {
+    // NACEX heads its history with calendar days and gives no clock (synthetic scans).
+    const rows = buildEvents({ id: 'package-1', carrier: 'nacex', current_stage: 'in_transit' }, {
+      status: 'exception', current_stage: 'exception', last_status_text: 'Contacta con agencia', last_update: null,
+      last_update_local: '2026-10-19', direct_local_fallback: true, events: [
+        { local_time: '2026-10-19', description: 'Contacta con agencia', stage: 'exception' },
+        { local_time: '2026-10-19', description: 'En reparto', stage: 'out_for_delivery' },
+        { local_time: '2026-10-18', description: 'En tránsito', stage: 'in_transit' },
+        { provider_time_text: 'Unreadable heading', description: 'Recogido', stage: 'accepted' },
+      ] }, 'nacex', new Date('2026-10-20T08:00:00Z'));
+    // A scan of the same day listed later is older: a second earlier, whatever its stage.
+    expect(rows.map((row) => [row.occurred_at, row.stage, row.provider_event_id])).toEqual([
+      ['2026-10-19T00:00:01Z', 'exception', providerEventId('nacex', '2026-10-19', '', 'Contacta con agencia')],
+      ['2026-10-19T00:00:00Z', 'out_for_delivery', providerEventId('nacex', '2026-10-19', '', 'En reparto')],
+      ['2026-10-18T00:00:00Z', 'in_transit', providerEventId('nacex', '2026-10-18', '', 'En tránsito')],
+    ]);
+    // Among scans with clock times, a day follows the scan before it on that day.
+    expect(buildEvents({ id: 'package-1', carrier: 'dpd' }, { status: 'delivered', current_stage: 'delivered',
+      last_status_text: 'Delivered', last_update: '2026-10-19T08:12:00Z', events: [
+        { local_time: '2026-10-19', description: 'Delivered', stage: 'delivered' },
+        { time: '2026-10-19T08:12:00Z', description: 'Out for delivery', stage: 'out_for_delivery' },
+        { local_time: '2026-10-19', description: 'At the depot', stage: 'in_transit' },
+        { time: '2026-10-18T19:00:00Z', description: 'In transit', stage: 'in_transit' },
+      ] }, 'dpd', new Date('2026-10-20T08:00:00Z')).map((row) => [row.occurred_at, row.description])).toEqual([
+      ['2026-10-19T08:12:01Z', 'Delivered'], ['2026-10-19T08:12:00Z', 'Out for delivery'],
+      ['2026-10-18T22:00:00Z', 'At the depot'], ['2026-10-18T19:00:00Z', 'In transit']]);
+    // A clock time read as a local time still dates no row.
+    expect(buildEvents({ id: 'package-1', carrier: 'seur', current_stage: 'in_transit' }, { status: 'delivered', current_stage: 'delivered',
+      last_status_text: 'Entregado', last_update: null, direct_local_fallback: true,
+      events: [{ local_time: '2026-10-19T10:00:00', description: 'Entregado', stage: 'delivered' }] }, 'seur', new Date('2026-10-20T08:00:00Z'))
+      .map((row) => (row.raw_data as JsonObject).observed_without_provider_timestamp)).toEqual([true]);
+  });
+
   it('keeps a scan the carrier repeats word for word once', () => {
     const sort = { time: '2026-09-29T06:07:00+02:00', description: 'Tri effectué dans l’agence de distribution' };
     const rows = buildEvents({ id: 'package-1', carrier: 'chronopost' }, {
@@ -752,6 +785,27 @@ function fakeClient(packages: JsonObject[] = []) {
 }
 
 describe('TrackingSyncService', () => {
+  it('replaces the stage change it saw without a time once the carrier dates that scan by its day', async () => {
+    const client = fakeClient();
+    const answer: CarrierResult = { status: 'exception', current_stage: 'exception', last_status_text: 'Contacta con agencia',
+      last_update: null, last_update_local: '2026-10-19', events: [
+        { local_time: '2026-10-19', description: 'Contacta con agencia', stage: 'exception' },
+        { local_time: '2026-10-18', description: 'En reparto', stage: 'out_for_delivery' }] };
+    const adapter = { fetch: vi.fn().mockResolvedValue(answer) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-10-20T08:00:00Z'));
+    // An earlier check saw the stage change and dated it at that check.
+    const observed = { provider_event_id: 'nacex:observed', occurred_at: '2026-10-19T17:00:00.000Z', stage: 'exception',
+      description: 'Contacta con agencia', observed_without_provider_timestamp: true };
+    await service.syncPackage({ id: 'day-dated', carrier: 'nacex', tracking_number: '0000/00000000', current_stage: 'exception',
+      [STORED_EVENT_IDENTITIES]: [observed] });
+    const [, , rows, , deleted] = client.applyTrackingSync.mock.calls.at(-1)! as unknown as [JsonObject, JsonObject, JsonObject[], string[], string[]];
+    expect(rows.map((row: JsonObject) => [row.occurred_at, row.description])).toEqual([
+      ['2026-10-19T00:00:00Z', 'Contacta con agencia'], ['2026-10-18T00:00:00Z', 'En reparto']]);
+    expect(deleted).toEqual(['nacex:observed']);
+    expect(client.completeSyncAttempt).toHaveBeenLastCalledWith(expect.any(String),
+      expect.objectContaining({ anomaly_codes: [] }), expect.any(Array));
+  });
+
   it('consumes new-add query context before fetching and never repeats it on refresh', async () => {
     const candidates = ['dpd', 'seur', 'brt', 'relais-colis', 'ciblex', 'hermes-de'].map((carrier) => ({ carrier, needsInput: null, preferred: false }));
     vi.spyOn(scraper, 'recognitionCandidates').mockReturnValue(candidates);

@@ -23,6 +23,7 @@ import {
   trackingFailureMessage,
   localizedDatePhrase,
   localizedRelativeTime,
+  localizedScanAge,
   useI18n,
 } from '../i18n';
 import {
@@ -139,7 +140,7 @@ export function ParcelDetail({
     ? localizedRelativeTime(parcel.lastSyncedAt, t, languageTag)
     : null;
   const lastUpdate = current && current.stage !== 'pending'
-    ? localizedRelativeTime(current.occurredAt, t, languageTag)
+    ? localizedScanAge(current, t, languageTag)
     : null;
   const swipeStart = useRef<TouchPoint | null>(null);
   const backdropPress = useRef(false);

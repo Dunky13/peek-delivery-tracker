@@ -22,6 +22,7 @@ export {
   localizedEventDescription,
   localizedExpectedDelivery,
   localizedRelativeTime,
+  localizedScanAge,
   stageLabel,
   trackingFailureMessage,
 } from './lib/messages';

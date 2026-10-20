@@ -141,6 +141,11 @@ count as missed checks and keep the time of the last successful check. Checks th
 wait for cooldowns leave it unchanged. Provider failures remain in the audit and health
 evidence while the chip is hidden.
 
+A scan an adapter dates by its day alone, with no clock (NACEX's history), is stored as a
+row of that day anyway, in the carrier's order: a second after the scan before it when that
+one is of the same day, else at the start of the day in the carrier's zone. It replaces the
+stage change an earlier check stored without a time. The day dates no answer for routing.
+
 An adapter whose answer has only local clocks or an undated status summary keeps its
 evidence while a universal provider dates the timeline. Its answer confirms the filed
 carrier, so a provider naming that carrier doesn't ask it before its own retry time. A

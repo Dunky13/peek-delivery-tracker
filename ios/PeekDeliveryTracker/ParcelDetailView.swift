@@ -647,7 +647,7 @@ struct ParcelDetailView: View {
                     Text(localizer.text("detail.lastChecked", ["date": localizer.relativeTime(from: lastSyncedAt)]))
                 }
                 if let current = parcel.currentEvent, current.stage != .pending {
-                    Text(localizer.text("detail.lastUpdate", ["date": localizer.relativeTime(from: current.occurredAt)]))
+                    Text(localizer.text("detail.lastUpdate", ["date": localizer.relativeTime(of: current)]))
                 }
             }
 
@@ -1131,7 +1131,8 @@ struct ParcelJournal: View {
         let calendar = Calendar.current
         for entry in entries {
             let event = entry.event
-            let date = DateParser.date(event.occurredAt)
+            // A scan dated by its day alone sits under that day, wherever the reader is.
+            let date = event.displayDate
             let key = date.map { String(calendar.startOfDay(for: $0).timeIntervalSince1970) } ?? event.occurredAt
             if let index = groups.firstIndex(where: { $0.id == key }) {
                 groups[index].entries.append(entry)
@@ -1145,10 +1146,14 @@ struct ParcelJournal: View {
                         label = localizer.shortDate(date) + (year == calendar.component(.year, from: Date()) ? "" : " \(year)")
                     }
                 } else { label = event.occurredAt }
-                groups.append(JournalDay(id: key, label: label, entries: [entry]))
+                groups.append(JournalDay(id: key, label: label, start: date.map { calendar.startOfDay(for: $0) }, entries: [entry]))
             }
         }
-        return groups
+        // A scan dated by its day alone can sort among the day before's scans, west of the carrier's zone.
+        return groups.enumerated().sorted { a, b in
+            let (first, second) = (a.element.start ?? .distantPast, b.element.start ?? .distantPast)
+            return first != second ? first > second : a.offset < b.offset
+        }.map(\.element)
     }
 }
 
@@ -1161,6 +1166,8 @@ private struct CarrierEditorRequest: Identifiable {
 private struct JournalDay: Identifiable {
     let id: String
     let label: String
+    /// The start of the day; nil for scans without a readable date, which stay last.
+    let start: Date?
     var entries: [JournalEntry]
 }
 
@@ -1201,7 +1208,9 @@ private struct JournalEventRow: View {
         .accessibilityElement(children: .combine)
     }
 
+    /// No clock time for a scan the carrier dated by its day alone: its day heads the group.
     private var time: String {
+        if event.calendarDay != nil { return "" }
         guard let date = DateParser.date(event.occurredAt) else { return "—" }
         return localizer.clockTime(date)
     }

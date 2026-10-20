@@ -6,6 +6,7 @@ import {
   formatDateTime,
   formatExpectedDelivery,
   relativeTime,
+  scanDate,
 } from './format';
 
 const NOW = new Date('2026-07-01T12:00:00.000Z').getTime();
@@ -89,5 +90,15 @@ describe('readable localized calendar dates', () => {
     const date = new Date(2026, 8, 12, 14, 5);
     expect(localizedCalendarDate(date, locale)).toBe(expected);
     expect(localizedCalendarDateTime(date, locale)).toBe(`${expected}, 14:05`);
+  });
+});
+
+describe('scanDate', () => {
+  it('reads a scan dated by its day alone as that day on the reader\'s calendar, untimed', () => {
+    // The start of the day in the carrier's zone can be the evening before for the reader.
+    expect(scanDate({ occurredAt: new Date(2026, 9, 1, 23).toISOString(), day: '2026-10-02' })).toEqual({ date: new Date(2026, 9, 2), timed: false });
+    expect(scanDate({ occurredAt: new Date(2026, 9, 2, 9, 12).toISOString() })).toEqual({ date: new Date(2026, 9, 2, 9, 12), timed: true });
+    expect(scanDate({ occurredAt: new Date(2026, 9, 2, 9, 12).toISOString(), day: '2026-02-30' })).toEqual({ date: new Date(2026, 9, 2, 9, 12), timed: true });
+    expect(scanDate({ occurredAt: 'not a date' })).toBeNull();
   });
 });
