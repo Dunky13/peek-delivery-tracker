@@ -71,8 +71,8 @@ seguir,rastrear,rastreio,tracking,localizar,entrega,entregas,envio,envios,correi
 ## What's new
 
 ```text
-• O Peek conhece mais 225 transportadoras e desenha cada uma com as suas cores.
+• O Peek conhece mais 228 transportadoras e desenha cada uma com as suas cores.
 • Os pedidos da Amazon abrem na loja Amazon certa, também em países sem loja própria.
-• Cola um número de encomenda da Temu e o Peek mostra-te onde a Temu indica os números de seguimento.
 • Se um número abranger várias encomendas, o Peek avisa-te: adiciona cada uma com o seu próprio número.
+• Quando uma transportadora só indica o dia de uma leitura, o Peek mostra esse dia sem hora.
 ```

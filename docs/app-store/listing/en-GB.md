@@ -73,8 +73,8 @@ delivery,tracking,shipment,order,courier,post,mail,shipping,track,deliveries,map
 ## What's new
 
 ```text
-• Peek knows 225 more carriers and draws each one in its own colours.
+• Peek knows 228 more carriers and draws each one in its own colours.
 • Amazon orders open in the right Amazon store, also from countries without one of their own.
-• Paste a Temu order number and Peek shows where Temu lists the tracking numbers.
 • When one number covers several parcels, Peek says so: add each with its own number.
+• When a carrier gives only the day of a scan, Peek shows that day without a clock time.
 ```
