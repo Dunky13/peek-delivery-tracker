@@ -29,21 +29,28 @@ workdir=$(mktemp -d)
 trap 'rm -rf "$workdir"' EXIT
 nonce=$(date +%s)-$$
 
+# A slow answer, a reset connection or an unexpected status is asked again twice, 3 s apart,
+# so that one bad answer from a site that works doesn't fail the deploy.
 request() {
   local url=$1
   local output=$2
   local response_headers=$3
   local expected_status=${4:-200}
-  local status
-  status=$(curl "${curl_args[@]}" \
-    -D "$response_headers" \
-    -o "$output" \
-    -w '%{http_code}' \
-    "$url")
-  if [[ "$status" != "$expected_status" ]]; then
-    echo "Smoke request returned HTTP $status for $url" >&2
-    exit 1
-  fi
+  local status attempt
+  for attempt in 1 2 3; do
+    if status=$(curl "${curl_args[@]}" \
+      -D "$response_headers" \
+      -o "$output" \
+      -w '%{http_code}' \
+      "$url"); then
+      [[ "$status" == "$expected_status" ]] && return
+      echo "Smoke request returned HTTP $status for $url (attempt $attempt of 3)" >&2
+    else
+      echo "Smoke request failed for $url (attempt $attempt of 3)" >&2
+    fi
+    [[ $attempt == 3 ]] || sleep 3
+  done
+  exit 1
 }
 
 require_match() {
