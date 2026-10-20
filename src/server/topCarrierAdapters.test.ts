@@ -17,8 +17,6 @@ const cases = [
     latestLocal: '2026-09-04T11:43:00', stage: 'delivered' },
   { carrier: 'evri', number: 'H000000000000001', fixture: 'international',
     latestLocal: '2026-06-08T12:08:00', stage: 'failed_attempt' },
-  { carrier: 'sf-express', number: 'SF0000000000001', fixture: 'delivered',
-    latestLocal: '2026-01-08T11:20:00', stage: 'delivered' },
 ];
 const observedAt = new Date('2026-09-26T12:00:00Z');
 

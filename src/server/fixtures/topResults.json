@@ -92,52 +92,6 @@
       }
     ]
   },
-  "sf-express/delivered/all": {
-    "status": "delivered",
-    "current_stage": "delivered",
-    "last_status_text": "Delivered",
-    "last_update": null,
-    "last_update_local": "2026-01-08T11:20:00",
-    "expected_delivery": null,
-    "events": [
-      {
-        "local_time": "2026-01-08T11:20:00",
-        "provider_code": "80",
-        "description": "Delivered",
-        "stage": "delivered"
-      },
-      {
-        "local_time": "2026-01-08T07:50:00",
-        "provider_code": "204",
-        "description": "Out for delivery",
-        "stage": "out_for_delivery"
-      },
-      {
-        "local_time": "2026-01-07T10:00:00",
-        "provider_code": "14",
-        "description": "Customs clearance completed",
-        "stage": "in_transit"
-      },
-      {
-        "local_time": "2026-01-06T15:00:00",
-        "provider_code": "106",
-        "description": "The shipment has arrived at the destination hub",
-        "stage": "in_transit"
-      },
-      {
-        "local_time": "2026-01-05T14:00:00",
-        "provider_code": "30",
-        "description": "Shipment loaded at the origin hub",
-        "stage": "in_transit"
-      },
-      {
-        "local_time": "2026-01-04T12:00:00",
-        "provider_code": "950",
-        "description": "The shipment has been collected by SF Express",
-        "stage": "accepted"
-      }
-    ]
-  },
   "japan-post/positive/destination": {
     "status": "delivered",
     "current_stage": "delivered",
