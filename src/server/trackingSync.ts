@@ -1662,6 +1662,13 @@ export class TrackingSyncService {
         // A rejected/older summary must not advertise a swap that was not saved.
         values.carrier_data.routing.configured_carrier = carrierId;
       }
+      // A parcel left under unknown keeps no carrier confirmed for it, such as one whose
+      // local-clock answer could not replace the saved summary: routing would stop filing it
+      // any other way, and the database files a parcel a provider names only while none is.
+      if (!values.carrier && carrierId === 'unknown' && routing) {
+        delete routing.confirmed_carrier; delete routing.confirmed_number;
+        delete routing.confirmed_tracking_url; delete routing.confirmed_postcode;
+      }
       // A scan already stored is rewritten in place, which is no news.
       const storedIds = new Set(stored.map((event) => String(event.provider_event_id)));
       const eventsNew = persistedEvents.filter((event) => !storedIds.has(String(event.provider_event_id))).length;

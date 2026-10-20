@@ -1039,6 +1039,74 @@ describe('TrackingSyncService', () => {
     expect(report).toHaveBeenCalledWith('carrier_auto_swapped', expect.objectContaining({ carrier: 'unknown', provider: '17feia', category: 'detected' }));
   });
 
+  it('files an unknown parcel under the carrier only recognition found once a provider naming none dates its local-clock answer', async () => {
+    const report = vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    vi.spyOn(scraper, 'universalPlan').mockReturnValue({ sources: ['Postal Ninja'], carrier: null, tier: () => 'unknown', rank: () => 0 });
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    // A shape detection is unsure of. STO, which alone knows it, lists its scans on Shanghai's
+    // clock: 09:00 there is the provider's 01:00 UTC.
+    const number = '123456789012';
+    const adapter = {
+      recognize: vi.fn(async (carrier: string) => ({ known: carrier === 'sto' })),
+      fetch: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: null,
+        events: [{ local_time: '2026-09-10T09:00:00', description: 'Departed the sorting centre', stage: 'in_transit' }] }),
+      fetchUniversal: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-09-10T01:00:00Z',
+        events: [{ time: '2026-09-10T01:00:00Z', description: 'In transit', stage: 'in_transit' }] }),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null,
+      () => new Date('2026-09-10T12:00:00Z'));
+    await service.syncPackage({ id: 'recognized', carrier: 'unknown', tracking_number: number, current_stage: 'pending' });
+    expect(adapter.fetch).toHaveBeenCalledExactlyOnceWith('sto', number, null, null);
+    const saved = client.updatePackage.mock.calls.at(-1)![1];
+    // The database files it as a probe's confirmation: the carrier confirmed for the number, swapped from unknown.
+    expect(saved).toMatchObject({ carrier: 'sto', tracking_url: null, dpd_postcode: null, current_stage: 'in_transit', carrier_data: {
+      tracking_provider: 'Postal Ninja', carrier_answered: true, auto_changed_from: 'unknown', auto_changed_to: 'sto',
+      routing: { configured_carrier: 'sto', confirmed_carrier: 'sto', confirmed_number: number },
+      direct_local_history: { carrier: 'sto', number, events: [expect.objectContaining({ local_time: '2026-09-10T09:00:00' })] },
+    } });
+    expect(report).toHaveBeenCalledWith('candidate_probe_confirmed', expect.objectContaining({ carrier: 'unknown', provider: 'sto' }));
+    expect(report).toHaveBeenCalledWith('carrier_auto_swapped', expect.objectContaining({ carrier: 'unknown', provider: 'sto' }));
+  });
+
+  it('keeps no carrier confirmed for a parcel it leaves unknown, so a later check can file it', async () => {
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    const local = (stage: string, description: string) => ({ status: 'in_transit', current_stage: stage, last_update: null,
+      events: [{ local_time: '2026-09-10T09:00:00', description, stage }] });
+    const dated = (time: string) => ({ status: 'in_transit', current_stage: 'in_transit', last_update: time,
+      reported_carriers: ['17FEIA', 'DPD'], events: [{ time, description: 'In transit', stage: 'in_transit' }] });
+    const adapter = {
+      fetch: vi.fn().mockResolvedValueOnce(local('registered', 'Shipment information received'))
+        .mockResolvedValue(local('in_transit', 'Departed the sorting centre')),
+      fetchUniversal: vi.fn().mockResolvedValueOnce(dated('2026-09-10T11:00:00Z')).mockResolvedValue(dated('2026-09-10T18:00:00Z')),
+    };
+    let now = new Date('2026-09-10T12:00:00Z');
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    // A synthetic number in 17FEIA's own shape. An earlier release filed it from a registration on local
+    // clocks, which the sync kept out of the provider's saved summary, and saved the carrier as confirmed.
+    const number = 'FEIXY0000000001YQ';
+    const parcel = { id: 'stale-confirmation', carrier: 'unknown', tracking_number: number, current_stage: 'registered',
+      carrier_data: { tracking_provider: 'Ship24', routing: { version: 1, configured_carrier: 'unknown',
+        confirmed_carrier: '17feia', confirmed_number: number, confirmed_tracking_url: null, confirmed_postcode: null,
+        last_event_at: '2026-09-10T08:00:00.000Z' } } };
+    await service.syncPackage(parcel);
+    const first = client.updatePackage.mock.calls.at(-1)![1];
+    expect(first).not.toHaveProperty('carrier');
+    expect(first.carrier_data.routing).toMatchObject({ configured_carrier: 'unknown' });
+    for (const key of ['confirmed_carrier', 'confirmed_number', 'confirmed_tracking_url', 'confirmed_postcode']) {
+      expect(first.carrier_data.routing).not.toHaveProperty(key);
+    }
+    // Its carrier moves and a provider dates the progress: the parcel is filed as one never confirmed would be.
+    now = new Date('2026-09-10T19:00:00Z');
+    await service.syncPackage({ ...parcel, ...first });
+    expect(adapter.fetch.mock.calls.map(([carrier]) => carrier)).toEqual(['17feia', '17feia']);
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ carrier: '17feia', carrier_data: {
+      discovered_carrier: '17feia', routing: { configured_carrier: '17feia', discovered_carrier: '17feia' } } });
+  });
+
   it('persists routing for a universal-only carrier and respects it on the next manual check', async () => {
     const client = { ...fakeClient(),
       acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),

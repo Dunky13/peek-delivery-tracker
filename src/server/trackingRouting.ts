@@ -16,7 +16,7 @@ import { errorType, reportRoutingEvent } from './observability';
 import { recordChecksumRejection, recordProviderInput } from './metrics';
 import { CarrierError, carrierErrorKind, CARRIER_DEFINITIONS, deliveryHandoff, IndeterminateError, NoHistoryError, retryAfterMsOf } from 'universal-parcel-scraper';
 import { captureDirectLocalHistory, directHistoryNumber, directLocalHistory, hasUnresolvedDirectCurrent, hasUnresolvedDirectHistory } from './directLocalHistory';
-import { latestResultTime } from 'universal-parcel-scraper/app';
+import { eventTimestamp, latestResultTime } from 'universal-parcel-scraper/app';
 import type { Recognition, TrackingContext } from 'universal-parcel-scraper/node';
 import { MAX_RECOGNITIONS, recognitionCandidates, recognizeAll, settleRecognition } from 'universal-parcel-scraper';
 import { BROWSER_RECOGNITION_BUDGET_MS, MAX_BROWSER_RECOGNITIONS } from './browserRecognition';
@@ -237,6 +237,23 @@ export function hasRoutingProgress(result: CarrierResult): boolean {
 function localAnswer(result: CarrierResult): { scans: number; stage: string | null } {
   return { scans: result.events?.length ?? 0, stage: resultStage(result) };
 }
+/**
+ * Whether a provider dates every scan of a carrier's local-clock answer: a scan of the same
+ * stage at the instant the scan's local time gives in the carrier's catalog zone, to the
+ * minute, or an hour off (SEUR's Canary Islands run an hour behind Madrid). Only provider
+ * times with an offset count; a carrier the catalog places in no zone has none to read.
+ */
+function datesEveryScan(carrier: string, answer: CarrierResult, provider: CarrierResult): boolean {
+  const zone = carrierZone(carrier);
+  const scans = answer.events ?? [];
+  const minute = (time: unknown, timezone?: string) => Math.floor(Date.parse(eventTimestamp(time, timezone) ?? '') / 60_000);
+  const stage = (event: { stage?: string; description?: string }) => event.stage ?? inferStage(event.description ?? '', 'pending');
+  const dated = (provider.events ?? []).filter((event) => typeof event.time === 'string' && /(?:Z|[+-]\d{2}:?\d{2})$/i.test(event.time));
+  return zone !== null && scans.length > 0 && scans.every((scan) => {
+    const local = minute(scan.local_time ?? scan.time, zone);
+    return dated.some((event) => stage(event) === stage(scan) && [0, 60].includes(Math.abs(minute(event.time) - local)));
+  });
+}
 /** The newest instant of a routed result, read in its source's zone exactly as its events are persisted. */
 function latest(value: RoutedResult): number {
   return latestResultTime(value.result, value.sourceCarrierId);
@@ -367,6 +384,8 @@ export class TrackingRouter {
     // Carriers asked in this check whose own answer for the number moved but had only
     // local clocks: the answer, the local history it brought, and how to confirm the carrier.
     const localAnswers = new Map<string, { value: RoutedResult; history: JsonObject | undefined; confirm: () => void }>();
+    // The carrier this check's recognition settled on alone.
+    let recognized: string | undefined;
     // Asked again, or its answer on local clocks taken, a carrier has nothing set aside.
     const clearSetAside = (carrier: string) => {
       if (!state.set_aside?.[carrier]) return;
@@ -501,19 +520,29 @@ export class TrackingRouter {
         ? [...localAnswers.keys()].find((carrier) => detectionNames(number, carrier))
           ?? (providerNamed && localAnswers.has(providerNamed) ? providerNamed : undefined)
         : undefined;
-      const named = answered ?? providerNamed;
+      // Recognition alone found the carrier: its moving answer files the parcel once this
+      // provider dates every scan of it, confirmed as a probe's dated answer would be. The
+      // provider need name no carrier (Postal Ninja names none).
+      const recognizedAnswer = unnamed && !answered && !providerNamed && recognized && hasRoutingProgress(value.result)
+        ? localAnswers.get(recognized) : undefined;
+      const dated = recognizedAnswer && hasRoutingProgress(recognizedAnswer.value.result)
+        && datesEveryScan(recognized!, recognizedAnswer.value.result, value.result) ? recognized : undefined;
+      const named = answered ?? providerNamed ?? dated;
       // Filed under the carrier that answered, the parcel keeps that carrier's history,
       // not one another candidate brought first.
-      const history = answered ? localAnswers.get(answered)?.history : localHistory;
+      const taken = answered ?? dated;
+      const history = taken ? localAnswers.get(taken)?.history : localHistory;
       if (named) {
         state.configured_carrier = named;
         // A provider naming several legs may settle on none (17FEIA, and a DPD the catalog
         // cannot place): the carrier that answered is the one routing settled on, which the
         // database's guard requires of a parcel a provider's history files.
-        if (answered) {
-          state.discovered_carrier = answered;
-          clearSetAside(answered);
+        if (answered) state.discovered_carrier = answered;
+        if (dated) {
+          report('candidate_probe_confirmed', dated);
+          recognizedAnswer!.confirm();
         }
+        if (taken) clearSetAside(taken);
         value.correction = { carrier: named, trackingUrl: null, postcode: null };
       }
       // A carrier with an adapter of its own that this check did not ask (an Add preflight's
@@ -527,6 +556,7 @@ export class TrackingRouter {
         ...(answered ? { carrier_answered: true, discovered_carrier: answered } : {}),
         ...(directCarrier(provider) ? { active_tracking_carrier: value.sourceCarrierId } : {}),
         ...(swap ? { auto_changed_from: declared, auto_changed_to: provider, auto_changed_at: now().toISOString() } : {}),
+        ...(dated ? { carrier_answered: true, auto_changed_from: declared, auto_changed_to: dated, auto_changed_at: now().toISOString() } : {}),
       } };
     };
     const attemptedDirect = new Set<string>();
@@ -716,7 +746,8 @@ export class TrackingRouter {
     // While no provider has progress for the parcel, a carrier's own answer that moved serves
     // it, on local clocks too: the filed carrier's, or for an unknown parcel the one detection
     // names or a provider named, which it is then filed under and confirmed for, as a probe's
-    // answer with dated scans would be. That carrier is asked first on the next check.
+    // answer with dated scans would be. A registration alone is no movement. That carrier is
+    // asked first on the next check.
     const ownLocalAnswer = (): RoutedResult | undefined => {
       if (localDirectFallback) {
         if (!hasRoutingProgress(localDirectFallback.value.result)) return undefined;
@@ -727,7 +758,7 @@ export class TrackingRouter {
       const carrier = [...localAnswers.keys()].find((answered) => detectionNames(number, answered))
         ?? (state.discovered_carrier && localAnswers.has(state.discovered_carrier) ? state.discovered_carrier : undefined);
       const answer = carrier ? localAnswers.get(carrier) : undefined;
-      if (!carrier || !answer) return undefined;
+      if (!carrier || !answer || !hasRoutingProgress(answer.value.result)) return undefined;
       answer.confirm();
       clearSetAside(carrier);
       localHistory = answer.history;
@@ -815,6 +846,7 @@ export class TrackingRouter {
           BROWSER_RECOGNITION_BUDGET_MS, signal));
       }
       signal?.throwIfAborted();
+      recognized = settleRecognition(outcomes, now()).carrier;
       // A carrier that knows the number and needs no input gets a full
       // lookup, adopted only on real progress (a pre-advice is not enough).
       for (const outcome of outcomes) {

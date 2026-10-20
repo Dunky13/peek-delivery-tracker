@@ -1662,6 +1662,24 @@ describe('persistent tracking routing', () => {
         result: { direct_local_fallback: true, routing: { configured_carrier: '17feia', confirmed_carrier: '17feia' } } });
     });
 
+    it('does not file the parcel from an answer showing only a registration', async () => {
+      fixedPlan('Ship24', '17TRACK');
+      const registered = (): RoutedResult => ({ ...local(), result: { status: 'pending', current_stage: 'registered', last_update: null,
+        events: [{ local_time: '2026-09-10T09:00:00', description: 'Shipment information received', stage: 'registered' }] } });
+      // No provider answers, or one shows a registration too.
+      for (const answer of [async () => { throw new NotFoundError('Ship24'); }, async () => thinHistory()]) {
+        const { router, direct, universal } = setup();
+        direct.mockResolvedValue(registered());
+        universal.mockImplementation(answer);
+        const outcome = await router.fetch(filed({}, { current_stage: 'registered' }), false)
+          .catch((error: unknown) => error as RoutingDeferred);
+        const routing = outcome instanceof RoutingDeferred ? outcome.routing : outcome.result.routing;
+        expect(outcome).not.toHaveProperty('correction');
+        expect(routing).toMatchObject({ configured_carrier: 'unknown', set_aside: { '17feia': { reason: 'local_clock' } } });
+        expect(routing).not.toHaveProperty('confirmed_carrier');
+      }
+    });
+
     it('leaves the parcel unknown when only recognition found the carrier and no provider has progress', async () => {
       fixedPlan('Ship24', '17TRACK');
       const { router, direct, universal, recognize } = setup();
@@ -1676,7 +1694,8 @@ describe('persistent tracking routing', () => {
 
     it.each([
       ['a provider named', 'TEST1234', '17feia', { discovered_carrier: '17feia' }],
-      ['recognition found for a shape detection is unsure of', '123456789012', 'sto', {}],
+      // STO's 09:00 in Shanghai is 01:00 UTC, 10 hours before the provider's scan.
+      ['recognition found for a shape detection is unsure of, whose scans the provider does not date', '123456789012', 'sto', {}],
     ])('does not take a carrier %s', async (_label, trackingNumber, carrier, routing) => {
       fixedPlan('Ship24', '17TRACK');
       const { router, direct, universal, recognize } = setup();
@@ -1711,6 +1730,57 @@ describe('persistent tracking routing', () => {
       expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
       expect(result.result.routing).not.toHaveProperty(['failures', carrier]);
       expect(result.result.routing).not.toHaveProperty('set_aside');
+    });
+
+    describe('a carrier only recognition found, whose scans a provider naming no carrier dates', () => {
+      // A shape detection is unsure of: recognition asks STO, whose catalog zone is Asia/Shanghai,
+      // among others. Its answer's 09:00 there is 01:00 UTC.
+      const trackingNumber = '123456789012';
+      const dating = (time = '2026-09-10T01:00:00Z', stage = 'in_transit', description = 'In transit'): CarrierResult => ({
+        status: 'in_transit', current_stage: stage, last_update: time, events: [{ time, description, stage }] });
+      const check = async (known: string[], provider: CarrierResult) => {
+        fixedPlan('Postal Ninja');
+        const { router, direct, universal, recognize } = setup();
+        recognize.mockImplementation(async (asked: string) => ({ known: known.includes(asked) }));
+        direct.mockImplementation(async (_parcel, asked: string) => local(asked));
+        universal.mockResolvedValue(provider);
+        const result = await router.fetch(filed({ last_event_at: '2026-09-10T01:00:00.000Z' }, { tracking_number: trackingNumber }), false);
+        expect(direct.mock.calls.map(([, carrier]) => carrier).sort()).toEqual([...known].sort());
+        return result;
+      };
+
+      it.each([
+        ['to the minute', '2026-09-10T01:00:42Z'],
+        ['an hour off, as a scan on the Canary Islands is on Madrid\'s clock', '2026-09-10T02:00:00Z'],
+      ])('files the parcel under it, confirmed as a probe\'s dated answer would be, when the scans match %s', async (_label, time) => {
+        const result = await check(['sto'], dating(time));
+        expect(result).toMatchObject({ sourceCarrierId: 'unknown', correction: { carrier: 'sto', trackingUrl: null, postcode: null },
+          result: { tracking_provider: 'Postal Ninja', carrier_answered: true, auto_changed_from: 'unknown', auto_changed_to: 'sto',
+            routing: { configured_carrier: 'sto', confirmed_carrier: 'sto', confirmed_number: trackingNumber,
+              confirmed_tracking_url: null, confirmed_postcode: null },
+            direct_local_history: { carrier: 'sto', number: trackingNumber, events: [expect.objectContaining({ local_time: '2026-09-10T09:00:00' })] } } });
+        expect(result.result.routing).not.toHaveProperty('set_aside');
+        expect(result.result.routing).not.toHaveProperty('discovered_carrier');
+        expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('candidate_probe_confirmed', expect.objectContaining({ carrier: 'unknown', provider: 'sto' }));
+      });
+
+      it.each([
+        ['scans that match by an offset that is no whole hour', ['sto'], dating('2026-09-10T01:30:00Z')],
+        ['a scan of another stage', ['sto'], dating('2026-09-10T01:00:00Z', 'out_for_delivery', 'Out for delivery')],
+        ['recognition that knows two carriers', ['sto', 'j-and-t'], dating()],
+        // BRT's catalog lists it in UTC: read there, its 09:00 would be the provider's.
+        ['a carrier the catalog lists in UTC', ['brt'], dating('2026-09-10T09:00:00Z')],
+        // Read as UTC, it would be STO's scan.
+        ['provider times without an offset', ['sto'], dating('2026-09-10T01:00:00')],
+      ] as const)('leaves the parcel unknown on %s', async (_label, known, provider) => {
+        const result = await check([...known], provider);
+        expect(result.correction).toBeUndefined();
+        expect(result.result).toMatchObject({ tracking_provider: 'Postal Ninja', routing: { configured_carrier: 'unknown',
+          set_aside: Object.fromEntries(known.map((carrier) => [carrier, expect.objectContaining({ reason: 'local_clock' })])) } });
+        expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+        expect(result.result).not.toHaveProperty('auto_changed_from');
+        expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('candidate_probe_confirmed', expect.anything());
+      });
     });
 
     it('keeps the local history of the carrier it takes, not of one asked before it', async () => {
