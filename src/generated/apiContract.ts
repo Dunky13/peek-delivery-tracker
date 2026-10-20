@@ -3593,7 +3593,7 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^\\d{13,14}$",
+        "pattern": "^[1-9]\\d{11,12}[0-6]$",
         "confidence": "low"
       }
     ],
@@ -5549,7 +5549,8 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^\\d{11}$",
-        "confidence": "low"
+        "confidence": "low",
+        "checksum": "dhl-ecommerce-pl"
       }
     ],
     "trackingSearchUrl": "https://mojdhl.pl/tracking"
@@ -8729,7 +8730,7 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^\\d{11}$",
+        "pattern": "^[2-9]\\d{10}$",
         "confidence": "low"
       }
     ],
