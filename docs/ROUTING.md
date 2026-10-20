@@ -545,7 +545,7 @@ detection or the adapters could act on: each check saves them for the hourly rev
 | `candidate_probe_confirmed` | Carrier recognition found the carrier and it tracks the parcel |
 | `foreign_history_rejected` | A universal returned an older parcel of another carrier for the number |
 | `carrier_input_needed` | A recognized carrier needs the user's input (the GLS postcode); the parcel asks for it |
-| `direct_support_opportunity` | Signal: a carrier without an adapter of its own is tracked through a provider, a candidate for an adapter |
+| `direct_support_opportunity` | Signal: a carrier without an adapter of its own is tracked through a provider, a candidate for an adapter. Reported once per number |
 | `carrier_coverage_discovered` | Signal: a provider named a carrier the catalog doesn't know |
 | `fresher_provider_found` | A shadow check found newer history at another provider and the parcel moved to it. Evidence to revisit the default order |
 | `coverage_contradicted` | A provider disagreed with the carrier's coverage results: `category` `history` when one that answered without history has the parcel, `no_history` when one with history does not while another has it. Evidence to rerun the coverage probe |

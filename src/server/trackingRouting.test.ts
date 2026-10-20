@@ -204,6 +204,20 @@ describe('persistent tracking routing', () => {
     await router.fetch(parcel({ carrier: 'royal-mail', current_stage: 'in_transit' }), false);
     expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('direct_support_opportunity', expect.anything());
   });
+  it('reports a direct-support opportunity once per number, not on every check', async () => {
+    const reported = () => vi.mocked(monitoring.reportRoutingEvent).mock.calls
+      .filter(([code]) => code === 'direct_support_opportunity').map(([, context]) => context.provider);
+    const first = setup();
+    first.universal.mockResolvedValue({ ...history(), discovered_carrier: 'aaa-cooper' });
+    const result = await first.router.fetch(parcel(), false);
+    expect(reported()).toEqual(['aaa-cooper']);
+    expect(result.result.routing).toMatchObject({ support_opportunity: 'aaa-cooper' });
+    const next = setup(new Date('2026-09-10T13:00:00Z'));
+    next.universal.mockResolvedValue({ ...history('2026-09-10T12:30:00Z'), discovered_carrier: 'aaa-cooper' });
+    await next.router.fetch(parcel({ carrier_data: result.result }), true);
+    expect(next.universal).toHaveBeenCalled();
+    expect(reported()).toEqual(['aaa-cooper']);
+  });
   it.each([
     ['registered', { ...thinHistory(), current_stage: 'registered',
       events: [{ time: '2026-09-10T11:30:00Z', description: 'Information received', stage: 'registered' }] }],

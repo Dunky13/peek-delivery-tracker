@@ -95,6 +95,8 @@ export interface RoutingState extends JsonObject {
    * check did not ask: the next run asks it (see the schedule). The next check clears it.
    */
   carrier_named_at?: string;
+  /** The carrier without an adapter of its own last reported as a candidate for one: a number counts once. */
+  support_opportunity?: string;
 }
 
 let rules: string | undefined;
@@ -390,6 +392,13 @@ export class TrackingRouter {
       carrier: declared, provider, category: kind, trackingNumber: number,
       ...(error ? { errorClass: errorType(error), error } : {}),
     });
+    // A carrier tracked through a provider for want of an adapter is reported once per number,
+    // not on every check that tracks it.
+    const opportunity = (carrier: string) => {
+      if (state.support_opportunity === carrier) return;
+      state.support_opportunity = carrier;
+      report('direct_support_opportunity', carrier);
+    };
     const fail = (provider: string, error: unknown, universalSource = false): Failure => {
       const classified = routingFailure(error);
       const kind = classified.kind === 'transport' && answeredWithoutHistory(error, !universalSource)
@@ -988,7 +997,7 @@ export class TrackingRouter {
           if (source !== 'UPU' && ['full', 'partial'].includes(plan.tier(source))) report('coverage_contradicted', source, 'no_history');
         }
       }
-      if (!withoutProgress && !directCarrier(declared) && declared !== 'unknown' && declared !== 'intl-post' && !preferred) report('direct_support_opportunity', declared);
+      if (!withoutProgress && !directCarrier(declared) && declared !== 'unknown' && declared !== 'intl-post' && !preferred) opportunity(declared);
       state.preferred_provider = withoutProgress || chosen === 'UPU' ? preferred : chosen;
       state.preferred_number = state.preferred_provider ? universalNumber : undefined;
       // A carrier whose adapter refuses the number as one it does not issue is no
@@ -1001,7 +1010,7 @@ export class TrackingRouter {
         if (directCarrier(state.discovered_carrier) && state.discovered_carrier !== state.confirmed_carrier) {
           state.direct_retry_at = now().toISOString();
           report('direct_carrier_discovered', state.discovered_carrier);
-        } else if (!withoutProgress && !directCarrier(state.discovered_carrier)) report('direct_support_opportunity', state.discovered_carrier);
+        } else if (!withoutProgress && !directCarrier(state.discovered_carrier)) opportunity(state.discovered_carrier);
       }
       // Confirm a newly reported carrier immediately. Preserve universal data if
       // confirmation fails, needs credentials, or only returned older history.
