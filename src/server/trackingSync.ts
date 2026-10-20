@@ -33,7 +33,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
-import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, UNIVERSAL_PROVIDER, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { datedObservations, restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, UNIVERSAL_PROVIDER, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   askedForCheck,
   providerFailureSummary,
@@ -1603,9 +1603,15 @@ export class TrackingSyncService {
       const undated = stored.filter((row) => row.observed_without_provider_timestamp === true
         && String(row.provider_event_id).startsWith(`${sourceCarrierId}:`) && daysDated.has(JSON.stringify([row.stage, row.description])))
         .map((row) => String(row.provider_event_id));
-      const absorbed = eventsToPersist.length > 0 ? [...shared.absorbed, ...undated] : [];
+      // A stage change seen without a time goes too once a dated scan holds it, or the scan
+      // takes its row over.
+      const dated = datedObservations(eventsToPersist.filter((event) => !normalized.relays.has(String(event.provider_event_id))),
+        stored, matches);
+      const absorbed = eventsToPersist.length > 0 ? [...new Set([...shared.absorbed, ...undated, ...dated.absorbed])] : [];
       const persistedEvents = withIdentities(
-        eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))), matches.reused, stored,
+        eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))
+          && !dated.skipped.has(String(event.provider_event_id))),
+        new Map([...matches.reused, ...dated.reused]), stored,
       );
       if (!preserveSummary) {
         values.last_status_text = result.last_status_text || null;
@@ -1683,7 +1689,7 @@ export class TrackingSyncService {
         events_new: eventsNew,
         identities_reused: [...matches.reused.keys()].filter((id) => persistedIds.has(id)).length,
         copies_skipped: [...matches.skipped.keys()].filter((id) => persistedIds.has(id)).length,
-        copies_absorbed: absorbed.length - undated.length,
+        copies_absorbed: eventsToPersist.length > 0 ? shared.absorbed.size : 0,
         atomic_with_package: true,
         ...reannounced,
       });

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
+import type { JsonObject } from './types';
+import { datedObservations, restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
 
 // New events carry the sync's ISO spelling; stored rows come back from
 // PostgREST with an explicit +00:00 offset. Both name the same instant.
@@ -898,6 +899,120 @@ describe('rows only a universal provider wrote', () => {
     expect(persisted.map((event) => [event.provider_event_id, (event.raw_data as Record<string, unknown>).universal_provider])).toEqual([
       ['unknown:sorted', 'ParcelsApp'], ['unknown:new', 'ParcelsApp'], ['unknown:taken', undefined],
     ]);
+  });
+});
+
+describe('a provider\'s copy a whole number of hours from the carrier\'s row', () => {
+  // UPS dates its scans to the second; a provider kept the minute of its customs scan, read 11 h late.
+  const place = { location: 'Louisville, KY, US', stage: 'customs', raw_data: { provider_code: 'XC' } };
+  const own = { ...row('ups:customs', '2026-01-04T12:09:15+00:00', 'Clearing agency'), ...place };
+  const copy = { ...row('unknown:customs', '2026-01-04T23:09:00+00:00', 'Clearing agency'), ...place, universal_provider: 'ParcelsApp' };
+  const ownScan = { ...scan('ups:customs', '2026-01-04T12:09:15Z', 'Clearing agency'), ...place };
+  const read = (id: string, at: string) => ({ ...scan(id, at, 'Clearing agency'), ...place, universal_provider: 'ParcelsApp' });
+
+  it('goes with any check, and its provider\'s copy at that time stays out', () => {
+    expect([...sharedScans([ownScan], [own, copy]).absorbed]).toEqual(['unknown:customs']);
+    expect([...sharedScans([scan('unknown:other', '2026-01-05T08:00:00Z', 'Delivered')], [own, copy]).absorbed]).toEqual(['unknown:customs']);
+    // The carrier's row reaches the parcel in this check.
+    expect([...sharedScans([ownScan], [copy]).absorbed]).toEqual(['unknown:customs']);
+    const again = sharedScans([read('unknown:customs', '2026-01-04T23:09:00Z')], [own, copy]);
+    expect(pairs(again.skipped)).toEqual([['unknown:customs', 'ups:customs']]);
+    expect([...again.absorbed]).toEqual(['unknown:customs']);
+    const later = sharedScans([read('unknown:late', '2026-01-04T23:09:00Z')], [own]);
+    expect(pairs(later.skipped)).toEqual([['unknown:late', 'ups:customs']]);
+  });
+
+  it('stays when it may be a scan of its own', () => {
+    const kept = (rows: JsonObject[]) => sharedScans([ownScan], rows).absorbed.size;
+    expect(kept([own, { ...copy, location: 'Philadelphia, PA, US' }])).toBe(0);
+    expect(kept([own, { ...copy, description: 'Import scan' }])).toBe(0);
+    expect(kept([own, { ...copy, raw_data: { provider_code: 'XD' } }])).toBe(0);
+    // Seconds of its own, or not a whole number of hours, or more than 14 h away.
+    expect(kept([own, { ...copy, occurred_at: '2026-01-04T23:09:30+00:00' }])).toBe(0);
+    expect(kept([own, { ...copy, occurred_at: '2026-01-04T22:39:00+00:00' }])).toBe(0);
+    expect(kept([own, { ...copy, occurred_at: '2026-01-05T03:09:00+00:00' }])).toBe(0);
+    // The carrier has a scan of its own at the copy's minute, or two copies match one row.
+    expect(kept([own, copy, { ...own, provider_event_id: 'ups:customs-again', occurred_at: '2026-01-04T23:09:40+00:00' }])).toBe(0);
+    expect(kept([own, copy, { ...copy, provider_event_id: 'unknown:customs-again', occurred_at: '2026-01-04T21:09:00+00:00' }])).toBe(0);
+    // An earlier release's row that names no provider holds the scan at the copy's minute, or is the only row a whole number of hours away.
+    expect(kept([own, copy, { ...own, provider_event_id: 'unknown:legacy', occurred_at: '2026-01-04T23:09:00+00:00' }])).toBe(0);
+    const delivered = scan('unknown:other', '2026-01-05T08:00:00Z', 'Delivered');
+    expect(sharedScans([delivered], [{ ...own, provider_event_id: 'unknown:legacy' }, copy]).absorbed.size).toBe(0);
+    // A copy that names no provider may be the carrier's row an earlier release wrote.
+    expect(kept([own, { ...copy, universal_provider: undefined }])).toBe(0);
+    // A row the batch's carrier scan takes over is that scan's.
+    expect(sharedScans([{ ...scan('ups:other', '2026-01-04T23:09:00Z', 'Clearing agency'), ...place }], [own, copy]).absorbed.size).toBe(0);
+    // The provider reads the scan at the carrier's minute too, or still at the copy's under another identity.
+    expect(sharedScans([ownScan, read('unknown:read', '2026-01-04T12:09:00Z')], [own, copy]).absorbed.has('unknown:customs')).toBe(false);
+    expect(sharedScans([read('unknown:customs-again', '2026-01-04T23:09:00Z')], [own, copy]).absorbed.size).toBe(0);
+  });
+});
+
+describe('a stage change the sync saw without a time', () => {
+  const sighting = { ...row('dpd-uk:observed', '2026-10-20T16:11:32.240+00:00', 'Order details received', 'registered'),
+    location: null, observed_without_provider_timestamp: true };
+  const dated = (values: JsonObject = {}) => ({ ...scan('dpd-uk:registered', '2026-09-22T18:09:00Z', 'Order details received', 'registered'),
+    time: '2026-09-22T19:09:00+01:00', ...values });
+  const none = { reused: new Map<string, string>(), skipped: new Map<string, string>() };
+  /** Each sighting a scan dates: the scan that takes its row over, or `absorbed`. */
+  const dating = (events: JsonObject[], stored: JsonObject[] = [sighting], matches = none) => {
+    const found = datedObservations(events, stored, matches);
+    return [...[...found.reused].map(([scanId, row]) => [row, scanId]), ...[...found.absorbed].map((row) => [row, 'absorbed']),
+      ...[...found.skipped].map((row) => [row, 'skipped'])];
+  };
+
+  it('is the scan one source dates with the same stage, wording, code and place', () => {
+    expect(dating([dated()])).toEqual([['dpd-uk:observed', 'dpd-uk:registered']]);
+    // A place where the sighting names none.
+    expect(dating([dated({ location: 'London' })])).toEqual([['dpd-uk:observed', 'dpd-uk:registered']]);
+    // The wall clock it kept, in the scan's zone or another.
+    const clocked = (local: string) => dating([dated()], [{ ...sighting, local_time: local }]).length;
+    expect(clocked('2026-09-22T19:09:00')).toBe(1);
+    expect(clocked('2026-09-22T18:09:00')).toBe(1);
+    expect(clocked('2026-09-22')).toBe(1);
+    expect(clocked('2026-09-22T19:10:00')).toBe(0);
+    expect(clocked('2026-09-25')).toBe(0);
+  });
+
+  it('takes the row over only for a scan new to the parcel, from its source or dating a provider\'s sighting', () => {
+    // A provider's copy of a carrier's sighting would leave the carrier's row holding the provider's clock.
+    expect(dating([dated({ provider_event_id: 'unknown:registered' })])).toEqual([['dpd-uk:observed', 'absorbed']]);
+    expect(dating([dated()], [{ ...sighting, provider_event_id: 'unknown:observed' }])).toEqual([['unknown:observed', 'dpd-uk:registered']]);
+    // Stored already, or holding another row.
+    expect(dating([dated()], [sighting, dated()])).toEqual([['dpd-uk:observed', 'absorbed']]);
+    expect(dating([dated()], [sighting], { ...none, reused: new Map([['dpd-uk:registered', 'unknown:copy']]) }))
+      .toEqual([['dpd-uk:observed', 'absorbed']]);
+    expect(dating([dated()], [sighting], { ...none, skipped: new Map([['dpd-uk:registered', 'ups:twin']]) }))
+      .toEqual([['dpd-uk:observed', 'absorbed']]);
+    // A scan dated to the day alone could not find the row again.
+    expect(dating([dated({ time: undefined, local_time: '2026-09-22' })])).toEqual([['dpd-uk:observed', 'absorbed']]);
+    // One scan takes one row over.
+    expect(dating([dated()], [sighting, { ...sighting, provider_event_id: 'dpd-uk:observed-again' }]))
+      .toEqual([['dpd-uk:observed', 'dpd-uk:registered'], ['dpd-uk:observed-again', 'absorbed']]);
+  });
+
+  it('is a stored row too when it kept the time of day, whether stored or new', () => {
+    const clocked = { ...sighting, local_time: '2026-09-22T19:09:00' };
+    // A provider dated the scan before the carrier's answer on local clocks was seen.
+    expect(dating([], [clocked, dated()])).toEqual([['dpd-uk:observed', 'absorbed']]);
+    expect(dating([clocked], [dated()])).toEqual([['dpd-uk:observed', 'skipped']]);
+    expect(dating([clocked], [clocked, dated()])).toEqual([['dpd-uk:observed', 'absorbed'], ['dpd-uk:observed', 'skipped']]);
+    // Without the time of day, a stage seen twice in the same words may be two scans.
+    expect(dating([], [sighting, dated()])).toEqual([]);
+    expect(dating([{ ...sighting, local_time: '2026-09-22' }], [dated()])).toEqual([]);
+    expect(dating([clocked], [dated({ occurred_at: '2026-09-22T18:10:00Z' })])).toEqual([]);
+  });
+
+  it('stays when no one scan dates it', () => {
+    const left = (events: JsonObject[], values: JsonObject = {}) => dating(events, [{ ...sighting, ...values }]).length;
+    expect(left([dated({ stage: 'accepted' })])).toBe(0);
+    expect(left([dated({ description: 'Order details updated' })])).toBe(0);
+    expect(left([dated({ raw_data: { provider_code: '02' } })], { provider_code: '01' })).toBe(0);
+    expect(left([dated({ location: 'London' })], { location: 'Leeds' })).toBe(0);
+    expect(left([dated({ occurred_at: '2026-10-20T17:00:00Z' })])).toBe(0);
+    expect(left([dated({ location: 'London' }), dated({ provider_event_id: 'dpd-uk:again', location: 'Leeds' })])).toBe(0);
+    expect(left([dated({ raw_data: { observed_without_provider_timestamp: true } })])).toBe(0);
+    expect(left([dated()], { observed_without_provider_timestamp: undefined })).toBe(0);
   });
 });
 

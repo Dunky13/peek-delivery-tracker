@@ -797,6 +797,34 @@ describe('TrackingSyncService', () => {
       expect.objectContaining({ anomaly_codes: [] }), expect.any(Array));
   });
 
+  it('lets the scan the carrier now dates take over the stage change it saw without a time', async () => {
+    const answer: CarrierResult = { status: 'exception', current_stage: 'exception', last_status_text: 'Contacta con agencia',
+      last_update: '2026-10-19T14:00:00+02:00', events: [
+        { time: '2026-10-19T14:00:00+02:00', description: 'Contacta con agencia', stage: 'exception' },
+        { time: '2026-10-18T09:00:00+02:00', description: 'En reparto', stage: 'out_for_delivery' }] };
+    // An earlier check saw the stage change and dated it at that check.
+    const observed = { provider_event_id: 'nacex:observed', occurred_at: '2026-10-19T17:00:00.000Z', stage: 'exception',
+      description: 'Contacta con agencia', observed_without_provider_timestamp: true };
+    const sync = async (stored: JsonObject[]) => {
+      const client = fakeClient();
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn().mockResolvedValue(answer) },
+        null, () => new Date('2026-10-20T08:00:00Z'));
+      await service.syncPackage({ id: 'dated-later', carrier: 'nacex', tracking_number: '0000/00000000', current_stage: 'exception',
+        [STORED_EVENT_IDENTITIES]: stored });
+      const [, , rows, , deleted] = client.applyTrackingSync.mock.calls.at(-1)! as unknown as [JsonObject, JsonObject, JsonObject[], string[], string[]];
+      return { rows: rows.map((row) => [row.provider_event_id, row.occurred_at]), deleted };
+    };
+    const taken = await sync([observed]);
+    expect(taken.rows[0]).toEqual(['nacex:observed', '2026-10-19T12:00:00Z']);
+    expect(taken.deleted).toEqual([]);
+    // A provider's copy of the scan was stored already: the scan takes the copy over, and the stage change goes.
+    const copy = { provider_event_id: 'unknown:copy', occurred_at: '2026-10-19T12:00:00+00:00', stage: 'exception',
+      description: 'Contacta con agencia', universal_provider: 'Ship24' };
+    const absorbed = await sync([observed, copy]);
+    expect(absorbed.rows[0]).toEqual(['unknown:copy', '2026-10-19T12:00:00Z']);
+    expect(absorbed.deleted).toEqual(['nacex:observed']);
+  });
+
   it('consumes new-add query context before fetching and never repeats it on refresh', async () => {
     const candidates = ['dpd', 'seur', 'brt', 'relais-colis', 'ciblex', 'hermes-de'].map((carrier) => ({ carrier, needsInput: null, preferred: false }));
     vi.spyOn(scraper, 'recognitionCandidates').mockReturnValue(candidates);

@@ -39,6 +39,12 @@
  *   (`UNIVERSAL_PROVIDER`), and follows the provider's clock when a scraper
  *   fix moves it. A carrier's scan writes the row without the name, so the
  *   row keeps the carrier's instant from then on.
+ * - A universal copy stored a whole number of hours from a carrier's row of
+ *   the scan, before a fix read the provider's clock right, goes with any
+ *   check (`sharedScans`).
+ * - A stage change the sync stored at the time it saw it goes once a scan
+ *   dates it, a scan new to the parcel taking its row over, and a new one a
+ *   stored row dates is not stored (`datedObservations`).
  * - A handoff's batch carries the earlier carrier's scans too, and that
  *   carrier may relay the delivery carrier's scans in its own words. Both are
  *   stored (relayCopies.ts), but only the delivery carrier's scan takes over a
@@ -350,6 +356,26 @@ function stagesAgree(left: string, right: string): boolean {
   return left === right || [left, right].some((stage) => stage === '' || stage === 'pending');
 }
 
+/** The provider codes of one scan: the same when both carry one. */
+function codesAgree(left: JsonObject, right: JsonObject): boolean {
+  return !providerCode(left) || !providerCode(right) || providerCode(left) === providerCode(right);
+}
+
+function placeOf(row: JsonObject): string {
+  return String(row.location ?? '').replace(/\s+/g, ' ').trim().toLocaleLowerCase('en-US');
+}
+
+/**
+ * A copy a whole number of hours from a scan, up to 14 h: the scan read in
+ * another zone. A copy in whole minutes is compared to the scan's minute, a
+ * copy in whole seconds to its second.
+ */
+function hoursApart(copy: number, scan: number): boolean {
+  const unit = copy % MINUTE_MS === 0 ? MINUTE_MS : 1_000;
+  const shift = copy - Math.floor(scan / unit) * unit;
+  return shift !== 0 && shift % HOUR_MS === 0 && Math.abs(shift) <= MAX_ZONE_SHIFT_MS;
+}
+
 /**
  * The words of a scan's place, without accents, case or countries ("Paris, FR"
  * and "PARIS CDG" share paris), umlauts spelt out (ZUERICH is Zürich). A word
@@ -452,6 +478,16 @@ function copies(scan: JsonObject, row: JsonObject): boolean {
  * shift away where another row holds it. A scan that matches such a
  * row across an offset, not just within a minute, takes it over as a carrier's
  * scan would.
+ *
+ * A row only a universal provider wrote, a whole number of hours from a
+ * carrier's own row, up to 14 h, in the same wording and place, with stages
+ * and provider codes that agree, is a copy an earlier release read on the
+ * wrong clock: it is absorbed, and a universal scan that matches a stored
+ * carrier row that way is left out. A copy in whole minutes is compared to
+ * the carrier's minute. A row of the scan at the copy's own minute, the
+ * carrier's or one written before rows named their provider, the provider's
+ * reading of the scan at the carrier row's minute, a scan that takes the row
+ * over or repeats it, or a second copy of the carrier row keeps it.
  */
 export function sharedScans(
   events: readonly JsonObject[],
@@ -593,7 +629,135 @@ export function sharedScans(
       && sameWording(wordingOf(event), wordingOf(row)) && !placesConflict(placeWords(event), placeWords(row)));
     if (copy && answer.some((event) => event !== copy && instantOf(event) < instantOf(row))) shared.absorbed.add(id);
   }
+  // A provider's copy of a carrier's row a whole number of hours away, in the same wording and
+  // place, stored before a fix read the provider's clock right (ParcelsApp's copy of UPS's
+  // customs scan, 11 h late), goes, and the provider's copies at that time stay out. A carrier
+  // row of the scan at the copy's own minute, the provider's reading of the scan at the carrier
+  // row's minute, or a second copy of the row makes it another scan. A universal scan is matched
+  // with stored rows alone.
+  const carrierRows = stored.filter((row) => !taken.has(identity(row)) && heldByCarrier(row) && !observedOnly(row)
+    && Number.isFinite(instantOf(row)));
+  const batchScans = events.filter((event) => heldByCarrier(event) && !observedOnly(event) && Number.isFinite(instantOf(event)));
+  const minute = (at: number) => Math.floor(at / MINUTE_MS);
+  const carrierRowOf = (copy: JsonObject, among: readonly JsonObject[]): JsonObject | undefined => {
+    const same = (row: JsonObject) => wordingOf(copy) !== '' && wordingOf(row) === wordingOf(copy)
+      && placeOf(row) === placeOf(copy) && codesAgree(copy, row) && stagesAgree(stageOf(row), stageOf(copy));
+    const scans = among.filter(same);
+    const apart = scans.filter((row) => sourceOf(identity(row)) !== UNIVERSAL && hoursApart(instantOf(copy), instantOf(row)));
+    if (apart.length !== 1 || scans.some((row) => minute(instantOf(row)) === minute(instantOf(copy)))) return undefined;
+    const carrier = apart[0]!;
+    return events.some((event) => providerOf(event) === providerOf(copy) && same(event)
+      && minute(instantOf(event)) === minute(instantOf(carrier))) ? undefined : carrier;
+  };
+  const stale = new Map<string, JsonObject>();
+  for (const event of events) {
+    const id = identity(event);
+    if (sourceOf(id) !== UNIVERSAL || providerOf(event) === '' || reused.has(id) || shared.reused.has(id)
+      || shared.skipped.has(id) || observedOnly(event) || !Number.isFinite(instantOf(event))) continue;
+    const carrier = carrierRowOf(event, carrierRows);
+    if (carrier) stale.set(id, carrier);
+  }
+  // A row another scan takes over or repeats holds that scan.
+  const holding = new Set([...shared.reused.values(), ...shared.skipped.values(), ...shared.absorbed]);
+  for (const row of rows) {
+    const id = identity(row);
+    if (sourceOf(id) !== UNIVERSAL || providerOf(row) === '' || holding.has(id) || stale.has(id)) continue;
+    const carrier = carrierRowOf(row, [...carrierRows, ...batchScans]);
+    if (carrier) stale.set(id, carrier);
+  }
+  const copiesOf = new Map<JsonObject, number>();
+  for (const carrier of stale.values()) copiesOf.set(carrier, (copiesOf.get(carrier) ?? 0) + 1);
+  for (const [id, carrier] of stale) {
+    if (copiesOf.get(carrier) !== 1) continue;
+    if (storedById.has(id)) shared.absorbed.add(id);
+    if (events.some((event) => identity(event) === id)) shared.skipped.set(id, storedById.has(identity(carrier)) ? identity(carrier) : id);
+  }
   return shared;
+}
+
+/** The wall clock a row kept (`local_time`), with or without the time of day. */
+function localTimeOf(row: JsonObject): string {
+  const local = row.local_time ?? (isRecord(row.raw_data) ? row.raw_data.local_time : undefined);
+  return typeof local === 'string' ? local : '';
+}
+
+/** Whether a scan's instant can be the wall clock a sighting kept: in the scan's zone or another, up to 14 h away. */
+function showsClock(local: string, instant: number): boolean {
+  if (local === '') return true;
+  const day = /^\d{4}-\d{2}-\d{2}$/.test(local);
+  const wall = Date.parse(day ? `${local}T00:00:00Z` : `${local.slice(0, 19)}Z`);
+  if (!Number.isFinite(wall)) return true;
+  if (day) return instant >= wall - MAX_ZONE_SHIFT_MS && instant < wall + 24 * HOUR_MS + MAX_ZONE_SHIFT_MS;
+  const unit = wall % MINUTE_MS === 0 || instant % MINUTE_MS === 0 ? MINUTE_MS : 1_000;
+  const shift = Math.floor(wall / unit) * unit - Math.floor(instant / unit) * unit;
+  return shift % QUARTER_HOUR_MS === 0 && Math.abs(shift) <= MAX_ZONE_SHIFT_MS;
+}
+
+export interface DatedObservations {
+  /** A scan's computed identity → the sighting's row it takes over in place. */
+  reused: Map<string, string>;
+  /** Stored sightings whose scan another row holds: deleted with the sync. */
+  absorbed: Set<string>;
+  /** Sightings of the batch whose scan a stored row holds: left out. */
+  skipped: Set<string>;
+}
+
+/**
+ * The stage changes the sync stamped with the time it saw them that one dated
+ * scan holds (DPD UK's registration once its scans carry London's clock, a
+ * provider's copy of a scan the carrier gave on local clocks): the same stage
+ * and wording, the same provider code when both carry one, and the same place
+ * unless one names none. The scan is no later than the sighting, and a
+ * sighting that kept the scan's wall clock shows it, in the scan's zone or
+ * whole quarter hours away up to 14 h. A stored sighting is matched with the
+ * batch's scans, and with the stored rows too when it kept the time of day,
+ * as is a sighting of the batch; without it, a stage seen twice in the same
+ * words could be taken for one scan. A sighting two scans could date stays.
+ *
+ * A scan of the batch new to the parcel, with a time of day, from the
+ * sighting's source or dating a universal provider's sighting, takes the
+ * stored sighting's row over, so it is not announced again; the row then
+ * holds the scan as any row of that source does. Otherwise the sighting is
+ * absorbed, or left out of the batch.
+ */
+export function datedObservations(
+  events: readonly JsonObject[],
+  stored: readonly JsonObject[],
+  matches: { reused: ReadonlyMap<string, string>; skipped: ReadonlyMap<string, string> },
+): DatedObservations {
+  const dated: DatedObservations = { reused: new Map(), absorbed: new Set(), skipped: new Set() };
+  const storedIds = new Set(stored.map(identity));
+  const batchIds = new Set(events.map(identity));
+  // A stored row a scan of the batch takes over or repeats is that scan.
+  const held = new Set([...batchIds, ...matches.reused.values(), ...matches.skipped.values()]);
+  const dates = (row: JsonObject) => !['', 'app'].includes(sourceOf(identity(row))) && !observedOnly(row)
+    && Number.isFinite(instantOf(row));
+  const scans = events.filter(dates);
+  const rows = stored.filter((row) => dates(row) && !held.has(identity(row)));
+  const sightings = [...stored, ...events.filter((event) => !storedIds.has(identity(event)))]
+    .filter((row) => observedOnly(row) && !['', 'app'].includes(sourceOf(identity(row))) && wordingOf(row) !== '');
+  for (const sighting of sightings) {
+    const id = identity(sighting);
+    const clocked = /T\d{2}:\d{2}/.test(localTimeOf(sighting));
+    const kept = storedIds.has(id);
+    if (!kept && !clocked) continue;
+    const matching = (clocked ? [...scans, ...rows] : scans).filter((scan) => stageOf(scan) === stageOf(sighting)
+      && wordingOf(scan) === wordingOf(sighting) && codesAgree(scan, sighting)
+      && (placeOf(scan) === placeOf(sighting) || !placeOf(scan) || !placeOf(sighting))
+      && instantOf(scan) <= instantOf(sighting) && showsClock(localTimeOf(sighting), instantOf(scan)));
+    if (new Set(matching.map(identity)).size !== 1) continue;
+    const scan = identity(matching[0]!);
+    // A sighting the batch writes again is left out, so its stored row can go.
+    if (batchIds.has(id)) dated.skipped.add(id);
+    if (!kept) continue;
+    // A scan dated by its day alone keeps its own row: a later check finds a row by its time.
+    if (!batchIds.has(id) && batchIds.has(scan) && !storedIds.has(scan) && !matches.reused.has(scan) && !matches.skipped.has(scan)
+      && !dated.reused.has(scan) && timeOf(matching[0]!) !== '' && [sourceOf(scan), UNIVERSAL].includes(sourceOf(id))) {
+      dated.reused.set(scan, id);
+    }
+    else dated.absorbed.add(id);
+  }
+  return dated;
 }
 
 /**
