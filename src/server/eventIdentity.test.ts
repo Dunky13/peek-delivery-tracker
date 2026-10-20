@@ -4,8 +4,10 @@ import { datedObservations, restatedIdentities, sameInstantIdentities, sharedSca
 
 // New events carry the sync's ISO spelling; stored rows come back from
 // PostgREST with an explicit +00:00 offset. Both name the same instant.
+// A universal scan names its provider, as the sync's do.
 const scan = (id: string, occurredAt: string, description = 'Scan', stage?: string) => ({
   package_id: 'package-1', provider_event_id: id, occurred_at: occurredAt, description, ...(stage ? { stage } : {}),
+  ...(id.startsWith('unknown:') ? { raw_data: { universal_provider: 'ParcelsApp' } } : {}),
 });
 const row = (id: string, occurredAt: string, description?: string, stage?: string) => ({
   provider_event_id: id, occurred_at: occurredAt,
@@ -707,7 +709,8 @@ describe('scans a carrier and a universal provider both report', () => {
     // A row DPD's own rule took over is not offered again.
     expect(sharedScans([scan('dpd:b', instant, 'Delivered')], [row('unknown:a', instant, 'Delivered')],
       new Map([['dpd:a', 'unknown:a']])).reused.size).toBe(0);
-    const observed = { ...scan('unknown:observed', instant, 'Delivered'), raw_data: { observed_without_provider_timestamp: true } };
+    const observed = { ...scan('unknown:observed', instant, 'Delivered'),
+      raw_data: { universal_provider: 'ParcelsApp', observed_without_provider_timestamp: true } };
     expect(sharedScans([observed], [row('gofo:delivered', instant, 'Delivered')]).skipped.size).toBe(0);
     expect(sharedScans([scan('unknown:a', instant, 'Delivered')], []).skipped.size).toBe(0);
   });
@@ -797,7 +800,7 @@ describe('every copy at a carrier scan\'s instant', () => {
   it('leaves out a provider\'s later copies of a scan a carrier holds, so absorbed copies do not come back', () => {
     const instant = '2026-01-09T08:45:32.000Z';
     const carrier = row('speedaf:accepted', instant, 'Guangzhou warehouse', 'accepted');
-    const copy = (id: string, description: string, stage: string) => named(scan(id, instant, description, stage), 'ParcelsApp');
+    const copy = (id: string, description: string, stage: string) => scan(id, instant, description, stage);
     const shared = sharedScans([copy('unknown:a', 'Arrived at departure transport hub', 'pending'),
       copy('unknown:b', 'Guangzhou warehouse, International logistics', 'pending'),
       copy('unknown:c', 'Departed', 'in_transit'), scan('unknown:d', instant, 'Unclassified')], [carrier]);
@@ -817,11 +820,8 @@ describe('every copy at a carrier scan\'s instant', () => {
 describe('rows only a universal provider wrote', () => {
   // A provider first read a warehouse's clock as UTC, eight hours late; a scraper fix reads it on the warehouse's own.
   const named = <T extends object>(value: T, provider = 'ParcelsApp') => ({ ...value, universal_provider: provider });
-  const fixed = (id: string, occurredAt: string, description: string, provider = 'ParcelsApp') => ({
-    ...scan(id, occurredAt, description), raw_data: { universal_provider: provider },
-  });
   const late = named(row('unknown:sorted', '2026-01-03T21:15:42+00:00', 'Arrived at sorting center'));
-  const sorted = fixed('unknown:sorted', '2026-01-03T13:15:42Z', 'Arrived at sorting center');
+  const sorted = scan('unknown:sorted', '2026-01-03T13:15:42Z', 'Arrived at sorting center');
 
   it('moves its own row to the provider\'s corrected clock, unless a carrier or another provider wrote it, or it predates the name', () => {
     const moved = sharedScans([sorted], [late]);
@@ -841,19 +841,19 @@ describe('rows only a universal provider wrote', () => {
     // The fix changed the time the identity hashes, so the scan meets its old row under another identity.
     const unnamed = row('unknown:departed-late', '2026-01-04T02:30:10+00:00', 'Departed from sorting center');
     const departed = named(unnamed);
-    const scan = fixed('unknown:departed', '2026-01-03T18:30:10Z', 'Departed from sorting center');
-    const moved = sharedScans([scan], [departed]);
+    const corrected = scan('unknown:departed', '2026-01-03T18:30:10Z', 'Departed from sorting center');
+    const moved = sharedScans([corrected], [departed]);
     expect(pairs(moved.reused)).toEqual([['unknown:departed', 'unknown:departed-late']]);
     expect(moved.skipped.size).toBe(0);
     expect([...moved.shifted]).toEqual(['unknown:departed']);
-    expect(withIdentities([scan], moved.reused, [departed])).toMatchObject([
+    expect(withIdentities([corrected], moved.reused, [departed])).toMatchObject([
       { provider_event_id: 'unknown:departed-late', occurred_at: '2026-01-03T18:30:10Z', raw_data: { universal_provider: 'ParcelsApp' } },
     ]);
     // A copy to the minute is no clock fix, and an unnamed row stays where it is.
-    const minuted = sharedScans([fixed('unknown:departed', '2026-01-04T02:30:00Z', 'Departed from sorting center')], [departed]);
+    const minuted = sharedScans([scan('unknown:departed', '2026-01-04T02:30:00Z', 'Departed from sorting center')], [departed]);
     expect(pairs(minuted.skipped)).toEqual([['unknown:departed', 'unknown:departed-late']]);
     expect(minuted.reused.size).toBe(0);
-    expect(pairs(sharedScans([scan], [unnamed]).skipped)).toEqual([['unknown:departed', 'unknown:departed-late']]);
+    expect(pairs(sharedScans([corrected], [unnamed]).skipped)).toEqual([['unknown:departed', 'unknown:departed-late']]);
   });
 
   it('leaves the scan out when another row at the corrected instant already holds it', () => {
@@ -875,13 +875,13 @@ describe('rows only a universal provider wrote', () => {
     // The provider read a hub on the wrong clock, three hours late, beside the scan another leg copied right.
     const hub = 'Carteret, NJ';
     const at = <T extends object>(value: T) => ({ ...value, location: hub });
-    const label = fixed('unknown:label', '2026-01-01T07:38:40Z', 'Shipping label created');
-    const arrived = { ...fixed('unknown:arrived', '2026-01-03T00:42:33Z', 'Arrived at origin hub'), location: hub };
+    const label = scan('unknown:label', '2026-01-01T07:38:40Z', 'Shipping label created');
+    const arrived = { ...scan('unknown:arrived', '2026-01-03T00:42:33Z', 'Arrived at origin hub'), location: hub };
     const right = named(at(row('unknown:arrived', '2026-01-03T00:42:33+00:00', 'Arrived at origin hub')));
     const stale = named(at(row('unknown:arrived-late', '2026-01-03T03:42:33+00:00', 'Arrived at origin hub')));
     expect([...sharedScans([label, arrived], [right, stale]).absorbed]).toEqual(['unknown:arrived-late']);
     // It stays while the answer shows its instant, does not reach back past it, or nothing else holds the scan.
-    const again = { ...fixed('unknown:again', '2026-01-03T03:42:33Z', 'Arrived at origin hub'), location: hub };
+    const again = { ...scan('unknown:again', '2026-01-03T03:42:33Z', 'Arrived at origin hub'), location: hub };
     expect(sharedScans([label, arrived, again], [right, stale]).absorbed.size).toBe(0);
     expect(sharedScans([arrived], [right, stale]).absorbed.size).toBe(0);
     expect(sharedScans([label, arrived], [stale]).absorbed.size).toBe(0);
@@ -893,7 +893,7 @@ describe('rows only a universal provider wrote', () => {
   });
 
   it('names the provider on its new rows and the rows it named, never on a row a carrier or an earlier release wrote', () => {
-    const scans = [sorted, fixed('unknown:new', '2026-01-03T15:00:00Z', 'Loaded'), fixed('unknown:copy', '2026-01-03T16:00:00Z', 'Sorted')];
+    const scans = [sorted, scan('unknown:new', '2026-01-03T15:00:00Z', 'Loaded'), scan('unknown:copy', '2026-01-03T16:00:00Z', 'Sorted')];
     const stored = [late, row('unknown:taken', '2026-01-03T16:00:00+00:00', 'Sorted')];
     const persisted = withIdentities(scans, new Map([['unknown:copy', 'unknown:taken']]), stored);
     expect(persisted.map((event) => [event.provider_event_id, (event.raw_data as Record<string, unknown>).universal_provider])).toEqual([
@@ -1016,7 +1016,8 @@ describe('a stage change the sync saw without a time', () => {
 
   it('takes the row over only for a scan new to the parcel, from its source or dating a provider\'s sighting', () => {
     // A provider's copy of a carrier's sighting would leave the carrier's row holding the provider's clock.
-    expect(dating([dated({ provider_event_id: 'unknown:registered' })])).toEqual([['dpd-uk:observed', 'absorbed']]);
+    expect(dating([dated({ provider_event_id: 'unknown:registered', raw_data: { universal_provider: 'ParcelsApp' } })]))
+      .toEqual([['dpd-uk:observed', 'absorbed']]);
     expect(dating([dated()], [{ ...sighting, provider_event_id: 'unknown:observed' }])).toEqual([['unknown:observed', 'dpd-uk:registered']]);
     // Stored already, or holding another row.
     expect(dating([dated()], [sighting, dated()])).toEqual([['dpd-uk:observed', 'absorbed']]);
