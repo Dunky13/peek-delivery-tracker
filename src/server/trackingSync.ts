@@ -1905,8 +1905,11 @@ export class TrackingSyncService {
             && new Date(deliveryTime).toISOString().slice(0, 10) === new Date(originTime).toISOString().slice(0, 10)
             && new Date(watermark).toISOString().slice(0, 10) === new Date(originTime).toISOString().slice(0, 10);
           const scanned = delivery.status !== 'pending' && !['pending', 'registered'].includes(resultStage(delivery) ?? 'pending');
+          // A partner relaying the origin's scans may keep only their minute (CTT's copy of Royal
+          // Mail's departure): a time on a whole minute is compared to the minute.
+          const fresh = deliveryTime >= (deliveryTime % 60_000 === 0 ? watermark - watermark % 60_000 : watermark);
           if (scanned && (candidate.basis !== 'destination' || deliveryTime > 0)
-            && resultHasUpdate(delivery) && (deliveryTime >= watermark || sameCompletion)
+            && resultHasUpdate(delivery) && (fresh || sameCompletion)
             && (!terminal || resultStage(delivery) === terminal)) {
             // The local delivery hides the origin failure from the router, which reports every other one.
             if (originError && !isUnannouncedTrackingError(originError)) reportRoutingEvent('provider_failed', {
@@ -1928,7 +1931,7 @@ export class TrackingSyncService {
             };
           }
           // It has the parcel on record with news of its own and no scan yet: its first scan comes next.
-          if (!scanned && deliveryTime > 0 && deliveryTime >= watermark) Object.assign(probe, { announced: true, misses: 1 });
+          if (!scanned && deliveryTime > 0 && fresh) Object.assign(probe, { announced: true, misses: 1 });
         } catch (error) {
           fallbackError = errorType(error);
           // A partner that does not know the item yet, or answers inconclusively

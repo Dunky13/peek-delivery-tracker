@@ -3092,6 +3092,22 @@ describe('TrackingSyncService', () => {
     }
   });
 
+  it('hands over to a partner relaying the origin’s newest scan to the minute', async () => {
+    const origin: CarrierResult = { status: 'in_transit', destination_country: 'PT', last_update: '2026-10-20T05:10:08+01:00',
+      timezone: 'Europe/London', events: [{ time: '2026-10-20T05:10:08+01:00', description: 'Item Leaving the UK', stage: 'in_transit' }] };
+    for (const [relayed, partner] of [['2026-10-20T05:10:00+01:00', 'ctt'], ['2026-10-20T05:09:00+01:00', undefined]] as const) {
+      const client = fakeClient();
+      const adapter = { fetch: vi.fn(async (carrier: string): Promise<CarrierResult> => carrier === 'ctt'
+        ? { status: 'in_transit', last_update: relayed, timezone: 'Europe/Lisbon',
+          events: [{ time: relayed, description: 'Forwarded to the destination country', stage: 'in_transit' }] }
+        : origin) };
+      await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-10-20T08:00:00Z'))
+        .syncPackage({ id: 'relayed-departure', carrier: 'royal-mail', tracking_number: 'RA123456785GB' }, { trigger: 'scheduled' });
+      expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['royal-mail', 'ctt']);
+      expect(client.updatePackage.mock.calls.at(-1)![1].carrier_data.active_tracking_carrier).toBe(partner);
+    }
+  });
+
   it('asks an unconfirmed partner again on a refresh by hand, a few minutes apart', async () => {
     const client = fakeClient();
     let now = new Date('2026-09-10T10:00:00Z');

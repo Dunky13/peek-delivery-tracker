@@ -428,8 +428,11 @@ A parcel often changes carrier at the border. The origin history is always kept.
   home in the destination country whose number rule fits beside AliExpress's, asked with
   the same number.
 - The partner is only adopted once its own adapter (no required inputs) returns dated,
-  fresh progress. A partner whose only input is optional (DPD's postcode) is asked without
-  it, and only with a reference of its own number shape, never the origin's postal number.
+  fresh progress: a scan no older than the origin's newest. A partner's time on a whole
+  minute is compared to the minute, since a partner relaying the origin's scans may keep
+  only their minute (CTT's copies of Royal Mail's). A partner whose only input is optional
+  (DPD's postcode) is asked without it, and only with a reference of its own number shape,
+  never the origin's postal number.
   Failed confirmations wait 55 min, doubling with each miss up to 6 h, unless the origin
   history or the partner changes; the wait stays 55 min while the origin is down, and a
   check a provider answers in the meantime keeps the misses and the last ask. It is
