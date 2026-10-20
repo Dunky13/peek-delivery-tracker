@@ -10469,6 +10469,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -10923,6 +10926,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -10989,6 +10995,9 @@
       "austrian-post",
       "usps",
       "estafeta"
+    ],
+    "preferred": [
+      "austrian-post"
     ],
     "asked": [
       "austrian-post"
@@ -11232,6 +11241,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -11423,6 +11435,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -11476,6 +11491,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -11489,6 +11507,9 @@
       "usps",
       "estafeta"
     ],
+    "preferred": [
+      "austrian-post"
+    ],
     "asked": [
       "austrian-post"
     ]
@@ -11501,6 +11522,9 @@
       "austrian-post",
       "usps",
       "estafeta"
+    ],
+    "preferred": [
+      "austrian-post"
     ],
     "asked": [
       "austrian-post"
@@ -39757,6 +39781,31 @@
     "candidates": []
   },
   {
+    "input": "48285234834793",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "dpd",
+      "ciblex",
+      "hermes-de",
+      "seur",
+      "brt",
+      "delhivery",
+      "dhl-ecommerce-uk",
+      "dpd-be",
+      "dpd-de",
+      "dpd-nl",
+      "dpd-uk"
+    ],
+    "asked": [
+      "hermes-de",
+      "dpd-be",
+      "dpd",
+      "dpd-nl",
+      "dpd-de"
+    ]
+  },
+  {
     "input": "483151203868516",
     "carrier": "unknown",
     "confidence": "low",
@@ -62280,6 +62329,14 @@
     ]
   },
   {
+    "input": "A0123456789ABCDEF01F",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
     "input": "A0984R00009",
     "carrier": "unknown",
     "confidence": "none",
@@ -74555,6 +74612,14 @@
     ]
   },
   {
+    "input": "JCZ1006008960DH",
+    "carrier": "jcex",
+    "confidence": "high",
+    "candidates": [
+      "jcex"
+    ]
+  },
+  {
     "input": "JD0002123456789012",
     "carrier": "unknown",
     "confidence": "low",
@@ -77358,6 +77423,14 @@
   },
   {
     "input": "LP107221675JP",
+    "carrier": "japan-post",
+    "confidence": "high",
+    "candidates": [
+      "japan-post"
+    ]
+  },
+  {
+    "input": "LP107777790JP",
     "carrier": "japan-post",
     "confidence": "high",
     "candidates": [
@@ -85968,7 +86041,39 @@
     ]
   },
   {
+    "input": "SF6047696957042",
+    "carrier": "sf-express",
+    "confidence": "high",
+    "candidates": [
+      "sf-express"
+    ]
+  },
+  {
     "input": "SF6047789135544",
+    "carrier": "sf-express",
+    "confidence": "high",
+    "candidates": [
+      "sf-express"
+    ]
+  },
+  {
+    "input": "SF6047826456714",
+    "carrier": "sf-express",
+    "confidence": "high",
+    "candidates": [
+      "sf-express"
+    ]
+  },
+  {
+    "input": "SF6047918078324",
+    "carrier": "sf-express",
+    "confidence": "high",
+    "candidates": [
+      "sf-express"
+    ]
+  },
+  {
+    "input": "SF6047933110963",
     "carrier": "sf-express",
     "confidence": "high",
     "candidates": [

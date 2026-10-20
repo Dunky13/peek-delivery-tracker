@@ -544,6 +544,11 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "s10"
       },
       {
+        "pattern": "^A0[0-9A-F]{18}$",
+        "confidence": "high",
+        "checksum": "frankier-id"
+      },
+      {
         "pattern": "^JJD(?!\\d{16}$)(?!0146\\d{14}$)[A-Z0-9]{8,}$",
         "confidence": "high"
       },
@@ -2004,7 +2009,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "royal-mail",
-      "browserRecognitionRank": 900
+      "browserRecognitionRank": 910
     },
     "linkRules": [
       {
@@ -2253,6 +2258,11 @@ export const CARRIER_CAPABILITIES = {
     },
     "linkRules": [],
     "detectionRules": [
+      {
+        "pattern": "^10\\d{20}$",
+        "confidence": "low",
+        "preferred": true
+      },
       {
         "pattern": "^\\d{22}$",
         "confidence": "low"
@@ -10030,7 +10040,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kuala_Lumpur",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "citylink-express",
+      "recognitionRank": 533
     },
     "trackingUrlTemplate": "https://www.citylinkexpress.com/tracking-result/?track0={trackingNumber}",
     "linkRules": [
@@ -19724,7 +19735,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Guatemala",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "guatex",
+      "recognitionRank": 566
     },
     "trackingUrlTemplate": "https://servicios.guatex.gt/Guatex/RastreoTracking?tipo=G&dato={trackingNumber}",
     "linkRules": [
@@ -21701,7 +21713,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "vozovoz",
+      "recognitionRank": 569
     },
     "trackingUrlTemplate": "https://vozovoz.ru/order/manage/?id={trackingNumber}",
     "linkRules": [
@@ -27190,7 +27203,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "flippost",
+      "recognitionRank": 568
     },
     "trackingUrlTemplate": "https://flippost.com/instruments/online/?number={trackingNumber}",
     "linkRules": [
@@ -29434,7 +29448,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Chicago",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "fedex-freight"
     },
     "trackingUrlTemplate": "https://www.fedexfreight.com/fedextrack/?trknbr={trackingNumber}",
     "linkRules": [
@@ -29841,7 +29855,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "j-and-t-au",
+      "recognitionRank": 698
     },
     "trackingUrlTemplate": "https://www.jtexpress.au/tracking?q={trackingNumber}",
     "linkRules": [
