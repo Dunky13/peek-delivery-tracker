@@ -78,7 +78,8 @@ describe('parcelDisplayStatus', () => {
   it('folds a final event date into one concise status line', () => {
     const delivered = parcel('ok', 'in_transit');
     delivered.events[0].stage = 'delivered';
-    delivered.events[0].occurredAt = '2026-07-16T10:00:00Z';
+    // Noon on 16 July where the test runs: the 16th in every zone.
+    delivered.events[0].occurredAt = new Date(2026, 6, 16, 12).toISOString();
     expect(localizedParcelCompletionDate(delivered, 'de-CH', (key) => en[key], new Date(2026, 8, 9).getTime())).toBe('Do 16. Juli');
   });
 });
