@@ -6030,7 +6030,12 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/lkfl/order/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^10\\d{9}$",
+        "confidence": "low"
+      }
+    ],
     "trackingUrlTemplate": "https://my.cdek.ru/lkfl/order/{trackingNumber}",
     "trackingSearchUrl": "https://my.cdek.ru/lkfl/"
   },
@@ -7328,6 +7333,10 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^1[A-Z]{3,5}\\d{9,12}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^1[A-Z][A-Z0-9]{2}LN\\d{9}$",
         "confidence": "low"
       }
     ],
