@@ -999,6 +999,7 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         case "magyar-posta": isValidMagyarPostaNumber(number)
         case "poste-italiane": isValidPosteItalianeRegisteredNumber(number)
         case "frankier-id": isValidFrankierId(number)
+        case "dhl-ecommerce-pl": isValidDhlEcommercePolandNumber(number)
         default: nil
         }
     }
@@ -1034,6 +1035,15 @@ final class CarrierCatalog: ObservableObject, @unchecked Sendable {
         let digits = value.compactMap(\.wholeNumberValue)
         let sum = digits[0..<11].enumerated().reduce(0) { $0 + $1.element * ($1.offset % 2 == 0 ? 4 : 9) }
         return (10 - sum % 10) % 10 == digits[11]
+    }
+
+    /// DHL eCommerce Poland's 11-digit parcel numbers: the Identcode's weights, 4, 9, 4, … from the
+    /// left, over ten digits and a modulo-10 check digit.
+    static func isValidDhlEcommercePolandNumber(_ value: String) -> Bool {
+        guard matches(value, pattern: "^[0-9]{11}$") else { return false }
+        let digits = value.compactMap(\.wholeNumberValue)
+        let sum = digits[0..<10].enumerated().reduce(0) { $0 + $1.element * ($1.offset % 2 == 0 ? 4 : 9) }
+        return (10 - sum % 10) % 10 == digits[10]
     }
 
     /// GLS 12-digit parcel numbers: a modulo-10 check digit weighted 3, 1, 3, … from the right, plus one.

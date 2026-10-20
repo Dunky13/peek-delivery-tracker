@@ -992,6 +992,18 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertTrue(catalog.detect("1234567890123456789").candidates.contains(.pocztaPolska))
     }
 
+    /// Constructed eleven-digit numbers: DHL eCommerce Poland weighs ten digits 4 and 9 from the left.
+    func testDhlEcommercePolandNumbersCheckTheirLastDigit() {
+        for number in ["12345678900", "99999999995", "00000000000"] {
+            XCTAssertTrue(CarrierCatalog.isValidDhlEcommercePolandNumber(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("dhl-ecommerce-pl", number), true, number)
+        }
+        for number in ["12345678901", "99999999996", "123456789016", "1234567890", "12345678900\n", "12345 678900"] {
+            XCTAssertFalse(CarrierCatalog.isValidDhlEcommercePolandNumber(number), number)
+            XCTAssertEqual(CarrierCatalog.checksumPasses("dhl-ecommerce-pl", number), false, number)
+        }
+    }
+
     /// Constructed twelve-digit numbers: the Identcode weighs 4 and 9 from the left. Passing it
     /// suggests DHL, which is never selected or listed first, and recognition asks it first.
     func testTheIdentcodeCheckSuggestsDHLWithoutSelectingIt() {
