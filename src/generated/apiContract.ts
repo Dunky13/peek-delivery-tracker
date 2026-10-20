@@ -30031,7 +30031,7 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CN"
     ],
-    "color": "#683088",
+    "color": "#55207a",
     "selectable": true,
     "timezone": "Asia/Shanghai",
     "tracking": {
