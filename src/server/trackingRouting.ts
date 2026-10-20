@@ -828,8 +828,9 @@ export class TrackingRouter {
 
     const richerSources = sources.filter((source) => source !== 'UPU');
     const preferred = richerSources.includes(state.preferred_provider!) ? state.preferred_provider : undefined;
-    // A cheaper fallback must not stay pinned after the richer route recovers.
-    const priority = priorityUniversalSource(universalNumber);
+    // A cheaper fallback must not stay pinned after the richer route recovers. A
+    // provider the carrier's plan left out stays out, even for a number it would lead.
+    const priority = sources.find((source) => source === priorityUniversalSource(universalNumber));
     // Providers with fuller history for this carrier come before the one the parcel stays with.
     const fuller = preferred ? richerSources.filter((source) => plan.rank(source) < plan.rank(preferred)) : [];
     // The discovery cursor rotates which aggregator a check starts with.

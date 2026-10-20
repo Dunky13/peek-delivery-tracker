@@ -1046,6 +1046,14 @@ describe('persistent tracking routing', () => {
     await second.router.fetch(parcel({ carrier_data: result.result }), false);
     expect(second.universal.mock.calls.map(([source]) => source)).toEqual(['17TRACK']);
   });
+  it('does not ask a provider the carrier\'s plan left out, even for a number it would lead', async () => {
+    // A ten-digit number puts Ship24 first, unless the carrier's evidence leaves it out.
+    fixedPlan('ParcelsApp', '17TRACK');
+    const { router, universal } = setup();
+    universal.mockRejectedValue(new NotFoundError('provider'));
+    await expect(router.fetch(parcel({ tracking_number: '1234567891' }), false)).rejects.toBeInstanceOf(RoutingDeferred);
+    expect(universal.mock.calls.map(([source]) => source)).toEqual(['ParcelsApp', '17TRACK']);
+  });
   it('tries every enabled provider only once and includes Postal Ninja only when enabled', async () => {
     const { direct, universal, health } = setup();
     universal.mockRejectedValue(new Error('down'));

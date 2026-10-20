@@ -62,7 +62,9 @@ Clients show the earliest next-check eligibility; polling windows can delay the 
      browser-service 17TRACK within a tier, then the default order. A
      full history outranks a cheaper partial one because a parcel keeps the provider that
      answers first. A provider that never had history and answered with another carrier's
-     parcel or refused the number format is not asked, unless no other would remain.
+     parcel or refused the number format is not asked, unless no other would remain. Nor is
+     one that keeps the carrier for its subscribers, whatever it once returned: Ship24 answers
+     no anonymous lookup for those couriers.
    - The order is the one of the carrier the lookup is for (the delivery leg's carrier for
      its number), else of the carrier confirmed or discovered for the number, else the
      default.
@@ -76,8 +78,9 @@ Clients show the earliest next-check eligibility; polling windows can delay the 
      other aggregators, whatever its tier, before UPU.
    - Exception: checksum-valid China Post `C…CN` and `L…CN` numbers try 17TRACK first,
      because it returns much richer history for them (see
-     [COMPARISON.md](https://github.com/plhery/universal-parcel-scraper/blob/main/providers/COMPARISON.md)). Dedicated adapters such
-     as EMS still go first.
+     [COMPARISON.md](https://github.com/plhery/universal-parcel-scraper/blob/main/providers/COMPARISON.md)), and ten-digit
+     numbers try Ship24 first, for its fuller Express histories. Dedicated adapters such as EMS
+     still go first, and a provider the carrier's order leaves out stays out.
 
 For new lookups, the iPhone's device region takes precedence over a trusted Cloudflare
 `CF-IPCountry` header as a country hint.

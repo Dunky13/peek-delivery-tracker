@@ -91,6 +91,8 @@ async function lookup(number: string, health: ProviderHealth, signal: AbortSigna
       bounded.throwIfAborted();
       const universal = tracker ??= new UniversalTracker({ providers: ['Ship24', 'ParcelsApp'], environment: preflightEnvironment() });
       // No carrier is filed yet, and the answer may name one: a guess sent with the lookup could only come back as proof.
+      // Nor is a sure one sent: a number whose shape names a carrier confidently is filed under it without a preflight
+      // (carrierDetection.ts), so any carrier here would be a guess.
       const fetching = stopped.run(stop, () => universal.fetchSource(provider, number, Math.max(1, Math.floor(deadline - performance.now())), null, null, bounded, null, null));
       const result = normalizeCarrierResult(await withinSignal(fetching, bounded));
       bounded.throwIfAborted();
