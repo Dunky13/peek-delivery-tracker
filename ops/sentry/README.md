@@ -47,6 +47,9 @@ failures age out of the window; a new failure meanwhile reminds as usual.
 - If a tier stops being probed (no parcels left), its incident closes once its last sample
   ages out, with a `closed` notice instead of a recovery: none was observed. A new outage
   of that tier notifies at once.
+- A direct incident whose carrier stopped running its direct step (an adapter that goes
+  straight to its browser step) closes once the carrier's three latest lookups, all after
+  its last direct attempt, answered: a `closed` notice with the reason `bypassed`.
 
 ## Delivery
 

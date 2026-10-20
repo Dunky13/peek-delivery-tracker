@@ -114,6 +114,37 @@ begin
   assert pg_temp.health_sample('other-tier',true)='[]';
   assert (select active and pending is not null from public.tracking_health_incidents where kind='direct' and subject='unsent-tier'),
     'A pending recovery notice must survive the sweep';
+  -- A direct step the carrier no longer runs closes once three lookups in a row answered after it.
+  for i in 1..10 loop result := pg_temp.health_sample('bypassed-tier',false,'direct'); end loop;
+  perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
+  update public.tracking_health_samples set observed_at=now()-interval '1 hour' where subject='bypassed-tier';
+  for i in 1..3 loop
+    assert pg_temp.health_sample('bypassed-tier',true)='[]', 'Fewer than three later lookups must keep a direct incident open';
+  end loop;
+  result := pg_temp.health_sample('bypassed-tier',true);
+  assert jsonb_array_length(result)=1 and result->0->>'state'='closed' and result->0->>'reason'='bypassed'
+    and result->0->>'kind'='direct', 'A bypassed direct step must send a closed notice';
+  perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
+  assert (select not active from public.tracking_health_incidents where kind='direct' and subject='bypassed-tier');
+  -- A failed lookup among the three keeps it open.
+  for i in 1..10 loop result := pg_temp.health_sample('flaky-tier',false,'direct'); end loop;
+  perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
+  update public.tracking_health_samples set observed_at=now()-interval '1 hour' where subject='flaky-tier';
+  perform pg_temp.health_sample('flaky-tier',true);
+  perform pg_temp.health_sample('flaky-tier',false);
+  perform pg_temp.health_sample('flaky-tier',true);
+  assert pg_temp.health_sample('flaky-tier',true)='[]';
+  assert (select active and pending is null from public.tracking_health_incidents where kind='direct' and subject='flaky-tier'),
+    'A failed lookup after the direct step must keep its incident open';
+  -- A direct step that still runs and fails beside a fallback that answers stays open.
+  for i in 1..13 loop
+    result := public.record_tracking_health(gen_random_uuid(),null,jsonb_build_array(
+      jsonb_build_object('kind','direct','subject','rescued-tier','healthy',false,'details','{}'::jsonb),
+      jsonb_build_object('kind','provider','subject','rescued-tier','healthy',true,'details','{}'::jsonb)));
+    if i=10 then perform public.ack_tracking_health(array[(result->0->>'id')::uuid]); end if;
+  end loop;
+  assert (select active and pending is null from public.tracking_health_incidents where kind='direct' and subject='rescued-tier'),
+    'A direct step that still fails must keep its incident open while a fallback answers';
   -- A tier still failing when traffic resumes opens a new incident at once.
   for i in 1..10 loop result := pg_temp.health_sample('retired-tier',false,'direct'); end loop;
   assert result->0->>'state'='open', 'A closed incident must reopen on fresh failures';
