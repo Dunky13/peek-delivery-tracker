@@ -16024,7 +16024,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Moscow",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "kit-tk",
+      "recognitionRank": 567
     },
     "trackingUrlTemplate": "https://tk-kit.ru/tracking?track_code={trackingNumber}",
     "linkRules": [
@@ -24518,7 +24519,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Jakarta",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gtl-goto",
+      "recognitionRank": 708
     },
     "trackingUrlTemplate": "https://gtl.id/tracking?tracking_number={trackingNumber}",
     "linkRules": [
@@ -24536,6 +24538,10 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^TKGTL[0-9A-Z]{11}$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^GTL\\d{10}$",
         "confidence": "high"
       }
     ],
@@ -28027,7 +28033,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gms-worldwide",
+      "recognitionRank": 565
     },
     "trackingUrlTemplate": "https://www.gmsworldwide.com/shipment-tracking?tracking_no={trackingNumber}&tracking_type=cnno",
     "linkRules": [
@@ -29893,6 +29900,45 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ]
+  },
+  "jcex": {
+    "displayName": "JCEX",
+    "aliases": [
+      "JCEX",
+      "Jiacheng International",
+      "Hangzhou Jiacheng International Logistics",
+      "佳成国际",
+      "佳成国际物流有限公司"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#0080cc",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "jcex"
+    },
+    "trackingUrlTemplate": "https://track.jcex.com/?nums={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "track.jcex.com"
+        ],
+        "pathPattern": "^/?$",
+        "params": [
+          "nums"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^JCZ\\d{10}DH$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://track.jcex.com/"
   }
 } as const;
 
@@ -30702,7 +30748,8 @@ export const CARRIER_IDS = [
   "jumppoint",
   "ycs-logistics",
   "j-and-t-au",
-  "lingdong"
+  "lingdong",
+  "jcex"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
