@@ -2,13 +2,14 @@ import 'server-only';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { GUIDE_LINKS, type GuideLink } from '../generated/guides';
-import { parseGuide, typeset, type Guide } from '../guides/markdown';
+import { parseGuide, typeset, updatedDay, type Guide } from '../guides/markdown';
 import { guidePath } from '../guides/paths';
 import { SUPPORTED_LOCALES, type Locale } from '../lib/locale';
 
 // The build ships these files beside the server (`outputFileTracingIncludes` in `next.config.ts`).
 const directory = path.join(process.cwd(), 'content', 'guides');
 const read = new Map<string, Guide>();
+const days = new Map<string, string>();
 
 /** The guides of a language, in the order the site shows them. */
 export function guideLinks(locale: Locale): readonly GuideLink[] {
@@ -28,6 +29,16 @@ export function guide(locale: Locale, id: string): Guide {
   const loaded = typeset(parseGuide(readFileSync(path.join(directory, id, `${locale}.md`), 'utf8'), `content/guides/${key}.md`), locale);
   if (process.env.NODE_ENV === 'production') read.set(key, loaded);
   return loaded;
+}
+
+/** The day a guide's facts were last checked, from its fields alone: the sitemap dates every guide without keeping its text. */
+export function guideUpdated(locale: Locale, id: string): string {
+  const key = `${id}/${locale}`;
+  const kept = read.get(key)?.updated ?? days.get(key);
+  if (kept) return kept;
+  const day = updatedDay(readFileSync(path.join(directory, id, `${locale}.md`), 'utf8'), `content/guides/${key}.md`);
+  if (process.env.NODE_ENV === 'production') days.set(key, day);
+  return day;
 }
 
 /** Where one guide lives in every language, or the guides' own page when no guide is named. */

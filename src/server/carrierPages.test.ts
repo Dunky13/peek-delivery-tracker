@@ -13,7 +13,7 @@ vi.mock('next/headers', () => ({
 // Outside a request there is nothing to wait for.
 vi.mock('next/server', async (original) => ({ ...await original<typeof import('next/server')>(), connection: async () => undefined }));
 
-const { carrierAddresses, carrierAlternates, carrierLanguages, carrierLinkBySlug, carrierLinks, carrierText } = await import('./carrierTexts');
+const { carrierAddresses, carrierAlternates, carrierLanguages, carrierLinkBySlug, carrierLinks, carrierText, carrierUpdated } = await import('./carrierTexts');
 const { CarrierIndexRoute, CarrierRoute, carrierIndexMetadata, carrierMetadata } = await import('./carrierPages');
 const { frenchSpacing, questions } = await import('../guides/markdown');
 
@@ -44,6 +44,12 @@ describe('the carriers’ pages as the server reads them', () => {
     expect(carrierLinkBySlug('en', 'no-such-carrier')).toBeUndefined();
     // A slug of one language names nothing in another.
     expect(carrierLinkBySlug(missing, carrierLinks('en')[0].slug)).toBeUndefined();
+  });
+
+  it('dates each page, for the sitemap, by its fields alone, as its text does', () => {
+    for (const locale of SUPPORTED_LOCALES) {
+      for (const { id } of carrierLinks(locale)) expect(carrierUpdated(locale, id)).toBe(carrierText(locale, id).updated);
+    }
   });
 
   it('reads a page’s file every time while developing, so an edit shows, and once in production', () => {

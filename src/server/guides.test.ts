@@ -13,7 +13,7 @@ vi.mock('next/headers', () => ({
 // Outside a request there is nothing to wait for.
 vi.mock('next/server', async (original) => ({ ...await original<typeof import('next/server')>(), connection: async () => undefined }));
 
-const { guide, guideAddresses, guideAlternates, guideLinkBySlug, guideLinks } = await import('./guides');
+const { guide, guideAddresses, guideAlternates, guideLinkBySlug, guideLinks, guideUpdated } = await import('./guides');
 const { GuideIndexRoute, GuideRoute, guideIndexMetadata, guideMetadata } = await import('./guidePages');
 const { frenchSpacing } = await import('../guides/markdown');
 
@@ -34,6 +34,12 @@ describe('the guides as the server reads them', () => {
       }
     }
     expect(guideLinkBySlug('en', 'no-such-guide')).toBeUndefined();
+  });
+
+  it('dates each guide, for the sitemap, by its fields alone, as its text does', () => {
+    for (const locale of SUPPORTED_LOCALES) {
+      for (const { id } of guideLinks(locale)) expect(guideUpdated(locale, id)).toBe(guide(locale, id).updated);
+    }
   });
 
   it('knows where a guide lives in every language, and where the guides’ own page does', () => {

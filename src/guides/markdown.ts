@@ -102,12 +102,13 @@ export function parseInline(source: string, where = 'guide'): Inline[] {
 
   function until(close: string): Inline[] {
     const nodes: Inline[] = [];
-    let text = '';
-    const flush = () => { if (text) { nodes.push({ type: 'text', text }); text = ''; } };
+    // Joined once, a run is one string: added a character at a time, it would keep a node per character.
+    const text: string[] = [];
+    const flush = () => { if (text.length) { nodes.push({ type: 'text', text: text.join('') }); text.length = 0; } };
     while (at < source.length) {
       if (close && source.startsWith(close, at)) { flush(); at += close.length; return nodes; }
       const char = source[at];
-      if (char === '\\' && at + 1 < source.length) { text += source[at + 1]; at += 2; continue; }
+      if (char === '\\' && at + 1 < source.length) { text.push(source[at + 1]); at += 2; continue; }
       if (char === '`') {
         const end = source.indexOf('`', at + 1);
         if (end < 0) fail('code is not closed');
@@ -141,7 +142,7 @@ export function parseInline(source: string, where = 'guide'): Inline[] {
         continue;
       }
       if (char === ']') fail('"]" needs a backslash before it');
-      text += char;
+      text.push(char);
       at += 1;
     }
     if (close) fail(`"${close}" is missing`);
@@ -334,6 +335,11 @@ export function parseGuide(source: string, where = 'guide'): Guide {
     title: value('title'), description: value('description'), slug: value('slug'), picture: value('picture'),
     published: value('published'), updated: value('updated'), blocks: parseBlocks(body, where),
   }, where, 'guide');
+}
+
+/** The day a guide or a carrier's page was last checked, read from its fields alone. */
+export function updatedDay(source: string, where = 'page'): string {
+  return frontMatter(source, FIELDS, where, 'page').value('updated');
 }
 
 /** A carrier's page: a guide's file without a picture. */

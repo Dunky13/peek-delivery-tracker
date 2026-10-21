@@ -3,13 +3,14 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { carrierPath } from '../carriers/paths';
 import { CARRIER_LINKS, type CarrierLink } from '../generated/carriers';
-import { parseCarrierText, typeset, type CarrierText } from '../guides/markdown';
+import { parseCarrierText, typeset, updatedDay, type CarrierText } from '../guides/markdown';
 import { SUPPORTED_LOCALES, type Locale } from '../lib/locale';
 
 // The build ships these files beside the server (`outputFileTracingIncludes` in `next.config.ts`).
 // `./carriers` is the scraper's list of every carrier Peek tracks; this is the few with a page of their own.
 const directory = path.join(process.cwd(), 'content', 'carriers');
 const read = new Map<string, CarrierText>();
+const days = new Map<string, string>();
 
 /** The carriers with a page in a language, in the order the site shows them. */
 export function carrierLinks(locale: Locale): readonly CarrierLink[] {
@@ -34,6 +35,16 @@ export function carrierText(locale: Locale, id: string): CarrierText {
   const loaded = typeset(parseCarrierText(readFileSync(path.join(directory, id, `${locale}.md`), 'utf8'), `content/carriers/${key}.md`), locale);
   if (process.env.NODE_ENV === 'production') read.set(key, loaded);
   return loaded;
+}
+
+/** The day a carrier's page was last checked, from its fields alone: the sitemap dates every page without keeping its text. */
+export function carrierUpdated(locale: Locale, id: string): string {
+  const key = `${id}/${locale}`;
+  const kept = read.get(key)?.updated ?? days.get(key);
+  if (kept) return kept;
+  const day = updatedDay(readFileSync(path.join(directory, id, `${locale}.md`), 'utf8'), `content/carriers/${key}.md`);
+  if (process.env.NODE_ENV === 'production') days.set(key, day);
+  return day;
 }
 
 /**

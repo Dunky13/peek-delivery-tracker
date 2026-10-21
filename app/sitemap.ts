@@ -2,8 +2,8 @@ import type { MetadataRoute } from 'next';
 import { CARRIER_LINKS } from '../src/generated/carriers';
 import { GUIDE_LINKS } from '../src/generated/guides';
 import { SUPPORTED_LOCALES, type Locale } from '../src/lib/locale';
-import { carrierAlternates, carrierLanguages, carrierText } from '../src/server/carrierTexts';
-import { guide, guideAlternates } from '../src/server/guides';
+import { carrierAlternates, carrierLanguages, carrierUpdated } from '../src/server/carrierTexts';
+import { guideAlternates, guideUpdated } from '../src/server/guides';
 import { landingAddress, landingAlternates } from '../src/server/landingMetadata';
 import { siteOrigin } from '../src/server/requestOrigin';
 
@@ -15,9 +15,9 @@ const xmlAddresses = <Addresses extends Partial<Record<string, string>>>(address
   Object.fromEntries(Object.entries(addresses).flatMap(([language, address]) => (address === undefined ? [] : [[language, xml(address)]]))) as Addresses;
 
 /** The day the newest guide of a language was last checked: when its list last changed. */
-const lastChecked = (locale: Locale) => GUIDE_LINKS[locale].map(({ id }) => guide(locale, id).updated).sort().at(-1);
+const lastChecked = (locale: Locale) => GUIDE_LINKS[locale].map(({ id }) => guideUpdated(locale, id)).sort().at(-1);
 /** The day the newest carrier's page of a language was last checked; none for a language with none yet. */
-const carriersChecked = (locale: Locale) => CARRIER_LINKS[locale].map(({ id }) => carrierText(locale, id).updated).sort().at(-1);
+const carriersChecked = (locale: Locale) => CARRIER_LINKS[locale].map(({ id }) => carrierUpdated(locale, id)).sort().at(-1);
 
 /**
  * The pages meant to be found: the landing in each language, the guides' own
@@ -37,12 +37,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...SUPPORTED_LOCALES.map((locale) => ({ url: index[locale], lastModified: lastChecked(locale), alternates: { languages: index } })),
     ...GUIDE_LINKS.en.flatMap(({ id }) => {
       const addresses = xmlAddresses(guideAlternates(origin, id));
-      return SUPPORTED_LOCALES.map((locale) => ({ url: addresses[locale], lastModified: guide(locale, id).updated, alternates: { languages: addresses } }));
+      return SUPPORTED_LOCALES.map((locale) => ({ url: addresses[locale], lastModified: guideUpdated(locale, id), alternates: { languages: addresses } }));
     }),
     ...SUPPORTED_LOCALES.map((locale) => ({ url: carriers[locale]!, lastModified: carriersChecked(locale), alternates: { languages: carriers } })),
     ...CARRIER_LINKS.en.flatMap(({ id }) => {
       const addresses = xmlAddresses(carrierAlternates(origin, id));
-      return carrierLanguages(id).map((locale) => ({ url: addresses[locale]!, lastModified: carrierText(locale, id).updated, alternates: { languages: addresses } }));
+      return carrierLanguages(id).map((locale) => ({ url: addresses[locale]!, lastModified: carrierUpdated(locale, id), alternates: { languages: addresses } }));
     }),
     { url: xml(new URL('/privacy.html', origin).href) },
     { url: xml(new URL('/support.html', origin).href) },
