@@ -483,6 +483,19 @@ describe('persistent tracking routing', () => {
       expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
     });
 
+    it('reads a scan dated to the minute as new as anything within that minute', async () => {
+      const { router, direct } = setup();
+      const answer = async (stamp: string) => {
+        direct.mockResolvedValue({ ...directValue(), result: history(stamp) });
+        return router.fetch(named({ last_event_at: '2026-09-10T11:00:41.250Z' }), false);
+      };
+      expect(await answer('2026-09-10T11:00:00Z')).toMatchObject({ sourceCarrierId: 'ups', correction: { carrier: 'ups' } });
+      // The minute before is older, and so is a scan read to the second.
+      for (const stamp of ['2026-09-10T10:59:00Z', '2026-09-10T11:00:12Z']) {
+        expect((await answer(stamp)).result.routing).toMatchObject({ set_aside: { ups: { reason: 'older', newest: new Date(stamp).toISOString() } } });
+      }
+    });
+
     it('records the answer it sets aside, and the checks in a row that set the same one aside, until one is taken', async () => {
       const withoutCopies = vi.fn().mockReturnValue(Date.parse('2026-09-10T05:00:00Z'));
       const { router, direct } = setup(time, { withoutCopies });

@@ -533,7 +533,8 @@ set is that provider's newest scan, which the sync stored, so one past every sto
 comes back to the newest, its copies having moved since. The router holds a carrier
 detection or a provider names to the same rule before taking it: its newest scan counts
 against the watermark less the copies of its own scans, stored or in the answer of the
-provider that names it. An answer without any date is neither older nor newer, so it does
+provider that names it. A newest scan dated to the minute (Sameday's) is as new as a watermark
+within that minute. An answer without any date is neither older nor newer, so it does
 not displace the parcel's dated progress either. An answer it sets aside stays in
 `routing.set_aside` until the carrier is asked again, so the review tells it from a carrier
 not asked: why (older, no movement, local clocks only unless the check then takes that

@@ -172,6 +172,14 @@ function universalSpacing(now: Date): number {
 }
 const millis = (value: unknown): number => typeof value === 'string' && Number.isFinite(Date.parse(value)) ? Date.parse(value) : 0;
 const iso = (value: number): string => new Date(value).toISOString();
+/**
+ * Whether a scan is as new as the parcel's newest. A scan dated to the minute (Sameday's) is as
+ * new as anything within that minute: the parcel's newest may be the same scan read to the
+ * second, or the moment the parcel was added.
+ */
+export function asNewAs(scan: number, watermark: number): boolean {
+  return scan % 60_000 === 0 ? scan + 60_000 > watermark : scan >= watermark;
+}
 export function routingFailure(error: unknown): { kind: RoutingFailureKind; retryAfterMs: number } {
   // Errors from the carrier package carry their kind; classify those first so
   // a wrong shipment or malformed payload keeps its hourly retry, and only fall
@@ -648,7 +656,7 @@ export class TrackingRouter {
     const olderThanParcel = (value: RoutedResult, provider?: CarrierResult) => {
       const watermark = millis(state.last_event_at);
       const newest = latest(value);
-      return newest > 0 && newest < watermark && newest < (this.options.withoutCopies?.(watermark, value, provider) ?? watermark);
+      return newest > 0 && !asNewAs(newest, watermark) && !asNewAs(newest, this.options.withoutCopies?.(watermark, value, provider) ?? watermark);
     };
     const tryDirect = async (carrier: string, candidate = false, terminalStage?: string, probe = false, provider?: CarrierResult): Promise<RoutedResult | null> => {
       signal?.throwIfAborted();

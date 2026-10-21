@@ -5,7 +5,7 @@ import { detectCarrierMatch } from '../lib/carriers';
 import { AUTOMATIC_CARRIER_IDS } from './carriers';
 import { localClockCarrier } from './directLocalHistory';
 import { refusesNumber } from './numberRefusal';
-import { catalogRules, directCarrier, opensBrowser, releaseLapses, routingState } from './trackingRouting';
+import { asNewAs, catalogRules, directCarrier, opensBrowser, releaseLapses, routingState } from './trackingRouting';
 import { isRecord, type JsonObject } from './types';
 
 /** Only parcels added this recently are looked at again, as carrier recognition only asks for them. */
@@ -71,7 +71,7 @@ function rerouteLead(parcel: JsonObject, rules: string, now: number, refused: Re
   const fits = (carrier: string) => {
     const aside = routing.set_aside?.[carrier];
     return aside?.reason === 'local_clock' ? !localClockCarrier(carrier)
-      : Date.parse(aside?.newest ?? '') >= Date.parse(routing.last_event_at ?? '');
+      : asNewAs(Date.parse(aside?.newest ?? ''), Date.parse(routing.last_event_at ?? ''));
   };
   const asked = (carrier: string) => carrier === routing.confirmed_carrier || Boolean(routing.set_aside?.[carrier])
     || (Boolean(routing.failures[carrier]) && !refusedBefore(carrier)) || Boolean(routing.candidate_probes?.[carrier]);

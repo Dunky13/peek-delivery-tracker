@@ -203,6 +203,8 @@ describe('a carrier whose answer was set aside as older than the parcel', () => 
     expect(await lead('2026-10-08T05:46:00.000Z', { last_synced_at: '2026-10-07T23:00:00Z' })).toEqual({ carrier: 'australia-post', rank: 2 });
     // The provider's corrected clock brought the parcel's newest scan back to the carrier's.
     expect(await lead('2026-10-07T23:01:00.000Z')).toEqual({ carrier: 'australia-post', rank: 0 });
+    // Or to the same minute, read to the second.
+    expect(await lead('2026-10-07T23:01:42.318Z')).toEqual({ carrier: 'australia-post', rank: 0 });
   });
 
   it('counts as asked for a parcel filed under a carrier', () => {
