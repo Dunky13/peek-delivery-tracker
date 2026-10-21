@@ -455,9 +455,10 @@ A parcel often changes carrier at the border. The origin history is always kept.
   partner link. Names and links are resolved through the carrier catalog.
 - With no named partner, a checksum-valid S10 number and a reported destination country can
   propose **one** national-post lookup ([catalog hints](https://github.com/plhery/universal-parcel-scraper/blob/main/core/catalog/hints.ts)).
-  When the origin reports no destination, as An Post's doesn't, the country hint stands in
-  unless it is the country that issued the number. The issuer suffix and transit scans never
-  pick the operator.
+  When the origin reports no destination, as An Post's doesn't, or cannot answer, the country
+  hint stands in unless it is the country that issued the number. It does so too when the
+  origin is asked for a parcel filed under another carrier or none. The issuer suffix and
+  transit scans never pick the operator.
 - AliExpress follows some parcels under the delivery carrier's own number, such as an SDA
   waybill in Italy, and names no partner for it. The proposal is then the one carrier at
   home in the destination country whose number rule fits beside AliExpress's, asked with

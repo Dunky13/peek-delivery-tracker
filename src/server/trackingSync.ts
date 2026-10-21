@@ -1346,11 +1346,13 @@ export class TrackingSyncService {
       const checks = lookups?.for(parcel);
       const subject = checks?.parcel ?? parcel;
       const once = <T>(key: readonly unknown[], lookup: () => Promise<T>) => checks ? checks.once(key, lookup) : lookup();
+      // Where the parcel was looked up from stays the parcel's, even for a carrier asked without its data.
+      const lookupCountry = normalizedLookupCountry(isRecord(subject.carrier_data) ? subject.carrier_data.lookup_country_hint : undefined);
       // Only a check someone asked for, or a lookup's, skips the scheduled cadence: a release's re-check keeps it.
       try {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
           ? await new TrackingRouter({
-            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks, askedForCheck(context.trigger)),
+            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks, askedForCheck(context.trigger), lookupCountry),
             universal: (source, number, timeout, postcode, timezone, carrier) => once(universalLookupKey(source, number, postcode, timezone, carrier),
               () => this.adapter.fetchUniversal!(source, number, timeout, postcode, timezone, carrier)),
             ...(checks ? { reusedUniversal: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null, carrier: string | null) =>
@@ -1364,7 +1366,7 @@ export class TrackingSyncService {
               once(recognitionKey('browser', carrier, number), () => this.adapter.recognizeBrowser!(carrier, number, context, previousError)) } : {}),
             enablePostalNinja: process.env.TRACKING_ENABLE_POSTAL_NINJA === 'true',
           }).fetch(subject, !askedForCheck(context.trigger), context.signal, addition)
-          : await this.fetchResult(subject, carrierId, checks, askedForCheck(context.trigger)));
+          : await this.fetchResult(subject, carrierId, checks, askedForCheck(context.trigger), lookupCountry));
       } catch (error) {
         if (carrierId === 'amazon-shipping' && error instanceof CarrierError && error.reason === 'history_expired') {
           audit.skip('normalize', 'history_expired');
@@ -1907,6 +1909,7 @@ export class TrackingSyncService {
     carrierId: string,
     checks?: ParcelLookups,
     byHand = false,
+    lookupCountry: string | null = null,
   ): Promise<{
     result: CarrierResult;
     sourceCarrierId: string;
@@ -1960,15 +1963,16 @@ export class TrackingSyncService {
           typeof parcel.dpd_postcode === 'string' ? parcel.dpd_postcode : null,
         ));
       } catch (error) {
-        // An international operator outage must not hide a confirmed local delivery.
-        savedPartner = deliveryHandoff(carrierId, trackingNumber, metadata);
+        // An international operator outage must not hide a confirmed local delivery, nor
+        // the post of the country a postal item is looked up from when nothing names one.
+        savedPartner = deliveryHandoff(carrierId, trackingNumber, metadata, lookupCountry);
         if (!savedPartner) throw error;
         originError = error;
         origin = { delivery_carrier: savedPartner.carrier, delivery_tracking_number: savedPartner.number };
       }
       let fallbackError: string | null = null;
       // The country the parcel was looked up from proposes a postal item's destination post only when nothing names one.
-      const candidate = savedPartner ?? deliveryHandoff(carrierId, trackingNumber, origin, normalizedLookupCountry(metadata.lookup_country_hint));
+      const candidate = savedPartner ?? deliveryHandoff(carrierId, trackingNumber, origin, lookupCountry);
       const previousProbe = candidate ? previousDeliveryProbe(parcel, candidate.carrier, candidate.number) : null;
       const originUpdate = typeof origin.last_update === 'string' ? origin.last_update : previousProbe?.origin_update ?? null;
       const sinceProbe = previousProbe ? this.now().getTime() - Date.parse(previousProbe.at) : Number.NaN;

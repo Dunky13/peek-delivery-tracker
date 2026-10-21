@@ -2609,6 +2609,62 @@ describe('TrackingSyncService', () => {
     }
   });
 
+  it('asks the post of the country a postal item is looked up from while its origin post cannot answer', async () => {
+    const parcel = { id: 'looked-up-outage', carrier: 'dhl', tracking_number: 'RR123456785DE', current_stage: 'in_transit',
+      carrier_data: { lookup_country_hint: 'FR', routing: { version: 1, configured_carrier: 'dhl', last_event_at: '2026-01-11T10:00:00.000Z' } } };
+    const delivery: CarrierResult = { status: 'out_for_delivery', current_stage: 'out_for_delivery',
+      last_update: '2026-01-12T09:42:00Z', events: [
+        { time: '2026-01-12T09:42:00Z', description: 'En cours de livraison', location: 'Example office', stage: 'out_for_delivery' }] };
+    const lookups = (adapter: { fetch: ReturnType<typeof vi.fn> }) => adapter.fetch.mock.calls.map((call) => call[0]);
+    const adapter = { fetch: vi.fn(async (carrier: string) => {
+      if (carrier === 'la-poste') return delivery;
+      throw new ChallengeError('DHL');
+    }) };
+    const client = fakeClient();
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-01-12T10:00:00Z'));
+    await service.syncPackage(parcel);
+    expect(lookups(adapter)).toEqual(['dhl', 'la-poste']);
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'out_for_delivery', carrier_data: {
+      active_tracking_carrier: 'la-poste', original_carrier: 'dhl' } });
+
+    // Looked up from the issuer's country, or with no country, the origin's failure stands.
+    for (const carrier_data of [{ ...parcel.carrier_data, lookup_country_hint: 'DE' }, { routing: parcel.carrier_data.routing }]) {
+      const quiet = { fetch: vi.fn().mockRejectedValue(new ChallengeError('DHL')) };
+      await new TrackingSyncService(fakeClient() as unknown as SupabaseServiceClient, quiet, null, () => new Date('2026-01-12T10:00:00Z'))
+        .syncPackage({ ...parcel, carrier_data });
+      expect(lookups(quiet)).toEqual(['dhl']);
+    }
+  });
+
+  it('keeps the lookup country for the origin post a parcel filed under no carrier is asked about', async () => {
+    const delivery: CarrierResult = { status: 'out_for_delivery', current_stage: 'out_for_delivery',
+      last_update: '2026-01-12T09:42:00Z', events: [
+        { time: '2026-01-12T09:42:00Z', description: 'En cours de livraison', location: 'Example office', stage: 'out_for_delivery' }] };
+    // Deutsche Post names no destination for the item it exported.
+    const exported: CarrierResult = { status: 'in_transit', current_stage: 'in_transit', last_update: '2026-01-11T10:00:00Z',
+      events: [{ time: '2026-01-11T10:00:00Z', description: 'Die Sendung wurde ins Zielland transportiert', stage: 'in_transit' }] };
+    for (const origin of [exported, new ChallengeError('DHL')]) {
+      const client = { ...fakeClient(),
+        acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: null }),
+        finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+      const adapter = {
+        fetch: vi.fn(async (carrier: string) => {
+          if (carrier === 'la-poste') return delivery;
+          if (origin instanceof Error) throw origin;
+          return origin;
+        }),
+        fetchUniversal: vi.fn().mockRejectedValue(new NoHistoryError('UPU', 'No history')),
+      };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-01-12T10:00:00Z'));
+      await service.syncPackage({ id: 'unfiled-postal', carrier: 'unknown', tracking_number: 'RR123456785DE', current_stage: 'pending',
+        created_at: '2026-01-10T10:00:00Z', carrier_data: { lookup_country_hint: 'FR' } });
+      expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['dhl', 'la-poste']);
+      expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ current_stage: 'out_for_delivery', carrier_data: {
+        active_tracking_carrier: 'la-poste', original_carrier: 'dhl', lookup_country_hint: 'FR' } });
+      expect(adapter.fetchUniversal).not.toHaveBeenCalled();
+    }
+  });
+
   it('asks the earlier carrier hourly for a day after a handoff, for its late scans only', async () => {
     const client = { ...fakeClient(), acquireTrackingProvider: vi.fn(), finishTrackingProvider: vi.fn() };
     let now = new Date('2026-01-12T10:30:00Z');
