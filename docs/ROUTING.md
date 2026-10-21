@@ -477,7 +477,9 @@ A parcel often changes carrier at the border. The origin history is always kept.
   ask the failed check saves too, and a check a provider answers in the meantime keeps the
   misses and the last ask. It is
   5 min on a refresh by hand, and once the partner has announced the parcel: a dated
-  record no older than the origin's newest scan, without a scan of its own.
+  record no older than the origin's newest scan, without a scan of its own. An origin
+  asked without the parcel's data, as for a parcel filed under no carrier, keeps the same
+  wait.
   A partner that does not know the item yet, or answers inconclusively, is not
   reported as `provider_failed`; its network failures and server errors still are.
 - Until then the parcel is followed on the origin. The cards, parcel links and the delivered email
@@ -510,7 +512,8 @@ A parcel often changes carrier at the border. The origin history is always kept.
   selected Swiss postal routes keep their Cainiao fallback. On such a route Swiss Post is
   asked first; once it has missed the item, Cainiao answers first. Cainiao's news asks Swiss
   Post again at once; without news the gap doubles with each miss, from 55 min up to 6 h
-  (5 min on a refresh by hand).
+  (5 min on a refresh by hand). When Cainiao fails after Swiss Post was asked, the check
+  saves that ask without a miss.
 
 ## UPU history
 

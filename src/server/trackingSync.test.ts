@@ -2668,6 +2668,37 @@ describe('TrackingSyncService', () => {
     }
   });
 
+  it('waits out the probe gap for the origin post a parcel filed under no carrier is asked about', async () => {
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: null }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    const adapter = {
+      fetch: vi.fn(async (carrier: string): Promise<CarrierResult> => {
+        if (carrier === 'la-poste') throw Object.assign(new Error('Shipment not found'), { status: 404 });
+        throw Object.assign(new Error('Bad gateway'), { status: 502 });
+      }),
+      fetchUniversal: vi.fn().mockRejectedValue(new NoHistoryError('UPU', 'No history')),
+    };
+    let now = new Date('2026-01-12T10:00:00Z');
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    let parcel: JsonObject = { id: 'unfiled-postal', carrier: 'unknown', tracking_number: 'RR123456785DE', current_stage: 'in_transit',
+      created_at: '2026-01-10T10:00:00Z', carrier_data: { lookup_country_hint: 'FR' } };
+    const refresh = async (time: string) => {
+      now = new Date(`2026-01-12T${time}:00Z`);
+      adapter.fetch.mockClear();
+      await service.syncPackage(parcel, { trigger: 'scheduled' });
+      parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
+      return adapter.fetch.mock.calls.map((call) => call[0]);
+    };
+
+    expect(await refresh('10:00')).toEqual(['dhl', 'la-poste']);
+    // DHL is asked without the parcel's data whenever its own wait is over, La Poste once its 55 min have passed.
+    expect(await refresh('10:16')).toEqual(['dhl']);
+    expect(await refresh('10:46')).toEqual(['dhl']);
+    expect(await refresh('11:47')).toEqual(['dhl', 'la-poste']);
+    expect(parcel).toMatchObject({ carrier: 'unknown', carrier_data: { delivery_probe: { carrier: 'la-poste', at: '2026-01-12T11:47:00.000Z' } } });
+  });
+
   it('asks the earlier carrier hourly for a day after a handoff, for its late scans only', async () => {
     const client = { ...fakeClient(), acquireTrackingProvider: vi.fn(), finishTrackingProvider: vi.fn() };
     let now = new Date('2026-01-12T10:30:00Z');
@@ -3030,6 +3061,32 @@ describe('TrackingSyncService', () => {
     await service.syncPackage(parcel, { trigger: 'scheduled' });
     expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['aliexpress']);
     expect(client.updatePackage.mock.calls.at(-1)![1].carrier_data).toMatchObject({ delivery_probe: probe });
+  });
+
+  it('counts a Swiss Post probe toward its gap when Cainiao fails after it', async () => {
+    const client = fakeClient();
+    let now = new Date('2026-09-10T10:00:00Z');
+    const adapter = { fetch: vi.fn(async (carrier: string): Promise<CarrierResult> => {
+      if (carrier === 'swiss-post') throw Object.assign(new Error('Shipment not found'), { status: 404 });
+      throw Object.assign(new Error('Bad gateway'), { status: 502 });
+    }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    let parcel: JsonObject = { id: 'swiss-letter', carrier: 'swiss-post', tracking_number: 'LX123456785CH', current_stage: 'in_transit' };
+    const refresh = async (time: string) => {
+      now = new Date(`2026-09-10T${time}:00Z`);
+      adapter.fetch.mockClear();
+      await service.syncPackage(parcel, { trigger: 'scheduled' });
+      parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
+      return adapter.fetch.mock.calls.map((call) => call[0]);
+    };
+
+    expect(await refresh('10:00')).toEqual(['swiss-post', 'aliexpress']);
+    expect(parcel).toMatchObject({ sync_status: 'error', carrier_data: {
+      delivery_probe: { carrier: 'swiss-post', at: '2026-09-10T10:00:00.000Z', origin_update: null, misses: 1 } } });
+    // Within the gap Cainiao answers first; while it cannot say whether the item moved, the gap does not grow.
+    expect(await refresh('10:10')).toEqual(['aliexpress']);
+    expect(await refresh('10:56')).toEqual(['swiss-post', 'aliexpress']);
+    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T10:56:00.000Z', misses: 1 } });
   });
 
   it.each(['Switzerland', 'Finland'])('respects Cainiao’s actual destination field before the historical probe: %s', async (country) => {

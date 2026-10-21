@@ -1263,8 +1263,9 @@ export class TrackingSyncService {
     const previousStage = String(parcel.current_stage ?? 'pending');
     const addition = isRecord(parcel.carrier_data) && parcel.carrier_data.add_recognition_pending === true;
     let consumeAddition = addition;
-    // The delivery probe of an origin that failed: whatever the check saves carries it, so its gap counts it.
-    let originDownProbe: JsonObject | null = null;
+    // The delivery probe the check's lookups last made or kept: whatever the check saves carries it, though the
+    // origin failed or routing set its answer aside, so its gap counts it.
+    let lookupProbe: JsonObject | null = null;
 
     const persist = async (
       values: JsonObject,
@@ -1273,9 +1274,9 @@ export class TrackingSyncService {
       deleteEventIds: string[] = [],
     ) => {
       context.signal?.throwIfAborted();
-      if (originDownProbe) {
+      if (lookupProbe) {
         values.carrier_data = { ...(isRecord(values.carrier_data) ? values.carrier_data : isRecord(parcel.carrier_data) ? parcel.carrier_data : {}),
-          delivery_probe: originDownProbe };
+          delivery_probe: lookupProbe };
       }
       if (consumeAddition) {
         const data = { ...(isRecord(values.carrier_data) ? values.carrier_data : isRecord(parcel.carrier_data) ? parcel.carrier_data : {}) };
@@ -1354,12 +1355,17 @@ export class TrackingSyncService {
       const once = <T>(key: readonly unknown[], lookup: () => Promise<T>) => checks ? checks.once(key, lookup) : lookup();
       // Where the parcel was looked up from stays the parcel's, even for a carrier asked without its data.
       const lookupCountry = normalizedLookupCountry(isRecord(subject.carrier_data) ? subject.carrier_data.lookup_country_hint : undefined);
-      const keepProbe = (probe: JsonObject) => { originDownProbe = probe; };
+      // So does its delivery probe's marker, so the probe's gap holds for that carrier too.
+      const savedProbe = isRecord(subject.carrier_data) ? subject.carrier_data.delivery_probe : undefined;
+      const withSavedProbe = (candidate: JsonObject) => isRecord(savedProbe) && isRecord(candidate.carrier_data)
+        && candidate.carrier_data.delivery_probe === undefined
+        ? { ...candidate, carrier_data: { ...candidate.carrier_data, delivery_probe: savedProbe } } : candidate;
+      const keepProbe = (probe: JsonObject) => { lookupProbe = probe; };
       // Only a check someone asked for, or a lookup's, skips the scheduled cadence: a release's re-check keeps it.
       try {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
           ? await new TrackingRouter({
-            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks, askedForCheck(context.trigger), lookupCountry, keepProbe),
+            direct: (candidate, carrier) => this.fetchResult(withSavedProbe(candidate), carrier, checks, askedForCheck(context.trigger), lookupCountry, keepProbe),
             universal: (source, number, timeout, postcode, timezone, carrier) => once(universalLookupKey(source, number, postcode, timezone, carrier),
               () => this.adapter.fetchUniversal!(source, number, timeout, postcode, timezone, carrier)),
             ...(checks ? { reusedUniversal: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null, carrier: string | null) =>
@@ -2051,11 +2057,9 @@ export class TrackingSyncService {
           });
         }
       }
-      if (originError) {
-        // The error carries no result: the check saves the probe's marker, so its gap counts it.
-        if (isRecord(origin.delivery_probe)) onProbe?.(origin.delivery_probe);
-        throw originError;
-      }
+      // The check saves the probe's marker although the origin's error carries no result, or routing sets the result aside.
+      if (isRecord(origin.delivery_probe)) onProbe?.(origin.delivery_probe);
+      if (originError) throw originError;
       return {
         result: origin, sourceCarrierId: carrierId,
         swissPostReady: null, handoffFallbackErrorType: fallbackError,
@@ -2110,7 +2114,11 @@ export class TrackingSyncService {
       });
       // Cainiao still covers the international leg if Swiss Post is not ready.
     }
-    cainiao ??= await fetchCainiao();
+    // Swiss Post was asked: Cainiao failing saves that ask, without a miss while Cainiao cannot say whether it moved.
+    cainiao ??= await fetchCainiao().catch((error: unknown) => {
+      onProbe?.({ at: askedAt, origin_update: previousProbe?.origin_update ?? null, carrier: 'swiss-post', number: trackingNumber, misses });
+      throw error;
+    });
     const originUpdate = typeof cainiao.last_update === 'string' ? cainiao.last_update : previousProbe?.origin_update ?? null;
     const probe: DeliveryProbe = { at: askedAt, origin_update: originUpdate, carrier: 'swiss-post', number: trackingNumber,
       misses: previousProbe && originUpdate === previousProbe.origin_update ? misses + 1 : 1 };
