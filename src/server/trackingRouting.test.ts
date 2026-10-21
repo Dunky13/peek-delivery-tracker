@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
-import { freshnessWindow, RoutingDeferred, routingState, suggestedInput, TrackingRouter, type RoutedResult } from './trackingRouting';
+import { freshnessWindow, recheckSources, RoutingDeferred, routingState, suggestedInput, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { refusesNumber } from './numberRefusal';
 import type { JsonObject } from './types';
 import type { CarrierResult, UniversalSource } from 'universal-parcel-scraper';
@@ -2082,6 +2082,73 @@ describe('coverage-based provider order', () => {
     other.universal.mockRejectedValueOnce(new IndeterminateError('ParcelsApp', 'no history'));
     await other.router.fetch(parcel(), false);
     expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('coverage_contradicted', expect.anything());
+  });
+});
+
+describe('rechecks of a number nobody has answered', () => {
+  const sources = (universal: ReturnType<typeof vi.fn>) => universal.mock.calls.map(([source]) => source);
+  const recheck = (check: ReturnType<typeof setup>, input: JsonObject) => check.router.fetch(input, true, undefined, false, true);
+  it('contacts one universal provider at most, where a full check asks each in turn', async () => {
+    const full = setup();
+    full.universal.mockRejectedValue(new NotFoundError('Provider'));
+    await full.router.fetch(parcel(), true).catch(() => null);
+    expect(sources(full.universal)).toEqual(['ParcelsApp', 'Ship24', '17TRACK']);
+    const first = setup();
+    first.universal.mockRejectedValue(new NotFoundError('Provider'));
+    const deferred = await recheck(first, parcel()).catch((error: unknown) => error);
+    expect(deferred).toBeInstanceOf(RoutingDeferred);
+    expect(sources(first.universal)).toEqual(['ParcelsApp']);
+    // The discovery cursor moves on: the next recheck of a number pointing to no provider starts with Ship24.
+    const { routing } = deferred as RoutingDeferred;
+    const next = setup(new Date('2026-09-12T12:00:00Z'));
+    next.universal.mockRejectedValue(new NotFoundError('Provider'));
+    await recheck(next, parcel({ carrier_data: { routing } })).catch(() => null);
+    expect(sources(next.universal)).toEqual(['Ship24']);
+  });
+  it('skips a provider in backoff or cooling down for the next one it may ask', async () => {
+    const cooling = setup();
+    cooling.health.acquireTrackingProvider.mockResolvedValueOnce({ token: null, retry_at: '2026-09-10T13:00:00Z' });
+    const answered = await recheck(cooling, parcel());
+    expect(sources(cooling.universal)).toEqual(['Ship24']);
+    // A first answer joins the regular flow.
+    expect(answered.result).toMatchObject({ tracking_provider: 'Ship24', routing: { last_success_at: time.toISOString() } });
+    const backoff = setup();
+    backoff.universal.mockRejectedValue(new NotFoundError('Provider'));
+    await recheck(backoff, parcel({ carrier_data: { routing: state({
+      failures: { ParcelsApp: { count: 3, kind: 'not_found', retry_at: '2026-09-11T00:00:00Z' } } }) } })).catch(() => null);
+    expect(sources(backoff.universal)).toEqual(['Ship24']);
+    // 17TRACK, which nothing points to, is not asked even when both are out.
+    const out = setup();
+    await recheck(out, parcel({ carrier_data: { routing: state({ failures: {
+      ParcelsApp: { count: 3, kind: 'not_found', retry_at: '2026-09-11T00:00:00Z' },
+      Ship24: { count: 3, kind: 'not_found', retry_at: '2026-09-11T00:00:00Z' } } }) } })).catch(() => null);
+    expect(out.universal).not.toHaveBeenCalled();
+  });
+  it('still asks the carriers that recognize the number', async () => {
+    const { router, direct, universal, recognizeBrowser } = setup();
+    recognizeBrowser.mockResolvedValue({ known: true, lastActivityAt: time.toISOString() });
+    direct.mockImplementation(async (_parcel, carrier) => directValue(carrier));
+    const result = await router.fetch(parcel({ tracking_number: '000000000011' }), true, undefined, false, true);
+    expect(result.sourceCarrierId).toBe('fedex');
+    expect(universal).not.toHaveBeenCalled();
+  });
+  it('asks the providers with history for the carrier the number points to', async () => {
+    // A USPS number: 17TRACK had USPS's full history and ParcelsApp part of it, Ship24 none.
+    const usps = setup();
+    usps.direct.mockRejectedValue(new NotFoundError('USPS'));
+    usps.universal.mockRejectedValue(new NotFoundError('Provider'));
+    await recheck(usps, parcel({ tracking_number: '9400111206206406260787' })).catch(() => null);
+    expect(sources(usps.universal)).toEqual(['17TRACK']);
+    expect(recheckSources('9400111206206406260787', ['ParcelsApp', 'Ship24', '17TRACK'])).toEqual(['17TRACK', 'ParcelsApp']);
+    // Ten digits, likeliest DHL Express: Ship24 and 17TRACK had its full history.
+    expect(recheckSources('1234567891', ['ParcelsApp', 'Ship24', '17TRACK'])).toEqual(['Ship24', '17TRACK', 'ParcelsApp']);
+    // A number pointing to no carrier with evidence gets the HTTP providers, in the check's order.
+    expect(recheckSources('NOSHAPE42', ['17TRACK', 'Ship24', 'ParcelsApp'])).toEqual(['Ship24', 'ParcelsApp']);
+    // Evidence that no provider had the carrier's history leaves them too, and only providers the check may ask count.
+    vi.spyOn(scraper, 'universalPlan').mockReturnValue({ sources: ['17TRACK', 'ParcelsApp', 'Ship24', 'Postal Ninja'], carrier: 'usps',
+      tier: (source) => source === 'Postal Ninja' ? 'full' : 'empty', rank: () => 0 });
+    expect(recheckSources('NOSHAPE42', ['17TRACK', 'Ship24', 'ParcelsApp'])).toEqual(['Ship24', 'ParcelsApp']);
+    expect(recheckSources('NOSHAPE42', ['17TRACK', 'Ship24', 'ParcelsApp', 'Postal Ninja'])).toEqual(['Postal Ninja']);
   });
 });
 

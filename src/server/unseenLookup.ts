@@ -8,6 +8,8 @@ import { isRecord, type JsonObject } from './types';
  */
 export const UNSEEN_HOURLY_MS = 6 * 60 * 60 * 1_000;
 
+const DAY_MS = 24 * 60 * 60 * 1_000;
+
 /** After this long unseen, a number is checked daily. */
 const UNSEEN_DAILY_AFTER_MS = 48 * 60 * 60 * 1_000;
 
@@ -41,6 +43,34 @@ export function unseenFor(parcel: JsonObject, now: Date): number | null {
     || routing.confirmed_carrier || routing.discovered_carrier || routing.input_needed || routing.provider_input_needed) return null;
   const added = Date.parse(String(parcel.created_at ?? ''));
   return Number.isFinite(added) ? Math.max(0, now.getTime() - added) : 0;
+}
+
+/**
+ * With `TRACKING_ENABLE_UNSEEN_RECHECKS=true`, an account's parcel whose number nobody
+ * has answered for a day is checked again once each this long after it was added, by
+ * day, rather than every 6 hours, daily and then weekly with every provider.
+ */
+const UNSEEN_RECHECKS_MS = [1, 3, 7].map((days) => days * DAY_MS);
+
+/** From this long after it was added, such a parcel leaves the schedule. */
+const UNSEEN_RECHECKS_END_MS = 14 * DAY_MS;
+
+/**
+ * When a check nobody asked for is due for an account's parcel whose number nobody
+ * has answered for a day, as epoch milliseconds: 1, 3 or 7 days after it was added,
+ * the latest of these that has passed. Null from 14 days, when no such check is due
+ * any more. Undefined when the rechecks don't apply: they are off, the parcel is a
+ * lookup without an account, someone has answered for its number, or it is newer.
+ */
+export function unseenRecheckDue(parcel: JsonObject, now: Date): number | null | undefined {
+  if (process.env.TRACKING_ENABLE_UNSEEN_RECHECKS !== 'true') return undefined;
+  // Lookups without an account have no owner (one_off), and every account's parcel has one.
+  const owned = parcel.one_off === false || (parcel.one_off == null && typeof parcel.user_id === 'string');
+  const unseen = owned ? unseenFor(parcel, now) : null;
+  if (unseen === null || unseen < UNSEEN_RECHECKS_MS[0]) return undefined;
+  if (unseen >= UNSEEN_RECHECKS_END_MS) return null;
+  const since = UNSEEN_RECHECKS_MS.filter((after) => unseen >= after).at(-1)!;
+  return now.getTime() - unseen + since;
 }
 
 /**

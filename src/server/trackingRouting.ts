@@ -256,6 +256,21 @@ export function suggestedInput(parcel: JsonObject, state: RoutingState): Routing
     && requiredRequirements(candidate, number).map(({ field }) => field).join() === 'postcode');
   return carrier ? { carrier, field: 'dpdPostcode' } : undefined;
 }
+/**
+ * The universal providers a recheck of a number nobody has answered for a day may ask, of
+ * `ordered`, the check's own order; it contacts one of them at most. The first carrier its
+ * detection names or lists with coverage evidence gives those that had history for it, fuller
+ * first. A number pointing to no such carrier, or to one no provider had history for, gets
+ * the HTTP providers the Add preflight asks, ParcelsApp and Ship24, in the check's order:
+ * the browser-service ones cost more, and nothing points to them.
+ */
+export function recheckSources(number: string, ordered: readonly UniversalSource[], enablePostalNinja?: boolean): UniversalSource[] {
+  const detected = detectCarrierMatch(number);
+  const plan = universalPlan({ carriers: detected.confidence === 'high' ? [detected.carrier] : detected.candidates,
+    trackingNumber: number, enablePostalNinja });
+  const covered = plan.carrier ? plan.sources.filter((source) => ordered.includes(source) && ['full', 'partial'].includes(plan.tier(source))) : [];
+  return covered.length ? covered : ordered.filter((source) => source === 'ParcelsApp' || source === 'Ship24');
+}
 /** A parcel carrier's own zone, when its catalog names one. */
 function carrierZone(carrier: string): string | null {
   try {
@@ -432,7 +447,11 @@ export class TrackingRouter {
     enablePostalNinja?: boolean;
   }) {}
 
-  async fetch(parcel: JsonObject, scheduled: boolean, signal?: AbortSignal, addition = false): Promise<RoutedResult> {
+  /**
+   * `sparse`: a recheck of a number nobody has answered for a day, which asks the carriers
+   * as usual and contacts one universal provider at most (recheckSources).
+   */
+  async fetch(parcel: JsonObject, scheduled: boolean, signal?: AbortSignal, addition = false, sparse = false): Promise<RoutedResult> {
     const now = () => this.options.now?.() ?? new Date();
     const state = routingState(parcel);
     // Last routed under another scraper release, whose adapters may have answered otherwise.
@@ -985,8 +1004,9 @@ export class TrackingRouter {
     // Postal Ninja and UPU keep their place after the others.
     const rotation: UniversalSource[] = richerSources.filter((source) => source !== 'Postal Ninja');
     const offset = state.discovery_cursor % Math.max(1, rotation.length);
-    const ordered = [...new Set<UniversalSource>([...(priority ? [priority] : []), ...fuller, ...(preferred ? [preferred] : []), ...rotation.slice(offset), ...rotation.slice(0, offset),
+    const everyProvider = [...new Set<UniversalSource>([...(priority ? [priority] : []), ...fuller, ...(preferred ? [preferred] : []), ...rotation.slice(offset), ...rotation.slice(0, offset),
       ...sources])];
+    const ordered = sparse ? recheckSources(universalNumber, everyProvider, this.options.enablePostalNinja) : everyProvider;
     // Reserve each source’s lookup budget plus transport allowance (UPU needs only 8s).
     // Start after direct attempts so a slow carrier cannot starve discovery.
     const universalDeadline = performance.now() + sources.reduce((sum, source) => sum + universalSourceBudget(source) + 5_000, 0);
@@ -1007,7 +1027,7 @@ export class TrackingRouter {
       // Node's AbortSignal.timeout requires integer milliseconds.
       const remaining = Math.floor(universalDeadline - performance.now());
       if (attemptedUniversal.has(source) || remaining <= 5_000 || millis(state.failures[source]?.retry_at) > now().getTime()
-        || (scheduled && awaitsInput(source))) return null;
+        || (scheduled && awaitsInput(source)) || (sparse && attempts > 0)) return null;
       attemptedUniversal.add(source);
       const prefetched = prefetchedUniversal.get(source) ?? this.options.takePrefetchedUniversal?.(source, universalNumber, providerPostcode);
       if (prefetched) {

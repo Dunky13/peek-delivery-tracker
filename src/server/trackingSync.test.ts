@@ -778,6 +778,7 @@ describe('status observation collection', () => {
 function fakeClient(packages: JsonObject[] = []) {
   const client = {
     listActivePackages: vi.fn().mockResolvedValue(packages),
+    getPackage: vi.fn(async (id: string): Promise<JsonObject | null> => packages.find((parcel) => parcel.id === id) ?? null),
     listFollowedOneOffPackages: vi.fn().mockResolvedValue([]),
     listUnfiledOneOffPackages: vi.fn().mockResolvedValue([]),
     listUnwatchedPackageIds: vi.fn().mockResolvedValue([]),
@@ -5800,5 +5801,113 @@ describe('the pickup point a parcel was collected from', () => {
       carrier_data: { pickup_point: POINT, routing: { version: 1, configured_carrier: 'chronopost' } } },
     answer('delivered', [waiting, collected]));
     expect(changed.point(-1)).toBeUndefined();
+  });
+});
+
+describe('rechecks of an account\'s parcel whose number nobody has answered', () => {
+  afterEach(() => vi.unstubAllEnvs());
+  const routing = { version: 1, configured_carrier: 'unknown', failures: {} };
+  const unseen = (id: string, extra: JsonObject = {}): JsonObject => ({ id, user_id: 'a', one_off: false, carrier: 'unknown',
+    current_stage: 'pending', tracking_number: 'TEST1234', created_at: '2026-09-01T09:00:00Z', last_synced_at: null,
+    sync_status: 'waiting', archived_at: null, carrier_data: { routing }, ...extra });
+  const checked = async (parcels: JsonObject[], at: string, client = fakeClient(parcels)) => {
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+      { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, null, () => new Date(at));
+    await service.sync();
+    return client.startSyncAttempt.mock.calls.map(([, values]) => values.package_id);
+  };
+
+  // Added on 1 September at 11:00 in Zurich; `on` with the rechecks, `off` without, as today.
+  it.each([
+    { name: 'a day on, checked four hours before', at: '2026-09-02T10:00:00Z', last: '2026-09-02T06:00:15Z', on: 1, off: 0 },
+    { name: 'two days on, checked after a day', at: '2026-09-03T08:00:00Z', last: '2026-09-02T10:00:15Z', on: 0, off: 1 },
+    { name: 'two days on, never checked', at: '2026-09-03T10:00:00Z', last: null, on: 1, off: 1 },
+    { name: 'three days on, checked after a day', at: '2026-09-04T10:00:00Z', last: '2026-09-02T10:00:15Z', on: 1, off: 1 },
+    { name: 'three days on, at 23:00 in Zurich', at: '2026-09-04T21:00:00Z', last: '2026-09-02T10:00:15Z', on: 0, off: 1 },
+    { name: 'three days on, at 08:00 in Zurich', at: '2026-09-05T06:00:00Z', last: '2026-09-02T10:00:15Z', on: 1, off: 1 },
+    { name: 'six days on, checked after three', at: '2026-09-07T10:00:00Z', last: '2026-09-04T10:00:15Z', on: 0, off: 1 },
+    { name: 'a week on, checked after three days', at: '2026-09-08T10:00:00Z', last: '2026-09-04T10:00:15Z', on: 1, off: 0 },
+    { name: 'two weeks on, checked after one', at: '2026-09-15T10:00:00Z', last: '2026-09-08T10:00:15Z', on: 0, off: 1 },
+    { name: 'three days on, archived', at: '2026-09-04T10:00:00Z', last: '2026-09-02T10:00:15Z', on: 1, off: 1,
+      extra: { archived_at: '2026-09-02T12:00:00Z' } },
+    { name: 'two weeks on, archived', at: '2026-09-15T10:00:00Z', last: '2026-09-08T10:00:15Z', on: 0, off: 1,
+      extra: { archived_at: '2026-09-02T12:00:00Z' } },
+    { name: 'two weeks on, answered for', at: '2026-09-15T10:00:00Z', last: '2026-09-15T09:00:15Z', on: 1, off: 1,
+      extra: { carrier_data: { routing: { ...routing, last_success_at: '2026-09-01T10:00:00Z', last_event_at: '2026-09-01T10:00:00Z' } } } },
+  ])('checks a parcel $name at $at: $on with the rechecks, $off without', async ({ at, last, on, off, extra }) => {
+    const parcel = unseen('unseen', { last_synced_at: last, ...extra });
+    await expect(checked([parcel], at)).resolves.toHaveLength(off);
+    vi.stubEnv('TRACKING_ENABLE_UNSEEN_RECHECKS', 'false');
+    await expect(checked([parcel], at)).resolves.toHaveLength(off);
+    vi.stubEnv('TRACKING_ENABLE_UNSEEN_RECHECKS', 'true');
+    await expect(checked([parcel], at)).resolves.toHaveLength(on);
+  });
+
+  it('leaves lookups without an account as they are', async () => {
+    vi.stubEnv('TRACKING_ENABLE_UNSEEN_RECHECKS', 'true');
+    const lookup = unseen('lookup', { user_id: null, one_off: true, last_synced_at: '2026-09-02T06:00:15Z' });
+    const client = fakeClient();
+    client.listFollowedOneOffPackages.mockResolvedValue([lookup]);
+    // Off the schedule six hours after it was added, where an account's parcel gets its recheck.
+    await expect(checked([], '2026-09-02T10:00:00Z', client)).resolves.toEqual([]);
+    await expect(checked([unseen('owned', { last_synced_at: '2026-09-02T06:00:15Z' })], '2026-09-02T10:00:00Z')).resolves.toEqual(['owned']);
+    // Opening one of its links still checks it daily, as it does an account's parcel.
+    expect(isOpenedParcelSyncDue(lookup, new Date('2026-09-02T13:00:00Z'))).toBe(true);
+    const owned = unseen('owned', { last_synced_at: '2026-09-04T10:00:15Z' });
+    expect(isOpenedParcelSyncDue(owned, new Date('2026-09-05T11:00:00Z'))).toBe(true);
+  });
+
+  it('rechecks after every other parcel and lookup, within its account\'s share, three a run', async () => {
+    vi.stubEnv('TRACKING_ENABLE_UNSEEN_RECHECKS', 'true');
+    const regular = (id: string, user: string): JsonObject => ({ id, user_id: user, carrier: 'swiss-post', current_stage: 'in_transit',
+      tracking_number: `TEST${id}`, created_at: '2026-09-03T09:00:00Z', last_synced_at: null, sync_status: 'ok', archived_at: null });
+    const recheck = (id: string, user: string) => unseen(id, { user_id: user, tracking_number: `TEST${id}`, last_synced_at: '2026-09-02T10:00:15Z' });
+    const parcels = [recheck('a6', 'a'), ...['a1', 'a2', 'a3', 'a4', 'a5'].map((id) => regular(id, 'a')),
+      recheck('b1', 'b'), recheck('b2', 'b'), recheck('b3', 'b'), recheck('b4', 'b'), recheck('c1', 'c')];
+    const client = fakeClient(parcels);
+    client.listFollowedOneOffPackages.mockResolvedValue([{ ...regular('lookup', 'x'), user_id: null, one_off: true }]);
+    // Account a's five regular parcels take its share; b and c share three rechecks after the lookup.
+    await expect(checked(parcels, '2026-09-04T10:00:00Z', client)).resolves.toEqual(['a1', 'a2', 'a3', 'a4', 'a5', 'lookup', 'b1', 'c1', 'b2']);
+    // Only the rechecks were read again.
+    expect(client.getPackage.mock.calls.map(([id]) => id)).toEqual(['b1', 'c1', 'b2']);
+  });
+
+  it('skips a recheck when another check ran since the run listed it, or it cannot tell', async () => {
+    vi.stubEnv('TRACKING_ENABLE_UNSEEN_RECHECKS', 'true');
+    const parcel = unseen('unseen', { last_synced_at: '2026-09-02T10:00:15Z' });
+    const at = '2026-09-04T10:00:00Z';
+    const reread = async (current: () => Promise<JsonObject | null>) => {
+      const client = fakeClient([parcel]);
+      client.getPackage.mockImplementation(current);
+      return await checked([parcel], at, client);
+    };
+    await expect(reread(async () => ({ ...parcel }))).resolves.toEqual(['unseen']);
+    await expect(reread(async () => ({ ...parcel, last_synced_at: '2026-09-04T09:59:00Z' }))).resolves.toEqual([]);
+    await expect(reread(async () => null)).resolves.toEqual([]);
+    const capture = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
+    const failure = new Error('unavailable');
+    await expect(reread(async () => { throw failure; })).resolves.toEqual([]);
+    expect(capture).toHaveBeenCalledWith(failure, { component: 'tracking', operation: 'reread_unseen_recheck' });
+    // The next run, after its check, finds it done.
+    await expect(checked([{ ...parcel, last_synced_at: '2026-09-04T10:00:05Z' }], '2026-09-04T10:02:00Z')).resolves.toEqual([]);
+  });
+
+  it('asks one universal provider at a recheck nobody asked for, each one when someone asks', async () => {
+    const parcel = unseen('unseen', { last_synced_at: '2026-09-02T10:00:15Z' });
+    const asked = async (check: (service: TrackingSyncService) => Promise<unknown>) => {
+      const client = { ...fakeClient([parcel]), acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
+        finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+      const adapter = { fetch: vi.fn().mockRejectedValue(new NotFoundError('Carrier')),
+        fetchUniversal: vi.fn().mockRejectedValue(new NotFoundError('Provider')) };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-04T10:00:00Z'));
+      await check(service);
+      return adapter.fetchUniversal.mock.calls.map(([source]) => source);
+    };
+    const every = ['ParcelsApp', 'Ship24', '17TRACK'];
+    await expect(asked((service) => service.sync())).resolves.toEqual(every);
+    vi.stubEnv('TRACKING_ENABLE_UNSEEN_RECHECKS', 'true');
+    await expect(asked((service) => service.sync())).resolves.toEqual(['ParcelsApp']);
+    await expect(asked((service) => service.syncPackage(parcel, { trigger: 'release' }))).resolves.toEqual(['ParcelsApp']);
+    await expect(asked((service) => service.syncPackage(parcel, { trigger: 'refresh' }))).resolves.toEqual(every);
   });
 });

@@ -48,7 +48,7 @@ import type { UniversalSource } from 'universal-parcel-scraper';
 import { answeredWithoutHistory, catalogRules, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { REDETECTION_WINDOW_MS, rerouteAskable } from './redetection';
 import { upuHistory } from './upuHistory';
-import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours } from './unseenLookup';
+import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours, unseenRecheckDue } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent, localClockCarrier } from './directLocalHistory';
 import { carrierMovedAt, eventStage, showsDelivery, UNCONFIRMED_DELIVERY_MS } from './disputedDelivery';
@@ -63,6 +63,8 @@ import { carrierLookupKey, recognitionKey, SharedLookups, universalLookupKey, ty
 const MAX_PACKAGES_PER_OWNER_PER_SYNC = 5;
 /** One-off parcels have no owner: a scheduled run checks this many of them, all together. */
 const MAX_ONE_OFF_PACKAGES_PER_SYNC = 10;
+/** A scheduled run rechecks at most this many accounts' parcels whose number nobody has answered (unseenRecheckDue). */
+const MAX_UNSEEN_RECHECKS_PER_SYNC = 3;
 /** A one-off parcel stays on the schedule this long after one of its links was last opened. */
 const ONE_OFF_FOLLOWED_MS = 24 * 60 * 60 * 1_000;
 /** A catalog queues the checks of parcels its rules point to another carrier this many at a time. */
@@ -271,6 +273,15 @@ function isScheduledTrackingSyncDue(
   if (!isTrackingSyncDue(parcel, now)) return false;
   const unseen = unseenFor(parcel, now);
   if (oneOff && unseen !== null && (unfollowed || unseen >= UNSEEN_HOURLY_MS)) return false;
+  // An account's parcel whose number nobody has answered for a day, with the rechecks on: once
+  // 1, 3 and 7 days after it was added, by day, archived or not, and no more from 14 days. Any
+  // check since the latest of these stands in for it, so a run that finds it done skips it.
+  // Opening one of its links still checks it daily.
+  const recheck = oneOff || opened ? undefined : unseenRecheckDue(parcel, now);
+  if (recheck !== undefined) {
+    const hour = DateTime.fromJSDate(now, { zone: 'Europe/Zurich' }).hour;
+    return recheck !== null && hour >= 8 && hour < 22 && !(Date.parse(String(parcel.last_synced_at ?? '')) >= recheck);
+  }
   const archived = parcel.archived_at != null && !sharedAlerts;
   if (archived) {
     const activity = lastActivity(parcel);
@@ -882,8 +893,14 @@ export class TrackingSyncService {
       const due = (oneOff: boolean, unfollowed = false) => (parcel: JsonObject) => isScheduledTrackingSyncDue(parcel, now, {
         unwatched: unwatched.has(String(parcel.id)), oneOff, unfollowed, sharedAlerts: shared.has(String(parcel.id)),
       });
-      const accounts = fairSyncPackages(active.filter(due(false)));
-      const parcels = [...accounts, ...await this.oneOffPackages(due(true), due(true, true), now, context.signal)];
+      const owned = active.filter(due(false));
+      // An account's parcel whose number nobody has answered for a day is rechecked after every
+      // other parcel and lookup, within its account's share, a few a run.
+      const rechecks = new Set(owned.filter((parcel) => unseenRecheckDue(parcel, now) !== undefined));
+      const shares = fairSyncPackages([...owned.filter((parcel) => !rechecks.has(parcel)), ...rechecks]);
+      const parcels = [...shares.filter((parcel) => !rechecks.has(parcel)),
+        ...await this.oneOffPackages(due(true), due(true, true), now, context.signal),
+        ...shares.filter((parcel) => rechecks.has(parcel)).slice(0, MAX_UNSEEN_RECHECKS_PER_SYNC)];
       // Copies of one number, in several accounts or followed without one, share their lookups.
       const lookups = new SharedLookups(parcels);
       let legs: Set<string> | null | undefined;
@@ -892,6 +909,8 @@ export class TrackingSyncService {
         // At shutdown the run stops between checks; its job goes back to the queue, and the
         // replacement checks the parcels still due.
         if (context.stopping?.aborted) throw context.stopping.reason;
+        // A check since the run listed it, such as a release's re-check on another server, stands in for a recheck.
+        if (rechecks.has(parcel) && !await this.uncheckedSinceListed(parcel, context.signal)) continue;
         summary.checked += 1;
         const outcome = await this.syncOne(parcel, context, lookups);
         summary[outcome] += 1;
@@ -1058,6 +1077,21 @@ export class TrackingSyncService {
       () => this.client.listUnfiledOneOffPackages(new Date(now.getTime() - REDETECTION_WINDOW_MS)));
     return [...followed.filter(followedDue), ...unfiled.filter((parcel) => !listed.has(String(parcel.id)) && unfollowedDue(parcel))]
       .slice(0, MAX_ONE_OFF_PACKAGES_PER_SYNC);
+  }
+
+  /**
+   * Whether no check has run on the parcel since the run listed it. One that cannot be
+   * read is left for the next run.
+   */
+  private async uncheckedSinceListed(parcel: JsonObject, signal?: AbortSignal): Promise<boolean> {
+    try {
+      const current = await this.client.getPackage(String(parcel.id));
+      return current !== null && current.id === parcel.id && (current.last_synced_at ?? null) === (parcel.last_synced_at ?? null);
+    } catch (error) {
+      signal?.throwIfAborted();
+      captureOperationalError(error, { component: 'tracking', operation: 'reread_unseen_recheck' });
+      return false;
+    }
   }
 
   /**
@@ -1369,6 +1403,8 @@ export class TrackingSyncService {
         && candidate.carrier_data.delivery_probe === undefined
         ? { ...candidate, carrier_data: { ...candidate.carrier_data, delivery_probe: savedProbe } } : candidate;
       const keepProbe = (probe: JsonObject) => { lookupProbe = probe; };
+      // A check nobody asked for of an account's number nobody has answered for a day contacts one provider at most.
+      const sparse = !askedForCheck(context.trigger) && unseenRecheckDue(subject, now) !== undefined;
       // Only a check someone asked for, or a lookup's, skips the scheduled cadence: a release's re-check keeps it.
       try {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
@@ -1386,7 +1422,7 @@ export class TrackingSyncService {
             ...(this.adapter.recognizeBrowser ? { recognizeBrowser: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) =>
               once(recognitionKey('browser', carrier, number), () => this.adapter.recognizeBrowser!(carrier, number, context, previousError)) } : {}),
             enablePostalNinja: process.env.TRACKING_ENABLE_POSTAL_NINJA === 'true',
-          }).fetch(subject, !askedForCheck(context.trigger), context.signal, addition)
+          }).fetch(subject, !askedForCheck(context.trigger), context.signal, addition, sparse)
           : await this.fetchResult(subject, carrierId, checks, askedForCheck(context.trigger), lookupCountry, keepProbe));
       } catch (error) {
         if (carrierId === 'amazon-shipping' && error instanceof CarrierError && error.reason === 'history_expired') {

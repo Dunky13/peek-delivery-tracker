@@ -228,7 +228,7 @@ parcels followed without an account that nobody watches (below).
 | Nobody waiting for it | hourly around the clock; manual refresh still allowed |
 | Followed without an account, no link opened for an hour and no alert on | every 3 h, not overnight; opening a link queues a check at once |
 | Without an account, filed under no carrier, added in the last 30 days, no link opened for a day and no alert on, once a carrier or provider answered for its number | every 6 h, not overnight |
-| Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, weekly after 7 days, around the clock; manual refresh still allowed |
+| Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, weekly after 7 days, around the clock; manual refresh still allowed. An account's parcel, with its rechecks on: 1, 3 and 7 days after it was added, then no more after 14 days (below) |
 | Archived, with a new event in the last 30 days (from when it was added), and no alert on a link shared with someone | daily around the clock; manual refresh still allowed |
 | Delivered on a provider's word alone, which the parcel's carrier did not show (below) | daily around the clock for 3 days |
 
@@ -295,6 +295,18 @@ and a number no carrier is known for asks every provider in turn. A scheduled ru
 account's share, the least recently checked first. Their own checks queue behind every account's
 refresh and the scheduled run. A delivered or returned one is not checked, but for a
 delivery only a provider reported (above).
+
+**An account's parcel whose number nobody has seen for a day**, with
+`TRACKING_ENABLE_UNSEEN_RECHECKS=true` (off by default), leaves that cadence for three
+rechecks: once 1, 3 and 7 days after it was added, by day, archived or not, and none from
+14 days. Any check since the latest of these stands in for it. A scheduled run rechecks
+after every other parcel and lookup, within the account's five, three at most, and skips a
+parcel checked since the run listed it ([`unseenLookup.ts`](../src/server/unseenLookup.ts)).
+A recheck, like a release's re-check of such a parcel, asks the carriers as any check does
+and contacts one universal provider at most: the first free one with history for the
+likeliest carrier the number's detection points to, fuller first, else ParcelsApp or Ship24
+in the discovery cursor's order. Opening one of its links still checks it daily, a refresh
+asks every provider, and a first answer puts it on the regular cadence.
 
 HTTP 429 without `Retry-After` is not retried immediately. Adapters that allow one
 transient retry honour a `Retry-After` of up to one minute; longer windows fail the attempt.
