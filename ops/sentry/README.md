@@ -15,7 +15,7 @@ failure that recovers never opens an issue. See [OBSERVABILITY.md](../../docs/OB
 
 | Incident | Opens when | Recovers when |
 | --- | --- | --- |
-| Shipment refresh | The 3 latest scheduled checks of one parcel failed, the last within the hour, or ≥ 5 failures and > 20 % of checks in one hour | The 3 latest checks succeed and no threshold is still breached |
+| Shipment refresh | The 3 latest scheduled checks of two parcels failed, the last within the hour, or of one parcel while no other parcel's latest check that hour answered; or ≥ 5 failures and > 20 % of checks in one hour | The 3 latest checks succeed and no threshold is still breached |
 | Direct transport | > 50 % of ≥ 10 direct probes failed in 24 h | The 3 latest direct probes succeed and no more than half of the 24 h's failed |
 | Provider lookup | > 50 % of ≥ 10 lookups failed in 24 h | The 3 latest lookups succeed and no more than half of the 24 h's failed |
 
@@ -40,6 +40,10 @@ failures age out of the window; a new failure meanwhile reminds as usual.
   healthy, filed as missing input, whether or not routing made the check. So is a number
   that names several parcels (inconclusive with the reason `several_parcels`, such as an
   Australia Post consignment of several articles): the owner has to give one parcel's number.
+- One parcel's failed streak while the carrier answers its other parcels is that parcel's
+  own, such as a number that trips the carrier's bot defences: it neither opens a refresh
+  incident nor holds one open. Missing input and not-found don't count as answering. A
+  carrier whose other parcels fail too, or that has no other parcel, opens at the first streak.
 - A step skipped during a cooldown is not a success. A check that contacted nobody because
   everything was cooling down records nothing.
 - A parcel whose own carrier says not-found stays `waiting` even if every fallback fails.

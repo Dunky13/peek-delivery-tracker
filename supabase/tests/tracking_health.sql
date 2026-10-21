@@ -17,6 +17,12 @@ create function pg_temp.direct_notice(result jsonb, subject text)
 returns jsonb language sql as $$
   select n from jsonb_array_elements(result) n where n->>'kind'='direct' and n->>'subject'=subject;
 $$;
+-- A parcel's refresh that answered without a lookup, its number waiting for the owner's input.
+create function pg_temp.input_required_refresh(subject text, package_id uuid)
+returns jsonb language sql as $$
+  select public.record_tracking_health(gen_random_uuid(),package_id,jsonb_build_array(jsonb_build_object(
+    'kind','refresh','subject',subject,'healthy',true,'details',jsonb_build_object('category','input_required'))));
+$$;
 create function pg_temp.answered_sample(subject text)
 returns jsonb language sql as $$
   select public.record_tracking_health(gen_random_uuid(),null,jsonb_build_array(jsonb_build_object(
@@ -64,13 +70,29 @@ begin
   result := pg_temp.health_sample('test-carrier',false,'refresh');
   assert result->0->>'consecutive_failures'='true', 'Same parcel failing three times must alert';
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
-  for i in 1..3 loop result := pg_temp.health_sample('test-carrier',true,'refresh','20000000-0000-4000-8000-000000000001'); end loop;
-  assert result='[]', 'Other healthy parcels must not clear a still-failing parcel';
+  for i in 1..3 loop result := pg_temp.input_required_refresh('test-carrier','20000000-0000-4000-8000-000000000001'); end loop;
+  assert result='[]', 'Parcels waiting for input must not clear a still-failing parcel';
   -- A parcel that stopped being checked, a one-off lookup leaving the schedule, holds nothing open.
   update public.tracking_health_samples set observed_at=now()-interval '2 hours'
     where subject='test-carrier' and package_id='10000000-0000-4000-8000-000000000001';
-  result := pg_temp.health_sample('test-carrier',true,'refresh','20000000-0000-4000-8000-000000000001');
+  result := pg_temp.input_required_refresh('test-carrier','20000000-0000-4000-8000-000000000001');
   assert result->0->>'state'='recovered', 'A streak that ended before the window must let the incident recover';
+
+  -- One parcel's streak while the carrier answers another parcel, such as a number that trips its
+  -- bot defences, is that parcel's own; a second parcel's streak makes it the carrier's.
+  perform pg_temp.health_sample('streak-carrier',true,'refresh','20000000-0000-4000-8000-000000000001');
+  for i in 1..3 loop result := pg_temp.health_sample('streak-carrier',false,'refresh'); end loop;
+  assert result='[]', 'One parcel failing while another parcel answers must not alert';
+  -- Below the rate's five failures an hour, so only the streaks can alert.
+  update public.tracking_health_samples set observed_at=now()-interval '2 hours' where subject='streak-carrier' and not healthy;
+  for i in 1..2 loop perform pg_temp.health_sample('streak-carrier',false,'refresh','20000000-0000-4000-8000-000000000002'); end loop;
+  assert pg_temp.health_sample('streak-carrier',false,'refresh')='[]', 'A streak whose parcel stays alone must not alert';
+  result := pg_temp.health_sample('streak-carrier',false,'refresh','20000000-0000-4000-8000-000000000002');
+  assert result->0->>'state'='open' and result->0->>'consecutive_failures'='true' and (result->0->>'failures')::int=4,
+    'Two parcels failing three times in a row must alert';
+  perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
+  for i in 1..3 loop result := pg_temp.health_sample('streak-carrier',true,'refresh','20000000-0000-4000-8000-000000000001'); end loop;
+  assert result='[]', 'Another parcel answering must not clear two still-failing parcels';
 
   for i in 1..10 loop result := pg_temp.health_sample('half-failing',i%2=0); end loop;
   assert result='[]', 'Exactly 50 percent must not alert';
