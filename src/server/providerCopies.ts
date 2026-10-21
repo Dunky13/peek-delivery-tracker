@@ -7,7 +7,11 @@
  * cannot tell apart stay stored. Once a direct carrier is confirmed for the
  * parcel, its timeline leaves out such a copy: a row only a universal provider
  * wrote, at the minute of one of the carrier's scans, or in that scan's stage
- * within 15 minutes or a whole number of hours up to 14 h away. A carrier's
+ * within 15 minutes or a whole number of hours up to 14 h away. A copy only
+ * whole hours from the carrier's scans shows the provider read them a zone
+ * away, so its provider's other rows of that minute are copies too, in any
+ * stage (Swiss Post dates a London office's scans on Swiss time, and
+ * ParcelsApp tells the departure twice). A carrier's
  * scan dated by its day, on a wall clock in no zone (YunExpress's), has no
  * instant to compare: a copy in its stage and words whose time shows that wall
  * clock, whole quarter hours away up to 14 h, is left out. A provider's step
@@ -57,9 +61,13 @@ function observed(event: JsonObject): boolean {
     || (isRecord(event.raw_data) && event.raw_data.observed_without_provider_timestamp === true);
 }
 
-function named(event: JsonObject): boolean {
+function providerName(event: JsonObject): string {
   const name = event.universal_provider ?? (isRecord(event.raw_data) ? event.raw_data.universal_provider : undefined);
-  return typeof name === 'string' && name !== '';
+  return typeof name === 'string' ? name : '';
+}
+
+function named(event: JsonObject): boolean {
+  return providerName(event) !== '';
 }
 
 function storedHistory(data: unknown): { from: number; to: number; held: Set<string> } | null {
@@ -124,6 +132,12 @@ function copies(copy: JsonObject, scan: JsonObject): boolean {
     && (Math.abs(instant(copy) - instant(scan)) <= NEAR_MS || (minutes % HOUR_MS === 0 && minutes <= MAX_SHIFT_MS));
 }
 
+/** Whether `copy` repeats the carrier's `scan` whole hours from it, and so on a clock a zone away. */
+function hoursAway(copy: JsonObject, scan: JsonObject): boolean {
+  const minutes = Math.abs(Math.floor(instant(copy) / MINUTE_MS) - Math.floor(instant(scan) / MINUTE_MS)) * MINUTE_MS;
+  return !Number.isFinite(wallClock(scan)) && minutes > 0 && copies(copy, scan) && minutes % HOUR_MS === 0;
+}
+
 /** The ids of the stored rows of `row` its timeline leaves out as a universal provider's copies of its carrier's scans. */
 export function providerCopies(row: JsonObject): Set<string> {
   const data = isRecord(row.carrier_data) ? row.carrier_data : {};
@@ -135,10 +149,18 @@ export function providerCopies(row: JsonObject): Set<string> {
   const scans = row.tracking_events.filter(isRecord).filter((event) => !observed(event) && Number.isFinite(instant(event)));
   const universal = (event: JsonObject) => source(event) === UNIVERSAL && !history?.held.has(identity(event));
   const own = scans.filter((event) => !['', 'app'].includes(source(event)) && !universal(event));
+  const providerOnly = (event: JsonObject) => universal(event)
+    && (named(event) || (history !== null && history.from <= instant(event) && instant(event) <= history.to));
+  const minute = (event: JsonObject) => `${providerName(event)}@${Math.floor(instant(event) / MINUTE_MS)}`;
   for (const event of scans) {
-    const providerOnly = universal(event)
-      && (named(event) || (history !== null && history.from <= instant(event) && instant(event) <= history.to));
-    if (providerOnly && own.some((scan) => copies(event, scan))) copied.add(String(event.id));
+    if (providerOnly(event) && own.some((scan) => copies(event, scan))) copied.add(String(event.id));
+  }
+  // A provider that reads the carrier's scans a zone away tells every scan of that minute on the same clock: its
+  // rows at the minute of a copy that only repeats scans whole hours away repeat that scan too, whatever their stage.
+  const shifted = new Set(scans.filter((event) => copied.has(String(event.id))
+    && own.every((scan) => !copies(event, scan) || hoursAway(event, scan))).map(minute));
+  for (const event of scans) {
+    if (providerOnly(event) && shifted.has(minute(event))) copied.add(String(event.id));
   }
   return copied;
 }

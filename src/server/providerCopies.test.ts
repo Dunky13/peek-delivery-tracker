@@ -67,6 +67,24 @@ describe('providerCopies', () => {
       .toEqual(new Set(['u2']));
   });
 
+  it('leaves out a provider\'s other rows of the minute it read a zone away, and only those', () => {
+    // Swiss Post dates a London office's departure on Swiss time; ParcelsApp tells it on London's, twice.
+    const events = [
+      scan('c1', 'swiss-post', '2026-10-16T15:27:00Z', { description: 'Arrival at the processing point' }),
+      scan('c2', 'swiss-post', '2026-10-16T15:57:00Z', { description: 'The consignment has left the border point' }),
+      scan('u1', 'unknown', '2026-10-16T16:57:00Z', { ...named, description: 'Departure from office of exchange' }),
+      scan('u2', 'unknown', '2026-10-16T16:57:00Z', { ...named, stage: 'pending', description: 'Item has passed a checkpoint' }),
+      // Another provider's row of that minute, and the provider's row of another minute, stay.
+      scan('u3', 'unknown', '2026-10-16T16:57:00Z', { universal_provider: '17TRACK', stage: 'customs' }),
+      scan('u4', 'unknown', '2026-10-16T16:58:00Z', { ...named, stage: 'customs' }),
+    ];
+    const carrierData = { routing: { confirmed_carrier: 'landmark-global' } };
+    expect([...providerCopies({ carrier_data: carrierData, tracking_events: events })].sort()).toEqual(['u1', 'u2']);
+    // A copy also close to a carrier's scan keeps the carrier's clock: the provider's other rows of its minute stay.
+    const near = scan('c3', 'swiss-post', '2026-10-16T16:50:00Z');
+    expect([...providerCopies({ carrier_data: carrierData, tracking_events: [...events, near] })].sort()).toEqual(['u1']);
+  });
+
   it('leaves out a provider\'s copy of a scan the carrier dated by its day, showing the scan\'s wall clock in its words', () => {
     // YunExpress gives the scan a wall clock in no zone; the provider dates it on Shanghai's clock.
     const day = scan('c2', 'yunexpress', '2026-10-11T00:00:01Z', { local_time: '2026-10-11T18:20:00', description: 'Sorted' });

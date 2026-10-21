@@ -100,5 +100,38 @@ do $$ begin
     raise exception 'Clients can run hidden_provider_copy';
   end if;
 end; $$;
+-- A provider reading the carrier's scans a zone away tells every scan of that minute on the same clock: its other
+-- rows of the minute of a copy only whole hours from the carrier's scans are copies too, in any stage.
+update public.tracking_events set occurred_at = '2026-10-08T08:40:00Z', stage = 'in_transit',
+  description = 'The consignment has left the border point', raw_data = '{}' where id = '97000000-0000-0000-0000-000000000006';
+update public.tracking_events set occurred_at = '2026-10-08T09:40:00Z', stage = 'in_transit',
+  description = 'Departure from office of exchange', raw_data = '{"universal_provider": "ParcelsApp"}'
+where id = '97000000-0000-0000-0000-000000000007';
+insert into public.tracking_events(id, package_id, stage, description, provider_event_id, occurred_at, created_at, raw_data)
+values ('97000000-0000-0000-0000-000000000009', '97000000-0000-0000-0000-000000000005', 'pending',
+  'Item has passed a checkpoint', 'unknown:checkpoint', '2026-10-08T09:40:00Z', '2026-10-08T09:50:00Z',
+  '{"universal_provider": "ParcelsApp"}'),
+ ('97000000-0000-0000-0000-000000000010', '97000000-0000-0000-0000-000000000005', 'customs',
+  'Customs', 'unknown:other', '2026-10-08T09:40:00Z', '2026-10-08T09:50:00Z', '{"universal_provider": "17TRACK"}');
+do $$ begin
+  if not public.hidden_provider_copy('97000000-0000-0000-0000-000000000007')
+    or not public.hidden_provider_copy('97000000-0000-0000-0000-000000000009') then
+    raise exception 'A provider''s rows of the minute it read a zone away were not hidden';
+  end if;
+  if public.hidden_provider_copy('97000000-0000-0000-0000-000000000010') then
+    raise exception 'Another provider''s row of that minute was hidden';
+  end if;
+end; $$;
+-- A copy also close to a carrier's scan keeps the carrier's clock: the provider's other rows of its minute stay.
+update public.tracking_events set occurred_at = '2026-10-08T09:35:00Z', stage = 'in_transit'
+where id = '97000000-0000-0000-0000-000000000008';
+do $$ begin
+  if not public.hidden_provider_copy('97000000-0000-0000-0000-000000000007') then
+    raise exception 'A copy close to a carrier scan was not hidden';
+  end if;
+  if public.hidden_provider_copy('97000000-0000-0000-0000-000000000009') then
+    raise exception 'A provider row of the minute of a copy on the carrier''s clock was hidden';
+  end if;
+end; $$;
 reset role;
 rollback;
