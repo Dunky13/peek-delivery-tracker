@@ -77,7 +77,9 @@ All tables and views here are service-role only.
   scans whose receipts it dropped, and `reannouncement_failed` when that failed (also
   reported to Sentry as `reopen_announcements`). A not-yet-announced number
   is a successful `fetch` with disposition `unannounced`, and the attempt ends as
-  `waiting`. Real failures end as `error`. A `fetch` that reused answers another copy of
+  `waiting`. Real failures end as `error`. A successful `fetch` names the source that served
+  the parcel (`source_carrier`, `unknown` for a universal provider) and has `carrier_answered`
+  when the carrier answered too, on local clocks or in part. A `fetch` that reused answers another copy of
   its number got earlier in the same scheduled run counts them in `shared_answers`, as it
   does the failure of a carrier whose own browser already failed in the run.
 

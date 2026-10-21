@@ -1138,6 +1138,9 @@ describe('TrackingSyncService', () => {
     } });
     expect(saved.carrier_data.routing).not.toHaveProperty('confirmed_carrier');
     expect(report).toHaveBeenCalledWith('carrier_auto_swapped', expect.objectContaining({ carrier: 'unknown', provider: '17feia', category: 'detected' }));
+    // The audit shows the carrier answered, though the provider serves the parcel.
+    expect(client.completeSyncAttempt).toHaveBeenCalledWith(expect.anything(), expect.anything(), expect.arrayContaining([
+      expect.objectContaining({ step: 'fetch', details: expect.objectContaining({ source_carrier: 'unknown', carrier_answered: true }) })]));
   });
 
   it('files an unknown parcel under the carrier only recognition found once a provider naming none dates its local-clock answer', async () => {

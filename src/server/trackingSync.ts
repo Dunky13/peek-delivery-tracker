@@ -1429,6 +1429,8 @@ export class TrackingSyncService {
       const { swissPostReady, handoffFallbackErrorType } = fetched;
       audit.record('fetch', 'succeeded', performance.now() - fetchStartedAt, {
         source_carrier: sourceCarrierId,
+        // The carrier answered too, when a provider serves its answer on local clocks or in part.
+        carrier_answered: result.carrier_answered === true,
         swiss_post_ready: swissPostReady,
         handoff_fallback_error_type: handoffFallbackErrorType,
         ...sharedAnswers(checks),
