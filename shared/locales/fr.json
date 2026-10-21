@@ -864,6 +864,7 @@
   "picker.auto.servicesNone": "Pas encore trouvé par les services de suivi. Peek continuera de vérifier après l’ajout.",
   "picker.auto.servicesFailed": "Pas de réponse des services de suivi. Peek réessaiera après l’ajout.",
   "picker.auto.later": "Peek le cherchera après l’ajout.",
+  "picker.auto.change": "Peek trouve le transporteur pour toi.",
   "picker.section.fits": "Correspond à ce numéro",
   "picker.section.detected": "Détecté",
   "picker.section.known": "Connaissent ce numéro",

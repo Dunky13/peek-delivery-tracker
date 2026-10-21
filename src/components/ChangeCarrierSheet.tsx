@@ -1,4 +1,5 @@
 import { normalizeDeliveryPostcode } from 'universal-parcel-scraper';
+import { isAmazonTrackingNumber } from '../lib/amazon';
 import { userErrorMessage } from '../lib/userMessages';
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { createPortal } from 'react-dom';
@@ -41,11 +42,21 @@ export function ChangeCarrierSheet({
   onClose: () => void;
 }) {
   const { locale, t } = useI18n();
-  const [selectedCarrier, setSelectedCarrier] = useState<CarrierId>(initialCarrier);
+  const detected = detectCarrierMatch(parcel.trackingNumber);
+  // Automatic detection files the parcel as adding it would: under the carrier its number's
+  // shape names, else under none, and Peek looks for it. A parcel filed under none already is.
+  // An Amazon number is tracked through Amazon Shipping alone.
+  const unfiled = parcel.carrier === 'unknown' || parcel.carrier === 'intl-post';
+  const automaticCarrier: CarrierId | null = isAmazonTrackingNumber(parcel.trackingNumber) ? null
+    : unfiled ? parcel.carrier : detected.confidence === 'high' ? detected.carrier : 'unknown';
+  const [selectedCarrier, setSelectedCarrier] = useState<CarrierId | 'auto'>(
+    automaticCarrier && unfiled && initialCarrier === parcel.carrier ? 'auto' : initialCarrier);
+  const automatic = selectedCarrier === 'auto';
+  const chosenCarrier = selectedCarrier === 'auto' ? automaticCarrier ?? parcel.carrier : selectedCarrier;
   const [trackingUrl, setTrackingUrl] = useState(initialCarrier === parcel.carrier ? parcel.trackingUrl ?? '' : '');
   const [dpdPostcode, setDpdPostcode] = useState(initialCarrier === parcel.carrier ? parcel.dpdPostcode ?? '' : '');
   const [providerPostcode, setProviderPostcode] = useState('');
-  const needsProviderPostcode = Boolean(parcel.providerInputNeeded && selectedCarrier === parcel.carrier);
+  const needsProviderPostcode = Boolean(parcel.providerInputNeeded && chosenCarrier === parcel.carrier);
   let normalizedProviderPostcode: string | undefined;
   if (needsProviderPostcode) { try { normalizedProviderPostcode = normalizeDeliveryPostcode(providerPostcode); } catch { /* The field stays invalid until complete. */ } }
   const [saving, setSaving] = useState(false);
@@ -54,22 +65,23 @@ export function ChangeCarrierSheet({
   const carrierButton = useRef<HTMLButtonElement>(null);
   const fieldId = useId();
   const [dialog, onClose] = useSheetDialog<HTMLDivElement>(true, onDismissed, carrierButton);
-  const carrier = carrierInfo(selectedCarrier, locale);
+  const carrier = carrierInfo(chosenCarrier, locale);
+  const autoDescription = automaticCarrier && !['unknown', 'intl-post'].includes(automaticCarrier)
+    ? t('picker.auto.detected', { carrier: carrierInfo(automaticCarrier, locale).name }) : t('picker.auto.change');
   // A carrier that issues no number of this shape is pointed out before the change is saved.
-  const refused = useNumberRefusal(selectedCarrier, parcel.trackingNumber);
-  // The picker leads with the parcel's own carrier when no longer offered,
-  // then the carriers its number fits, then the ones used before.
-  const detected = detectCarrierMatch(parcel.trackingNumber);
+  const refused = useNumberRefusal(automatic ? null : chosenCarrier, parcel.trackingNumber);
+  // The picker leads with automatic detection, then the parcel's own carrier when no longer
+  // offered and not filed automatically, then the carriers its number fits, then the ones used before.
   const fitting = (detected.confidence === 'high' ? [detected.carrier] : detected.candidates)
     .filter((id) => carrierInfo(id).capabilities.selectable);
   const pickerSections: CarrierPickerSection[] = [
-    ...(carrierInfo(parcel.carrier).capabilities.selectable ? [] : [
+    ...(carrierInfo(parcel.carrier).capabilities.selectable || (automaticCarrier && unfiled) ? [] : [
       { key: 'current', title: t('picker.section.current'), carriers: [parcel.carrier] },
     ]),
     { key: 'fits', title: t(detected.confidence === 'high' ? 'picker.section.detected' : 'picker.section.fits'), carriers: fitting },
     { key: 'used', title: t('picker.section.used'), carriers: usedCarriers.filter((id) => !fitting.includes(id)) },
   ].filter((section) => section.carriers.length > 0);
-  const requirements = carrierRequirements(selectedCarrier, parcel.trackingNumber);
+  const requirements = carrierRequirements(chosenCarrier, parcel.trackingNumber);
   const valueFor = (field: CarrierInputField) => field === 'trackingUrl'
     ? trackingUrl
     : dpdPostcode;
@@ -81,14 +93,15 @@ export function ChangeCarrierSheet({
   const nextPostcode = requirements.some(({ field }) => field === 'dpdPostcode')
     ? dpdPostcode.trim().toUpperCase()
     : undefined;
-  const changed = Boolean(normalizedProviderPostcode) || selectedCarrier !== parcel.carrier
+  const changed = Boolean(normalizedProviderPostcode) || chosenCarrier !== parcel.carrier
     || (nextTrackingUrl ?? '') !== (parcel.trackingUrl ?? '')
     || (nextPostcode ?? '') !== (parcel.dpdPostcode ?? '');
 
-  function selectCarrier(value: CarrierId) {
+  function selectCarrier(value: CarrierId | 'auto') {
+    const id = value === 'auto' ? automaticCarrier : value;
     setSelectedCarrier(value);
-    setTrackingUrl(value === parcel.carrier ? parcel.trackingUrl ?? '' : '');
-    setDpdPostcode(value === parcel.carrier ? parcel.dpdPostcode ?? '' : '');
+    setTrackingUrl(id === parcel.carrier ? parcel.trackingUrl ?? '' : '');
+    setDpdPostcode(id === parcel.carrier ? parcel.dpdPostcode ?? '' : '');
     setError(null);
   }
 
@@ -99,7 +112,7 @@ export function ChangeCarrierSheet({
     setError(null);
     try {
       await onChange({
-        carrier: selectedCarrier,
+        carrier: chosenCarrier,
         providerPostcode: normalizedProviderPostcode,
         trackingUrl: nextTrackingUrl,
         dpdPostcode: nextPostcode,
@@ -156,12 +169,13 @@ export function ChangeCarrierSheet({
               aria-describedby={`${fieldId}-hint`}
               onClick={() => setPickerOpen(true)}
             >
-              <CarrierTruck carrier={carrier} />
-              <span className="carrier-field__name" id={`${fieldId}-value`}>{carrier.name}</span>
+              {automatic ? <span className="carrier-picker__detect"><Icon name="detect" /></span> : <CarrierTruck carrier={carrier} />}
+              <span className="carrier-field__name" id={`${fieldId}-value`}>{automatic ? t('add.detect') : carrier.name}</span>
               <Icon name="chevron" />
             </button>
             <small className={`field__help${refused ? ' is-attention' : ''}`} id={`${fieldId}-hint`}>
-              {refused ? `${carrier.name} ${t('add.line.refused')}` : t(carrierTrackingHintKey(carrier.id), { carrier: carrier.name })}
+              {refused ? `${carrier.name} ${t('add.line.refused')}` : automatic ? autoDescription
+                : t(carrierTrackingHintKey(carrier.id), { carrier: carrier.name })}
             </small>
           </div>
           {requirements.map((requirement) => (
@@ -178,7 +192,7 @@ export function ChangeCarrierSheet({
                 inputMode={requirement.inputMode}
                 autoComplete={requirement.autoComplete}
                 value={valueFor(requirement.field)}
-                placeholder={postcodeExample(selectedCarrier, requirement)}
+                placeholder={postcodeExample(chosenCarrier, requirement)}
                 pattern={requirement.pattern}
                 maxLength={requirement.maxLength}
                 onChange={(event) => {
@@ -235,9 +249,10 @@ export function ChangeCarrierSheet({
   {pickerOpen && (
     <CarrierPickerSheet
       selected={selectedCarrier}
+      auto={automaticCarrier ? { description: autoDescription, recommended: false, busy: false } : undefined}
       sections={pickerSections}
       onSelect={(choice) => {
-        if (choice !== 'auto') selectCarrier(choice);
+        selectCarrier(choice);
         setPickerOpen(false);
       }}
       onClose={() => setPickerOpen(false)}

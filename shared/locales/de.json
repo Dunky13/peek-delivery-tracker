@@ -864,6 +864,7 @@
   "picker.auto.servicesNone": "Bei den Trackingdiensten noch nicht gefunden. Peek prüft nach dem Hinzufügen weiter.",
   "picker.auto.servicesFailed": "Keine Antwort von den Trackingdiensten. Peek versucht es nach dem Hinzufügen erneut.",
   "picker.auto.later": "Peek sucht den Paketdienst nach dem Hinzufügen.",
+  "picker.auto.change": "Peek findet den Paketdienst für dich.",
   "picker.section.fits": "Passt zu dieser Nummer",
   "picker.section.detected": "Erkannt",
   "picker.section.known": "Kennen diese Nummer",

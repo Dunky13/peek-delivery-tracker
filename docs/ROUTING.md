@@ -381,7 +381,10 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   on the carrier line before tracking starts (`/api/public/refusal`), and the change-carrier
   sheet under the carrier it shows. The adapter's own check runs on the server and sends
   nothing, so no verification or allowance applies. The reader can still track the number
-  with that carrier.
+  with that carrier. The change-carrier sheet (web and iPhone) also goes back to automatic
+  detection, which files the parcel as adding it would: under the carrier its number's shape
+  names, else under no carrier, so routing looks for it. A parcel filed under no carrier opens
+  on it; an Amazon number is not offered it.
 - **In routing.** When the filed carrier cannot track the number (no adapter of its own,
   its adapter answered not-found, or an unconfirmed carrier failed and is absent from
   the low-confidence format's candidate list), the router asks

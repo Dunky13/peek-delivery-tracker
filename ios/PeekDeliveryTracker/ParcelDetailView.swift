@@ -826,7 +826,8 @@ private struct ChangeCarrierView: View {
     @EnvironmentObject private var localizer: Localizer
     @Environment(\.dismiss) private var dismiss
 
-    @State private var selectedCarrier: CarrierID
+    /// Nil while automatic detection is chosen.
+    @State private var chosenCarrier: CarrierID?
     @State private var trackingURL: String
     @State private var deliveryPostcode: String
     @State private var providerPostcode = ""
@@ -841,7 +842,9 @@ private struct ChangeCarrierView: View {
     init(parcel: Parcel, initialCarrier: CarrierID? = nil) {
         self.parcel = parcel
         let carrier = initialCarrier ?? parcel.carrier
-        _selectedCarrier = State(initialValue: carrier)
+        let unfiled = parcel.carrier == .unknown || parcel.carrier == .internationalPost
+        _chosenCarrier = State(initialValue: unfiled && carrier == parcel.carrier
+            && !CarrierCatalog.shared.isAmazonTrackingNumber(parcel.trackingNumber) ? nil : carrier)
         _trackingURL = State(initialValue: carrier == parcel.carrier ? parcel.trackingURL ?? "" : "")
         _deliveryPostcode = State(initialValue: carrier == parcel.carrier ? parcel.dpdPostcode ?? "" : "")
     }
@@ -861,16 +864,26 @@ private struct ChangeCarrierView: View {
 
                 Section(localizer.text("add.carrier")) {
                     NavigationLink {
-                        CarrierPickerView(selection: selectedCarrier, sections: pickerSections) { carrier in
-                            if let carrier { selectedCarrier = carrier }
+                        CarrierPickerView(
+                            selection: chosenCarrier,
+                            automatic: automaticCarrier == nil ? nil : .init(description: automaticDescription, recommended: false, busy: false),
+                            sections: pickerSections
+                        ) { carrier in
+                            chosenCarrier = carrier
                         }
                         // The full list, and room for its letter rail.
                         .onAppear { detent = .large }
                     } label: {
                         HStack(spacing: 10) {
-                            CarrierTruckMark(identity: CarrierVisualIdentity.of(selectedCarrier, language: localizer.language))
+                            if automatic {
+                                Image(systemName: "wand.and.sparkles")
+                                    .foregroundStyle(ExperimentalPalette.ochre)
+                                    .frame(width: 27)
+                            } else {
+                                CarrierTruckMark(identity: CarrierVisualIdentity.of(selectedCarrier, language: localizer.language))
+                            }
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(catalog.info(for: selectedCarrier, language: localizer.language).displayName)
+                                Text(carrierName)
                                 if refused {
                                     Text(localizer.text("add.line.refused"))
                                         .font(.caption)
@@ -881,7 +894,7 @@ private struct ChangeCarrierView: View {
                     }
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel(localizer.text("add.carrier"))
-                    .accessibilityValue([catalog.info(for: selectedCarrier, language: localizer.language).displayName,
+                    .accessibilityValue([carrierName,
                                          refused ? localizer.text("add.line.refused") : nil].compactMap { $0 }.joined(separator: ", "))
                     .accessibilityAddTraits(.isButton)
                     .onChange(of: selectedCarrier) { _, carrier in
@@ -889,7 +902,7 @@ private struct ChangeCarrierView: View {
                         deliveryPostcode = carrier == parcel.carrier ? parcel.dpdPostcode ?? "" : ""
                         errorMessage = nil
                     }
-                    Text(localizer.text(catalog.trackingHintKey(for: selectedCarrier), [
+                    Text(automatic ? automaticDescription : localizer.text(catalog.trackingHintKey(for: selectedCarrier), [
                         "carrier": catalog.info(for: selectedCarrier, language: localizer.language).displayName,
                     ]))
                     .font(.footnote)
@@ -958,12 +971,40 @@ private struct ChangeCarrierView: View {
         }
     }
 
+    private var unfiled: Bool { parcel.carrier == .unknown || parcel.carrier == .internationalPost }
+
+    /// Automatic detection files the parcel as adding it would: under the carrier its number's
+    /// shape names, else under none, and Peek looks for it. A parcel filed under none already is.
+    /// An Amazon number is tracked through Amazon Shipping alone.
+    private var automaticCarrier: CarrierID? {
+        if catalog.isAmazonTrackingNumber(parcel.trackingNumber) { return nil }
+        if unfiled { return parcel.carrier }
+        let match = catalog.detect(parcel.trackingNumber)
+        return match.confidence == .high ? match.carrier : .unknown
+    }
+
+    private var automatic: Bool { chosenCarrier == nil }
+
+    /// The carrier the change files the parcel under.
+    private var selectedCarrier: CarrierID { chosenCarrier ?? automaticCarrier ?? parcel.carrier }
+
+    private var carrierName: String {
+        automatic ? localizer.text("add.detect") : catalog.info(for: selectedCarrier, language: localizer.language).displayName
+    }
+
+    private var automaticDescription: String {
+        guard let carrier = automaticCarrier, carrier != .unknown, carrier != .internationalPost else {
+            return localizer.text("picker.auto.change")
+        }
+        return localizer.text("picker.auto.detected", ["carrier": catalog.info(for: carrier, language: localizer.language).displayName])
+    }
+
     private var requirements: [CarrierRequirement] {
         catalog.requirements(for: selectedCarrier, trackingNumber: parcel.trackingNumber)
     }
 
     private var refusalQuestion: NumberRefusalRequest? {
-        NumberRefusals.question(carrier: selectedCarrier, trackingNumber: CarrierCatalog.normalize(parcel.trackingNumber), demo: store.isDemo)
+        NumberRefusals.question(carrier: automatic ? nil : selectedCarrier, trackingNumber: CarrierCatalog.normalize(parcel.trackingNumber), demo: store.isDemo)
     }
 
     /// A carrier that issues no number of this shape is pointed out before the change is saved.
@@ -971,15 +1012,15 @@ private struct ChangeCarrierView: View {
         refusalQuestion != nil && refusedQuestion == refusalQuestion
     }
 
-    /// The parcel's own carrier when no longer offered, then the carriers its
-    /// number fits, then the ones used before.
+    /// After automatic detection, the parcel's own carrier when no longer offered and not
+    /// filed automatically, then the carriers its number fits, then the ones used before.
     private var pickerSections: [CarrierPickerView.PickerSection] {
         let match = catalog.detect(parcel.trackingNumber)
         let fitting = (match.confidence == .high ? [match.carrier] : match.candidates)
             .filter { catalog.info(for: $0).selectable }
         return [
             .init(id: "current", title: localizer.text("picker.section.current"),
-                  carriers: catalog.info(for: parcel.carrier).selectable ? [] : [parcel.carrier]),
+                  carriers: catalog.info(for: parcel.carrier).selectable || (automaticCarrier != nil && unfiled) ? [] : [parcel.carrier]),
             .init(id: "fits", title: localizer.text(match.confidence == .high ? "picker.section.detected" : "picker.section.fits"),
                   carriers: fitting),
             .init(id: "used", title: localizer.text("picker.section.used"),

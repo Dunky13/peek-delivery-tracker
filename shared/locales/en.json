@@ -864,6 +864,7 @@
   "picker.auto.servicesNone": "Not found by tracking services yet. Peek will keep checking after you add it.",
   "picker.auto.servicesFailed": "No answer from tracking services. Peek will try again after you add it.",
   "picker.auto.later": "Peek will look it up after you add it.",
+  "picker.auto.change": "Peek finds the carrier for you.",
   "picker.section.fits": "Fits this number",
   "picker.section.detected": "Detected",
   "picker.section.known": "Know this number",

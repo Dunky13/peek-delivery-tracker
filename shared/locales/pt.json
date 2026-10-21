@@ -864,6 +864,7 @@
   "picker.auto.servicesNone": "Ainda não encontrada nos serviços de seguimento. O Peek continua a verificar depois de adicionares.",
   "picker.auto.servicesFailed": "Sem resposta dos serviços de seguimento. O Peek tenta de novo depois de adicionares.",
   "picker.auto.later": "O Peek procura-a depois de adicionares.",
+  "picker.auto.change": "O Peek encontra a transportadora por ti.",
   "picker.section.fits": "Corresponde a este número",
   "picker.section.detected": "Detetada",
   "picker.section.known": "Conhecem este número",
