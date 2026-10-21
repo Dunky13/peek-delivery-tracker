@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { JsonObject } from './types';
-import { datedObservations, restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { datedObservations, filledPlaceholders, restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
 
 // New events carry the sync's ISO spelling; stored rows come back from
 // PostgREST with an explicit +00:00 offset. Both name the same instant.
@@ -364,6 +364,48 @@ describe('rows an earlier take-over left under an old identity', () => {
     expect(restatedIdentities([scan], [saved, { ...saved, provider_event_id: 'aliexpress:current' }]).size).toBe(0);
     expect(restatedIdentities([scan, { ...scan, provider_event_id: 'aliexpress:bracketed' }], [saved]).size).toBe(0);
     expect(restatedIdentities([scan], [saved, { ...saved, provider_event_id: 'aliexpress:copy' }]).size).toBe(0);
+  });
+});
+
+describe('rows stored with a placeholder of the carrier\'s template left in', () => {
+  const occurred = '2026-10-21T07:41:00.000Z';
+  // An adapter left bpost's placeholder for its locker's name unfilled; its fix fills it in.
+  const saved = { provider_event_id: 'bpost:placeholder', occurred_at: '2026-10-21T07:41:00+00:00', stage: 'in_transit',
+    description: 'Item available at the {{bboxRebrand}}', location: '' };
+  const scan = { provider_event_id: 'bpost:filled', occurred_at: occurred, stage: 'ready_for_pickup',
+    description: 'Item available at the bbox locker', location: '' };
+
+  it('lets the scan that fills the placeholder in take the row over', () => {
+    expect(pairs(filledPlaceholders([scan], [saved]))).toEqual([['bpost:filled', 'bpost:placeholder']]);
+    expect(pairs(filledPlaceholders([{ ...scan, description: 'Item available at the  Parcel Locker ' }], [saved])))
+      .toEqual([['bpost:filled', 'bpost:placeholder']]);
+    const deadline = { ...saved, provider_event_id: 'swiss-post:placeholder', description: 'Registered for collection — Deadline to {{valueParameter}}' };
+    expect(pairs(filledPlaceholders([{ ...scan, provider_event_id: 'swiss-post:filled', description: 'Registered for collection — Deadline to 28.10.2026' }], [deadline])))
+      .toEqual([['swiss-post:filled', 'swiss-post:placeholder']]);
+  });
+
+  it('needs the same source, instant and place, and the template\'s other words', () => {
+    for (const row of [
+      { ...saved, provider_event_id: 'dhl:placeholder' },
+      { ...saved, provider_event_id: 'app:pending' },
+      { ...saved, occurred_at: '2026-10-21T07:41:01+00:00' },
+      { ...saved, location: 'Example Town' },
+      { ...saved, description: 'Item on its way to the {{bboxRebrand}}' },
+      { ...saved, description: 'Item available at the bbox locker' },
+      { ...saved, observed_without_provider_timestamp: true },
+    ]) expect(filledPlaceholders([scan], [row]).size).toBe(0);
+    for (const event of [
+      { ...scan, description: 'Item available at the ' },
+      { ...scan, description: 'Item available at the {{bboxRebrand}}' },
+      { ...scan, description: 'Item ready at the bbox locker' },
+    ]) expect(filledPlaceholders([event], [saved]).size).toBe(0);
+  });
+
+  it('leaves a scan stored under its own identity, a row the batch carries, and two alike scans or rows alone', () => {
+    expect(filledPlaceholders([scan], [saved, { ...scan }]).size).toBe(0);
+    expect(filledPlaceholders([scan, { ...saved }], [saved]).size).toBe(0);
+    expect(filledPlaceholders([scan, { ...scan, provider_event_id: 'bpost:other', description: 'Item available at the Parcel Locker' }], [saved]).size).toBe(0);
+    expect(filledPlaceholders([scan], [saved, { ...saved, provider_event_id: 'bpost:copy' }]).size).toBe(0);
   });
 });
 

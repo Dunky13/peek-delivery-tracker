@@ -33,7 +33,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, SyncJobLeaseLost, type SupabaseServiceClient } from './supabase';
-import { clockDay, datedObservations, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, UNWORDED_STEP, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { clockDay, datedObservations, filledPlaceholders, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, UNWORDED_STEP, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   askedForCheck,
   providerFailureSummary,
@@ -1480,17 +1480,18 @@ export class TrackingSyncService {
       // A reworded scan (DPD with and without the postcode) updates its stored row in place,
       // and a scan both a carrier and a universal provider reported is stored once.
       // A handoff's batch also carries the earlier carrier's scans, under that carrier's policy.
-      // A scan meets the row an earlier take-over left under an old identity before any policy.
+      // A scan meets the row an earlier take-over left under an old identity before any policy,
+      // then the row whose template placeholder an adapter left unfilled, whatever the carrier.
       const stored = storedEventIdentities(parcel);
       const reworded = restatedIdentities(events, stored);
+      const adopt = (matches: ReadonlyMap<string, string>) => {
+        const taken = new Set(reworded.values());
+        for (const [id, saved] of matches) if (!reworded.has(id) && !taken.has(saved)) reworded.set(id, saved);
+      };
+      adopt(filledPlaceholders(events, stored));
       const policyCarriers = fetched.earlierResult && fetched.earlierCarrierId && fetched.earlierCarrierId !== sourceCarrierId
         ? [sourceCarrierId, fetched.earlierCarrierId] : [sourceCarrierId];
-      for (const policyCarrier of policyCarriers) {
-        const taken = new Set(reworded.values());
-        for (const [id, saved] of sameInstantIdentities(events, stored, policyCarrier)) {
-          if (!reworded.has(id) && !taken.has(saved)) reworded.set(id, saved);
-        }
-      }
+      for (const policyCarrier of policyCarriers) adopt(sameInstantIdentities(events, stored, policyCarrier));
       // The earlier carrier's relay of a delivery scan stays its own row, at the same second or to the minute.
       const relaying = fetched.earlierCarrierId ?? earlierCarrier(parcel);
       const shared = sharedScans(events.filter((event) => !normalized.relays.has(String(event.provider_event_id))), stored, reworded, relaying);

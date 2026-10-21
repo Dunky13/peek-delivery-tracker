@@ -280,6 +280,54 @@ export function restatedIdentities(
   return restated;
 }
 
+/** A placeholder of a carrier's text template that an adapter left unfilled, such as `{{bboxRebrand}}`. */
+const PLACEHOLDER = /\{\{[^{}]*\}\}/;
+
+/** The wordings that fill each placeholder of a stored row's wording, or null when it has none. */
+function filledTemplate(row: JsonObject): RegExp | null {
+  const parts = String(row.description ?? '').replace(/\s+/g, ' ').trim().split(PLACEHOLDER);
+  if (parts.length < 2) return null;
+  return new RegExp(`^${parts.map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\S.*?')}$`, 'iu');
+}
+
+/**
+ * Maps the computed identity of each new scan to the stored row whose wording it fills in: a
+ * row an adapter stored with a placeholder of the carrier's template left in ("Item available at
+ * the {{bboxRebrand}}"), which the wording identifies, so the scraper's fix would otherwise store
+ * the scan beside it. The same source, instant and place, never an observation, a scan whose own
+ * identity is not stored and a row no event of the batch carries, matched one to one.
+ */
+export function filledPlaceholders(
+  events: readonly JsonObject[],
+  stored: readonly JsonObject[],
+): Map<string, string> {
+  const filled = new Map<string, string>();
+  const storedIds = new Set(stored.map(identity));
+  const claimed = new Set(events.map(identity));
+  const templates = stored.flatMap((row) => {
+    const template = sourceOf(identity(row)) === '' || claimed.has(identity(row)) || observedOnly(row) ? null : filledTemplate(row);
+    return template ? [{ row, template }] : [];
+  });
+  if (templates.length === 0) return filled;
+  const fills = (event: JsonObject, { row, template }: { row: JsonObject; template: RegExp }) => (
+    sourceOf(identity(row)) === sourceOf(identity(event)) && instantOf(row) === instantOf(event)
+    && String(row.location ?? '').trim() === String(event.location ?? '').trim()
+    && !PLACEHOLDER.test(String(event.description ?? ''))
+    && template.test(String(event.description ?? '').replace(/\s+/g, ' ').trim())
+  );
+  const scans = events.filter((event) => {
+    const source = sourceOf(identity(event));
+    return source !== '' && source !== 'app' && !storedIds.has(identity(event)) && !observedOnly(event);
+  });
+  for (const scan of scans) {
+    const matching = templates.filter((template) => fills(scan, template));
+    if (matching.length !== 1) continue;
+    if (scans.filter((other) => fills(other, matching[0]!)).length !== 1) continue;
+    filled.set(identity(scan), identity(matching[0]!.row));
+  }
+  return filled;
+}
+
 const UNIVERSAL = 'unknown';
 const MINUTE_MS = 60 * 1_000;
 const QUARTER_HOUR_MS = 15 * MINUTE_MS;

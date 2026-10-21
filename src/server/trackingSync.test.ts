@@ -4577,6 +4577,24 @@ it('rewrites a scan in place when a take-over left its row under an older identi
     .toEqual([{ id: 'row-0', provider_event_id: 'dhl:taken-over' }]);
 });
 
+it('rewrites in place a scan stored with a placeholder of the carrier\'s template left in', async () => {
+  const store = eventStore();
+  const at = '2026-10-21T07:41:00Z';
+  const available = { time: at, stage: 'ready_for_pickup', description: 'Item available at the bbox locker', location: '' };
+  const adapter = { fetch: vi.fn().mockResolvedValue({ status: 'ready_for_pickup', current_stage: 'ready_for_pickup',
+    last_update: at, last_status_text: available.description, events: [available] }) };
+  const service = new TrackingSyncService(store.client as unknown as SupabaseServiceClient, adapter, null,
+    () => new Date('2026-10-21T12:00:00Z'));
+  store.rows.set('bpost:placeholder', { id: 'row-0', package_id: 'placeholder-parcel', provider_event_id: 'bpost:placeholder',
+    occurred_at: at, stage: 'in_transit', description: 'Item available at the {{bboxRebrand}}', location: '', raw_data: { time: at } });
+  const load = () => ({ id: 'placeholder-parcel', user_id: 'owner', carrier: 'bpost', tracking_number: 'TEST1234',
+    current_stage: 'in_transit', [STORED_EVENT_IDENTITIES]: store.identities() });
+  await service.syncPackage(load());
+  await service.syncPackage(load());
+  expect([...store.rows.values()].map(({ id, provider_event_id, description }) => ({ id, provider_event_id, description })))
+    .toEqual([{ id: 'row-0', provider_event_id: 'bpost:placeholder', description: 'Item available at the bbox locker' }]);
+});
+
 it('tells a check that stored a scan from one that rewrote the scans it had', async () => {
   const store = eventStore();
   const scan = (time: string, description: string, location = '') => ({ time, stage: 'in_transit', description, location });
