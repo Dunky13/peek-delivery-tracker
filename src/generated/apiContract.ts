@@ -12615,7 +12615,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^27\\d{13}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://www.raben-group.com/"
   },
   "ram-hand-to-hand": {
@@ -30228,6 +30233,26 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ]
+  },
+  "z-leading": {
+    "displayName": "Z-Leading",
+    "aliases": [
+      "Zhongling",
+      "中领国际",
+      "Shenzhen Z-leading International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#005ab0",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": []
   }
 } as const;
 
@@ -31053,7 +31078,8 @@ export const CARRIER_IDS = [
   "j-and-t-de",
   "kun-express",
   "juxi-express",
-  "techlink"
+  "techlink",
+  "z-leading"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
