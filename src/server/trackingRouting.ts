@@ -266,13 +266,14 @@ function latest(value: RoutedResult): number {
   return latestResultTime(value.result, value.sourceCarrierId);
 }
 // Numbers are reused, and carriers' number spaces overlap (a 12-digit Yamato
-// number can be an old FedEx parcel). A universal history that ended a month
-// before the parcel was added and names only other catalog carriers is not it.
-// With no carrier filed, nor is one that ended three months before without a
-// delivery or return: a seller's label can wait a month for the parcel, one
-// that old is a reused number's, and an old delivery may be looked up again.
-const FOREIGN_HISTORY_GAP = 30 * DAY;
-const UNFILED_HISTORY_GAP = 90 * DAY;
+// number can be an old FedEx parcel). A history that ended three months before
+// the parcel was added, without a delivery or return, is the number's earlier
+// parcel, whichever source gives it and whichever carrier it names: a seller's
+// label can wait a month for the parcel, and an old delivery may be a parcel
+// looked up again. For a parcel filed under a specific carrier, so is a
+// universal history that ended a month before and names only other catalog carriers.
+const OLD_LABEL_GAP = 90 * DAY;
+const OTHER_CARRIER_GAP = 30 * DAY;
 /** Whether a reported name can mean this carrier: its id, a brand network of it, or a name the catalog doesn't know. */
 function mayNameCarrier(name: string, carrier: string): boolean {
   const id = carrierIdFromName(name);
@@ -283,19 +284,40 @@ function mayNameCarrier(name: string, carrier: string): boolean {
   if (brand && name.toLowerCase().replace(/[^a-z0-9]/g, '').startsWith(brand)) return true;
   return !isKnownCarrierName(name);
 }
+/**
+ * The newest scan of the answers, read closely enough to tell an age in months: a wall clock
+ * without an offset reads as UTC, and so does a scan an adapter dates on the carrier's local
+ * clock alone (`local_time`), which `latestResultTime` leaves out. 0 when nothing is dated.
+ */
+function newestScan(results: readonly (CarrierResult | undefined)[]): number {
+  return Math.max(0, ...results.flatMap((result) => result ? [latestResultTime(result, 'unknown'),
+    ...[result.last_update_local, ...(result.events ?? []).map((event) => event.local_time)]
+      .map((time) => Date.parse(eventTimestamp(time) ?? '') || 0)] : []));
+}
+/** Whether an answer reached a delivery or a return. */
+function finished(result: CarrierResult): boolean {
+  return [resultStage(result), ...(result.events ?? []).map((event) => event.stage)]
+    .some((stage) => stage === 'delivered' || stage === 'returned');
+}
+/**
+ * Whether an answer is a reused number's earlier parcel: its newest scan, a handoff's earlier
+ * leg included, ended three months before the parcel was added, and it never reached a
+ * delivery or return. An answer without a date is no older parcel.
+ */
+function oldLabel(addedAt: unknown, ...results: (CarrierResult | undefined)[]): boolean {
+  const newest = newestScan(results);
+  return newest > 0 && newest < millis(addedAt) - OLD_LABEL_GAP
+    && !results.some((result) => result && finished(result));
+}
 /** Whether a universal history is the number's earlier parcel, not the one filed under this carrier at this time. */
 export function foreignHistory(result: CarrierResult, carrier: string, addedAt: unknown): boolean {
-  if (typeof addedAt !== 'string') return false;
-  const unfiled = carrier === 'unknown' || carrier === 'intl-post';
-  const newest = latestResultTime(result, 'unknown');
-  if (!(newest > 0 && newest < millis(addedAt) - (unfiled ? UNFILED_HISTORY_GAP : FOREIGN_HISTORY_GAP))) return false;
-  if (unfiled) {
-    return ![resultStage(result), ...(result.events ?? []).map((event) => event.stage)]
-      .some((stage) => stage === 'delivered' || stage === 'returned');
-  }
+  if (oldLabel(addedAt, result)) return true;
+  if (carrier === 'unknown' || carrier === 'intl-post') return false;
   const names = Array.isArray(result.reported_carriers)
     ? result.reported_carriers.filter((name): name is string => typeof name === 'string') : [];
-  return names.length > 0 && !names.some((name) => mayNameCarrier(name, carrier));
+  if (!names.length || names.some((name) => mayNameCarrier(name, carrier))) return false;
+  const newest = newestScan([result]);
+  return newest > 0 && newest < millis(addedAt) - OTHER_CARRIER_GAP;
 }
 /** Whether a carrier has an adapter of its own for the router to ask. */
 export function directCarrier(carrier: string): boolean {
@@ -632,6 +654,12 @@ export class TrackingRouter {
         if (!usable(value.result)) throw Object.assign(new Error('No confirmed shipment progress'), { status: 404 });
         // It answers for the number, on local clocks too: a refusal an older release recorded no longer holds.
         if (state.failures[carrier]?.user_error === 'carrier:invalid_input') delete state.failures[carrier];
+        // The carrier's own copy of a reused number's earlier parcel answers without history for
+        // this one: it neither confirms the carrier nor serves the parcel, on local clocks either.
+        if (oldLabel(parcel.created_at, value.result, value.earlierResult)) {
+          report('foreign_history_rejected', carrier);
+          throw new NoHistoryError(carrier, `${carrier} returned an older parcel for this number`);
+        }
         // An empty summary archive binds the fallback to this parcel without
         // creating a scan; earlier real scans survive when it is merged.
         const capturedHistory = hasUnresolvedDirectHistory(value.sourceCarrierId, value.result)

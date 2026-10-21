@@ -1405,12 +1405,17 @@ describe('persistent tracking routing', () => {
     expect(result.result.routing).toMatchObject({ failures: { Ship24: { kind: 'no_history' } } });
     expect(vi.mocked(monitoring.reportRoutingEvent)).toHaveBeenCalledWith('foreign_history_rejected', expect.objectContaining({ provider: 'Ship24' }));
   });
-  it.each(['unknown', 'intl-post'])('ignores an old label a universal returns for a reused number filed under %s', async (carrier) => {
+  it.each([
+    ['unknown', 'Example Post'], ['intl-post', 'Example Post'],
+    // Filed under the carrier that reused the number, whose own tracker does not know the new parcel yet.
+    ['happy-post', 'Happy-Post'],
+  ])('ignores an old label a universal returns for a reused number filed under %s', async (carrier, name) => {
     fixedPlan('ParcelsApp', '17TRACK');
-    const { router, universal } = setup();
+    const { router, direct, universal } = setup();
+    direct.mockRejectedValue(new NotFoundError('Happy-Post'));
     // The number's earlier parcel: a label from last winter that never moved, naming the carrier that reused it.
     universal.mockResolvedValueOnce({ status: 'pending', current_stage: 'registered', last_update: '2026-01-08T08:36:05Z',
-      reported_carriers: ['Example Post'], events: [{ time: '2026-01-08T06:58:19Z', description: 'Label generated', stage: 'registered' },
+      reported_carriers: [name], events: [{ time: '2026-01-08T06:58:19Z', description: 'Label generated', stage: 'registered' },
         { time: '2026-01-08T08:36:05Z', description: 'shipped', stage: 'pending' }] });
     universal.mockResolvedValueOnce(history());
     const result = await router.fetch(parcel({ carrier, created_at: '2026-09-01T00:00:00Z' }), false);
@@ -1419,10 +1424,67 @@ describe('persistent tracking routing', () => {
     expect(result.result.routing).toMatchObject({ failures: { ParcelsApp: { kind: 'no_history' } } });
     expect(vi.mocked(monitoring.reportRoutingEvent)).toHaveBeenCalledWith('foreign_history_rejected', expect.objectContaining({ provider: 'ParcelsApp' }));
   });
+  describe('the filed carrier\'s own answer for a reused number', () => {
+    // Happy-Post's tracker dates its steps on wall clocks in no zone; the number and steps are invented.
+    const filed = parcel({ carrier: 'happy-post', tracking_number: '12345678', created_at: '2026-09-01T00:00:00Z' });
+    const happyPost = (local: string | undefined, stage = 'registered'): RoutedResult => ({ sourceCarrierId: 'happy-post',
+      swissPostReady: null, handoffFallbackErrorType: null, result: { status: stage === 'delivered' ? 'delivered' : 'pending',
+        current_stage: stage, last_update: null, ...(local ? { last_update_local: local } : {}),
+        events: [{ ...(local ? { local_time: local } : { provider_time_text: '08/01 09:36' }),
+          description: stage === 'delivered' ? 'Delivered' : 'Label created', stage }] } });
+    // The number's earlier parcel: a label from last winter that never moved.
+    const lastWinter = () => happyPost('2026-01-08T09:36:05');
+
+    it('is no history for the parcel, and a provider with the new parcel\'s history serves it', async () => {
+      fixedPlan('ParcelsApp', '17TRACK');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(lastWinter());
+      const result = await router.fetch(filed, false);
+      expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ tracking_number: '12345678' }), 'happy-post');
+      expect(universal).toHaveBeenCalledOnce();
+      expect(result).toMatchObject({ sourceCarrierId: 'unknown', result: { tracking_provider: 'ParcelsApp', last_update: '2026-09-10T11:00:00Z',
+        // The carrier answered without history for this parcel: asked again within the quarter hour, as when it lists none.
+        routing: { failures: { 'happy-post': { kind: 'no_history', count: 1, retry_at: '2026-09-10T12:15:00.000Z' } },
+          direct_retry_at: '2026-09-10T12:15:00.000Z' } } });
+      for (const key of ['carrier_answered', 'direct_local_fallback', 'direct_local_history']) expect(result.result).not.toHaveProperty(key);
+      expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+      expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('foreign_history_rejected', expect.objectContaining({ carrier: 'happy-post', provider: 'happy-post' }));
+      expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('provider_failed', expect.objectContaining({ provider: 'happy-post', category: 'no_history' }));
+    });
+
+    it('is not served while no provider has the parcel either', async () => {
+      fixedPlan('ParcelsApp');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(lastWinter());
+      universal.mockRejectedValue(new NotFoundError('ParcelsApp'));
+      const deferred = await router.fetch(filed, false).catch((error: unknown) => error);
+      expect(deferred).toBeInstanceOf(RoutingDeferred);
+      expect((deferred as RoutingDeferred).routing).toMatchObject({ failures: { 'happy-post': { kind: 'no_history' } } });
+      expect((deferred as RoutingDeferred).routing).not.toHaveProperty('confirmed_carrier');
+    });
+
+    it.each([
+      ['a label two months old', '2026-07-03T09:36:05', 'registered'],
+      ['an old delivery, which may be a parcel looked up again', '2026-01-08T09:36:05', 'delivered'],
+      ['no readable date', undefined, 'registered'],
+    ])('serves %s while no provider has the parcel', async (_label, local, stage) => {
+      fixedPlan('ParcelsApp');
+      const { router, direct, universal } = setup();
+      direct.mockResolvedValue(happyPost(local, stage));
+      universal.mockRejectedValue(new NotFoundError('ParcelsApp'));
+      const result = await router.fetch(filed, false);
+      expect(result).toMatchObject({ sourceCarrierId: 'happy-post', result: { direct_local_fallback: true, current_stage: stage,
+        routing: { confirmed_carrier: 'happy-post', confirmed_number: '12345678' } } });
+      expect(result.result.routing).not.toHaveProperty(['failures', 'happy-post']);
+      expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('foreign_history_rejected', expect.anything());
+    });
+  });
   it.each([
-    ['a name for the filed carrier', { carrier: 'yamato' }, ['Yamato Transport'], '2026-01-09T13:19:00Z'],
-    ['a name the catalog does not know', { carrier: 'yamato' }, ['Example Parcel Co'], '2026-01-09T13:19:00Z'],
-    ["only the postal union's feed", { carrier: 'yamato' }, ['UPU'], '2026-01-09T13:19:00Z'],
+    // Older than a month, but not three, or delivered.
+    ['a name for the filed carrier', { carrier: 'yamato' }, ['Yamato Transport'], '2026-07-01T10:00:00Z'],
+    ['a name the catalog does not know', { carrier: 'yamato' }, ['Example Parcel Co'], '2026-07-01T10:00:00Z'],
+    ["only the postal union's feed", { carrier: 'yamato' }, ['UPU'], '2026-07-01T10:00:00Z'],
+    ['a name for the filed carrier and a delivery', { carrier: 'yamato' }, ['Yamato Transport'], '2026-01-09T13:19:00Z', 'delivered'],
     ['a recent history', { carrier: 'yamato' }, ['FedEx'], '2026-08-20T10:00:00Z'],
     ['no filed carrier and a delivery', { carrier: 'unknown' }, ['FedEx'], '2026-01-09T13:19:00Z', 'delivered'],
     ['no filed carrier and a label two months old', { carrier: 'unknown' }, ['FedEx'], '2026-07-01T10:00:00Z', 'registered'],
@@ -1761,6 +1823,27 @@ describe('persistent tracking routing', () => {
       expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { configured_carrier: 'unknown',
         set_aside: { [carrier]: { reason: 'local_clock', checked_at: time.toISOString(), count: 1 } } } });
       expect((result.result.routing as JsonObject).set_aside).not.toHaveProperty([carrier, 'newest']);
+    });
+
+    it.each([
+      ['detection names', number, '17feia'],
+      ['recognition found', '123456789012', 'sto'],
+    ])('does not take a reused number\'s old label from a carrier %s', async (_label, trackingNumber, carrier) => {
+      fixedPlan('Ship24', '17TRACK');
+      const { router, direct, universal, recognize } = setup();
+      recognize.mockImplementation(async (asked: string) => ({ known: asked === carrier }));
+      // The number's earlier parcel, last winter, months before this one was added.
+      direct.mockImplementation(async (_parcel, asked: string) => ({ ...local(asked), result: { ...local(asked).result,
+        last_update_local: '2026-01-08T09:00:00', events: [{ local_time: '2026-01-08T09:00:00', description: 'Departed the sorting centre', stage: 'in_transit' }] } }));
+      universal.mockResolvedValue(legs(history()));
+      const result = await router.fetch(filed({}, { tracking_number: trackingNumber, created_at: '2026-09-01T00:00:00Z' }), false);
+      expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier }), carrier);
+      expect(result.correction).toBeUndefined();
+      expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { configured_carrier: 'unknown' } });
+      for (const key of ['carrier_answered', 'direct_local_history']) expect(result.result).not.toHaveProperty(key);
+      expect(result.result.routing).not.toHaveProperty('confirmed_carrier');
+      expect(result.result.routing).not.toHaveProperty('set_aside');
+      expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('foreign_history_rejected', expect.objectContaining({ provider: carrier }));
     });
 
     it.each([
