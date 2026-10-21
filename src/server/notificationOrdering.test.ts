@@ -294,6 +294,46 @@ it.each(['web', 'native'] as const)('records a provider\'s copy the timeline lea
   expect(await dispatched('copy')).toEqual(['copy']);
 });
 
+it('moves no Live Activity for a provider\'s copy the timeline leaves out', async () => {
+  const client = new SupabaseServiceClient('https://example.test', 'test');
+  const apns = new NativePushNotificationService(client, 'team', 'key', privateKey, 'app', clocks('2026-10-08T09:06:00Z').apns);
+  const service = new DeliveryLiveActivityNotificationService(client, apns);
+  const send = vi.spyOn(service, 'send').mockResolvedValue();
+  const ack = vi.spyOn(client, 'recordLiveActivityDeliveries').mockResolvedValue();
+  vi.spyOn(client, 'updateLiveActivityToken').mockResolvedValue();
+  vi.spyOn(client, 'deleteLiveActivityTokenById').mockResolvedValue();
+  const pending = vi.spyOn(client, 'listPendingLiveActivityEvents');
+  // The activity runs on the carrier's out for delivery; a provider stores the scan again, read as in transit.
+  const stored = (id: string, source: string, stage: string, occurred_at: string, extra = {}) => ({
+    id, stage, occurred_at, created_at: '2026-10-08T09:05:00Z', provider_event_id: `${source}:${id}`, ...extra,
+  });
+  const scans = [
+    stored('out', 'posti', 'out_for_delivery', '2026-10-08T08:40:00Z'),
+    stored('copy', 'unknown', 'in_transit', '2026-10-08T08:40:21Z', { universal_provider: '17TRACK' }),
+    stored('delivered', 'posti', 'delivered', '2026-10-08T09:02:00Z'),
+  ];
+  const copies = vi.mocked(client.providerCopyScans).mockResolvedValue([{
+    id: 'pkg', carrier_data: { routing: { confirmed_carrier: 'posti' } }, tracking_events: scans,
+  }]);
+  const dispatched = async (...ids: string[]) => {
+    pending.mockResolvedValueOnce(ids.map((id) => {
+      const { stage, occurred_at, created_at } = scans.find((scan) => scan.id === id)!;
+      return { device_id: 'device', package_id: 'pkg', update_token: 'token', update_token_id: 'update',
+        event_id: id, stage, occurred_at, event_created_at: created_at };
+    }));
+    send.mockClear(); ack.mockClear();
+    await service.dispatch();
+    expect(ack.mock.calls.flatMap(([rows]) => rows.map((row) => row.eventId))).toEqual(ids);
+    return [send.mock.calls.map(([event, kind]) => [event.event_id, kind]), ack.mock.calls[0]![0][0]!.deliveryKind];
+  };
+  expect(await dispatched('copy')).toEqual([[], 'update']);
+  // The carrier's own news in the same batch moves it as ever.
+  expect(await dispatched('copy', 'delivered')).toEqual([[['delivered', 'end']], 'end']);
+  // A failed lookup moves it as before.
+  copies.mockRejectedValueOnce(new Error('down'));
+  expect(await dispatched('copy')).toEqual([[['copy', 'end']], 'end']);
+});
+
 it.each(['web', 'native'] as const)('records an earlier carrier\'s scan told after a later one as handled without announcing it, for %s', async (channel) => {
   const client = new SupabaseServiceClient('https://example.test', 'test');
   const clock = clocks('2026-10-08T15:26:00Z');

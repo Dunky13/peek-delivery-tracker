@@ -432,10 +432,8 @@ export function compareNotificationEvents(left: JsonObject, right: JsonObject): 
 
 /**
  * What a batch of new scans is measured against, by parcel: its newest stored
- * scan, when it joined its account, the handed-over parcel's scans whose news
- * it already had (relayCopies.ts) and the universal copies its timeline leaves
- * out (providerCopies.ts), and whether it is archived. Copies are looked for
- * only in parcels with a confirmed carrier whose batch holds a universal row.
+ * scan, when it joined its account, the scans whose news it already had
+ * (`knownScans`), and whether it is archived.
  */
 interface ParcelTimes {
   latest: ReadonlyMap<string, string>;
@@ -445,22 +443,37 @@ interface ParcelTimes {
 }
 
 /** A lookup that fails leaves its answer empty, and its rule then announces every batch as before. */
+async function orNone<T>(load: () => Promise<T>, none: T): Promise<T> {
+  try { return await load(); } catch { return none; }
+}
+
+const batchParcels = (batches: readonly JsonObject[][]) => batches.map((events) => stringField(events[0]!, 'package_id')).filter(Boolean);
+
+/**
+ * The scans of the batches whose news their parcel already had: a handed-over
+ * parcel's relay repeats and late scans (relayCopies.ts) and the universal
+ * copies its timeline leaves out (providerCopies.ts). Copies are looked for
+ * only in parcels with a confirmed carrier whose batch holds a universal row.
+ */
+async function knownScans(client: SupabaseServiceClient, batches: readonly JsonObject[][]): Promise<Set<string>> {
+  const eventIds = batches.flat().map((event) => stringField(event, 'event_id')).filter(Boolean);
+  const [handoffs, copied] = await Promise.all([
+    orNone(() => client.handoffScans(batchParcels(batches)), []),
+    orNone(() => client.providerCopyScans(eventIds), []),
+  ]);
+  return new Set([...handoffs.flatMap((row) => [...relayRepeats(row), ...lateScans(row)]),
+    ...copied.flatMap((row) => [...providerCopies(row)])]);
+}
+
 async function parcelTimes(client: SupabaseServiceClient, batches: Iterable<JsonObject[]>): Promise<ParcelTimes> {
   const all = [...batches];
-  const ids = all.map((events) => stringField(events[0]!, 'package_id')).filter(Boolean);
-  const eventIds = all.flat().map((event) => stringField(event, 'event_id')).filter(Boolean);
-  const read = async <T>(load: () => Promise<T>, none: T) => {
-    try { return await load(); } catch { return none; }
-  };
-  const [latest, joined, handoffs, copied, archived] = await Promise.all([
-    read(() => client.latestScanTimes(ids), new Map<string, string>()),
-    read(() => client.packageJoinTimes(ids), new Map<string, string>()),
-    read(() => client.handoffScans(ids), []),
-    read(() => client.providerCopyScans(eventIds), []),
-    read(() => client.archivedPackageIds(ids), new Set<string>()),
+  const ids = batchParcels(all);
+  const [latest, joined, known, archived] = await Promise.all([
+    orNone(() => client.latestScanTimes(ids), new Map<string, string>()),
+    orNone(() => client.packageJoinTimes(ids), new Map<string, string>()),
+    knownScans(client, all),
+    orNone(() => client.archivedPackageIds(ids), new Set<string>()),
   ]);
-  const known = new Set([...handoffs.flatMap((row) => [...relayRepeats(row), ...lateScans(row)]),
-    ...copied.flatMap((row) => [...providerCopies(row)])]);
   return { latest, joined, known, archived };
 }
 
@@ -471,7 +484,7 @@ async function parcelTimes(client: SupabaseServiceClient, batches: Iterable<Json
  * news, and a universal copy of a carrier's scan, which the timeline leaves
  * out. None when that is all the batch holds.
  */
-function announcedScan(events: readonly JsonObject[], { known }: ParcelTimes): JsonObject | undefined {
+function announcedScan(events: readonly JsonObject[], { known }: Pick<ParcelTimes, 'known'>): JsonObject | undefined {
   return events.filter((event) => !known.has(stringField(event, 'event_id'))).sort(compareNotificationEvents)[0];
 }
 
@@ -1014,9 +1027,25 @@ export class DeliveryLiveActivityNotificationService {
       grouped.set(key, [...(grouped.get(key) ?? []), row]);
     }
     const summary = emptySummary();
+    const known = await knownScans(this.client, [...grouped.values()]);
+    const record = (events: readonly JsonObject[], kind: LiveActivityDeliveryKind) => this.client.recordLiveActivityDeliveries(
+      events.map((event) => ({
+        deviceId: stringField(event, 'device_id'),
+        eventId: stringField(event, 'event_id'),
+        packageId: stringField(event, 'package_id'),
+        deliveryKind: kind,
+        eventCreatedAt: stringField(event, 'event_created_at'),
+      })),
+    );
     for (const events of grouped.values()) {
       signal?.throwIfAborted();
-      const newest = [...events].sort(compareNotificationEvents)[0]!;
+      // A copy or repeat of a scan the parcel had moves no activity: one in another stage would end it.
+      const newest = announcedScan(events, { known });
+      if (!newest) {
+        // Recorded as updates, the batch holds back no later start.
+        await record(events, 'update');
+        continue;
+      }
       const kind = this.deliveryKind(newest);
       if (!kind) continue;
       const deviceId = stringField(newest, 'device_id');
@@ -1025,13 +1054,7 @@ export class DeliveryLiveActivityNotificationService {
       try {
         await this.send(newest, kind);
         signal?.throwIfAborted();
-        await this.client.recordLiveActivityDeliveries(events.map((event) => ({
-          deviceId,
-          eventId: stringField(event, 'event_id'),
-          packageId: stringField(event, 'package_id'),
-          deliveryKind: kind,
-          eventCreatedAt: stringField(event, 'event_created_at'),
-        })));
+        await record(events, kind);
         if (kind === 'end' && updateTokenId) {
           await this.client.deleteLiveActivityTokenById(updateTokenId);
         } else if (updateTokenId) {
