@@ -52,6 +52,7 @@ import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours } from './unseenLookup
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent, localClockCarrier } from './directLocalHistory';
 import { DIRECT_HISTORY, directHistory } from './providerCopies';
+import { earlierCarrier } from './relayCopies';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
 import { trackingSupportEvidence } from './trackingSupport';
 import { deployedVersion, statusMapClosings, universalMapAgrees } from './reviewQueues';
@@ -1465,8 +1466,9 @@ export class TrackingSyncService {
           if (!reworded.has(id) && !taken.has(saved)) reworded.set(id, saved);
         }
       }
-      // The earlier carrier's relay of a delivery scan stays its own row.
-      const shared = sharedScans(events.filter((event) => !normalized.relays.has(String(event.provider_event_id))), stored, reworded);
+      // The earlier carrier's relay of a delivery scan stays its own row, at the same second or to the minute.
+      const relaying = fetched.earlierCarrierId ?? earlierCarrier(parcel);
+      const shared = sharedScans(events.filter((event) => !normalized.relays.has(String(event.provider_event_id))), stored, reworded, relaying);
       const matches = { reused: new Map([...reworded, ...shared.reused]), skipped: shared.skipped };
       // Copies a universal provider read in the wrong zone must not make a result
       // look fresher, or the carrier's own reply older, than it is.
@@ -2089,7 +2091,7 @@ function watermarkWithoutCopies(parcel: JsonObject, watermark: number, value: Ro
   const stored = storedEventIdentities(parcel);
   const known = new Set(stored.map((row) => row.provider_event_id));
   const rows = [...stored, ...(provider ? buildEvents(parcel, provider, 'unknown') : []).filter((row) => !known.has(row.provider_event_id))];
-  return withoutCopyDrift(watermark, events, rows, sharedScans(events, rows),
+  return withoutCopyDrift(watermark, events, rows, sharedScans(events, rows, new Map(), earlierCarrier(parcel)),
     providerWatermark(isRecord(parcel.carrier_data) ? parcel.carrier_data : {}, stored));
 }
 

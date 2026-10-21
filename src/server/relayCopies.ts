@@ -20,7 +20,7 @@ import { isRecord, type JsonObject } from './types';
 const RELAY_WINDOW_MS = 60_000;
 
 /** The carrier a parcel was handed over from, while another one tracks it; null for a parcel of one carrier. */
-function earlierCarrier(row: JsonObject): string | null {
+export function earlierCarrier(row: JsonObject): string | null {
   const data = isRecord(row.carrier_data) ? row.carrier_data : {};
   const earlier = typeof data.original_carrier === 'string' ? data.original_carrier : '';
   const current = typeof data.active_tracking_carrier === 'string' ? data.active_tracking_carrier : String(row.carrier ?? '');
