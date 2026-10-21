@@ -144,7 +144,10 @@ count as missed checks and keep the time of the last successful check. Checks th
 wait for cooldowns leave it unchanged. Provider failures remain in the audit and health
 evidence while the chip is hidden. A parcel without scans whose own carrier refuses the
 number, such as one chosen by hand that issues no number of that shape, shows the refusal
-at the first check.
+at the first check. The refusal is stored as `carrier:refused_number` when the carrier's
+adapter refuses the number alone ([`numberRefusal.ts`](../src/server/numberRefusal.ts)), so
+the reader is told to check the number or the carrier; a refused input such as a postcode
+keeps `carrier:invalid_input`, which asks for the parcel's details.
 
 A scan an adapter dates by its day alone, with no clock (NACEX's history), is stored as a
 row of that day anyway, in the carrier's order: a second after the scan before it when that

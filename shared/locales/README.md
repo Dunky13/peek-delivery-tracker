@@ -29,6 +29,8 @@ classifying carrier wording in the UI. See [LOCALIZATION.md](../../docs/LOCALIZA
 
 Typed carrier failures are stored as `carrier:<kind>` in `sync_error`, and the map picks
 localized guidance for each. A number the carrier finds several parcels under is stored as
-`carrier:several_parcels`, so the owner is asked to add each parcel's own number. Unknown
+`carrier:several_parcels`, so the owner is asked to add each parcel's own number. A number
+the parcel's own carrier does not issue is stored as `carrier:refused_number`, so the owner
+is asked to check the number or the carrier; a refused postcode stays `carrier:invalid_input`. Unknown
 codes get generic copy. Full diagnostics stay in the server audit. Only offer "edit input"
 when the carrier actually has editable inputs.

@@ -285,6 +285,7 @@
     "input_required": "tracking.failure.input",
     "invalid_input": "tracking.failure.input",
     "several_parcels": "tracking.failure.severalParcels",
+    "refused_number": "tracking.failure.refusedNumber",
     "maintenance": "tracking.failure.maintenance",
     "rate_limited": "tracking.failure.rateLimited",
     "challenge": "tracking.failure.challenge",

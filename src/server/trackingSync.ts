@@ -806,6 +806,17 @@ export function detectSyncAnomalies(
 type SyncOutcome = 'updated' | 'unchanged' | 'waiting' | 'errors' | 'unsupported' | 'superseded';
 
 /**
+ * The copy code a failure is stored with. A number the parcel's own carrier
+ * refuses as one it does not issue, such as one chosen by hand that issues no
+ * number of its shape, has its own; a refused input, such as a postcode, asks
+ * for the parcel's details.
+ */
+async function failureCopy(code: string | null, carrier: string, parcel: JsonObject): Promise<string | null> {
+  return code === 'carrier:invalid_input' && await refusesNumber(carrier, String(parcel.tracking_number ?? ''))
+    ? 'carrier:refused_number' : code;
+}
+
+/**
  * The work, or its rejection as soon as shutdown aborts it: a carrier that does not
  * watch the signal cannot hold the job's handoff. A lost lease waits for the work.
  */
@@ -1744,10 +1755,11 @@ export class TrackingSyncService {
         // that issues no number of its shape, shows why at the first check: only its details can change that.
         const refused = previousStage === 'pending' && error.routing.failures[carrierId]?.user_error === 'carrier:invalid_input';
         const failing = error.stale || refused;
+        const syncError = failing ? await failureCopy(deferredTrackingFailure(error.routing.failures, carrierId), carrierId, parcel) ?? error.message : null;
         try {
           await persist({ last_synced_at: this.now().toISOString(),
             sync_status: failing ? 'error' : previousStage === 'pending' ? 'waiting' : 'ok',
-            sync_error: failing ? deferredTrackingFailure(error.routing.failures, carrierId) ?? error.message : null,
+            sync_error: syncError,
             carrier_data: { ...(isRecord(parcel.carrier_data) ? parcel.carrier_data : {}), routing: error.routing },
           });
         } catch (persistenceError) {
@@ -1770,7 +1782,7 @@ export class TrackingSyncService {
           await persist({
             last_synced_at: this.now().toISOString(),
             sync_status: 'error',
-            sync_error: trackingFailureCode(error) ?? message.slice(0, 500),
+            sync_error: await failureCopy(trackingFailureCode(error), carrierId, parcel) ?? message.slice(0, 500),
           });
         }, () => ({ purpose: 'record_error' }));
       } catch (persistenceError) {

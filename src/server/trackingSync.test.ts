@@ -3924,13 +3924,21 @@ describe('TrackingSyncService', () => {
       carrier_data: { routing: { version: 1, configured_carrier: 'nz-couriers', consecutive_failures: 0, probe_cursor: 0, discovery_cursor: 0 } } };
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
     await expect(service.syncPackage(parcel, { trigger: 'package' })).resolves.toMatchObject({ waiting: 0, errors: 1 });
-    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error', sync_error: 'carrier:invalid_input',
+    // The number itself is refused: it has its own copy.
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error', sync_error: 'carrier:refused_number',
       carrier_data: { routing: { failures: { 'nz-couriers': { kind: 'invalid_input', user_error: 'carrier:invalid_input' } } } } });
 
     // A parcel the providers already followed keeps its scans in view, as before.
     await expect(service.syncPackage({ ...parcel, id: 'followed', current_stage: 'in_transit' }, { trigger: 'package' }))
       .resolves.toMatchObject({ waiting: 1, errors: 0 });
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'ok', sync_error: null });
+
+    // A refused postcode asks for the parcel's details, as before: Heppner's adapter takes the number.
+    adapter.fetch.mockRejectedValue(new InvalidInputError('Heppner', 'Heppner postcode does not match the country'));
+    const postcode = { ...parcel, id: 'postcode', carrier: 'heppner', dpd_postcode: '1000',
+      carrier_data: { routing: { ...parcel.carrier_data.routing, configured_carrier: 'heppner' } } };
+    await expect(service.syncPackage(postcode, { trigger: 'package' })).resolves.toMatchObject({ waiting: 0, errors: 1 });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error', sync_error: 'carrier:invalid_input' });
   });
 
   it('records no health sample for a scheduled check that contacted no provider', async () => {
