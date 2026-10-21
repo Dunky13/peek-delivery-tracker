@@ -71,6 +71,14 @@ function checkedAttestation(value: unknown, development: boolean): Buffer {
   return bytes;
 }
 
+/**
+ * iOS writes the launch category as four little-endian bytes, where Apple's
+ * documentation says a UInt32: both are read.
+ */
+function launchCategory(value: unknown): unknown {
+  return Buffer.isBuffer(value) && value.length === 4 ? value.readUInt32LE(0) : value;
+}
+
 /** Newer systems add signed launch-category and bundle-version extensions. */
 function checkExtensions(data: unknown, attestation: boolean, development: boolean) {
   if (!Buffer.isBuffer(data) || data.length < (attestation ? 87 : 37)) throw rejected();
@@ -79,9 +87,9 @@ function checkExtensions(data: unknown, attestation: boolean, development: boole
   const decoded = cbor.decodeAllSync(data.subarray(offset), { max_depth: 16 });
   const extensions = decoded[attestation ? 1 : 0];
   if (decoded.length !== (attestation ? 2 : 1) || !extensions || typeof extensions !== 'object') throw rejected();
-  const category = extensions.apple_validation_category_01 ?? extensions.validationCategory;
+  const category = launchCategory(extensions.apple_validation_category_01 ?? extensions.validationCategory);
   const version = extensions.apple_bundle_version_01 ?? extensions.bundleVersion;
-  if (category !== undefined && ![2, 4, 5, ...(development ? [3] : [])].includes(category)) throw rejected();
+  if (category !== undefined && !(typeof category === 'number' && [2, 4, 5, ...(development ? [3] : [])].includes(category))) throw rejected();
   if (version !== undefined && (typeof version !== 'string' || !/^\d{1,10}(?:\.\d{1,10}){0,2}$/.test(version))) throw rejected();
 }
 

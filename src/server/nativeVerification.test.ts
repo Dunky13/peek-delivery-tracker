@@ -138,6 +138,15 @@ describe('native verification', () => {
     vi.stubEnv('APP_ATTEST_ALLOW_DEVELOPMENT', 'true');
     await verifyNativeRequest(await signedRequest({ extension: { validationCategory: 3 } }), service, signedBody);
   });
+  it('reads the launch category as the four little-endian bytes iOS writes', async () => {
+    const category = (value: number) => { const bytes = Buffer.alloc(4); bytes.writeUInt32LE(value); return bytes; };
+    await verifyNativeRequest(await signedRequest({ extension: { apple_bundle_version_01: '1', apple_validation_category_01: category(4) } }), service, signedBody);
+    await verifyNativeRequest(await signedRequest({ extension: { apple_validation_category_01: category(2) } }), service, signedBody);
+    for (const value of [category(3), category(1), Buffer.from([4, 0])]) {
+      await expect(verifyNativeRequest(await signedRequest({ extension: { apple_validation_category_01: value } }), service, signedBody))
+        .rejects.toMatchObject({ status: 403 });
+    }
+  });
   it('returns daily limits and rejects a replay refused by the atomic database check', async () => {
     vi.mocked(service.request).mockResolvedValueOnce({ public_key: storedKey, app_id: appID, sign_count: 0 }).mockResolvedValueOnce('limited');
     await expect(verifyNativeRequest(await signedRequest(), service, signedBody)).rejects.toMatchObject({ status: 429, headers: { 'Retry-After': expect.any(String) } });
