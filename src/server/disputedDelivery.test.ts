@@ -37,6 +37,13 @@ describe('a delivery the parcel\'s own carrier disputes', () => {
     expect(withoutDisputedDelivery(provider('2026-10-20T18:00:00Z'), 'unknown', 'brt', delivered)).toBeNull();
   });
 
+  it('reads a scan without a stage by its wording', () => {
+    const relayed = own({ time: '2026-10-17T00:53:23+02:00', description: 'Your parcel is on its way' });
+    expect(carrierMovedAt('brt', relayed)).toBe(Date.parse('2026-10-16T22:53:23Z'));
+    expect(withoutDisputedDelivery(provider('2026-10-12T01:00:01Z'), 'unknown', 'brt', relayed)).not.toBeNull();
+    expect(showsDelivery(own({ local_time: '2026-10-21T10:00:00', description: 'Delivered' }))).toBe(true);
+  });
+
   it('stands when a delivery scan has no date to compare', () => {
     const answer = own({ local_time: '2026-10-21T10:00:00', description: 'In viaggio', stage: 'in_transit' });
     const undated = { ...provider('2026-10-20T18:00:00Z'), events: [{ description: 'Delivered', stage: 'delivered' }] };

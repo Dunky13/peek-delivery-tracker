@@ -1,6 +1,6 @@
 import 'server-only';
 import { deferredTrackingFailure, trackingFailureCode } from './trackingFailure';
-import { CarrierError, carrierErrorKind, inferStage, stageSource, resultStage, resultHasUpdate, CARRIER_DEFINITIONS, type CarrierId } from 'universal-parcel-scraper';
+import { CarrierError, carrierErrorKind, stageSource, resultStage, resultHasUpdate, CARRIER_DEFINITIONS, type CarrierId } from 'universal-parcel-scraper';
 export { classifyStage, inferStage, stageSource, resultStage, resultHasUpdate } from 'universal-parcel-scraper';
 import { AMAZON_ACCOUNT_MESSAGE, AMAZON_HISTORY_EXPIRED, requiresAmazonAccount } from '../lib/amazon';
 import { normalizeTrackingNumber } from '../lib/carriers';
@@ -51,7 +51,7 @@ import { upuHistory } from './upuHistory';
 import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent, localClockCarrier } from './directLocalHistory';
-import { carrierMovedAt, showsDelivery, UNCONFIRMED_DELIVERY_MS } from './disputedDelivery';
+import { carrierMovedAt, eventStage, showsDelivery, UNCONFIRMED_DELIVERY_MS } from './disputedDelivery';
 import { DIRECT_HISTORY, directHistory } from './providerCopies';
 import { earlierCarrier } from './relayCopies';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
@@ -518,7 +518,7 @@ export function buildEvents(
     rows.push({
       package_id: parcel.id,
       // Historical scans must not inherit the shipment's current/final stage.
-      stage: VALID_STAGES.has(declaredStage) ? declaredStage : inferStage(description),
+      stage: eventStage(raw),
       description,
       location: location || null,
       occurred_at: occurredAt,
@@ -561,12 +561,7 @@ export function buildEvents(
     && (current !== previousStage || newUpuMilestone)
     && !currentAlreadyTimed
   ) {
-    const matchingEvent = (result.events ?? []).find((raw) => {
-      const declaredStage = String(raw.stage ?? '');
-      const description = String(raw.description ?? '');
-      return (VALID_STAGES.has(declaredStage) ? declaredStage : inferStage(description))
-        === current;
-    });
+    const matchingEvent = (result.events ?? []).find((raw) => eventStage(raw) === current);
     const description = String(
       matchingEvent?.description ?? result.last_status_text ?? UNWORDED_STEP,
     ).trim() || UNWORDED_STEP;
