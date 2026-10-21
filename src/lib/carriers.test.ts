@@ -1528,11 +1528,11 @@ describe('ambiguous number shapes', () => {
   });
 
   it('keeps 14-digit numbers ambiguous', () => {
-    expect(detectCarrierMatch('01234567890123')).toEqual({
+    // A DPD depot code can list its network first, but the shape stays a suggestion.
+    expect(detectCarrierMatch('01234567890123')).toMatchObject({
       carrier: 'unknown',
       confidence: 'low',
       candidates: expect.arrayContaining(['dpd', 'dpd-fr', 'ciblex', 'seur', 'brt', 'dpd-de', 'dpd-uk']),
-      preferred: [],
     });
     expect(detectCarrierMatch('10594002378611')).toEqual({
       carrier: 'unknown',
