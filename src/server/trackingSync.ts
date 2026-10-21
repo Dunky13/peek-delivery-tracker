@@ -32,7 +32,7 @@ import {
 } from './observability';
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
-import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
+import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, SyncJobLeaseLost, type SupabaseServiceClient } from './supabase';
 import { clockDay, datedObservations, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, UNWORDED_STEP, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   askedForCheck,
@@ -1214,8 +1214,17 @@ export class TrackingSyncService {
     } catch (error) {
       // Shutdown ends the check now, whatever its carrier is still doing: the job goes back to the queue.
       if (context.signal?.reason instanceof WorkerShutdown) await audit.interrupt();
+      // A deletion or carrier change that the lease renewal noticed before the check's next write
+      // ends it as that write would have, so its attempt is not left running.
+      else if (await this.withdrawn(context)) await audit.finish({ outcome: 'superseded' });
       throw error;
     }
+  }
+
+  /** Whether the check stopped because a deletion or a carrier change took its job. */
+  private async withdrawn(context: SyncRunContext): Promise<boolean> {
+    if (!(context.signal?.reason instanceof SyncJobLeaseLost) || !context.lease) return false;
+    return await this.client.syncJobWithdrawn(context.lease.jobId).catch(() => false);
   }
 
   /** One parcel's check, from choosing its carrier to the end of its audit. */

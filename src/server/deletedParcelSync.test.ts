@@ -218,6 +218,45 @@ describe('the audit of a check whose parcel was deleted', () => {
     expect(events()).toContain('tracking_sync_audit_skipped');
     expect(report).not.toHaveBeenCalled();
   });
+
+  /** A check whose lease renewal fails while its carrier answers, before its next write. */
+  function renewalLost(withdrawn: boolean | Error) {
+    const lease = { jobId: 'job', workerId: 'worker' };
+    const controller = new AbortController();
+    const client = {
+      startSyncAttempt: vi.fn().mockResolvedValue(undefined),
+      applyTrackingSync: vi.fn().mockResolvedValue(true),
+      completeSyncAttempt: vi.fn().mockResolvedValue(true),
+      syncJobWithdrawn: withdrawn instanceof Error ? vi.fn().mockRejectedValue(withdrawn) : vi.fn().mockResolvedValue(withdrawn),
+    };
+    const adapter = { fetch: vi.fn().mockImplementation(async () => {
+      controller.abort(new SyncJobLeaseLost());
+      throw new Error('Carrier unavailable');
+    }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter);
+    const parcel = { id: 'parcel', carrier: 'ups', tracking_number: 'TEST1234', current_stage: 'pending', tracking_generation: 'generation' };
+    const check = service.syncPackage(parcel, { trigger: 'package', jobId: 'job', lease, signal: controller.signal });
+    return { client, check };
+  }
+
+  it('ends the check as superseded when the lease renewal finds its job taken first', async () => {
+    const { report } = monitor();
+    const { client, check } = renewalLost(true);
+    await expect(check).rejects.toBeInstanceOf(SyncJobLeaseLost);
+    expect(client.syncJobWithdrawn).toHaveBeenCalledExactlyOnceWith('job');
+    expect(client.completeSyncAttempt).toHaveBeenCalledExactlyOnceWith(
+      expect.any(String), expect.objectContaining({ outcome: 'superseded' }), expect.any(Array),
+    );
+    expect(report).not.toHaveBeenCalled();
+  });
+
+  it('leaves the attempt to the next claim when the lease went otherwise', async () => {
+    for (const withdrawn of [false, new SupabaseError('The delivery database is unreachable')]) {
+      const { client, check } = renewalLost(withdrawn);
+      await expect(check).rejects.toBeInstanceOf(SyncJobLeaseLost);
+      expect(client.completeSyncAttempt).not.toHaveBeenCalled();
+    }
+  });
 });
 
 describe('the job lease client', () => {

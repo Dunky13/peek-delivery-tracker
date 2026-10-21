@@ -86,12 +86,11 @@ its `tracking_sync_completed` line; one whose worker died is marked `abandoned` 
 job is claimed again. Attempts still running after 30 min are marked `abandoned` and
 reported. Deleting a package or account deletes its audit.
 
-A check whose parcel is deleted while it runs, or whose next write finds its carrier
-changed, ends as `superseded`: nothing is saved and no error is reported. A deleted parcel
-takes the check's job and audit rows with it, so the worker drops the job instead of
-finishing it. A carrier change that the worker's lease renewal notices before that write
-stops the check instead: its attempt stays `running`, and is marked `abandoned` and
-reported as above.
+A check whose parcel is deleted or whose carrier changes while it runs ends as
+`superseded`: nothing is saved and no error is reported, whether its next write or the
+worker's lease renewal notices first. A deleted parcel takes the check's job and audit rows
+with it, and a carrier change ends the job, so the worker drops the job instead of
+finishing it.
 
 `delivery_emails` records what was emailed: one row per parcel and stage claimed for a
 delivery email, with the account, the scan it told and its `stage` (`delivered`,
