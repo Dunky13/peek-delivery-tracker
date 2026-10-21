@@ -10,6 +10,7 @@ import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { createAdapterRegistry } from './adapterRegistry';
 import { hostStepRecorder } from './stepRecorder';
+import { SupabaseError } from './supabase';
 
 const captured = vi.hoisted(() => ({ events: [] as Event[] }));
 
@@ -303,6 +304,29 @@ it('names a parcel by the shape of its number and cuts addresses down in reports
   expect(logLine!.data).toEqual({ logger: 'console' });
   const call = report.breadcrumbs?.find((crumb) => crumb.category === 'http' && crumb.data?.status_code === 404);
   expect(call!.data).toEqual({ url: 'https://carrier.example/v1/track/:id/events', 'http.method': 'GET', status_code: 404 });
+});
+
+it('opens one issue for a database that does not answer, whichever write found it, and one per write for a refusal', async () => {
+  vi.stubEnv('SENTRY_DSN', 'https://public@example.test/1');
+  expect(initObservability()).toBe(true);
+  const unreachable = () => new SupabaseError('The delivery database is unreachable', undefined, 'unreachable',
+    { cause: new TypeError('fetch failed') });
+  const ids = [
+    captureOperationalError(unreachable(), { component: 'sync-worker', operation: 'finish_job', jobId: 'job-1' }),
+    captureOperationalError(unreachable(), { component: 'tracking-sync', operation: 'persist_package', carrier: 'example', jobId: 'job-1' }),
+    captureOperationalError(new SupabaseError('Supabase POST request failed (404)', 404, 'PGRST202'),
+      { component: 'tracking-sync', operation: 'persist_package', carrier: 'example', jobId: 'job-1' }),
+  ];
+  await flushObservability();
+  const [finish, persist, refused] = ids.map((id) => captured.events.find((event) => event.event_id === id)!);
+  expect(finish.fingerprint).toEqual(['delivery-tracker', 'database-unreachable']);
+  expect(persist.fingerprint).toEqual(finish.fingerprint);
+  // Each event still names the write that failed.
+  expect(finish.tags).toMatchObject({ component: 'sync-worker', operation: 'finish_job', job_id: 'job-1', database_code: 'unreachable' });
+  expect(persist.tags).toMatchObject({ component: 'tracking-sync', operation: 'persist_package', carrier: 'example',
+    job_id: 'job-1', database_code: 'unreachable' });
+  expect(refused.fingerprint).toEqual(['delivery-tracker', 'tracking-sync', 'persist_package', 'example', 'SupabaseError']);
+  expect(refused.tags).toMatchObject({ database_code: 'PGRST202', database_status: '404' });
 });
 
 it('sends carriers no trace headers', async () => {

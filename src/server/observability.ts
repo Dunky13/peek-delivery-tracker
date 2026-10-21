@@ -383,7 +383,8 @@ export function captureOperationalError(
         ? 'Verify the deployed database migrations and RPC signature, then reload the PostgREST schema cache. Check whether observation logging or shipment persistence failed.'
         : 'Check database availability, permissions and migrations; inspect the operation tag to distinguish shipment persistence from diagnostics.',
     });
-    scope.setFingerprint([
+    // A database that does not answer fails every write at once: one outage is one issue, and the tags name each write.
+    scope.setFingerprint(errorMetadata.databaseCode === 'unreachable' ? ['delivery-tracker', 'database-unreachable'] : [
       'delivery-tracker',
       context.component,
       context.operation,
