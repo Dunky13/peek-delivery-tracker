@@ -64875,6 +64875,14 @@
     ]
   },
   {
+    "input": "CB055492622IT",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "CB212298281IE",
     "carrier": "an-post",
     "confidence": "high",
@@ -65283,6 +65291,14 @@
     ],
     "asked": [
       "chronopost"
+    ]
+  },
+  {
+    "input": "CE009577060IT",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
     ]
   },
   {
@@ -69325,10 +69341,14 @@
   },
   {
     "input": "EE002763955MH",
-    "carrier": "intl-post",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "intl-post"
+      "mailamericas",
+      "chronopost"
+    ],
+    "preferred": [
+      "mailamericas"
     ],
     "asked": [
       "mailamericas",
@@ -69637,13 +69657,10 @@
   },
   {
     "input": "EE426921890IT",
-    "carrier": "intl-post",
+    "carrier": "poste-italiane",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost"
+      "poste-italiane"
     ]
   },
   {
@@ -71630,6 +71647,20 @@
     "confidence": "high",
     "candidates": [
       "ekart"
+    ]
+  },
+  {
+    "input": "FMP1UW2ABCDEFGHI",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "vinted-go"
+    ],
+    "preferred": [
+      "vinted-go"
+    ],
+    "asked": [
+      "vinted-go"
     ]
   },
   {
@@ -76025,6 +76056,18 @@
     "candidates": []
   },
   {
+    "input": "KK123456785IT",
+    "carrier": "intl-post",
+    "confidence": "high",
+    "candidates": [
+      "intl-post"
+    ],
+    "asked": [
+      "poste-italiane",
+      "chronopost"
+    ]
+  },
+  {
     "input": "KLD1CS28943670",
     "carrier": "indah-logistik",
     "confidence": "high",
@@ -78606,10 +78649,14 @@
   },
   {
     "input": "ML545911751MH",
-    "carrier": "intl-post",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "intl-post"
+      "mailamericas",
+      "chronopost"
+    ],
+    "preferred": [
+      "mailamericas"
     ],
     "asked": [
       "mailamericas",
@@ -78618,10 +78665,14 @@
   },
   {
     "input": "ML559616706MH",
-    "carrier": "intl-post",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "intl-post"
+      "mailamericas",
+      "chronopost"
+    ],
+    "preferred": [
+      "mailamericas"
     ],
     "asked": [
       "mailamericas",
@@ -79243,10 +79294,14 @@
   },
   {
     "input": "Ml614236970mh",
-    "carrier": "intl-post",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "intl-post"
+      "mailamericas",
+      "chronopost"
+    ],
+    "preferred": [
+      "mailamericas"
     ],
     "asked": [
       "mailamericas",
@@ -84073,6 +84128,14 @@
     ]
   },
   {
+    "input": "RN700062106IT",
+    "carrier": "poste-italiane",
+    "confidence": "high",
+    "candidates": [
+      "poste-italiane"
+    ]
+  },
+  {
     "input": "RN766621724RO",
     "carrier": "intl-post",
     "confidence": "high",
@@ -84672,6 +84735,22 @@
   },
   {
     "input": "RR123456785TY",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "aliexpress",
+      "chronopost"
+    ],
+    "preferred": [
+      "aliexpress"
+    ],
+    "asked": [
+      "aliexpress",
+      "chronopost"
+    ]
+  },
+  {
+    "input": "RR123456785XX",
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
@@ -91881,10 +91960,14 @@
   },
   {
     "input": "ml267690798mh",
-    "carrier": "intl-post",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "intl-post"
+      "mailamericas",
+      "chronopost"
+    ],
+    "preferred": [
+      "mailamericas"
     ],
     "asked": [
       "mailamericas",
@@ -91893,10 +91976,14 @@
   },
   {
     "input": "ml594249402mh",
-    "carrier": "intl-post",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "intl-post"
+      "mailamericas",
+      "chronopost"
+    ],
+    "preferred": [
+      "mailamericas"
     ],
     "asked": [
       "mailamericas",
@@ -91905,10 +91992,14 @@
   },
   {
     "input": "ml621041112mh",
-    "carrier": "intl-post",
-    "confidence": "high",
+    "carrier": "unknown",
+    "confidence": "low",
     "candidates": [
-      "intl-post"
+      "mailamericas",
+      "chronopost"
+    ],
+    "preferred": [
+      "mailamericas"
     ],
     "asked": [
       "mailamericas",

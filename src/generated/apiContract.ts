@@ -277,6 +277,12 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low",
         "checksum": "s10",
         "preferred": true
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}XX$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "aliases": [
@@ -1952,7 +1958,7 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!AS\\d{9}US$)(?!CW\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?![CELR][A-Z]\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -2666,6 +2672,17 @@ export const CARRIER_CAPABILITIES = {
         "pattern": "^CW\\d{9}IT$",
         "confidence": "high",
         "checksum": "s10"
+      },
+      {
+        "pattern": "^[CELR][A-Z]\\d{9}IT$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}IT$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       },
       {
         "pattern": "^(?:\\d{6}[A-Z]\\d{6}|[139]C\\d{4}[A-Z]\\d{6}|\\d{3}[A-Z]\\d{8}[A-Z])$",
@@ -8976,6 +8993,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^VGS\\d{14}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^FMP\\dUW\\d[A-Z]{9}$",
+        "confidence": "low",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://vintedgo.com/en/tracking?region=europe"
@@ -14976,7 +14998,8 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^[A-Z]{2}\\d{9}MH$",
         "confidence": "low",
-        "checksum": "s10"
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://mailamericas.com/"
