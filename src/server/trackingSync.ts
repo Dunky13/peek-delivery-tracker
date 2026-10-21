@@ -1331,8 +1331,8 @@ export class TrackingSyncService {
         // A provider resting on a rate limit was not asked, and a universal provider that failed
         // (transport, challenge, unreadable answer) did not answer: neither says anything about
         // the number. A carrier's own adapter failing does. So does the parcel's own carrier asking
-        // for an input: only the owner can supply it, so the missed checks show that request, as a
-        // refused number does.
+        // for an input: only the owner can supply it, so the missed checks show that request. A
+        // refused number shows at the first check (below).
         const failures = error instanceof RoutingDeferred
           ? Object.entries(error.routing.failures).filter(([source, failure]) => failure.kind !== 'rate_limited'
             && (directCarrier(source) || ['not_found', 'no_history', 'input_required'].includes(failure.kind)))
@@ -1740,10 +1740,14 @@ export class TrackingSyncService {
       context.signal?.throwIfAborted();
       if (error instanceof SupersededTrackingSync) return superseded();
       if (error instanceof RoutingDeferred) {
+        // A parcel with no scans whose own carrier refuses the number, such as one chosen by hand
+        // that issues no number of its shape, shows why at the first check: only its details can change that.
+        const refused = previousStage === 'pending' && error.routing.failures[carrierId]?.user_error === 'carrier:invalid_input';
+        const failing = error.stale || refused;
         try {
           await persist({ last_synced_at: this.now().toISOString(),
-            sync_status: error.stale ? 'error' : previousStage === 'pending' ? 'waiting' : 'ok',
-            sync_error: error.stale ? deferredTrackingFailure(error.routing.failures, carrierId) ?? error.message : null,
+            sync_status: failing ? 'error' : previousStage === 'pending' ? 'waiting' : 'ok',
+            sync_error: failing ? deferredTrackingFailure(error.routing.failures, carrierId) ?? error.message : null,
             carrier_data: { ...(isRecord(parcel.carrier_data) ? parcel.carrier_data : {}), routing: error.routing },
           });
         } catch (persistenceError) {
@@ -1753,9 +1757,9 @@ export class TrackingSyncService {
         }
         // A check that contacted nobody says nothing about provider health.
         // Keep the failure evidence even while the parcel's error chip is suppressed.
-        await audit.finish({ outcome: error.stale ? 'error' : 'waiting', sourceCarrier: carrierId,
+        await audit.finish({ outcome: failing ? 'error' : 'waiting', sourceCarrier: carrierId,
           evaluateHealth: error.attempted > 0, error, providerFailures: error.routing.failures });
-        return error.stale ? 'errors' : 'waiting';
+        return failing ? 'errors' : 'waiting';
       }
       let message = error instanceof Error ? error.message.trim() || error.name : String(error);
       if (error instanceof SyntaxError) {

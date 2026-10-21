@@ -131,7 +131,7 @@ before its first scan, hence its shorter not-found wait. When a universal provid
 progress the parcel hasn't had yet and names a carrier that said not found, that carrier is
 asked again in the same check. A pending parcel whose failures are all not-found or
 `no_history` shows as waiting, not as an outage, unless its own carrier asks for an input:
-as with a refused number, the missed checks then show that request. A provider resting on a rate limit was
+the missed checks then show that request. A provider resting on a rate limit was
 not asked, and a universal provider that failed (transport, verification, an unreadable
 answer) did not answer, so neither changes that; a carrier's own adapter failing does. When a failed direct adapter recovers, it
 takes over from the universal provider again.
@@ -142,7 +142,9 @@ is at least 1 h old by day or 3 h overnight. An answer with progress, or one for
 awaiting its first movement, resets the streak. Thin answers for a universal-only parcel
 count as missed checks and keep the time of the last successful check. Checks that only
 wait for cooldowns leave it unchanged. Provider failures remain in the audit and health
-evidence while the chip is hidden.
+evidence while the chip is hidden. A parcel without scans whose own carrier refuses the
+number, such as one chosen by hand that issues no number of that shape, shows the refusal
+at the first check.
 
 A scan an adapter dates by its day alone, with no clock (NACEX's history), is stored as a
 row of that day anyway, in the carrier's order: a second after the scan before it when that

@@ -41,7 +41,7 @@ import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { NOOP_RECORDER } from 'universal-parcel-scraper/node';
-import { BudgetExceededError, IndeterminateError, InputRequiredError, NoHistoryError, NotFoundError, SchemaError } from 'universal-parcel-scraper';
+import { BudgetExceededError, IndeterminateError, InputRequiredError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from 'universal-parcel-scraper';
 import * as scraper from 'universal-parcel-scraper';
 
 // Keep the published plan configurable without changing the scraper's other exports.
@@ -3909,6 +3909,28 @@ describe('TrackingSyncService', () => {
     // The owner has to supply it: the carrier answered.
     expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'needs-input',
       expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: true })]));
+  });
+
+  it('says at the first check that the carrier chosen for a parcel without scans refuses its number', async () => {
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    const adapter = { fetch: vi.fn().mockRejectedValue(new InvalidInputError('New Zealand Couriers', 'Not a New Zealand Couriers number')),
+      fetchUniversal: vi.fn(async (source: string) => {
+        throw source === 'Ship24' ? new NotFoundError(source) : new IndeterminateError(source, `${source} has no usable shipment history`);
+      }) };
+    const parcel = { id: 'refused', carrier: 'nz-couriers', tracking_number: 'TEST1234', current_stage: 'pending',
+      carrier_data: { routing: { version: 1, configured_carrier: 'nz-couriers', consecutive_failures: 0, probe_cursor: 0, discovery_cursor: 0 } } };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+    await expect(service.syncPackage(parcel, { trigger: 'package' })).resolves.toMatchObject({ waiting: 0, errors: 1 });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'error', sync_error: 'carrier:invalid_input',
+      carrier_data: { routing: { failures: { 'nz-couriers': { kind: 'invalid_input', user_error: 'carrier:invalid_input' } } } } });
+
+    // A parcel the providers already followed keeps its scans in view, as before.
+    await expect(service.syncPackage({ ...parcel, id: 'followed', current_stage: 'in_transit' }, { trigger: 'package' }))
+      .resolves.toMatchObject({ waiting: 1, errors: 0 });
+    expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: 'ok', sync_error: null });
   });
 
   it('records no health sample for a scheduled check that contacted no provider', async () => {
