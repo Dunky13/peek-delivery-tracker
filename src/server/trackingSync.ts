@@ -1507,8 +1507,26 @@ export class TrackingSyncService {
       const retracted = previousStage === 'pending' && hasRoutingProgress(result) && typeof answeredBy === 'string'
         && ahead.length > 0 && Math.max(...ahead.map((row) => Date.parse(String(row.occurred_at)))) >= previousEventTime
         && ahead.every((row) => row.universal_provider === answeredBy && !shown.has(String(row.provider_event_id)));
+      // The parcel's own carrier answered in this check: its own answer, or the scans it gave on local clocks beside a provider's.
+      const filed = String(parcel.carrier);
+      const capture = isRecord(result.direct_local_history) ? result.direct_local_history : {};
+      const ownAnswer: CarrierResult | null = !directCarrier(filed) || result.original_carrier || previousData.original_carrier ? null
+        : typeof result.tracking_provider !== 'string' ? (sourceCarrierId === filed ? result : null)
+          : result.carrier_answered === true && capture.carrier === filed && capture.number === directHistoryNumber(parcel, result)
+            && Array.isArray(capture.events) ? { events: capture.events.filter(isRecord) } : null;
+      const carrierMoved = ownAnswer ? carrierMovedAt(filed, ownAnswer) : Number.NaN;
+      // A saved delivery only a provider reported gives way to that answer when it disputes it, as
+      // routing's does in a single check (disputedDelivery.ts): the provider's delivery rows go.
+      const savedDeliveries = stored.filter((row) => row.stage === 'delivered');
+      const disputedRows = previousStage === 'delivered' && selectedStage !== null && selectedStage !== 'delivered'
+        && typeof previousData.tracking_provider === 'string' && savedDeliveries.length > 0
+        && savedDeliveries.every((row) => String(row.provider_event_id).startsWith('unknown:')
+          && Date.parse(String(row.occurred_at)) <= carrierMoved)
+        ? savedDeliveries.map((row) => String(row.provider_event_id)) : [];
+      // An answer of the parcel's own carrier that disputes the saved delivery is not older either:
+      // the watermark came from the provider whose delivery it disputes.
       const olderSnapshot = Number.isFinite(previousEventTime) && Number.isFinite(returnedEventTime)
-        && returnedEventTime < previousEventTime && !retracted;
+        && returnedEventTime < previousEventTime && !retracted && !disputedRows.length;
       // UPU wall time cannot prove freshness against another source. It may
       // establish initial progress, or update its own saved local-time summary.
       const unprovenUpuSummary = result.tracking_provider === 'UPU' && (
@@ -1530,22 +1548,6 @@ export class TrackingSyncService {
       const unprovenProviderSummary = typeof result.tracking_provider === 'string' && !fetched.correction
         && directCarrier(String(parcel.carrier)) && answeredByCarrier(parcel) && previousStage !== 'pending'
         && Number.isFinite(previousEventTime) && !(returnedEventTime > previousEventTime);
-      // The parcel's own carrier answered in this check: its own answer, or the scans it gave on local clocks beside a provider's.
-      const filed = String(parcel.carrier);
-      const capture = isRecord(result.direct_local_history) ? result.direct_local_history : {};
-      const ownAnswer: CarrierResult | null = !directCarrier(filed) || result.original_carrier || previousData.original_carrier ? null
-        : typeof result.tracking_provider !== 'string' ? (sourceCarrierId === filed ? result : null)
-          : result.carrier_answered === true && capture.carrier === filed && capture.number === directHistoryNumber(parcel, result)
-            && Array.isArray(capture.events) ? { events: capture.events.filter(isRecord) } : null;
-      const carrierMoved = ownAnswer ? carrierMovedAt(filed, ownAnswer) : Number.NaN;
-      // A saved delivery only a provider reported gives way to that answer when it disputes it, as
-      // routing's does in a single check (disputedDelivery.ts): the provider's delivery rows go.
-      const savedDeliveries = stored.filter((row) => row.stage === 'delivered');
-      const disputedRows = previousStage === 'delivered' && selectedStage !== null && selectedStage !== 'delivered'
-        && typeof previousData.tracking_provider === 'string' && savedDeliveries.length > 0
-        && savedDeliveries.every((row) => String(row.provider_event_id).startsWith('unknown:')
-          && Date.parse(String(row.occurred_at)) <= carrierMoved)
-        ? savedDeliveries.map((row) => String(row.provider_event_id)) : [];
       const preserveSummary = keepSaved || olderSnapshot || unprovenUpuSummary || unprovenLocalSummary || unprovenProviderSummary
         || (['delivered', 'returned'].includes(previousStage) && selectedStage !== previousStage && !disputedRows.length);
       const carrierData: JsonObject = Object.fromEntries(

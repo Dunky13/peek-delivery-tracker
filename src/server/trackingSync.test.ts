@@ -939,7 +939,7 @@ describe('TrackingSyncService', () => {
   describe('a delivery only a provider reported', () => {
     // A BRT import a provider marked delivered the day BRT took it over; numbers, wording and clocks are invented.
     const registered = { local_time: '2026-10-12T10:10:00', description: 'Shipping info sent to BRT', stage: 'registered' };
-    const own = (status: CarrierResult['status'], text: string, ...newer: Array<{ local_time: string; stage?: string; description: string }>): CarrierResult => ({
+    const own = (status: CarrierResult['status'], text: string, ...newer: Array<{ local_time: string; stage: string; description: string }>): CarrierResult => ({
       status, current_stage: newer[0]?.stage ?? status, last_status_text: text, last_update: null,
       last_update_local: newer[0]?.local_time ?? registered.local_time, events: [...newer, registered] });
     const provider = (status: CarrierResult['status'], delivered: string): CarrierResult => ({
@@ -978,10 +978,11 @@ describe('TrackingSyncService', () => {
       const first = await check('2026-10-19T20:00:00Z', new Error('down'), provider('delivered', '2026-10-12T12:00:01Z'));
       expect(first).toMatchObject({ current_stage: 'delivered', carrier_data: { unconfirmed_delivery_until: '2026-10-22T20:00:00.000Z' } });
       expect(first.stages).toContain('delivered');
-      // The carrier's relay scan, after the delivery unlike its registration, comes without a stage: its wording reads as in transit.
-      const reopened = await check('2026-10-21T08:00:00Z',
-        own('in_transit', 'In viaggio', { local_time: '2026-10-20T09:00:00', description: 'Your parcel is on its way' }),
-        provider('in_transit', '2026-10-12T12:00:01Z'));
+      // The carrier answers alone with a relay scan after the delivery, unlike its registration, and without a stage: its
+      // wording reads as in transit. The provider dated its copy of that scan by the next day, later than the carrier's.
+      const relay = { time: '2026-10-17T00:53:23+02:00', description: 'Your parcel is on its way' };
+      const reopened = await check('2026-10-21T08:00:00Z', { status: 'in_transit', current_stage: 'in_transit',
+        last_status_text: 'In viaggio', last_update: relay.time, events: [relay, registered] }, provider('in_transit', '2026-10-12T12:00:01Z'));
       expect(reopened).toMatchObject({ current_stage: 'in_transit', last_status_text: 'In viaggio' });
       expect(reopened.stages).not.toContain('delivered');
       expect(reopened.carrier_data).not.toHaveProperty('unconfirmed_delivery_until');
