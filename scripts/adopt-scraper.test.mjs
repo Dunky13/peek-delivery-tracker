@@ -4,6 +4,7 @@ import path from 'node:path';
 import { describe, it } from 'node:test';
 import {
   ENFORCED_BY,
+  adoptionSlot,
   chooseTarget,
   compareVersions,
   continueCommand,
@@ -20,6 +21,7 @@ import {
   pinnedVersion,
   readMigrations,
   retry,
+  slotAdoption,
 } from './adopt-scraper.mjs';
 
 const postcode = {
@@ -89,6 +91,44 @@ describe('scraper release versions', () => {
     assert.equal(pinnedVersion({ dependencies: { 'universal-parcel-scraper': '0.2.0' } }), '0.2.0');
     assert.throws(() => pinnedVersion({ dependencies: { 'universal-parcel-scraper': '^0.2.0' } }), /exact release/);
     assert.throws(() => pinnedVersion({ dependencies: {} }), /exact release/);
+  });
+});
+
+describe('adoption slots', () => {
+  const at = (time) => adoptionSlot(new Date(time)).toISOString();
+
+  it('starts one 7 past every even hour from 06:07 to 22:07 UTC', () => {
+    assert.equal(at('2026-10-21T06:07:00Z'), '2026-10-21T06:07:00.000Z');
+    assert.equal(at('2026-10-21T08:06:59Z'), '2026-10-21T06:07:00.000Z');
+    assert.equal(at('2026-10-21T08:07:00Z'), '2026-10-21T08:07:00.000Z');
+    assert.equal(at('2026-10-21T13:45:57Z'), '2026-10-21T12:07:00.000Z');
+    assert.equal(at('2026-10-21T22:07:00Z'), '2026-10-21T22:07:00.000Z');
+  });
+
+  it('lets the last one run until the first of the next day', () => {
+    assert.equal(at('2026-10-21T23:59:00Z'), '2026-10-21T22:07:00.000Z');
+    assert.equal(at('2026-10-22T03:00:00Z'), '2026-10-21T22:07:00.000Z');
+    assert.equal(at('2026-10-22T06:06:59Z'), '2026-10-21T22:07:00.000Z');
+    assert.equal(at('2026-11-01T00:30:00Z'), '2026-10-31T22:07:00.000Z');
+  });
+
+  const slot = new Date('2026-10-21T12:07:00Z');
+  const run = (id, ...jobs) => ({ id, jobs: [{ name: 'Due', status: 'completed', conclusion: 'success', started_at: '2026-10-21T13:00:00Z' }, ...jobs] });
+  const adopt = (started_at, conclusion = 'success', status = 'completed') => ({ name: 'Adopt', status, conclusion, started_at });
+
+  it('finds the run whose adoption started in the slot, whatever it found', () => {
+    assert.equal(slotAdoption(slot, [run(1, adopt('2026-10-21T12:09:00Z'))])?.id, 1);
+    assert.equal(slotAdoption(slot, [run(1, adopt('2026-10-21T12:07:00Z', 'failure'))])?.id, 1);
+    assert.equal(slotAdoption(slot, [run(1, adopt('2026-10-21T12:30:00Z', 'cancelled'))])?.id, 1);
+  });
+
+  it('ignores adoptions skipped, still queued or started before the slot', () => {
+    assert.equal(slotAdoption(slot, [
+      run(1, adopt('2026-10-21T13:10:00Z', 'skipped')),
+      run(2, adopt('2026-10-21T13:20:00Z', null, 'queued')),
+      run(3, adopt('2026-10-21T12:06:59Z')),
+      run(4),
+    ]), undefined);
   });
 });
 

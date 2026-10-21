@@ -3,6 +3,7 @@
 // database holds its own copy of. Every command also runs locally; the gate asks
 // production's ledger of migrations through SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.
 //
+//   node scripts/adopt-scraper.mjs due                    whether this run is its slot's adoption
 //   node scripts/adopt-scraper.mjs resolve [--version=1.2.3] [--database-ready]
 //   node scripts/adopt-scraper.mjs snapshot <file>        before installing the release
 //   node scripts/adopt-scraper.mjs gate <file> [--database-ready]   exits 3 when the release waits for a migration
@@ -85,6 +86,37 @@ export function chooseTarget({ current, requested = '', distTags = {}, databaseR
     version = published.reduce((newest, candidate) => (compareVersions(candidate, newest) > 0 ? candidate : newest));
   }
   return { version, adopt: compareVersions(version, current) > 0 };
+}
+
+// ---------------------------------------------------------------------------
+// Slots
+// ---------------------------------------------------------------------------
+
+const MINUTE = 60_000;
+// A slot starts 7 past every even hour from 06:07 to 22:07 UTC, and the last
+// one lasts until the first of the next day.
+const FIRST_SLOT = 6 * 60 + 7;
+const LAST_SLOT = 22 * 60 + 7;
+const SLOT_LENGTH = 120;
+
+/** When the slot `now` falls in started. */
+export function adoptionSlot(now) {
+  const midnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const minute = Math.floor((now.getTime() - midnight) / MINUTE);
+  if (minute < FIRST_SLOT) return new Date(midnight - (24 * 60 - LAST_SLOT) * MINUTE);
+  const slot = FIRST_SLOT + Math.floor((minute - FIRST_SLOT) / SLOT_LENGTH) * SLOT_LENGTH;
+  return new Date(midnight + Math.min(slot, LAST_SLOT) * MINUTE);
+}
+
+/**
+ * The run that adopted in this slot, if any: its Adopt job started once the
+ * slot had begun, whether it found a newer release or not. `runs` are the
+ * workflow's runs, each with its `jobs`.
+ */
+export function slotAdoption(slot, runs) {
+  return runs.find((run) => run.jobs.some((job) => job.name === 'Adopt'
+    && ['in_progress', 'completed'].includes(job.status) && job.conclusion !== 'skipped'
+    && Date.parse(job.started_at) >= slot.getTime()));
 }
 
 // ---------------------------------------------------------------------------
@@ -410,6 +442,45 @@ export async function installedRelease() {
   };
 }
 
+async function github(pathname) {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) throw new Error('GITHUB_TOKEN is required to read the adoption runs');
+  const response = await fetch(`${process.env.GITHUB_API_URL ?? 'https://api.github.com'}${pathname}`, {
+    headers: { accept: 'application/vnd.github+json', authorization: `Bearer ${token}`, 'x-github-api-version': '2022-11-28' },
+    signal: AbortSignal.timeout(20_000),
+  });
+  if (!response.ok) throw new Error(`GitHub answered ${response.status} for ${pathname}`);
+  return response.json();
+}
+
+/**
+ * Whether this run is its slot's adoption: no other run has adopted since the
+ * slot began. A run queued behind another one starts its adoption after it
+ * was created, so the runs of the slot before are looked at too, unless they
+ * ended before this slot began.
+ */
+async function due() {
+  const repository = process.env.GITHUB_REPOSITORY;
+  const ownRun = Number(process.env.GITHUB_RUN_ID);
+  if (!repository || !ownRun) throw new Error('GITHUB_REPOSITORY and GITHUB_RUN_ID are required to look for the slot\'s adoption');
+  const slot = adoptionSlot(new Date());
+  const ask = (pathname) => retry(() => github(pathname), { attempts: 3, pauseMs: 5_000 });
+  const query = new URLSearchParams({ created: `>=${new Date(slot.getTime() - SLOT_LENGTH * MINUTE).toISOString()}`, per_page: '100' });
+  const { workflow_runs: listed } = await ask(`/repos/${repository}/actions/workflows/adopt-scraper.yml/runs?${query}`);
+  let adoption;
+  for (const run of listed) {
+    if (run.id === ownRun || Date.parse(run.updated_at) < slot.getTime()) continue;
+    const { jobs } = await ask(`/repos/${repository}/actions/runs/${run.id}/jobs?per_page=100`);
+    adoption = slotAdoption(slot, [{ ...run, jobs }]);
+    if (adoption) break;
+  }
+  const name = `${slot.toISOString().slice(11, 16)} UTC slot`;
+  console.log(adoption ? `The ${name} already had its adoption: ${adoption.html_url}` : `Nothing adopted in the ${name} yet: this run adopts.`);
+  const outputs = `due=${!adoption}\n`;
+  process.stdout.write(outputs);
+  if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, outputs);
+}
+
 async function summarize(markdown) {
   console.log(markdown);
   if (process.env.GITHUB_STEP_SUMMARY) await appendFile(process.env.GITHUB_STEP_SUMMARY, `${markdown}\n`);
@@ -505,11 +576,12 @@ async function main() {
       'database-ready': { type: 'boolean', default: false },
     },
   });
+  if (command === 'due') return due();
   if (command === 'resolve') return resolveTarget(values.version.trim(), values['database-ready']);
   if (command === 'snapshot' && file) return writeFile(file, `${JSON.stringify(await installedRelease(), null, 2)}\n`);
   if (command === 'gate' && file) return gate(file, values['database-ready']);
   if (command === 'peers') return checkPeers();
-  throw new Error('Usage: adopt-scraper.mjs resolve [--version=X.Y.Z] [--database-ready] | snapshot <file> | gate <file> [--database-ready] | peers');
+  throw new Error('Usage: adopt-scraper.mjs due | resolve [--version=X.Y.Z] [--database-ready] | snapshot <file> | gate <file> [--database-ready] | peers');
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

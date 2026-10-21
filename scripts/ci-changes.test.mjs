@@ -260,24 +260,28 @@ describe('scraper adoption validation', () => {
     assert.ok(workflow.includes('PUSH_TOKEN: ${{ secrets.SCRAPER_ADOPTION_TOKEN }}'));
   });
 
-  it('adopts the newest release every 2 hours by day, or by hand, not on each release', () => {
+  it('adopts the newest release once in each 2-hour slot by day, or by hand, not on each release', () => {
     const triggers = workflow.match(/\non:\n([\s\S]*?)\n\S/)?.[1] ?? '';
-    assert.match(triggers, /\n  schedule:\n(?:\s*#.*\n)*\s+- cron: '7 6-22\/2 \* \* \*'/);
+    assert.match(triggers, /\n  schedule:\n(?:\s*#.*\n)*\s+- cron: '7,37 6-23 \* \* \*'/);
     assert.match(triggers, /\n  workflow_dispatch:/);
     assert.doesNotMatch(workflow, /repository_dispatch|client_payload/);
   });
 
-  it('lets a CI run on main stand in for a late schedule, once the last adoption is 2 hours old', () => {
+  it('lets the first scheduled or CI-started run of a slot adopt, and a run by hand always', () => {
     const triggers = workflow.match(/\non:\n([\s\S]*?)\n\S/)?.[1] ?? '';
     assert.match(triggers, /\n  workflow_run:\n\s+workflows: \[CI\]\n\s+types: \[completed\]\n\s+branches: \[main\]/);
     const due = workflow.match(/\n  due:\n([\s\S]*?)\n  adopt:\n/)?.[1];
     assert.ok(due, 'The due job must come before the adopt job.');
-    assert.match(due, /if: github\.event_name == 'workflow_run' && github\.event\.workflow_run\.conclusion == 'success'/);
-    assert.match(due, /startswith\("Adopt Universal Parcel Scraper"\)/);
-    assert.match(due, /\[ "\$hour" -ge 6 \] && \[ "\$hour" -le 22 \] && \[ "\$age" -ge 7200 \]/);
-    assert.ok(workflow.includes('git commit --quiet -m "Adopt Universal Parcel Scraper $VERSION"'));
-    // The schedule and a run by hand never wait for that check.
-    assert.match(workflow, /\n    needs: due\n    if: >-\n      !cancelled\(\) && github\.repository == 'plhery\/peek-delivery-tracker'\n      && \(github\.event_name != 'workflow_run' \|\| needs\.due\.outputs\.due == 'true'\)\n/);
+    assert.match(due, /if: github\.event_name == 'schedule' \|\| \(github\.event_name == 'workflow_run' && github\.event\.workflow_run\.conclusion == 'success'\)/);
+    // It reads the workflow's runs and jobs, and nothing of a release runs there.
+    assert.match(due, /permissions:\n\s+actions: read\n\s+contents: read\n/);
+    assert.match(due, /sparse-checkout: scripts\/adopt-scraper\.mjs\n/);
+    assert.match(due, /run: node scripts\/adopt-scraper\.mjs due\n/);
+    assert.doesNotMatch(due, /\bnpm\b|secrets\./);
+    // The check knows a run's adoption by this job's name.
+    assert.match(workflow, /\n  adopt:\n    name: Adopt\n/);
+    // Only a run by hand skips that check.
+    assert.match(workflow, /\n    needs: due\n    if: >-\n      !cancelled\(\) && github\.repository == 'plhery\/peek-delivery-tracker'\n      && \(github\.event_name == 'workflow_dispatch' \|\| needs\.due\.outputs\.due == 'true'\)\n/);
     // Due is skipped then, and a skipped ancestor skips the push unless it says !cancelled().
     const push = workflow.match(/\n  push:\n([\s\S]*?)\n    runs-on:/)?.[1] ?? '';
     assert.match(push, /if: "!cancelled\(\) && needs\.adopt\.result == 'success' && needs\.adopt\.outputs\.adopt == 'true'"/);

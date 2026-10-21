@@ -70,12 +70,14 @@ exercise each provider independently of coverage ordering.
 
 ## Updating the dependency
 
-`.github/workflows/adopt-scraper.yml` moves the app to a scraper release. Every 2 hours
-from 06:07 to 22:07 UTC it takes the newer of npm's `latest` and `next`, so one deploy
-carries every release published since the last run. GitHub starts scheduled runs hours late
-or drops them, so a CI run that ends on main also starts one: from 06:00 to 22:59 UTC, it
-adopts once the last adoption commit is 2 hours old, and otherwise stops at once. An urgent
-release is adopted by hand:
+`.github/workflows/adopt-scraper.yml` moves the app to a scraper release. Once in each
+2-hour slot, starting 7 past every even hour from 06:07 to 22:07 UTC, it takes the newer of
+npm's `latest` and `next`, so one deploy carries every release published since the slot
+before. The last slot lasts until 06:07. GitHub starts scheduled runs hours late or drops
+them, so the schedule ticks every half hour and a CI run that ends on main starts a run too.
+The first of them in a slot adopts, whether it finds a newer release or not; the others look
+at the workflow's runs, find that one and stop at once. An urgent release is adopted by
+hand, which counts as its slot's adoption:
 
 ```bash
 gh workflow run adopt-scraper.yml                    # the newer of npm's latest and next

@@ -4,12 +4,13 @@ name: Adopt scraper release
 # main. docs/SCRAPER.md describes it and its database gate.
 
 on:
-  # The newest release every 2 hours, from 06:07 to 22:07 UTC: one deploy takes
-  # every release published since the last run.
+  # The newest release once in each 2-hour slot, from 06:07 to 22:07 UTC: one
+  # deploy takes every release published since the last slot. GitHub starts
+  # scheduled runs hours late or drops them, so the schedule ticks every half
+  # hour and a CI run that ends on main starts a run too. The first of them in
+  # a slot adopts; the others end at once (the Due job).
   schedule:
-    - cron: '7 6-22/2 * * *'
-  # GitHub starts scheduled runs hours late or drops them. A CI run that ends on
-  # main also starts one, which adopts only once the last adoption is 2 hours old.
+    - cron: '7,37 6-23 * * *'
   workflow_run:
     workflows: [CI]
     types: [completed]
@@ -55,27 +56,33 @@ env:
     ios/PeekDeliveryTracker/Resources/ChecksumVectors.json
 
 jobs:
-  # A run that CI started adopts from 06:00 to 22:59 UTC, once the last
-  # adoption commit on main is 2 hours old.
+  # A scheduled run, or one a CI run on main started, adopts when no run has
+  # since its slot began. A run by hand always adopts.
   due:
     name: Due
-    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
     outputs:
       due: ${{ steps.due.outputs.due }}
     steps:
-      - name: Check the time since the last adoption
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+          sparse-checkout: scripts/adopt-scraper.mjs
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 26
+      - name: Look for the slot's adoption
         id: due
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          last=$(gh api "repos/$GITHUB_REPOSITORY/commits?sha=main&path=package-lock.json&per_page=30" \
-            --jq '[.[] | select(.commit.message | startswith("Adopt Universal Parcel Scraper"))][0].commit.committer.date // "1970-01-01T00:00:00Z"')
-          age=$(( $(date -u +%s) - $(date -u -d "$last" +%s) ))
-          hour=$(date -u +%-H)
-          echo "Last adoption $last, $((age / 60)) minutes ago."
-          if [ "$hour" -ge 6 ] && [ "$hour" -le 22 ] && [ "$age" -ge 7200 ]; then echo 'due=true' >> "$GITHUB_OUTPUT"; fi
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/adopt-scraper.mjs due
 
   # Installs the release, prepares its generated files and runs the app's
   # typecheck and unit tests on them, without secrets or repository write
@@ -86,7 +93,7 @@ jobs:
     needs: due
     if: >-
       !cancelled() && github.repository == 'plhery/peek-delivery-tracker'
-      && (github.event_name != 'workflow_run' || needs.due.outputs.due == 'true')
+      && (github.event_name == 'workflow_dispatch' || needs.due.outputs.due == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     outputs:
@@ -237,7 +244,7 @@ jobs:
   gate:
     name: Database gate for ${{ needs.adopt.outputs.version }}
     needs: adopt
-    # Due is skipped outside CI-started runs: without !cancelled() a skipped ancestor skips this job.
+    # Due is skipped in a run by hand: without !cancelled() a skipped ancestor skips this job.
     if: "!cancelled() && needs.adopt.outputs.blocked == 'true'"
     runs-on: ubuntu-latest
     timeout-minutes: 5
