@@ -2146,6 +2146,11 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
+        "pattern": "^(?:20|52|6[2456]|8[02])\\d{22}$",
+        "confidence": "low",
+        "preferred": true
+      },
+      {
         "pattern": "^\\d{24}$",
         "confidence": "low"
       },
@@ -5060,8 +5065,12 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^(?!PB)[A-Z]{3}[CPR]\\d{10}$",
+        "pattern": "^(?:AMI|BAL|BGS|BSI|DEL|FLO|FMP|GLA|LUA|MY[ENS]|SDL|SHO|SPO|SRT|TEL)[CPR]\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^(?!PB)[A-Z]{3}[CPR]\\d{10}$",
+        "confidence": "low"
       }
     ],
     "trackingSearchUrl": "https://www.ekartlogistics.in/track-order"
@@ -30149,6 +30158,34 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ]
+  },
+  "juxi-express": {
+    "displayName": "Juxi Express",
+    "aliases": [
+      "SHJX",
+      "SHJX Juxi Express",
+      "驹隙物流",
+      "上海驹隙",
+      "上海驹隙国际物流有限公司",
+      "Shanghai Juxi International Freight Forwarding"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#e2393c",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^JXC[A-Z]{2}\\d{10}YQ$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -30963,7 +31000,8 @@ export const CARRIER_IDS = [
   "shiprocket",
   "first-line",
   "j-and-t-de",
-  "kun-express"
+  "kun-express",
+  "juxi-express"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 

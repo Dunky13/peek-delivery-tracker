@@ -21346,14 +21346,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "ciblex",
       "inpost",
+      "ciblex",
       "bpost",
       "austrian-post"
     ],
+    "preferred": [
+      "inpost"
+    ],
     "asked": [
-      "austrian-post",
       "inpost",
+      "austrian-post",
       "ciblex"
     ]
   },
@@ -21362,14 +21365,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "ciblex",
       "inpost",
+      "ciblex",
       "bpost",
       "austrian-post"
     ],
+    "preferred": [
+      "inpost"
+    ],
     "asked": [
-      "austrian-post",
       "inpost",
+      "austrian-post",
       "ciblex"
     ]
   },
@@ -42041,6 +42047,25 @@
     ]
   },
   {
+    "input": "520000000000000000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost",
+      "ciblex",
+      "bpost",
+      "austrian-post"
+    ],
+    "preferred": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost",
+      "austrian-post",
+      "ciblex"
+    ]
+  },
+  {
     "input": "520695602044",
     "carrier": "unknown",
     "confidence": "low",
@@ -46612,14 +46637,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "ciblex",
       "inpost",
+      "ciblex",
       "bpost",
       "austrian-post"
     ],
+    "preferred": [
+      "inpost"
+    ],
     "asked": [
-      "austrian-post",
       "inpost",
+      "austrian-post",
       "ciblex"
     ]
   },
@@ -47505,14 +47533,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "ciblex",
       "inpost",
+      "ciblex",
       "bpost",
       "austrian-post"
     ],
+    "preferred": [
+      "inpost"
+    ],
     "asked": [
-      "austrian-post",
       "inpost",
+      "austrian-post",
       "ciblex"
     ]
   },
@@ -47602,14 +47633,17 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "ciblex",
       "inpost",
+      "ciblex",
       "bpost",
       "austrian-post"
     ],
+    "preferred": [
+      "inpost"
+    ],
     "asked": [
-      "austrian-post",
       "inpost",
+      "austrian-post",
       "ciblex"
     ]
   },
@@ -47803,6 +47837,25 @@
       "dpd-nl",
       "dpd-de",
       "seur"
+    ]
+  },
+  {
+    "input": "650000000000000000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost",
+      "ciblex",
+      "bpost",
+      "austrian-post"
+    ],
+    "preferred": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost",
+      "austrian-post",
+      "ciblex"
     ]
   },
   {
@@ -48027,6 +48080,25 @@
       "dpd",
       "dpd-nl",
       "dpd-de"
+    ]
+  },
+  {
+    "input": "660000000000000000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost",
+      "ciblex",
+      "bpost",
+      "austrian-post"
+    ],
+    "preferred": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost",
+      "austrian-post",
+      "ciblex"
     ]
   },
   {
@@ -53708,6 +53780,25 @@
     ]
   },
   {
+    "input": "800000000000000000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost",
+      "ciblex",
+      "bpost",
+      "austrian-post"
+    ],
+    "preferred": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost",
+      "austrian-post",
+      "ciblex"
+    ]
+  },
+  {
     "input": "80000000001",
     "carrier": "unknown",
     "confidence": "low",
@@ -54919,6 +55010,25 @@
       "mondial-relay",
       "colisweb",
       "heppner"
+    ]
+  },
+  {
+    "input": "820000000000000000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "inpost",
+      "ciblex",
+      "bpost",
+      "austrian-post"
+    ],
+    "preferred": [
+      "inpost"
+    ],
+    "asked": [
+      "inpost",
+      "austrian-post",
+      "ciblex"
     ]
   },
   {
@@ -73914,6 +74024,14 @@
     ]
   },
   {
+    "input": "HRBC0123456789",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "ekart"
+    ]
+  },
+  {
     "input": "HRD74785090",
     "carrier": "unknown",
     "confidence": "none",
@@ -75784,6 +75902,22 @@
     "confidence": "high",
     "candidates": [
       "j-and-t"
+    ]
+  },
+  {
+    "input": "JXCYT7091667250YQ",
+    "carrier": "juxi-express",
+    "confidence": "high",
+    "candidates": [
+      "juxi-express"
+    ]
+  },
+  {
+    "input": "JXCZZ9000000001YQ",
+    "carrier": "juxi-express",
+    "confidence": "high",
+    "candidates": [
+      "juxi-express"
     ]
   },
   {
