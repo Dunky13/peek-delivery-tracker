@@ -4239,6 +4239,36 @@ describe('TrackingSyncService', () => {
     expect(client.recordTrackingHealth).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ['answering it has no shipment', 'portal_not_found', true],
+    ['answering inconclusively', undefined, false],
+  ] as const)('answers a pending parcel’s check, while a provider fails, by its carrier %s: %s', async (_case, reason, answered) => {
+    vi.spyOn(scraper, 'universalPlan').mockReturnValue({ sources: ['ParcelsApp', '17TRACK'], carrier: null, tier: () => 'unknown', rank: () => 0 });
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: null }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    const adapter = {
+      fetch: vi.fn().mockRejectedValue(new IndeterminateError('SF Express', 'SF Express returned no shipment', reason ? { reason } : undefined)),
+      fetchUniversal: vi.fn(async (source: string) => {
+        if (source === 'ParcelsApp') throw new Error('fetch failed');
+        throw new NoHistoryError(source, 'No history');
+      }),
+    };
+    let now = new Date('2026-09-10T10:00:00Z');
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    let parcel: JsonObject = { id: 'sf-parcel', carrier: 'sf-express', tracking_number: 'SF1234567890123', current_stage: 'pending',
+      created_at: '2026-09-01T10:00:00Z', carrier_data: { routing: { version: 1, configured_carrier: 'sf-express' } } };
+    for (const [time, failing] of [['10:00', false], ['12:00', !answered], ['14:00', !answered]] as const) {
+      now = new Date(`2026-09-10T${time}:00Z`);
+      await expect(service.syncPackage(parcel, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: failing ? 0 : 1, errors: failing ? 1 : 0 });
+      parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
+      expect(parcel).toMatchObject({ sync_status: failing ? 'error' : 'waiting' });
+      // The provider's outage is its own incident: the refresh got the carrier's answer, or it did not.
+      expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'sf-parcel', expect.arrayContaining([
+        expect.objectContaining({ kind: 'refresh', subject: 'sf-express', healthy: answered })]));
+    }
+  });
+
   it.each([0, 1])('records why every provider failed with a previous streak of %s', async (streak) => {
     const client = { ...fakeClient(),
       acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
