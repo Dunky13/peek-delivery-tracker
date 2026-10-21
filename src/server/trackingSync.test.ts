@@ -5367,6 +5367,48 @@ describe('scans a carrier and a universal provider both report', () => {
     expect((kept.routing as JsonObject).last_event_at).toBe(late);
   });
 
+  it('keeps the carrier\'s summary over a provider copy in other words an hour late, and takes it back from one saved before', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    // GOFO's scan to the minute, and a provider's copy in its own words with the wall clock read an hour off:
+    // nothing ties the copy to the scan, so it is stored.
+    const departed: Scan = { time: '2026-01-04T10:20:00-05:00', location: 'Hub City, EX', description: 'Departed GOFO Regional Hub', stage: 'in_transit' };
+    const reworded: Scan = { time: '2026-01-04T16:20:00Z', location: 'HUB CITY', description: 'Left the sorting hub', stage: 'in_transit' };
+    const adapter = {
+      fetch: vi.fn().mockResolvedValueOnce(result([departed, hub, label]))
+        .mockRejectedValueOnce(new Error('GOFO tracking endpoint is unavailable')).mockResolvedValue(result([departed, hub, label])),
+      fetchUniversal: vi.fn().mockResolvedValue({ ...result([reworded]), tracking_provider: 'ParcelsApp' }),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    const sync = async (stage: string, carrierData?: JsonObject) => {
+      await service.syncPackage({ ...parcel, current_stage: stage, ...(carrierData ? { carrier_data: carrierData } : {}),
+        [STORED_EVENT_IDENTITIES]: store.identities() });
+      const values = store.client.updatePackage.mock.calls.at(-1)![1] as JsonObject;
+      return { values, data: values.carrier_data as JsonObject,
+        anomalies: (client.completeSyncAttempt.mock.calls.at(-1)![1] as JsonObject).anomaly_codes };
+    };
+    const watermark = (last: string) => ({ routing: { version: 1, configured_carrier: 'gofo', last_event_at: last } });
+
+    const first = await sync('pending');
+    expect(first.data).toMatchObject({ routing: { last_event_at: '2026-01-04T15:20:00.000Z' } });
+    // GOFO is down: the copy is stored, the offset recorded, and the copy is no newer than GOFO's scan.
+    const down = await sync('in_transit', watermark('2026-01-04T15:20:00.000Z'));
+    expect(store.rows.size).toBe(4);
+    expect(down.anomalies).toContain('provider_clock_offset');
+    expect(down.data).not.toHaveProperty('tracking_provider');
+    expect(down.data).toMatchObject({ routing: { last_event_at: '2026-01-04T15:20:00.000Z' } });
+    // A provider's summary the copy set before: GOFO's answer takes it back.
+    const late = '2026-01-04T16:20:00.000Z';
+    const back = await sync('in_transit', { tracking_provider: 'ParcelsApp', last_update: late, ...watermark(late) });
+    expect(back.values).toMatchObject({ last_status_text: departed.description });
+    expect(back.data).not.toHaveProperty('tracking_provider');
+    expect(back.data).toMatchObject({ routing: { last_event_at: '2026-01-04T15:20:00.000Z' } });
+  });
+
   it('stores a provider scan from another place a zone after a carrier scan, and moves the watermark to it', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const store = eventStore();
@@ -5588,9 +5630,9 @@ describe('a carrier a provider names, whose scans the provider copied in the wro
       .mockRejectedValueOnce(new Error('4PX tracking is unavailable')).mockResolvedValue(result(scans));
     const { store, adapter, sync } = setup(fetch);
     const first = await sync('2026-01-05T12:00:00Z');
-    // The router caps the watermark at the time of the check.
+    // A copy dated past the check is misdated: the watermark is the newest copy before it.
     expect(first).toMatchObject({ carrier_data: { tracking_provider: 'ParcelsApp',
-      routing: { discovered_carrier: 'four-px', last_event_at: '2026-01-05T12:00:00.000Z' } } });
+      routing: { discovered_carrier: 'four-px', last_event_at: '2026-01-04T16:30:00.000Z' } } });
     const copied = new Map([...store.rows.values()].map((row) => [row.provider_event_id, row.id]));
     expect(copied.size).toBe(3);
     // The parcel was added after the carrier's newest scan: the app's row is no scan.

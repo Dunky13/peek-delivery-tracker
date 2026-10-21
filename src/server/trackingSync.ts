@@ -33,7 +33,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, SyncJobLeaseLost, type SupabaseServiceClient } from './supabase';
-import { clockDay, datedObservations, filledPlaceholders, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, UNWORDED_STEP, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { clockDay, datedObservations, filledPlaceholders, misdatedCopies, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, UNWORDED_STEP, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   askedForCheck,
   providerFailureSummary,
@@ -1372,7 +1372,7 @@ export class TrackingSyncService {
               checks.reuse<CarrierResult>(universalLookupKey(source, number, postcode, timezone, carrier)) } : {}),
             health: this.client, now: this.now,
             takePrefetchedUniversal: takePreflightHistory, preflightInputNeeded, refuses: refusesNumber,
-            withoutCopies: (watermark: number, value: RoutedResult, provider?: CarrierResult) => watermarkWithoutCopies(parcel, watermark, value, provider),
+            withoutCopies: (watermark: number, value: RoutedResult, provider?: CarrierResult) => watermarkWithoutCopies(parcel, watermark, value, provider, now.getTime()),
             ...(this.adapter.recognize ? { recognize: (carrier: string, number: string, context?: TrackingContext) =>
               once(recognitionKey('http', carrier, number), () => this.adapter.recognize!(carrier, number, context)) } : {}),
             ...(this.adapter.recognizeBrowser ? { recognizeBrowser: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) =>
@@ -1538,14 +1538,16 @@ export class TrackingSyncService {
       const shared = sharedScans(events.filter((event) => !normalized.relays.has(String(event.provider_event_id))), stored, reworded, relaying);
       const matches = { reused: new Map([...reworded, ...shared.reused]), skipped: shared.skipped };
       // Copies a universal provider read in the wrong zone must not make a result
-      // look fresher, or the carrier's own reply older, than it is.
+      // look fresher, or the carrier's own reply older, than it is: neither those
+      // the sync matched nor those it could not tell from the carrier's scans.
+      const misdated = misdatedCopies(events, stored, now.getTime());
       const previousData = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
       const previousEventTime = withoutCopyDrift(
-        Date.parse(previousRouting.last_event_at ?? ''), events, stored, matches, providerWatermark(previousData, stored),
+        Date.parse(previousRouting.last_event_at ?? ''), events, stored, matches, { ...providerWatermark(previousData, stored), misdated },
       );
       // Read as routing wrote the watermark: a naive local clock in its source's zone.
       const returnedEventTime = withoutCopyDrift(
-        Date.parse(eventTimestamp(result.last_update, resultTimezone(sourceCarrierId, result)) ?? ''), events, stored, matches,
+        Date.parse(eventTimestamp(result.last_update, resultTimezone(sourceCarrierId, result)) ?? ''), events, stored, matches, { misdated },
       );
       // Rows past the answer's newest scan that only its own provider wrote, and that its answer
       // no longer shows, are no scans: a notice the provider dated at the lookup, which a scraper
@@ -1612,7 +1614,7 @@ export class TrackingSyncService {
         const watermark = keepWatermark ? previousEventTime : withoutCopyDrift(
           Date.parse(String(routing.last_event_at ?? '')), events, stored, matches, { also: [returnedEventTime,
             fetched.earlierResult && !fetched.earlierFollowUp
-              ? latestResultTime(fetched.earlierResult, fetched.earlierCarrierId ?? sourceCarrierId) : Number.NaN] },
+              ? latestResultTime(fetched.earlierResult, fetched.earlierCarrierId ?? sourceCarrierId) : Number.NaN], misdated },
         );
         const saved = keepWatermark ? previousRouting.last_event_at : routing.last_event_at;
         if (Number.isFinite(watermark) && Date.parse(String(saved ?? '')) !== watermark) routing.last_event_at = new Date(watermark).toISOString();
@@ -1804,8 +1806,13 @@ export class TrackingSyncService {
         atomic_with_package: true,
         ...reannounced,
       });
-      // One scan from two sources on clocks a zone apart: a provider's clock the scraper should fix.
-      if ([...shared.shifted].some((id) => persistedIds.has(id))) anomalies = [...anomalies, 'provider_clock_offset'];
+      // One scan from two sources on clocks a zone apart: a provider's clock the scraper should fix. So is
+      // a provider's scan stored whole hours after the carrier's copy of it, or dated past the check.
+      const misread = eventsToPersist.some((event) => {
+        const at = misdated.get(String(event.provider_event_id));
+        return at !== undefined && !(Date.parse(String(event.occurred_at)) - at < 60 * 60 * 1_000);
+      });
+      if ([...shared.shifted].some((id) => persistedIds.has(id)) || misread) anomalies = [...anomalies, 'provider_clock_offset'];
       await this.recordStatusObservations(eventsToPersist, sourceCarrierId, context, new Map([...matches.reused, ...matches.skipped]), [
         ...(fetched.earlierResult && fetched.earlierCarrierId
           ? localStatusObservationEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId) : []),
@@ -2191,15 +2198,16 @@ function storedEventIdentities(parcel: JsonObject): JsonObject[] {
 /**
  * A routing watermark without what a universal provider's copies of a
  * carrier's own scans, read in the wrong zone, add to it, matched as the sync
- * matches them: in the stored rows and in `provider`'s answer of the same check.
+ * matches them: in the stored rows and in `provider`'s answer of the same check
+ * made at `checkedAt`.
  */
-function watermarkWithoutCopies(parcel: JsonObject, watermark: number, value: RoutedResult, provider?: CarrierResult): number {
+function watermarkWithoutCopies(parcel: JsonObject, watermark: number, value: RoutedResult, provider: CarrierResult | undefined, checkedAt: number): number {
   const events = buildEvents(parcel, value.result, value.sourceCarrierId);
   const stored = storedEventIdentities(parcel);
   const known = new Set(stored.map((row) => row.provider_event_id));
   const rows = [...stored, ...(provider ? buildEvents(parcel, provider, 'unknown') : []).filter((row) => !known.has(row.provider_event_id))];
   return withoutCopyDrift(watermark, events, rows, sharedScans(events, rows, new Map(), earlierCarrier(parcel)),
-    providerWatermark(isRecord(parcel.carrier_data) ? parcel.carrier_data : {}, stored));
+    { ...providerWatermark(isRecord(parcel.carrier_data) ? parcel.carrier_data : {}, stored), misdated: misdatedCopies(events, rows, checkedAt) });
 }
 
 /**

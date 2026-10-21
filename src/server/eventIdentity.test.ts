@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { JsonObject } from './types';
-import { datedObservations, filledPlaceholders, restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { datedObservations, filledPlaceholders, misdatedCopies, restatedIdentities, sameInstantIdentities, sharedScans, relayedScans, withIdentities, withoutCopyDrift } from './eventIdentity';
 
 // New events carry the sync's ISO spelling; stored rows come back from
 // PostgREST with an explicit +00:00 offset. Both name the same instant.
@@ -482,6 +482,9 @@ describe('scans a carrier and a universal provider both report', () => {
     // A trailing sentence counts only after a finished one.
     expect(sharedScans([scan('unknown:x', '2026-01-04T15:00:00Z', 'Out for Delivery. Call us')],
       [row('gofo:x', '2026-01-04T12:00:00+00:00', 'Out for Delivery.')]).skipped.size).toBe(1);
+    // So does a detail after an arrow (17TRACK's), but not a word run on.
+    expect(skipped('2026-01-04T13:00:00Z', 'Out for Delivery -> Your item is out for delivery')).toBe(1);
+    expect(skipped('2026-01-04T13:00:00Z', 'Out for Delivery->Your item')).toBe(0);
   });
 
   it('matches the same wording dated to the minute the other scan falls in, without a clock offset', () => {
@@ -1207,5 +1210,59 @@ describe('newest-event times set by copies read in the wrong zone', () => {
     const newer = [...stored, row('unknown:sorted', '2026-01-04T14:10:00+00:00', 'Sorted')];
     expect(withoutCopyDrift(late, events, newer, none, { withStored: true, explained: [late] })).toBe(at('2026-01-04T14:10:00Z'));
     expect(withoutCopyDrift(late, events, stored, none, { withStored: true, explained: [at('2026-01-04T15:00:00Z')] })).toBe(late);
+  });
+});
+
+describe('a provider\'s copies a carrier\'s answer cannot tell from its own scans', () => {
+  const at = (iso: string) => Date.parse(iso);
+  const checked = at('2026-01-05T12:00:00Z');
+  // Swiss Post's scan at a London office of exchange, and ParcelsApp's copy of it, its wall clock read as UTC in winter time.
+  const office = { ...row('swiss-post:export', '2026-01-04T10:05:00+00:00', 'Departure from the office of exchange', 'in_transit'),
+    location: 'LON E ET BEA' };
+  const copy = { ...row('unknown:export', '2026-01-04T11:05:00+00:00', 'Dispatched from the country of origin', 'in_transit'),
+    location: 'LONDON BPI', universal_provider: 'ParcelsApp', created_at: '2026-01-04T12:00:00+00:00' };
+  const misdated = (scans: JsonObject[], stored: JsonObject[], checkedAt = checked) => Object.fromEntries(misdatedCopies(scans, stored, checkedAt));
+
+  it('counts a copy whole hours late, in any wording, at the carrier\'s scan', () => {
+    expect(misdated([], [office, copy])).toEqual({ 'unknown:export': at('2026-01-04T10:05:00Z') });
+    expect(misdated([scan('unknown:export', copy.occurred_at, copy.description, 'in_transit')], [office])).toEqual({ 'unknown:export': at('2026-01-04T10:05:00Z') });
+    // A copy later in the carrier's minute (17TRACK's seconds), or a copy with no place.
+    const minute = row('usps:arrived', '2026-01-04T09:12:00+00:00', 'Arrived at USPS Regional Facility', 'in_transit');
+    expect(misdated([scan('unknown:arrived', '2026-01-04T09:12:41Z', 'Arrived at USPS Facility')], [minute]))
+      .toEqual({ 'unknown:arrived': at('2026-01-04T09:12:00Z') });
+    expect(misdated([], [office, { ...copy, location: null }])).toEqual({ 'unknown:export': at('2026-01-04T10:05:00Z') });
+  });
+
+  it('leaves a copy from another place, stage or gap, one earlier than the scan, a carrier\'s row and an unnamed one', () => {
+    for (const other of [
+      { ...copy, location: 'LYON' },
+      { ...copy, stage: 'delivered' },
+      { ...copy, occurred_at: '2026-01-04T11:20:00+00:00' },
+      { ...copy, occurred_at: '2026-01-04T09:05:00+00:00' },
+      { ...copy, universal_provider: undefined },
+      { ...copy, provider_event_id: 'royal-mail:export' },
+    ]) expect(misdated([], [office, other]), JSON.stringify(other)).toEqual({});
+    expect(misdated([], [copy])).toEqual({});
+  });
+
+  it('counts a copy dated past the check that first returned it at no instant', () => {
+    const ahead = { ...copy, occurred_at: '2026-01-04T12:30:00+00:00' };
+    expect(misdated([], [ahead])).toEqual({ 'unknown:export': Number.NaN });
+    // A new copy is first returned by this check; a few minutes of clock drift pass.
+    expect(misdated([scan('unknown:ahead', '2026-01-05T12:30:00Z', 'Arrived')], [])).toEqual({ 'unknown:ahead': Number.NaN });
+    expect(misdated([scan('unknown:ahead', '2026-01-05T12:04:00Z', 'Arrived')], [])).toEqual({});
+    expect(misdated([], [{ ...ahead, created_at: undefined }])).toEqual({});
+  });
+
+  it('lets the carrier\'s own scan stand for a watermark the copy set', () => {
+    const stored = [office, copy];
+    const counts = misdatedCopies([], stored, checked);
+    const none = { reused: new Map<string, string>(), skipped: new Map<string, string>() };
+    expect(withoutCopyDrift(at('2026-01-04T11:05:00Z'), [], stored, none, { withStored: true, misdated: counts })).toBe(at('2026-01-04T10:05:00Z'));
+    expect(withoutCopyDrift(at('2026-01-04T11:05:00Z'), [], stored, none, { withStored: true })).toBe(at('2026-01-04T11:05:00Z'));
+    // A copy dated past the check (capped there by the router) leaves the newest scan before it.
+    const ahead = [office, { ...copy, occurred_at: '2026-01-04T14:00:00+00:00' }];
+    expect(withoutCopyDrift(at('2026-01-04T12:00:00Z'), [], ahead, none, { withStored: true, misdated: misdatedCopies([], ahead, checked) }))
+      .toBe(at('2026-01-04T10:05:00Z'));
   });
 });

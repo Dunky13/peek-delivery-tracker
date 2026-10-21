@@ -380,13 +380,15 @@ function observedOnly(row: JsonObject): boolean {
 
 /**
  * The same wording, or one with a further sentence after it (GOFO's support
- * line) or before it (ParcelsApp's heading for an Ecoscooting scan).
+ * line) or before it (ParcelsApp's heading for an Ecoscooting scan), or a
+ * detail after an arrow (17TRACK's "Arrived at USPS Facility -> Your item…").
  */
 function sameWording(left: string, right: string): boolean {
   if (!left || !right) return false;
   if (left === right) return true;
   const [shorter, longer] = left.length < right.length ? [left, right] : [right, left];
   return (/[.!?]$/.test(shorter) && longer.startsWith(`${shorter} `))
+    || longer.startsWith(`${shorter} -> `)
     || (longer.endsWith(` ${shorter}`) && /[.!?]$/.test(longer.slice(0, -shorter.length - 1)));
 }
 
@@ -914,6 +916,55 @@ export function relayedScans(earlier: readonly JsonObject[], delivery: readonly 
   ))).map(identity));
 }
 
+/** Clocks a few minutes apart: a scan dated this little past the check that returned it is no misread zone. */
+const SIGHTING_LEEWAY_MS = 5 * MINUTE_MS;
+
+/**
+ * Whether two places are named with no word in common, where a word may also
+ * shorten another to its first letters (Swiss Post's "LON E ET BEA" office is
+ * ParcelsApp's "LONDON BPI").
+ */
+function placesDiffer(left: readonly string[], right: readonly string[]): boolean {
+  const shortens = (short: string, long: string) => short.length >= 3 && long.startsWith(short);
+  return left.length > 0 && right.length > 0
+    && !left.some((word) => right.some((other) => word === other || shortens(word, other) || shortens(other, word)));
+}
+
+/**
+ * The universal rows that cannot make a carrier's own answer look older, or a
+ * provider's newer, than it is, with the instant each counts at. A provider's
+ * copy of a carrier's scan the sync could not tell from it (other wording, a
+ * clock to the minute) counts at the scan's instant: one later in the scan's
+ * minute (17TRACK adds seconds to USPS's minute), or a whole number of hours
+ * up to 14 h later, the scan read in another zone (ParcelsApp reads a London
+ * office's wall clock as UTC), with stages that agree and from no other place.
+ * The latest such scan counts. A provider's scan dated more than a few minutes
+ * past the check that first returned it counts at none (NaN): no clock but a
+ * misread zone does that. `scans` are a check's scans, `stored` the parcel's
+ * rows, each first seen at its `created_at` (else at `checkedAt`, the check's
+ * time). A row written by a carrier, or one naming no provider, is no copy.
+ */
+export function misdatedCopies(scans: readonly JsonObject[], stored: readonly JsonObject[], checkedAt: number): Map<string, number> {
+  const storedById = new Map(stored.map((row) => [identity(row), row] as const));
+  const rows = [...new Map([...stored, ...scans].map((row) => [identity(row), row] as const)).values()]
+    .filter((row) => !observedOnly(row) && Number.isFinite(instantOf(row)));
+  const carriers = rows.filter(heldByCarrier);
+  const misdated = new Map<string, number>();
+  for (const row of rows) {
+    if (sourceOf(identity(row)) !== UNIVERSAL || providerOf(row) === '') continue;
+    const at = instantOf(row);
+    const sighted = Date.parse(String(storedById.get(identity(row))?.created_at ?? ''));
+    if (at > (Number.isFinite(sighted) ? sighted : checkedAt) + SIGHTING_LEEWAY_MS) {
+      misdated.set(identity(row), Number.NaN);
+      continue;
+    }
+    const twins = carriers.filter((scan) => at > instantOf(scan) && (sameTruncated(at, instantOf(scan)) || hoursApart(at, instantOf(scan)))
+      && stagesAgree(stageOf(row), stageOf(scan)) && !placesDiffer(placeWords(row), placeWords(scan)));
+    if (twins.length) misdated.set(identity(row), Math.max(...twins.map(instantOf)));
+  }
+  return misdated;
+}
+
 /**
  * A newest-event time (the routing watermark, a result's summary time) that
  * universal copies read in the wrong zone may have set hours late. A skipped
@@ -926,7 +977,8 @@ export function relayedScans(earlier: readonly JsonObject[], delivery: readonly 
  * always counts, `stored` rows only with `withStored`, and `also` adds instants
  * the batch rows do not carry. `explained` adds times copies are known to have
  * set: a universal provider's summary time is its newest scan's, which the
- * sync stored. The app's own rows ("Tracking added") are no scans: a parcel
+ * sync stored. `misdated` rows count at the instant it gives them
+ * (`misdatedCopies`). The app's own rows ("Tracking added") are no scans: a parcel
  * added after its newest scan keeps that scan's time.
  */
 export function withoutCopyDrift(
@@ -934,13 +986,18 @@ export function withoutCopyDrift(
   events: readonly JsonObject[],
   stored: readonly JsonObject[],
   matches: { reused: ReadonlyMap<string, string>; skipped: ReadonlyMap<string, string> },
-  options: { withStored?: boolean; also?: readonly number[]; explained?: readonly number[] } = {},
+  options: { withStored?: boolean; also?: readonly number[]; explained?: readonly number[]; misdated?: ReadonlyMap<string, number> } = {},
 ): number {
   if (!Number.isFinite(time)) return time;
   const storedById = new Map(stored.map((row) => [identity(row), row] as const));
   const claimed: number[] = [...(options.explained ?? [])];
   const retimed = new Map<string, number>();
   const kept: number[] = [...(options.also ?? [])];
+  const counted = (row: JsonObject, at: number) => {
+    const misdated = options.misdated?.get(identity(row));
+    if (misdated !== undefined) claimed.push(at);
+    kept.push(misdated ?? at);
+  };
   for (const event of events) {
     if (observedOnly(event)) continue;
     const takenOver = storedById.get(matches.reused.get(identity(event)) ?? '');
@@ -949,12 +1006,19 @@ export function withoutCopyDrift(
       retimed.set(identity(takenOver), instantOf(event));
     }
     const twin = storedById.get(matches.skipped.get(identity(event)) ?? '');
-    if (twin) claimed.push(instantOf(event));
-    kept.push(instantOf(twin ?? event));
+    if (twin) {
+      claimed.push(instantOf(event));
+      kept.push(instantOf(twin));
+    } else counted(event, instantOf(event));
   }
   if (options.withStored) {
     // A row stored when the sync first saw it, a provider having given no instant, holds no scan time.
-    for (const row of stored) if (sourceOf(identity(row)) !== 'app' && !observedOnly(row)) kept.push(retimed.get(identity(row)) ?? instantOf(row));
+    for (const row of stored) {
+      if (sourceOf(identity(row)) === 'app' || observedOnly(row)) continue;
+      const moved = retimed.get(identity(row));
+      if (moved !== undefined) kept.push(moved);
+      else counted(row, instantOf(row));
+    }
   }
   const newest = Math.max(...kept.filter(Number.isFinite));
   const claimedNewest = Math.max(...claimed.filter(Number.isFinite));
