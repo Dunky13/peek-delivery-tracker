@@ -138,7 +138,8 @@ export type CarrierDecal = 'default' | 'dhl' | 'ups' | 'fedex' | 'dpd' | 'amazon
   | 'rpx-hk' | 'montenegro-post' | 'vitran-express' | 'am-home-delivery' | 'american-west-express'
   | 'ccfs' | 'custom-companies' | 'hercules-freight' | 'gaash' | 'orian' | 'qwintry' | 'skypostal'
   | 'ait-worldwide' | 'team-worldwide' | 'huahan' | 'anserx' | 'chukou1' | 'jumppoint'
-  | 'ycs-logistics' | 'lingdong' | 'jcex' | 'shiprocket' | 'first-line' | 'kun-express';
+  | 'ycs-logistics' | 'lingdong' | 'jcex' | 'shiprocket' | 'first-line' | 'kun-express'
+  | 'juxi-express';
 
 /** How one property is mixed out of the carrier's catalog color. */
 export interface BrandDerivationStep {

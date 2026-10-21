@@ -347,6 +347,7 @@ and [`truck.json`](truck.json).
 | `jrs-express` | [jrs-express.com](https://jrs-express.com/) — site CSS and bundle #046a38 (162 uses); header logo PNG #14692e (approximate) |
 | `jrt` | [17track.net](https://res.17track.net/asset/carrier/logo/120x120/192125.png) — icon pixels navy #023053, orange #e66926 (approximate) |
 | `jumppoint` | [jumppoint.io](https://cdn.prod.website-files.com/625fc6e7f6a0fbc4cd3a3246/6446da72e77910eee6b44c6d_jumppoint.svg) — logo SVG fill #0F4AE1, also the site CSS --jumppoint-blue #0f4ae1 (36 uses) |
+| `juxi-express` | [juxiex.com](https://www.juxiex.com/images/logo.png) — header logo PNG flat red #e2393c of the 驹隙物流 characters, the logo's most used colour; the mark's square frame is #e60012 |
 | `kargoist` | [kargoist.com](https://kargoist.com/wp-content/uploads/2022/07/cropped-android-chrome-512x512-1-270x270.png) — site icon PNG flat cyan #18b6d6, grey #5a5b5e (approximate) |
 | `kazpost` | [post.kz](https://post.kz/react/static/css/main.a6b7127e.chunk.css) — site CSS yellow #fed201 with logo blue #0157a5 |
 | `kerry-tj` | [zh.wikipedia.org](https://upload.wikimedia.org/wikipedia/zh/8/80/Kerry_TJ_Logistics_logo.svg) — logo SVG fill #ec6900; orange trucks on Commons photos |
@@ -1419,3 +1420,4 @@ and [`truck.json`](truck.json).
 | `shiprocket` | White play-button bands around a green play triangle, on purple | [shiprocket.in](https://sr-website-01.shiprocket.in/sr-website/shiprocket_logo-1-TWLqUy.svg) — the header logo symbol: nested play-button outlines cut into bands, the green triangle at their centre; the favicon shows it white on purple |
 | `first-line` | White O around a slanted figure one, and orange italic NE, on purple | [firstline56.com](http://www.firstline56.com/uploadfiles/20221019-165927.png) — the ONE of the header logo: an O whose swoosh rises into a flagged one, open beside a crescent, then the orange NE |
 | `kun-express` | White K whose arms cross and close into a loop around the stem, on blue | [kun-express.com](http://www.kun-express.com/public/static/images/logo.png) — the K of the header wordmark: a stem through a fish-shaped loop whose two strokes cross and run on as the arms |
+| `juxi-express` | White and yellow crescents closing into a C around a yellow running figure with a white head, on red | [juxiex.com](https://www.juxiex.com/images/logo.png) — the header logo mark: a red lower crescent and a yellow-to-orange upper crescent form a C around a running figure, yellow and orange with a red head, inside a red square frame (frame left out) |
