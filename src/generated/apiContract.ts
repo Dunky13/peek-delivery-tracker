@@ -31143,6 +31143,10 @@ export interface ApiPackageRow {
   "carrier": ApiCarrierId;
   "field": "dpdPostcode" | "trackingUrl";
 };
+  "input_suggested"?: {
+  "carrier": ApiCarrierId;
+  "field": "dpdPostcode";
+};
   "provider_input_needed"?: {
   "provider": string;
   "field": "dpdPostcode";

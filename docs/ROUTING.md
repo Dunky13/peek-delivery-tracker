@@ -395,6 +395,12 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   carrier in the same check is adopted the same way, with the delivery carrier as the parcel's
   current leg. A carrier that needs the user's input is saved as
   `routing.input_needed`, and the parcel asks the user for it.
+  A parcel filed under no carrier that no carrier or provider has answered for yet is offered
+  the first carrier detection lists for its number that serves the country it was looked up
+  from and needs only the delivery postcode for numbers of its shape, which recognition
+  cannot ask without it (Mondial Relay's 8-digit shipments): `routing.input_suggested`, set
+  at each check. The prompt says the carrier may have the parcel; the owner adding the postcode
+  files it there. Lookups without an account show no prompt.
   A transient failure of a matching carrier and failures of an already confirmed carrier
   do not trigger recognition.
 - **Retries.** Answers are kept in `routing.candidate_probes`, not with the carrier

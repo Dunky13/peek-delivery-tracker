@@ -225,6 +225,8 @@ const swiftInlineNames = {
   'PackageRow.carrier_data.routing.provider_input_needed.field': 'ProviderInputNeededField',
   'PackageRow.carrier_data.routing.input_needed': 'CarrierInputNeeded',
   'PackageRow.carrier_data.routing.input_needed.field': 'CarrierInputNeededField',
+  'PackageRow.carrier_data.routing.input_suggested': 'CarrierInputSuggested',
+  'PackageRow.carrier_data.routing.input_suggested.field': 'CarrierInputSuggestedField',
   'NativePushDeviceRequest.environment': 'NativePushEnvironment',
   'NativePushDeviceRequest.locale': 'NativePushLocale',
 };

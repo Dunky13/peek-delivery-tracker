@@ -880,6 +880,7 @@
   "picker.jump": "Jump to a letter",
   "detail.inputNeeded": "{{carrier}} has this parcel. Add the delivery postcode to track it.",
   "detail.inputNeededAction": "Add postcode",
+  "detail.inputSuggested": "{{carrier}} may have this parcel. Add the delivery postcode to track it.",
   "map.open": "Open the map",
   "map.close": "Close the map",
   "map.view": "Map view",

@@ -33975,6 +33975,26 @@
                       }
                     }
                   },
+                  "input_suggested": {
+                    "description": "For a parcel filed under no carrier, a carrier its number's shape and lookup country point to that needs the listed input before it can be asked about the number. Nothing says that carrier has the parcel.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "carrier",
+                      "field"
+                    ],
+                    "properties": {
+                      "carrier": {
+                        "$ref": "#/components/schemas/CarrierId"
+                      },
+                      "field": {
+                        "type": "string",
+                        "enum": [
+                          "dpdPostcode"
+                        ]
+                      }
+                    }
+                  },
                   "provider_input_needed": {
                     "type": "object",
                     "additionalProperties": false,

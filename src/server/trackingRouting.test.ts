@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
-import { freshnessWindow, RoutingDeferred, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
+import { freshnessWindow, RoutingDeferred, routingState, suggestedInput, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { refusesNumber } from './numberRefusal';
 import type { JsonObject } from './types';
 import type { CarrierResult, UniversalSource } from 'universal-parcel-scraper';
@@ -867,6 +867,29 @@ describe('persistent tracking routing', () => {
       const forgotten = await later.router.fetch(parcel({ tracking_number: '12345678901', carrier_data: result.result }), false);
       expect(asked(later.recognize)).toContain('gls-de');
       expect(forgotten.result.routing).not.toHaveProperty('input_needed');
+    });
+    it('suggests a carrier that cannot be asked about the number without the postcode', async () => {
+      // An 8-digit shipment fits Mondial Relay, which needs the recipient's postcode for it, so
+      // recognition cannot ask it; a parcel looked up from France is offered it.
+      const lookup = parcel({ tracking_number: '12345678', current_stage: 'pending', carrier_data: { lookup_country_hint: 'FR' } });
+      const { router, universal } = setup();
+      universal.mockRejectedValue(new NotFoundError('Provider'));
+      const deferred = await router.fetch(lookup, false).catch((error: unknown) => error);
+      expect(deferred).toBeInstanceOf(RoutingDeferred);
+      expect((deferred as RoutingDeferred).routing.input_suggested).toEqual({ carrier: 'mondial-relay', field: 'dpdPostcode' });
+      // Nothing to suggest once a carrier or provider answered for the number, or once it is filed.
+      const next = setup(new Date('2026-09-11T12:00:00Z'));
+      const answered = await next.router.fetch({ ...lookup, carrier_data: { ...lookup.carrier_data as JsonObject,
+        routing: { ...(deferred as RoutingDeferred).routing, last_event_at: '2026-09-10T11:00:00Z' } } }, false);
+      expect(answered.result.routing).not.toHaveProperty('input_suggested');
+      const routing = { ...(deferred as RoutingDeferred).routing };
+      expect(suggestedInput({ ...lookup, carrier: 'mondial-relay' }, routing)).toBeUndefined();
+      expect(suggestedInput(lookup, { ...routing, input_needed: { carrier: 'gls-de', field: 'dpdPostcode' } })).toBeUndefined();
+      // Nor from a country the carrier does not serve, without a country, or for a number of another shape.
+      expect(suggestedInput({ ...lookup, carrier_data: { lookup_country_hint: 'DE' } }, routing)).toBeUndefined();
+      expect(suggestedInput({ ...lookup, carrier_data: {} }, routing)).toBeUndefined();
+      expect(suggestedInput({ ...lookup, tracking_number: '12345678901' }, routing)).toBeUndefined();
+      expect(suggestedInput({ ...lookup, current_stage: 'delivered' }, routing)).toBeUndefined();
     });
     it.each([
       ['a delivered parcel', 'asendia', swissDpd, notFound('Asendia'), { current_stage: 'delivered' }],

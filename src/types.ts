@@ -36,6 +36,8 @@ export interface Parcel {
   providerInputNeeded?: { provider: string; field: 'dpdPostcode' };
   nextCheckAt?: string;
   inputNeeded?: { carrier: CarrierId; field: 'dpdPostcode' | 'trackingUrl' };
+  /** A carrier the number points to that needs the delivery postcode before it can be asked about it. */
+  inputSuggested?: { carrier: CarrierId; field: 'dpdPostcode' };
   originalParcelId?: string;
   originalCarrier?: CarrierId;
   originalTrackingNumber?: string;

@@ -2556,6 +2556,7 @@ enum ParcelFeedbackRequestApp: String, Codable, CaseIterable, Hashable, Sendable
 
 struct CarrierDataRouting: Codable, Equatable, Hashable, Sendable {
     var inputNeeded: CarrierInputNeeded? = nil
+    var inputSuggested: CarrierInputSuggested? = nil
     var providerInputNeeded: ProviderInputNeeded? = nil
     var nextCheckAt: String? = nil
 }
@@ -2563,6 +2564,11 @@ struct CarrierDataRouting: Codable, Equatable, Hashable, Sendable {
 struct CarrierInputNeeded: Codable, Equatable, Hashable, Sendable {
     var carrier: CarrierID
     var field: CarrierInputNeededField
+}
+
+struct CarrierInputSuggested: Codable, Equatable, Hashable, Sendable {
+    var carrier: CarrierID
+    var field: CarrierInputSuggestedField
 }
 
 struct ProviderInputNeeded: Codable, Equatable, Hashable, Sendable {
@@ -2573,6 +2579,12 @@ struct ProviderInputNeeded: Codable, Equatable, Hashable, Sendable {
 enum CarrierInputNeededField: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
     case dpdPostcode
     case trackingURL = "trackingUrl"
+
+    var id: String { rawValue }
+}
+
+enum CarrierInputSuggestedField: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
+    case dpdPostcode
 
     var id: String { rawValue }
 }

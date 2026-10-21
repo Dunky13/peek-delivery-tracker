@@ -340,7 +340,9 @@ struct ParcelDetailView: View {
                     }.font(.footnote)
                 }
                 if let needed = parcel.inputNeededPrompt {
-                    inputNeededPrompt(needed, tint: branding.ink)
+                    inputNeededPrompt(needed.carrier, text: "detail.inputNeeded", tint: branding.ink)
+                } else if let suggested = parcel.inputSuggestedPrompt {
+                    inputNeededPrompt(suggested.carrier, text: "detail.inputSuggested", tint: branding.ink)
                 }
                 HStack(alignment: .center, spacing: 18) {
                     Text(parcel.label.nonEmpty ?? localizer.text("common.parcel"))
@@ -457,16 +459,16 @@ struct ParcelDetailView: View {
         .accessibilityElement(children: .contain)
     }
 
-    /// Recognition found the carrier, but it needs the postcode before it can track.
-    private func inputNeededPrompt(_ needed: CarrierInputNeeded, tint: Color) -> some View {
+    /// Recognition found the carrier, or the number points to one, but it needs the postcode before it can track.
+    private func inputNeededPrompt(_ carrier: CarrierID, text key: String, tint: Color) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(localizer.text("detail.inputNeeded", [
-                "carrier": catalog.info(for: needed.carrier, language: localizer.language).displayName,
+            Text(localizer.text(key, [
+                "carrier": catalog.info(for: carrier, language: localizer.language).displayName,
             ]))
             .font(.footnote)
             .fixedSize(horizontal: false, vertical: true)
             Button {
-                carrierEditor = CarrierEditorRequest(initialCarrier: needed.carrier)
+                carrierEditor = CarrierEditorRequest(initialCarrier: carrier)
             } label: {
                 Text(localizer.text("detail.inputNeededAction"))
                     .font(.footnote.weight(.semibold))

@@ -880,6 +880,7 @@
   "picker.jump": "Zu einem Buchstaben springen",
   "detail.inputNeeded": "{{carrier}} hat dieses Paket. Gib die Postleitzahl der Lieferadresse ein, um es zu verfolgen.",
   "detail.inputNeededAction": "Postleitzahl eingeben",
+  "detail.inputSuggested": "{{carrier}} hat dieses Paket vielleicht. Gib die Postleitzahl der Lieferadresse ein, um es zu verfolgen.",
   "map.open": "Karte öffnen",
   "map.close": "Karte schließen",
   "map.view": "Kartenansicht",

@@ -880,6 +880,7 @@
   "picker.jump": "Przejdź do litery",
   "detail.inputNeeded": "{{carrier}} ma tę przesyłkę. Dodaj kod pocztowy odbiorcy, aby ją śledzić.",
   "detail.inputNeededAction": "Dodaj kod pocztowy",
+  "detail.inputSuggested": "Tę przesyłkę może mieć {{carrier}}. Dodaj kod pocztowy odbiorcy, aby ją śledzić.",
   "map.open": "Otwórz mapę",
   "map.close": "Zamknij mapę",
   "map.view": "Widok mapy",

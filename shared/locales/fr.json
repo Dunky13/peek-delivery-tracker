@@ -880,6 +880,7 @@
   "picker.jump": "Aller à une lettre",
   "detail.inputNeeded": "{{carrier}} a ce colis. Ajoute le code postal de livraison pour le suivre.",
   "detail.inputNeededAction": "Ajouter le code postal",
+  "detail.inputSuggested": "{{carrier}} a peut-être ce colis. Ajoute le code postal de livraison pour le suivre.",
   "map.open": "Ouvrir la carte",
   "map.close": "Fermer la carte",
   "map.view": "Vue de la carte",

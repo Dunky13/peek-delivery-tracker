@@ -454,6 +454,43 @@ final class ParcelLogicTests: XCTestCase {
         XCTAssertNil(untouched.inputNeededPrompt)
     }
 
+    func testPromptsForASuggestedCarrierOnlyWhileNobodyAnsweredForTheNumber() throws {
+        let packageID = UUID()
+        let json = """
+        {
+          "packages": [{
+            "id": "\(packageID.uuidString)",
+            "tracking_number": "12345678",
+            "label": "Test parcel",
+            "carrier": "unknown",
+            "created_at": "2026-08-01T10:00:00Z",
+            "sync_status": "waiting",
+            "carrier_data": { "routing": { "input_suggested": { "carrier": "mondial-relay", "field": "dpdPostcode" } } },
+            "notifications_muted": false,
+            "tracking_events": []
+          }]
+        }
+        """
+        let parcel = try XCTUnwrap(JSONDecoder.deliveryTracker.decode(PackageListResponse.self, from: Data(json.utf8)).packages.first)
+        XCTAssertEqual(parcel.inputSuggestedPrompt, CarrierInputSuggested(carrier: .mondialRelay, field: .dpdPostcode))
+        XCTAssertNil(parcel.inputNeededPrompt)
+
+        // Filed under a carrier, archived, with a scan, or once a carrier asks for the postcode itself: nothing suggested.
+        var filed = parcel
+        filed.carrier = .mondialRelay
+        XCTAssertNil(filed.inputSuggestedPrompt)
+        var archived = parcel
+        archived.archivedAt = "2026-08-10T10:00:00Z"
+        XCTAssertNil(archived.inputSuggestedPrompt)
+        var scanned = parcel
+        scanned.trackingEvents.append(event(packageID, .inTransit, "2026-08-10T10:00:00Z"))
+        XCTAssertNil(scanned.inputSuggestedPrompt)
+        var needed = parcel
+        needed.carrierData?.routing?.inputNeeded = CarrierInputNeeded(carrier: .glsCh, field: .dpdPostcode)
+        XCTAssertNil(needed.inputSuggestedPrompt)
+        XCTAssertEqual(needed.inputNeededPrompt?.carrier, .glsCh)
+    }
+
     func testDecodesSharedAPIContractFixture() throws {
         struct Fixture: Decodable {
             let packageList: PackageListResponse

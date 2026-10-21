@@ -121,6 +121,14 @@ extension Parcel {
         return inputNeeded
     }
 
+    /// Nobody has answered for the number yet, and its shape points to a carrier that needs
+    /// the delivery postcode before it can be asked about it.
+    var inputSuggestedPrompt: CarrierInputSuggested? {
+        guard inputNeededPrompt == nil, let suggested = carrierData?.routing?.inputSuggested,
+              carrier == .unknown, !isArchived, currentEvent == nil else { return nil }
+        return suggested
+    }
+
     var sortedEvents: [TrackingEvent] {
         trackingEvents.sorted(by: Self.eventPrecedes)
     }

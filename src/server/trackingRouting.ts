@@ -79,6 +79,8 @@ export interface RoutingState extends JsonObject {
   candidate_probes?: Record<string, { count: number; retry_at: string }>;
   /** A carrier that knows the number but cannot track it without the user's input. */
   input_needed?: { carrier: string; field: string };
+  /** A carrier the number of a parcel filed under no carrier points to, which needs the user's input before it can be asked (suggestedInput). */
+  input_suggested?: { carrier: string; field: 'dpdPostcode' };
   provider_input_needed?: { provider: string; field: 'dpdPostcode' };
   /** When providers last held no fuller history than the filed carrier's partial answer. */
   partial_checked_at?: string;
@@ -222,6 +224,29 @@ export function plausibleInputRequest(number: string, carriers: readonly (string
   const detected = detectCarrierMatch(number);
   return detected.carrier !== 'unknown' || detected.candidates.length > 0 || carriers.some((carrier) => carrier !== undefined
     && carrier in CARRIER_DEFINITIONS && activeRequirements(carrier, number).some((rule) => rule.field === 'postcode'));
+}
+/**
+ * The carrier to offer the owner of a parcel filed under no carrier that no carrier or
+ * provider has answered for yet: the first carrier detection lists for its number that
+ * serves the country the parcel was looked up from and needs the delivery postcode, and
+ * only it, for numbers of this shape, so recognition cannot ask it (Mondial Relay's
+ * 8-digit shipments). Nothing says that carrier has the parcel.
+ */
+export function suggestedInput(parcel: JsonObject, state: RoutingState): RoutingState['input_suggested'] {
+  const metadata = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
+  const country = normalizedLookupCountry(metadata.lookup_country_hint);
+  if (String(parcel.carrier) !== 'unknown' || !country || ['delivered', 'returned'].includes(String(parcel.current_stage))
+    || metadata.original_carrier || state.last_event_at || state.confirmed_carrier || state.discovered_carrier
+    || state.input_needed) return undefined;
+  const number = String(parcel.tracking_number ?? '');
+  const detected = detectCarrierMatch(number);
+  if (detected.confidence !== 'low') return undefined;
+  const askable = new Set([...recognitionCandidates(number, { countryHint: country }),
+    ...recognitionCandidates(number, { countryHint: country, phase: 'browser' })].map(({ carrier }) => carrier));
+  const carrier = detected.candidates.find((candidate) => AUTOMATIC_CARRIER_IDS.has(candidate) && !askable.has(candidate)
+    && (CARRIER_DEFINITIONS[candidate]?.countries ?? []).includes(country)
+    && requiredRequirements(candidate, number).map(({ field }) => field).join() === 'postcode');
+  return carrier ? { carrier, field: 'dpdPostcode' } : undefined;
 }
 /** A parcel carrier's own zone, when its catalog names one. */
 function carrierZone(carrier: string): string | null {
@@ -416,6 +441,9 @@ export class TrackingRouter {
     const number = String(parcel.tracking_number ?? '');
     const metadata = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
     const countryHint = normalizedLookupCountry(metadata.lookup_country_hint);
+    const suggested = suggestedInput(parcel, state);
+    if (suggested) state.input_suggested = suggested;
+    else delete state.input_suggested;
     let localDirectFallback: { value: RoutedResult; carrier: string } | undefined;
     let localHistory: JsonObject | undefined;
     // The filed carrier's status alone, or part of its history, while providers are asked for the rest.

@@ -880,6 +880,7 @@
   "picker.jump": "Ir para uma letra",
   "detail.inputNeeded": "{{carrier}} tem esta encomenda. Adiciona o código postal de entrega para a seguires.",
   "detail.inputNeededAction": "Adicionar código postal",
+  "detail.inputSuggested": "{{carrier}} pode ter esta encomenda. Adiciona o código postal de entrega para a seguires.",
   "map.open": "Abrir o mapa",
   "map.close": "Fechar o mapa",
   "map.view": "Vista do mapa",

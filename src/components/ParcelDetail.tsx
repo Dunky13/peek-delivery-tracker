@@ -131,6 +131,10 @@ export function ParcelDetail({
   // Recognition found the carrier, but it needs the postcode before it can track.
   const inputNeeded = parcel.inputNeeded?.field === 'dpdPostcode' && parcel.inputNeeded.carrier !== parcel.carrier
     && !parcel.archivedAt && !['delivered', 'returned'].includes(current?.stage ?? '') ? parcel.inputNeeded : undefined;
+  // Or nobody has answered for the number yet, and its shape points to a carrier that cannot be asked without the postcode.
+  const inputSuggested = !inputNeeded && parcel.inputSuggested?.field === 'dpdPostcode' && parcel.carrier === 'unknown'
+    && !parcel.archivedAt && !current ? parcel.inputSuggested : undefined;
+  const postcodePrompt = inputNeeded ?? inputSuggested;
   const status = parcelDisplayStatus(parcel);
   const statusLabel = t(parcelDisplayStatusKey(parcel));
   const completionDate = localizedParcelCompletionDate(parcel, languageTag, t);
@@ -503,11 +507,11 @@ export function ParcelDetail({
             setCarrierSheetInitial(parcel.carrier); setEditingCarrier(true);
           }}>{t('detail.inputNeededAction')}</button>
         </div>}
-        {inputNeeded && (
+        {postcodePrompt && (
           <div className="detail__input-needed" role="status">
-            <p>{t('detail.inputNeeded', { carrier: carrierInfo(inputNeeded.carrier, locale).name })}</p>
+            <p>{t(inputNeeded ? 'detail.inputNeeded' : 'detail.inputSuggested', { carrier: carrierInfo(postcodePrompt.carrier, locale).name })}</p>
             <button type="button" className="text-button" onClick={() => {
-              setCarrierSheetInitial(inputNeeded.carrier);
+              setCarrierSheetInitial(postcodePrompt.carrier);
               setEditingCarrier(true);
             }}>{t('detail.inputNeededAction')}</button>
           </div>

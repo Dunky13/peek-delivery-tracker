@@ -154,6 +154,24 @@ describe('shipment details', () => {
     expect(screen.queryByText(/has this parcel/)).not.toBeInTheDocument();
   });
 
+  it('offers the carrier a number points to when it needs a postcode to be asked', async () => {
+    const view = show({ carrier: 'unknown', trackingNumber: '12345678', inputSuggested: { carrier: 'mondial-relay', field: 'dpdPostcode' } });
+    // Nothing says the carrier has it.
+    expect(screen.getByText('Mondial Relay may have this parcel. Add the delivery postcode to track it.')).toBeInTheDocument();
+    expect(screen.queryByText(/has this parcel/)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Add postcode' }));
+    expect(screen.getByRole('button', { name: 'Carrier Mondial Relay' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /^Delivery postcode/ })).toBeInTheDocument();
+    view.unmount();
+    // Not once it is filed, or once a scan came.
+    const filed = show({ carrier: 'mondial-relay', trackingNumber: '12345678', inputSuggested: { carrier: 'mondial-relay', field: 'dpdPostcode' } });
+    expect(screen.queryByText(/may have this parcel/)).not.toBeInTheDocument();
+    filed.unmount();
+    show({ carrier: 'unknown', trackingNumber: '12345678', inputSuggested: { carrier: 'mondial-relay', field: 'dpdPostcode' },
+      events: [{ id: 'event', parcelId: 'parcel', stage: 'registered', description: 'Label created', occurredAt: '2026-09-10T10:00:00Z' }] });
+    expect(screen.queryByText(/may have this parcel/)).not.toBeInTheDocument();
+  });
+
   it('never displays legacy diagnostics', () => {
     show({ syncStatus: 'error', syncError: 'private upstream error details' });
     expect(screen.queryByText('private upstream error details')).not.toBeInTheDocument();
