@@ -1003,7 +1003,7 @@ export class SupabaseServiceClient extends SupabaseClient {
   /**
    * Scheduled sync candidates, with their stored event identities: every
    * account's open parcels, archived ones included. One-off parcels come from
-   * listFollowedOneOffPackages.
+   * listFollowedOneOffPackages and listUnfiledOneOffPackages.
    */
   override async listActivePackages(): Promise<JsonObject[]> {
     return await this.activePackages(`${ACTIVE_PACKAGE_SELECT},${SYNC_EVENT_IDENTITIES}`, [['one_off', 'is.false']]);
@@ -1022,6 +1022,25 @@ export class SupabaseServiceClient extends SupabaseClient {
     return rows(await this.request(`/rest/v1/rpc/followed_one_off_packages?${params}`, {
       method: 'POST', body: { p_opened_since: openedSince.toISOString() },
     }));
+  }
+
+  /**
+   * The open, unarchived one-off parcels filed under no carrier and added since
+   * `addedSince`, followed or not, the least recently checked first, in the
+   * shape of listActivePackages.
+   */
+  async listUnfiledOneOffPackages(addedSince: Date): Promise<JsonObject[]> {
+    const params = query([
+      ['select', `${ACTIVE_PACKAGE_SELECT},${SYNC_EVENT_IDENTITIES}`],
+      ['one_off', 'is.true'],
+      ['user_id', 'is.null'],
+      ['archived_at', 'is.null'],
+      ['carrier', 'in.(unknown,intl-post)'],
+      ['current_stage', 'not.in.(delivered,returned)'],
+      ['created_at', `gte.${addedSince.toISOString()}`],
+      ['order', 'last_synced_at.asc.nullsfirst,created_at.asc'],
+    ]);
+    return rows(await this.request(`/rest/v1/packages?${params}`));
   }
 
   /**

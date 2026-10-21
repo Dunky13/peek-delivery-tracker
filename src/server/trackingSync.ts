@@ -98,6 +98,12 @@ const NOT_YET_MOVING = new Set(['registered', 'accepted']);
 /** By day, a lookup without an account that nobody watches is checked this often. */
 const UNWATCHED_ONE_OFF_HOURS = 3;
 /**
+ * By day, a lookup without an account filed under no carrier that nobody follows any more is
+ * checked this often while it is new (REDETECTION_WINDOW_MS), once a carrier or provider has
+ * answered for its number: the next answer can name its carrier.
+ */
+const UNFILED_ONE_OFF_HOURS = 6;
+/**
  * An archived parcel is checked daily until this long after its newest carrier
  * event, or after it was added: one put away at a pickup point still shows its
  * collection.
@@ -248,6 +254,8 @@ interface ScheduleContext {
   unwatched?: boolean;
   /** A lookup without an account, which leaves the schedule when nobody has seen its number for hours. */
   oneOff?: boolean;
+  /** A lookup without an account filed under no carrier, with no link opened for a day and no alert on. */
+  unfollowed?: boolean;
   /** Someone the parcel was shared with gets its link's alerts, so archiving it keeps the regular cadence. */
   sharedAlerts?: boolean;
   /** One of the parcel's links was just opened: a number nobody has seen is checked daily rather than weekly. */
@@ -257,11 +265,11 @@ interface ScheduleContext {
 function isScheduledTrackingSyncDue(
   parcel: JsonObject,
   now: Date,
-  { unwatched = false, oneOff = false, sharedAlerts = false, opened = false }: ScheduleContext = {},
+  { unwatched = false, oneOff = false, unfollowed = false, sharedAlerts = false, opened = false }: ScheduleContext = {},
 ): boolean {
   if (!isTrackingSyncDue(parcel, now)) return false;
   const unseen = unseenFor(parcel, now);
-  if (oneOff && unseen !== null && unseen >= UNSEEN_HOURLY_MS) return false;
+  if (oneOff && unseen !== null && (unfollowed || unseen >= UNSEEN_HOURLY_MS)) return false;
   const archived = parcel.archived_at != null && !sharedAlerts;
   if (archived) {
     const activity = lastActivity(parcel);
@@ -277,6 +285,12 @@ function isScheduledTrackingSyncDue(
   // not ask: the next run asks that carrier. That check clears the mark; failing that, it lapses.
   const sinceNamed = now.getTime() - Date.parse(String(routingState(parcel).carrier_named_at ?? ''));
   if (sinceNamed >= 0 && sinceNamed < NAMED_CARRIER_DUE_MS) return true;
+  // A lookup without an account filed under no carrier that nobody follows any more: every 6 hours
+  // by day, and not overnight. A provider's next answer, or a carrier recognition asks, can name its carrier.
+  if (oneOff && unfollowed) {
+    return local.hour >= 8 && local.hour < 22
+      && lastChecked < hourStart.minus({ hours: UNFILED_ONE_OFF_HOURS - 1 }).toMillis();
+  }
   // A lookup without an account that nobody opened in the last hour and that has no alert on:
   // every 3 hours by day, and not overnight, when nobody reads it. A number no carrier is known
   // for asks every provider in turn. Opening its link still queues a check at once.
@@ -864,11 +878,11 @@ export class TrackingSyncService {
       const unwatched = await this.unwatchedPackages(now, context.signal);
       const active = await this.client.listActivePackages();
       const shared = await this.sharedAlertPackages(active, context.signal);
-      const due = (oneOff: boolean) => (parcel: JsonObject) => isScheduledTrackingSyncDue(parcel, now, {
-        unwatched: unwatched.has(String(parcel.id)), oneOff, sharedAlerts: shared.has(String(parcel.id)),
+      const due = (oneOff: boolean, unfollowed = false) => (parcel: JsonObject) => isScheduledTrackingSyncDue(parcel, now, {
+        unwatched: unwatched.has(String(parcel.id)), oneOff, unfollowed, sharedAlerts: shared.has(String(parcel.id)),
       });
       const accounts = fairSyncPackages(active.filter(due(false)));
-      const parcels = [...accounts, ...await this.followedOneOffPackages(due(true), now, context.signal)];
+      const parcels = [...accounts, ...await this.oneOffPackages(due(true), due(true, true), now, context.signal)];
       // Copies of one number, in several accounts or followed without one, share their lookups.
       const lookups = new SharedLookups(parcels);
       let legs: Set<string> | null | undefined;
@@ -1015,24 +1029,34 @@ export class TrackingSyncService {
   }
 
   /**
-   * One-off parcels stay on the schedule while a link was opened lately.
-   * They come after every account's share and count as one owner, the least
-   * recently checked first, so lookups cannot starve accounts. Nor can they
-   * stop them: when the list cannot be read, the accounts are still checked.
+   * One-off parcels stay on the schedule while a link was opened lately, and
+   * those filed under no carrier while they are new, followed or not: a check
+   * can find their carrier. They come after every account's share and count as
+   * one owner, the followed ones first, each the least recently checked first,
+   * so lookups cannot starve accounts. Nor can they stop them: when a list
+   * cannot be read, the others are still checked.
    */
-  private async followedOneOffPackages(
-    due: (parcel: JsonObject) => boolean,
+  private async oneOffPackages(
+    followedDue: (parcel: JsonObject) => boolean,
+    unfollowedDue: (parcel: JsonObject) => boolean,
     now: Date,
     signal?: AbortSignal,
   ): Promise<JsonObject[]> {
-    try {
-      return (await this.client.listFollowedOneOffPackages(new Date(now.getTime() - ONE_OFF_FOLLOWED_MS)))
-        .filter(due).slice(0, MAX_ONE_OFF_PACKAGES_PER_SYNC);
-    } catch (error) {
-      signal?.throwIfAborted();
-      captureOperationalError(error, { component: 'tracking', operation: 'list_one_off_packages' });
-      return [];
-    }
+    const list = async (operation: string, read: () => Promise<JsonObject[]>) => {
+      try { return await read(); }
+      catch (error) {
+        signal?.throwIfAborted();
+        captureOperationalError(error, { component: 'tracking', operation });
+        return [];
+      }
+    };
+    const followed = await list('list_one_off_packages',
+      () => this.client.listFollowedOneOffPackages(new Date(now.getTime() - ONE_OFF_FOLLOWED_MS)));
+    const listed = new Set(followed.map((parcel) => String(parcel.id)));
+    const unfiled = await list('list_unfiled_one_off_packages',
+      () => this.client.listUnfiledOneOffPackages(new Date(now.getTime() - REDETECTION_WINDOW_MS)));
+    return [...followed.filter(followedDue), ...unfiled.filter((parcel) => !listed.has(String(parcel.id)) && unfollowedDue(parcel))]
+      .slice(0, MAX_ONE_OFF_PACKAGES_PER_SYNC);
   }
 
   /**

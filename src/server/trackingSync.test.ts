@@ -778,6 +778,7 @@ function fakeClient(packages: JsonObject[] = []) {
   const client = {
     listActivePackages: vi.fn().mockResolvedValue(packages),
     listFollowedOneOffPackages: vi.fn().mockResolvedValue([]),
+    listUnfiledOneOffPackages: vi.fn().mockResolvedValue([]),
     listUnwatchedPackageIds: vi.fn().mockResolvedValue([]),
     sharedAlertPackageIds: vi.fn().mockResolvedValue(new Set()),
     autoLinkPackages: vi.fn().mockResolvedValue(0),
@@ -1878,6 +1879,51 @@ describe('TrackingSyncService', () => {
       { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, null);
     await expect(service.sync()).resolves.toMatchObject({ checked: 1, updated: 1 });
     expect(report).toHaveBeenCalledExactlyOnceWith(failure, { component: 'tracking', operation: 'list_one_off_packages' });
+  });
+
+  it('keeps a new lookup filed under no carrier on the schedule every 6 hours by day once its number was answered for', async () => {
+    const routing = { version: 1, configured_carrier: 'unknown', failures: {}, preferred_provider: 'Postal Ninja',
+      last_success_at: '2026-09-08T10:00:00Z', last_event_at: '2026-09-08T09:00:00Z' };
+    const lookup = (id: string, extra: JsonObject = {}): JsonObject => ({ id, user_id: null, one_off: true, carrier: 'unknown',
+      current_stage: 'in_transit', tracking_number: ON_THE_HOUR, created_at: '2026-09-05T10:00:00Z', archived_at: null,
+      last_synced_at: '2026-09-09T06:00:15Z', sync_status: 'ok', carrier_data: { routing }, ...extra });
+    const check = async (at: string, unfiled: JsonObject[], followed: JsonObject[] = []) => {
+      const client = fakeClient();
+      client.listFollowedOneOffPackages.mockResolvedValue(followed);
+      client.listUnfiledOneOffPackages.mockResolvedValue(unfiled);
+      client.listUnwatchedPackageIds.mockResolvedValue([...unfiled, ...followed].map((parcel) => String(parcel.id)));
+      const now = new Date(at);
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+        { fetch: vi.fn(), fetchUniversal: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, null, () => now);
+      await service.sync();
+      // Those added in the last 30 days, as recognition only asks for them.
+      expect(client.listUnfiledOneOffPackages).toHaveBeenCalledExactlyOnceWith(new Date(now.getTime() - 30 * 86_400_000));
+      return client.startSyncAttempt.mock.calls.map(([, values]) => values.package_id);
+    };
+    // Six hours after its last check (08:00 in Zurich), not before, and not overnight.
+    await expect(check('2026-09-09T11:00:00Z', [lookup('seen')])).resolves.toEqual([]);
+    await expect(check('2026-09-09T12:00:00Z', [lookup('seen')])).resolves.toEqual(['seen']);
+    await expect(check('2026-09-09T21:00:00Z', [lookup('seen', { last_synced_at: '2026-09-09T12:00:15Z' })])).resolves.toEqual([]);
+    // A number nobody has seen stays off the schedule: it would ask every provider in turn.
+    const unseen = lookup('unseen', { current_stage: 'pending', sync_status: 'waiting',
+      carrier_data: { routing: { version: 1, configured_carrier: 'unknown', failures: {} } } });
+    await expect(check('2026-09-09T12:00:00Z', [unseen])).resolves.toEqual([]);
+    // A followed lookup keeps its own cadence and goes first; the unfiled list does not check it twice.
+    const followed = lookup('followed', { last_synced_at: '2026-09-09T09:00:15Z' });
+    await expect(check('2026-09-09T12:00:00Z', [lookup('seen'), followed], [followed])).resolves.toEqual(['followed', 'seen']);
+  });
+
+  it('still checks the followed lookups when the unfiled ones cannot be listed', async () => {
+    const report = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
+    const client = fakeClient();
+    client.listFollowedOneOffPackages.mockResolvedValue([{ id: 'one-off', user_id: null, one_off: true, carrier: 'swiss-post',
+      tracking_number: 'TEST1234', current_stage: 'in_transit' }]);
+    const failure = new Error('unavailable');
+    client.listUnfiledOneOffPackages.mockRejectedValue(failure);
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+      { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, null);
+    await expect(service.sync()).resolves.toMatchObject({ checked: 1 });
+    expect(report).toHaveBeenCalledExactlyOnceWith(failure, { component: 'tracking', operation: 'list_unfiled_one_off_packages' });
   });
 
   it.each([

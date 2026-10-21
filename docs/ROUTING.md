@@ -227,6 +227,7 @@ parcels followed without an account that nobody watches (below).
 | No new event for 48 h (from when it was added) | hourly around the clock; manual refresh still allowed |
 | Nobody waiting for it | hourly around the clock; manual refresh still allowed |
 | Followed without an account, no link opened for an hour and no alert on | every 3 h, not overnight; opening a link queues a check at once |
+| Without an account, filed under no carrier, added in the last 30 days, no link opened for a day and no alert on, once a carrier or provider answered for its number | every 6 h, not overnight |
 | Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, weekly after 7 days, around the clock; manual refresh still allowed |
 | Archived, with a new event in the last 30 days (from when it was added), and no alert on a link shared with someone | daily around the clock; manual refresh still allowed |
 | Delivered on a provider's word alone, which the parcel's carrier did not show (below) | daily around the clock for 3 days |
@@ -284,8 +285,10 @@ delivery only a provider reported that the parcel's carrier did not show, checke
 opened in the last 24 hours or has an alert on. Otherwise a parcel waits until a link is
 opened again; that read queues a check at once when the schedule would run one, and never
 more often than the schedule, however often the link is polled. A scheduled check made while
-that one waits stands in for it. One whose number nobody
-has seen 6 h after it was added leaves the schedule too; opening a link still queues a
+that one waits stands in for it. One filed under no carrier stays on the schedule for 30
+days after it was added, every 6 hours by day, after the followed ones, once a carrier or
+provider has answered for its number: a check can find its carrier. One whose number nobody
+has seen 6 h after it was added leaves the schedule, followed or not; opening a link still queues a
 check at its cadence, daily rather than weekly after 7 days, since someone is looking. One whose links nobody opened in the last hour and that has no alert
 on is checked every 3 hours by day and waits for the morning overnight: nobody reads it,
 and a number no carrier is known for asks every provider in turn. A scheduled run checks at most ten of them, after every
@@ -435,7 +438,8 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   the cooldown ends. These checks wait behind every other job, a lookup's own check too, and
   keep the scheduled cadence; they are recorded with the `release` trigger. Asking for the
   parcel's check moves a queued one up. Only parcels filed under no carrier, or showing a
-  provider's history, are looked at. A lookup nobody follows any more gets this one check.
+  provider's history, are looked at. A lookup nobody follows any more gets this one check,
+  unless the schedule keeps it as one filed under no carrier.
 
 ## Handoffs (two carriers)
 
