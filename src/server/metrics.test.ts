@@ -224,6 +224,22 @@ describe('prometheus carrier metrics', () => {
     expect(sentry.newTraces).toBe(1);
   });
 
+  it('counts typo candidates by checksum, carrier and origin only', async () => {
+    metrics.recordTypoCandidate('s10', 'la-poste', 'lookup');
+    metrics.recordTypoCandidate('s10', 'la-poste', 'lookup');
+    metrics.recordTypoCandidate('ups', 'ups', 'account');
+    const text = await scraped();
+    expect(text).toContain('typo_candidate_total{checksum="s10",carrier="la-poste",origin="lookup"} 2');
+    expect(text).toContain('typo_candidate_total{checksum="ups",carrier="ups",origin="account"} 1');
+    sentry.initialized = true;
+    sentry.count.mockClear();
+    sentry.newTraces = 0;
+    metrics.recordTypoCandidate('s10', 'swiss-post', 'account');
+    sentry.initialized = false;
+    expect(sentry.count.mock.calls).toEqual([['tracking.typo_candidate', 1, { attributes: { checksum: 's10', carrier: 'swiss-post', origin: 'account' } }]]);
+    expect(sentry.newTraces).toBe(1);
+  });
+
   it('counts DPD app sessions by outcome and what began them', async () => {
     metrics.recordDpdAppSession('opened', 'refused');
     metrics.recordDpdAppSession('opened', 'refused');

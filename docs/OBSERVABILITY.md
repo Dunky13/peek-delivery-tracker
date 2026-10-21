@@ -544,6 +544,12 @@ Key JSON events:
 - `carrier_recognition`: how many carriers the Add sheet's recognition asked, whether it
   asked a `second_batch` because none of the first five knew the number, how many knew the
   number or failed, and what it settled on (a carrier, `choice` or `none`).
+- `typo_candidate`: the first check of a parcel just added or looked up failed or found
+  nothing, and leaving out one digit of two identical neighbours gives a number that a
+  high-confidence detection rule's check digit accepts while the number as typed passes
+  none. It has that rule's `checksum` (`s10` before any other), the `carrier` it points to
+  and the `origin`, `account` or `lookup`; never either number. Nothing is suggested to the
+  reader: it counts how often a "did you mean" would apply;
 - `tracking_redetections_queued`: how many parcels added in the last 30 days were queued for
   a check because a scraper release's catalog now points them to a carrier they never asked
   (`queued`, at most 50 a batch) and how many wait for a later batch or their cooldown to end
@@ -731,7 +737,9 @@ by one phase when counting attempts; summing phases double-counts.
 - `tracking.scrape.fallbacks`, with `from_phase` and `to_phase`;
 - `tracking.provider_input`, tagged `provider` and `step`, as `provider_input_total` below;
 - `tracking.checksum_rejection`, tagged `carrier` and `rule`, as
-  `carrier_checksum_rejection_total` below, each in a trace of its own.
+  `carrier_checksum_rejection_total` below, each in a trace of its own;
+- `tracking.typo_candidate`, tagged `checksum`, `carrier` and `origin`, as
+  `typo_candidate_total` below, each in a trace of its own.
 
 Import [the Scraper Health dashboard](../ops/sentry/scraper-health-dashboard.json) and set
 your project ID.
@@ -763,6 +771,7 @@ or a carrier's tracking that does not know the item, is `no_history` rather than
 | `tracking_sync_anomaly_total` (carrier, anomaly) | Suspicious decisions of checks, by anomaly code |
 | `tracking_health_incident_total` (kind, subject, state) | Health incidents that opened or still fail six hours on (`open`), `recovered`, or `closed` with no sample left or a direct step the carrier has not run for six hours |
 | `carrier_checksum_rejection_total` (carrier, rule) | Parcels a carrier's own lookup first confirmed although detection had left that carrier out on a failed check digit. `rule` is the failing rule's id in the scraper's `carrier.json` |
+| `typo_candidate_total` (checksum, carrier, origin) | First checks that failed or found nothing for a number that reads as a digit typed twice, as the `typo_candidate` line says |
 | `public_lookup_total` (outcome) | Lookups without an account: `created`, `reused` (the number was already stored), `limited_burst`, `limited_daily` (the client's day is used up), `limited_network` (its IPv6 /48's day), `limited_global` |
 | `public_detection_total` (outcome) | Detections without an account that needed a carrier's answer: `asked`, or refused first as `limited_burst`, `limited_daily` or `limited_global` |
 | `public_parcel_read_total` (outcome) | Reads of a parcel link: `ok`, `not_found` or `stopped` (its sharing was stopped) |

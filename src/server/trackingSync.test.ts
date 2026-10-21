@@ -43,6 +43,7 @@ import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { NOOP_RECORDER } from 'universal-parcel-scraper/node';
 import { BudgetExceededError, IndeterminateError, InputRequiredError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from 'universal-parcel-scraper';
 import * as scraper from 'universal-parcel-scraper';
+import { doubled, s10 } from '../test/trackingNumbers';
 
 // Keep the published plan configurable without changing the scraper's other exports.
 vi.mock(import('universal-parcel-scraper'), async importOriginal => ({ ...await importOriginal() }));
@@ -4445,6 +4446,33 @@ describe('TrackingSyncService', () => {
       sync_status: 'unsupported',
       last_synced_at: null,
     }));
+  });
+
+  it('counts a likely typo when the first check of a parcel just added fails or finds nothing', async () => {
+    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const counted = vi.spyOn(metrics, 'recordTypoCandidate').mockImplementation(() => undefined);
+    const typed = doubled(`RR${s10('12345678')}FR`, 5);
+    const client = fakeClient();
+    const unsupported = new TrackingSyncService(client as unknown as SupabaseServiceClient, { fetch: vi.fn() });
+    const added = { trigger: 'added' } as const;
+    await unsupported.syncPackage({ id: 'account-parcel', carrier: 'unknown', tracking_number: typed, user_id: 'user-1' }, added);
+    await unsupported.syncPackage({ id: 'lookup', carrier: 'unknown', tracking_number: typed, user_id: null }, added);
+    // Not a later check, nor a parcel that has progress.
+    await unsupported.syncPackage({ id: 'refreshed', carrier: 'unknown', tracking_number: typed, user_id: 'user-1' }, { trigger: 'refresh' });
+    await unsupported.syncPackage({ id: 'answered', carrier: 'unknown', tracking_number: typed, current_stage: 'in_transit' }, added);
+    const notFound = new TrackingSyncService(client as unknown as SupabaseServiceClient, {
+      fetch: vi.fn().mockRejectedValue(new NotFoundError('la-poste', 'Unknown parcel')),
+    });
+    await notFound.syncPackage({ id: 'not-found', carrier: 'la-poste', tracking_number: typed, user_id: 'user-1' }, added);
+    // A first check that stored scans was answered.
+    const answering = new TrackingSyncService(client as unknown as SupabaseServiceClient, {
+      fetch: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-10-20T08:00:00Z',
+        events: [{ time: '2026-10-20T08:00:00Z', description: 'Parcel sorted', stage: 'in_transit' }] }),
+    });
+    await expect(answering.syncPackage({ id: 'scanned', carrier: 'la-poste', tracking_number: typed, user_id: 'user-1' }, added))
+      .resolves.toMatchObject({ updated: 1 });
+    expect(counted.mock.calls).toEqual([['s10', 'la-poste', 'account'], ['s10', 'la-poste', 'lookup'], ['s10', 'la-poste', 'account']]);
   });
 
   it('keeps failed lookup diagnostics in logs without creating an immediate Sentry issue', async () => {

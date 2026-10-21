@@ -56,6 +56,7 @@ import { DIRECT_HISTORY, directHistory } from './providerCopies';
 import { earlierCarrier } from './relayCopies';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
 import { trackingSupportEvidence } from './trackingSupport';
+import { noteTypoCandidate } from './typoCandidate';
 import { deployedVersion, statusMapClosings, universalMapAgrees } from './reviewQueues';
 import { carrierLookupKey, recognitionKey, SharedLookups, universalLookupKey, type ParcelLookups } from './sharedLookups';
 
@@ -1233,8 +1234,15 @@ export class TrackingSyncService {
       routing.confirmed_number === parcel.tracking_number ? routing.confirmed_carrier ?? null : null,
     );
     await audit.start();
+    // A parcel just added, or looked up, with no progress saved yet: its first answer.
+    const firstAnswer = context.trigger === 'added' && String(parcel.current_stage ?? 'pending') === 'pending';
     try {
-      return await untilShutdown(this.check(parcel, context, audit, now, lookups), context.signal);
+      const outcome = await untilShutdown(this.check(parcel, context, audit, now, lookups), context.signal);
+      // A first check that failed or found nothing may be a mistyped number: counted for review, never suggested.
+      if (firstAnswer && outcome !== 'updated' && outcome !== 'superseded') {
+        noteTypoCandidate(String(parcel.tracking_number ?? ''), typeof parcel.user_id === 'string' ? 'account' : 'lookup');
+      }
+      return outcome;
     } catch (error) {
       // Shutdown ends the check now, whatever its carrier is still doing: the job goes back to the queue.
       if (context.signal?.reason instanceof WorkerShutdown) await audit.interrupt();
