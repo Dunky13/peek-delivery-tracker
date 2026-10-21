@@ -195,6 +195,7 @@ describe('carrier brand', () => {
       'first-line',
       'kun-express',
       'juxi-express',
+      'techlink',
     ] as const) {
       for (const shape of SOURCE_DECALS[name]) {
         if (shape.type === 'circle') {

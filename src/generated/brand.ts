@@ -1202,6 +1202,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "team-express-ae": "team-express-ae",
   "team-global-express": "team-global-express",
   "team-worldwide": "team-worldwide",
+  "techlink": "techlink",
   "tej-couriers": "tej-couriers",
   "teleship": "teleship",
   "tfm-express": "tfm-express",
@@ -14613,6 +14614,18 @@ export const CARRIER_TRUCK: TruckGeometry = {
         "cx": 12.44,
         "cy": 6.21,
         "r": 0.48,
+        "fill": "accent"
+      }
+    ],
+    "techlink": [
+      {
+        "type": "polygon",
+        "d": "M7.72 5.32L14.92 9.52L15.4 9.65L15.87 9.52L16.22 9.18L16.35 8.7L16.22 8.23L15.88 7.88L8.68 3.68L8.2 3.55L7.73 3.68L7.38 4.02L7.25 4.5L7.38 4.97Z",
+        "fill": "#f7bda4"
+      },
+      {
+        "type": "polygon",
+        "d": "M14.92 7.88L7.72 12.08L7.38 12.43L7.25 12.9L7.38 13.38L7.73 13.72L8.2 13.85L8.68 13.72L15.88 9.52L16.22 9.17L16.35 8.7L16.22 8.22L15.87 7.88L15.4 7.75Z",
         "fill": "accent"
       }
     ]
