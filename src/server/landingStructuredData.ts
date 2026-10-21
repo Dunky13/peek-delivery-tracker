@@ -20,10 +20,10 @@ export function peekOrganization(origin: URL) {
 }
 
 /**
- * What the landing tells search engines, as schema.org data: who makes Peek,
- * the site with its names, and the web application at this address, described
- * as the page describes it, free. No rating, no count, nothing a reader could
- * not check.
+ * What the landing tells search engines, as schema.org data: the site with its
+ * names, the web application at this address, described as the page describes
+ * it, free, and who makes them. No rating, no count, nothing a reader could not
+ * check.
  */
 export function landingStructuredData({ origin, url, locale }: {
   /** The origin the site's addresses are written on. */
@@ -36,7 +36,6 @@ export function landingStructuredData({ origin, url, locale }: {
   return {
     '@context': 'https://schema.org',
     '@graph': [
-      peekOrganization(origin),
       {
         '@type': 'WebSite',
         name: t('app.title'),
@@ -58,6 +57,7 @@ export function landingStructuredData({ origin, url, locale }: {
         isAccessibleForFree: true,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
       },
+      peekOrganization(origin),
     ],
   };
 }

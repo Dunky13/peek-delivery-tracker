@@ -30,6 +30,7 @@ import { CARRIER_LINKS } from './generated/carriers';
 import { GUIDE_LINKS } from './generated/guides';
 import { guidePath } from './guides/paths';
 import { ADDRESS_LANGUAGES, documentLanguage, SUPPORTED_LOCALES, type Locale } from './lib/locale';
+import { SOURCE_URL } from './lib/source';
 import { messagesFor } from './server/requestLocale';
 
 const TITLE = 'Peek — Universal Parcel Tracker';
@@ -190,10 +191,18 @@ describe('public product metadata', () => {
     const data = JSON.parse(text) as { '@context': string; '@graph': Record<string, unknown>[] };
     expect(data['@context']).toBe('https://schema.org');
     expect(data['@graph']).toEqual([
-      { '@type': 'WebSite', name: 'Peek', alternateName: ['Peek Tracker', 'delivery.example.test'], url: 'https://delivery.example.test/', inLanguage: ['en', 'de', 'fr', 'it', 'es', 'pt', 'pl'] },
+      {
+        '@type': 'WebSite', name: 'Peek', alternateName: ['Peek Tracker', 'delivery.example.test'], url: 'https://delivery.example.test/', inLanguage: ['en', 'de', 'fr', 'it', 'es', 'pt', 'pl'],
+        publisher: { '@id': 'https://delivery.example.test/#organization' },
+      },
       {
         '@type': 'WebApplication', name: 'Peek', alternateName: 'Peek — Universal Parcel Tracker', url: 'https://delivery.example.test/',
         description: LANDING_DESCRIPTION, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Web, iOS', inLanguage: 'en', isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      },
+      {
+        '@type': 'Organization', '@id': 'https://delivery.example.test/#organization', name: 'Peek', url: 'https://delivery.example.test/',
+        logo: { '@type': 'ImageObject', url: 'https://delivery.example.test/icons/icon-512.png' }, sameAs: [SOURCE_URL],
       },
     ]);
     expect(application.props).toMatchObject({ landingRoute: false, initialLocale: 'en' });

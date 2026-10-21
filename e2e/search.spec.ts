@@ -152,7 +152,7 @@ test('the landing tells search engines about the site and the app, as data the b
   await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeEnabled();
   const blocks = page.locator('script[type="application/ld+json"]');
   await expect(blocks).toHaveCount(1);
-  expect(JSON.parse((await blocks.textContent())!)['@graph']).toHaveLength(2);
+  expect(JSON.parse((await blocks.textContent())!)['@graph']).toHaveLength(3);
   expect(violations).toEqual([]);
 });
 

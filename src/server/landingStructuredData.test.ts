@@ -9,7 +9,7 @@ describe('landingStructuredData', () => {
 
   it('names who makes Peek, with its public source, as one node the other pages name too', () => {
     expect(data['@context']).toBe('https://schema.org');
-    expect(data['@graph'][0]).toEqual({
+    expect(data['@graph'][2]).toEqual({
       '@type': 'Organization',
       '@id': 'https://peek.example.test/#organization',
       name: 'Peek',
@@ -17,11 +17,11 @@ describe('landingStructuredData', () => {
       logo: { '@type': 'ImageObject', url: 'https://peek.example.test/icons/icon-512.png' },
       sameAs: [SOURCE_URL],
     });
-    expect(peekOrganization(new URL('https://peek.example.test'))).toEqual(data['@graph'][0]);
+    expect(peekOrganization(new URL('https://peek.example.test'))).toEqual(data['@graph'][2]);
   });
 
   it('names the site, with the names people search for taken from its host, published by Peek', () => {
-    expect(data['@graph'][1]).toEqual({
+    expect(data['@graph'][0]).toEqual({
       '@type': 'WebSite',
       name: 'Peek',
       alternateName: ['Peek Tracker', 'peek.example.test'],
@@ -30,11 +30,11 @@ describe('landingStructuredData', () => {
       publisher: { '@id': 'https://peek.example.test/#organization' },
     });
     const local = landingStructuredData({ origin: new URL('http://127.0.0.1:3000'), url: 'http://127.0.0.1:3000/', locale: 'en' });
-    expect(local['@graph'][1]).toMatchObject({ alternateName: ['Peek Tracker', '127.0.0.1'] });
+    expect(local['@graph'][0]).toMatchObject({ alternateName: ['Peek Tracker', '127.0.0.1'] });
   });
 
   it('describes the app with the page’s own words, free of charge, and claims nothing else', () => {
-    expect(data['@graph'][2]).toEqual({
+    expect(data['@graph'][1]).toEqual({
       '@type': 'WebApplication',
       name: 'Peek',
       alternateName: 'Peek — Universal Parcel Tracker',
@@ -47,7 +47,7 @@ describe('landingStructuredData', () => {
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
     });
     const german = landingStructuredData({ origin: new URL('https://peek.example.test'), url: 'https://peek.example.test/de', locale: 'de' });
-    expect(german['@graph'][2]).toMatchObject({ url: 'https://peek.example.test/de', inLanguage: 'de', description: de['preview.landing.description'] });
+    expect(german['@graph'][1]).toMatchObject({ url: 'https://peek.example.test/de', inLanguage: 'de', description: de['preview.landing.description'] });
     // Three things are told, and nothing about what others think of them.
     expect(data['@graph']).toHaveLength(3);
   });
