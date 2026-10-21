@@ -28,10 +28,13 @@ import { UNKNOWN_ITEM_REASONS } from './trackingFailure';
  * typo candidate by checksum, carrier and origin only.
  * Routing signals, sync anomalies and health incidents, which the review
  * queues keep in Postgres, are counted by code and carrier or provider id only.
+ * App Attest is counted by the request's kind, how it ended and a reason code,
+ * and the proof each lookup without an account came with by its kind: never by
+ * key, device or address.
  */
 
 /** Bump when the series or their labels change, so a hot-reloaded copy does not reuse an older shape. */
-const RUNTIME_VERSION = 12;
+const RUNTIME_VERSION = 13;
 
 interface PrometheusRuntime {
   version: number;
@@ -61,6 +64,8 @@ interface PrometheusRuntime {
   routingSignalTotal: Counter<'signal' | 'carrier' | 'subject'>;
   syncAnomalyTotal: Counter<'carrier' | 'anomaly'>;
   healthIncidentTotal: Counter<'kind' | 'subject' | 'state'>;
+  nativeVerificationTotal: Counter<'kind' | 'outcome' | 'reason'>;
+  lookupProofTotal: Counter<'kind' | 'proof'>;
   publicLookupClients: Gauge;
   publicLookupsPerClient: Gauge<'stat'>;
   publicDetectionClients: Gauge;
@@ -236,6 +241,18 @@ function createRuntime(): PrometheusRuntime {
       labelNames: ['kind', 'subject', 'state'] as const,
       registers: [registry],
     }),
+    nativeVerificationTotal: new Counter({
+      name: 'native_verification_total',
+      help: 'App Attest attestations and assertions by kind (attestation, lookup, detection, account_lookup, account_detection, account_refresh), outcome and reason code.',
+      labelNames: ['kind', 'outcome', 'reason'] as const,
+      registers: [registry],
+    }),
+    lookupProofTotal: new Counter({
+      name: 'lookup_proof_total',
+      help: 'Lookups and detections without an account by the proof that let them through (app_attest, turnstile, ua_bypass, none) or refused.',
+      labelNames: ['kind', 'proof'] as const,
+      registers: [registry],
+    }),
     publicLookupClients: new Gauge({
       name: 'public_lookup_clients',
       help: 'Clients (hashed addresses) that made a lookup without an account yesterday (UTC).',
@@ -361,6 +378,27 @@ export function recordPublicLookup(outcome: PublicLookupOutcome): void {
 /** A detection without an account that had carriers asked about its number, or was refused before they were. */
 export function recordPublicDetection(outcome: 'asked' | 'limited_burst' | 'limited_daily' | 'limited_global'): void {
   count(runtime.publicDetectionTotal, 'public_detection_total', { outcome });
+}
+
+export type NativeVerificationKind = 'attestation' | 'lookup' | 'detection' | 'account_lookup' | 'account_detection' | 'account_refresh';
+
+/**
+ * An App Attest check: an attestation `verified` or `rejected`, an assertion
+ * of a lookup without an account `verified`, `rejected` or `limited` by the
+ * device's allowance, and one of a signed-in request `verified`, `invalid` or
+ * `missing`. `reason` is a short code, `none` when there is nothing to explain.
+ */
+export function recordNativeVerification(
+  kind: NativeVerificationKind,
+  outcome: 'verified' | 'rejected' | 'limited' | 'invalid' | 'missing',
+  reason: string,
+): void {
+  count(runtime.nativeVerificationTotal, 'native_verification_total', { kind, outcome, reason });
+}
+
+/** What let a lookup or detection without an account through, or that it was refused. */
+export function recordLookupProof(kind: 'lookup' | 'detection', proof: 'app_attest' | 'turnstile' | 'ua_bypass' | 'none' | 'refused'): void {
+  count(runtime.lookupProofTotal, 'lookup_proof_total', { kind, proof });
 }
 
 export function recordPublicParcelRead(outcome: 'ok' | 'not_found' | 'stopped'): void {

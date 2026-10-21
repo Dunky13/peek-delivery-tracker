@@ -5,7 +5,8 @@ import { POST as lookup } from '../../app/api/public/parcels/route';
 import { POST as detect } from '../../app/api/public/detect/route';
 import { SupabaseServiceClient } from './supabase';
 import * as amazon from './amazonShippingEligibility';
-import { requireLookupProof, turnstileSettings, verifyLookupBrowser } from './lookupVerification';
+import { requireLookupProof, turnstileSettings, verifyLookupBrowser, verifyLookupRequest } from './lookupVerification';
+import { metricsText } from './metrics';
 
 const request = (proof?: string, ip = '192.0.2.8', hostname = 'peek.example') => new NextRequest(`https://${hostname}/api/public/parcels`, {
   headers: { host: hostname, 'x-real-ip': ip, ...(proof ? { 'x-lookup-proof': proof } : {}) },
@@ -21,6 +22,12 @@ beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ success: true, hostname: 'peek.example', action: 'parcel_lookup' })));
 });
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.useRealTimers(); });
+/** A counter's value: the first scrape shows a new series at 0 and applies its updates. */
+async function series(name: string): Promise<number> {
+  await metricsText();
+  const line = (await metricsText()).split('\n').find((entry) => entry.startsWith(`${name} `));
+  return line ? Number(line.slice(name.length + 1)) : 0;
+}
 
 describe('lookup verification', () => {
   it('requires complete configuration and refuses production test keys', () => {
@@ -186,6 +193,31 @@ describe('lookup verification', () => {
       browser.headers.set('User-Agent', agent);
       expect(() => requireLookupProof(browser)).toThrow('verify');
     }
+  });
+
+  it('counts which proof let each lookup or detection through, or its refusal', async () => {
+    vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const service = new SupabaseServiceClient('https://database.example', 'test-service-key');
+    const names = [...['turnstile', 'ua_bypass', 'refused', 'none'].map((proof) => `lookup_proof_total{kind="lookup",proof="${proof}"}`),
+      'lookup_proof_total{kind="detection",proof="refused"}'];
+    const before: number[] = [];
+    for (const name of names) before.push(await series(name));
+    const { proof } = await verifyLookupBrowser(request(), 'one-use-token');
+    await verifyLookupRequest(request(proof), service, new Uint8Array());
+    vi.stubEnv('TURNSTILE_ALLOW_NATIVE_USER_AGENT', 'true');
+    const native = request();
+    native.headers.set('User-Agent', 'PeekDeliveryTracker/1 CFNetwork/3860 Darwin/25.5.0');
+    await verifyLookupRequest(native, service, new Uint8Array());
+    // An app that verifies says so, and gets no exemption.
+    native.headers.set('X-Native-Verification', '1');
+    await expect(verifyLookupRequest(native, service, new Uint8Array())).rejects.toMatchObject({ status: 403 });
+    await expect(verifyLookupRequest(new NextRequest('https://peek.example/api/public/detect', { headers: { host: 'peek.example' } }), service, new Uint8Array()))
+      .rejects.toMatchObject({ status: 403 });
+    vi.stubEnv('TURNSTILE_SITE_KEY', ''); vi.stubEnv('TURNSTILE_SECRET_KEY', ''); vi.stubEnv('TURNSTILE_HOSTNAMES', '');
+    await verifyLookupRequest(request(), service, new Uint8Array());
+    const after: number[] = [];
+    for (const name of names) after.push(await series(name));
+    expect(after.map((value, index) => value - before[index]!)).toEqual([1, 1, 1, 1, 1]);
   });
 
   it('still enforces lookup and detection allowances for exempt native requests', async () => {

@@ -8,6 +8,7 @@ import { POST as lookUp } from '../../app/api/public/parcels/route';
 import { GET as page } from '../../app/api/public/native/turnstile/route';
 import { nativeAttestSettings, nativeChallenge, nativeRequestPayload, registerNativeKey, verifyNativeRequest } from './nativeVerification';
 import { verifyLookupRequest, verifyLookupBrowser } from './lookupVerification';
+import { metricsText } from './metrics';
 import { SupabaseServiceClient } from './supabase';
 
 const appID = 'TESTTEAM01.com.example.Peek';
@@ -37,6 +38,12 @@ async function signedRequest(options: { counter?: number; appID?: string; extens
   return req;
 }
 const service = new SupabaseServiceClient('https://database.example', 'test-key');
+/** A counter's value: the first scrape shows a new series at 0 and applies its updates. */
+async function series(name: string): Promise<number> {
+  await metricsText();
+  const line = (await metricsText()).split('\n').find((entry) => entry.startsWith(`${name} `));
+  return line ? Number(line.slice(name.length + 1)) : 0;
+}
 beforeEach(() => {
   vi.stubEnv('APP_ATTEST_APP_ID', appID);
   vi.stubEnv('APP_ATTEST_ALLOW_DEVELOPMENT', 'false');
@@ -90,7 +97,10 @@ describe('native verification', () => {
     expect((await send(Buffer.from('{"trackingNumber":"TESTPARCEL654321"}'))).status).toBe(403);
     expect(claim).toHaveBeenCalledOnce();
   });
-  it.each(['body', 'path', 'method', 'network', 'hostname', 'key', 'challenge', 'signature'])('rejects a signed request after changing its %s', async (kind) => {
+  it.each([
+    ['body', 'signature'], ['path', 'signature'], ['method', 'signature'], ['network', 'challenge_mismatch'],
+    ['hostname', 'challenge_mismatch'], ['key', 'challenge_mismatch'], ['challenge', 'malformed'], ['signature', 'signature'],
+  ])('rejects a signed request after changing its %s, as a %s failure', async (kind, reason) => {
     const original = await signedRequest();
     let req: Request = original;
     const body = kind === 'body' ? Buffer.from('{}') : signedBody;
@@ -101,39 +111,39 @@ describe('native verification', () => {
     if (kind === 'key') req.headers.set('x-app-attest-key-id', Buffer.alloc(32, 8).toString('base64'));
     if (kind === 'challenge') req.headers.set('x-app-attest-challenge', original.headers.get('x-app-attest-challenge')!.replace(/.$/, '!'));
     if (kind === 'signature') req.headers.set('x-app-attest-assertion', (await cbor.encodeAsync({ signature: Buffer.alloc(71), authenticatorData: Buffer.alloc(37) })).toString('base64'));
-    await expect(verifyNativeRequest(req, service, body)).rejects.toMatchObject({ status: 403 });
+    await expect(verifyNativeRequest(req, service, body)).rejects.toMatchObject({ status: 403, reason });
     expect(service.request).not.toHaveBeenCalledWith('/rest/v1/rpc/accept_native_assertion', expect.anything());
   });
   it('rejects expired, wrongly scoped, malformed and unconfigured challenges', async () => {
     vi.useFakeTimers();
     const req = await signedRequest();
     vi.advanceTimersByTime(121_000);
-    await expect(verifyNativeRequest(req, service, signedBody)).rejects.toMatchObject({ status: 403 });
+    await expect(verifyNativeRequest(req, service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'challenge_expired' });
     expect(() => nativeChallenge(request(), 'invalid', 'assertion')).toThrow('Invalid');
     expect(() => nativeChallenge(request(), keyID, 'other')).toThrow('Invalid');
     const other = await signedRequest();
     other.headers.set('x-app-attest-challenge', nativeChallenge(other, keyID, 'attestation').challenge);
-    await expect(verifyNativeRequest(other, service, signedBody)).rejects.toMatchObject({ status: 403 });
+    await expect(verifyNativeRequest(other, service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'challenge_mismatch' });
     const unconfigured = await signedRequest();
     vi.stubEnv('APP_ATTEST_APP_ID', '');
-    await expect(verifyNativeRequest(unconfigured, service, signedBody)).rejects.toMatchObject({ status: 403 });
+    await expect(verifyNativeRequest(unconfigured, service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'unconfigured' });
   });
   it('rejects replayed counters, unknown or incorrectly scoped keys and malformed assertions', async () => {
-    await expect(verifyNativeRequest(await signedRequest({ counter: 0 }), service, signedBody)).rejects.toMatchObject({ status: 403 });
-    await expect(verifyNativeRequest(await signedRequest({ appID: 'TESTTEAM02.com.example.Other' }), service, signedBody)).rejects.toMatchObject({ status: 403 });
+    await expect(verifyNativeRequest(await signedRequest({ counter: 0 }), service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'counter' });
+    await expect(verifyNativeRequest(await signedRequest({ appID: 'TESTTEAM02.com.example.Other' }), service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'app_id' });
     vi.mocked(service.request).mockResolvedValueOnce(null);
-    await expect(verifyNativeRequest(await signedRequest(), service, signedBody)).rejects.toMatchObject({ status: 403 });
+    await expect(verifyNativeRequest(await signedRequest(), service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'unknown_key' });
     vi.mocked(service.request).mockResolvedValueOnce({ public_key: storedKey, app_id: 'other', sign_count: 0 });
-    await expect(verifyNativeRequest(await signedRequest(), service, signedBody)).rejects.toMatchObject({ status: 403 });
+    await expect(verifyNativeRequest(await signedRequest(), service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'app_id' });
     for (const value of ['not base64!', 'AA==', (await cbor.encodeAsync({ signature: 'bad', authenticatorData: Buffer.alloc(37) })).toString('base64'), 'A'.repeat(4100)]) {
       const req = await signedRequest(); req.headers.set('x-app-attest-assertion', value);
-      await expect(verifyNativeRequest(req, service, signedBody)).rejects.toMatchObject({ status: 403 });
+      await expect(verifyNativeRequest(req, service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'malformed' });
     }
   });
   it('checks signed launch categories and bundle versions on systems that supply them', async () => {
     await verifyNativeRequest(await signedRequest({ extension: { validationCategory: 4, bundleVersion: '2.1' } }), service, signedBody);
-    for (const extension of [{ validationCategory: 0 }, { validationCategory: 3 }, { bundleVersion: '<bad>' }]) {
-      await expect(verifyNativeRequest(await signedRequest({ extension }), service, signedBody)).rejects.toMatchObject({ status: 403 });
+    for (const [extension, reason] of [[{ validationCategory: 0 }, 'category'], [{ validationCategory: 3 }, 'category'], [{ bundleVersion: '<bad>' }, 'bundle_version']] as const) {
+      await expect(verifyNativeRequest(await signedRequest({ extension }), service, signedBody)).rejects.toMatchObject({ status: 403, reason });
     }
     vi.stubEnv('APP_ATTEST_ALLOW_DEVELOPMENT', 'true');
     await verifyNativeRequest(await signedRequest({ extension: { validationCategory: 3 } }), service, signedBody);
@@ -144,14 +154,14 @@ describe('native verification', () => {
     await verifyNativeRequest(await signedRequest({ extension: { apple_validation_category_01: category(2) } }), service, signedBody);
     for (const value of [category(3), category(1), Buffer.from([4, 0])]) {
       await expect(verifyNativeRequest(await signedRequest({ extension: { apple_validation_category_01: value } }), service, signedBody))
-        .rejects.toMatchObject({ status: 403 });
+        .rejects.toMatchObject({ status: 403, reason: 'category' });
     }
   });
   it('returns daily limits and rejects a replay refused by the atomic database check', async () => {
     vi.mocked(service.request).mockResolvedValueOnce({ public_key: storedKey, app_id: appID, sign_count: 0 }).mockResolvedValueOnce('limited');
     await expect(verifyNativeRequest(await signedRequest(), service, signedBody)).rejects.toMatchObject({ status: 429, headers: { 'Retry-After': expect.any(String) } });
     vi.mocked(service.request).mockResolvedValueOnce({ public_key: storedKey, app_id: appID, sign_count: 0 }).mockResolvedValueOnce('rejected');
-    await expect(verifyNativeRequest(await signedRequest(), service, signedBody)).rejects.toMatchObject({ status: 403 });
+    await expect(verifyNativeRequest(await signedRequest(), service, signedBody)).rejects.toMatchObject({ status: 403, reason: 'replayed' });
   });
   it('does not let incomplete attestation headers fall back to a browser proof or legacy user-agent', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ success: true, hostname: 'peek.example', action: 'parcel_lookup' })));
@@ -167,10 +177,36 @@ describe('native verification', () => {
   it('rejects invalid attestations before storing a public key', async () => {
     const req = request();
     const challenge = nativeChallenge(req, keyID, 'attestation').challenge;
-    for (const attestation of ['bad!', (await cbor.encodeAsync({ attStmt: { x5c: [Buffer.alloc(10), Buffer.alloc(10)] }, authData: Buffer.alloc(87) })).toString('base64')]) {
-      await expect(registerNativeKey(req, service, { keyId: keyID, challenge, attestation })).rejects.toMatchObject({ status: 403 });
+    for (const [attestation, reason] of [['bad!', 'malformed'], [(await cbor.encodeAsync({ attStmt: { x5c: [Buffer.alloc(10), Buffer.alloc(10)] }, authData: Buffer.alloc(87) })).toString('base64'), 'chain']]) {
+      await expect(registerNativeKey(req, service, { keyId: keyID, challenge, attestation })).rejects.toMatchObject({ status: 403, reason });
     }
+    await expect(registerNativeKey(req, service, { keyId: 'short', challenge, attestation: 'AA==' })).rejects.toMatchObject({ status: 403, reason: 'malformed' });
+    await expect(registerNativeKey(request('/api/public/native/verification', '{}', '198.51.100.4'), service, { keyId: keyID, challenge, attestation: 'AA==' }))
+      .rejects.toMatchObject({ status: 403, reason: 'challenge_mismatch' });
     expect(service.request).not.toHaveBeenCalled();
+  });
+  it('names each failure in its log line and counts every check, without a key, challenge or address', async () => {
+    const lines: string[] = [];
+    vi.spyOn(console, 'log').mockImplementation((line: string) => { lines.push(line); });
+    const events = () => lines.map((line) => JSON.parse(line) as Record<string, unknown>).filter((line) => line.event === 'native_verification');
+    const rejectedSignature = 'native_verification_total{kind="detection",outcome="rejected",reason="signature"}';
+    const verifiedLookup = 'native_verification_total{kind="lookup",outcome="verified",reason="none"}';
+    const attested = 'lookup_proof_total{kind="lookup",proof="app_attest"}';
+    const before = [await series(rejectedSignature), await series(verifiedLookup), await series(attested)];
+    const req = await signedRequest();
+    await expect(verifyNativeRequest(new Request('https://peek.example/api/public/detect', req), service, signedBody)).rejects.toMatchObject({ status: 403 });
+    await verifyLookupRequest(await signedRequest(), service, signedBody);
+    const req2 = request('/api/public/native/verification');
+    await expect(registerNativeKey(req2, service, { keyId: keyID, challenge: nativeChallenge(req2, keyID, 'attestation').challenge, attestation: 'bad!' }))
+      .rejects.toMatchObject({ status: 403 });
+    expect(events().map(({ kind, outcome, reason }) => ({ kind, outcome, reason }))).toEqual([
+      { kind: 'detection', outcome: 'rejected', reason: 'signature' },
+      { kind: 'lookup', outcome: 'verified', reason: undefined },
+      { kind: 'attestation', outcome: 'rejected', reason: 'malformed' },
+    ]);
+    expect(lines.join('\n')).not.toContain(keyID);
+    expect(lines.join('\n')).not.toContain('192.0.2.10');
+    expect([await series(rejectedSignature), await series(verifiedLookup), await series(attested)]).toEqual(before.map((value) => value + 1));
   });
   it('exposes the free fallback without enabling App Attest and returns no-store challenges', async () => {
     vi.stubEnv('APP_ATTEST_APP_ID', '');

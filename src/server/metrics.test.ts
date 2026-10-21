@@ -181,6 +181,19 @@ describe('prometheus carrier metrics', () => {
     expect(text).not.toContain('parcel_forgotten_total{kind="package",reason="expired"}');
   });
 
+  it('counts App Attest checks by kind, outcome and reason, and lookups by the proof they came with', async () => {
+    metrics.recordNativeVerification('attestation', 'rejected', 'environment');
+    metrics.recordNativeVerification('account_lookup', 'missing', 'legacy');
+    metrics.recordNativeVerification('account_lookup', 'missing', 'legacy');
+    metrics.recordLookupProof('lookup', 'ua_bypass');
+    metrics.recordLookupProof('detection', 'turnstile');
+    const text = await scraped();
+    expect(text).toContain('native_verification_total{kind="attestation",outcome="rejected",reason="environment"} 1');
+    expect(text).toContain('native_verification_total{kind="account_lookup",outcome="missing",reason="legacy"} 2');
+    expect(text).toContain('lookup_proof_total{kind="lookup",proof="ua_bypass"} 1');
+    expect(text).toContain('lookup_proof_total{kind="detection",proof="turnstile"} 1');
+  });
+
   it('counts delivery emails by how they ended and why, and nothing else', async () => {
     metrics.recordDeliveryEmail('sent', 'none');
     metrics.recordDeliveryEmail('sent', 'none');
