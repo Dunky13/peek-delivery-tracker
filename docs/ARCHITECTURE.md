@@ -375,7 +375,8 @@ and nothing typed is sent.
   lookup, so bringing it back does not announce them either. No Live Activity starts for
   it, and the delivery email leaves it out. Someone it was shared with still gets their
   link's alerts.
-- A Live Activity starts only at `out_for_delivery`. It ends on delivery, failed attempt,
+- A Live Activity starts only at `out_for_delivery`, once until a scan in another stage,
+  not counting a provider copy the timeline leaves out. It ends on delivery, failed attempt,
   problem, pickup, return, archive, sign-out or opt-out. At most two run at once. Live
   Activity pushes go first, so a successful one replaces the matching banner; if it fails,
   the banner is sent.

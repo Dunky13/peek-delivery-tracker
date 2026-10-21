@@ -12,7 +12,8 @@
  * instant to compare: a copy in its stage and words whose time shows that wall
  * clock, whole quarter hours away up to 14 h, is left out. A provider's step
  * the carrier never shows, such as another leg's scans, stays. Push leaves the
- * copies unannounced too (push.ts).
+ * copies unannounced too (push.ts), and the Live Activity queue tells them with
+ * the same rules in SQL (`public.hidden_provider_copy`): change both together.
  *
  * A row a carrier's scan took over keeps its universal identity and loses the
  * provider's name, and rows stored before rows named their provider have none
