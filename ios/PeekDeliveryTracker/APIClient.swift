@@ -85,6 +85,23 @@ final class DeliveryAPIClient {
         return name
     }
 
+    /// Whether a carrier picked by hand refuses the number as one it does not issue. The
+    /// server runs the carrier's own check, which sends the number nowhere: no sign-in or cookies.
+    static func numberRefusal(_ value: NumberRefusalRequest, configuration: AppConfiguration = .current, transport: URLSession = .shared) async throws -> Bool {
+        var request = URLRequest(url: configuration.apiBaseURL.appending(path: "api/public/refusal"),
+                                 cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 15)
+        request.httpMethod = "POST"
+        request.httpShouldHandleCookies = false
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder.deliveryTracker.encode(value)
+        let (data, response) = try await transport.data(for: request)
+        guard let response = response as? HTTPURLResponse else { throw DeliveryAPIError.invalidResponse }
+        guard response.statusCode == 200 else { throw DeliveryAPIError.serviceFailed(response.statusCode) }
+        do { return try JSONDecoder.deliveryTracker.decode(NumberRefusalResponse.self, from: data).refused }
+        catch { throw DeliveryAPIError.invalidResponse }
+    }
+
     /// Reads a parcel link as a viewer: no sign-in, no cookies and never an owner key.
     /// Nil when the link leads nowhere, whether it was forgotten or never existed. A link whose
     /// owner stopped sharing it throws `ParcelLinkStopped`.

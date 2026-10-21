@@ -325,6 +325,29 @@ final class CarrierCatalogTests: XCTestCase {
         XCTAssertNil(CarrierRecognition(settledNumber: "").request(for: "", applies: true))
     }
 
+    @MainActor func testARefusalIsAskedOnceForACarrierAndANumberTheServerTakes() async throws {
+        XCTAssertNil(NumberRefusals.question(carrier: nil, trackingNumber: "SYNTH12345", demo: false))
+        XCTAssertNil(NumberRefusals.question(carrier: .unknown, trackingNumber: "SYNTH12345", demo: false))
+        XCTAssertNil(NumberRefusals.question(carrier: .nzCouriers, trackingNumber: "SYNTH12345", demo: true))
+        XCTAssertNil(NumberRefusals.question(carrier: .nzCouriers, trackingNumber: "SYN", demo: false))
+        XCTAssertNil(NumberRefusals.question(carrier: .nzCouriers, trackingNumber: "SYNTH-12345", demo: false))
+        let question = try XCTUnwrap(NumberRefusals.question(carrier: .nzCouriers, trackingNumber: "SYNTHREFUSAL01", demo: false))
+        XCTAssertEqual(question, NumberRefusalRequest(trackingNumber: "SYNTHREFUSAL01", carrier: .nzCouriers))
+
+        var asked = 0
+        let refuses = await NumberRefusals.refuses(question) { _ in asked += 1; return true }
+        XCTAssertTrue(refuses)
+        let again = await NumberRefusals.refuses(question) { _ in asked += 1; return false }
+        XCTAssertTrue(again)
+        XCTAssertEqual(asked, 1)
+        // Nothing is refused when the server cannot answer, and the next sight asks again.
+        let other = NumberRefusalRequest(trackingNumber: "SYNTHREFUSAL02", carrier: .nzCouriers)
+        let failed = await NumberRefusals.refuses(other) { _ in throw DeliveryAPIError.serviceFailed(503) }
+        XCTAssertFalse(failed)
+        let answered = await NumberRefusals.refuses(other) { _ in true }
+        XCTAssertTrue(answered)
+    }
+
     func testRecognitionAsksDirectCandidatesForGenericPostalNumbers() {
         let number = "RR123456785FI"
         let input = catalog.parse(number)

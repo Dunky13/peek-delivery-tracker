@@ -366,6 +366,35 @@ final class ParcelLinkTests: XCTestCase {
         }
     }
 
+    @MainActor func testARefusalIsAskedWithoutSignInOrCookies() async throws {
+        let transport = LinkTestURLProtocol.transport()
+        defer { transport.invalidateAndCancel() }
+        nonisolated(unsafe) var requests: [URLRequest] = []
+        nonisolated(unsafe) var answer: (Int, [String: String], Data) = (200, [:], Data(#"{"refused":true}"#.utf8))
+        LinkTestURLProtocol.handler = { request in requests.append(request); return answer }
+        let question = NumberRefusalRequest(trackingNumber: "SYNTHREFUSAL01", carrier: .nzCouriers)
+
+        let refused = try await DeliveryAPIClient.numberRefusal(question, configuration: LinkTestURLProtocol.configuration, transport: transport)
+        XCTAssertTrue(refused)
+        let request = try XCTUnwrap(requests.first)
+        XCTAssertEqual(request.httpMethod, "POST")
+        XCTAssertEqual(request.url?.absoluteString, "https://links.test/api/public/refusal")
+        XCTAssertFalse(request.httpShouldHandleCookies)
+        for header in ["Authorization", "Cookie", "X-Parcel-Key"] {
+            XCTAssertNil(request.value(forHTTPHeaderField: header), header)
+        }
+        let body = try XCTUnwrap(JSONSerialization.jsonObject(with: LinkTestURLProtocol.body(of: request)) as? [String: String])
+        XCTAssertEqual(body, ["carrier": "nz-couriers", "trackingNumber": "SYNTHREFUSAL01"])
+
+        for (status, data) in [(429, Data()), (200, Data("{}".utf8))] {
+            answer = (status, [:], data)
+            do {
+                _ = try await DeliveryAPIClient.numberRefusal(question, configuration: LinkTestURLProtocol.configuration, transport: transport)
+                XCTFail("Expected a failure")
+            } catch {}
+        }
+    }
+
     @MainActor func testKeepingSendsTheSuggestedNameUnderTheAccountAndReloadsTheList() async throws {
         let transport = LinkTestURLProtocol.transport()
         defer { transport.invalidateAndCancel() }

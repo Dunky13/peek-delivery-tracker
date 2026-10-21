@@ -264,6 +264,32 @@ struct CarrierRecognition: Equatable, Sendable {
     }
 }
 
+/// Whether a carrier picked by hand refuses a number as one it does not issue, so the
+/// pickers can say so before tracking starts. A carrier's refusal of a number does not
+/// change: each pair is asked once while the app runs. Nothing is refused until the
+/// server answers, or when it cannot.
+@MainActor
+enum NumberRefusals {
+    private static var answers: [NumberRefusalRequest: Bool] = [:]
+
+    /// The pair worth asking about: a carrier and a number the server accepts, outside the demo.
+    static func question(carrier: CarrierID?, trackingNumber: String, demo: Bool) -> NumberRefusalRequest? {
+        guard !demo, let carrier, carrier != .unknown,
+              trackingNumber.range(of: "^[A-Z0-9]{4,40}$", options: .regularExpression) != nil else { return nil }
+        return NumberRefusalRequest(trackingNumber: trackingNumber, carrier: carrier)
+    }
+
+    static func refuses(
+        _ question: NumberRefusalRequest,
+        ask: (NumberRefusalRequest) async throws -> Bool = { try await DeliveryAPIClient.numberRefusal($0) }
+    ) async -> Bool {
+        if let known = answers[question] { return known }
+        guard let answer = try? await ask(question) else { return false }
+        answers[question] = answer
+        return answer
+    }
+}
+
 struct ParcelTrackingLink: Identifiable, Sendable {
     enum Role: Sendable { case active, waiting, history }
     let carrier: CarrierID

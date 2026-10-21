@@ -28,6 +28,7 @@ struct AddParcelView: View {
     @State private var lookupAttempt = 0
     @State private var verifiedCarrier: CarrierDetectionResponse?
     @State private var recognition: CarrierRecognition
+    @State private var refusedQuestion: NumberRefusalRequest?
     @FocusState private var focusedField: Field?
 
     @ObservedObject private var catalog = CarrierCatalog.shared
@@ -171,6 +172,12 @@ struct AddParcelView: View {
                     guard !Task.isCancelled else { return }
                     recognition.failedNumber = number
                 }
+            }
+            .task(id: refusalQuestion) {
+                guard let question = refusalQuestion else { return }
+                let refuses = await NumberRefusals.refuses(question)
+                guard !Task.isCancelled else { return }
+                refusedQuestion = refuses ? question : nil
             }
         }
     }
@@ -422,7 +429,7 @@ struct AddParcelView: View {
         if let detail {
             Text(detail)
                 .font(.caption)
-                .foregroundStyle(choosingCarrier ? ExperimentalPalette.ochre : Color.secondary)
+                .foregroundStyle(choosingCarrier || refused ? ExperimentalPalette.ochre : Color.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
@@ -645,8 +652,19 @@ struct AddParcelView: View {
         return nil
     }
 
+    /// A carrier picked by hand, once the number is settled.
+    private var refusalQuestion: NumberRefusalRequest? {
+        guard !amazonNumber, recognition.settledNumber == normalizedNumber else { return nil }
+        return NumberRefusals.question(carrier: carrierOverride, trackingNumber: normalizedNumber, demo: store.isDemo)
+    }
+
+    /// A carrier picked by hand that issues no number of this shape is pointed out before the parcel is added.
+    private var refused: Bool {
+        refusalQuestion != nil && refusedQuestion == refusalQuestion
+    }
+
     private var lineDetail: String? {
-        if carrierOverride != nil { return localizer.text("add.line.chosen") }
+        if carrierOverride != nil { return localizer.text(refused ? "add.line.refused" : "add.line.chosen") }
         if case .recognized = recognitionStatus { return localizer.text("add.line.found") }
         if let preflightDetail { return preflightDetail }
         if amazonNumber || (lineCarrier != nil && lineCarrier != .internationalPost) { return localizer.text("add.detectedCarrier") }
