@@ -3367,8 +3367,9 @@ describe('TrackingSyncService', () => {
         sync_error: 'The carrier temporarily returned no tracking progress. Previous tracking details have been kept.',
       });
       expect(client.insertEvents).not.toHaveBeenCalled();
-      expect(client.completeSyncAttempt).toHaveBeenCalledWith(expect.any(String),
-        expect.objectContaining({ outcome: 'error', anomaly_codes: ['progress_disappeared'] }), expect.any(Array));
+      // No exception was raised: the check still names its error.
+      expect(client.completeSyncAttempt).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+        outcome: 'error', anomaly_codes: ['progress_disappeared'], error_type: 'ProgressDisappeared' }), expect.any(Array));
       adapter.fetch.mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit',
         last_status_text: 'Departed customs', events: [] });
       await expect(service.syncPackage(parcel)).resolves.toMatchObject({ updated: 1, errors: 0 });
@@ -3423,7 +3424,7 @@ describe('TrackingSyncService', () => {
     expect(client.insertEvents).not.toHaveBeenCalled();
     expect(client.deleteEventsByDescriptions).not.toHaveBeenCalled();
     expect(client.completeSyncAttempt).toHaveBeenCalledWith(expect.any(String),
-      expect.objectContaining({ outcome: 'waiting', anomaly_codes: ['fallback_without_progress'] }),
+      expect.objectContaining({ outcome: 'waiting', anomaly_codes: ['fallback_without_progress'], error_type: null }),
       expect.arrayContaining([expect.objectContaining({ step: 'complete', details: expect.objectContaining({
         support_lookup_number: '06080000000002', support_direct_progress: false,
       }) })]));
@@ -3521,7 +3522,7 @@ describe('TrackingSyncService', () => {
     // The answer came without an error: its anomaly is the refresh incident's evidence.
     expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'overnight-thin',
       expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: false,
-        details: expect.objectContaining({ anomaly_codes: 'progress_disappeared' }) })]));
+        details: expect.objectContaining({ error_type: 'ProgressDisappeared', anomaly_codes: 'progress_disappeared' }) })]));
   });
 
   it.each(['result', 'error', 'unannounced'] as const)(

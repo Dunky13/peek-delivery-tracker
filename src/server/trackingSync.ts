@@ -1741,6 +1741,7 @@ export class TrackingSyncService {
         eventsNormalized: events.length,
         eventsNew,
         anomalyCodes: anomalies,
+        ...(progressDisappeared ? { errorType: 'ProgressDisappeared' } : {}),
         providerFailures: routing?.failures,
         supportEvidence: trackingSupportEvidence(parcel, result, sourceCarrierId, outcome, preserveSummary),
       } as const;

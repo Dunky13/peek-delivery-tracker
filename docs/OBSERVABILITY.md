@@ -113,7 +113,7 @@ another stage.
 | `delivered_status_conflict` | The provider says delivered but the chosen stage doesn't |
 | `early_stage_regression` | A scan only announcing or accepting the parcel came after a later stage, which was kept |
 | `provider_clock_offset` | One scan reached the parcel on two clocks a zone apart: a provider read it in the wrong zone, or a scraper fix moved the provider's clock and its rows followed ([ROUTING.md](ROUTING.md)) |
-| `progress_disappeared` | The carrier's own adapter or the provider its saved summary came from answers without progress; for a carrier without an adapter, exhausted providers return only thin answers and the routing failure threshold is reached. The saved state is kept and the check ends as an error. |
+| `progress_disappeared` | The carrier's own adapter or the provider its saved summary came from answers without progress; for a carrier without an adapter, exhausted providers return only thin answers and the routing failure threshold is reached. The saved state is kept and the check ends as an error, with `error_type` `ProgressDisappeared`. |
 | `fallback_without_progress` | A different fallback provider answers without progress for a carrier with its own adapter, or a thin answer for a carrier without one stays below the routing failure threshold. The saved state is kept and the check ends as waiting. |
 | `worker_abandoned_attempt` | The check was still running after 30 min, usually because its worker died, and was marked `abandoned` by the audit maintenance |
 

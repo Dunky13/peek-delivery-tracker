@@ -186,9 +186,11 @@ it('gives a failed refresh the anomaly and each provider\'s failure kind as evid
   const refreshSample = () => (client.recordTrackingHealth.mock.lastCall![2] as JsonObject[])
     .find((sample) => sample.kind === 'refresh')!;
   // The carrier answered without the progress already saved: no error object, every tier healthy.
-  await audit().finish({ outcome: 'error', anomalyCodes: ['progress_disappeared', 'provider_clock_offset'], providerFailures: failures });
+  await audit().finish({ outcome: 'error', anomalyCodes: ['progress_disappeared', 'provider_clock_offset'],
+    errorType: 'ProgressDisappeared', providerFailures: failures });
+  expect(client.completeSyncAttempt).toHaveBeenLastCalledWith(expect.any(String), expect.objectContaining({ error_type: 'ProgressDisappeared' }), expect.any(Array));
   expect(refreshSample()).toMatchObject({ healthy: false, details: {
-    anomaly_codes: 'progress_disappeared,provider_clock_offset', provider_failures: 'ParcelsApp:no_history,Ship24:transport',
+    error_type: 'ProgressDisappeared', anomaly_codes: 'progress_disappeared,provider_clock_offset', provider_failures: 'ParcelsApp:no_history,Ship24:transport',
   } });
   const deferred = Object.assign(new Error('every provider failed'), { name: 'RoutingDeferredError' });
   await audit().finish({ outcome: 'error', error: deferred, providerFailures: { 'la-poste': { kind: 'verification' } } });

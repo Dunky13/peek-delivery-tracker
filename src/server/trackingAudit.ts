@@ -88,6 +88,8 @@ export interface SyncAuditCompletion {
   eventsNew?: number;
   anomalyCodes?: SyncAnomalyCode[];
   error?: unknown;
+  /** An error no exception raised, such as an answer without the progress already saved. */
+  errorType?: string;
   /** Routing's `failures`, each with its `kind`, keyed by provider or carrier id: a failed refresh's evidence. */
   providerFailures?: unknown;
   /** False when no provider was contacted, so the check is not evidence of provider health. */
@@ -346,7 +348,7 @@ export class TrackingSyncAudit {
       events_normalized: boundedCount(completion.eventsNormalized),
       events_new: boundedCount(completion.eventsNew),
       anomaly_codes: [...new Set(completion.anomalyCodes ?? [])].slice(0, 16),
-      error_type: completion.error === undefined ? null : errorType(completion.error),
+      error_type: completion.error === undefined ? completion.errorType ?? null : errorType(completion.error),
       completed_at: completedAt.toISOString(),
       duration_ms: Math.round(elapsedMilliseconds(this.#startedAt)),
     };
