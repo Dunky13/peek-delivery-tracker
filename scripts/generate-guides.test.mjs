@@ -146,15 +146,15 @@ test('every carrier’s page is complete in its languages, and the list the app 
   assert.equal(readFileSync(carriersGenerated, 'utf8'), carriersModule(readCarriers()), 'src/generated/carriers.ts is stale. Run npm run guides.');
 });
 
-test('the carriers’ list names each once, by an id, under a carrier of the scraper’s catalog, in English and other languages of the site', () => {
+test('the carriers’ list names each once, by an id, under a carrier of the scraper’s catalog, in English and other languages a page can be written in', () => {
   refusesCarriers(({ index, list }) => list([...index, index[0]]), /lists each carrier once/);
   refusesCarriers(({ index, first, list }) => list([{ ...first, id: 'Bad_Id' }, ...index.slice(1)]), /"Bad_Id" is not an id/);
   refusesCarriers(({ index, first, list }) => list([{ ...first, catalog: 'no-such-carrier' }, ...index.slice(1)]), /"no-such-carrier" is no carrier of Universal Parcel Scraper's catalog/);
   refusesCarriers(({ index, first, list }) => list([{ ...first, name: ' ' }, ...index.slice(1)]), /has no name/);
   refusesCarriers(({ index, first, list }) => list([{ ...first, colour: 'red' }, ...index.slice(1)]), /is a carrier's id, catalog, name and languages/);
   const [{ languages: written }] = carrierIndex();
-  for (const languages of [written.filter((locale) => locale !== 'en'), [...written, 'nl'], [...written, 'en']]) {
-    refusesCarriers(({ index, first: carrier, list }) => list([{ ...carrier, languages }, ...index.slice(1)]), /is written in English and in other languages of the site/);
+  for (const languages of [written.filter((locale) => locale !== 'en'), [...written, 'xx'], [...written, 'en']]) {
+    refusesCarriers(({ index, first: carrier, list }) => list([{ ...carrier, languages }, ...index.slice(1)]), /is written in English and in other languages a page can be written in/);
   }
 });
 
@@ -246,4 +246,27 @@ test('the list the app links holds, in each language, its carriers in order with
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }
+});
+
+test('a page in a language with pages alone is listed under its language, and links a carrier in its language or else in English', () => {
+  const index = carrierIndex();
+  const [carrier, other] = index;
+  const finnish = (link) => ({ list, file }) => {
+    list([{ ...carrier, languages: [...carrier.languages, 'fi'] }, ...index.slice(1)]);
+    // The English page as a Finnish one: its links to carriers lead to their English pages.
+    writeFileSync(file(carrier.id, 'fi'), readFileSync(file(carrier.id, 'en'), 'utf8').replace(/^slug: .+$/m, 'slug: lahetysten-seuranta').replace(/\n## /, `\n${link}\n\n## `));
+  };
+  const directory = copyCarriers(finnish(`[${other.name}](carrier:${other.id}).`));
+  try {
+    const written = carriersModule(readCarriers(directory));
+    assert.match(written, /export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink\[\]>/);
+    const links = JSON.parse(written.slice(written.indexOf('= {') + 2, written.lastIndexOf(';')));
+    assert.deepEqual(Object.keys(links), ['en', 'de', 'fr', 'it', 'es', 'pt', 'pl', 'nl', 'sv', 'da', 'nb', 'fi', 'cs', 'sk', 'hu', 'ro', 'bg', 'el', 'hr', 'sl', 'lt', 'lv', 'et', 'uk']);
+    assert.deepEqual(links.fi.map(({ id, slug }) => ({ id, slug })), [{ id: carrier.id, slug: 'lahetysten-seuranta' }]);
+    assert.deepEqual(links.sv, []);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+  refusesCarriers(finnish('[Nobody](carrier:no-such-carrier).'), /fi\.md: "carrier:no-such-carrier" leads to no other carrier's page in this language/);
+  refusesCarriers(finnish(`[Itself](carrier:${carrier.id}).`), new RegExp(`fi\\.md: "carrier:${carrier.id}" leads to no other carrier's page`));
 });

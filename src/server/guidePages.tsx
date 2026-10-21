@@ -6,7 +6,7 @@ import { GuideFrame } from '../guides/GuideFrame';
 import { GuideIndex } from '../guides/GuideIndex';
 import { GuidePage } from '../guides/GuidePage';
 import { frenchSpacing } from '../guides/markdown';
-import { SUPPORTED_LOCALES, type Locale } from '../lib/locale';
+import { interfaceLanguage, isPageOnlyLanguage, PAGE_ONLY_LANGUAGES, SUPPORTED_LOCALES, type Locale, type PageLanguage } from '../lib/locale';
 import type { Translate } from '../lib/messages';
 import { guide, guideAddresses, guideAlternates, guideLinkBySlug, guideLinks } from './guides';
 import { landingAddress } from './landingMetadata';
@@ -24,18 +24,22 @@ export function guideWords(locale: Locale): Translate {
   return locale === 'fr' ? (key, variables) => frenchSpacing(t(key, variables)) : t;
 }
 
-/** Each language's name, written in that language, for the foot of a guides page. */
-export const languageNames = () => Object.fromEntries(SUPPORTED_LOCALES.map((locale) => [locale, messagesFor(locale)[`language.${locale}`]])) as Record<Locale, string>;
+/** Each language's name, written in that language, for the foot of a guides page: the site's own, and those with pages alone. */
+export const languageNames = () => Object.fromEntries([
+  ...SUPPORTED_LOCALES.map((locale) => [locale, messagesFor(locale)[`language.${locale}`]]),
+  ...Object.entries(PAGE_ONLY_LANGUAGES).map(([language, { name }]) => [language, name]),
+]) as Record<PageLanguage, string>;
 
 /**
  * A guides page's metadata, or a carrier's page's: its title with Peek's name, its address in each
- * language it is written in on the site's canonical origin, and Peek's own picture in the page's language.
+ * language it is written in on the site's canonical origin, and Peek's own picture in the page's language,
+ * or for a language with pages alone, in the language around its text.
  */
-export async function pageMetadata(locale: Locale, alternates: (site: URL) => Partial<Record<Locale | 'x-default', string>>, title: string, description: string, article?: { published: string; updated: string }): Promise<Metadata> {
+export async function pageMetadata(locale: PageLanguage, alternates: (site: URL) => Partial<Record<PageLanguage | 'x-default', string>>, title: string, description: string, article?: { published: string; updated: string }): Promise<Metadata> {
   const origin = await requestOrigin();
   const languages = alternates(await siteOrigin());
   const address = languages[locale];
-  const picture = sitePicture(origin, locale);
+  const picture = sitePicture(origin, interfaceLanguage(locale));
   return {
     metadataBase: origin,
     title: `${title} — Peek`,
@@ -45,7 +49,7 @@ export async function pageMetadata(locale: Locale, alternates: (site: URL) => Pa
       ...(article ? { type: 'article', publishedTime: article.published, modifiedTime: article.updated } : { type: 'website' }),
       url: address,
       siteName: 'Peek',
-      locale: PREVIEW_LOCALES[locale],
+      locale: isPageOnlyLanguage(locale) ? PAGE_ONLY_LANGUAGES[locale].preview : PREVIEW_LOCALES[locale],
       title,
       description,
       images: [picture],

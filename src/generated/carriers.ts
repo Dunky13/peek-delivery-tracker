@@ -1,5 +1,5 @@
 // Generated from content/carriers by scripts/generate-guides.mjs. Do not edit.
-import type { Locale } from '../lib/locale';
+import type { PageLanguage } from '../lib/locale';
 
 /**
  * A carrier's page in one language: the carrier's id, its id in Universal Parcel Scraper's catalog, its name
@@ -7,7 +7,7 @@ import type { Locale } from '../lib/locale';
  */
 export interface CarrierLink { id: string; catalog: string; slug: string; title: string; name: string; color: string }
 
-export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
+export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
   "en": [
     {
       "id": "quickpac",
@@ -2357,5 +2357,22 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "name": "DHL Express",
       "color": "#ffcc00"
     }
-  ]
+  ],
+  "nl": [],
+  "sv": [],
+  "da": [],
+  "nb": [],
+  "fi": [],
+  "cs": [],
+  "sk": [],
+  "hu": [],
+  "ro": [],
+  "bg": [],
+  "el": [],
+  "hr": [],
+  "sl": [],
+  "lt": [],
+  "lv": [],
+  "et": [],
+  "uk": []
 };

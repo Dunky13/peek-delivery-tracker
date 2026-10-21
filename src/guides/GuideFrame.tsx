@@ -1,7 +1,7 @@
 import { createElement, type ReactNode } from 'react';
 import mark from '../brand/mark.json';
 import { carrierPath } from '../carriers/paths';
-import { documentLanguage, languagePath, SUPPORTED_LOCALES, type Locale } from '../lib/locale';
+import { documentLanguage, languagePath, PAGE_LANGUAGES, type Locale, type PageAddresses, type PageLanguage } from '../lib/locale';
 import type { Translate } from '../lib/messages';
 import { SOURCE_URL } from '../lib/source';
 import { GuideAnalytics } from './GuideAnalytics';
@@ -22,15 +22,18 @@ function Mark({ size }: { size: number }) {
  * language as plain links a search engine can follow. The tracker is the
  * landing in the page's language, reached with a plain link so the browser
  * loads it anew: what the landing decides before its first paint only runs on
- * a fresh document.
+ * a fresh document. A page whose text is in a language with pages alone
+ * stands in the frame of `locale`, and its foot names its own language too.
  */
-export function GuideFrame({ locale, t, addresses, languageNames, screen, children }: {
+export function GuideFrame({ locale, language = locale, t, addresses, languageNames, screen, children }: {
   locale: Locale;
+  /** The language of the page's text, when it is not `locale`'s. */
+  language?: PageLanguage;
   t: Translate;
-  /** This page in every language. */
-  addresses: Record<Locale, string>;
-  /** Each language's name, written in that language. */
-  languageNames: Record<Locale, string>;
+  /** This page in every language of the site, and in each language with pages alone it is written in. */
+  addresses: PageAddresses;
+  /** Each language's name, written in that language: the site's own, and those with pages alone. */
+  languageNames: Record<Locale, string> & Partial<Record<PageLanguage, string>>;
   /** The page's name in the usage counts. */
   screen: string;
   children: ReactNode;
@@ -54,8 +57,8 @@ export function GuideFrame({ locale, t, addresses, languageNames, screen, childr
         <a href={SOURCE_URL} target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
       <nav className="guide-footer__languages" aria-label={t('language.label')}>
-        {SUPPORTED_LOCALES.map((language) => <a key={language} href={addresses[language]} hrefLang={language} lang={documentLanguage(language)}
-          aria-current={language === locale ? 'page' : undefined}>{languageNames[language]}</a>)}
+        {PAGE_LANGUAGES.filter((other) => addresses[other] !== undefined).map((other) => <a key={other} href={addresses[other]} hrefLang={other} lang={documentLanguage(other)}
+          aria-current={other === language ? 'page' : undefined}>{languageNames[other]}</a>)}
       </nav>
     </footer>
     <GuideAnalytics screen={screen} />

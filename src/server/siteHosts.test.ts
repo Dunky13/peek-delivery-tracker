@@ -6,7 +6,7 @@ import { carrierPath } from '../carriers/paths';
 import { CARRIER_LINKS } from '../generated/carriers';
 import { GUIDE_LINKS } from '../generated/guides';
 import { guidePath } from '../guides/paths';
-import { ADDRESS_LANGUAGES, SUPPORTED_LOCALES } from '../lib/locale';
+import { ADDRESS_LANGUAGES, PAGE_ONLY_LANGUAGES, SUPPORTED_LOCALES, type PageOnlyLanguage } from '../lib/locale';
 import { canonicalOrigin, legacyHostRedirect, movedOrigin, requestHost, siteHosts } from './siteHosts';
 
 const moved = { CANONICAL_ORIGIN: 'https://peek.example.test', LEGACY_HOSTS: 'delivery.example.test, old.example.test' } as unknown as NodeJS.ProcessEnv;
@@ -243,6 +243,25 @@ describe('the page proxy', () => {
     for (const path of ['/en/carriers/x', '/carriersmore', '/api/carriers']) expect(rewrite(path).headers.get('x-middleware-rewrite'), path).toBeNull();
   });
 
+  it('renders a carrier’s page in a language with pages alone in English around its text, and any other address there as the 404 page', () => {
+    const answer = (path: string) => page(`https://peek.example.test${path}`, { headers: { host: 'peek.example.test', cookie: 'sdt.locale=de; other=1', 'accept-language': 'de' } });
+    for (const language of Object.keys(PAGE_ONLY_LANGUAGES) as PageOnlyLanguage[]) {
+      const own = CARRIER_LINKS[language].map(({ slug }) => carrierPath(language, slug));
+      // It has no carriers' own page.
+      for (const path of [carrierPath(language), carrierPath(language, 'no-such-carrier'), carrierPath(language, CARRIER_LINKS.en[0].slug)]) {
+        const response = answer(path);
+        expect(response.headers.get('x-middleware-rewrite'), path).toBe('https://peek.example.test/_not-found');
+        expect(response.headers.get('x-middleware-request-cookie'), path).toBe('sdt.locale=en; other=1');
+        expect(response.headers.get('set-cookie'), path).toBeNull();
+      }
+      for (const path of own) {
+        const response = answer(path);
+        expect(response.headers.get('x-middleware-rewrite'), path).toBeNull();
+        expect(response.headers.get('x-middleware-request-cookie'), path).toBe('sdt.locale=en; other=1');
+      }
+    }
+  });
+
   it('answers an address below a language’s guides that names none of them with the 404 page, in that language', () => {
     const rewrite = (path: string) => page(`https://peek.example.test${path}`, { headers: { host: 'peek.example.test', cookie: 'sdt.locale=de' } });
     for (const locale of SUPPORTED_LOCALES) {
@@ -273,7 +292,11 @@ describe('the page proxy', () => {
         expect(matches(path, { purpose: 'prefetch' }), path).toBe(true);
       }
     }
+    // The languages with pages alone, written out in the matcher, are the app's.
+    expect(config.matcher).toContainEqual({ source: `/:language(${Object.keys(PAGE_ONLY_LANGUAGES).join('|')})/carriers/:path*` });
+    for (const language of Object.keys(PAGE_ONLY_LANGUAGES) as PageOnlyLanguage[]) expect(matches(carrierPath(language, 'a-page'), prefetch), language).toBe(true);
     // Other pages are not answered for a prefetch, which renders nothing the proxy needs to set.
+    expect(matches('/xx/carriers/a-page', prefetch)).toBe(false);
     expect(matches('/demo', prefetch)).toBe(false);
     expect(matches('/demo')).toBe(true);
   });

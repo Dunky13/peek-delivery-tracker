@@ -53,7 +53,8 @@ export function proxy(request: NextRequest) {
 
   // A language address such as `/de`, and a guides or carriers address such as `/de/guides/…` or `/carriers/…`
   // (English), is in its own language, whatever the browser prefers: the page is rendered as if that language had
-  // been chosen. Only the request the page reads says so. The browser's own cookie is not written, and no other
+  // been chosen. A carrier's page in a language with pages alone, such as `/fi/carriers/…`, is in English around
+  // its text. Only the request the page reads says so. The browser's own cookie is not written, and no other
   // address reads anything a client could not already choose.
   const { pathname } = request.nextUrl;
   const language = pathLanguage(pathname) ?? guidePathLanguage(pathname) ?? carrierPathLanguage(pathname);
@@ -91,5 +92,7 @@ export const config = {
     { source: '/:language(de|fr|it|es|pt|pl)/guides/:path*' },
     { source: '/carriers/:path*' },
     { source: '/:language(de|fr|it|es|pt|pl)/carriers/:path*' },
+    // The languages with pages alone (`PAGE_ONLY_LANGUAGES`), written out: the matcher is read before the app runs.
+    { source: '/:language(nl|sv|da|nb|fi|cs|sk|hu|ro|bg|el|hr|sl|lt|lv|et|uk)/carriers/:path*' },
   ],
 };

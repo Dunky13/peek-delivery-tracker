@@ -2,7 +2,7 @@ import { Fragment, type ReactNode } from 'react';
 import { carrierPath } from '../carriers/paths';
 import { CARRIER_LINKS } from '../generated/carriers';
 import type { GuideLink } from '../generated/guides';
-import { languagePath, type Locale } from '../lib/locale';
+import { documentLanguage, languagePath, type Locale, type PageLanguage } from '../lib/locale';
 import type { Block, Inline, JourneyIcon } from './markdown';
 import { NumberChecker, type CheckerWords } from './NumberChecker';
 import { guidePath } from './paths';
@@ -30,17 +30,26 @@ function JourneyGlyph({ name }: { name: JourneyIcon }) {
 /**
  * A guide's blocks as the page's elements. Links to other guides, to a
  * carrier's page and to the tracker (`/`) lead to the guide's own language;
- * every other link leaves the site in a new tab.
+ * every other link leaves the site in a new tab. A text in a language with
+ * pages alone leads to a carrier's page in its language where there is one,
+ * and everywhere else to `locale`, the language around it.
  */
-export function GuideBody({ blocks, locale, links, sources, checker }: {
+export function GuideBody({ blocks, locale, language = locale, links, sources, checker }: {
   blocks: readonly Block[];
   locale: Locale;
+  /** The language the blocks are written in, when it is not `locale`. */
+  language?: PageLanguage;
   links: readonly GuideLink[];
   /** The heading above the sources, in the reader's language. */
   sources: string;
   /** What a number checker says, in the reader's language. */
   checker: CheckerWords;
 }) {
+  function carrierAddress(id: string): string {
+    const own = CARRIER_LINKS[language].find((link) => link.id === id);
+    return own ? carrierPath(language, own.slug) : carrierPath(locale, CARRIER_LINKS[locale].find((link) => link.id === id)?.slug);
+  }
+
   function inline(nodes: readonly Inline[]): ReactNode {
     return nodes.map((node, index) => {
       switch (node.type) {
@@ -49,7 +58,7 @@ export function GuideBody({ blocks, locale, links, sources, checker }: {
         case 'strong': return <strong key={index}>{inline(node.children)}</strong>;
         case 'em': return <em key={index}>{inline(node.children)}</em>;
         case 'guide': return <a key={index} href={guidePath(locale, links.find((link) => link.id === node.id)?.slug)}>{inline(node.children)}</a>;
-        case 'carrier': return <a key={index} href={carrierPath(locale, CARRIER_LINKS[locale].find((link) => link.id === node.id)?.slug)}>{inline(node.children)}</a>;
+        case 'carrier': return <a key={index} href={carrierAddress(node.id)}>{inline(node.children)}</a>;
         case 'link': return node.href === '/'
           ? <a key={index} href={languagePath(locale)}>{inline(node.children)}</a>
           : <a key={index} href={node.href} target="_blank" rel="noopener noreferrer">{inline(node.children)}</a>;
@@ -103,7 +112,7 @@ export function GuideBody({ blocks, locale, links, sources, checker }: {
       </ol>;
       case 'checker': return <NumberChecker key={index} locale={locale} words={checker} />;
       case 'sources': return <section key={index} className="guide-sources" aria-labelledby="guide-sources">
-        <h2 id="guide-sources">{sources}</h2>
+        <h2 id="guide-sources" lang={language === locale ? undefined : documentLanguage(locale)}>{sources}</h2>
         <ul>{block.items.map((item, at) => <li key={at}>{inline(item)}</li>)}</ul>
       </section>;
     }

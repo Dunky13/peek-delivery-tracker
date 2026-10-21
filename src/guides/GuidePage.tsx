@@ -1,5 +1,5 @@
 import type { GuideLink } from '../generated/guides';
-import { languagePath, type Locale } from '../lib/locale';
+import { documentLanguage, languagePath, type Locale, type PageLanguage } from '../lib/locale';
 import { languageTags, type Translate } from '../lib/messages';
 import { GuideBody } from './GuideBody';
 import type { CheckerWords } from './NumberChecker';
@@ -26,8 +26,12 @@ export function GuideMeta({ updated, blocks, locale, t }: { updated: string; blo
   </p>;
 }
 
-/** A page's text: its first paragraph, the answer, then the list of its sections and the rest. */
-export function GuideText({ blocks, locale, t, links }: { blocks: readonly Block[]; locale: Locale; t: Translate; links: readonly GuideLink[] }) {
+/**
+ * A page's text: its first paragraph, the answer, then the list of its sections and the rest. A text in a
+ * language with pages alone (`language`) says so, inside the words of `locale` around it.
+ */
+export function GuideText({ blocks, locale, language = locale, t, links }: { blocks: readonly Block[]; locale: Locale; language?: PageLanguage; t: Translate; links: readonly GuideLink[] }) {
+  const lang = language === locale ? undefined : documentLanguage(language);
   const contents = blocks.filter((block) => block.type === 'heading' && block.level === 2);
   const [lead, rest] = [blocks.slice(0, 1), blocks.slice(1)];
   const sources = t('guides.sources');
@@ -42,14 +46,14 @@ export function GuideText({ blocks, locale, t, links }: { blocks: readonly Block
   };
   return <>
     {/* The answer comes first, before the list of what else the page holds. */}
-    <div className="guide-body guide-lead"><GuideBody blocks={lead} locale={locale} links={links} sources={sources} checker={checker} /></div>
+    <div className="guide-body guide-lead" lang={lang}><GuideBody blocks={lead} locale={locale} language={language} links={links} sources={sources} checker={checker} /></div>
     <div className="guide__columns">
       {contents.length > 2 && <nav className="guide-contents" aria-labelledby="guide-contents">
         <strong id="guide-contents">{t('guides.contents')}</strong>
-        <ol>{contents.map((block) => block.type === 'heading' && <li key={block.id}><a href={`#${block.id}`}>{block.plain}</a></li>)}</ol>
+        <ol lang={lang}>{contents.map((block) => block.type === 'heading' && <li key={block.id}><a href={`#${block.id}`}>{block.plain}</a></li>)}</ol>
       </nav>}
-      <div className="guide-body">
-        <GuideBody blocks={rest} locale={locale} links={links} sources={sources} checker={checker} />
+      <div className="guide-body" lang={lang}>
+        <GuideBody blocks={rest} locale={locale} language={language} links={links} sources={sources} checker={checker} />
       </div>
     </div>
   </>;

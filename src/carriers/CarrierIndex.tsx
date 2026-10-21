@@ -1,5 +1,5 @@
 import type { CarrierLink } from '../generated/carriers';
-import type { Locale } from '../lib/locale';
+import type { Locale, PageLanguage } from '../lib/locale';
 import type { Translate } from '../lib/messages';
 import { carrierPath } from './paths';
 
@@ -9,7 +9,7 @@ export function CarrierSwatch({ color }: { color: string }) {
 }
 
 /** A carrier's page as a card: the carrier's name by its colour, the page's title, and what it answers. */
-export function CarrierCard({ link, description, locale }: { link: CarrierLink; description: string; locale: Locale }) {
+export function CarrierCard({ link, description, locale }: { link: CarrierLink; description: string; locale: PageLanguage }) {
   return <li>
     <a className="guide-card carrier-card" href={carrierPath(locale, link.slug)}>
       <span className="carrier-card__name"><CarrierSwatch color={link.color} />{link.name}</span>

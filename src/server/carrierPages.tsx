@@ -6,7 +6,7 @@ import { CarrierIndex } from '../carriers/CarrierIndex';
 import { CarrierPage } from '../carriers/CarrierPage';
 import { GuideFrame } from '../guides/GuideFrame';
 import { plainBlocks, questions } from '../guides/markdown';
-import type { Locale } from '../lib/locale';
+import { interfaceLanguage, type Locale, type PageLanguage } from '../lib/locale';
 import { carrierAddresses, carrierAlternates, carrierLinkBySlug, carrierLinks, carrierText } from './carrierTexts';
 import { guideWords, languageNames, pageMetadata } from './guidePages';
 import { guideLinks } from './guides';
@@ -21,14 +21,14 @@ export async function carrierIndexMetadata(locale: Locale): Promise<Metadata> {
 }
 
 /** A carrier's page's metadata, or none of its own for a slug without a page, which the page answers with a 404. */
-export async function carrierMetadata(locale: Locale, slug: string): Promise<Metadata> {
+export async function carrierMetadata(locale: PageLanguage, slug: string): Promise<Metadata> {
   const link = carrierLinkBySlug(locale, slug);
   if (!link) return {};
   const { title, description, published, updated } = carrierText(locale, link.id);
   return pageMetadata(locale, (site) => carrierAlternates(site, link.id), title, description, { published, updated });
 }
 
-const described = (locale: Locale) => carrierLinks(locale).map((link) => ({ link, description: carrierText(locale, link.id).description }));
+const described = (locale: PageLanguage) => carrierLinks(locale).map((link) => ({ link, description: carrierText(locale, link.id).description, language: locale }));
 
 /** The carriers with a page in a language, all on one page. */
 export async function CarrierIndexRoute({ locale }: { locale: Locale }) {
@@ -43,14 +43,17 @@ export async function CarrierIndexRoute({ locale }: { locale: Locale }) {
  * One carrier's page, in the language of its address. The proxy sends an address without a page, a
  * carrier's in a language it is not written in too, to the site's 404 page before it gets here; reached
  * anyway, such a slug is still a 404. Its language links lead to the carrier's page in the languages it is
- * written in, and to the carriers' own page in the others.
+ * written in, and to the carriers' own page in the others. A page in a language with pages alone stands in
+ * English: its words around the text, its trail, its picture and its way to the tracker; its carriers lead
+ * to their pages in its language first, then to the English ones.
  */
-export async function CarrierRoute({ locale, slug }: { locale: Locale; slug: string }) {
+export async function CarrierRoute({ locale, slug }: { locale: PageLanguage; slug: string }) {
   await connection();
   const link = carrierLinkBySlug(locale, slug);
   if (!link) notFound();
   const text = carrierText(locale, link.id);
-  const t = guideWords(locale);
+  const ui = interfaceLanguage(locale);
+  const t = guideWords(ui);
   const site = await siteOrigin();
   const url = carrierAlternates(site, link.id)[locale];
   const peek = peekOrganization(site);
@@ -60,13 +63,13 @@ export async function CarrierRoute({ locale, slug }: { locale: Locale; slug: str
       {
         '@type': 'Article', headline: text.title, description: text.description, inLanguage: locale,
         datePublished: text.published, dateModified: text.updated, mainEntityOfPage: url,
-        image: sitePicture(site, locale).url, author: peek, publisher: peek,
+        image: sitePicture(site, ui).url, author: peek, publisher: peek,
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Peek', item: landingAddress(site, locale) },
-          { '@type': 'ListItem', position: 2, name: t('carriers.title'), item: carrierAlternates(site)[locale] },
+          { '@type': 'ListItem', position: 1, name: 'Peek', item: landingAddress(site, ui) },
+          { '@type': 'ListItem', position: 2, name: t('carriers.title'), item: carrierAlternates(site)[ui] },
           { '@type': 'ListItem', position: 3, name: text.title, item: url },
         ],
       },
@@ -79,10 +82,12 @@ export async function CarrierRoute({ locale, slug }: { locale: Locale; slug: str
       },
     ],
   };
-  return <GuideFrame locale={locale} t={t} addresses={carrierAddresses(link.id)} languageNames={languageNames()} screen={`carriers/${locale}/${link.id}`}>
+  const own = described(locale);
+  const others = [...own, ...described(ui).filter((other) => !own.some(({ link: written }) => written.id === other.link.id))];
+  return <GuideFrame locale={ui} language={locale} t={t} addresses={carrierAddresses(link.id)} languageNames={languageNames()} screen={`carriers/${locale}/${link.id}`}>
     {/* Data, not a script: the browser runs nothing of it, so the page's script policy does not apply. */}
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonForScript(data) }} />
-    <CarrierPage text={text} carrier={link} locale={locale} t={t} guides={guideLinks(locale)}
-      others={described(locale).filter((other) => other.link.id !== link.id)} />
+    <CarrierPage text={text} carrier={link} locale={ui} language={locale} t={t} guides={guideLinks(ui)}
+      others={others.filter((other) => other.link.id !== link.id)} />
   </GuideFrame>;
 }

@@ -1,30 +1,39 @@
 import { CARRIER_LINKS } from '../generated/carriers';
-import { isLocale, type Locale } from '../lib/locale';
+import { interfaceLanguage, isLocale, isPageOnlyLanguage, type Locale, type PageLanguage } from '../lib/locale';
 
 /** Where the carriers' pages of a language live, or one of them. English has no prefix. */
-export function carrierPath(locale: Locale, slug?: string): string {
-  return `${locale === 'en' ? '' : `/${locale}`}/carriers${slug ? `/${slug}` : ''}`;
+export function carrierPath(language: PageLanguage, slug?: string): string {
+  return `${language === 'en' ? '' : `/${language}`}/carriers${slug ? `/${slug}` : ''}`;
 }
 
 /**
  * The language a carriers address is written in, or null at any other address: `/carriers` is English,
- * `/de/carriers` German. English has no prefix, so `/en/carriers` is no carriers address.
+ * `/de/carriers` German, `/fi/carriers` Finnish, a language with pages alone. English has no prefix, so
+ * `/en/carriers` is no carriers address.
  */
-export function carrierPathLanguage(pathname: string): Locale | null {
+export function carrierPageLanguage(pathname: string): PageLanguage | null {
   const match = /^\/(?:([a-z]{2})\/)?carriers(?:\/|$)/.exec(pathname);
   if (!match) return null;
   if (!match[1]) return 'en';
-  return isLocale(match[1]) && match[1] !== 'en' ? match[1] : null;
+  return (isLocale(match[1]) && match[1] !== 'en') || isPageOnlyLanguage(match[1]) ? match[1] : null;
+}
+
+/** The language a carriers address is shown in: its own, or for a language with pages alone, the one around its pages. */
+export function carrierPathLanguage(pathname: string): Locale | null {
+  const language = carrierPageLanguage(pathname);
+  return language && interfaceLanguage(language);
 }
 
 /**
  * Whether an address below a language's carriers names no carrier written in that language, letter for
  * letter: the proxy answers it with the site's 404 page, as it does an address that names no guide
- * (`namesNoGuide`). A carrier's page in a language it is not written in is no page either.
+ * (`namesNoGuide`). A carrier's page in a language it is not written in is no page either, and a language
+ * with pages alone has no carriers' own page.
  */
 export function namesNoCarrier(pathname: string): boolean {
-  const language = carrierPathLanguage(pathname);
+  const language = carrierPageLanguage(pathname);
   if (!language) return false;
   const below = pathname.slice(carrierPath(language).length);
-  return below !== '' && !CARRIER_LINKS[language].some(({ slug }) => below === `/${slug}`);
+  if (below === '') return isPageOnlyLanguage(language);
+  return !CARRIER_LINKS[language].some(({ slug }) => below === `/${slug}`);
 }

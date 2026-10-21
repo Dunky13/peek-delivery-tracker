@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import en from '../../shared/locales/en.json';
 import fr from '../../shared/locales/fr.json';
-import { SUPPORTED_LOCALES, type Locale } from '../lib/locale';
+import { isLocale, SUPPORTED_LOCALES, type Locale, type PageLanguage } from '../lib/locale';
 
 const request = vi.hoisted(() => ({ host: 'peek.example' }));
 vi.mock('next/headers', () => ({
@@ -24,7 +24,7 @@ const [first] = carrierLinks('en');
 const prefix = (locale: Locale) => (locale === 'en' ? '' : `/${locale}`);
 /** A carrier written in English and in one other language, and a language it is not written in. */
 const translated = carrierLinks('en').map(({ id }) => ({ id, languages: carrierLanguages(id) })).find(({ languages }) => languages.length > 1 && languages.length < SUPPORTED_LOCALES.length)!;
-const [, other] = translated.languages;
+const [, other] = translated.languages.filter(isLocale);
 const missing = SUPPORTED_LOCALES.find((locale) => !translated.languages.includes(locale))!;
 const graph = (html: string) => JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/.exec(html)![1])['@graph'];
 
@@ -91,7 +91,7 @@ describe('what a carrier’s page tells a search engine', () => {
     const link = carrierLinks(other).find(({ id }) => id === translated.id)!;
     const text = carrierText(other, link.id);
     const metadata = await carrierMetadata(other, link.slug);
-    const address = (locale: Locale) => `https://peek.example.test${carrierAddresses(link.id)[locale]}`;
+    const address = (locale: PageLanguage) => `https://peek.example.test${carrierAddresses(link.id)[locale]}`;
     expect(metadata.title).toBe(`${link.title} — Peek`);
     expect(metadata.description).toBe(text.description);
     expect(metadata.metadataBase).toEqual(new URL('https://peek.example'));
