@@ -844,6 +844,7 @@
   "detail.editPostcode": "Edit postcode",
   "add.recognized": "{{carrier}} has this parcel.",
   "add.line.chosen": "Chosen by you",
+  "add.line.refused": "doesn’t issue numbers like this one",
   "add.line.found": "has this parcel",
   "add.line.asking": "asking {{carriers}}…",
   "add.line.several": "{{carriers}} know it",

@@ -6,7 +6,7 @@ import { lookupCarrier } from '../lib/carrierDetection';
 import { carrierPicker, pickCarrier } from '../test/carrierPicker';
 
 vi.mock('../lib/carrierDetection', () => ({ lookupCarrier: vi.fn() }));
-afterEach(() => vi.resetAllMocks());
+afterEach(() => { vi.resetAllMocks(); vi.unstubAllGlobals(); });
 const apiAuth = { userId: 'test-user', getAccessToken: async () => 'test-token' };
 /** The quiet line under the number that names the carrier and opens the picker. */
 const carrierLine = (name: RegExp) => screen.getByRole('button', { name });
@@ -214,6 +214,21 @@ describe('DPD carrier lookup', () => {
     expect(carrierLine(/^SEUR Chosen by you/)).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /^add parcel$/i }));
     expect(onAdd).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'seur' }));
+  });
+
+  it('says before adding that a carrier picked by hand issues no number like this one', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (_path: string, init?: RequestInit) => Response.json({ refused: JSON.parse(String(init?.body)).carrier === 'nz-couriers' })));
+    const onAdd = vi.fn().mockResolvedValue(undefined);
+    const user = userEvent.setup();
+    render(<AddParcelSheet onAdd={onAdd} onClose={vi.fn()} initialTrackingInput="12345678901234" />);
+    await pickCarrier(user, carrierLine(/^Detect automatically/), 'New Zealand Couriers');
+    expect(await screen.findByText('doesn’t issue numbers like this one')).toHaveClass('is-attention');
+    await pickCarrier(user, carrierLine(/^New Zealand Couriers/), 'SEUR');
+    expect(await screen.findByText('Chosen by you')).not.toHaveClass('is-attention');
+    // A warning, not a refusal: the parcel can still be added.
+    await pickCarrier(user, carrierLine(/^SEUR/), 'New Zealand Couriers');
+    await user.click(screen.getByRole('button', { name: /^add parcel$/i }));
+    expect(onAdd).toHaveBeenCalledWith(expect.objectContaining({ carrier: 'nz-couriers' }));
   });
 
   it('keeps automatic detection when no carrier knows the number yet', async () => {

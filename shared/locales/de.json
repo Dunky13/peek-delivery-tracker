@@ -844,6 +844,7 @@
   "detail.editPostcode": "Postleitzahl ändern",
   "add.recognized": "{{carrier}} hat dieses Paket.",
   "add.line.chosen": "Von dir gewählt",
+  "add.line.refused": "vergibt keine Nummern wie diese",
   "add.line.found": "hat dieses Paket",
   "add.line.asking": "Peek fragt bei {{carriers}} nach …",
   "add.line.several": "{{carriers}} kennen die Nummer",

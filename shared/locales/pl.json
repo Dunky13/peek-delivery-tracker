@@ -844,6 +844,7 @@
   "detail.editPostcode": "Zmień kod pocztowy",
   "add.recognized": "{{carrier}} ma tę przesyłkę.",
   "add.line.chosen": "Wybrano ręcznie",
+  "add.line.refused": "nie wydaje takich numerów",
   "add.line.found": "ma tę przesyłkę",
   "add.line.asking": "Peek pyta: {{carriers}}…",
   "add.line.several": "znają ją: {{carriers}}",

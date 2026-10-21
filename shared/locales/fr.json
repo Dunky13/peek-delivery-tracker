@@ -844,6 +844,7 @@
   "detail.editPostcode": "Modifier le code postal",
   "add.recognized": "{{carrier}} a ce colis.",
   "add.line.chosen": "Choisi par toi",
+  "add.line.refused": "n’émet pas de numéros comme celui-ci",
   "add.line.found": "a ce colis",
   "add.line.asking": "Peek demande à {{carriers}}…",
   "add.line.several": "{{carriers}} le connaissent",

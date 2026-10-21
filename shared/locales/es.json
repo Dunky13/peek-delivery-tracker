@@ -844,6 +844,7 @@
   "detail.editPostcode": "Cambiar código postal",
   "add.recognized": "{{carrier}} tiene este paquete.",
   "add.line.chosen": "Elegido por ti",
+  "add.line.refused": "no emite números como este",
   "add.line.found": "tiene este paquete",
   "add.line.asking": "preguntando a {{carriers}}…",
   "add.line.several": "{{carriers}} lo conocen",

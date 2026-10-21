@@ -5,6 +5,7 @@ import { useI18n, type MessageKey } from '../../i18n';
 import { amazonOrdersUrl } from '../../lib/amazon';
 import { carrierBrand } from '../../lib/carrierBrand';
 import { carrierInfo, carrierTrackingHintKey, formatTrackingNumber, tracksAutomatically, typedRequirementValue } from '../../lib/carriers';
+import { useNumberRefusal } from '../../lib/numberRefusal';
 import { forgetPostcode } from '../../lib/postcodeMemory';
 import { lettersPostcode, postcodeExample } from '../../lib/postcodeExample';
 import type { CarrierId } from '../../types';
@@ -52,6 +53,8 @@ export function LookupFeedback({ lookup, pointer, onSignIn, onPickCarrier, onSug
   // What a carrier asked for is corrected beside its own field.
   const inputTrouble = validation && found.fields.length > 0 && (validation === 'error.postcode' || validation === 'error.trackingLink');
   const message = validation && !inputTrouble ? t(validation) : found.nothing ? t('add.notFound') : null;
+  // A carrier picked by hand that issues no number of this shape is pointed out before tracking starts.
+  const refused = useNumberRefusal(match && found.source === 'chosen' ? found.carrier : null, found.normalized);
 
   let line: ReactNode = null;
   if (match && !typo && several.length === 0) {
@@ -63,9 +66,10 @@ export function LookupFeedback({ lookup, pointer, onSignIn, onPickCarrier, onSug
         : found.amazon ? { mark: truck, strong: carrier.name, detail: t('add.detectedCarrier') }
           : check.status === 'asking' ? { mark: detect(true), strong: t('add.checkingServices'), detail: '' }
             : check.status === 'several' ? { mark: detect(), strong: t('door.line.several.many', { count: check.carriers.length }), detail: t('door.line.chooseYours'), attention: true }
-              : found.source !== 'none' ? { mark: truck, strong: carrier.name, detail: t(found.source === 'chosen' ? 'add.line.chosen' : found.source === 'found' ? 'add.line.found' : 'add.detectedCarrier') }
-                : rested ? { mark: detect(), strong: t('add.carrier'), detail: t(check.status === 'none' ? 'add.line.none' : 'door.line.later') }
-                  : null;
+              : refused ? { mark: truck, strong: carrier.name, detail: t('add.line.refused'), attention: true }
+                : found.source !== 'none' ? { mark: truck, strong: carrier.name, detail: t(found.source === 'chosen' ? 'add.line.chosen' : found.source === 'found' ? 'add.line.found' : 'add.detectedCarrier') }
+                  : rested ? { mark: detect(), strong: t('add.carrier'), detail: t(check.status === 'none' ? 'add.line.none' : 'door.line.later') }
+                    : null;
     // The way to the picker stays put while the carriers are asked: leaving the field starts the asking, and a
     // button that left with it would take the click along.
     const changeable = !state.job && found.source !== 'device' && !found.amazon && check.status !== 'several' && Boolean(said);

@@ -2,6 +2,15 @@
 
 import Foundation
 
+struct NumberRefusalRequest: Codable, Equatable, Hashable, Sendable {
+    var trackingNumber: String
+    var carrier: CarrierID
+}
+
+struct NumberRefusalResponse: Codable, Equatable, Hashable, Sendable {
+    var refused: Bool
+}
+
 struct CarrierDetectionRequest: Codable, Equatable, Hashable, Sendable {
     var trackingNumber: String
     var lookupCountryHint: String? = nil

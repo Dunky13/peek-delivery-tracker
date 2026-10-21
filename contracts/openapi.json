@@ -31560,6 +31560,42 @@
         ]
       }
     },
+    "/api/public/refusal": {
+      "post": {
+        "operationId": "checkNumberRefusal",
+        "summary": "Whether a carrier refuses a number as one it does not issue",
+        "description": "The carrier's adapter checks the number's shape; nothing is sent to the carrier. The pickers use it to warn about a carrier picked by hand before tracking starts.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NumberRefusalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Whether the carrier refuses the number",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NumberRefusalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unknown carrier or invalid tracking number"
+          },
+          "429": {
+            "description": "Too many checks this minute. Retry-After says when to try again."
+          }
+        }
+      }
+    },
     "/api/public/parcels": {
       "post": {
         "operationId": "lookUpParcel",
@@ -32518,6 +32554,36 @@
       }
     },
     "schemas": {
+      "NumberRefusalRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "trackingNumber",
+          "carrier"
+        ],
+        "properties": {
+          "trackingNumber": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 80
+          },
+          "carrier": {
+            "$ref": "#/components/schemas/CarrierId"
+          }
+        }
+      },
+      "NumberRefusalResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "refused"
+        ],
+        "properties": {
+          "refused": {
+            "type": "boolean"
+          }
+        }
+      },
       "CarrierDetectionRequest": {
         "type": "object",
         "additionalProperties": false,

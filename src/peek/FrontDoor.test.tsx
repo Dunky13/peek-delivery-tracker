@@ -431,6 +431,24 @@ describe('FrontDoor', () => {
     await waitFor(() => expect(mocks.lookup).toHaveBeenCalledWith({ trackingNumber: 'DEMO4471203', carrier: 'gls-ch', dpdPostcode: '8004' }, expect.any(AbortSignal)));
   });
 
+  it('says before tracking that a carrier picked by hand issues no number like this one', async () => {
+    const refusal = vi.fn(async (_path: string, init?: RequestInit) => Response.json({ refused: JSON.parse(String(init?.body)).carrier === 'nz-couriers' }));
+    vi.stubGlobal('fetch', refusal);
+    const { user, field, track } = door();
+    await user.type(field, 'DEMO4471204');
+    await user.tab();
+    await user.click(screen.getByRole('button', { name: 'Change' }));
+    const picker = await screen.findByRole('dialog', { name: 'Carrier' });
+    await user.type(within(picker).getByRole('combobox', { name: 'Search carriers' }), 'New Zealand Couriers');
+    await user.click(within(picker).getByRole('option', { name: /New Zealand Couriers/ }));
+    await waitFor(() => expect(document.querySelector('.door-line')).toHaveTextContent('New Zealand Couriers doesn’t issue numbers like this one'));
+    expect(refusal).toHaveBeenCalledWith('/api/public/refusal', expect.objectContaining({
+      method: 'POST', body: JSON.stringify({ carrier: 'nz-couriers', trackingNumber: 'DEMO4471204' }) }));
+    // A warning, not a refusal: the reader may track it anyway.
+    await user.click(track);
+    await waitFor(() => expect(mocks.lookup).toHaveBeenCalledWith({ trackingNumber: 'DEMO4471204', carrier: 'nz-couriers' }, expect.any(AbortSignal)));
+  });
+
   it('leads to the chosen carrier’s field when the choice lands just after the door redrew', async () => {
     let answer!: (value: { trackingNumber: string; carrier: string }) => void;
     mocks.detect.mockReturnValueOnce(new Promise((resolve) => { answer = resolve; }));

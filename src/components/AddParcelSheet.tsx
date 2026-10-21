@@ -32,6 +32,7 @@ import './AddParcelSheet.css';
 import { useTypingPause } from '../lib/typingPause';
 import { FoundNumber } from '../peek/lookup/FoundNumber';
 import { lookupCarrier } from '../lib/carrierDetection';
+import { useNumberRefusal } from '../lib/numberRefusal';
 import type { ApiAuth } from '../lib/apiClient';
 import type { ApiCarrierDetectionResponse } from '../generated/apiContract';
 
@@ -253,7 +254,10 @@ export function AddParcelSheet({
   const numberCarrier = shapeCarrier(parsedTracking);
   const preflightDetail = currentRecognition?.carrier !== 'unknown' ? undefined : currentRecognition.trackingFound ? t('add.historyFound')
     : currentRecognition.providers?.some(({ outcome }) => outcome === 'input_required') ? t('add.providerInputNeeded') : undefined;
-  const lineDetail = automatic && preflightDetail ? preflightDetail : !automatic ? t('add.line.chosen')
+  // A carrier picked by hand that issues no number of this shape is pointed out before the parcel is added.
+  const refused = useNumberRefusal(!automatic && !amazonNumber ? selectedCarrier : null,
+    normalizeTrackingNumber(settledTrackingNumber) === normalizedNumber ? normalizedNumber : null);
+  const lineDetail = automatic && preflightDetail ? preflightDetail : !automatic ? t(refused ? 'add.line.refused' : 'add.line.chosen')
     : check.status === 'found' ? t('add.line.found')
       : amazonNumber || (lineCarrier && lineCarrier.id !== 'intl-post') ? t('add.detectedCarrier')
         : check.status === 'asking' ? t('add.checkingServices')
@@ -446,7 +450,7 @@ export function AddParcelSheet({
                       )}
                       <span className="add-parcel-carrier__identity">
                         <strong>{lineCarrier?.name ?? t('add.detect')}</strong>{' '}
-                        {lineDetail && <small className={choosing ? 'is-attention' : undefined}>{lineDetail}</small>}
+                        {lineDetail && <small className={choosing || refused ? 'is-attention' : undefined}>{lineDetail}</small>}
                       </span>{' '}
                       <span className="add-parcel-carrier__change">{t(choosing ? 'add.line.choose' : 'add.line.change')}</span>
                     </button>

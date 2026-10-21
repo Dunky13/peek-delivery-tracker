@@ -30189,6 +30189,15 @@ export const CARRIER_CAPABILITIES = {
   }
 } as const;
 
+export interface ApiNumberRefusalRequest {
+  "trackingNumber": string;
+  "carrier": ApiCarrierId;
+}
+
+export interface ApiNumberRefusalResponse {
+  "refused": boolean;
+}
+
 export interface ApiCarrierDetectionRequest {
   "trackingNumber": string;
   "lookupCountryHint"?: string;
