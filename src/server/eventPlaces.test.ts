@@ -176,6 +176,29 @@ describe('withEventPlaces', () => {
     expect(exported.carrier_data).not.toHaveProperty('direct_history');
   });
 
+  it('keeps a provider row the new carrier\'s answer took over, with the earlier carrier\'s scan of it as its relay', () => {
+    // CTT tells Royal Mail's scans to the minute; its answer took over the provider's copies of them, which it holds.
+    const scan = (id: string, source: string, stage: string, occurredAt: string) => ({
+      ...event(id, null, occurredAt), stage, provider_event_id: `${source}:${id}`,
+    });
+    const row = {
+      id: 'parcel', carrier: 'royal-mail', carrier_data: {
+        original_carrier: 'royal-mail', active_tracking_carrier: 'ctt', routing: { confirmed_carrier: 'royal-mail' },
+        direct_history: { from: '2026-10-15T00:02:02.000Z', to: '2026-10-20T04:10:08.000Z', held: ['unknown:accepted', 'unknown:forwarded'] },
+      },
+      tracking_events: [
+        scan('accepted', 'unknown', 'accepted', '2026-10-16T17:21:00+00:00'),
+        scan('received', 'royal-mail', 'accepted', '2026-10-16T17:21:16+00:00'),
+        scan('forwarded', 'unknown', 'in_transit', '2026-10-20T04:10:00+00:00'),
+        scan('leaving', 'royal-mail', 'in_transit', '2026-10-20T04:10:08+00:00'),
+      ],
+    };
+    const served = (withEventPlaces(row) as { tracking_events: Record<string, unknown>[] }).tracking_events;
+    expect(served.map(({ id, relay_of }) => [id, relay_of])).toEqual([
+      ['accepted', undefined], ['received', 'accepted'], ['forwarded', undefined], ['leaving', 'forwarded'],
+    ]);
+  });
+
   it('serves the parcel without places when the gazetteer fails, and reports it once', () => {
     vi.spyOn(places, 'placesForEvents').mockImplementation(() => {
       throw new Error('missing gazetteer');
