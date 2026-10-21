@@ -1307,6 +1307,24 @@ describe('persistent tracking routing', () => {
     expect(fallback.result.tracking_provider).toBe('Ship24');
     expect(fallback.result).not.toHaveProperty('carrier_answered');
   });
+  it('leaves out a provider\'s delivery the filed carrier\'s own answer disputes, and reports it', async () => {
+    fixedPlan('ParcelsApp');
+    // A BRT import a provider marked delivered the day BRT took it over; the number, wording and clocks are invented.
+    const { router, direct, universal } = setup(new Date('2026-10-19T20:00:00Z'));
+    direct.mockResolvedValue({ sourceCarrierId: 'brt', swissPostReady: null, handoffFallbackErrorType: null,
+      result: { status: 'in_transit', current_stage: 'registered', last_status_text: 'Shipping info sent', last_update: null,
+        events: [{ local_time: '2026-10-12T10:10:00', description: 'Shipping info sent', stage: 'registered' }] } });
+    universal.mockResolvedValue({ status: 'delivered', current_stage: 'delivered', last_status_text: 'Delivered',
+      delivered_at: '2026-10-12T01:00:01Z', last_update: '2026-10-17T01:00:02Z', events: [
+        { time: '2026-10-17T01:00:02Z', description: 'In viaggio', stage: 'in_transit' },
+        { time: '2026-10-12T01:00:01Z', description: 'Delivered', stage: 'delivered' }] });
+    const routed = await router.fetch(parcel({ carrier: 'brt', tracking_number: '12345678901234' }), false);
+    expect(routed.result).toMatchObject({ tracking_provider: 'ParcelsApp', carrier_answered: true,
+      status: 'in_transit', current_stage: 'registered', last_status_text: 'Shipping info sent' });
+    expect(routed.result).not.toHaveProperty('delivered_at');
+    expect(routed.result.events).toEqual([expect.objectContaining({ description: 'In viaggio' })]);
+    expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('delivery_disputed', expect.objectContaining({ carrier: 'brt', provider: 'ParcelsApp' }));
+  });
   describe('a filed carrier\'s partial answer', () => {
     // UPS's public example number; the clocks, wording and estimate are invented.
     const ups = (overrides: JsonObject = {}) => parcel({ carrier: 'ups', tracking_number: '1Z999AA10123456784', ...overrides });

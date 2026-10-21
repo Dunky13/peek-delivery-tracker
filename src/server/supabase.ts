@@ -355,14 +355,17 @@ export class SupabaseClient {
     return await this.activePackages(ACTIVE_PACKAGE_SELECT, [['archived_at', 'is.null']]);
   }
 
-  /** The parcels a check can still change: not delivered or returned, unless the delivery is only announced. */
+  /**
+   * The parcels a check can still change: not delivered or returned, unless the delivery is
+   * only announced, or only a provider reported it and the carrier may yet dispute it (trackingSync.ts).
+   */
   protected async activePackages(
     select: string,
     filters: ReadonlyArray<readonly [string, string]> = [],
   ): Promise<JsonObject[]> {
     const params = query([
       ['select', select],
-      ['or', '(current_stage.not.in.(delivered,returned),last_status_text.eq.TO_BE_DELIVERED)'],
+      ['or', `(current_stage.not.in.(delivered,returned),last_status_text.eq.TO_BE_DELIVERED,carrier_data->>unconfirmed_delivery_until.gt."${new Date().toISOString()}")`],
       ...filters,
       ['order', 'last_synced_at.asc.nullsfirst,created_at.asc'],
     ]);

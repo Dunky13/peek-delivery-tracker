@@ -302,10 +302,19 @@ begin
   update public.packages set current_stage = 'delivered' where tracking_number = 'ONEOFFFOLLOW04';
   insert into public.packages (user_id, tracking_number, carrier)
   values ('c1000000-0000-4000-8000-000000000001', 'ONEOFFFOLLOW05', 'unknown');
+  -- A delivery only a provider reported stays followed until its follow-up ends.
+  perform public.create_one_off_parcel('ONEOFFFOLLOW06', 'unknown', null, null, key_a);
+  perform public.create_one_off_parcel('ONEOFFFOLLOW07', 'unknown', null, null, key_a);
+  update public.packages set current_stage = 'delivered', last_synced_at = now() - interval '2 hours',
+    carrier_data = jsonb_build_object('unconfirmed_delivery_until', to_jsonb(now() + interval '1 day'))
+  where tracking_number = 'ONEOFFFOLLOW06';
+  update public.packages set current_stage = 'delivered',
+    carrier_data = jsonb_build_object('unconfirmed_delivery_until', to_jsonb(now() - interval '1 minute'))
+  where tracking_number = 'ONEOFFFOLLOW07';
 
   select array_agg(tracking_number) into followed
   from public.followed_one_off_packages(now() - interval '24 hours');
-  if followed is distinct from array['ONEOFFFOLLOW02', 'ONEOFFFOLLOW01'] then
+  if followed is distinct from array['ONEOFFFOLLOW02', 'ONEOFFFOLLOW06', 'ONEOFFFOLLOW01'] then
     raise exception 'Scheduled sync would follow %', followed;
   end if;
   delete from public.packages where tracking_number like 'ONEOFFFOLLOW%';

@@ -936,6 +936,72 @@ describe('TrackingSyncService', () => {
     expect(adapter.fetchUniversal).toHaveBeenCalledTimes(1);
   });
 
+  describe('a delivery only a provider reported', () => {
+    // A BRT import a provider marked delivered the day BRT took it over; numbers, wording and clocks are invented.
+    const registered = { local_time: '2026-10-12T10:10:00', description: 'Shipping info sent to BRT', stage: 'registered' };
+    const own = (status: CarrierResult['status'], text: string, ...newer: Array<{ local_time: string; stage: string; description: string }>): CarrierResult => ({
+      status, current_stage: newer[0]?.stage ?? status, last_status_text: text, last_update: null,
+      last_update_local: newer[0]?.local_time ?? registered.local_time, events: [...newer, registered] });
+    const provider = (status: CarrierResult['status'], delivered: string): CarrierResult => ({
+      status, current_stage: status, last_status_text: status === 'delivered' ? 'Delivered' : 'In viaggio',
+      last_update: [delivered, '2026-10-17T01:00:02Z'].sort().at(-1),
+      events: [{ time: '2026-10-17T01:00:02Z', description: 'In viaggio', stage: 'in_transit' },
+        { time: delivered, description: 'Delivered', stage: 'delivered' }] });
+    const parcel = () => {
+      const store = eventStore();
+      const client = Object.assign(store.client, {
+        acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
+        finishTrackingProvider: vi.fn().mockResolvedValue(undefined) });
+      let saved: JsonObject = { id: 'delivered-by-provider', carrier: 'brt', tracking_number: '12345678901234', current_stage: 'pending',
+        created_at: '2026-10-10T00:00:00Z' };
+      return async (at: string, carrier: CarrierResult | Error, answer: CarrierResult) => {
+        const adapter = { fetch: carrier instanceof Error ? vi.fn().mockRejectedValue(carrier) : vi.fn().mockResolvedValue(carrier),
+          fetchUniversal: vi.fn().mockResolvedValue(answer) };
+        await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date(at))
+          .syncPackage({ ...saved, [STORED_EVENT_IDENTITIES]: store.identities() });
+        saved = { ...saved, ...client.applyTrackingSync.mock.calls.at(-1)![1] };
+        return { ...saved, stages: [...store.rows.values()].map((row) => row.stage) } as JsonObject & { stages: unknown[] };
+      };
+    };
+
+    it('gives way in the same check to the carrier\'s own answer that moved the parcel after it', async () => {
+      const check = parcel();
+      const checked = await check('2026-10-19T20:00:00Z', own('in_transit', 'In transito'), provider('delivered', '2026-10-12T01:00:01Z'));
+      expect(checked).toMatchObject({ current_stage: 'in_transit', last_status_text: 'In transito' });
+      expect(checked.stages).not.toContain('delivered');
+      expect(checked.carrier_data).not.toHaveProperty('unconfirmed_delivery_until');
+    });
+
+    it('is checked again for a while, and reopens once the carrier moves the parcel after it', async () => {
+      const check = parcel();
+      // The carrier was down: the provider's delivery is saved, to be checked again for 3 days.
+      const first = await check('2026-10-19T20:00:00Z', new Error('down'), provider('delivered', '2026-10-12T01:00:01Z'));
+      expect(first).toMatchObject({ current_stage: 'delivered', carrier_data: { unconfirmed_delivery_until: '2026-10-22T20:00:00.000Z' } });
+      expect(first.stages).toContain('delivered');
+      const reopened = await check('2026-10-21T08:00:00Z',
+        own('in_transit', 'In viaggio', { local_time: '2026-10-20T09:00:00', description: 'In viaggio', stage: 'in_transit' }),
+        provider('in_transit', '2026-10-12T01:00:01Z'));
+      expect(reopened).toMatchObject({ current_stage: 'in_transit', last_status_text: 'In viaggio' });
+      expect(reopened.stages).not.toContain('delivered');
+      expect(reopened.carrier_data).not.toHaveProperty('unconfirmed_delivery_until');
+    });
+
+    it('stays delivered when the carrier\'s newest scan is older, and ends the follow-up once the carrier shows it', async () => {
+      const check = parcel();
+      const delivering = { local_time: '2026-10-20T09:53:00', description: 'In consegna', stage: 'out_for_delivery' };
+      const first = await check('2026-10-20T15:00:00Z', own('out_for_delivery', 'In consegna', delivering), provider('delivered', '2026-10-20T14:32:00Z'));
+      expect(first).toMatchObject({ current_stage: 'delivered', carrier_data: { unconfirmed_delivery_until: '2026-10-23T15:00:00.000Z' } });
+      const again = await check('2026-10-21T15:00:00Z', own('out_for_delivery', 'In consegna', delivering), provider('delivered', '2026-10-20T14:32:00Z'));
+      expect(again).toMatchObject({ current_stage: 'delivered', carrier_data: { unconfirmed_delivery_until: '2026-10-23T15:00:00.000Z' } });
+      expect(again.stages).toContain('delivered');
+      const confirmed = await check('2026-10-22T15:00:00Z',
+        own('delivered', 'Consegnata', { local_time: '2026-10-20T15:30:00', description: 'Consegnata', stage: 'delivered' }, delivering),
+        provider('delivered', '2026-10-20T14:32:00Z'));
+      expect(confirmed.current_stage).toBe('delivered');
+      expect(confirmed.carrier_data).not.toHaveProperty('unconfirmed_delivery_until');
+    });
+  });
+
   it('saves provider identity for an unknown parcel without claiming a direct answer', async () => {
     const client = { ...fakeClient(),
       acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
@@ -2043,6 +2109,11 @@ describe('TrackingSyncService', () => {
     expect(isOpenedParcelSyncDue({ ...parcel, current_stage: 'returned' }, at('12:00:00'))).toBe(false);
     expect(isOpenedParcelSyncDue({ ...parcel, archived_at: '2026-09-09T09:00:00Z' }, at('12:00:00'))).toBe(false);
     expect(isOpenedParcelSyncDue({ ...parcel, current_stage: 'delivered', last_status_text: 'TO_BE_DELIVERED' }, at('12:00:00'))).toBe(true);
+    // A delivery only a provider reported, which the carrier may yet dispute: daily, until the follow-up ends.
+    const unconfirmed = { ...parcel, current_stage: 'delivered', carrier_data: { unconfirmed_delivery_until: '2026-09-11T10:00:00Z' } };
+    expect(isOpenedParcelSyncDue(unconfirmed, at('12:00:00'))).toBe(false);
+    expect(isOpenedParcelSyncDue(unconfirmed, new Date('2026-09-10T11:00:00Z'))).toBe(true);
+    expect(isOpenedParcelSyncDue(unconfirmed, new Date('2026-09-11T11:00:00Z'))).toBe(false);
     // Out for delivery, the carrier's own adapter answering: every 2 minutes.
     const delivering = { ...parcel, current_stage: 'out_for_delivery' };
     expect(isOpenedParcelSyncDue(delivering, at('10:01:59'))).toBe(false);

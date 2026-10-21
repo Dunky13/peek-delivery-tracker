@@ -123,6 +123,7 @@ describe('one-off parcels and their links', () => {
   });
 
   it('lists archived parcels for the schedule, and leaves them out of refreshing every parcel', async () => {
+    vi.useFakeTimers({ now: new Date('2026-10-21T08:00:00Z'), toFake: ['Date'] });
     const client = service();
     const user = new SupabaseUserClient('https://database.example', 'public-key', 'token');
     const scheduled = vi.spyOn(client, 'request').mockResolvedValue([]);
@@ -132,10 +133,12 @@ describe('one-off parcels and their links', () => {
     expect(params(scheduled.mock.calls[0][0]).has('archived_at')).toBe(false);
     expect(params(scheduled.mock.calls[0][0]).get('select')!.split(',')).toContain('archived_at');
     expect(params(refreshed.mock.calls[0][0]).get('archived_at')).toBe('is.null');
-    // Neither holds a delivered or returned parcel.
+    // Neither holds a delivered or returned parcel, but for a delivery its carrier may yet dispute.
     for (const request of [scheduled, refreshed]) {
-      expect(params(request.mock.calls[0][0]).get('or')).toBe('(current_stage.not.in.(delivered,returned),last_status_text.eq.TO_BE_DELIVERED)');
+      expect(params(request.mock.calls[0][0]).get('or')).toBe('(current_stage.not.in.(delivered,returned),last_status_text.eq.TO_BE_DELIVERED,'
+        + 'carrier_data->>unconfirmed_delivery_until.gt."2026-10-21T08:00:00.000Z")');
     }
+    vi.useRealTimers();
   });
 
   it('reads when the last scheduled run finished', async () => {

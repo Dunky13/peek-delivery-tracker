@@ -16,6 +16,7 @@ import { errorType, reportRoutingEvent } from './observability';
 import { recordChecksumRejection, recordProviderInput } from './metrics';
 import { CarrierError, carrierErrorKind, CARRIER_DEFINITIONS, deliveryHandoff, IndeterminateError, NoHistoryError, retryAfterMsOf } from 'universal-parcel-scraper';
 import { captureDirectLocalHistory, directHistoryNumber, directLocalHistory, hasUnresolvedDirectCurrent, hasUnresolvedDirectHistory } from './directLocalHistory';
+import { withoutDisputedDelivery } from './disputedDelivery';
 import { eventTimestamp, latestResultTime } from 'universal-parcel-scraper/app';
 import type { Recognition, TrackingContext } from 'universal-parcel-scraper/node';
 import { MAX_RECOGNITIONS, recognitionCandidates, recognizeAll, settleRecognition } from 'universal-parcel-scraper';
@@ -1153,6 +1154,13 @@ export class TrackingRouter {
       state.discovery_cursor = 0;
       // The carrier answered too: only its clock or a partial answer sent the result elsewhere, so links stay with it.
       if (localDirectFallback || partialDirect) value.result = { ...value.result, carrier_answered: true };
+      // A delivery only the provider shows, which the carrier's own answer disputes, goes (disputedDelivery.ts).
+      const undisputed = localDirectFallback && universalNumber === number ? withoutDisputedDelivery(
+        value.result, value.sourceCarrierId, localDirectFallback.carrier, localDirectFallback.value.result) : null;
+      if (undisputed) {
+        value = { ...value, result: undisputed };
+        report('delivery_disputed', chosen);
+      }
       return persistResult(value, chosen, withoutProgress);
     }
     if (partialDirect) {

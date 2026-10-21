@@ -51,6 +51,7 @@ import { upuHistory } from './upuHistory';
 import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent, localClockCarrier } from './directLocalHistory';
+import { carrierMovedAt, showsDelivery, UNCONFIRMED_DELIVERY_MS } from './disputedDelivery';
 import { DIRECT_HISTORY, directHistory } from './providerCopies';
 import { earlierCarrier } from './relayCopies';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
@@ -270,8 +271,8 @@ function isScheduledTrackingSyncDue(
   if (!Number.isFinite(lastChecked)) return true;
   const local = DateTime.fromJSDate(now, { zone: 'Europe/Zurich' });
   const hourStart = parcelHourStart(parcel, local);
-  // Archived, daily around the clock.
-  if (archived) return lastChecked < hourStart.minus({ hours: 23 }).toMillis();
+  // Archived, daily around the clock, as is a delivery its carrier may yet dispute.
+  if (archived || unconfirmedDelivery(parcel, now)) return lastChecked < hourStart.minus({ hours: 23 }).toMillis();
   // A provider filed the parcel under a carrier with an adapter of its own that the check did
   // not ask: the next run asks that carrier. That check clears the mark; failing that, it lapses.
   const sinceNamed = now.getTime() - Date.parse(String(routingState(parcel).carrier_named_at ?? ''));
@@ -310,6 +311,15 @@ function isScheduledTrackingSyncDue(
 }
 
 /**
+ * A delivery only a provider reported, which the parcel's carrier did not show: checked
+ * daily until `unconfirmed_delivery_until`, in case the carrier disputes it.
+ */
+function unconfirmedDelivery(parcel: JsonObject, now: Date): boolean {
+  const until = isRecord(parcel.carrier_data) ? Date.parse(String(parcel.carrier_data.unconfirmed_delivery_until ?? '')) : Number.NaN;
+  return parcel.current_stage === 'delivered' && until > now.getTime();
+}
+
+/**
  * Whether opening a one-off parcel's link should queue a check: only when the
  * schedule's cadence for the parcel has come round, including for a lookup
  * that left the schedule because nobody has seen its number, which someone
@@ -318,7 +328,7 @@ function isScheduledTrackingSyncDue(
  */
 export function isOpenedParcelSyncDue(parcel: JsonObject, now: Date): boolean {
   const open = !['delivered', 'returned'].includes(String(parcel.current_stage))
-    || parcel.last_status_text === 'TO_BE_DELIVERED';
+    || parcel.last_status_text === 'TO_BE_DELIVERED' || unconfirmedDelivery(parcel, now);
   return open && parcel.archived_at == null && isScheduledTrackingSyncDue(parcel, now, { opened: true });
 }
 
@@ -1525,8 +1535,24 @@ export class TrackingSyncService {
       const unprovenProviderSummary = typeof result.tracking_provider === 'string' && !fetched.correction
         && directCarrier(String(parcel.carrier)) && answeredByCarrier(parcel) && previousStage !== 'pending'
         && Number.isFinite(previousEventTime) && !(returnedEventTime > previousEventTime);
+      // The parcel's own carrier answered in this check: its own answer, or the scans it gave on local clocks beside a provider's.
+      const filed = String(parcel.carrier);
+      const capture = isRecord(result.direct_local_history) ? result.direct_local_history : {};
+      const ownAnswer: CarrierResult | null = !directCarrier(filed) || result.original_carrier || previousData.original_carrier ? null
+        : typeof result.tracking_provider !== 'string' ? (sourceCarrierId === filed ? result : null)
+          : result.carrier_answered === true && capture.carrier === filed && capture.number === directHistoryNumber(parcel, result)
+            && Array.isArray(capture.events) ? { events: capture.events.filter(isRecord) } : null;
+      const carrierMoved = ownAnswer ? carrierMovedAt(filed, ownAnswer) : Number.NaN;
+      // A saved delivery only a provider reported gives way to that answer when it disputes it, as
+      // routing's does in a single check (disputedDelivery.ts): the provider's delivery rows go.
+      const savedDeliveries = stored.filter((row) => row.stage === 'delivered');
+      const disputedRows = previousStage === 'delivered' && selectedStage !== null && selectedStage !== 'delivered'
+        && typeof previousData.tracking_provider === 'string' && savedDeliveries.length > 0
+        && savedDeliveries.every((row) => String(row.provider_event_id).startsWith('unknown:')
+          && Date.parse(String(row.occurred_at)) <= carrierMoved)
+        ? savedDeliveries.map((row) => String(row.provider_event_id)) : [];
       const preserveSummary = keepSaved || olderSnapshot || unprovenUpuSummary || unprovenLocalSummary || unprovenProviderSummary
-        || (['delivered', 'returned'].includes(previousStage) && selectedStage !== previousStage);
+        || (['delivered', 'returned'].includes(previousStage) && selectedStage !== previousStage && !disputedRows.length);
       const carrierData: JsonObject = Object.fromEntries(
         Object.entries(result).filter(([key, value]) => key !== 'events' && value != null),
       );
@@ -1623,6 +1649,7 @@ export class TrackingSyncService {
       const dated = datedObservations(eventsToPersist.filter((event) => !normalized.relays.has(String(event.provider_event_id))),
         stored, matches);
       const absorbed = eventsToPersist.length > 0 ? [...new Set([...shared.absorbed, ...undated, ...dated.absorbed])] : [];
+      const removed = preserveSummary ? absorbed : [...absorbed, ...disputedRows];
       const keptEvents = eventsToPersist.filter((event) => !matches.skipped.has(String(event.provider_event_id))
         && !dated.skipped.has(String(event.provider_event_id)));
       const persistedEvents = withIdentities(keptEvents, new Map([...matches.reused, ...dated.reused]), stored);
@@ -1635,13 +1662,19 @@ export class TrackingSyncService {
         values.carrier_data = carrierData;
         if (selectedStage && (hasUpdate || !swissPostReady)) {
           // The parcel's rows once this check is saved.
-          const written = new Set([...persistedEvents.map((event) => String(event.provider_event_id)), ...absorbed]);
+          const written = new Set([...persistedEvents.map((event) => String(event.provider_event_id)), ...removed]);
           const rows = [...stored.filter((row) => !written.has(String(row.provider_event_id))
             && !deleteDescriptions.includes(String(row.description))), ...persistedEvents];
           // A carrier the router swapped to may rightly know less than a mistaken one did.
           values.current_stage = fetched.correction ? selectedStage : stageToSave(heldStage(parcel, previousStage, rows), selectedStage);
           if (values.current_stage !== selectedStage) anomalies = [...anomalies, 'early_stage_regression'];
         }
+        // A delivery only a provider reported, which the parcel's own carrier did not show, is
+        // checked again daily for a while: the carrier may yet dispute it (activePackages).
+        const followed = previousStage === 'delivered' ? previousData.unconfirmed_delivery_until
+          : new Date(now.getTime() + UNCONFIRMED_DELIVERY_MS).toISOString();
+        if (values.current_stage === 'delivered' && typeof result.tracking_provider === 'string' && typeof followed === 'string'
+          && directCarrier(filed) && !result.original_carrier && !showsDelivery(ownAnswer)) carrierData.unconfirmed_delivery_until = followed;
         // A parcel collected from its pickup point keeps the point once the carrier stops naming it.
         const collectedAt = collectedPickupPoint(parcel, carrierData, String(values.current_stage ?? previousStage),
           fetched.correction?.carrier ?? carrierId, [...stored, ...events]);
@@ -1703,7 +1736,7 @@ export class TrackingSyncService {
         : !knownUpdate || fallbackWithoutProgress ? 'waiting' : news ? 'updated' : 'unchanged';
       operation = 'persist_package';
       await audit.step('persist_package', async () => {
-        await persist(values, persistedEvents, keepSaved ? [] : deleteDescriptions, absorbed);
+        await persist(values, persistedEvents, keepSaved ? [] : deleteDescriptions, removed);
       }, () => ({
         outcome,
         selected_stage: selectedStage,
