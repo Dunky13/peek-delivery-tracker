@@ -15,6 +15,7 @@ import {
 import { lettersPostcode, postcodeExample } from '../lib/postcodeExample';
 import { useI18n } from '../i18n';
 import { useSheetDialog } from '../lib/modal';
+import { useNumberRefusal } from '../lib/numberRefusal';
 import type {
   CarrierId,
   ParcelCarrierInput,
@@ -54,6 +55,8 @@ export function ChangeCarrierSheet({
   const fieldId = useId();
   const [dialog, onClose] = useSheetDialog<HTMLDivElement>(true, onDismissed, carrierButton);
   const carrier = carrierInfo(selectedCarrier, locale);
+  // A carrier that issues no number of this shape is pointed out before the change is saved.
+  const refused = useNumberRefusal(selectedCarrier, parcel.trackingNumber);
   // The picker leads with the parcel's own carrier when no longer offered,
   // then the carriers its number fits, then the ones used before.
   const detected = detectCarrierMatch(parcel.trackingNumber);
@@ -157,8 +160,8 @@ export function ChangeCarrierSheet({
               <span className="carrier-field__name" id={`${fieldId}-value`}>{carrier.name}</span>
               <Icon name="chevron" />
             </button>
-            <small className="field__help" id={`${fieldId}-hint`}>
-              {t(carrierTrackingHintKey(carrier.id), { carrier: carrier.name })}
+            <small className={`field__help${refused ? ' is-attention' : ''}`} id={`${fieldId}-hint`}>
+              {refused ? `${carrier.name} ${t('add.line.refused')}` : t(carrierTrackingHintKey(carrier.id), { carrier: carrier.name })}
             </small>
           </div>
           {requirements.map((requirement) => (

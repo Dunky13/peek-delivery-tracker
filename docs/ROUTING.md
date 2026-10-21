@@ -369,9 +369,10 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   number waits for Track. Multiple carrier matches and missing inputs still require a choice.
 - **A carrier picked by hand.** When the reader picks a carrier whose adapter refuses the
   number as one it does not issue, the Add sheet (web and iPhone) and the front door say so
-  on the carrier line before tracking starts (`/api/public/refusal`). The adapter's own check runs on the
-  server and sends nothing, so no verification or allowance applies. The reader can still
-  track the number with that carrier.
+  on the carrier line before tracking starts (`/api/public/refusal`), and the change-carrier
+  sheet under the carrier it shows. The adapter's own check runs on the server and sends
+  nothing, so no verification or allowance applies. The reader can still track the number
+  with that carrier.
 - **In routing.** When the filed carrier cannot track the number (no adapter of its own,
   its adapter answered not-found, or an unconfirmed carrier failed and is absent from
   the low-confidence format's candidate list), the router asks

@@ -831,6 +831,7 @@ private struct ChangeCarrierView: View {
     @State private var saving = false
     @State private var errorMessage: String?
     @State private var detent: PresentationDetent = .medium
+    @State private var refusedQuestion: NumberRefusalRequest?
 
     @ObservedObject private var catalog = CarrierCatalog.shared
 
@@ -866,12 +867,20 @@ private struct ChangeCarrierView: View {
                     } label: {
                         HStack(spacing: 10) {
                             CarrierTruckMark(identity: CarrierVisualIdentity.of(selectedCarrier, language: localizer.language))
-                            Text(catalog.info(for: selectedCarrier, language: localizer.language).displayName)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(catalog.info(for: selectedCarrier, language: localizer.language).displayName)
+                                if refused {
+                                    Text(localizer.text("add.line.refused"))
+                                        .font(.caption)
+                                        .foregroundStyle(ExperimentalPalette.ochre)
+                                }
+                            }
                         }
                     }
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel(localizer.text("add.carrier"))
-                    .accessibilityValue(catalog.info(for: selectedCarrier, language: localizer.language).displayName)
+                    .accessibilityValue([catalog.info(for: selectedCarrier, language: localizer.language).displayName,
+                                         refused ? localizer.text("add.line.refused") : nil].compactMap { $0 }.joined(separator: ", "))
                     .accessibilityAddTraits(.isButton)
                     .onChange(of: selectedCarrier) { _, carrier in
                         trackingURL = carrier == parcel.carrier ? parcel.trackingURL ?? "" : ""
@@ -939,10 +948,25 @@ private struct ChangeCarrierView: View {
         .onChange(of: requirements.isEmpty, initial: true) { _, empty in
             if !empty { detent = .large }
         }
+        .task(id: refusalQuestion) {
+            guard let question = refusalQuestion else { return }
+            let refuses = await NumberRefusals.refuses(question)
+            guard !Task.isCancelled else { return }
+            refusedQuestion = refuses ? question : nil
+        }
     }
 
     private var requirements: [CarrierRequirement] {
         catalog.requirements(for: selectedCarrier, trackingNumber: parcel.trackingNumber)
+    }
+
+    private var refusalQuestion: NumberRefusalRequest? {
+        NumberRefusals.question(carrier: selectedCarrier, trackingNumber: CarrierCatalog.normalize(parcel.trackingNumber), demo: store.isDemo)
+    }
+
+    /// A carrier that issues no number of this shape is pointed out before the change is saved.
+    private var refused: Bool {
+        refusalQuestion != nil && refusedQuestion == refusalQuestion
     }
 
     /// The parcel's own carrier when no longer offered, then the carriers its
