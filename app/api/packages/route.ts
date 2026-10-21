@@ -4,7 +4,7 @@ import {
   apiRoute,
   HttpError,
   json,
-  readJsonObject,
+  readJsonBody,
   requireService,
   requireUser,
   requireUserClient,
@@ -14,6 +14,7 @@ import { captureOperationalError } from '../../../src/server/observability';
 import { SupabaseError } from '../../../src/server/supabase';
 import { wakeSyncWorker } from '../../../src/server/background';
 import { lookupCountry, rememberLookupCountry } from '../../../src/server/lookupCountry';
+import { checkAccountRequest } from '../../../src/server/nativeVerification';
 import { newPackageValues } from '../../../src/server/validation';
 
 export const dynamic = 'force-dynamic';
@@ -34,9 +35,10 @@ export const GET = apiRoute(async (context) => {
 }, { serviceRequired: true });
 
 export const POST = apiRoute(async (context) => {
-  const body = await readJsonObject(context.request);
+  const { raw, value: body } = await readJsonBody(context.request);
   const values = newPackageValues(body);
   lookupCountry(context.request, body.lookupCountryHint);
+  await checkAccountRequest(context.request, requireService(context), raw, 'account_lookup');
   await claimAccountTracking(requireService(context), requireUser(context).id, 'lookup');
   await verifyAmazonShippingAddition(values.carrier, values.trackingNumber);
   const client = requireUserClient(context);

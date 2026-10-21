@@ -6,7 +6,7 @@ import { clientIp, clientNetwork, HttpError } from './api';
 import { recordLookupProof } from './metrics';
 import { logOperationalEvent } from './observability';
 import { requestHostname } from './siteHosts';
-import { NATIVE_USER_AGENT, verifyNativeRequest } from './nativeVerification';
+import { hasNativeAssertion, NATIVE_USER_AGENT, verifyNativeRequest } from './nativeVerification';
 import type { SupabaseServiceClient } from './supabase';
 
 const PROOF_SECONDS = 15 * 60;
@@ -146,7 +146,7 @@ export async function verifyLookupRequest(request: Request, service: SupabaseSer
     return;
   }
   try {
-    if (['x-app-attest-key-id', 'x-app-attest-challenge', 'x-app-attest-assertion'].some((header) => request.headers.has(header))) {
+    if (hasNativeAssertion(request)) {
       await verifyNativeRequest(request, service, body);
       recordLookupProof(kind, 'app_attest');
       return;

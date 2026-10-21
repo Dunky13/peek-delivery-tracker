@@ -13,6 +13,10 @@ const CHALLENGE_SECONDS = 120;
 const KEY_ID = /^[A-Za-z0-9+/]{43}=$/;
 /** The iPhone app's URLSession user-agent. Anyone can send it. */
 export const NATIVE_USER_AGENT = /^PeekDeliveryTracker\/\S+ CFNetwork\/\S+ Darwin\/\S+$/;
+const ASSERTION_HEADERS = ['x-app-attest-key-id', 'x-app-attest-challenge', 'x-app-attest-assertion'];
+
+/** Whether the request carries any of an assertion's headers. */
+export const hasNativeAssertion = (request: Request) => ASSERTION_HEADERS.some((header) => request.headers.has(header));
 
 /**
  * Why an attestation or assertion failed, as logs and metrics name it:
@@ -23,12 +27,13 @@ export const NATIVE_USER_AGENT = /^PeekDeliveryTracker\/\S+ CFNetwork\/\S+ Darwi
  * moved past), `unknown_key` (never registered, or unused for 90 days), Apple's
  * steps (`chain`, `certificate_time`, `nonce`, `key_id`, `app_id`, `counter`,
  * `aaguid`, `environment` for a development key, `signature`), the signed
- * launch `category` and `bundle_version`, and `unknown`.
+ * launch `category` and `bundle_version`, `missing` (none sent where one is
+ * required), `unavailable` (the database did not answer) and `unknown`.
  */
 export type NativeFailure =
   | 'malformed' | 'unconfigured' | 'challenge_expired' | 'challenge_mismatch' | 'replayed' | 'unknown_key'
   | 'chain' | 'certificate_time' | 'nonce' | 'key_id' | 'app_id' | 'counter' | 'aaguid' | 'environment'
-  | 'signature' | 'category' | 'bundle_version' | 'unknown';
+  | 'signature' | 'category' | 'bundle_version' | 'missing' | 'unavailable' | 'unknown';
 
 /** The refusal the app answers by verifying again. Its reason stays on the server. */
 class NativeRefusal extends HttpError {
@@ -61,13 +66,14 @@ const LIBRARY_FAILURES = new Map<string, NativeFailure>([
 
 function failure(error: unknown): NativeFailure {
   if (error instanceof NativeRefusal) return error.reason;
+  if (error instanceof SupabaseError) return 'unavailable';
   return (error instanceof Error && LIBRARY_FAILURES.get(error.message)) || 'unknown';
 }
 
 /** Logs and counts one check. The line never has a key, challenge, assertion or address. */
-function record(kind: NativeVerificationKind, outcome: Parameters<typeof recordNativeVerification>[1], reason = 'none') {
+function record(kind: NativeVerificationKind, outcome: Parameters<typeof recordNativeVerification>[1], reason = 'none', mode?: AccountAttestMode) {
   recordNativeVerification(kind, outcome, reason);
-  logOperationalEvent('native_verification', { kind, outcome, reason: reason === 'none' ? undefined : reason });
+  logOperationalEvent('native_verification', { kind, outcome, reason: reason === 'none' ? undefined : reason, mode });
 }
 
 /** Records a failed check and gives the refusal to throw. */
@@ -257,4 +263,67 @@ export async function verifyNativeRequest(request: Request, service: SupabaseSer
   }
   if (outcome !== 'accepted') throw refusal(kind, rejected('replayed'));
   record(kind, 'verified');
+}
+
+export type AccountAttestMode = 'off' | 'log' | 'enforce';
+
+/** `NATIVE_ATTEST_ACCOUNT_MODE`; anything but `off` or `enforce` reads as `log`, which never refuses. */
+export function accountAttestMode(env: Record<string, string | undefined> = process.env): AccountAttestMode {
+  const mode = env.NATIVE_ATTEST_ACCOUNT_MODE?.trim().toLowerCase();
+  return mode === 'off' || mode === 'enforce' ? mode : 'log';
+}
+
+/**
+ * Signed-in requests that have carriers asked or checks queued may carry the
+ * assertion anonymous lookups do, over the bytes the route read (none for a
+ * route without a body). In `log` mode, the default, a present assertion is
+ * checked and the database takes its challenge and counter, with no device
+ * allowance to spend: the check counts `verified` or `invalid` with its
+ * reason, and a request from the app's user-agent without one counts
+ * `missing`, `unsigned` when the app says it verifies (`X-Native-Verification`)
+ * and `legacy` from builds that never do. Nothing is refused. In `enforce`
+ * mode, with App Attest configured, a request from the app's user-agent
+ * without a valid assertion gets the refusal an anonymous lookup gets.
+ * Browsers never sign and are never refused here; account budgets apply to all.
+ */
+export async function checkAccountRequest(
+  request: Request,
+  service: SupabaseServiceClient,
+  body: Uint8Array,
+  kind: 'account_lookup' | 'account_detection' | 'account_refresh',
+): Promise<void> {
+  const mode = accountAttestMode();
+  if (mode === 'off') return;
+  let settings: NativeAttestSettings | null;
+  try {
+    settings = nativeAttestSettings();
+  } catch {
+    // The anonymous routes report a broken configuration; it never stops an account.
+    settings = null;
+  }
+  const app = NATIVE_USER_AGENT.test(request.headers.get('user-agent') ?? '');
+  const enforced = mode === 'enforce' && app && settings !== null;
+  if (!hasNativeAssertion(request)) {
+    if (!app) return;
+    record(kind, 'missing', request.headers.has('x-native-verification') ? 'unsigned' : 'legacy', mode);
+    if (enforced) throw rejected('missing');
+    return;
+  }
+  try {
+    if (!settings) throw rejected('unconfigured');
+    const checked = await checkAssertion(request, service, body, settings);
+    // With nothing to spend, the database takes the challenge and the counter and counts no use.
+    const outcome = await service.request('/rest/v1/rpc/accept_native_assertion', { method: 'POST', body: {
+      p_key_id: checked.keyId, p_counter: checked.counter, p_challenge: checked.challenge.hash, p_expires: checked.challenge.expires,
+      p_kind: 'lookup', p_limit: 0,
+    } });
+    if (outcome !== 'limited') throw rejected('replayed');
+    record(kind, 'verified', 'none', mode);
+  } catch (error) {
+    const reason = failure(error);
+    record(kind, 'invalid', reason, mode);
+    if (!enforced) return;
+    if (error instanceof SupabaseError) throw error;
+    throw error instanceof NativeRefusal ? error : rejected(reason);
+  }
 }

@@ -22,8 +22,14 @@ or the `lookup` or `detection` an assertion signed), its `outcome` (`verified`,
 challenge, or a counter another request moved past), `unknown_key`, a failed step
 of Apple's validation (`chain`, `certificate_time`, `nonce`, `key_id`, `app_id`,
 `counter`, `aaguid`, `environment` for a development key, `signature`), the signed
-launch `category` or `bundle_version`, or `unknown`. `native_verification_total`
-counts the same. Neither has a key identifier, challenge, assertion, address or
+launch `category` or `bundle_version`, or `unknown`. Signed-in parcel additions,
+detections that contact a carrier and refreshes log `account_lookup`,
+`account_detection` or `account_refresh` with the `mode` that answered (`log` or
+`enforce`): `verified`, `invalid` with the same reasons (`unavailable` when the
+database could not check), or `missing` for a request from the app's user-agent
+that was not signed, `unsigned` when the app says it verifies but could not sign
+and `legacy` from builds that never sign. Browsers sign nothing and are not
+counted. `native_verification_total` counts the same. Neither has a key identifier, challenge, assertion, address or
 parcel input. `lookup_proof_total` counts what let each anonymous lookup or
 detection through. Verification, anonymous lookup and detection endpoints omit the incoming request
 from error reports because their headers can carry verification credentials.
@@ -829,6 +835,12 @@ Useful questions:
   `TURNSTILE_ALLOW_NATIVE_USER_AGENT` off ([DEPLOYMENT.md](DEPLOYMENT.md)).
   `native_verification_total{outcome="rejected"}` by `reason` says why installations
   that do verify fall back to Turnstile.
+
+- **Can signed-in requests require App Attest?** `native_verification_total` for the
+  `account_*` kinds. Builds that never sign count `outcome="missing",reason="legacy"`
+  and would be signed out by `NATIVE_ATTEST_ACCOUNT_MODE=enforce`; once that is about
+  zero, and `unsigned` and `invalid` are rare next to `verified`, enforce
+  ([DEPLOYMENT.md](DEPLOYMENT.md)). `invalid` by `reason` says what to fix first.
 
 - **Is a check digit wrong for real numbers?** A `carrier_checksum_rejection_total` rule that
   keeps counting. Review that checksum in the scraper; the series holds no number to test it with.

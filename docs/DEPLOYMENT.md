@@ -312,6 +312,16 @@ and `NATIVE_DETECTIONS_PER_DAY` for installation budgets; `0` disables that work
 Network and global budgets still apply. Apple outages and unsupported devices
 use Turnstile. Signed-in requests use account budgets.
 
+Signed-in parcel additions, detections that contact a carrier and refreshes can
+carry the same signature. `NATIVE_ATTEST_ACCOUNT_MODE` sets what the server does with them. `log`, the
+default, checks a signature that is sent and counts the result; it never refuses
+and spends no installation budget. `enforce` refuses a request from the app's
+user-agent without a valid signature, as an anonymous lookup is refused, once
+`APP_ATTEST_APP_ID` is set. Browsers are never refused, and the user-agent can be
+forged, so account budgets remain the limit. `off` checks nothing. Builds that do
+not sign take the refusal for an ended session and sign the user out, so enforce
+only once they are gone ([OBSERVABILITY.md](OBSERVABILITY.md)).
+
 Accounts have separate persistent daily budgets for parcel additions and
 carrier detections: `ACCOUNT_LOOKUPS_PER_DAY` (default 15) and
 `ACCOUNT_DETECTIONS_PER_DAY` (default 60). Accounts cost nothing to make, so every

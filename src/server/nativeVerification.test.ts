@@ -6,10 +6,15 @@ import { GET as configuration, POST as register } from '../../app/api/public/nat
 import { POST as challengeRoute } from '../../app/api/public/native/challenge/route';
 import { POST as lookUp } from '../../app/api/public/parcels/route';
 import { GET as page } from '../../app/api/public/native/turnstile/route';
-import { nativeAttestSettings, nativeChallenge, nativeRequestPayload, registerNativeKey, verifyNativeRequest } from './nativeVerification';
+import { POST as addParcel } from '../../app/api/packages/route';
+import { POST as refreshParcel } from '../../app/api/packages/[id]/sync/route';
+import { POST as refreshAll } from '../../app/api/sync/route';
+import { POST as detectForAccount } from '../../app/api/carriers/detect/route';
+import { SupabaseAuthenticator } from './auth';
+import { accountAttestMode, nativeAttestSettings, nativeChallenge, nativeRequestPayload, registerNativeKey, verifyNativeRequest } from './nativeVerification';
 import { verifyLookupRequest, verifyLookupBrowser } from './lookupVerification';
 import { metricsText } from './metrics';
-import { SupabaseServiceClient } from './supabase';
+import { SupabaseError, SupabaseServiceClient, SupabaseUserClient } from './supabase';
 
 const appID = 'TESTTEAM01.com.example.Peek';
 const keyID = Buffer.alloc(32, 7).toString('base64');
@@ -21,15 +26,15 @@ function request(path = '/api/public/parcels', body = signedBody.toString(), ip 
   return new NextRequest(`https://peek.example${path}`, { method: 'POST', body,
     headers: { 'Content-Type': 'application/json', host: 'peek.example', 'x-real-ip': ip } });
 }
-async function signedRequest(options: { counter?: number; appID?: string; extension?: object } = {}) {
-  const req = request();
+/** Adds an assertion over `body` to the request, as the app signs it. */
+async function signed<R extends Request>(req: R, body: Uint8Array, options: { counter?: number; appID?: string; extension?: object } = {}): Promise<R> {
   const { challenge } = nativeChallenge(req, keyID, 'assertion');
   const auth = Buffer.alloc(37);
   createHash('sha256').update(options.appID ?? appID).digest().copy(auth);
   auth.writeUInt32BE(options.counter ?? 1, 33);
   if (options.extension) auth[32] = 0x80;
   const authenticatorData = options.extension ? Buffer.concat([auth, await cbor.encodeAsync(options.extension)]) : auth;
-  const payload = nativeRequestPayload(req, challenge, signedBody);
+  const payload = nativeRequestPayload(req, challenge, body);
   const nonce = createHash('sha256').update(Buffer.concat([authenticatorData, createHash('sha256').update(payload).digest()])).digest();
   const signature = sign('sha256', nonce, privateKey);
   req.headers.set('X-App-Attest-Key-Id', keyID);
@@ -37,6 +42,7 @@ async function signedRequest(options: { counter?: number; appID?: string; extens
   req.headers.set('X-App-Attest-Assertion', (await cbor.encodeAsync({ signature, authenticatorData })).toString('base64'));
   return req;
 }
+const signedRequest = (options: Parameters<typeof signed>[2] = {}) => signed(request(), signedBody, options);
 const service = new SupabaseServiceClient('https://database.example', 'test-key');
 /** A counter's value: the first scrape shows a new series at 0 and applies its updates. */
 async function series(name: string): Promise<number> {
@@ -54,9 +60,10 @@ beforeEach(() => {
   vi.stubEnv('TRUST_PROXY_HEADERS', 'true');
   vi.stubEnv('SUPABASE_URL', 'https://database.example');
   vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-key');
-  vi.spyOn(SupabaseServiceClient.prototype, 'request').mockImplementation(async (path) => {
+  vi.spyOn(SupabaseServiceClient.prototype, 'request').mockImplementation(async (path, options) => {
     if (path.endsWith('get_native_attest_key')) return { public_key: storedKey, app_id: appID, sign_count: 0 };
-    if (path.endsWith('accept_native_assertion')) return 'accepted';
+    // As the database answers: with no allowance to spend, a valid assertion is `limited`.
+    if (path.endsWith('accept_native_assertion')) return (options?.body as { p_limit?: number }).p_limit === 0 ? 'limited' : 'accepted';
     return true;
   });
 });
@@ -230,5 +237,114 @@ describe('native verification', () => {
     expect(html).not.toContain('synthetic-secret');
     vi.stubEnv('TURNSTILE_SITE_KEY', ''); vi.stubEnv('TURNSTILE_SECRET_KEY', ''); vi.stubEnv('TURNSTILE_HOSTNAMES', '');
     expect((await page(new NextRequest('https://peek.example/api/public/native/turnstile'), { params: Promise.resolve({}) })).status).toBe(503);
+  });
+});
+
+describe('signed-in requests', () => {
+  const userId = '55000000-0000-4000-a000-000000000001';
+  const parcelId = '55000000-0000-4000-a000-000000000002';
+  const addition = Buffer.from('{"trackingNumber":"FR0000000099","carrier":"amazon-shipping"}');
+  const appAgent = 'PeekDeliveryTracker/42 CFNetwork/3860.500.111 Darwin/25.5.0';
+  const none = new Uint8Array();
+  const routeContext = { params: Promise.resolve({}) };
+  let lines: string[];
+  const account = (path: string, body: Buffer | null, headers: Record<string, string> = {}) => new NextRequest(`https://peek.example${path}`, {
+    method: 'POST', body: body?.toString(),
+    headers: { 'Content-Type': 'application/json', host: 'peek.example', 'x-real-ip': '192.0.2.10', Authorization: 'Bearer synthetic-token', ...headers },
+  });
+  const checks = () => lines.map((line) => JSON.parse(line) as Record<string, unknown>)
+    .filter((line) => line.event === 'native_verification').map(({ kind, outcome, reason, mode }) => ({ kind, outcome, reason, mode }));
+  let claim: ReturnType<typeof vi.spyOn>;
+  beforeEach(() => {
+    vi.stubEnv('SUPABASE_PUBLISHABLE_KEY', 'test-public');
+    vi.spyOn(SupabaseAuthenticator.prototype, 'validate').mockResolvedValue({ id: userId, email: null, authenticatedAt: null, sessionId: null });
+    // The account's own allowance answers each request that gets past verification.
+    claim = vi.spyOn(SupabaseServiceClient.prototype, 'claimAccountTracking').mockResolvedValue({ allowed: false, scope: 'account', overallUsed: 0 });
+    lines = [];
+    vi.spyOn(console, 'log').mockImplementation((line: string) => { lines.push(line); });
+  });
+
+  it('reads an unknown mode as log', () => {
+    expect(accountAttestMode({})).toBe('log');
+    expect(accountAttestMode({ NATIVE_ATTEST_ACCOUNT_MODE: ' Enforce ' })).toBe('enforce');
+    expect(accountAttestMode({ NATIVE_ATTEST_ACCOUNT_MODE: 'off' })).toBe('off');
+    expect(accountAttestMode({ NATIVE_ATTEST_ACCOUNT_MODE: 'strict' })).toBe('log');
+  });
+
+  it('checks assertions in log mode without refusing anyone or spending a device allowance', async () => {
+    const valid = await signed(account('/api/packages', addition, { 'User-Agent': appAgent }), addition);
+    expect((await addParcel(valid, routeContext)).status).toBe(429);
+    expect(service.request).toHaveBeenCalledWith('/rest/v1/rpc/accept_native_assertion', expect.objectContaining({ body: expect.objectContaining({
+      p_key_id: keyID, p_counter: 1, p_kind: 'lookup', p_limit: 0,
+    }) }));
+    const tampered = await signed(account('/api/packages', addition, { 'User-Agent': appAgent }), Buffer.from('{}'));
+    expect((await addParcel(tampered, routeContext)).status).toBe(429);
+    expect((await addParcel(account('/api/packages', addition, { 'User-Agent': appAgent }), routeContext)).status).toBe(429);
+    expect((await addParcel(account('/api/packages', addition, { 'User-Agent': appAgent, 'X-Native-Verification': '1' }), routeContext)).status).toBe(429);
+    expect((await addParcel(account('/api/packages', addition), routeContext)).status).toBe(429);
+    vi.mocked(service.request).mockRejectedValueOnce(new SupabaseError('database unavailable'));
+    expect((await addParcel(await signed(account('/api/packages', addition, { 'User-Agent': appAgent }), addition), routeContext)).status).toBe(429);
+    expect(claim).toHaveBeenCalledTimes(6);
+    expect(checks()).toEqual([
+      { kind: 'account_lookup', outcome: 'verified', reason: undefined, mode: 'log' },
+      { kind: 'account_lookup', outcome: 'invalid', reason: 'signature', mode: 'log' },
+      { kind: 'account_lookup', outcome: 'missing', reason: 'legacy', mode: 'log' },
+      { kind: 'account_lookup', outcome: 'missing', reason: 'unsigned', mode: 'log' },
+      { kind: 'account_lookup', outcome: 'invalid', reason: 'unavailable', mode: 'log' },
+    ]);
+    expect(lines.join('\n')).not.toContain(keyID);
+  });
+
+  it('refuses the app without a valid assertion in enforce mode, before its allowance, and never a browser', async () => {
+    vi.stubEnv('NATIVE_ATTEST_ACCOUNT_MODE', 'enforce');
+    for (const refused of [
+      account('/api/packages', addition, { 'User-Agent': appAgent, 'X-Native-Verification': '1' }),
+      await signed(account('/api/packages', addition, { 'User-Agent': appAgent }), Buffer.from('{}')),
+    ]) {
+      const response = await addParcel(refused, routeContext);
+      expect(response.status).toBe(403);
+      expect(response.headers.get('X-Lookup-Verification')).toBe('required');
+    }
+    vi.mocked(service.request).mockResolvedValueOnce({ public_key: storedKey, app_id: appID, sign_count: 0 }).mockResolvedValueOnce('rejected');
+    expect((await addParcel(await signed(account('/api/packages', addition, { 'User-Agent': appAgent }), addition), routeContext)).status).toBe(403);
+    const refusedRefresh = await refreshAll(account('/api/sync', null, { 'User-Agent': appAgent }), routeContext);
+    expect(refusedRefresh.status).toBe(403);
+    expect(claim).not.toHaveBeenCalled();
+    expect((await addParcel(await signed(account('/api/packages', addition, { 'User-Agent': appAgent }), addition), routeContext)).status).toBe(429);
+    // Browsers never sign, and a broken assertion from one is counted, not refused.
+    expect((await addParcel(account('/api/packages', addition), routeContext)).status).toBe(429);
+    expect((await addParcel(await signed(account('/api/packages', addition), Buffer.from('{}')), routeContext)).status).toBe(429);
+    // Without App Attest configured, the app cannot sign, so nothing is enforced.
+    vi.stubEnv('APP_ATTEST_APP_ID', '');
+    expect((await addParcel(account('/api/packages', addition, { 'User-Agent': appAgent }), routeContext)).status).toBe(429);
+    expect(claim).toHaveBeenCalledTimes(4);
+    expect(checks().map(({ outcome, reason }) => [outcome, reason])).toEqual([
+      ['missing', 'unsigned'], ['invalid', 'signature'], ['invalid', 'replayed'], ['missing', 'legacy'], ['verified', undefined],
+      ['invalid', 'signature'], ['missing', 'legacy'],
+    ]);
+  });
+
+  it('checks nothing when off', async () => {
+    vi.stubEnv('NATIVE_ATTEST_ACCOUNT_MODE', 'off');
+    expect((await addParcel(await signed(account('/api/packages', addition, { 'User-Agent': appAgent }), Buffer.from('{}')), routeContext)).status).toBe(429);
+    expect((await addParcel(account('/api/packages', addition, { 'User-Agent': appAgent }), routeContext)).status).toBe(429);
+    expect(service.request).not.toHaveBeenCalled();
+    expect(checks()).toEqual([]);
+  });
+
+  it('checks refreshes over an empty body, and detections when carriers are to be asked', async () => {
+    vi.spyOn(SupabaseUserClient.prototype, 'listActivePackages').mockResolvedValue([]);
+    vi.spyOn(SupabaseUserClient.prototype, 'getPackage').mockResolvedValue(null);
+    vi.spyOn(SupabaseServiceClient.prototype, 'pendingSyncJobCount').mockResolvedValue(0);
+    expect((await refreshAll(await signed(account('/api/sync', null, { 'User-Agent': appAgent }), none), routeContext)).status).toBe(202);
+    const one = await signed(account(`/api/packages/${parcelId}/sync`, null, { 'User-Agent': appAgent }), none);
+    expect((await refreshParcel(one, { params: Promise.resolve({ id: parcelId }) })).status).toBe(404);
+    const detection = await signed(account('/api/carriers/detect', addition, { 'User-Agent': appAgent }), addition);
+    expect((await detectForAccount(detection, routeContext)).status).toBe(429);
+    expect(checks()).toEqual([
+      { kind: 'account_refresh', outcome: 'verified', reason: undefined, mode: 'log' },
+      { kind: 'account_refresh', outcome: 'verified', reason: undefined, mode: 'log' },
+      { kind: 'account_detection', outcome: 'verified', reason: undefined, mode: 'log' },
+    ]);
   });
 });
