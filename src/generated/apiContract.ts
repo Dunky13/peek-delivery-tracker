@@ -3237,6 +3237,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^[A-Z]{2}\\d{2}(?:CA|US)A0[A-Z]\\d{9}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^JY\\d{2}CA\\d{2}A\\d{9}$",
+        "confidence": "low"
       }
     ],
     "trackingUrlTemplate": "https://www.uniuni.com/tracking/?no={trackingNumber}",
