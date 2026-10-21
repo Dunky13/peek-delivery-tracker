@@ -1425,7 +1425,7 @@ describe('persistent tracking routing', () => {
     ["only the postal union's feed", { carrier: 'yamato' }, ['UPU'], '2026-01-09T13:19:00Z'],
     ['a recent history', { carrier: 'yamato' }, ['FedEx'], '2026-08-20T10:00:00Z'],
     ['no filed carrier and a delivery', { carrier: 'unknown' }, ['FedEx'], '2026-01-09T13:19:00Z', 'delivered'],
-    ['no filed carrier and a recent label', { carrier: 'unknown' }, ['FedEx'], '2026-08-20T10:00:00Z', 'registered'],
+    ['no filed carrier and a label two months old', { carrier: 'unknown' }, ['FedEx'], '2026-07-01T10:00:00Z', 'registered'],
   ])('keeps a universal history with %s', async (_label, filed, reported, stamp, stage = 'in_transit') => {
     const { router, direct, universal } = setup();
     direct.mockResolvedValue(yearlessYamato());

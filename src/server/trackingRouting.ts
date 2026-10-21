@@ -268,10 +268,11 @@ function latest(value: RoutedResult): number {
 // Numbers are reused, and carriers' number spaces overlap (a 12-digit Yamato
 // number can be an old FedEx parcel). A universal history that ended a month
 // before the parcel was added and names only other catalog carriers is not it.
-// With no carrier filed, nor is one that ended so long before without a
-// delivery or return: an old label is a reused number's, an old delivery may
-// be a parcel looked up again.
+// With no carrier filed, nor is one that ended three months before without a
+// delivery or return: a seller's label can wait a month for the parcel, one
+// that old is a reused number's, and an old delivery may be looked up again.
 const FOREIGN_HISTORY_GAP = 30 * DAY;
+const UNFILED_HISTORY_GAP = 90 * DAY;
 /** Whether a reported name can mean this carrier: its id, a brand network of it, or a name the catalog doesn't know. */
 function mayNameCarrier(name: string, carrier: string): boolean {
   const id = carrierIdFromName(name);
@@ -285,9 +286,10 @@ function mayNameCarrier(name: string, carrier: string): boolean {
 /** Whether a universal history is the number's earlier parcel, not the one filed under this carrier at this time. */
 export function foreignHistory(result: CarrierResult, carrier: string, addedAt: unknown): boolean {
   if (typeof addedAt !== 'string') return false;
+  const unfiled = carrier === 'unknown' || carrier === 'intl-post';
   const newest = latestResultTime(result, 'unknown');
-  if (!(newest > 0 && newest < millis(addedAt) - FOREIGN_HISTORY_GAP)) return false;
-  if (carrier === 'unknown' || carrier === 'intl-post') {
+  if (!(newest > 0 && newest < millis(addedAt) - (unfiled ? UNFILED_HISTORY_GAP : FOREIGN_HISTORY_GAP))) return false;
+  if (unfiled) {
     return ![resultStage(result), ...(result.events ?? []).map((event) => event.stage)]
       .some((stage) => stage === 'delivered' || stage === 'returned');
   }
