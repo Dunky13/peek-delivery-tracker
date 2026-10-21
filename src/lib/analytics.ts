@@ -32,6 +32,25 @@ function outsideReferrer(referrer: string, hostname: string): string | undefined
   } catch { return undefined; }
 }
 
+/**
+ * AI assistants whose links name them in `utm_source` but whose apps send no referrer, by that
+ * name, with the site Umami counts them under (its referrers and its AI channel).
+ */
+const ASSISTANTS = new Map([
+  ['chatgpt.com', 'chatgpt.com'], ['chatgpt', 'chatgpt.com'], ['chat.openai.com', 'chatgpt.com'],
+  ['perplexity.ai', 'perplexity.ai'], ['perplexity', 'perplexity.ai'],
+  ['copilot.microsoft.com', 'copilot.microsoft.com'], ['copilot.com', 'copilot.microsoft.com'], ['copilot', 'copilot.microsoft.com'],
+  ['gemini.google.com', 'gemini.google.com'], ['gemini', 'gemini.google.com'],
+  ['claude.ai', 'claude.ai'], ['claude', 'claude.ai'],
+]);
+
+/** The assistant the landing address's `utm_source` names, as the referrer it did not send. */
+function assistantReferrer(search: string): string | undefined {
+  const source = new URLSearchParams(search).get('utm_source')?.trim().toLowerCase().replace(/^www\./, '');
+  const site = source ? ASSISTANTS.get(source) : undefined;
+  return site ? `https://${site}/` : undefined;
+}
+
 /** The landing address's campaign, as a query Umami reads: only the campaign keys, each shortened. */
 function campaignQuery(search: string): string {
   const given = new URLSearchParams(search);
@@ -47,10 +66,13 @@ function campaignQuery(search: string): string {
 /**
  * Where this page load came from, read once as the page starts, before the app can
  * change its address. Umami counts sources from page views alone, so it rides on the
- * load's first view.
+ * load's first view. An AI assistant that sent no referrer is counted as one, as if it had.
  */
 let arrival: { referrer?: string; campaign: string } | null = typeof window === 'undefined' ? null
-  : { referrer: outsideReferrer(document.referrer, location.hostname), campaign: campaignQuery(location.search) };
+  : {
+    referrer: outsideReferrer(document.referrer, location.hostname) ?? assistantReferrer(location.search),
+    campaign: campaignQuery(location.search),
+  };
 
 /** The app's language as the page declares it (`pt-PT` is `pt`), when it is one Peek speaks. */
 function appLocale(): string | undefined {

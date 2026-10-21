@@ -122,7 +122,9 @@ On the web, every event carries the app's language (`locale`) when the page decl
 A page load's first page view also says where the visitor came from, since Umami counts
 sources from page views only: the `referrer`, as origin and path without query or fragment,
 when it is another site (or an Android app), and the landing address's `utm_source`,
-`utm_medium` and `utm_campaign` as the view's query.
+`utm_medium` and `utm_campaign` as the view's query. When the browser gave no referrer and
+`utm_source` names an AI assistant (ChatGPT, Perplexity, Copilot, Gemini, Claude), the
+referrer is that assistant's site, so Umami lists it under referrers and its AI channel.
 
 The web sends nothing under DNT, GPC or `umami.disabled=1`, nor from a browser driven by
 automation (`navigator.webdriver`), such as a headless crawler, which still gets the same

@@ -162,6 +162,21 @@ describe('where a page load came from', () => {
     expect(payloads()[0].referrer).toBe(sent);
   });
 
+  it.each([
+    ['ChatGPT', '/?utm_source=chatgpt.com', '', 'https://chatgpt.com/'],
+    ['Perplexity, by name', '/carriers/en/royal-mail?utm_source=Perplexity', '', 'https://perplexity.ai/'],
+    ['ChatGPT, through a page that sent itself', '/?utm_source=chatgpt.com', 'https://www.bing.com/', 'https://www.bing.com/'],
+    ['a newsletter', '/?utm_source=newsletter', '', undefined],
+    ['a source named like a property of every object', '/?utm_source=constructor', '', undefined],
+  ])('names the assistant that sent no referrer: %s', async (_, address, referrer, sent) => {
+    history.replaceState(null, '', address);
+    arriveFrom(referrer);
+    const a = await import('./analytics');
+    a.trackScreen('front-door');
+    await a.startAnalytics(); await settle();
+    expect(payloads()[0].referrer).toBe(sent);
+  });
+
   it('sends no language the page does not declare, or one Peek does not speak', async () => {
     document.documentElement.lang = 'nl';
     const a = await import('./analytics');
