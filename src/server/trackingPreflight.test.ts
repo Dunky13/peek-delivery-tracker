@@ -29,6 +29,15 @@ it('shares concurrent work and lets one caller cancel while another reuses anony
   expect(takePreflightHistory('Ship24', '1234567891', null)).toMatchObject(history);
   expect(takePreflightHistory('Ship24', '1234567891', null)).toBeUndefined();
 });
+it('takes a reused number\'s old label as no history, naming no carrier', async () => {
+  vi.useFakeTimers({ now: new Date('2026-10-20T17:48:00Z'), toFake: ['Date'] });
+  vi.spyOn(UniversalTracker.prototype, 'fetchSource').mockImplementation(async (source) => {
+    if (source === 'Ship24') throw new NotFoundError(source);
+    return { status: 'pending', reported_carriers: ['Happy Post'], events: [{ time: '2025-12-22T16:10:17Z', description: 'Label generated', stage: 'registered' }] };
+  });
+  expect(await preflightTracking('1234500024', health())).toEqual({ providers: [{ provider: 'Ship24', outcome: 'no_history' }, { provider: 'ParcelsApp', outcome: 'no_history' }] });
+  expect(takePreflightHistory('ParcelsApp', '1234500024', null)).toBeUndefined();
+});
 it('keeps input requirements actionable without opening the provider circuit', async () => {
   vi.spyOn(UniversalTracker.prototype, 'fetchSource').mockImplementation(async (source) => {
     if (source === 'ParcelsApp') throw new InputRequiredError(source, 'postcode');

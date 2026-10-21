@@ -268,6 +268,9 @@ function latest(value: RoutedResult): number {
 // Numbers are reused, and carriers' number spaces overlap (a 12-digit Yamato
 // number can be an old FedEx parcel). A universal history that ended a month
 // before the parcel was added and names only other catalog carriers is not it.
+// With no carrier filed, nor is one that ended so long before without a
+// delivery or return: an old label is a reused number's, an old delivery may
+// be a parcel looked up again.
 const FOREIGN_HISTORY_GAP = 30 * DAY;
 /** Whether a reported name can mean this carrier: its id, a brand network of it, or a name the catalog doesn't know. */
 function mayNameCarrier(name: string, carrier: string): boolean {
@@ -279,13 +282,18 @@ function mayNameCarrier(name: string, carrier: string): boolean {
   if (brand && name.toLowerCase().replace(/[^a-z0-9]/g, '').startsWith(brand)) return true;
   return !isKnownCarrierName(name);
 }
-function foreignHistory(result: CarrierResult, carrier: string, addedAt: unknown): boolean {
-  if (carrier === 'unknown' || carrier === 'intl-post' || typeof addedAt !== 'string') return false;
+/** Whether a universal history is the number's earlier parcel, not the one filed under this carrier at this time. */
+export function foreignHistory(result: CarrierResult, carrier: string, addedAt: unknown): boolean {
+  if (typeof addedAt !== 'string') return false;
+  const newest = latestResultTime(result, 'unknown');
+  if (!(newest > 0 && newest < millis(addedAt) - FOREIGN_HISTORY_GAP)) return false;
+  if (carrier === 'unknown' || carrier === 'intl-post') {
+    return ![resultStage(result), ...(result.events ?? []).map((event) => event.stage)]
+      .some((stage) => stage === 'delivered' || stage === 'returned');
+  }
   const names = Array.isArray(result.reported_carriers)
     ? result.reported_carriers.filter((name): name is string => typeof name === 'string') : [];
-  if (!names.length || names.some((name) => mayNameCarrier(name, carrier))) return false;
-  const newest = latestResultTime(result, 'unknown');
-  return newest > 0 && newest < millis(addedAt) - FOREIGN_HISTORY_GAP;
+  return names.length > 0 && !names.some((name) => mayNameCarrier(name, carrier));
 }
 /** Whether a carrier has an adapter of its own for the router to ask. */
 export function directCarrier(carrier: string): boolean {
@@ -982,7 +990,7 @@ export class TrackingRouter {
         if (!usable(result)) throw new TypeError('No usable universal progress');
         if (foreignHistory(result, universalCarrier, parcel.created_at)) {
           report('foreign_history_rejected', source);
-          throw new IndeterminateError(source, `${source} returned an older parcel of another carrier for this number`);
+          throw new IndeterminateError(source, `${source} returned an older parcel for this number`);
         }
         const previousFailure = state.failures[source];
         if (previousFailure) report('provider_recovered', source);

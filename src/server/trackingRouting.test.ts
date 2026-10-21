@@ -1405,16 +1405,32 @@ describe('persistent tracking routing', () => {
     expect(result.result.routing).toMatchObject({ failures: { Ship24: { kind: 'no_history' } } });
     expect(vi.mocked(monitoring.reportRoutingEvent)).toHaveBeenCalledWith('foreign_history_rejected', expect.objectContaining({ provider: 'Ship24' }));
   });
+  it.each(['unknown', 'intl-post'])('ignores an old label a universal returns for a reused number filed under %s', async (carrier) => {
+    fixedPlan('ParcelsApp', '17TRACK');
+    const { router, universal } = setup();
+    // The number's earlier parcel: a label from last winter that never moved, naming the carrier that reused it.
+    universal.mockResolvedValueOnce({ status: 'pending', current_stage: 'registered', last_update: '2026-01-08T08:36:05Z',
+      reported_carriers: ['Example Post'], events: [{ time: '2026-01-08T06:58:19Z', description: 'Label generated', stage: 'registered' },
+        { time: '2026-01-08T08:36:05Z', description: 'shipped', stage: 'pending' }] });
+    universal.mockResolvedValueOnce(history());
+    const result = await router.fetch(parcel({ carrier, created_at: '2026-09-01T00:00:00Z' }), false);
+    expect(universal.mock.calls.map(([source]) => source)).toEqual(['ParcelsApp', '17TRACK']);
+    expect(result.result).toMatchObject({ tracking_provider: '17TRACK', last_update: '2026-09-10T11:00:00Z' });
+    expect(result.result.routing).toMatchObject({ failures: { ParcelsApp: { kind: 'no_history' } } });
+    expect(vi.mocked(monitoring.reportRoutingEvent)).toHaveBeenCalledWith('foreign_history_rejected', expect.objectContaining({ provider: 'ParcelsApp' }));
+  });
   it.each([
     ['a name for the filed carrier', { carrier: 'yamato' }, ['Yamato Transport'], '2026-01-09T13:19:00Z'],
     ['a name the catalog does not know', { carrier: 'yamato' }, ['Example Parcel Co'], '2026-01-09T13:19:00Z'],
     ["only the postal union's feed", { carrier: 'yamato' }, ['UPU'], '2026-01-09T13:19:00Z'],
-    ['no filed carrier', { carrier: 'unknown' }, ['FedEx'], '2026-01-09T13:19:00Z'],
     ['a recent history', { carrier: 'yamato' }, ['FedEx'], '2026-08-20T10:00:00Z'],
-  ])('keeps a universal history with %s', async (_label, filed, reported, stamp) => {
+    ['no filed carrier and a delivery', { carrier: 'unknown' }, ['FedEx'], '2026-01-09T13:19:00Z', 'delivered'],
+    ['no filed carrier and a recent label', { carrier: 'unknown' }, ['FedEx'], '2026-08-20T10:00:00Z', 'registered'],
+  ])('keeps a universal history with %s', async (_label, filed, reported, stamp, stage = 'in_transit') => {
     const { router, direct, universal } = setup();
     direct.mockResolvedValue(yearlessYamato());
-    universal.mockResolvedValueOnce({ ...history(stamp), reported_carriers: reported });
+    universal.mockResolvedValueOnce({ ...history(stamp), current_stage: stage, events: [{ time: stamp, description: 'Update', stage }],
+      reported_carriers: reported });
     const result = await router.fetch(parcel({ ...filed, tracking_number: '123456789012', created_at: '2026-09-01T00:00:00Z' }), false);
     if (filed.carrier === 'yamato') {
       expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ tracking_number: '123456789012' }), 'yamato');
