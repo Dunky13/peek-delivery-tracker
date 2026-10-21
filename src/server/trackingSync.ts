@@ -1263,6 +1263,8 @@ export class TrackingSyncService {
     const previousStage = String(parcel.current_stage ?? 'pending');
     const addition = isRecord(parcel.carrier_data) && parcel.carrier_data.add_recognition_pending === true;
     let consumeAddition = addition;
+    // The delivery probe of an origin that failed: whatever the check saves carries it, so its gap counts it.
+    let originDownProbe: JsonObject | null = null;
 
     const persist = async (
       values: JsonObject,
@@ -1271,6 +1273,10 @@ export class TrackingSyncService {
       deleteEventIds: string[] = [],
     ) => {
       context.signal?.throwIfAborted();
+      if (originDownProbe) {
+        values.carrier_data = { ...(isRecord(values.carrier_data) ? values.carrier_data : isRecord(parcel.carrier_data) ? parcel.carrier_data : {}),
+          delivery_probe: originDownProbe };
+      }
       if (consumeAddition) {
         const data = { ...(isRecord(values.carrier_data) ? values.carrier_data : isRecord(parcel.carrier_data) ? parcel.carrier_data : {}) };
         delete data.add_recognition_pending;
@@ -1348,11 +1354,12 @@ export class TrackingSyncService {
       const once = <T>(key: readonly unknown[], lookup: () => Promise<T>) => checks ? checks.once(key, lookup) : lookup();
       // Where the parcel was looked up from stays the parcel's, even for a carrier asked without its data.
       const lookupCountry = normalizedLookupCountry(isRecord(subject.carrier_data) ? subject.carrier_data.lookup_country_hint : undefined);
+      const keepProbe = (probe: JsonObject) => { originDownProbe = probe; };
       // Only a check someone asked for, or a lookup's, skips the scheduled cadence: a release's re-check keeps it.
       try {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
           ? await new TrackingRouter({
-            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks, askedForCheck(context.trigger), lookupCountry),
+            direct: (candidate, carrier) => this.fetchResult(candidate, carrier, checks, askedForCheck(context.trigger), lookupCountry, keepProbe),
             universal: (source, number, timeout, postcode, timezone, carrier) => once(universalLookupKey(source, number, postcode, timezone, carrier),
               () => this.adapter.fetchUniversal!(source, number, timeout, postcode, timezone, carrier)),
             ...(checks ? { reusedUniversal: (source: UniversalSource, number: string, postcode: string | null, timezone: string | null, carrier: string | null) =>
@@ -1366,7 +1373,7 @@ export class TrackingSyncService {
               once(recognitionKey('browser', carrier, number), () => this.adapter.recognizeBrowser!(carrier, number, context, previousError)) } : {}),
             enablePostalNinja: process.env.TRACKING_ENABLE_POSTAL_NINJA === 'true',
           }).fetch(subject, !askedForCheck(context.trigger), context.signal, addition)
-          : await this.fetchResult(subject, carrierId, checks, askedForCheck(context.trigger), lookupCountry));
+          : await this.fetchResult(subject, carrierId, checks, askedForCheck(context.trigger), lookupCountry, keepProbe));
       } catch (error) {
         if (carrierId === 'amazon-shipping' && error instanceof CarrierError && error.reason === 'history_expired') {
           audit.skip('normalize', 'history_expired');
@@ -1912,6 +1919,7 @@ export class TrackingSyncService {
     checks?: ParcelLookups,
     byHand = false,
     lookupCountry: string | null = null,
+    onProbe?: (probe: JsonObject) => void,
   ): Promise<{
     result: CarrierResult;
     sourceCarrierId: string;
@@ -2043,7 +2051,11 @@ export class TrackingSyncService {
           });
         }
       }
-      if (originError) throw originError;
+      if (originError) {
+        // The error carries no result: the check saves the probe's marker, so its gap counts it.
+        if (isRecord(origin.delivery_probe)) onProbe?.(origin.delivery_probe);
+        throw originError;
+      }
       return {
         result: origin, sourceCarrierId: carrierId,
         swissPostReady: null, handoffFallbackErrorType: fallbackError,

@@ -3249,6 +3249,52 @@ describe('TrackingSyncService', () => {
     expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T22:40:00.000Z', origin_update: originUpdate, misses: 1 } });
   });
 
+  it('counts a probe made while the origin post cannot answer toward the gap before the next', async () => {
+    const client = fakeClient();
+    let now = new Date('2026-09-10T10:00:00Z');
+    const adapter = { fetch: vi.fn(async (carrier: string): Promise<CarrierResult> => {
+      if (carrier === 'la-poste') throw Object.assign(new Error('Shipment not found'), { status: 404 });
+      throw new ChallengeError('DHL');
+    }) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    let parcel: JsonObject = { id: 'origin-down', carrier: 'dhl', tracking_number: 'RR123456785DE', current_stage: 'in_transit',
+      carrier_data: { lookup_country_hint: 'FR' } };
+    const refresh = async (time: string) => {
+      now = new Date(`2026-09-10T${time}:00Z`);
+      adapter.fetch.mockClear();
+      await service.syncPackage(parcel, { trigger: 'scheduled' });
+      parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
+      return adapter.fetch.mock.calls.map((call) => call[0]);
+    };
+
+    expect(await refresh('10:00')).toEqual(['dhl', 'la-poste']);
+    expect(parcel).toMatchObject({ sync_status: 'error', carrier_data: { lookup_country_hint: 'FR',
+      delivery_probe: { carrier: 'la-poste', at: '2026-09-10T10:00:00.000Z', misses: 1 } } });
+    // While the origin stays down the gap does not grow, and La Poste is asked again once it passes.
+    expect(await refresh('10:30')).toEqual(['dhl']);
+    expect(await refresh('10:55')).toEqual(['dhl', 'la-poste']);
+    expect(parcel.carrier_data).toMatchObject({ delivery_probe: { at: '2026-09-10T10:55:00.000Z' } });
+  });
+
+  it('keeps the probe an origin post that cannot answer made when the router defers the check', async () => {
+    const client = { ...fakeClient(),
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: null }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    const adapter = {
+      fetch: vi.fn(async (carrier: string): Promise<CarrierResult> => {
+        if (carrier === 'la-poste') throw Object.assign(new Error('Shipment not found'), { status: 404 });
+        throw new ChallengeError('DHL');
+      }),
+      fetchUniversal: vi.fn().mockRejectedValue(new NoHistoryError('UPU', 'No history')),
+    };
+    await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T10:00:00Z'))
+      .syncPackage({ id: 'origin-down', carrier: 'dhl', tracking_number: 'RR123456785DE', current_stage: 'in_transit',
+        carrier_data: { lookup_country_hint: 'FR', routing: { version: 1, configured_carrier: 'dhl', last_event_at: '2026-09-09T10:00:00.000Z' } } });
+    expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['dhl', 'la-poste']);
+    expect(client.updatePackage.mock.calls.at(-1)![1].carrier_data).toMatchObject({ routing: { failures: { dhl: {} } },
+      delivery_probe: { carrier: 'la-poste', at: '2026-09-10T10:00:00.000Z' } });
+  });
+
   it('asks a partner that has announced the parcel on every check until its first scan', async () => {
     const client = fakeClient();
     let now = new Date('2026-09-10T16:00:00Z');
