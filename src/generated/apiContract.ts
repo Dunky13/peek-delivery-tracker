@@ -30187,6 +30187,33 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ]
+  },
+  "techlink": {
+    "displayName": "Techlink",
+    "aliases": [
+      "TechLink",
+      "智禾",
+      "智禾国际物流",
+      "智禾国际物流(深圳)有限公司",
+      "Zhihe International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#e73547",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^ZHPHD\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{6}ML$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -31011,7 +31038,8 @@ export const CARRIER_IDS = [
   "first-line",
   "j-and-t-de",
   "kun-express",
-  "juxi-express"
+  "juxi-express",
+  "techlink"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
