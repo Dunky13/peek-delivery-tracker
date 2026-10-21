@@ -1032,6 +1032,70 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "Magyar Posta tracking: Hungarian statuses in English",
       "name": "Magyar Posta",
       "color": "#346631"
+    },
+    {
+      "id": "shiprocket",
+      "catalog": "shiprocket",
+      "slug": "shiprocket-tracking",
+      "title": "Shiprocket tracking: AWB numbers, statuses and RTO",
+      "name": "Shiprocket",
+      "color": "#735ae5"
+    },
+    {
+      "id": "first-line",
+      "catalog": "first-line",
+      "slug": "first-line-tracking",
+      "title": "FIRST LINE tracking: 1ST numbers, statuses and delivery",
+      "name": "FIRST LINE",
+      "color": "#55207a"
+    },
+    {
+      "id": "j-and-t-de",
+      "catalog": "j-and-t-de",
+      "slug": "jt-express-germany-tracking",
+      "title": "J&T Express Germany tracking: statuses, neighbours, contact",
+      "name": "J&T Express Germany",
+      "color": "#e60000"
+    },
+    {
+      "id": "kun-express",
+      "catalog": "kun-express",
+      "slug": "kun-express-tracking",
+      "title": "Kun Express tracking: KUN numbers, statuses and USPS",
+      "name": "Kun Express",
+      "color": "#0761ff"
+    },
+    {
+      "id": "juxi-express",
+      "catalog": "juxi-express",
+      "slug": "juxi-express-tracking",
+      "title": "Juxi Express tracking: JXC numbers, delivery and help",
+      "name": "Juxi Express",
+      "color": "#e2393c"
+    },
+    {
+      "id": "jcex",
+      "catalog": "jcex",
+      "slug": "jcex-tracking",
+      "title": "JCEX tracking: JCZ numbers, statuses and who delivers",
+      "name": "JCEX",
+      "color": "#0080cc"
+    },
+    {
+      "id": "lingdong",
+      "catalog": "lingdong",
+      "slug": "lingdong-tracking",
+      "title": "Lingdong International tracking: SZLD numbers and statuses",
+      "name": "Lingdong International",
+      "color": "#0171bb"
+    },
+    {
+      "id": "j-and-t-au",
+      "catalog": "j-and-t-au",
+      "slug": "jt-express-australia-tracking",
+      "title": "J&T Express Australia tracking: JTAU numbers and statuses",
+      "name": "J&T Express Australia",
+      "color": "#e60000"
     }
   ],
   "de": [
@@ -1242,6 +1306,14 @@ export const CARRIER_LINKS: Record<Locale, readonly CarrierLink[]> = {
       "title": "DHL Paket Sendungsverfolgung: Nummer, Status, Packstation",
       "name": "DHL Paket",
       "color": "#ffcc00"
+    },
+    {
+      "id": "j-and-t-de",
+      "catalog": "j-and-t-de",
+      "slug": "jt-express-sendungsverfolgung",
+      "title": "J&T Express Sendungsverfolgung: Status, Nachbar, Kontakt",
+      "name": "J&T Express Germany",
+      "color": "#e60000"
     }
   ],
   "fr": [

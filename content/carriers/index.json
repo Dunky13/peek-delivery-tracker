@@ -126,5 +126,13 @@
   { "id": "couriersplease", "catalog": "couriersplease", "name": "CouriersPlease", "languages": ["en"] },
   { "id": "nz-post", "catalog": "nz-post", "name": "NZ Post", "languages": ["en"] },
   { "id": "aramex-nz", "catalog": "aramex-nz", "name": "Aramex New Zealand", "languages": ["en"] },
-  { "id": "magyar-posta", "catalog": "magyar-posta", "name": "Magyar Posta", "languages": ["en"] }
+  { "id": "magyar-posta", "catalog": "magyar-posta", "name": "Magyar Posta", "languages": ["en"] },
+  { "id": "shiprocket", "catalog": "shiprocket", "name": "Shiprocket", "languages": ["en"] },
+  { "id": "first-line", "catalog": "first-line", "name": "FIRST LINE", "languages": ["en"] },
+  { "id": "j-and-t-de", "catalog": "j-and-t-de", "name": "J&T Express Germany", "languages": ["en", "de"] },
+  { "id": "kun-express", "catalog": "kun-express", "name": "Kun Express", "languages": ["en"] },
+  { "id": "juxi-express", "catalog": "juxi-express", "name": "Juxi Express", "languages": ["en"] },
+  { "id": "jcex", "catalog": "jcex", "name": "JCEX", "languages": ["en"] },
+  { "id": "lingdong", "catalog": "lingdong", "name": "Lingdong International", "languages": ["en"] },
+  { "id": "j-and-t-au", "catalog": "j-and-t-au", "name": "J&T Express Australia", "languages": ["en"] }
 ]
