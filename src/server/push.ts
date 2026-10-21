@@ -13,6 +13,7 @@ import { ALERT_PRESET_STAGES } from '../lib/notificationPresets';
 import { capitalized } from '../peek/parcel/summary';
 import { recordParcelAlertRemoved, recordParcelAlertSent } from './metrics';
 import { logOperationalEvent } from './observability';
+import { providerCopies } from './providerCopies';
 import { lateScans, relayRepeats } from './relayCopies';
 import { messagesFor } from './requestLocale';
 import type { SupabaseServiceClient } from './supabase';
@@ -432,7 +433,9 @@ export function compareNotificationEvents(left: JsonObject, right: JsonObject): 
 /**
  * What a batch of new scans is measured against, by parcel: its newest stored
  * scan, when it joined its account, the handed-over parcel's scans whose news
- * it already had (relayCopies.ts), and whether it is archived.
+ * it already had (relayCopies.ts) and the universal copies its timeline leaves
+ * out (providerCopies.ts), and whether it is archived. Copies are looked for
+ * only in parcels with a confirmed carrier whose batch holds a universal row.
  */
 interface ParcelTimes {
   latest: ReadonlyMap<string, string>;
@@ -443,24 +446,30 @@ interface ParcelTimes {
 
 /** A lookup that fails leaves its answer empty, and its rule then announces every batch as before. */
 async function parcelTimes(client: SupabaseServiceClient, batches: Iterable<JsonObject[]>): Promise<ParcelTimes> {
-  const ids = [...batches].map((events) => stringField(events[0]!, 'package_id')).filter(Boolean);
+  const all = [...batches];
+  const ids = all.map((events) => stringField(events[0]!, 'package_id')).filter(Boolean);
+  const eventIds = all.flat().map((event) => stringField(event, 'event_id')).filter(Boolean);
   const read = async <T>(load: () => Promise<T>, none: T) => {
     try { return await load(); } catch { return none; }
   };
-  const [latest, joined, handoffs, archived] = await Promise.all([
+  const [latest, joined, handoffs, copied, archived] = await Promise.all([
     read(() => client.latestScanTimes(ids), new Map<string, string>()),
     read(() => client.packageJoinTimes(ids), new Map<string, string>()),
     read(() => client.handoffScans(ids), []),
+    read(() => client.providerCopyScans(eventIds), []),
     read(() => client.archivedPackageIds(ids), new Set<string>()),
   ]);
-  return { latest, joined, known: new Set(handoffs.flatMap((row) => [...relayRepeats(row), ...lateScans(row)])), archived };
+  const known = new Set([...handoffs.flatMap((row) => [...relayRepeats(row), ...lateScans(row)]),
+    ...copied.flatMap((row) => [...providerCopies(row)])]);
+  return { latest, joined, known, archived };
 }
 
 /**
  * The scan a batch announces: its newest, leaving out the row of a relay pair
  * that reached the parcel second, which repeats news the parcel already had,
- * and an earlier carrier's scan that reached it after a later one, which is
- * older news. None when that is all the batch holds.
+ * an earlier carrier's scan that reached it after a later one, which is older
+ * news, and a universal copy of a carrier's scan, which the timeline leaves
+ * out. None when that is all the batch holds.
  */
 function announcedScan(events: readonly JsonObject[], { known }: ParcelTimes): JsonObject | undefined {
   return events.filter((event) => !known.has(stringField(event, 'event_id'))).sort(compareNotificationEvents)[0];

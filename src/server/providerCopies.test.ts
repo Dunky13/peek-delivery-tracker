@@ -66,6 +66,18 @@ describe('providerCopies', () => {
     expect(providerCopies({ carrier_data: { ...confirmed, direct_history: history }, tracking_events: [...events, before] }))
       .toEqual(new Set(['u2']));
   });
+
+  it('leaves out a provider\'s copy of a scan the carrier dated by its day, showing the scan\'s wall clock in its words', () => {
+    // YunExpress gives the scan a wall clock in no zone; the provider dates it on Shanghai's clock.
+    const day = scan('c2', 'yunexpress', '2026-10-11T00:00:01Z', { local_time: '2026-10-11T18:20:00', description: 'Sorted' });
+    const events = [scan('c1', 'yunexpress', '2026-10-11T00:00:00Z', { time: '2026-10-11T08:00:00+08:00' }), day,
+      scan('u1', 'unknown', '2026-10-11T10:20:00Z', { ...named, description: 'Sorted' }),
+      // Other words, or a time that is no zone's reading of the clock, stay.
+      scan('u2', 'unknown', '2026-10-11T10:20:00Z', { ...named, description: 'Departed' }),
+      scan('u3', 'unknown', '2026-10-11T10:27:00Z', { ...named, description: 'Sorted' })];
+    expect(providerCopies({ carrier_data: { routing: { confirmed_carrier: 'yunexpress' } }, tracking_events: events }))
+      .toEqual(new Set(['u1']));
+  });
 });
 
 describe('directHistory', () => {

@@ -935,4 +935,25 @@ describe('notification reads', () => {
     expect(page.get('carrier_data->>original_carrier')).toBe('not.is.null');
     expect(page.get('select')).toContain('tracking_events(id,stage,occurred_at,created_at,provider_event_id)');
   });
+
+  it('reads the scans of parcels with a confirmed carrier only when a universal provider wrote a new row', async () => {
+    const client = new SupabaseServiceClient('https://database.example', 'service-key');
+    const scan = { id: 'copy', stage: 'in_transit', occurred_at: '2026-10-01T12:09:00Z', provider_event_id: 'unknown:a' };
+    const request = vi.spyOn(client, 'request')
+      .mockResolvedValueOnce([{ package_id: 'package-1' }, { package_id: 'package-1' }])
+      .mockResolvedValueOnce([{ id: 'package-1', confirmed_carrier: 'posti', direct_history: null, tracking_events: [scan] }])
+      .mockResolvedValueOnce([]);
+    await expect(client.providerCopyScans(['copy', 'other', 'copy'])).resolves.toEqual([{
+      id: 'package-1', carrier_data: { routing: { confirmed_carrier: 'posti' } }, tracking_events: [scan],
+    }]);
+    const params = (call: number) => new URL(`https://database.example${String(request.mock.calls[call]![0])}`).searchParams;
+    expect(params(0).get('id')).toBe('in.(copy,other)');
+    expect(params(0).get('provider_event_id')).toBe('like.unknown:*');
+    expect(params(1).get('id')).toBe('in.(package-1)');
+    expect(params(1).get('carrier_data->routing->>confirmed_carrier')).toBe('not.is.null');
+    expect(params(1).get('select')).toContain('direct_history:carrier_data->direct_history');
+    // A batch of carriers' rows loads no parcel.
+    await expect(client.providerCopyScans(['own'])).resolves.toEqual([]);
+    expect(request).toHaveBeenCalledTimes(3);
+  });
 });

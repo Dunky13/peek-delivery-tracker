@@ -53,6 +53,7 @@ beforeEach(() => {
   vi.spyOn(client, 'latestScanTimes').mockResolvedValue(new Map());
   vi.spyOn(client, 'packageJoinTimes').mockResolvedValue(new Map());
   vi.spyOn(client, 'handoffScans').mockResolvedValue([]);
+  vi.spyOn(client, 'providerCopyScans').mockResolvedValue([]);
   vi.spyOn(client, 'archivedPackageIds').mockResolvedValue(new Set());
   vi.spyOn(console, 'log').mockImplementation(() => undefined);
   vi.spyOn(console, 'error').mockImplementation(() => undefined);

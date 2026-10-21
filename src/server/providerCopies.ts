@@ -7,8 +7,12 @@
  * cannot tell apart stay stored. Once a direct carrier is confirmed for the
  * parcel, its timeline leaves out such a copy: a row only a universal provider
  * wrote, at the minute of one of the carrier's scans, or in that scan's stage
- * within 15 minutes or a whole number of hours up to 14 h away. A provider's
- * step the carrier never shows, such as another leg's scans, stays.
+ * within 15 minutes or a whole number of hours up to 14 h away. A carrier's
+ * scan dated by its day, on a wall clock in no zone (YunExpress's), has no
+ * instant to compare: a copy in its stage and words whose time shows that wall
+ * clock, whole quarter hours away up to 14 h, is left out. A provider's step
+ * the carrier never shows, such as another leg's scans, stays. Push leaves the
+ * copies unannounced too (push.ts).
  *
  * A row a carrier's scan took over keeps its universal identity and loses the
  * provider's name, and rows stored before rows named their provider have none
@@ -17,6 +21,8 @@
  * and the time they cover (`direct_history`), and an unnamed universal row in
  * that time that no answer held counts as the provider's.
  */
+import { DateTime } from 'luxon';
+import { clockDay } from './eventIdentity';
 import { isRecord, type JsonObject } from './types';
 
 /** The `carrier_data` key of the universal rows carrier answers held and the time those answers covered. */
@@ -25,6 +31,7 @@ export const DIRECT_HISTORY = 'direct_history';
 const UNIVERSAL = 'unknown';
 const MINUTE_MS = 60_000;
 const NEAR_MS = 15 * MINUTE_MS;
+const QUARTER_HOUR_MS = 15 * MINUTE_MS;
 const HOUR_MS = 60 * MINUTE_MS;
 const MAX_SHIFT_MS = 14 * HOUR_MS;
 const MAX_HELD = 500;
@@ -89,8 +96,27 @@ export function directHistory(
   };
 }
 
-/** Whether `copy` repeats the carrier's `scan`: at its minute, or in its stage close to it or whole hours from it. */
+function wording(event: JsonObject): string {
+  return String(event.description ?? '').replace(/\s+/g, ' ').trim().toLocaleLowerCase('en-US');
+}
+
+/** The wall clock of a scan dated by its day (`clockDay`), read as if in UTC; NaN for any other scan. */
+function wallClock(event: JsonObject): number {
+  return clockDay(event) ? DateTime.fromISO(String(event.local_time), { zone: 'utc' }).toMillis() : Number.NaN;
+}
+
+/**
+ * Whether `copy` repeats the carrier's `scan`: at its minute, or in its stage close to it or whole
+ * hours from it. A scan dated by its day is repeated in its stage and words, at its wall clock in
+ * some zone.
+ */
 function copies(copy: JsonObject, scan: JsonObject): boolean {
+  const clock = wallClock(scan);
+  if (Number.isFinite(clock)) {
+    const shift = Math.floor(instant(copy) / MINUTE_MS) * MINUTE_MS - Math.floor(clock / MINUTE_MS) * MINUTE_MS;
+    return copy.stage === scan.stage && wording(copy) === wording(scan)
+      && shift % QUARTER_HOUR_MS === 0 && Math.abs(shift) <= MAX_SHIFT_MS;
+  }
   const minutes = Math.abs(Math.floor(instant(copy) / MINUTE_MS) - Math.floor(instant(scan) / MINUTE_MS)) * MINUTE_MS;
   if (minutes === 0) return true;
   return copy.stage === scan.stage

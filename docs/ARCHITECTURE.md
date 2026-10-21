@@ -78,7 +78,9 @@ Key server modules:
   the parcel had shown that stage neither as its own nor in another scan.
   A handoff's relay copy that reaches the parcel after the scan it repeats is never the one
   announced, nor is an earlier carrier's scan that reaches it after a later one
-  ([ROUTING.md](ROUTING.md#handoffs-two-carriers)). A scheduled run sends a
+  ([ROUTING.md](ROUTING.md#handoffs-two-carriers)), nor a universal provider's copy the
+  timeline leaves out: of a parcel with a confirmed carrier, when its batch holds a
+  provider's row, its rows are read once to find them (`src/server/providerCopies.ts`). A scheduled run sends a
   parcel's notifications right after its check, without waiting for the parcels after it.
   Once it has checked a parcel it may merge with another carrier's leg in the same
   account, it holds the rest of its notifications until the merge.

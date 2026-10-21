@@ -746,6 +746,31 @@ export class SupabaseClient {
     }));
   }
 
+  /**
+   * The parcels whose new rows (`eventIds`) include a universal provider's, among those with a
+   * confirmed carrier, with what providerCopies.ts reads: the confirmed carrier, the copy record
+   * and the parcel's rows. No other parcel's rows are loaded.
+   */
+  async providerCopyScans(eventIds: string[]): Promise<JsonObject[]> {
+    const pages = (ids: string[]) => Array.from({ length: Math.ceil(ids.length / 100) }, (_, page) => ids.slice(page * 100, page * 100 + 100));
+    const universal = await Promise.all(pages([...new Set(eventIds)]).map(async (page) => rows(await this.request(`/rest/v1/tracking_events?${query([
+      ['id', `in.(${page.join(',')})`],
+      ['provider_event_id', 'like.unknown:*'],
+      ['select', 'package_id'],
+    ])}`))));
+    const packageIds = [...new Set(universal.flat().flatMap((row) => typeof row.package_id === 'string' ? [row.package_id] : []))];
+    const found = await Promise.all(pages(packageIds).map(async (page) => rows(await this.request(`/rest/v1/packages?${query([
+      ['id', `in.(${page.join(',')})`],
+      ['carrier_data->routing->>confirmed_carrier', 'not.is.null'],
+      ['select', 'id,confirmed_carrier:carrier_data->routing->>confirmed_carrier,direct_history:carrier_data->direct_history,'
+        + 'tracking_events(id,stage,description,occurred_at,provider_event_id,time:raw_data->>time,local_time:raw_data->>local_time,'
+        + 'observed:raw_data->observed_without_provider_timestamp,universal_provider:raw_data->>universal_provider)'],
+    ])}`))));
+    return found.flat().map(({ confirmed_carrier, direct_history, ...row }) => ({
+      ...row, carrier_data: { routing: { confirmed_carrier }, ...(direct_history == null ? {} : { direct_history }) },
+    }));
+  }
+
   async listPendingPushNotifications(): Promise<JsonObject[]> {
     const params = query({ select: '*', order: 'event_created_at.asc', limit: '1000' });
     return rows(await this.request(`/rest/v1/pending_push_notifications?${params}`));
