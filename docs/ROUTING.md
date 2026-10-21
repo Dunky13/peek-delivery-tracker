@@ -147,7 +147,11 @@ evidence while the chip is hidden.
 A scan an adapter dates by its day alone, with no clock (NACEX's history), is stored as a
 row of that day anyway, in the carrier's order: a second after the scan before it when that
 one is of the same day, else at the start of the day in the carrier's zone. It replaces the
-stage change an earlier check stored without a time. The day dates no answer for routing.
+stage change an earlier check stored without a time. So is a scan on a wall clock in no zone
+(YunExpress's) listed after a dated scan, in an answer of the carrier's own lookup that is no
+fallback. Its identity keeps the clock, so two scans of a day stay two, and once a release
+dates the scan, the scan takes the row over: the same stage, wording, provider code and place,
+at an instant showing that wall clock. The day dates no answer for routing.
 
 An adapter whose answer has only local clocks or an undated status summary keeps its
 evidence while a universal provider dates the timeline. Its answer confirms the filed

@@ -314,9 +314,10 @@ and nothing typed is sent.
   old as it or older, a link placing it when the link was made, so a parcel added
   mid-journey or after its delivery shows the carrier's scans alone. The row never sets
   the stage, an alert or an email. An earlier carrier's relay copy of a scan is served
-  under that scan ([handoffs](ROUTING.md#handoffs-two-carriers)). A scan the carrier dated
-  by its day alone is served with that `day`: the apps list it under that day without a
-  time, and the delivery email names that day. `src/server/eventPlaces.ts` applies this to every parcel and link the API serves; the
+  under that scan ([handoffs](ROUTING.md#handoffs-two-carriers)). A universal provider's
+  copy of a confirmed carrier's scan is left out (`src/server/providerCopies.ts`). A scan
+  the carrier dated by its day alone, or on a wall clock in no zone, is served with that
+  `day`: the apps list it under that day without a time, and the delivery email names that day. `src/server/eventPlaces.ts` applies this to every parcel and link the API serves; the
   account export keeps every stored row.
 - **A pickup point** is named by most carriers only while the parcel waits there. A
   delivered parcel keeps the point it was collected from once the carrier stops naming it,

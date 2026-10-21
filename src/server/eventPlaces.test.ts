@@ -198,9 +198,13 @@ it('names the day of a scan the carrier dated without a clock time, and serves n
     stored('clock-and-day', { time: '2026-10-18T09:30:00Z', local_time: '2026-10-18' }),
     stored('local-clock', { local_time: '2026-10-17T09:30:00', observed: true }),
     stored('observed', { local_time: '2026-10-17', observed: true }),
+    // A wall clock in no zone (YunExpress's) dates its scan by its day; with an instant, the instant dates it.
+    stored('wall-clock', { local_time: '2026-10-16T18:20:00' }),
+    stored('wall-clock-and-time', { time: '2026-10-16T18:20:00+08:00', local_time: '2026-10-16T18:20:00' }),
   ] };
   const days = (served: { tracking_events: Array<Record<string, unknown>> }) => served.tracking_events.map((scan) => [scan.id, scan.day]);
-  const expected = [['local-day', '2026-10-19'], ['day', '2026-10-18'], ['clock', undefined], ['clock-and-day', undefined], ['local-clock', undefined], ['observed', undefined]];
+  const expected = [['local-day', '2026-10-19'], ['day', '2026-10-18'], ['clock', undefined], ['clock-and-day', undefined], ['local-clock', undefined], ['observed', undefined],
+    ['wall-clock', '2026-10-16'], ['wall-clock-and-time', undefined]];
   const served = withEventPlaces(row) as { tracking_events: Array<Record<string, unknown>> };
   expect(days(served)).toEqual(expected);
   expect(days(withoutEventSources(row) as typeof served)).toEqual(expected);

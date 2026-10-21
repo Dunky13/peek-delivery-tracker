@@ -733,6 +733,17 @@ export function scanDay(scan: JsonObject): string | null {
   return local?.isValid ? local.toISODate() : null;
 }
 
+const LOCAL_CLOCK = /^(\d{4}-\d{2}-\d{2})T\d{2}:\d{2}(?::\d{2})?$/;
+/**
+ * The day of a scan the carrier gave a wall clock in no zone (`local_time`) and no instant:
+ * YunExpress dates some scans of a history so and the others in full.
+ */
+export function clockDay(scan: JsonObject): string | null {
+  if (eventTimestamp(timeOf(scan).trim())) return null;
+  const day = LOCAL_CLOCK.exec(localTimeOf(scan))?.[1];
+  return day && DateTime.fromISO(day).isValid ? day : null;
+}
+
 /** The wall clock a row kept (`local_time`), with or without the time of day. */
 function localTimeOf(row: JsonObject): string {
   const local = row.local_time ?? (isRecord(row.raw_data) ? row.raw_data.local_time : undefined);
@@ -814,6 +825,21 @@ export function datedObservations(
       dated.reused.set(scan, id);
     }
     else dated.absorbed.add(id);
+  }
+  // A carrier's scan dated by its day, its wall clock in no zone (`clockDay`), is the scan a later
+  // reply of that source gives with its time: the same stage, wording, provider code and place, and
+  // an instant showing that wall clock. The scan takes the row over, one to one.
+  const dayRows = stored.filter((row) => !held.has(identity(row)) && dates(row) && clockDay(row) !== null);
+  const timedScans = scans.filter((scan) => !storedIds.has(identity(scan)) && !matches.reused.has(identity(scan))
+    && !matches.skipped.has(identity(scan)) && clockDay(scan) === null && timeOf(scan) !== '');
+  const pairs = dayRows.map((row) => [row, timedScans.filter((scan) => sourceOf(identity(scan)) === sourceOf(identity(row))
+    && stageOf(scan) === stageOf(row) && wordingOf(scan) === wordingOf(row) && codesAgree(scan, row)
+    && placeOf(scan) === placeOf(row) && showsClock(localTimeOf(row), instantOf(scan)))] as const);
+  const claims = new Map<string, number>();
+  for (const [, matching] of pairs) for (const scan of matching) claims.set(identity(scan), (claims.get(identity(scan)) ?? 0) + 1);
+  for (const [row, matching] of pairs) {
+    const scan = matching.length === 1 ? identity(matching[0]!) : '';
+    if (scan && claims.get(scan) === 1 && !dated.reused.has(scan)) dated.reused.set(scan, identity(row));
   }
   return dated;
 }

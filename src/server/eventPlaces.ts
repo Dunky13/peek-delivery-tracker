@@ -2,7 +2,7 @@ import 'server-only';
 
 import { captureOperationalError } from './observability';
 import { placesForEvents, type EventPoint } from 'universal-parcel-scraper/places';
-import { scanDay, UNWORDED_STEP } from './eventIdentity';
+import { clockDay, scanDay, UNWORDED_STEP } from './eventIdentity';
 import { DIRECT_HISTORY, providerCopies } from './providerCopies';
 import { relayCopies } from './relayCopies';
 import { isRecord, type JsonObject } from './types';
@@ -26,9 +26,12 @@ function served(event: JsonObject, relayOf?: string): JsonObject {
   return rest;
 }
 
-/** A scan with the times it was stored with read: the day it names, if any, and nothing else of them. */
+/**
+ * A scan with the times it was stored with read: the day it names, if any, and nothing else of
+ * them. A wall clock in no zone dates its scan by its day too.
+ */
 function dated(event: JsonObject): JsonObject {
-  const day = event.observed === true ? null : scanDay(event);
+  const day = event.observed === true ? null : scanDay(event) ?? clockDay(event);
   const rest: JsonObject = { ...event, ...(day ? { day } : {}) };
   for (const key of ['time', 'local_time', 'observed']) delete rest[key];
   return rest;

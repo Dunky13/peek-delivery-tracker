@@ -144,6 +144,37 @@ describe('tracking event normalization', () => {
       .map((row) => (row.raw_data as JsonObject).observed_without_provider_timestamp)).toEqual([true]);
   });
 
+  it('dates a carrier\'s scans on a wall clock in no zone by their day, among its dated scans', () => {
+    // YunExpress gives some scans a wall clock and no zone, the others in full (synthetic scans).
+    const answer = (events: JsonObject[], extra: JsonObject = {}): CarrierResult => ({ status: 'in_transit', current_stage: 'in_transit',
+      last_status_text: 'Departed', last_update: '2026-10-12T03:00:00+08:00', events, ...extra } as CarrierResult);
+    const scans = [
+      { time: '2026-10-12T03:00:00+08:00', description: 'Departed', stage: 'in_transit' },
+      { local_time: '2026-10-11T18:20:00', description: 'Sorted', stage: 'in_transit' },
+      { local_time: '2026-10-11T09:05:00', description: 'Sorted', stage: 'in_transit' },
+      { time: '2026-10-11T08:00:00+08:00', description: 'Received', stage: 'accepted' },
+      { local_time: '2026-10-09T10:00:00', description: 'Label created', stage: 'registered' },
+    ];
+    const parcel = { id: 'package-1', carrier: 'yunexpress', current_stage: 'in_transit' };
+    const rows = buildEvents(parcel, answer(scans), 'yunexpress', new Date('2026-10-12T08:00:00Z'));
+    // In the carrier's order: a second after the dated scan of their day, or at the start of theirs. Two clocks are two scans.
+    expect(rows.map((row) => [row.occurred_at, row.description, row.provider_event_id])).toEqual([
+      ['2026-10-11T19:00:00Z', 'Departed', providerEventId('yunexpress', '2026-10-12T03:00:00+08:00', '', 'Departed')],
+      ['2026-10-11T00:00:02Z', 'Sorted', providerEventId('yunexpress', '2026-10-11T18:20:00', '', 'Sorted')],
+      ['2026-10-11T00:00:01Z', 'Sorted', providerEventId('yunexpress', '2026-10-11T09:05:00', '', 'Sorted')],
+      ['2026-10-11T00:00:00Z', 'Received', providerEventId('yunexpress', '2026-10-11T08:00:00+08:00', '', 'Received')],
+      ['2026-10-09T00:00:00Z', 'Label created', providerEventId('yunexpress', '2026-10-09T10:00:00', '', 'Label created')],
+    ]);
+    const days = (result: CarrierResult, carrier = 'yunexpress') => buildEvents({ ...parcel, carrier }, result, carrier)
+      .map((row) => row.description);
+    // The newest scan on a wall clock, a fallback, a provider's answer and a carrier that dates its scans write no such row.
+    expect(days(answer([scans[1]!, scans[3]!]))).toEqual(['Received']);
+    expect(days(answer(scans, { direct_local_fallback: true }))).toEqual(['Departed', 'Received']);
+    expect(days(answer(scans, { tracking_provider: 'UPU' }))).toEqual(['Departed', 'Received']);
+    expect(days(answer(scans, { tracking_provider: 'ParcelsApp' }), 'unknown')).toEqual(['Departed', 'Received']);
+    expect(days(answer(scans), 'dhl')).toEqual(['Departed', 'Received']);
+  });
+
   it('keeps a scan the carrier repeats word for word once', () => {
     const sort = { time: '2026-09-29T06:07:00+02:00', description: 'Tri effectué dans l’agence de distribution' };
     const rows = buildEvents({ id: 'package-1', carrier: 'chronopost' }, {
@@ -4287,10 +4318,39 @@ function eventStore() {
       provider_code: (row.raw_data as JsonObject | undefined)?.provider_code,
       observed_without_provider_timestamp: (row.raw_data as JsonObject | undefined)?.observed_without_provider_timestamp,
       universal_provider: (row.raw_data as JsonObject | undefined)?.universal_provider,
+      local_time: (row.raw_data as JsonObject | undefined)?.local_time,
     })),
     batch: () => (client.applyTrackingSync.mock.calls.at(-1)?.[2] ?? []) as JsonObject[],
   };
 }
+
+it('lets a carrier\'s scan, once dated, take over the row of its day', async () => {
+  const store = eventStore();
+  const parcel = { id: 'yunexpress-day', user_id: 'owner', carrier: 'yunexpress', tracking_number: 'YT0000000000000001' };
+  const departed = { time: '2026-10-12T03:00:00+08:00', description: 'Departed', stage: 'in_transit' };
+  const received = { time: '2026-10-11T08:00:00+08:00', description: 'Received', stage: 'accepted' };
+  const sorted = { local_time: '2026-10-11T18:20:00', description: 'Sorted', location: 'Shenzhen', stage: 'in_transit' };
+  const answer = (events: JsonObject[]) => ({ status: 'in_transit', current_stage: 'in_transit', last_status_text: 'Departed',
+    last_update: departed.time, events });
+  const adapter = { fetch: vi.fn()
+    .mockResolvedValueOnce(answer([departed, sorted, received]))
+    // A release dates the scan on its wall clock, in its zone.
+    .mockResolvedValue(answer([departed, { ...sorted, time: '2026-10-11T18:20:00+08:00' }, received])) };
+  const service = new TrackingSyncService(store.client as unknown as SupabaseServiceClient, adapter, null,
+    () => new Date('2026-10-12T08:00:00Z'));
+  const sync = (stage: string) => service.syncPackage({ ...parcel, current_stage: stage, [STORED_EVENT_IDENTITIES]: store.identities() });
+
+  await sync('pending');
+  const day = providerEventId('yunexpress', '2026-10-11T18:20:00', 'Shenzhen', 'Sorted');
+  expect(store.rows.get(day)).toMatchObject({ occurred_at: '2026-10-11T00:00:01Z' });
+  const row = store.rows.get(day)!.id;
+  await sync('in_transit');
+  await sync('in_transit');
+  // The same row, at the scan's instant: nothing new to announce.
+  expect(store.batch().map((event) => event.provider_event_id)).toContain(day);
+  expect(store.rows.size).toBe(3);
+  expect(store.rows.get(day)).toMatchObject({ id: row, occurred_at: '2026-10-11T10:20:00Z' });
+});
 
 it('fills in a UPS scan location without creating another notification event', async () => {
   const store = eventStore();

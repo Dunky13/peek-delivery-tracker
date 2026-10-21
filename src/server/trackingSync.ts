@@ -33,7 +33,7 @@ import {
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
 import { REDETECTION_PAGE, STORED_EVENT_IDENTITIES, type SupabaseServiceClient } from './supabase';
-import { datedObservations, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, UNWORDED_STEP, withIdentities, withoutCopyDrift } from './eventIdentity';
+import { clockDay, datedObservations, restatedIdentities, sameInstantIdentities, scanDay, sharedScans, relayedScans, UNIVERSAL_PROVIDER, UNWORDED_STEP, withIdentities, withoutCopyDrift } from './eventIdentity';
 import {
   askedForCheck,
   providerFailureSummary,
@@ -50,7 +50,7 @@ import { REDETECTION_WINDOW_MS, rerouteAskable } from './redetection';
 import { upuHistory } from './upuHistory';
 import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
-import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent } from './directLocalHistory';
+import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent, localClockCarrier } from './directLocalHistory';
 import { DIRECT_HISTORY, directHistory } from './providerCopies';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
 import { trackingSupportEvidence } from './trackingSupport';
@@ -473,9 +473,15 @@ export function buildEvents(
   // A scan the carrier dates by its day alone, with no clock (NACEX's calendar headings), is
   // dated in the carrier's order, newest first: a second after the scan listed after it when
   // that one is of the same day, else at the start of its day in the result's zone. Scans that
-  // join the day later leave those dates as they are.
+  // join the day later leave those dates as they are. So is a carrier's scan on a wall clock in
+  // no zone listed after a dated one (YunExpress's), in an answer of its own lookup that is no
+  // fallback; its identity keeps the clock, so two scans of a day stay two.
   const scans = result.events ?? [];
-  const days = scans.map((raw) => eventTimestamp(raw.time, timezone) ? null : scanDay(raw));
+  const stamped = scans.map((raw) => eventTimestamp(raw.time, timezone) !== null);
+  const newestStamped = stamped.indexOf(true);
+  const ownClocks = localClockCarrier(carrierId) && typeof result.tracking_provider !== 'string' && result.direct_local_fallback !== true;
+  const clockDays = scans.map((raw, index) => ownClocks && !stamped[index] && newestStamped > -1 && newestStamped < index ? clockDay(raw) : null);
+  const days = scans.map((raw, index) => stamped[index] ? null : scanDay(raw) ?? clockDays[index]);
   const instants = new Array<string | null>(scans.length).fill(null);
   let older: DateTime | null = null;
   for (let index = scans.length - 1; index >= 0; index -= 1) {
@@ -494,7 +500,7 @@ export function buildEvents(
     const location = String(raw.location ?? '').trim();
     const occurredAt = instants[index];
     if (!occurredAt) continue;
-    const identity = providerEventId(carrierId, days[index] ?? raw.time, location, description);
+    const identity = providerEventId(carrierId, clockDays[index] ? raw.local_time : days[index] ?? raw.time, location, description);
     if (identities.has(identity)) continue;
     identities.add(identity);
     const declaredStage = String(raw.stage ?? '');
@@ -1593,7 +1599,8 @@ export class TrackingSyncService {
       // The copies the carrier's scans absorbed go with the batch that holds those scans. So does a
       // stage change this carrier was seen to make without a time, once it dates that scan by its day.
       const daysDated = new Set(eventsToPersist.filter((event) => isRecord(event.raw_data)
-        && event.raw_data.observed_without_provider_timestamp !== true && scanDay(event.raw_data) && !event.raw_data.time)
+        && event.raw_data.observed_without_provider_timestamp !== true && (scanDay(event.raw_data) || clockDay(event.raw_data))
+        && !event.raw_data.time)
         .map((event) => JSON.stringify([event.stage, event.description])));
       const undated = stored.filter((row) => row.observed_without_provider_timestamp === true
         && String(row.provider_event_id).startsWith(`${sourceCarrierId}:`) && daysDated.has(JSON.stringify([row.stage, row.description])))
