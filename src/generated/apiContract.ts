@@ -30214,7 +30214,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "techlink"
     },
     "linkRules": [],
     "detectionRules": [
