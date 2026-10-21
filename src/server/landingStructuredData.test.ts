@@ -1,26 +1,40 @@
 import { describe, expect, it } from 'vitest';
 import de from '../../shared/locales/de.json';
 import en from '../../shared/locales/en.json';
-import { jsonForScript, landingStructuredData } from './landingStructuredData';
+import { SOURCE_URL } from '../lib/source';
+import { jsonForScript, landingStructuredData, peekOrganization } from './landingStructuredData';
 
 describe('landingStructuredData', () => {
   const data = landingStructuredData({ origin: new URL('https://peek.example.test'), url: 'https://peek.example.test/', locale: 'en' });
 
-  it('names the site, with the names people search for taken from its host', () => {
+  it('names who makes Peek, with its public source, as one node the other pages name too', () => {
     expect(data['@context']).toBe('https://schema.org');
     expect(data['@graph'][0]).toEqual({
+      '@type': 'Organization',
+      '@id': 'https://peek.example.test/#organization',
+      name: 'Peek',
+      url: 'https://peek.example.test/',
+      logo: { '@type': 'ImageObject', url: 'https://peek.example.test/icons/icon-512.png' },
+      sameAs: [SOURCE_URL],
+    });
+    expect(peekOrganization(new URL('https://peek.example.test'))).toEqual(data['@graph'][0]);
+  });
+
+  it('names the site, with the names people search for taken from its host, published by Peek', () => {
+    expect(data['@graph'][1]).toEqual({
       '@type': 'WebSite',
       name: 'Peek',
       alternateName: ['Peek Tracker', 'peek.example.test'],
       url: 'https://peek.example.test/',
       inLanguage: ['en', 'de', 'fr', 'it', 'es', 'pt', 'pl'],
+      publisher: { '@id': 'https://peek.example.test/#organization' },
     });
     const local = landingStructuredData({ origin: new URL('http://127.0.0.1:3000'), url: 'http://127.0.0.1:3000/', locale: 'en' });
-    expect(local['@graph'][0].alternateName).toEqual(['Peek Tracker', '127.0.0.1']);
+    expect(local['@graph'][1]).toMatchObject({ alternateName: ['Peek Tracker', '127.0.0.1'] });
   });
 
   it('describes the app with the page’s own words, free of charge, and claims nothing else', () => {
-    expect(data['@graph'][1]).toEqual({
+    expect(data['@graph'][2]).toEqual({
       '@type': 'WebApplication',
       name: 'Peek',
       alternateName: 'Peek — Universal Parcel Tracker',
@@ -30,11 +44,12 @@ describe('landingStructuredData', () => {
       operatingSystem: 'Web, iOS',
       inLanguage: 'en',
       isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
     });
     const german = landingStructuredData({ origin: new URL('https://peek.example.test'), url: 'https://peek.example.test/de', locale: 'de' });
-    expect(german['@graph'][1]).toMatchObject({ url: 'https://peek.example.test/de', inLanguage: 'de', description: de['preview.landing.description'] });
-    // Two things are told, and nothing about what others think of them.
-    expect(data['@graph']).toHaveLength(2);
+    expect(german['@graph'][2]).toMatchObject({ url: 'https://peek.example.test/de', inLanguage: 'de', description: de['preview.landing.description'] });
+    // Three things are told, and nothing about what others think of them.
+    expect(data['@graph']).toHaveLength(3);
   });
 });
 

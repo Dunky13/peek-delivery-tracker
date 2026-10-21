@@ -11,7 +11,7 @@ import { carrierAddresses, carrierAlternates, carrierLinkBySlug, carrierLinks, c
 import { guideWords, languageNames, pageMetadata } from './guidePages';
 import { guideLinks } from './guides';
 import { landingAddress } from './landingMetadata';
-import { jsonForScript } from './landingStructuredData';
+import { jsonForScript, peekOrganization } from './landingStructuredData';
 import { siteOrigin } from './requestOrigin';
 import { sitePicture } from './sitePreview';
 
@@ -53,7 +53,7 @@ export async function CarrierRoute({ locale, slug }: { locale: Locale; slug: str
   const t = guideWords(locale);
   const site = await siteOrigin();
   const url = carrierAlternates(site, link.id)[locale];
-  const peek = { '@type': 'Organization', name: 'Peek', url: site.href, logo: { '@type': 'ImageObject', url: new URL('/icons/icon-512.png', site).href } };
+  const peek = peekOrganization(site);
   const data = {
     '@context': 'https://schema.org',
     '@graph': [

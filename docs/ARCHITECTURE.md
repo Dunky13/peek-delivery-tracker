@@ -277,10 +277,10 @@ the privacy notice and the help page. A guide or a carrier's page is dated by th
 facts were last checked. Each
 landing's HTML carries its title, description and canonical address, the address of every
 other language (`hreflang`, with `/` for a reader of none of them), and a schema.org
-description of the site and the app
+description of who makes Peek, the site and the free app
 ([`landingStructuredData.ts`](../src/server/landingStructuredData.ts)). A guide carries
 the same, with English for a reader of none, and describes itself as a schema.org article
-([`guidePages.tsx`](../src/server/guidePages.tsx)). A carrier's page names only the
+by that same Peek ([`guidePages.tsx`](../src/server/guidePages.tsx)). A carrier's page names only the
 languages it is written in, and adds its questions as a schema.org FAQ
 ([`carrierPages.tsx`](../src/server/carrierPages.tsx)). `/home` names `/` as its canonical
 address. Parcel links, invitations and `/email/off` answer `noindex` in a

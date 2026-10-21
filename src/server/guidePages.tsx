@@ -10,7 +10,7 @@ import { SUPPORTED_LOCALES, type Locale } from '../lib/locale';
 import type { Translate } from '../lib/messages';
 import { guide, guideAddresses, guideAlternates, guideLinkBySlug, guideLinks } from './guides';
 import { landingAddress } from './landingMetadata';
-import { jsonForScript } from './landingStructuredData';
+import { jsonForScript, peekOrganization } from './landingStructuredData';
 import { messagesFor } from './requestLocale';
 import { requestOrigin, siteOrigin } from './requestOrigin';
 import { PREVIEW_LOCALES, sitePicture, wordsIn } from './sitePreview';
@@ -98,7 +98,7 @@ export async function GuideRoute({ locale, slug }: { locale: Locale; slug: strin
   const site = await siteOrigin();
   const alternates = guideAlternates(site, link.id);
   const url = alternates[locale];
-  const peek = { '@type': 'Organization', name: 'Peek', url: site.href, logo: { '@type': 'ImageObject', url: new URL('/icons/icon-512.png', site).href } };
+  const peek = peekOrganization(site);
   // The guides that follow this one in the list, around its end.
   const others = described(locale).filter((other) => other.link.id !== link.id);
   const next = [...others.slice(at), ...others.slice(0, at)].slice(0, READ_ON);

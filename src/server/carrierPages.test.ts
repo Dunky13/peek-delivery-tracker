@@ -16,6 +16,7 @@ vi.mock('next/server', async (original) => ({ ...await original<typeof import('n
 const { carrierAddresses, carrierAlternates, carrierLanguages, carrierLinkBySlug, carrierLinks, carrierText, carrierUpdated } = await import('./carrierTexts');
 const { CarrierIndexRoute, CarrierRoute, carrierIndexMetadata, carrierMetadata } = await import('./carrierPages');
 const { frenchSpacing, questions } = await import('../guides/markdown');
+const { peekOrganization } = await import('./landingStructuredData');
 
 afterEach(() => { request.host = 'peek.example'; vi.unstubAllEnvs(); });
 
@@ -131,6 +132,9 @@ describe('what a carrier’s page tells a search engine', () => {
     const [article, crumbs, faq] = graph(html);
     const url = `https://peek.example/carriers/${first.slug}`;
     expect(article).toMatchObject({ '@type': 'Article', headline: first.title, inLanguage: 'en', mainEntityOfPage: url });
+    // Written and published by the Peek the landing names, under the same node.
+    expect(article.author).toEqual(peekOrganization(new URL('https://peek.example/')));
+    expect(article.publisher).toEqual(article.author);
     expect(crumbs.itemListElement.map((item: { name: string; item: string }) => [item.name, item.item])).toEqual([
       ['Peek', 'https://peek.example/'], [en['carriers.title'], 'https://peek.example/carriers'], [first.title, url],
     ]);

@@ -1,11 +1,29 @@
 import 'server-only';
 import { SUPPORTED_LOCALES, type Locale } from '../lib/locale';
+import { SOURCE_URL } from '../lib/source';
 import { siteTitle, wordsIn } from './sitePreview';
 
 /**
- * What the landing tells search engines, as schema.org data: the site with its
- * names, and the web application at this address, described as the page
- * describes it. No rating, no count, nothing a reader could not check.
+ * Who makes Peek, as schema.org data: one node that the landing, the guides and
+ * the carrier pages all name, with the public source as the place it is also
+ * found, so "Peek" reads as this Peek and no other.
+ */
+export function peekOrganization(origin: URL) {
+  return {
+    '@type': 'Organization',
+    '@id': `${origin.href}#organization`,
+    name: 'Peek',
+    url: origin.href,
+    logo: { '@type': 'ImageObject', url: new URL('/icons/icon-512.png', origin).href },
+    sameAs: [SOURCE_URL],
+  };
+}
+
+/**
+ * What the landing tells search engines, as schema.org data: who makes Peek,
+ * the site with its names, and the web application at this address, described
+ * as the page describes it, free. No rating, no count, nothing a reader could
+ * not check.
  */
 export function landingStructuredData({ origin, url, locale }: {
   /** The origin the site's addresses are written on. */
@@ -18,6 +36,7 @@ export function landingStructuredData({ origin, url, locale }: {
   return {
     '@context': 'https://schema.org',
     '@graph': [
+      peekOrganization(origin),
       {
         '@type': 'WebSite',
         name: t('app.title'),
@@ -25,6 +44,7 @@ export function landingStructuredData({ origin, url, locale }: {
         alternateName: ['Peek Tracker', origin.hostname],
         url: origin.href,
         inLanguage: [...SUPPORTED_LOCALES],
+        publisher: { '@id': `${origin.href}#organization` },
       },
       {
         '@type': 'WebApplication',
@@ -36,6 +56,7 @@ export function landingStructuredData({ origin, url, locale }: {
         operatingSystem: 'Web, iOS',
         inLanguage: locale,
         isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
       },
     ],
   };
