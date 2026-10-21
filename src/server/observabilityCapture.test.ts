@@ -327,6 +327,9 @@ it('opens one issue for a database that does not answer, whichever write found i
     job_id: 'job-1', database_code: 'unreachable' });
   expect(refused.fingerprint).toEqual(['delivery-tracker', 'tracking-sync', 'persist_package', 'example', 'SupabaseError']);
   expect(refused.tags).toMatchObject({ database_code: 'PGRST202', database_status: '404' });
+  // A database that does not answer gives no status, and still says what to check.
+  expect(finish.contexts?.next_steps?.action).toContain('did not answer');
+  expect(refused.contexts?.next_steps?.action).toContain('PostgREST schema cache');
 });
 
 it('sends carriers no trace headers', async () => {

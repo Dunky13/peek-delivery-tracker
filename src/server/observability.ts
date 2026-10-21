@@ -378,10 +378,13 @@ export function captureOperationalError(
   let eventId: string | null = null;
   Sentry.withScope((scope) => {
     applyContext(scope, context, capturedErrorType, errorMetadata);
-    if (errorMetadata.databaseStatus) scope.setContext('next_steps', {
-      action: errorMetadata.databaseCode === 'PGRST202'
-        ? 'Verify the deployed database migrations and RPC signature, then reload the PostgREST schema cache. Check whether observation logging or shipment persistence failed.'
-        : 'Check database availability, permissions and migrations; inspect the operation tag to distinguish shipment persistence from diagnostics.',
+    // A database that does not answer gives no status, so its code alone asks for the help text.
+    if (errorMetadata.databaseStatus || errorMetadata.databaseCode === 'unreachable') scope.setContext('next_steps', {
+      action: errorMetadata.databaseCode === 'unreachable'
+        ? 'The database did not answer in time, or cut its answer off. Check that the database and its gateway are running and reachable from the app; the operation tag of each event names a write that failed.'
+        : errorMetadata.databaseCode === 'PGRST202'
+          ? 'Verify the deployed database migrations and RPC signature, then reload the PostgREST schema cache. Check whether observation logging or shipment persistence failed.'
+          : 'Check database availability, permissions and migrations; inspect the operation tag to distinguish shipment persistence from diagnostics.',
     });
     // A database that does not answer fails every write at once: one outage is one issue, and the tags name each write.
     scope.setFingerprint(errorMetadata.databaseCode === 'unreachable' ? ['delivery-tracker', 'database-unreachable'] : [
