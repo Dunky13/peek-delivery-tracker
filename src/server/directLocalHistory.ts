@@ -1,6 +1,7 @@
 import { CARRIER_DEFINITIONS } from 'universal-parcel-scraper';
 import { DateTime } from 'luxon';
 import type { CarrierResult } from 'universal-parcel-scraper';
+import { showsClock } from './eventIdentity';
 import { isRecord, type JsonObject } from './types';
 
 const CARRIERS = new Set(Object.entries(CARRIER_DEFINITIONS).filter(([, carrier]) => carrier.tracking.localClocks).map(([id]) => id));
@@ -11,6 +12,31 @@ const eventKey = (event: JsonObject): string => JSON.stringify([
 function instant(value: unknown): boolean {
   return typeof value === 'string' && /(?:Z|[+-]\d{2}:?\d{2})$/i.test(value)
     && DateTime.fromISO(value, { setZone: true }).isValid;
+}
+
+const scanWords = (event: JsonObject): string => JSON.stringify([event.description, event.location, event.provider_code, event.provider_leg]);
+
+/**
+ * Leaves out a scan kept on its wall clock alone (`local_time`) once a later
+ * answer dates it: the same wording, place, provider code and leg, at an
+ * instant showing that wall clock. Keyed by their times, the two would stay
+ * side by side. One to one: a copy two dated scans could be, or a dated scan
+ * two copies could be, stays.
+ */
+function withoutDatedCopies(events: readonly JsonObject[]): JsonObject[] {
+  const dated = events.filter((event) => instant(event.time));
+  const candidates = new Map<JsonObject, JsonObject[]>();
+  for (const event of events) {
+    if (instant(event.time) || typeof event.local_time !== 'string' || event.local_time === '') continue;
+    const local = event.local_time;
+    candidates.set(event, dated.filter((scan) => scanWords(scan) === scanWords(event) && showsClock(local, Date.parse(String(scan.time)))));
+  }
+  const claims = new Map<JsonObject, number>();
+  for (const scans of candidates.values()) for (const scan of scans) claims.set(scan, (claims.get(scan) ?? 0) + 1);
+  return events.filter((event) => {
+    const scans = candidates.get(event);
+    return scans?.length !== 1 || claims.get(scans[0]!) !== 1;
+  });
 }
 
 /** Whether the catalog reads this carrier's own answers on local clocks. */
@@ -57,7 +83,10 @@ export function directLocalSnapshotIsOlder(previous: unknown, incoming: unknown)
   return previous.events.findIndex((event) => isRecord(event) && eventKey(event) === key) > 0;
 }
 
-/** Keep bounded local evidence across provider changes without creating scan instants. */
+/**
+ * Keep bounded local evidence across provider changes without creating scan
+ * instants. A scan an earlier answer kept undated goes once another dates it.
+ */
 export function directLocalHistory(parcel: JsonObject, result: CarrierResult): JsonObject | undefined {
   const data = isRecord(parcel.carrier_data) ? parcel.carrier_data : {};
   const number = directHistoryNumber(parcel, result);
@@ -65,8 +94,11 @@ export function directLocalHistory(parcel: JsonObject, result: CarrierResult): J
     && CARRIERS.has(String(value.carrier)) && value.number === number && Array.isArray(value.events);
   const previous = valid(data.direct_local_history) ? data.direct_local_history : undefined;
   const incoming = valid(result.direct_local_history) ? result.direct_local_history : undefined;
-  if (!incoming) return previous ? { ...previous, events: (previous.events as unknown[]).slice(0, 100) } : undefined;
-  if (!previous || previous.carrier !== incoming.carrier) return { ...incoming, events: (incoming.events as unknown[]).slice(0, 100) };
+  const bounded = (archive: JsonObject, events: unknown[]) => ({
+    ...archive, events: withoutDatedCopies(events.filter(isRecord)).slice(0, 100),
+  });
+  if (!incoming) return previous ? bounded(previous, previous.events as unknown[]) : undefined;
+  if (!previous || previous.carrier !== incoming.carrier) return bounded(incoming, incoming.events as unknown[]);
   const unique = new Map<string, JsonObject>();
   const older = (incoming.events as unknown[]).length === 0 || directLocalSnapshotIsOlder(previous, incoming);
   const ordered = older ? [previous, incoming] : [incoming, previous];
@@ -75,7 +107,6 @@ export function directLocalHistory(parcel: JsonObject, result: CarrierResult): J
     if (!isRecord(event)) continue;
     const key = eventKey(event);
     if (!unique.has(key)) unique.set(key, event);
-    if (unique.size === 100) break;
   }
-  return { ...(older ? previous : incoming), events: [...unique.values()] };
+  return bounded(older ? previous : incoming, [...unique.values()]);
 }

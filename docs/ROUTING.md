@@ -156,8 +156,12 @@ dates the scan, the scan takes the row over: the same stage, wording, provider c
 at an instant showing that wall clock. The day dates no answer for routing.
 
 An adapter whose answer has only local clocks or an undated status summary keeps its
-evidence while a universal provider dates the timeline. Its answer confirms the filed
-carrier, so a provider naming that carrier doesn't ask it before its own retry time. A
+evidence while a universal provider dates the timeline (`direct_local_history`, up to 100
+scans). A scan kept there on its wall clock alone goes once an answer dates it: the same
+wording, place, provider code and leg, at an instant showing that wall clock, one to one
+([`directLocalHistory.ts`](../src/server/directLocalHistory.ts)). The adapter's answer
+confirms the filed carrier, so a provider naming that carrier doesn't ask it before its
+own retry time. A
 provider whose history holds just the carrier's number of scans and stage only dates them:
 the carrier stays first on every check. While the carrier's answer keeps that number and
 stage and the parcel shows that provider's history, scheduled checks keep the history

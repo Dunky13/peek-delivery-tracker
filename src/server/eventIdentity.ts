@@ -756,7 +756,7 @@ function localTimeOf(row: JsonObject): string {
 }
 
 /** Whether a scan's instant can be the wall clock a sighting kept: in the scan's zone or another, up to 14 h away. */
-function showsClock(local: string, instant: number): boolean {
+export function showsClock(local: string, instant: number): boolean {
   if (local === '') return true;
   const day = /^\d{4}-\d{2}-\d{2}$/.test(local);
   const wall = Date.parse(day ? `${local}T00:00:00Z` : `${local.slice(0, 19)}Z`);
