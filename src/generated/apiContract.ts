@@ -1232,11 +1232,6 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       },
       {
-        "pattern": "^Z[ACS]\\d{11}$",
-        "confidence": "low",
-        "checksum": "colissimo"
-      },
-      {
         "pattern": "^(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}FR$",
         "confidence": "high",
         "checksum": "s10"
@@ -1505,7 +1500,7 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^[A-Z]{4}\\d{2}[A-Z0-9]{4}$",
+        "pattern": "^[A-Z]{4}\\d{2}(?!\\d{4}$)[A-Z0-9]{4}$",
         "confidence": "low"
       }
     ],
@@ -4391,18 +4386,15 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^ZS\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       },
       {
         "pattern": "^ZC\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       },
       {
         "pattern": "^ZA\\d{11}$",
-        "confidence": "low",
-        "preferred": true
+        "confidence": "high"
       }
     ],
     "trackingUrlTemplate": "https://www.ems.com.cn/mailtracking/you_jian_cha_xun.html",
@@ -4528,7 +4520,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "bring-posten"
+      "adapter": "bring-posten",
+      "recognitionRank": 205
     },
     "linkRules": [
       {
@@ -5967,7 +5960,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$",
+        "checksum": "mod7"
+      }
+    ],
     "trackingSearchUrl": "https://cyp.acscourier.net/en/quick-access/non-registered-users/track-and-trace/"
   },
   "allegro-one": {
@@ -6649,7 +6649,14 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/(?:en/)?track/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low",
+        "rawPattern": "^\\d{10}$",
+        "checksum": "mod7"
+      }
+    ],
     "trackingSearchUrl": "https://taxydromiki.com/track/"
   },
   "gls-es": {
