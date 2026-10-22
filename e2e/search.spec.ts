@@ -1,5 +1,5 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
-import { documentLanguage } from '../src/lib/locale';
+import { documentLanguage, PAGE_ONLY_LANGUAGES } from '../src/lib/locale';
 
 // What a search engine or a link preview gets: the first answer of the server, before any script runs.
 const errors = new WeakMap<Page, string[]>();
@@ -71,7 +71,10 @@ test('sitemap.xml lists the landing, the guides and the carriers’ pages in eve
   const carriers = addresses.slice(landings.length + guides.length, -2);
   expect(carriers.slice(0, 7)).toEqual([`${baseURL}/carriers`, ...languages.map((language) => `${baseURL}/${language}/carriers`)]);
   expect(carriers.length).toBeGreaterThan(7);
-  for (const address of carriers) expect(under('carriers')(address), address).toBe(true);
+  // A carrier's page can also be written in a language with pages alone, which has no carriers' page of its own.
+  const pageOnly = Object.keys(PAGE_ONLY_LANGUAGES);
+  const written = (address: string) => new RegExp(`^/(?:${pageOnly.join('|')})/carriers/[a-z0-9-]+$`).test(new URL(address).pathname);
+  for (const address of carriers) expect(under('carriers')(address) || written(address), address).toBe(true);
   const entries = xml.split('<url>').slice(1);
   const alternates = (entry: string) => [...entry.matchAll(/<xhtml:link rel="alternate" hreflang="([^"]*)" href="([^"]*)" \/>/g)].map(([, language, address]) => [language, address]);
   // Each landing names all of them, itself included, and claims no date nobody recorded.
@@ -97,7 +100,7 @@ test('sitemap.xml lists the landing, the guides and the carriers’ pages in eve
   });
   for (const entry of pages) {
     const named = Object.fromEntries(alternates(entry));
-    expect(Object.keys(named)).toEqual(['en', ...languages.filter((language) => language in named), 'x-default']);
+    expect(Object.keys(named)).toEqual(['en', ...[...languages, ...pageOnly].filter((language) => language in named), 'x-default']);
     expect(named['x-default']).toBe(named.en);
     expect(Object.values(named)).toContain(/<loc>([^<]*)<\/loc>/.exec(entry)![1]);
     expect(entry).toMatch(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/);
