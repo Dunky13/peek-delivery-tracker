@@ -87,7 +87,7 @@ Neben Cainiao begegnen dir YunExpress, [4PX](carrier:4px), [Sunyou](carrier:suny
 | `LP` + 14 Ziffern | Cainiao (AliExpress): in der Praxis beobachtet, von Cainiao nicht dokumentiert |
 | `YT` + 16 Ziffern | YunExpress (`YT` + 13 Ziffern ist YTO Express) |
 | `4PX` + 13 Ziffern + `CN` | 4PX |
-| zwei Buchstaben, neun Ziffern, `CN` | China Post oder China EMS |
+| zwei Buchstaben, neun Ziffern, `CN` | [China Post](carrier:china-post) oder China EMS |
 | zwei Buchstaben, neun Ziffern, `YP` | Yanwen (`YP` ist kein Land) |
 | `BYS` + 9 Ziffern | Yanwen |
 | `SY` + 11 Ziffern | Sunyou |

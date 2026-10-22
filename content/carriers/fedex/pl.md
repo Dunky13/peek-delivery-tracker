@@ -3,7 +3,7 @@ title: FedEx śledzenie: numer przesyłki, statusy i awizo
 description: Śledzenie przesyłki FedEx: gdzie jest 12-cyfrowy numer, co znaczą statusy jak „Wyjątek w doręczeniu”, co zrobić z awizem, cłem i jak skontaktować się z FedEx.
 slug: fedex-sledzenie
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 FedEx to międzynarodowa firma kurierska i ekspresowa, która w Europie sprzedaje usługi FedEx Express. Przesyłkę śledzisz na stronie śledzenia fedex.com, w aplikacji FedEx Mobile albo wklejając numer w pole powyżej. Według FedEx numer przychodzi zwykle w e-mailu lub SMS-ie o Twojej przesyłce.
@@ -17,7 +17,7 @@ Ile cyfr? Pomoc „Zapytaj FedEx” mówi o 12-cyfrowym numerze, a odpowiedź o 
 | Numer (wymyślony) | Co to jest |
 | --- | --- |
 | `123456789012` | 12 cyfr: FedEx Express, przesyłki międzynarodowe i krajowe. |
-| `1234567890123` | 13 cyfr: krajowe przesyłki FedEx w Polsce (FDS 2.0). |
+| `1234567890123` | 13 cyfr: krajowe przesyłki [FedEx w Polsce](carrier:fedex-pl) (FDS 2.0). |
 | `123456789012343` | 15 cyfr: kształt, który Peek też przypisuje FedEx. |
 
 Nie masz numeru? Na fedex.com wybierz „Monitorowanie po numerze referencyjnym” i wpisz numer referencyjny nadawcy. Bez żadnego z nich FedEx radzi zapytać nadawcę. Więcej w poradniku [gdzie znaleźć numer przesyłki](guide:find-tracking-number).
@@ -80,7 +80,7 @@ Polska strona kontaktowa FedEx, stan na 13 października 2026:
 
 ## Śledzenie przesyłki FedEx w Peek
 
-[Peek](/) stawia FedEx na pierwszym miejscu przy 12- i 15-cyfrowych numerach, których cyfra kontrolna się zgadza, ale nie ma pewności: te same kształty mają inni przewoźnicy. Stronę FedEx otwiera w przeglądarce dopiero na końcu, więc przewoźnika często wskazuje serwis śledzenia przesyłek albo Peek podaje go po krótkiej chwili. Numeru, który nie przechodzi kontroli, Peek nie proponuje FedEx: wybierz wtedy przewoźnika przez „Zmień przewoźnika”. Ważne w Polsce: krajowych 13-cyfrowych numerów FedEx Peek nie śledzi, sprawdzisz je na fedex.com. Możesz wkleić link z fedex.com z `trknbr=` albo `tracknumbers=`, także z polskiej strony śledzenia. Zeskanowany kod z etykiety jest odczytywany jako numer, który w sobie ma.
+[Peek](/) stawia FedEx na pierwszym miejscu przy 12- i 15-cyfrowych numerach, których cyfra kontrolna się zgadza, ale nie ma pewności: te same kształty mają inni przewoźnicy. Stronę FedEx otwiera w przeglądarce dopiero na końcu, więc przewoźnika często wskazuje serwis śledzenia przesyłek albo Peek podaje go po krótkiej chwili. Numeru, który nie przechodzi kontroli, Peek nie proponuje FedEx: wybierz wtedy przewoźnika przez „Zmień przewoźnika”. Ważne w Polsce: krajowe 13-cyfrowe numery FedEx Peek śledzi osobno, jako FedEx Poland. Możesz wkleić link z fedex.com z `trknbr=` albo `tracknumbers=`, także z polskiej strony śledzenia. Zeskanowany kod z etykiety jest odczytywany jako numer, który w sobie ma.
 
 Serwer Peek otwiera stronę śledzenia fedex.com w przeglądarce co 10 minut, a co 2 minuty, gdy paczka jest w doręczeniu. FedEx często odmawia takich wizyt. Gdy odmówi albo zażąda weryfikacji odbiorcy, historię uzupełniają serwisy śledzenia przesyłek.
 

@@ -17,7 +17,7 @@ Ein Nummernformat veröffentlicht SunYou nicht. Die Tracking-Seite nimmt 5 bis 5
 | `SY12345678901` | SY und 11 Ziffern: SunYou. |
 | `SYDE123456789` | SY, zwei Buchstaben und 9 Ziffern: ebenfalls SunYou. |
 | `LP00000000000000` | LP und 14 Ziffern: eine Logistiknummer von AliExpress und Cainiao. |
-| `RR123456785CN` | Zwei Buchstaben, neun Ziffern, CN: eine Nummer von China Post. |
+| `RR123456785CN` | Zwei Buchstaben, neun Ziffern, CN: eine Nummer von [China Post](carrier:china-post). |
 
 Die zwei Buchstaben nach SY verraten nicht sicher das Zielland. Auf SunYous Tracking ging eine `SYRM`-Nummer nach Japan, eine andere nach Bulgarien, und eine `SYAE`-Nummer nach Griechenland. Ein DE in der Nummer heißt also nicht unbedingt Deutschland.
 

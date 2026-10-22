@@ -51,7 +51,7 @@ Esto es lo que dicen las empresas y la norma postal sobre los números que más 
 | [Yanwen](carrier:yanwen) | Yanwen no publica ningún número de ejemplo; sus paquetes llevan `BYS` y 9 cifras, o dos letras, 9 cifras y `YP` (suele empezar por `UL` o `UK`). `YW`, tres letras y 12 cifras es su reparto propio en Estados Unidos |
 | AliExpress, [Cainiao](carrier:cainiao) | Cainiao no describe sus números; según esos datos, `DOFR` o `CNFR`, 13 cifras y `HD` es de Cainiao, y `LP` y `CNG` se explican justo abajo |
 | [YunExpress](carrier:yunexpress) | Yuntrack pide el número que empieza por `YT`, sin decir cuántas cifras lleva; según esos datos, `YT` y 16 cifras. `YT` y 13 cifras es YTO Express; `YT`, 9 cifras y `GB` es un envío postal de Royal Mail |
-| China Post, EMS | el formato postal acabado en `CN`; los números EMS internacionales empiezan por `E` |
+| [China Post](carrier:china-post), EMS | el formato postal acabado en `CN`; los números EMS internacionales empiezan por `E` |
 | Amazon | Amazon no publica ningún formato; `ES` y `TBA` se explican más abajo |
 
 ### Número de seguimiento que empieza por PQ, PK, LP o CNG

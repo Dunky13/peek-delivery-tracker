@@ -3,7 +3,7 @@ title: FedEx suivi : colis, statuts et avis de passage
 description: Suivre un colis FedEx : le numéro à 12 chiffres, le sens de « Exception de livraison » et des autres statuts, l'avis de passage, la douane et le contact.
 slug: fedex-suivi-colis
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 FedEx est un transporteur express et de colis, présent en France, en Belgique et en Suisse. Pour suivre ton colis, saisis le numéro sur la page de suivi de fedex.com, dans l'application FedEx Mobile, ou colle-le dans le champ ci-dessus. FedEx précise que le numéro arrive en général dans l'e-mail ou le SMS qu'il t'envoie au sujet de ton envoi.
@@ -74,7 +74,7 @@ Pages de contact de FedEx, lues le 13 octobre 2026 :
 
 ## Suivre un colis FedEx avec Peek
 
-[Peek](/) reconnaît les numéros FedEx à 12 et 15 chiffres quand leur clé de contrôle est bonne. D'autres transporteurs partagent ces formes, alors le colis est souvent nommé par un service de suivi, ou après une courte attente. Un numéro dont la clé est fausse n'est pas proposé à FedEx : choisis le transporteur avec « Changer de transporteur ». Les liens fedex.com avec `trknbr=` ou `tracknumbers=` fonctionnent aussi. Peek ne suit pas les numéros FedEx à 13 chiffres.
+[Peek](/) reconnaît les numéros FedEx à 12 et 15 chiffres quand leur clé de contrôle est bonne. D'autres transporteurs partagent ces formes, alors le colis est souvent nommé par un service de suivi, ou après une courte attente. Un numéro dont la clé est fausse n'est pas proposé à FedEx : choisis le transporteur avec « Changer de transporteur ». Les liens fedex.com avec `trknbr=` ou `tracknumbers=` fonctionnent aussi. Peek suit les numéros FedEx à 13 chiffres des colis nationaux en Pologne sous le nom FedEx Poland.
 
 Pour FedEx, il ouvre la page de suivi de fedex.com dans un navigateur, sur son propre serveur. Quand FedEx refuse, ou exige une vérification du destinataire, des services de suivi prennent le relais.
 

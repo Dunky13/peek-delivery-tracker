@@ -17,7 +17,7 @@ Il sito di Cainiao chiede solo lettere e cifre, accetta fino a 100 numeri in una
 | `LP12345678901234` | LP e 14 cifre: probabilmente Cainiao, ma non è sicuro. |
 | `CNG12345678900000` | CNG e 14 cifre: Cainiao. |
 | `DOFR1234567890123HD` | DOFR o CNFR, 13 cifre e HD: Cainiao. |
-| `RR123456785CN` | Numero postale: il sito di Cainiao traccia questa forma, ma la traccia anche la posta, qui China Post. |
+| `RR123456785CN` | Numero postale: il sito di Cainiao traccia questa forma, ma la traccia anche la posta, qui [China Post](carrier:china-post). |
 | `YT1234567890123456` | Non è Cainiao ma [YunExpress](carrier:yunexpress). |
 
 Il tracking di Cainiao risponde anche ad altre forme, per esempio AP e 14 cifre. Le voci «My Orders» e «Tracking» sono quelle della guida di AliExpress, che è in inglese anche nella versione italiana. Fuori da AliExpress nessuna pagina di Cainiao dice dove trovi il numero, e nessuna parla di SMS ai destinatari: vedi [dove cercare il codice tracking](guide:find-tracking-number).

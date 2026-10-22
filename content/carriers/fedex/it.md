@@ -3,7 +3,7 @@ title: FedEx tracking: numero, stati e consegna del pacco
 description: Tracking FedEx: dove trovi il numero di 12 cifre, cosa vuol dire «Eccezione di consegna», come cambi la consegna e come contatti FedEx Italia.
 slug: fedex-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 FedEx è un corriere espresso internazionale, attivo anche in Italia e in Ticino. Per seguire il pacco inserisci il numero nella pagina di monitoraggio di fedex.com, nell'app FedEx Mobile oppure nel box qui sopra. Secondo FedEx, il numero arriva di solito nell'e-mail o nell'SMS che ricevi sulla spedizione.
@@ -77,7 +77,7 @@ Così li indicavano il 13 ottobre 2026 le pagine di FedEx:
 
 ## Seguire un pacco FedEx con Peek
 
-[Peek](/) riconosce i numeri FedEx di 12 e 15 cifre quando la cifra di controllo è giusta. Le stesse forme le usano altri corrieri, quindi spesso il pacco viene attribuito da un servizio di tracking o dopo una breve attesa. Un numero che non supera il controllo non viene proposto a FedEx: scegli tu il corriere con «Cambia corriere». I numeri Ground Economy di 20 cifre vengono riconosciuti subito, i codici a barre dell'etichetta vengono letti per il numero che contengono, e funzionano anche i link di fedex.com con `trknbr=` o `tracknumbers=`. I numeri FedEx di 13 cifre invece non li segue.
+[Peek](/) riconosce i numeri FedEx di 12 e 15 cifre quando la cifra di controllo è giusta. Le stesse forme le usano altri corrieri, quindi spesso il pacco viene attribuito da un servizio di tracking o dopo una breve attesa. Un numero che non supera il controllo non viene proposto a FedEx: scegli tu il corriere con «Cambia corriere». I numeri Ground Economy di 20 cifre vengono riconosciuti subito, i codici a barre dell'etichetta vengono letti per il numero che contengono, e funzionano anche i link di fedex.com con `trknbr=` o `tracknumbers=`. I numeri FedEx di 13 cifre delle spedizioni nazionali in Polonia li segue come FedEx Poland.
 
 Il server di Peek apre la pagina di monitoraggio di fedex.com in un browser. Quando FedEx rifiuta la richiesta, o chiede di verificare il destinatario, subentrano servizi di tracking.
 

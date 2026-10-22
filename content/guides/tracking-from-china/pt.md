@@ -79,7 +79,7 @@ Além da Cainiao, é comum aparecerem a [YunExpress](carrier:yunexpress), a [4PX
 | `LP` + 14 algarismos | Cainiao (AliExpress): um formato que se vê na prática, mas que a Cainiao não documenta |
 | `YT` + 16 algarismos | YunExpress (`YT` + 13 algarismos é a YTO Express) |
 | `4PX` + 13 algarismos + `CN` | 4PX |
-| duas letras, nove algarismos, `CN` | China Post ou China EMS |
+| duas letras, nove algarismos, `CN` | [China Post](carrier:china-post) ou China EMS |
 | duas letras, nove algarismos, `YP` | Yanwen (`YP` não é um país) |
 | `SY` + 11 algarismos | Sunyou |
 | `SF` + 13 algarismos | SF Express |

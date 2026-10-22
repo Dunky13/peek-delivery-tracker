@@ -45,7 +45,7 @@ Oto, co przewoźnicy i standard pocztowy mówią o numerach, które w Polsce spo
 | [Cainiao](carrier:cainiao) (AliExpress) | Cainiao nie publikuje jednego formatu. W danych przewoźników, z których korzysta Peek, `DOFR` albo `CNFR`, 13 cyfr i `HD` to Cainiao; `LP` albo `CNG` i 14 cyfr to prawdopodobnie Cainiao, ale nie na pewno |
 | [Yanwen](carrier:yanwen) | `BYS` i 9 cyfr albo dwie litery, 9 cyfr i `YP` (często od `UL` albo `UK`); Yanwen nie publikuje przykładowego numeru. `YW`, trzy litery i 12 cyfr to własna usługa doręczeń Yanwen w USA |
 | [4PX](carrier:4px) | `4PX`, 13 cyfr i `CN`; 4PX nie publikuje przykładowego numeru, a jego strona przyjmuje od 5 do 50 liter i cyfr. `LP`, 13 cyfr i `CN` to prawdopodobnie też 4PX |
-| China Post, EMS | format pocztowy z `CN` na końcu; międzynarodowe numery EMS zaczynają się od `E` |
+| [China Post](carrier:china-post), EMS | format pocztowy z `CN` na końcu; międzynarodowe numery EMS zaczynają się od `E` |
 
 InPost od razu mówi, gdy długość się nie zgadza. Wyszukiwarka na stronie głównej inpost.pl nie przyjmie innego numeru i wyświetla wtedy komunikat `Podaj jeden numer przesyłki zawierający 24 cyfry`.
 

@@ -17,7 +17,7 @@ Aucune page de Cainiao ne donne la forme des numéros LP, CNG, DOFR ou CNFR. Son
 | `LP12345678901234` | LP et 14 chiffres : probablement Cainiao, sans certitude. |
 | `CNG12345678900000` | CNG et 14 chiffres : Cainiao. |
 | `DOFR1234567890123HD` | DOFR ou CNFR, 13 chiffres, puis HD : Cainiao. |
-| `RR123456785CN` | Un numéro postal : le site de Cainiao suit cette forme, mais la poste aussi, ici China Post. |
+| `RR123456785CN` | Un numéro postal : le site de Cainiao suit cette forme, mais la poste aussi, ici [China Post](carrier:china-post). |
 | `YT1234567890123456` | Pas Cainiao, mais [YunExpress](carrier:yunexpress). |
 
 Le suivi de Cainiao répond aussi à d'autres formes, comme AP suivi de 14 chiffres. Quand un transporteur local prend le relais, son numéro peut apparaître sous le numéro principal. Aucune page de Cainiao ne dit où trouver le numéro hors d'AliExpress, ni ne parle de SMS aux destinataires : lis [où trouver son numéro de suivi](guide:find-tracking-number). Si le site répond « Le numéro de suivi n'est pas valide », c'est qu'il ne reconnaît pas ce que tu as saisi : vérifie le numéro. S'il n'affiche aucun suivi, Cainiao te demande de vérifier qu'il s'agit bien d'un colis Cainiao ou AliExpress.

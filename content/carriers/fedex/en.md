@@ -3,7 +3,7 @@ title: FedEx tracking: numbers, statuses and missed deliveries
 description: Track a FedEx parcel: where to find the 12-digit tracking number, what statuses like Delivery exception mean, missed deliveries, customs bills and contacts.
 slug: fedex-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 FedEx is an express and parcel carrier. Track a parcel on fedex.com's tracking page, in the FedEx Mobile App or by pasting the number in the box above. FedEx says the number usually comes in the email or SMS it sends about your shipment.
@@ -78,7 +78,7 @@ FedEx's contact pages, read on 13 October 2026:
 
 ## Tracking FedEx parcels with Peek
 
-[Peek](/) recognises FedEx's 12- and 15-digit numbers when their check digit is right. Other carriers share those shapes, so the parcel is often named by a tracking service or after a short wait. A number that fails the check isn't offered to FedEx: pick the carrier with "Change". Ground Economy's 20-digit numbers are named FedEx at once, scanned label barcodes are read for the number inside, and fedex.com links with `trknbr=` or `tracknumbers=` work too. Peek doesn't track FedEx's 13-digit numbers.
+[Peek](/) recognises FedEx's 12- and 15-digit numbers when their check digit is right. Other carriers share those shapes, so the parcel is often named by a tracking service or after a short wait. A number that fails the check isn't offered to FedEx: pick the carrier with "Change". Ground Economy's 20-digit numbers are named FedEx at once, scanned label barcodes are read for the number inside, and fedex.com links with `trknbr=` or `tracknumbers=` work too. FedEx's 13-digit domestic numbers from Poland are followed as [FedEx Poland](carrier:fedex-pl).
 
 Peek opens fedex.com's tracking page in a browser on its own server. When FedEx refuses, or asks for recipient verification, tracking services fill in.
 

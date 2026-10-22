@@ -17,7 +17,7 @@ Cainiao nie publikuje jednego formatu numeru. Jego strona przyjmuje tylko litery
 | `LP12345678901234` | LP i 14 cyfr: prawdopodobnie Cainiao, ale nie na pewno. |
 | `CNG12345678900000` | CNG i 14 cyfr: Cainiao. |
 | `DOFR1234567890123HD` | DOFR albo CNFR, 13 cyfr i HD: Cainiao. |
-| `RR123456785CN` | Numer pocztowy, tu China Post. Strona Cainiao śledzi też taki kształt. |
+| `RR123456785CN` | Numer pocztowy, tu [China Post](carrier:china-post). Strona Cainiao śledzi też taki kształt. |
 | `LP123456785HK` | Też numer pocztowy (Hongkong Post): mimo LP to nie numer LP Cainiao. |
 | `YT1234567890123456` | Nie Cainiao, tylko [YunExpress](carrier:yunexpress). |
 

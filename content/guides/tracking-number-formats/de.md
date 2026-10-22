@@ -50,7 +50,7 @@ Das schreiben die Paketdienste selbst und der internationale Poststandard über 
 | [4PX](carrier:4px) | `4PX` + 13 Ziffern + `CN`. Ein Beispiel veröffentlicht 4PX nicht, seine Tracking-Seite nimmt 5 bis 50 Buchstaben und Ziffern an. `LP` + 13 Ziffern + `CN` ist wahrscheinlich auch 4PX |
 | [Yanwen](carrier:yanwen) | `BYS` + 9 Ziffern, oder zwei Buchstaben, 9 Ziffern und `YP`, oft ab `UL` oder `UK`. Ein Beispiel veröffentlicht Yanwen nicht. `YW`, drei Buchstaben und 12 Ziffern ist Yanwens eigener Zustelldienst in den USA |
 | [Cainiao](carrier:cainiao) (AliExpress) | `DOFR` oder `CNFR` plus 13 Ziffern und `HD`; `LP` oder `CNG` plus 14 Ziffern sind wahrscheinlich Cainiao, aber nicht sicher. So steht es in Peeks Paketdienst-Daten, Cainiao selbst beschreibt diese Formen nicht |
-| China Post, EMS | das Postformat mit `CN` am Ende. Internationale EMS-Nummern beginnen mit `E` |
+| [China Post](carrier:china-post), EMS | das Postformat mit `CN` am Ende. Internationale EMS-Nummern beginnen mit `E` |
 
 Bei Hermes merkst du sofort, wenn die Länge nicht stimmt. Die Sendungsverfolgung meldet dann `Sendungsnummer muss aus 14-20 Zeichen bestehen (Buchstaben, Zahlen).`
 

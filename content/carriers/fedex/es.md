@@ -3,7 +3,7 @@ title: FedEx seguimiento: estado del envío, entrega y teléfono
 description: Seguimiento de FedEx en España: dónde está el número de 12 cifras, qué significa «Excepción de entrega», entregas fallidas, aduanas y teléfono.
 slug: fedex-seguimiento
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 FedEx es una empresa de mensajería urgente y paquetería. Para seguir tu envío, busca el número en la página de seguimiento de fedex.com, en la app FedEx Mobile o pégalo en la casilla de arriba. Según FedEx, el número suele llegar en el correo o el SMS que te manda sobre el envío.
@@ -79,7 +79,7 @@ Según esa página, para hablar con atención al cliente basta el número de cue
 
 ## Seguimiento de FedEx con Peek
 
-[Peek](/) reconoce los números de 12 y 15 cifras de FedEx cuando su dígito de control es correcto. Otras empresas comparten esas formas, así que a menudo es un servicio de seguimiento el que identifica a FedEx, o Peek lo hace tras una breve espera. Un número que falla el control no se ofrece a FedEx: elige la empresa con «Cambiar». Los números Ground Economy de 20 cifras se asignan a FedEx al momento, los códigos de barras escaneados de la etiqueta se leen por el número que llevan y también valen los enlaces de fedex.com con `trknbr=` o `tracknumbers=`. Peek no sigue los números de 13 cifras.
+[Peek](/) reconoce los números de 12 y 15 cifras de FedEx cuando su dígito de control es correcto. Otras empresas comparten esas formas, así que a menudo es un servicio de seguimiento el que identifica a FedEx, o Peek lo hace tras una breve espera. Un número que falla el control no se ofrece a FedEx: elige la empresa con «Cambiar». Los números Ground Economy de 20 cifras se asignan a FedEx al momento, los códigos de barras escaneados de la etiqueta se leen por el número que llevan y también valen los enlaces de fedex.com con `trknbr=` o `tracknumbers=`. Peek sigue como FedEx Poland los números de 13 cifras de los envíos nacionales de FedEx en Polonia.
 
 Para leer los datos, el servidor de Peek abre la página de seguimiento de fedex.com en un navegador. Cuando FedEx la rechaza, o pide verificar al destinatario, los servicios de seguimiento completan el historial.
 

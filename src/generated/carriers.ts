@@ -1096,6 +1096,22 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "J&T Express Australia tracking: JTAU numbers and statuses",
       "name": "J&T Express Australia",
       "color": "#e60000"
+    },
+    {
+      "id": "china-post",
+      "catalog": "china-post",
+      "slug": "china-post-tracking",
+      "title": "China Post tracking: number, statuses and who delivers",
+      "name": "China Post",
+      "color": "#006d46"
+    },
+    {
+      "id": "fedex-pl",
+      "catalog": "fedex-pl",
+      "slug": "fedex-poland-tracking",
+      "title": "FedEx Poland tracking: 13-digit numbers and statuses",
+      "name": "FedEx Poland",
+      "color": "#4d148c"
     }
   ],
   "de": [
@@ -1314,6 +1330,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "J&T Express Sendungsverfolgung: Status, Nachbar, Kontakt",
       "name": "J&T Express Germany",
       "color": "#e60000"
+    },
+    {
+      "id": "china-post",
+      "catalog": "china-post",
+      "slug": "china-post-sendungsverfolgung",
+      "title": "China Post Sendungsverfolgung: Nummer, Status, Zustellung",
+      "name": "China Post",
+      "color": "#006d46"
     }
   ],
   "fr": [
@@ -1636,6 +1660,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "\"Intelcom / Dragonfly suivi colis\u00a0: statuts et contact\"",
       "name": "Intelcom / Dragonfly",
       "color": "#13a58f"
+    },
+    {
+      "id": "china-post",
+      "catalog": "china-post",
+      "slug": "china-post-suivi",
+      "title": "Suivi China Post\u00a0: numéro, statuts chinois et livraison",
+      "name": "China Post",
+      "color": "#006d46"
     }
   ],
   "it": [
@@ -1814,6 +1846,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "DHL Express tracking: lettera di vettura, stati e contatti",
       "name": "DHL Express",
       "color": "#ffcc00"
+    },
+    {
+      "id": "china-post",
+      "catalog": "china-post",
+      "slug": "china-post-tracking",
+      "title": "Tracking China Post: codice, stati in cinese e consegna",
+      "name": "China Post",
+      "color": "#006d46"
     }
   ],
   "es": [
@@ -2024,6 +2064,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Correos seguimiento: estados, entregas, aduanas y teléfono",
       "name": "Correos",
       "color": "#ffcd00"
+    },
+    {
+      "id": "china-post",
+      "catalog": "china-post",
+      "slug": "china-post-seguimiento",
+      "title": "China Post seguimiento: número, estados y entrega en España",
+      "name": "China Post",
+      "color": "#006d46"
     }
   ],
   "pt": [
@@ -2210,6 +2258,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "DHL Express tracking: carta de porte, estados e contactos",
       "name": "DHL Express",
       "color": "#ffcc00"
+    },
+    {
+      "id": "china-post",
+      "catalog": "china-post",
+      "slug": "china-post-rastreio",
+      "title": "China Post rastreio: número, estados e entrega em Portugal",
+      "name": "China Post",
+      "color": "#006d46"
     }
   ],
   "pl": [
@@ -2356,6 +2412,22 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "DHL Express śledzenie przesyłki: numer, statusy i kontakt",
       "name": "DHL Express",
       "color": "#ffcc00"
+    },
+    {
+      "id": "china-post",
+      "catalog": "china-post",
+      "slug": "china-post-sledzenie",
+      "title": "China Post śledzenie przesyłki: numer, statusy, doręczenie",
+      "name": "China Post",
+      "color": "#006d46"
+    },
+    {
+      "id": "fedex-pl",
+      "catalog": "fedex-pl",
+      "slug": "fedex-polska-sledzenie-przesylki",
+      "title": "FedEx Polska śledzenie przesyłki krajowej: numer i statusy",
+      "name": "FedEx Poland",
+      "color": "#4d148c"
     }
   ],
   "nl": [],

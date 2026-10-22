@@ -103,7 +103,7 @@ Une fois le retour accepté, envoie l'article par un envoi suivi à l'adresse de
 
 Oui, avec le numéro de suivi affiché sous « Suivre la commande ». Colle-le dans [Peek](/), qui affiche ces colis sous le nom « AliExpress / Cainiao ». Peek reconnaît tout de suite DOFR ou CNFR suivi de 13 chiffres et de HD, comme `DOFR1234567890123HD`. Pour les numéros LP, AP et CNG, la forme seule ne suffit pas : Peek interroge Cainiao et les autres transporteurs auxquels la forme correspond, comme Colis Privé pour un numéro CNG qui finit par ce qui ressemble à un code postal français, et affiche celui qui connaît le numéro. Si plusieurs le connaissent, il te demande de choisir ; s'il affiche le mauvais, appuie sur « Changer » et choisis « AliExpress / Cainiao ».
 
-Un numéro postal comme `RR123456785CN` part vers China Post. Pour le suivre chez Cainiao, colle plutôt le lien de suivi de global.cainiao.com.
+Un numéro postal comme `RR123456785CN` part vers [China Post](carrier:china-post). Pour le suivre chez Cainiao, colle plutôt le lien de suivi de global.cainiao.com.
 
 Quand le premier transporteur nomme le partenaire local qui prend le relais, Peek garde le premier historique, suit le partenaire dès que son propre suivi montre du nouveau, et affiche sur la carte le nom et le numéro du partenaire.
 

@@ -3,7 +3,7 @@ title: FedEx Tracking und Sendungsverfolgung: Status und Hilfe
 description: FedEx-Paket verfolgen: wo die 12-stellige Sendungsnummer steht, was „Zustellausnahme“ heißt, wie du die Zustellung änderst und wie du FedEx erreichst.
 slug: fedex-sendungsverfolgung
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 FedEx ist ein Express- und Paketdienst, der auf seinen europäischen Seiten die Dienste von FedEx Express anbietet. Verfolgen kannst du dein Paket auf der Tracking-Seite von fedex.com, in der FedEx Mobile App oder mit der Nummer im Feld oben. Die Sendungsnummer steht laut FedEx meist in der E-Mail oder SMS, die du zu deiner Sendung bekommst.
@@ -79,7 +79,7 @@ So stand es am 13. Oktober 2026 auf FedEx' Seiten für Deutschland, Österreich 
 
 ## FedEx-Paket mit Peek verfolgen
 
-Bei 12- und 15-stelligen Nummern mit gültiger Prüfziffer denkt [Peek](/) zuerst an FedEx, ist sich aber nicht sicher: Andere Paketdienste teilen diese Formen, und bei FedEx fragt Peek erst zuletzt nach, im Browser. Oft nennt deshalb ein Tracking-Dienst den Paketdienst, oder es dauert einen Moment. Fällt eine Nummer durch FedEx' Prüfung, wird FedEx nicht angeboten: Dann wählst du den Paketdienst mit „Paketdienst ändern“. Ground-Economy-Nummern mit 20 Ziffern erkennt Peek sofort als FedEx, bei gescannten Etikett-Barcodes liest es die Nummer darin. Links von fedex.com mit `trknbr=` oder `tracknumbers=` kannst du ebenfalls einfügen. 13-stellige FedEx-Nummern verfolgt Peek nicht.
+Bei 12- und 15-stelligen Nummern mit gültiger Prüfziffer denkt [Peek](/) zuerst an FedEx, ist sich aber nicht sicher: Andere Paketdienste teilen diese Formen, und bei FedEx fragt Peek erst zuletzt nach, im Browser. Oft nennt deshalb ein Tracking-Dienst den Paketdienst, oder es dauert einen Moment. Fällt eine Nummer durch FedEx' Prüfung, wird FedEx nicht angeboten: Dann wählst du den Paketdienst mit „Paketdienst ändern“. Ground-Economy-Nummern mit 20 Ziffern erkennt Peek sofort als FedEx, bei gescannten Etikett-Barcodes liest es die Nummer darin. Links von fedex.com mit `trknbr=` oder `tracknumbers=` kannst du ebenfalls einfügen. 13-stellige FedEx-Nummern für Inlandspakete in Polen verfolgt Peek als FedEx Poland.
 
 Peeks Server öffnet dafür die Tracking-Seite von fedex.com in einem Browser. Das klappt nicht immer: Blockt FedEx den Abruf oder verlangt FedEx eine Bestätigung durch den Empfänger, springen Tracking-Dienste ein.
 

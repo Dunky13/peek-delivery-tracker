@@ -108,7 +108,7 @@ La devolución tiene su propio número: la sigues con «Seguimiento de Paquete d
 Sí, con el número de la página «Seguir pedido». Pégalo en [Peek](/), que muestra estos paquetes como «AliExpress / Cainiao». Reconoce al momento los números DOFR o CNFR con 13 cifras y HD, como `DOFR1234567890123HD`. Los LP, CNG y AP no son seguros solo por su forma: Peek pregunta a Cainiao, y a cualquier otra empresa a la que corresponda la forma, y te muestra la que conoce el número. Si lo conocen varias, te pide que elijas; si muestra la equivocada, pulsa «Cambiar» y elige «AliExpress / Cainiao».
 
 - **Una forma que comparten varias empresas.** Con las formas que comparten varias empresas pasa lo mismo: si Peek muestra la empresa equivocada, pulsa «Cambiar» y elige la que indica el seguimiento de AliExpress.
-- **Números postales y de Ecoscooting.** Un número postal como `RR123456785CN` va a China Post, y uno de Ecoscooting, `CNESP` y 20 cifras, Peek lo reconoce por su forma. Para seguir un número postal a través de Cainiao, pega el enlace de seguimiento de global.cainiao.com.
+- **Números postales y de Ecoscooting.** Un número postal como `RR123456785CN` va a [China Post](carrier:china-post), y uno de Ecoscooting, `CNESP` y 20 cifras, Peek lo reconoce por su forma. Para seguir un número postal a través de Cainiao, pega el enlace de seguimiento de global.cainiao.com.
 - **Una nueva empresa en España.** Si la primera empresa indica quién toma el relevo en España, Peek guarda el historial anterior, pasa a la nueva en cuanto su seguimiento muestra novedades y en la tarjeta ves su nombre y su número.
 - **Varios paquetes, varios números.** Añade cada número. El número de pedido de AliExpress no es un número de seguimiento, y Peek no puede seguirlo.
 

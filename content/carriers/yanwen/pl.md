@@ -17,7 +17,7 @@ Yanwen nie publikuje przykładowego numeru ani stron pomocy dla odbiorców. Kszt
 | `BYS123456789` | BYS i 9 cyfr: Yanwen. |
 | `UL123456785YP` | Dwie litery, 9 cyfr i YP na końcu: Yanwen. Często zaczyna się od UL albo UK. |
 | `YWABC123456789012` | YW, trzy litery i 12 cyfr: własna usługa doręczeń Yanwen w USA. |
-| `RR123456785CN` | Ten sam pocztowy kształt z CN na końcu: China Post, nie Yanwen. |
+| `RR123456785CN` | Ten sam pocztowy kształt z CN na końcu: [China Post](carrier:china-post), nie Yanwen. |
 | `1234567890123U` | 13 cyfr i litera: numer [DPD Polska](carrier:dpd-pl), który paczka może dostać na ostatnim odcinku. |
 | `YT1234567890123456` | Nie Yanwen, tylko [YunExpress](carrier:yunexpress). |
 | `LP12345678901234` | Nie Yanwen, tylko numer logistyczny AliExpress, zobacz [Cainiao](carrier:cainiao). |

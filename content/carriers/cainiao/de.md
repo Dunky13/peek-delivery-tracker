@@ -17,7 +17,7 @@ Die Formen LP, CNG, DOFR und CNFR beschreibt keine Cainiao-Seite. Die Tracking-S
 | `LP12345678901234` | LP und 14 Ziffern: wahrscheinlich Cainiao, aber nicht sicher. |
 | `CNG12345678900000` | CNG und 14 Ziffern: Cainiao. |
 | `DOFR1234567890123HD` | DOFR oder CNFR, 13 Ziffern, dann HD: Cainiao. |
-| `RR123456785CN` | Eine Postnummer, hier von China Post. Cainiaos Seite verfolgt diese Form auch. |
+| `RR123456785CN` | Eine Postnummer, hier von [China Post](carrier:china-post). Cainiaos Seite verfolgt diese Form auch. |
 | `LP123456785HK` | Ebenfalls eine Postnummer (Hongkong Post), trotz LP keine LP-Nummer von Cainiao. |
 | `YT1234567890123456` | Keine Cainiao-Nummer, sondern [YunExpress](carrier:yunexpress). |
 

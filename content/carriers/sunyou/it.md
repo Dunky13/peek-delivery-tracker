@@ -17,7 +17,7 @@ SunYou non pubblica un formato. Il suo sito accetta da 5 a 50 lettere, cifre e t
 | `SY12345678901` | SY e 11 cifre: SunYou. |
 | `SYGB000000000` | SY, due lettere e 9 cifre: anche questo SunYou. |
 | `LP00000000000000` | LP e 14 cifre: un numero logistico di AliExpress e Cainiao. |
-| `RR123456785CN` | Due lettere, nove cifre e CN: un numero di China Post. |
+| `RR123456785CN` | Due lettere, nove cifre e CN: un numero di [China Post](carrier:china-post). |
 
 Le due lettere dopo SY non indicano per forza il Paese di arrivo. Sul tracking di SunYou un numero `SYRM` è andato in Giappone, un altro in Bulgaria, e un numero `SYAE` in Grecia. Chi cerca «sunyou post rm tracking» ha quasi sempre un numero che comincia con SYRM: è un normale numero SunYou.
 

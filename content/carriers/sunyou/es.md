@@ -17,7 +17,7 @@ SunYou no publica ningún formato de número, pero los que aparecen en su seguim
 | `SY12345678901` | SY y 11 cifras: SunYou. |
 | `SYGB000000000` | SY, dos letras y 9 cifras: también SunYou. |
 | `LP00000000000000` | LP y 14 cifras: referencia logística de AliExpress y Cainiao. |
-| `RR123456785CN` | Dos letras, 9 cifras y CN: un número de China Post. |
+| `RR123456785CN` | Dos letras, 9 cifras y CN: un número de [China Post](carrier:china-post). |
 
 Las dos letras que siguen a SY no siempre indican el destino. En el seguimiento de SunYou, un número `SYRM` fue a Japón y otro a Bulgaria, y uno `SYAE` acabó en Grecia.
 

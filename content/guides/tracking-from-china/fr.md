@@ -79,7 +79,7 @@ Les numéros postaux font exception. L'Union postale universelle ne permet qu'un
 | `CNG` + 14 chiffres | Cainiao (AliExpress), mais la même forme peut correspondre à [Colis Privé](carrier:colis-prive) |
 | `YT` + 16 chiffres | YunExpress (`YT` + 13 chiffres, c'est YTO Express) |
 | `4PX` + 13 chiffres + `CN` | 4PX |
-| deux lettres, neuf chiffres, `CN` | China Post ou China EMS |
+| deux lettres, neuf chiffres, `CN` | [China Post](carrier:china-post) ou China EMS |
 | deux lettres, neuf chiffres, `YP` | Yanwen (`YP` n'est pas un pays) |
 | `SY` + 11 chiffres | Sunyou |
 | `SF` + 13 chiffres | SF Express |

@@ -50,7 +50,7 @@ Eis o que as transportadoras, e a norma postal, dizem sobre os números que mais
 | [YunExpress](carrier:yunexpress) | `YT` + 16 algarismos (`YT` + 13 algarismos é a YTO Express) |
 | [Yanwen](carrier:yanwen) | `BYS` + 9 algarismos, ou duas letras, 9 algarismos e `YP` (`UL` e `UK` são os inícios mais comuns); a Yanwen não publica nenhum número de exemplo. `YW`, três letras e 12 algarismos é o seu serviço de entrega nos Estados Unidos |
 | [4PX](carrier:4px) | `4PX` + 13 algarismos + `CN`; a 4PX não publica nenhum número de exemplo, e o site aceita de 5 a 50 letras e algarismos. `LP` + 13 algarismos + `CN` é muito provavelmente 4PX |
-| China Post, EMS | o formato postal terminado em `CN`; os números EMS internacionais começam por `E` |
+| [China Post](carrier:china-post), EMS | o formato postal terminado em `CN`; os números EMS internacionais começam por `E` |
 
 ### O que significam as letras de um código de envio dos CTT?
 

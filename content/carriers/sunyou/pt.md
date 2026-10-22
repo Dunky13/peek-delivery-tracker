@@ -17,7 +17,7 @@ A SunYou não publica nenhum formato de número, mas os que aparecem no seguimen
 | `SY12345678901` | SY e 11 algarismos: SunYou. |
 | `SYPT000000000` | SY, duas letras e 9 algarismos: também SunYou. |
 | `LP00000000000000` | LP e 14 algarismos: uma referência logística do AliExpress e da Cainiao. |
-| `RR123456785CN` | Duas letras, 9 algarismos e CN: um número dos Correios da China. |
+| `RR123456785CN` | Duas letras, 9 algarismos e CN: um número dos [Correios da China](carrier:china-post). |
 
 As duas letras a seguir a SY nem sempre são o país de destino. No seguimento da SunYou, um número `SYRM` foi para o Japão e outro para a Bulgária, e um número `SYAE` foi para a Grécia. Quem procura «sunyou post rm tracking» tem um número destes: o RM não indica o país de destino.
 

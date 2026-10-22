@@ -52,7 +52,7 @@ Voici ce que disent les transporteurs et la norme postale sur les numéros que t
 | [4PX](carrier:4px) | `4PX` suivi de 13 chiffres et de `CN` ; 4PX ne publie aucun exemple, et son site accepte de 5 à 50 lettres et chiffres. `LP` suivi de 13 chiffres et de `CN`, c'est probablement 4PX aussi |
 | [Yanwen](carrier:yanwen) | Yanwen ne publie aucun exemple ; ses colis portent `BYS` suivi de 9 chiffres, ou deux lettres, 9 chiffres et `YP` (`UL` et `UK` sont des débuts fréquents). `YW`, trois lettres et 12 chiffres, c'est son service de livraison aux États-Unis |
 | AliExpress, [Cainiao](carrier:cainiao) | Cainiao ne décrit pas ses numéros ; dans les données de transporteurs de Peek, `DOFR` ou `CNFR` suivi de 13 chiffres et de `HD` ; `LP` ou `CNG` suivi de 14 chiffres, probablement Cainiao, sans certitude (un `CNG` qui finit comme un code postal français peut aussi être Colis Privé) |
-| China Post, EMS | format postal qui finit par `CN` ; les numéros EMS internationaux commencent par `E` |
+| [China Post](carrier:china-post), EMS | format postal qui finit par `CN` ; les numéros EMS internationaux commencent par `E` |
 | Amazon | Amazon ne publie aucun format ; les numéros en `FR` et en `TBA` sont expliqués plus bas |
 
 ### Numéro qui commence par 99 ou 3232 : La Poste suisse ou bpost
