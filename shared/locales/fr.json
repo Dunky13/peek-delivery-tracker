@@ -177,6 +177,7 @@
   "detail.mute": "Désactiver les notifications de ce colis",
   "detail.notificationFailed": "Impossible d’enregistrer tes réglages de notifications. Réessaie.",
   "detail.carrierWebsite": "Ouvrir le site {{carrier}}",
+  "detail.open": "Ouvrir le colis",
   "detail.parcelActions": "Actions du colis",
   "detail.renameFailed": "Impossible d’enregistrer le nom. Réessaie.",
   "detail.restore": "Restaurer le colis",

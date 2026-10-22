@@ -684,9 +684,9 @@ struct DeliveriesNavigation: Equatable {
         return true
     }
 
-    /// The parcel shown beside the list has left it from its own page, archived, brought back or deleted,
-    /// and the card after it shows instead: the one before it for the last, the first for one that had none.
-    /// `cards` is the list as it was before the parcel left.
+    /// The parcel shown beside the list has left it, archived, brought back or deleted from its own page or
+    /// deleted from its card, and the card after it shows instead: the one before it for the last, the first
+    /// for one that had none. `cards` is the list as it was before the parcel left.
     mutating func leave(_ parcelID: UUID, cards: [UUID]) {
         guard shown == parcelID else { return }
         let index = cards.firstIndex(of: parcelID)
@@ -706,6 +706,45 @@ struct DeliveriesNavigation: Equatable {
     private mutating func pick(_ parcelID: UUID?) {
         path = parcelID.map { [$0] } ?? []
         automaticPick = parcelID
+    }
+}
+
+/// What a parcel's menu offers: its page's •••, and its card's under a long press or a secondary click.
+enum ParcelMenuItem: Hashable {
+    case open, rename, share, copyTrackingNumber, changeCarrier, archive, restore, delete
+
+    /// The items in groups that a line sets apart. A card's menu also opens the parcel, and shares it as the
+    /// page's own button does. Every parcel in the list can be changed, in the demo and without an account as
+    /// well: an archived one is brought back rather than archived.
+    static func menu(for parcel: Parcel, onCard: Bool) -> [[Self]] {
+        let changes: [Self] = [.rename] + (onCard ? [.share] : []) + [.copyTrackingNumber, .changeCarrier]
+        return (onCard ? [[.open]] : []) + [changes, [parcel.isArchived ? .restore : .archive], [.delete]]
+    }
+
+    var titleKey: String {
+        switch self {
+        case .open: "detail.open"
+        case .rename: "detail.editTitle"
+        case .share: "share.action"
+        case .copyTrackingNumber: "detail.copyTracking"
+        case .changeCarrier: "detail.changeCarrier"
+        case .archive: "detail.archive"
+        case .restore: "detail.restore"
+        case .delete: "detail.delete"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .open: "shippingbox"
+        case .rename: "pencil"
+        case .share: "square.and.arrow.up"
+        case .copyTrackingNumber: "doc.on.doc"
+        case .changeCarrier: "truck.box"
+        case .archive: "archivebox"
+        case .restore: "arrow.uturn.backward"
+        case .delete: "trash"
+        }
     }
 }
 

@@ -4,10 +4,22 @@ import VisionKit
 
 /// How someone starts following their first parcel. The deliveries list owns the sheet that adds it.
 enum FirstParcelRequest: Equatable {
-    /// Whatever is on the clipboard, read once the person asked for it.
+    /// Whatever is on the clipboard, read once the person asked for it, or text dropped on the deliveries.
     case paste(String)
     case type
     case scan
+
+    /// As much pasted text as Add takes in.
+    static let pasteLimit = 2000
+
+    /// Text or a link dragged onto the deliveries from another app is taken as a paste: each piece once, one to a
+    /// line, as the share extension joins them. Nil when nothing in it reads as a tracking number.
+    static func drop(_ items: [String], catalog: CarrierCatalog = .shared) -> Self? {
+        let pieces = items.compactMap { $0.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty }
+            .reduce(into: [String]()) { pieces, piece in if !pieces.contains(piece) { pieces.append(piece) } }
+        let text = String(pieces.joined(separator: "\n").prefix(pasteLimit))
+        return catalog.parse(text).trackingNumber.isEmpty ? nil : .paste(text)
+    }
 }
 
 /// The made-up parcel the first screen follows: a pair of trainers, from Shenzhen to a kiosk in Zürich.

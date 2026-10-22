@@ -177,6 +177,7 @@
   "detail.mute": "Desativar notificações da encomenda",
   "detail.notificationFailed": "Não foi possível guardar as definições de notificações. Tenta novamente.",
   "detail.carrierWebsite": "Abrir o site de {{carrier}}",
+  "detail.open": "Abrir encomenda",
   "detail.parcelActions": "Ações da encomenda",
   "detail.renameFailed": "Não foi possível guardar o nome. Tenta novamente.",
   "detail.restore": "Restaurar encomenda",

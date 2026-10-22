@@ -49,6 +49,16 @@ A parcel's detail shares the parcel through such a link, built on the host of
 they stay on the device and never reach the API. In the demo the link is made up and leads
 nowhere.
 
+## The deliveries
+
+A long press on a parcel's card, or a secondary click, opens its menu; a pointer lights the
+card up. The menu opens and shares the parcel and does what its page's ••• menu does: rename
+it, copy its tracking number, change its carrier, archive it with Undo as a swipe does or
+bring it back, and delete it once confirmed.
+
+Text or a link dropped on the deliveries or on + opens Add with it, as a paste or the Share
+extension does. A drop with no tracking number in it is refused.
+
 ## Signing for a device
 
 1. Select your team for the app, `ShareExtension` and `DeliveryWidget` targets.

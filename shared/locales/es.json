@@ -177,6 +177,7 @@
   "detail.mute": "Desactivar notificaciones del paquete",
   "detail.notificationFailed": "No se han podido guardar los ajustes de notificaciones. Inténtalo de nuevo.",
   "detail.carrierWebsite": "Abrir la web de {{carrier}}",
+  "detail.open": "Abrir paquete",
   "detail.parcelActions": "Acciones del paquete",
   "detail.renameFailed": "No se ha podido guardar el nombre. Inténtalo de nuevo.",
   "detail.restore": "Restaurar paquete",

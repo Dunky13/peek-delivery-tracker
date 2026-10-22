@@ -177,6 +177,7 @@
   "detail.mute": "Mitteilungen für dieses Paket ausschalten",
   "detail.notificationFailed": "Die Mitteilungseinstellungen konnten nicht gespeichert werden. Versuche es erneut.",
   "detail.carrierWebsite": "Website von {{carrier}} öffnen",
+  "detail.open": "Paket öffnen",
   "detail.parcelActions": "Paketaktionen",
   "detail.renameFailed": "Der Name konnte nicht gespeichert werden. Versuche es erneut.",
   "detail.restore": "Paket wiederherstellen",

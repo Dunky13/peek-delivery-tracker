@@ -177,6 +177,7 @@
   "detail.mute": "Disattiva le notifiche del pacco",
   "detail.notificationFailed": "Impossibile salvare le impostazioni delle notifiche. Riprova.",
   "detail.carrierWebsite": "Apri il sito {{carrier}}",
+  "detail.open": "Apri pacco",
   "detail.parcelActions": "Azioni del pacco",
   "detail.renameFailed": "Impossibile salvare il nome. Riprova.",
   "detail.restore": "Ripristina pacco",

@@ -177,6 +177,7 @@
   "detail.mute": "Wyłącz powiadomienia o przesyłce",
   "detail.notificationFailed": "Nie udało się zapisać ustawień powiadomień. Spróbuj ponownie.",
   "detail.carrierWebsite": "Otwórz stronę przewoźnika {{carrier}}",
+  "detail.open": "Otwórz przesyłkę",
   "detail.parcelActions": "Działania dotyczące przesyłki",
   "detail.renameFailed": "Nie udało się zapisać nazwy. Spróbuj ponownie.",
   "detail.restore": "Przywróć przesyłkę",

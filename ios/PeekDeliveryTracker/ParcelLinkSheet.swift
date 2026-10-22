@@ -856,9 +856,7 @@ private struct SharedParcelNumber: View {
     }
 
     private func copy(_ value: String, carrier: CarrierID) {
-        DeliveryAnalytics.shared.action("parcel-copy-tracking")
-        UIPasteboard.general.string = carrier == .postlogistics ? CarrierCatalog.format(value, carrier: carrier) : value
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        TrackingNumberCopy.copy(value, carrier: carrier)
         copiedNumber = value
         Task {
             try? await Task.sleep(for: .seconds(2))

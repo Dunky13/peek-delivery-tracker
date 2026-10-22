@@ -177,6 +177,7 @@
   "detail.mute": "Turn off parcel notifications",
   "detail.notificationFailed": "Couldn’t save your notification settings. Try again.",
   "detail.carrierWebsite": "Open the {{carrier}} website",
+  "detail.open": "Open parcel",
   "detail.parcelActions": "Parcel actions",
   "detail.renameFailed": "Couldn’t save the name. Try again.",
   "detail.restore": "Restore parcel",

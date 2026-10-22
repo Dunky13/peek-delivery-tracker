@@ -2734,3 +2734,48 @@ extension ParcelLogicTests {
         XCTAssertNil(folded.screen(after: next))
     }
 }
+
+extension ParcelLogicTests {
+    func testACardsMenuOffersWhatItsPageDoesAndOpensAndSharesTheParcelToo() {
+        let parcel = makeParcel()
+        XCTAssertEqual(ParcelMenuItem.menu(for: parcel, onCard: true), [
+            [.open], [.rename, .share, .copyTrackingNumber, .changeCarrier], [.archive], [.delete],
+        ])
+        // The page has its own share button, and is open already.
+        XCTAssertEqual(ParcelMenuItem.menu(for: parcel, onCard: false), [
+            [.rename, .copyTrackingNumber, .changeCarrier], [.archive], [.delete],
+        ])
+        // An archived parcel is brought back rather than archived again.
+        var archived = parcel
+        archived.archivedAt = "2026-08-02T10:00:00Z"
+        XCTAssertEqual(ParcelMenuItem.menu(for: archived, onCard: true)[2], [.restore])
+        XCTAssertEqual(ParcelMenuItem.menu(for: archived, onCard: false)[1], [.restore])
+    }
+
+    func testACopiedTrackingNumberIsTheOneItsCarriersSiteTakes() {
+        XCTAssertEqual(TrackingNumberCopy.text("1Z999AA10123456784", carrier: .ups), "1Z999AA10123456784")
+        // PostLogistics prints its references with a dash, and its site searches for them so.
+        XCTAssertEqual(TrackingNumberCopy.text("12345678001", carrier: .postlogistics), "12345678-001")
+    }
+
+    func testTextDroppedOnTheDeliveriesOpensAddOnlyWhenItHoldsATrackingNumber() {
+        let catalog = CarrierCatalog(cacheURL: nil)
+        XCTAssertEqual(FirstParcelRequest.drop([" 1Z999AA10123456784\n"], catalog: catalog), .paste("1Z999AA10123456784"))
+        let message = "Your order has shipped: 1Z999AA10123456784"
+        XCTAssertEqual(FirstParcelRequest.drop([message], catalog: catalog), .paste(message))
+        // A link and the words that came with it are read together, each once, one to a line, as the share extension reads them.
+        let link = "https://www.ups.com/track?tracknum=1Z999AA10123456784"
+        XCTAssertEqual(FirstParcelRequest.drop([link, "Track your parcel", link], catalog: catalog),
+                       .paste("\(link)\nTrack your parcel"))
+        // Nothing to track: the drop is refused, and Add stays closed.
+        XCTAssertNil(FirstParcelRequest.drop([], catalog: catalog))
+        XCTAssertNil(FirstParcelRequest.drop([" ", "\n"], catalog: catalog))
+        XCTAssertNil(FirstParcelRequest.drop(["Your shipment arrives Monday"], catalog: catalog))
+        // No more than Add takes in from a paste.
+        let long = "Your order has shipped: 1Z999AA10123456784. " + String(repeating: "More news follows. ", count: 200)
+        guard case .paste(let text)? = FirstParcelRequest.drop([long], catalog: catalog) else {
+            return XCTFail("a long message with a number is refused")
+        }
+        XCTAssertEqual(text.count, FirstParcelRequest.pasteLimit)
+    }
+}

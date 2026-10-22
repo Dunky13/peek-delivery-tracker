@@ -234,6 +234,7 @@ private struct DeliveryListView: View {
     @State private var scanning = false
     @State private var toast: ListToast?
     @State private var actionError: String?
+    @State private var prompts = CardPrompts()
     @State private var pull = PullToRefreshModel()
     /// Parcels delivered since the list was last shown, held in place until their cards leave.
     @State private var delivered = DeliveredHold()
@@ -251,12 +252,45 @@ private struct DeliveryListView: View {
         var warning = false
     }
 
+    /// What a card's menu asked for that waits on the person: a new name, a sheet, or a yes before a delete.
+    private struct CardPrompts {
+        var renaming: Parcel?
+        var naming = false
+        var name = ""
+        var sharing: Parcel?
+        var changingCarrier: Parcel?
+        var deleting: UUID?
+        /// A sheet stands over the list.
+        var covers: Bool { sharing != nil || changingCarrier != nil }
+    }
+
     var body: some View {
         // Filtering, sorting and grouping run once per render, not once per section.
         let layout = arrangement(of: delivered.arranged(store.parcels))
         // The cards that are others once the held parcels are let go: those leave without a trace, and are flown.
         let leaving = delivered.isEmpty ? [] : Set(layout.changing(into: arrangement(of: store.parcels)).keys)
-        return holdingDelivered(screen(layout, leaving: leaving))
+        return holdingDelivered(prompting(screen(layout, leaving: leaving)))
+    }
+
+    /// What a card's menu opens over the list, kept apart from the screen's own modifiers as `holdingDelivered` is.
+    private func prompting(_ screen: some View) -> some View {
+        screen
+            .parcelRenameAlert(isPresented: $prompts.naming, name: $prompts.name) { label in
+                guard let parcel = prompts.renaming else { return }
+                Task {
+                    do { try await store.rename(parcel, label: label) }
+                    catch { actionError = localizer.errorMessage(error) }
+                }
+            }
+            .sheet(item: $prompts.sharing) { parcel in
+                ParcelShareSheet(parcel: parcel, client: store.shareClient(for: parcel), demo: store.isDemo)
+                    .environmentObject(localizer)
+            }
+            .sheet(item: $prompts.changingCarrier) { parcel in
+                ChangeCarrierView(parcel: parcel)
+                    .environmentObject(store)
+                    .environmentObject(localizer)
+            }
     }
 
     /// A parcel delivered since the list was last shown keeps its place for a moment, then its card leaves.
@@ -479,6 +513,7 @@ private struct DeliveryListView: View {
             ExperimentalBackdrop()
             content(layout, leaving: leaving)
         }
+        .dropDestination(for: DroppedText.self) { items, _ in addDropped(items) }
         .safeAreaInset(edge: .top, spacing: 0) { DemoModeBar() }
         .navigationTitle(localizer.text("native.deliveries"))
         .navigationBarTitleDisplayMode(.inline)
@@ -502,6 +537,7 @@ private struct DeliveryListView: View {
         showingAccount = false
         showingFilters = false
         sitePage = nil
+        prompts = CardPrompts()
         navigation.open(parcelID)
     }
 
@@ -661,6 +697,7 @@ private struct DeliveryListView: View {
                     .frame(width: 34, height: 34)
             }
             .accessibilityLabel(localizer.text("app.addParcelAria"))
+            .dropDestination(for: DroppedText.self) { items, _ in addDropped(items) }
         }
     }
 
@@ -894,7 +931,7 @@ private struct DeliveryListView: View {
 
     private var shouldShowNotificationInvitation: Bool {
         isSelected && (scenePhase == .active || store.notificationEnableInProgress)
-            && listShown && !showingAdd && !showingAccount && !showingFilters && sitePage == nil
+            && listShown && !showingAdd && !showingAccount && !showingFilters && sitePage == nil && !prompts.covers
             && !showingSearch && !searchFocused && !store.refreshing && actionError == nil
             && addedParcelID == nil && revealParcelID == nil && parcelBurstID == nil
             && store.shouldInviteNotifications
@@ -989,6 +1026,7 @@ private struct DeliveryListView: View {
                         transition: parcelTransition,
                         onName: { places.name(parcel.id, at: $0) },
                         selected: parcel.id == selectedCard,
+                        menu: menu(for: parcel),
                         onOpen: { open(parcel.id) },
                         onArchive: { await archive(parcel) }
                     )
@@ -1006,6 +1044,7 @@ private struct DeliveryListView: View {
                         parcels: section.parcels,
                         transition: parcelTransition,
                         selected: selectedCard,
+                        menu: menu(for:),
                         onOpen: { open($0) }
                     )
                 }
@@ -1015,6 +1054,7 @@ private struct DeliveryListView: View {
                     isExpanded: $archivedExpanded,
                     transition: parcelTransition,
                     selected: selectedCard,
+                    menu: menu(for:),
                     onOpen: { open($0) }
                 )
             }
@@ -1028,6 +1068,7 @@ private struct DeliveryListView: View {
                             parcel: parcel,
                             transition: parcelTransition,
                             selected: parcel.id == selectedCard,
+                            menu: menu(for: parcel),
                             onOpen: { open(parcel.id) },
                             onArchive: { await archive(parcel) }
                         )
@@ -1041,6 +1082,7 @@ private struct DeliveryListView: View {
                                 : nil,
                             transition: parcelTransition,
                             selected: parcel.id == selectedCard,
+                            menu: menu(for: parcel),
                             onOpen: { open(parcel.id) },
                             onArchive: parcel.isArchived ? nil : { await archive(parcel) }
                         )
@@ -1057,7 +1099,7 @@ private struct DeliveryListView: View {
         ExperimentalNextDeliveryPass(
             parcel: shown(parcel), transition: parcelTransition,
             arrived: delivered.holds(parcel.id), onName: { places.name(parcel.id, at: $0) },
-            selected: parcel.id == selectedCard,
+            selected: parcel.id == selectedCard, menu: menu(for: shown(parcel)),
             onOpen: { open(parcel.id) }, onArchive: { await archive(parcel) }
         )
         .modifier(arrivalCelebration(for: parcel.id, stubInset: 43))
@@ -1073,7 +1115,7 @@ private struct DeliveryListView: View {
         return ExperimentalParcelPassCard(
             parcel: shown(parcel), notice: notice, transition: parcelTransition,
             arrived: arrived, onName: { places.name(parcel.id, at: $0) },
-            selected: parcel.id == selectedCard,
+            selected: parcel.id == selectedCard, menu: menu(for: shown(parcel)),
             onOpen: { open(parcel.id) }, onArchive: { await archive(parcel) }
         )
         .modifier(arrivalCelebration(for: parcel.id))
@@ -1091,7 +1133,7 @@ private struct DeliveryListView: View {
     /// Whether the list is looked at, and may show a card moving.
     private var watching: Bool {
         isSelected && scenePhase == .active && listShown && !showingAdd && !showingAccount && !showingFilters
-            && sitePage == nil && !hasCustomView && !reduceMotion
+            && sitePage == nil && !prompts.covers && !hasCustomView && !reduceMotion
     }
 
     /// The parcel as it is now, for a card arranged as it was.
@@ -1184,6 +1226,56 @@ private struct DeliveryListView: View {
         }
     }
 
+    /// A card's menu: the actions of the parcel's page, with opening and sharing the parcel.
+    private func menu(for parcel: Parcel) -> CardMenu {
+        CardMenu(
+            items: ParcelMenuItem.menu(for: parcel, onCard: true),
+            choose: { chose($0, on: parcel) },
+            deleting: Binding(get: { prompts.deleting == parcel.id }, set: { prompts.deleting = $0 ? parcel.id : nil }),
+            delete: { delete(parcel) }
+        )
+    }
+
+    /// What a card's menu asked of its parcel. Archiving it is the same as swiping it away, Undo and all.
+    private func chose(_ item: ParcelMenuItem, on parcel: Parcel) {
+        switch item {
+        case .open: open(parcel.id)
+        case .rename:
+            prompts.renaming = parcel
+            prompts.name = parcel.label
+            prompts.naming = true
+        case .share: prompts.sharing = parcel
+        case .copyTrackingNumber:
+            let entry = parcel.trackingNumbers[0]
+            TrackingNumberCopy.copy(entry.number, carrier: entry.carrier)
+            let copied = localizer.text("detail.copied")
+            toast = ListToast(text: copied)
+            AccessibilityNotification.Announcement(copied).post()
+        case .changeCarrier: prompts.changingCarrier = parcel
+        case .archive: Task { await archive(parcel) }
+        case .restore:
+            Task {
+                do { try await store.restore(parcel) }
+                catch { actionError = localizer.errorMessage(error) }
+            }
+        case .delete: prompts.deleting = parcel.id
+        }
+    }
+
+    /// Deletes a parcel its card's menu asked about. Beside the list, a card that was shown gives way as it
+    /// does when the parcel is deleted from its page.
+    private func delete(_ parcel: Parcel) {
+        let cards = arrangement(of: delivered.arranged(store.parcels)).cards
+        Task {
+            do {
+                try await store.permanentlyDelete(parcel)
+                navigation.leave(parcel.id, cards: cards)
+            } catch {
+                actionError = localizer.errorMessage(error)
+            }
+        }
+    }
+
     private func clearFilters() {
         query = ""
         statusFilter = .all
@@ -1195,11 +1287,19 @@ private struct DeliveryListView: View {
     private func add(_ request: FirstParcelRequest) {
         scanning = request == .scan
         if case .paste(let text) = request, let pasted = text.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty {
-            sharedDraft = SharedParcelDraft(trackingInput: String(pasted.prefix(2000)))
+            sharedDraft = SharedParcelDraft(trackingInput: String(pasted.prefix(FirstParcelRequest.pasteLimit)))
         } else {
             sharedDraft = nil
         }
         showingAdd = true
+    }
+
+    /// Text dropped on the deliveries or on Add opens Add with it, as a paste does. A drop with no tracking
+    /// number in it is refused.
+    private func addDropped(_ items: [DroppedText]) -> Bool {
+        guard let request = FirstParcelRequest.drop(items.map(\.text)) else { return false }
+        add(request)
+        return true
     }
 
     private func consumeSharedDraft() {
@@ -1222,11 +1322,12 @@ private struct DeliveryListView: View {
     private func receive(_ arrival: ParcelLinkStore.Arrival?) {
         guard let arrival else { return }
         links.consumeArrival()
-        let elsewhere = !listShown || showingAdd || showingAccount || showingFilters || sitePage != nil
+        let elsewhere = !listShown || showingAdd || showingAccount || showingFilters || sitePage != nil || prompts.covers
         showingAdd = false
         showingAccount = false
         showingFilters = false
         sitePage = nil
+        prompts = CardPrompts()
         switch arrival {
         case .open(let parcelID):
             navigation.open(parcelID)
@@ -1271,6 +1372,7 @@ private struct ExperimentalNextDeliveryPass: View {
     var onName: ((CGFloat) -> Void)?
     /// The parcel shown beside the list.
     var selected = false
+    var menu: CardMenu?
     let onOpen: () -> Void
     let onArchive: () async -> Bool
 
@@ -1297,6 +1399,7 @@ private struct ExperimentalNextDeliveryPass: View {
                     title: localizer.text("parcel.archive"), cornerRadius: 24,
                     onOpen: onOpen, action: onArchive
                 )
+                .cardMenu(menu, shape: RoundedRectangle(cornerRadius: 24, style: .continuous))
                 .opacity(appeared ? 1 : 0)
                 .accessibilityHint(localizer.text("detail.label"))
                 .accessibilityAddTraits(selected ? .isSelected : [])
@@ -1395,6 +1498,7 @@ private struct ExperimentalParcelPassCard: View {
     var onName: ((CGFloat) -> Void)?
     /// The parcel shown beside the list.
     var selected = false
+    var menu: CardMenu?
     let onOpen: () -> Void
     let onArchive: (() async -> Bool)?
 
@@ -1438,7 +1542,8 @@ private struct ExperimentalParcelPassCard: View {
                     onOpen: onOpen, action: onArchive
                 )
                 .accessibilityElement(children: .combine)
-                .accessibilityAddTraits(selected ? .isSelected : [])
+                .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
+                .cardMenu(menu, shape: RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
     }
 
@@ -1558,6 +1663,7 @@ private struct ExperimentalDeliveredParcelCard: View {
     let transition: Namespace.ID
     var onName: ((CGFloat) -> Void)?
     var selected = false
+    var menu: CardMenu?
     let onOpen: () -> Void
     let onArchive: (() async -> Bool)?
 
@@ -1568,6 +1674,7 @@ private struct ExperimentalDeliveredParcelCard: View {
             transition: transition,
             onName: onName,
             selected: selected,
+            menu: menu,
             onOpen: onOpen,
             onArchive: onArchive
         )
@@ -1660,6 +1767,39 @@ private struct DeliveredFlightCard: View, Animatable {
         } else {
             ExperimentalParcelPassCard(parcel: flight.parcel, notice: nil, transition: transition, decorative: true, onOpen: {}, onArchive: nil)
         }
+    }
+}
+
+/// A card's menu, under a long press or a secondary click, and the question it asks before a delete.
+private struct CardMenu {
+    let items: [[ParcelMenuItem]]
+    let choose: (ParcelMenuItem) -> Void
+    let deleting: Binding<Bool>
+    let delete: () -> Void
+}
+
+private extension View {
+    /// A card the pointer lights up, and its menu. The card itself is lifted as the menu's preview, in its own shape.
+    @ViewBuilder func cardMenu(_ menu: CardMenu?, shape: some Shape) -> some View {
+        if let menu {
+            contentShape(.hoverEffect, shape)
+                .hoverEffect(.highlight)
+                .contentShape(.contextMenuPreview, shape)
+                .contextMenu { ParcelMenuButtons(items: menu.items, choose: menu.choose) }
+                .parcelDeleteConfirmation(isPresented: menu.deleting, delete: menu.delete)
+        } else {
+            self
+        }
+    }
+}
+
+/// Text or a link dragged onto the deliveries from another app.
+private struct DroppedText: Transferable {
+    let text: String
+
+    static var transferRepresentation: some TransferRepresentation {
+        ProxyRepresentation(importing: { (url: URL) in DroppedText(text: url.absoluteString) })
+        ProxyRepresentation(importing: { (text: String) in DroppedText(text: text) })
     }
 }
 
@@ -2317,6 +2457,7 @@ private struct ExperimentalArchiveShelf: View {
     let transition: Namespace.ID
     /// The parcel shown beside the list.
     var selected: UUID?
+    var menu: ((Parcel) -> CardMenu)?
     let onOpen: (UUID) -> Void
 
     @EnvironmentObject private var localizer: Localizer
@@ -2366,6 +2507,7 @@ private struct ExperimentalArchiveShelf: View {
                             parcel: parcel,
                             transition: transition,
                             selected: parcel.id == selected,
+                            menu: menu?(parcel),
                             onOpen: { onOpen(parcel.id) }
                         )
                         if index < parcels.count - 1 {
@@ -2386,6 +2528,7 @@ private struct ExperimentalArchivedParcelGroup: View {
     let transition: Namespace.ID
     /// The parcel shown beside the list.
     var selected: UUID?
+    var menu: ((Parcel) -> CardMenu)?
     let onOpen: (UUID) -> Void
 
     var body: some View {
@@ -2395,6 +2538,7 @@ private struct ExperimentalArchivedParcelGroup: View {
                     parcel: parcel,
                     transition: transition,
                     selected: parcel.id == selected,
+                    menu: menu?(parcel),
                     onOpen: { onOpen(parcel.id) }
                 )
                 if index < parcels.count - 1 {
@@ -2410,6 +2554,7 @@ private struct ExperimentalArchivedParcelRow: View {
     let parcel: Parcel
     let transition: Namespace.ID
     var selected = false
+    var menu: CardMenu?
     let onOpen: () -> Void
 
     @EnvironmentObject private var localizer: Localizer
@@ -2461,6 +2606,8 @@ private struct ExperimentalArchivedParcelRow: View {
         .matchedTransitionSource(id: parcel.id, in: transition)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(selected ? .isSelected : [])
+        // Rounded as the archive's surface is, which the first and last rows meet.
+        .cardMenu(menu, shape: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     @ViewBuilder private var archivedDate: some View {

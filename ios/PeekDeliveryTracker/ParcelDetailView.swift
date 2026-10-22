@@ -97,34 +97,9 @@ struct ParcelDetailView: View {
             if let parcel, sample == nil {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Button(localizer.text("detail.editTitle"), systemImage: "pencil") {
-                            editedTitle = parcel.label
-                            showingTitleEditor = true
+                        ParcelMenuButtons(items: ParcelMenuItem.menu(for: parcel, onCard: false), busy: working) {
+                            chose($0, on: parcel)
                         }
-                        Button(localizer.text("detail.copyTracking"), systemImage: "doc.on.doc") {
-                            let entry = parcel.trackingNumbers[0]
-                            copy(entry.number, carrier: entry.carrier)
-                        }
-                        Button(localizer.text("detail.changeCarrier"), systemImage: "truck.box") {
-                            carrierEditor = CarrierEditorRequest()
-                        }
-                        Divider()
-                        if parcel.isArchived {
-                            Button(localizer.text("detail.restore"), systemImage: "arrow.uturn.backward") {
-                                restore(parcel)
-                            }
-                        } else {
-                            Button(localizer.text("detail.archive"), systemImage: "archivebox") {
-                                archive(parcel)
-                            }
-                        }
-                        Divider()
-                        Button {
-                            showingDeleteConfirmation = true
-                        } label: {
-                            Label(localizer.text("detail.delete"), systemImage: "trash")
-                        }
-                        .disabled(working)
                     } label: {
                         Image(systemName: "ellipsis")
                     }
@@ -178,27 +153,11 @@ struct ParcelDetailView: View {
             if ParcelSharePreview.variant != nil { showingShare = true }
         }
         #endif
-        .alert(localizer.text("detail.editTitle"), isPresented: $showingTitleEditor) {
-            TextField(localizer.text("common.parcel"), text: $editedTitle)
-            Button(localizer.text("common.cancel"), role: .cancel) {}
-            Button(localizer.text("detail.saveTitle")) {
-                if let parcel {
-                    let label = String(editedTitle.trimmingCharacters(in: .whitespacesAndNewlines).prefix(80))
-                    run { try await store.rename(parcel, label: label) }
-                }
-            }
+        .parcelRenameAlert(isPresented: $showingTitleEditor, name: $editedTitle) { label in
+            if let parcel { run { try await store.rename(parcel, label: label) } }
         }
-        .confirmationDialog(
-            localizer.text("detail.deleteQuestion"),
-            isPresented: $showingDeleteConfirmation,
-            titleVisibility: .visible
-        ) {
-            Button(localizer.text("detail.delete")) {
-                if let parcel { delete(parcel) }
-            }
-            Button(localizer.text("common.cancel"), role: .cancel) {}
-        } message: {
-            Text(localizer.text("detail.deleteDescription"))
+        .parcelDeleteConfirmation(isPresented: $showingDeleteConfirmation) {
+            if let parcel { delete(parcel) }
         }
     }
 
@@ -717,11 +676,26 @@ struct ParcelDetailView: View {
         .foregroundStyle(.secondary)
     }
 
+    /// What the ••• menu asked of the parcel. The page is open already.
+    private func chose(_ item: ParcelMenuItem, on parcel: Parcel) {
+        switch item {
+        case .open: break
+        case .rename:
+            editedTitle = parcel.label
+            showingTitleEditor = true
+        case .share: showingShare = true
+        case .copyTrackingNumber:
+            let entry = parcel.trackingNumbers[0]
+            copy(entry.number, carrier: entry.carrier)
+        case .changeCarrier: carrierEditor = CarrierEditorRequest()
+        case .archive: archive(parcel)
+        case .restore: restore(parcel)
+        case .delete: showingDeleteConfirmation = true
+        }
+    }
+
     private func copy(_ value: String, carrier: CarrierID) {
-        DeliveryAnalytics.shared.action("parcel-copy-tracking")
-        UIPasteboard.general.string = carrier == .postlogistics
-            ? CarrierCatalog.format(value, carrier: carrier) : value
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        TrackingNumberCopy.copy(value, carrier: carrier)
         copiedNumber = value
         Task {
             try? await Task.sleep(for: .seconds(2))
@@ -862,7 +836,88 @@ private struct ParcelNotificationBell: View {
     }
 }
 
-private struct ChangeCarrierView: View {
+/// A parcel's menu, a line between its groups: the page's •••, and its card's in the deliveries.
+struct ParcelMenuButtons: View {
+    let items: [[ParcelMenuItem]]
+    /// Delete waits while another change is saved.
+    var busy = false
+    let choose: (ParcelMenuItem) -> Void
+
+    @EnvironmentObject private var localizer: Localizer
+
+    var body: some View {
+        ForEach(Array(items.enumerated()), id: \.offset) { index, group in
+            if index > 0 { Divider() }
+            ForEach(group, id: \.self) { item in
+                Button(localizer.text(item.titleKey), systemImage: item.symbol) { choose(item) }
+                    .disabled(busy && item == .delete)
+            }
+        }
+    }
+}
+
+/// Copies a tracking number as its carrier's site takes it.
+enum TrackingNumberCopy {
+    static func text(_ number: String, carrier: CarrierID) -> String {
+        carrier == .postlogistics ? CarrierCatalog.format(number, carrier: carrier) : number
+    }
+
+    @MainActor static func copy(_ number: String, carrier: CarrierID) {
+        DeliveryAnalytics.shared.action("parcel-copy-tracking")
+        UIPasteboard.general.string = text(number, carrier: carrier)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+    }
+}
+
+extension View {
+    /// Asks for a parcel's new name, starting from `name`; `save` gets it trimmed, at most 80 characters.
+    func parcelRenameAlert(isPresented: Binding<Bool>, name: Binding<String>, save: @escaping (String) -> Void) -> some View {
+        modifier(ParcelRenameAlert(isPresented: isPresented, name: name, save: save))
+    }
+
+    /// Asks before a parcel is deleted for good.
+    func parcelDeleteConfirmation(isPresented: Binding<Bool>, delete: @escaping () -> Void) -> some View {
+        modifier(ParcelDeleteConfirmation(isPresented: isPresented, delete: delete))
+    }
+}
+
+private struct ParcelRenameAlert: ViewModifier {
+    @Binding var isPresented: Bool
+    @Binding var name: String
+    let save: (String) -> Void
+
+    @EnvironmentObject private var localizer: Localizer
+
+    func body(content: Content) -> some View {
+        content.alert(localizer.text("detail.editTitle"), isPresented: $isPresented) {
+            TextField(localizer.text("common.parcel"), text: $name)
+            Button(localizer.text("common.cancel"), role: .cancel) {}
+            Button(localizer.text("detail.saveTitle")) {
+                save(String(name.trimmingCharacters(in: .whitespacesAndNewlines).prefix(80)))
+            }
+        }
+    }
+}
+
+private struct ParcelDeleteConfirmation: ViewModifier {
+    @Binding var isPresented: Bool
+    let delete: () -> Void
+
+    @EnvironmentObject private var localizer: Localizer
+
+    func body(content: Content) -> some View {
+        content.confirmationDialog(
+            localizer.text("detail.deleteQuestion"), isPresented: $isPresented, titleVisibility: .visible
+        ) {
+            Button(localizer.text("detail.delete"), action: delete)
+            Button(localizer.text("common.cancel"), role: .cancel) {}
+        } message: {
+            Text(localizer.text("detail.deleteDescription"))
+        }
+    }
+}
+
+struct ChangeCarrierView: View {
     let parcel: Parcel
 
     @EnvironmentObject private var store: ParcelStore
