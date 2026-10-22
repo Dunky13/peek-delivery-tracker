@@ -5,7 +5,7 @@ import {
 } from './push';
 import type { SupabaseServiceClient } from './supabase';
 import type { JsonObject } from './types';
-import { captureOperationalError, databaseUnavailable, logOperationalEvent, errorType } from './observability';
+import { captureOperationalError, databaseUnavailable, inBackgroundScope, logOperationalEvent, errorType } from './observability';
 
 export function friendshipNotification(row: JsonObject): { web: JsonObject; native: JsonObject } {
   const { locale, title, body } = friendNotificationCopy(row.locale, String(row.nickname ?? ''));
@@ -58,7 +58,7 @@ export class FriendshipPushWorker {
   wake() { if (this.running || this.stopped) return; if (this.timer) clearTimeout(this.timer); this.schedule(0); }
   stop() { this.stopped = true; if (this.timer) clearTimeout(this.timer); this.timer = null; }
   private schedule(delay: number) {
-    this.timer = setTimeout(() => { this.timer = null; void this.run(); }, delay);
+    this.timer = setTimeout(() => { this.timer = null; void inBackgroundScope('friendship-notifications', () => this.run()); }, delay);
     this.timer.unref();
   }
   private async run() {

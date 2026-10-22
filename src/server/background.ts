@@ -9,6 +9,7 @@ import {
   databaseUnavailable,
   errorType,
   finishScheduledSyncCheckIn,
+  inBackgroundScope,
   logOperationalEvent,
   shouldReportOutage,
   shouldReportRepeatedFailure,
@@ -199,9 +200,10 @@ export class SyncJobWorker {
   }
 
   private schedule(delayMs: number): void {
+    // A wake-up comes from a request: each run gets Sentry scopes of its own.
     this.#timer = setTimeout(() => {
       this.#timer = null;
-      void this.run();
+      void inBackgroundScope('sync-worker', () => this.run());
     }, delayMs);
     this.#timer.unref();
   }
@@ -557,7 +559,7 @@ class ScheduledSync {
     this.state.nextScheduledSync = (Date.now() + delayMs) / 1_000;
     this.#timer = setTimeout(() => {
       this.#timer = null;
-      void this.enqueueAndReschedule(starting);
+      void inBackgroundScope('sync-scheduler', () => this.enqueueAndReschedule(starting));
     }, delayMs);
     this.#timer.unref();
   }

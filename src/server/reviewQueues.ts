@@ -2,7 +2,7 @@ import 'server-only';
 
 import { statusMapAnswer } from 'universal-parcel-scraper/app';
 import manifest from '../../package.json';
-import { captureOperationalError, databaseUnavailable, errorType, logOperationalEvent } from './observability';
+import { captureOperationalError, databaseUnavailable, errorType, inBackgroundScope, logOperationalEvent } from './observability';
 import type { SupabaseServiceClient } from './supabase';
 import { trackingSupportContext } from './trackingSupport';
 import type { JsonObject } from './types';
@@ -256,7 +256,7 @@ export class ReviewQueueReplay {
   private schedule(delayMs: number): void {
     this.#timer = setTimeout(() => {
       this.#timer = null;
-      void this.run();
+      void inBackgroundScope('review-queues', () => this.run());
     }, delayMs);
     this.#timer.unref();
   }

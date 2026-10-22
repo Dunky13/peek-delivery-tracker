@@ -314,6 +314,23 @@ export function initObservability(): boolean {
   return true;
 }
 
+/**
+ * Runs scheduled or background work in Sentry scopes and a trace of its own. A timer set
+ * while a request is handled, such as the one that wakes a worker, runs in that request's
+ * async context, and so does every run the worker schedules from there: without this, its
+ * reports would carry the request's transaction, headers, tags, user and trace. `job` names
+ * the work: it is the reports' transaction and their `background_job` tag.
+ */
+export function inBackgroundScope<T>(job: string, work: () => T): T {
+  if (!runtime.__deliveryObservabilityInitialized) return work();
+  const isolationScope = new Sentry.Scope();
+  isolationScope.setTransactionName(job);
+  isolationScope.setTag('background_job', job);
+  const scope = new Sentry.Scope();
+  scope.setClient(Sentry.getClient());
+  return Sentry.withIsolationScope(isolationScope, () => Sentry.withScope(scope, () => Sentry.startNewTrace(work)));
+}
+
 function applyContext(
   scope: Sentry.Scope,
   context: OperationalContext,

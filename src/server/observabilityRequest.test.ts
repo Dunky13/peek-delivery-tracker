@@ -1,7 +1,11 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import * as Sentry from '@sentry/node';
 import type { Event } from '@sentry/node';
+import { SyncJobWorker } from './background';
+import * as observability from './observability';
 import { captureOperationalError, flushObservability, initObservability } from './observability';
+import { SupabaseError, SupabaseServiceClient } from './supabase';
+import { TrackingSyncService } from './trackingSync';
 
 const captured = vi.hoisted(() => ({ events: [] as Event[] }));
 
@@ -27,6 +31,8 @@ vi.mock('@sentry/node', async (importOriginal) => {
 
 afterEach(async () => {
   await Sentry.close();
+  Reflect.deleteProperty(globalThis, '__deliveryObservabilityInitialized');
+  vi.restoreAllMocks();
   vi.unstubAllEnvs();
 });
 
@@ -73,4 +79,54 @@ it('leaves the request out of a report for a route whose address or body carries
   const rest = JSON.stringify({ ...report, exception: undefined });
   expect(rest).not.toContain('k7Qm2xHd9RtW');
   expect(rest).not.toContain('OWNER-KEY');
+});
+
+it('reports a background job woken by a request with its own scope and trace, not the request\'s', async () => {
+  vi.stubEnv('SENTRY_DSN', 'https://public@example.test/1');
+  expect(initObservability()).toBe(true);
+  vi.spyOn(observability, 'logOperationalEvent').mockImplementation(() => undefined);
+  const client = new SupabaseServiceClient('https://database.test', 'test');
+  // A refused claim is reported at once.
+  vi.spyOn(client, 'claimSyncJob').mockRejectedValue(new SupabaseError('Supabase POST request failed (404)', 404, 'PGRST202'));
+  const worker = new SyncJobWorker(new TrackingSyncService(client), { workerHeartbeat: null, lastScheduledSync: null,
+    nextScheduledSync: null, lastSummary: null, lastError: null, lastAutoArchived: 0 });
+  const requestTrace = '0af7651916cd43dd8448eb211c80319c';
+  let inRequest: string | null = null;
+  // What the SDK records for a request from the iPhone app that continues the app's trace; the route wakes the worker.
+  Sentry.withIsolationScope((isolation) => Sentry.continueTrace({
+    sentryTrace: `${requestTrace}-b7ad6b7169203331`, baggage: 'sentry-environment=app,sentry-release=app%401.0',
+  }, () => {
+    isolation.setSDKProcessingMetadata({ normalizedRequest: {
+      url: 'https://delivery.example.test/api/public/parcels', method: 'POST',
+      headers: { 'user-agent': 'PeekApp/1.0 CFNetwork/3826 Darwin/25.0.0' },
+    } });
+    isolation.setTransactionName('POST /api/public/parcels');
+    isolation.setTag('app_platform', 'ios');
+    isolation.setUser({ id: 'request-user' });
+    inRequest = captureOperationalError(new Error('request failed'), { component: 'api', operation: 'request' });
+    worker.wake();
+  }));
+  try {
+    await vi.waitFor(() => expect(captured.events.some((event) => event.tags?.component === 'sync-worker')).toBe(true));
+  } finally {
+    worker.stop();
+  }
+  expect(await flushObservability()).toBe(true);
+
+  // The request's own report carries the request, as a control.
+  const request = captured.events.find((event) => event.event_id === inRequest)!;
+  expect(request.transaction).toBe('POST /api/public/parcels');
+  expect(request.tags?.app_platform).toBe('ios');
+  expect(request.contexts?.trace?.trace_id).toBe(requestTrace);
+
+  const job = captured.events.find((event) => event.tags?.component === 'sync-worker')!;
+  expect(job.tags).toMatchObject({ background_job: 'sync-worker', operation: 'claim_job' });
+  expect(job.tags?.app_platform).toBeUndefined();
+  expect(job.transaction).toBe('sync-worker');
+  expect(job.request).toBeUndefined();
+  expect(job.user).toBeUndefined();
+  expect(job.contexts?.trace?.trace_id).toMatch(/^[0-9a-f]{32}$/);
+  expect(job.contexts?.trace?.trace_id).not.toBe(requestTrace);
+  // The stack frames quote this file; nothing else of the report names the request.
+  expect(JSON.stringify({ ...job, exception: undefined })).not.toMatch(/CFNetwork|request-user|\/api\/public\/parcels|app@1\.0/);
 });
