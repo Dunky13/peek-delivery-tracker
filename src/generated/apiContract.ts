@@ -2426,6 +2426,28 @@ export const CARRIER_CAPABILITIES = {
           "smartposti.lv"
         ],
         "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas|pakas-meklesana)/([^/?#]+)(?:/[0-9]+)?/?$"
+      },
+      {
+        "domains": [
+          "smartposti.ee",
+          "smartposti.lt",
+          "smartposti.lv"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?receiving/parcel-tracking/?$",
+        "params": [
+          "trackingCode"
+        ]
+      },
+      {
+        "domains": [
+          "itella.ee",
+          "itella.lt",
+          "itella.lv"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?(?:private|business)-customer/track-shipment/?$",
+        "params": [
+          "trackingCode"
+        ]
       }
     ],
     "detectionRules": [
@@ -18371,7 +18393,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^E[A-Z]\\d{9}VN$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.ems.com.vn/tra-cuu/tra-cuu-buu-gui"
   },
   "ethiopian-post": {
@@ -22758,7 +22787,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}MZ$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.corremz.com/trace/"
   },
   "correos-nicaragua": {
