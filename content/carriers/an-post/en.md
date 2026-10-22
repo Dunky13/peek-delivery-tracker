@@ -14,9 +14,9 @@ An Post's own numbers follow the international postal format: two letters, nine 
 
 | Number (invented) | What it is |
 | --- | --- |
-| `RR123456785IE` | Registered or tracked item posted in Ireland. Peek also takes it with spaces or in lowercase: `RR 123 456 785 IE`. |
-| `CP123456785IE` | Same format with other starting letters (`CP`, `CE` and so on). |
-| `RR123456785GB` | A parcel from abroad keeps its foreign number. This one ends `GB`, so it is [Royal Mail](carrier:royal-mail)'s. |
+| `RR000000005IE` | Registered or tracked item posted in Ireland. Peek also takes it with spaces or in lowercase: `RR 123 456 785 IE`. |
+| `CP000000005IE` | Same format with other starting letters (`CP`, `CE` and so on). |
+| `RR000000005GB` | A parcel from abroad keeps its foreign number. This one ends `GB`, so it is [Royal Mail](carrier:royal-mail)'s. |
 
 A shop puts the number in its shipping email; it may also share your phone or email with An Post, which then texts or emails you about the delivery. From someone else, ask whether they used a tracked service: untracked post has no number. A parcel from abroad shows on An Post's tracking only once An Post has scanned it in Ireland. Lost the number? See [how to find your tracking number](guide:find-tracking-number).
 

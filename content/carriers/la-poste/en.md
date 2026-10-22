@@ -16,7 +16,7 @@ La Poste's help lists these shapes, to type without spaces and in capitals (exam
 | --- | --- |
 | `6A12345678905` | 1 digit, 1 letter, 11 digits: Colissimo parcels and tracked letters. |
 | `CK00000000000` | 2 letters and 11 digits. |
-| `LA123456785FR` | 2 letters, 9 digits, 2 letters: an international postal number ending FR. |
+| `LA000000005FR` | 2 letters, 9 digits, 2 letters: an international postal number ending FR. |
 | `87000000000000` | 14 digits. |
 | `87000000000000P` | 15 characters (15 digits, or 14 digits and a letter): the number of a partner post abroad. |
 

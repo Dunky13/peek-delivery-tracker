@@ -16,7 +16,7 @@ A Correos Express não publica o formato do número. A página portuguesa de apo
 | --- | --- |
 | `1234 5678 9012 3452` | 16 dígitos: Correos Express, mas também DHL eCommerce, Canada Post, TNT e Evri UK. |
 | `12345678901234567890123` | 23 dígitos: Correos Express. Com 000 nas posições 15 a 17, o Peek toma-o por um número da Australia Post. |
-| `RR123456785ES` | Letras e algarismos, no [formato postal](guide:tracking-number-formats): os Correos, o correio espanhol, não a Correos Express. |
+| `RR000000005ES` | Letras e algarismos, no [formato postal](guide:tracking-number-formats): os Correos, o correio espanhol, não a Correos Express. |
 | `0123/45678901` | Com uma barra: a [NACEX](carrier:nacex), outra transportadora. |
 
 A Correos Express não diz onde as lojas põem o número nem publica o nome com que assina os SMS, por isso procura no e-mail de envio da loja ou na página da encomenda ([onde encontrar o número de seguimento](guide:find-tracking-number)).

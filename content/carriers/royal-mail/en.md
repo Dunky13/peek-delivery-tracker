@@ -14,14 +14,14 @@ Royal Mail says its numbers are 9 to 27 characters long and may be called a barc
 
 | Shape (invented) | What it is |
 | --- | --- |
-| `AB123456785GB` | The usual tracked number: 2 letters, 9 digits, `GB`. |
+| `AB000000005GB` | The usual tracked number: 2 letters, 9 digits, `GB`. |
 | `0A1234567000000000ABC` | A 21-character reference from a 2D barcode, on domestic labels. |
 | `1234567890ABCDEF` | A 16-character reference of digits and the letters A to F. |
 
 Lookalikes:
 
 - `EA`, `EB`, `EC`, `ED`, `EE` or `CP` followed by 9 digits and `GB` belong to [Parcelforce](carrier:parcelforce), tracked on the same site.
-- The same shape ending in another country's code (`RR123456785FR`) is the sending post's number. Royal Mail can follow it once the item reaches the UK.
+- The same shape ending in another country's code (`RR000000005FR`) is the sending post's number. Royal Mail can follow it once the item reaches the UK.
 - Sixteen digits only, with no letters, are not Royal Mail's; [Evri](carrier:evri) and others use them.
 
 Special Delivery Guaranteed, Tracked 24, Tracked 48 and the International Tracked and Signed services are tracked. Signed For, Royal Mail 24 and 48, and 1st and 2nd Class parcels only confirm delivery.
@@ -79,7 +79,7 @@ Royal Mail's pages list these channels for recipients (read 13 October 2026):
 
 ## Tracking Royal Mail parcels with Peek
 
-[Peek](/) names Royal Mail at once for a valid `AB123456785GB`-style number; if the check digit fails, check the number or press "Change". For 21- and 16-character references it asks tracking services first and Royal Mail's site last, so this can take a little while; if nothing answers, or a rare reference is named [Australia Post](carrier:australia-post), pick Royal Mail with "Change". A royalmail.com link with `trackNumber=` works with any of these numbers; a `#/tracking-results/` link only with a number ending `GB`.
+[Peek](/) names Royal Mail at once for a valid `AB000000005GB`-style number; if the check digit fails, check the number or press "Change". For 21- and 16-character references it asks tracking services first and Royal Mail's site last, so this can take a little while; if nothing answers, or a rare reference is named [Australia Post](carrier:australia-post), pick Royal Mail with "Change". A royalmail.com link with `trackNumber=` works with any of these numbers; a `#/tracking-results/` link only with a number ending `GB`.
 
 Peek opens royalmail.com in a browser on its own server. Royal Mail often refuses automated visits, so a Royal Mail parcel is checked at most once an hour, even on delivery day, and tracking services hold little of its history: it can stay on its last status for hours.
 

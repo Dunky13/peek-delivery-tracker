@@ -21,7 +21,7 @@ Nova Poshta publishes no length or format. The numbers Peek's catalog knows look
 
 Lookalikes that belong elsewhere:
 
-- **Ending in `UA`**, such as `RR123456785UA`: an international postal number. That's [Ukrposhta](carrier:ukrposhta), the state post, not Nova Poshta.
+- **Ending in `UA`**, such as `RR000000005UA`: an international postal number. That's [Ukrposhta](carrier:ukrposhta), the state post, not Nova Poshta.
 - **13 digits**: Ukrposhta's domestic shape, not an EW.
 - **Ending in `G`**, such as `AB1234567CD12345G`: a [Meest](carrier:meest) number.
 - **Other 14-digit numbers** can be DPD, SEUR, BRT and others: check which carrier the SMS or email names.

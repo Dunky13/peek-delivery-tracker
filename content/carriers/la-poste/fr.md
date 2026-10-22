@@ -16,7 +16,7 @@ La Poste demande de le saisir sans espace et en lettres majuscules. Les formes q
 | --- | --- |
 | `6A12345678905` | 1 chiffre, 1 lettre, 11 chiffres : un Colissimo, une lettre suivie ou recommandée. |
 | `CK00000000000` | 2 lettres et 11 chiffres. |
-| `LA123456785FR` | 2 lettres, 9 chiffres, 2 lettres : un numéro postal international terminé par FR. |
+| `LA000000005FR` | 2 lettres, 9 chiffres, 2 lettres : un numéro postal international terminé par FR. |
 | `87000000000000` | 14 chiffres. |
 | `87000000000000P` | 15 caractères (15 chiffres, ou 14 chiffres et une lettre) : le numéro d'un partenaire postal à l'étranger. |
 

@@ -10,7 +10,7 @@ Delivengo est le service de [La Poste](carrier:la-poste) qui permet aux entrepri
 
 ## Numéro de suivi Delivengo : où le trouver
 
-Un colis Delivengo voyage comme un envoi postal prioritaire avec suivi, selon les règles de l'Union postale universelle. La Poste ne publie pas de format propre à Delivengo, mais ses numéros ont la forme postale internationale : deux lettres (souvent `LD` ou `LL`), neuf chiffres et `FR`, par exemple `LD123456785FR` (inventé). Le suivi de La Poste le demande « sans espace et en lettres majuscules ».
+Un colis Delivengo voyage comme un envoi postal prioritaire avec suivi, selon les règles de l'Union postale universelle. La Poste ne publie pas de format propre à Delivengo, mais ses numéros ont la forme postale internationale : deux lettres (souvent `LD` ou `LL`), neuf chiffres et `FR`, par exemple `LD000000005FR` (inventé). Le suivi de La Poste le demande « sans espace et en lettres majuscules ».
 
 **D'où il vient.** C'est la boutique qui te le donne, dans son e-mail d'expédition ou sur la page de ta commande. La Poste ne t'écrit elle-même que si la boutique a coché l'option dans son compte Delivengo et saisi ton adresse e-mail. Sinon, seule la boutique a le numéro. Si tu ne le trouves pas, lis [où trouver son numéro de suivi](guide:find-tracking-number).
 
@@ -18,10 +18,10 @@ Un colis Delivengo voyage comme un envoi postal prioritaire avec suivi, selon le
 
 | Numéro | À qui il appartient |
 | --- | --- |
-| `LD123456785FR` | La Poste : Delivengo, mais aussi les autres envois internationaux de La Poste ou de Colissimo qui ont cette forme. |
-| `RR123456785BE` | Un numéro de [bpost](carrier:bpost) : la poste belge, pas Delivengo. |
-| `LL123456785CH` | Un numéro de la [Poste suisse](carrier:swiss-post), pas Delivengo. |
-| `LD123456785GB` | Un numéro de Royal Mail, la poste britannique. |
+| `LD000000005FR` | La Poste : Delivengo, mais aussi les autres envois internationaux de La Poste ou de Colissimo qui ont cette forme. |
+| `RR000000005BE` | Un numéro de [bpost](carrier:bpost) : la poste belge, pas Delivengo. |
+| `LL000000005CH` | Un numéro de la [Poste suisse](carrier:swiss-post), pas Delivengo. |
+| `LD000000005GB` | Un numéro de Royal Mail, la poste britannique. |
 | `123456789012345` | 15 chiffres (ou 14 chiffres et une lettre) : un numéro « partenaire » que La Poste peut afficher pour un envoi international, si le partenaire le lui transmet. |
 
 Les deux dernières lettres disent quelle poste a créé le numéro. Rien dans un numéro en `…FR` ne distingue Delivengo d'un autre envoi de La Poste, et ce n'est pas grave : le suivi est le même. Si un chiffre est faux, la clé de contrôle ne correspond plus : le numéro n'est plus reconnu comme un envoi de La Poste et peut passer pour un numéro [Chronopost](carrier:chronopost). Copie-le plutôt que de le retaper, et pour suivre le colis, garde le numéro en `…FR` plutôt que le numéro partenaire.

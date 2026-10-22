@@ -15,13 +15,13 @@ Austrian Post's help pages give two shapes for an item number (digits invented h
 | Shape | What it is |
 | --- | --- |
 | `1012345678901234567890` | Austrian Post's own number: 22 digits starting 10. |
-| `RR123456785AT` | An international postal number: two letters, nine digits, two letters. Ending in AT, it is Austrian Post's. |
+| `RR000000005AT` | An international postal number: two letters, nine digits, two letters. Ending in AT, it is Austrian Post's. |
 
 **Where it turns up.** In the shop's shipping email; in Austrian Post's e-notification (email or Post App), if you have a free Post Account and the sender sent its shipping data; and on the yellow notice after a missed delivery.
 
 The 6-digit CRN code on a customs sticker is not the tracking number.
 
-**Lookalikes.** Many carriers use 22 digits. `0123450123451234567890` has TIPSA's shape and `0012340012345678901234` belongs to [CTT Express](carrier:ctt-express); `RR123456785DE` is a postal number from another country's post. If post.at doesn't know your number, check which carrier the shop named.
+**Lookalikes.** Many carriers use 22 digits. `0123450123451234567890` has TIPSA's shape and `0012340012345678901234` belongs to [CTT Express](carrier:ctt-express); `RR000000005DE` is a postal number from another country's post. If post.at doesn't know your number, check which carrier the shop named.
 
 ## Austrian Post tracking statuses explained
 

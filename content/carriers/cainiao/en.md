@@ -17,7 +17,7 @@ No Cainiao page gives the LP, CNG, DOFR or CNFR shapes. Its site takes letters a
 | `LP12345678901234` | LP and 14 digits: likely Cainiao, though not certain. |
 | `CNG12345678900000` | CNG and 14 digits: Cainiao. |
 | `DOFR1234567890123HD` | DOFR or CNFR, 13 digits, then HD: Cainiao. |
-| `RR123456785CN` | A [postal number](guide:tracking-number-formats): Cainiao's site tracks this shape, but so does the post, here [China Post](carrier:china-post). |
+| `RR000000005CN` | A [postal number](guide:tracking-number-formats): Cainiao's site tracks this shape, but so does the post, here [China Post](carrier:china-post). |
 | `YT1234567890123456` | Not Cainiao but [YunExpress](carrier:yunexpress). |
 
 Cainiao's tracking also answers other shapes, such as AP and 14 digits. No Cainiao page says where the number appears outside AliExpress, and none mentions texts to recipients: see [how to find your tracking number](guide:find-tracking-number). If the site shows no tracking, Cainiao asks you to check that it really is a Cainiao or AliExpress number.

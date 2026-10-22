@@ -2,7 +2,7 @@
 title: How to find your tracking number, or track without one
 description: Where to find your tracking number in a shipping email, order page or post office receipt, what to do if you lost it, and how to track a parcel without one.
 slug: how-to-find-tracking-number
-picture: A shipping email with the tracking number RR123456785CH highlighted in yellow, a barcode label beside it, and a smiling Pip.
+picture: A shipping email with the tracking number RR000000005CH highlighted in yellow, a barcode label beside it, and a smiling Pip.
 published: 2026-10-09
 updated: 2026-10-10
 ---
@@ -123,7 +123,7 @@ No. DHL spells it out: an order number is assigned by your retailer, and it isn'
 - home | Missed delivery | The card left behind often has a number that works too
 :::
 
-To tell them apart: a number labelled "Order" is the shop's own and won't work on the carrier's site, while a tracking number comes with a carrier's name or a link to its tracking page. `1Z999AA10123456784` is a UPS number; many postal items carry the international 13-character format, like `RR123456785CH`. [Tracking number formats](guide:tracking-number-formats) shows which carrier a number belongs to.
+To tell them apart: a number labelled "Order" is the shop's own and won't work on the carrier's site, while a tracking number comes with a carrier's name or a link to its tracking page. `1Z999AA10123456784` is a UPS number; many postal items carry the international 13-character format, like `RR000000005CH`. [Tracking number formats](guide:tracking-number-formats) shows which carrier a number belongs to.
 
 ## Why does my tracking number show nothing?
 

@@ -19,8 +19,8 @@ The most common shapes bpost lists (examples invented):
 | 24 digits starting 3232 or 3299 | `323200000000000000000000` | Parcel barcode |
 | 18 digits starting 3232 | `323200000000000000` | Parcel barcode |
 | 27 characters starting JJBEA | `JJBEA0000000000000000000001` | Parcel barcode |
-| Two letters, nine digits, BE | `CE123456785BE` | International postal number from Belgium |
-| R, a letter, nine digits, two letters | `RR123456785BE` | International registered mail |
+| Two letters, nine digits, BE | `CE000000005BE` | International postal number from Belgium |
+| R, a letter, nine digits, two letters | `RR000000005BE` | International registered mail |
 | 30 digits starting 010 | `010000000000000000000000000000` | Registered mail within Belgium |
 
 A barcode starting with U exists only for customs: the sender or buyer chose delivery without Track & Trace, and the item arrives within 5 working days of customs clearance, says bpost.

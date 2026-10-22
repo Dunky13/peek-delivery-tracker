@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-A tracking number's letters and length often tell you which carrier has your parcel or package. `1Z` followed by 16 letters and digits is UPS, 22 digits starting `92` to `95` is USPS, and 13 characters shaped like `RR123456785CH` (two letters, nine digits, two letters) usually belong to a national post, with the issuing country in the last two letters. Plain digits are the hard case: 10, 12 or 14 digits each fit several carriers, so the shipping email, or a tracker that checks the candidates, has the final word.
+A tracking number's letters and length often tell you which carrier has your parcel or package. `1Z` followed by 16 letters and digits is UPS, 22 digits starting `92` to `95` is USPS, and 13 characters shaped like `RR000000005CH` (two letters, nine digits, two letters) usually belong to a national post, with the issuing country in the last two letters. Plain digits are the hard case: 10, 12 or 14 digits each fit several carriers, so the shipping email, or a tracker that checks the candidates, has the final word.
 
 :::checker
 :::
@@ -41,7 +41,7 @@ Here's what the carriers and the postal standard say about the numbers you're mo
 | [XDP](carrier:xdp) | no published format; its numbers are `ZDB`, three letters and six digits, such as `ZDBABC123456`, sometimes with a leading `0`; its tracker asks for the delivery postcode too |
 | [APC Overnight](carrier:apc-overnight) | a 7-digit consignment number, used with the delivery postcode; shops often send a 22-digit number that starts with the booking date (20YYMMDD) and ends with those 7 digits |
 | [InPost](carrier:inpost) | in the UK, `JD` or `JJD` + 16 digits, or `8YDR` + 9 digits (InPost UK says its numbers usually start with `JD`, `JJD` or `8`); `JD` or `JJD` + 18 digits is DHL |
-| [An Post](carrier:an-post) | two letters, nine digits, two letters ending `IE`, such as `RR123456785IE` |
+| [An Post](carrier:an-post) | two letters, nine digits, two letters ending `IE`, such as `RR000000005IE` |
 | [Canada Post](carrier:canada-post) | 16 digits (online labels) or 13 characters ending `CA`; 12 digits for Priority Worldwide |
 | [Australia Post](carrier:australia-post) | its help page gives no format and calls it a "tracking number, or article ID"; numbers in the postal format end `AU` |
 | [YunExpress](carrier:yunexpress) | `YT` + 16 digits (`YT` + 13 digits is YTO Express) |
@@ -81,9 +81,9 @@ Amazon. In the carrier data Peek uses, `TBA`, `TBC` or `TBM` followed by 12 digi
 
 National posts share one 13-character format, set by the Universal Postal Union (UPU) in its standard S10. Here it is taken apart:
 
-:::anatomy RR 12345678 5 CH
+:::anatomy RR 00000000 5 CH
 - RR | Type of item: R for a registered letter
-- 12345678 | Serial number, eight digits
+- 00000000 | Serial number, eight digits
 - 5 | Check digit, worked out from the serial
 - CH | Country that issued the number: Switzerland
 :::
@@ -105,7 +105,7 @@ The check digit catches typos. To test a number:
 2. Divide by 11 and take the remainder away from 11.
 3. A result of 10 becomes 0, and 11 becomes 5.
 
-For `RR123456785CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, which leaves 6, and 11 − 6 = 5. If a postal number you copied by hand fails this test, look for a mistyped or swapped digit.
+For `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, which leaves 6, and 11 − 6 = 5. If a postal number you copied by hand fails this test, look for a mistyped or swapped digit.
 
 ### Whose tracking number starts with UL or UU?
 

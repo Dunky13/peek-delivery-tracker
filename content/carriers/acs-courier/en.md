@@ -15,7 +15,7 @@ ACS calls it the shipping number; shops often say voucher.
 | Shape (invented) | What it is |
 | --- | --- |
 | `1234567890` | An ACS shipping number: 10 digits, no letters. |
-| `RR123456785GR` | Not ACS: a postal number ending `GR` belongs to [ELTA Hellenic Post](carrier:elta). |
+| `RR000000005GR` | Not ACS: a postal number ending `GR` belongs to [ELTA Hellenic Post](carrier:elta). |
 
 It's in ACS's SMS, Viber or email, in the locker message and often in the shop's shipping email. The number on the "Absent" note left after a missed delivery works in ACS's tracker too, and a return gets its own new number.
 

@@ -15,8 +15,8 @@ The shapes posta.hu's tracker lists (digits invented):
 | Number | What it is |
 | --- | --- |
 | `PB00012345670` | A domestic MPL parcel: `P`, a letter and 11 more characters, 13 in all. On a longer barcode, enter the first 13 characters. |
-| `CP123456785HU` | An international parcel (Europe+ or EMS): two letters, 9 digits, `HU`. |
-| `RR123456785HU` | An international registered letter. Domestic registered letters start `RL` and need 16 characters. |
+| `CP000000005HU` | An international parcel (Europe+ or EMS): two letters, 9 digits, `HU`. |
+| `RR000000005HU` | An international registered letter. Domestic registered letters start `RL` and need 16 characters. |
 | `JJH30AAAAAPL00000000` | MPL Europe Standard: 20 characters starting `JJH`, a DHL-style ID. |
 
 Magyar Posta's email shows the identifier; tapping it opens tracking in the app.

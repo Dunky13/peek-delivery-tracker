@@ -42,7 +42,7 @@ So sehen die Nummern der Paketdienste aus, die Ziffern hier erfunden:
 
 | Paketdienst | Die Nummer sieht so aus |
 | --- | --- |
-| Österreichische Post | Zwei Buchstaben, 9 Ziffern und `AT`, wie `RR123456785AT`, oder 22 bzw. 24 Ziffern |
+| Österreichische Post | Zwei Buchstaben, 9 Ziffern und `AT`, wie `RR000000005AT`, oder 22 bzw. 24 Ziffern |
 | Die Schweizerische Post | 18 Ziffern ab `98` oder `99`, wie `991234567890123456`, oder zwei Buchstaben, 9 Ziffern und `CH` |
 | Planzer | 13 Ziffern ab `99990`, wie `9999012345678`, oder 20 Ziffern ab `91346097` |
 

@@ -19,7 +19,7 @@ Helthjem publishes no number format. The numbers its tracking answers for look l
 | `370724760000000000` | Helthjem: 18 digits starting `37072476`. |
 | `00370724760000000000` | The same with `00` in front, as under a barcode: 20 digits. |
 | `370000000000000004` | [Bring](carrier:bring): its own 18-digit numbers also start `370` or `373`. |
-| `RR123456785NO` | Bring: postal numbers ending `NO`. |
+| `RR000000005NO` | Bring: postal numbers ending `NO`. |
 
 Helthjem's numbers [look just like Bring's](guide:tracking-number-formats) `370` range; only Helthjem's own tracking settles it. If helthjem.no answers `Vi finner ingen pakke med dette sporingsnummeret.` (no parcel with this tracking number), check the digits, then try Bring or ask the shop which carrier it booked.
 

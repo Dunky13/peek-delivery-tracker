@@ -20,7 +20,7 @@ A reference can have another carrier's shape, such as the delivering carrier's o
 
 | Number shape (invented) | Whose it looks like |
 | --- | --- |
-| `RR123456785GB` | Royal Mail (two letters, nine digits, `GB`) |
+| `RR000000005GB` | Royal Mail (two letters, nine digits, `GB`) |
 | `H00ABC0000000000` | Evri's 16-character barcode, see [Evri tracking](carrier:evri) |
 | `00000000000000` | 14 digits: DPD UK among several others, see [DPD UK](carrier:dpd-uk) |
 | `ZDBABC123456` | XDP, see [XDP tracking](carrier:xdp) |

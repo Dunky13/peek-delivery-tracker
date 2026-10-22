@@ -14,7 +14,7 @@ Il mittente genera il numero e trasmette i dati alla Posta, di solito prima di c
 
 | Numero (inventato) | Cos'è |
 | --- | --- |
-| `RR123456785CH` | Due lettere, nove cifre e `CH`: un numero postale internazionale emesso in Svizzera. L'ultima cifra prima di `CH` è di controllo. |
+| `RR000000005CH` | Due lettere, nove cifre e `CH`: un numero postale internazionale emesso in Svizzera. L'ultima cifra prima di `CH` è di controllo. |
 | `99.00.000000.00000000` | 18 cifre che iniziano con `98` o `99`, con o senza punti o spazi: il codice a barre degli invii nazionali della Posta. |
 
 Nel campo di ricerca della Posta, «Numero d’invio o codice di ritiro», puoi inserire anche il codice di ritiro; Peek invece riconosce solo il numero d'invio.

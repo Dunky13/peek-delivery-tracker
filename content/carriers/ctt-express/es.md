@@ -17,7 +17,7 @@ El localizador de CTT Express pide «el código de envío», una ristra larga de
 | `0012340012345678901234` | 22 cifras: `00`, cuatro cifras, `00` y 14 cifras más. Es de CTT Express. |
 | `0012340012345678901234001` | Las mismas 22 cifras más un contador de bultos (`001` para el primero): 25 cifras, también CTT Express. |
 | `0000100012345678901234` | 22 cifras que empiezan por `00001000`: puede ser de CTT Express, pero también de [TIPSA](carrier:tipsa), Austrian Post y otros. |
-| `RR123456785PT` | Dos letras, nueve cifras y `PT`: un número postal de CTT, la empresa de correos portuguesa, que se sigue en ctt.pt. |
+| `RR000000005PT` | Dos letras, nueve cifras y `PT`: un número postal de CTT, la empresa de correos portuguesa, que se sigue en ctt.pt. |
 
 En la casilla de arriba puedes escribir el número con o sin espacios. Un número de 22 cifras sin `00` en las posiciones 1-2 y 7-8 no encaja con CTT Express: el catálogo de Peek lo atribuye a TIPSA o a otros transportistas, así que busca el nombre del transportista en el correo de la tienda.
 

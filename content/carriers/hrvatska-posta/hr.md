@@ -14,8 +14,8 @@ Hrvatska pošta broj za praćenje zove prijamni broj pošiljke, a u rezultatima 
 
 | Broj (izmišljen) | Što je to |
 | --- | --- |
-| `RR123456785HR` | Pošiljka predana u Hrvatskoj: 13 znakova, na kraju `HR`. |
-| `RR123456785CN` | Pošiljka iz inozemstva zadržava broj strane pošte i oznaku zemlje iz koje dolazi, ovdje Kine. Hrvatska pošta je prati pod istim brojem. |
+| `RR000000005HR` | Pošiljka predana u Hrvatskoj: 13 znakova, na kraju `HR`. |
+| `RR000000005CN` | Pošiljka iz inozemstva zadržava broj strane pošte i oznaku zemlje iz koje dolazi, ovdje Kine. Hrvatska pošta je prati pod istim brojem. |
 | Drugi bar kodovi | Tražilica prima i druge bar kodove od najmanje 5 znakova; za kraći javlja `Barkod se sastoji od minimalno 5 znakova`. |
 
 Druga oznaka zemlje znači drugu poštu: `…SI` je [Pošta Slovenije](carrier:posta-slovenije), a `…RS` [Pošta Srbije](carrier:posta-srbije). Kad takvu pošiljku u Hrvatskoj dostavlja Hrvatska pošta, njezine korake vidiš i na posiljka.posta.hr.

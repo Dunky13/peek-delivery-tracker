@@ -51,7 +51,7 @@ Em vários sítios:
 
 Num artigo do Marketplace com envio com tracking, o vendedor dá o tracking ID na plataforma de contacto, e o link aparece na tua conta. Se não o fizer, pede-lho através de «Contactar o vendedor parceiro». Se o link não mostrar nada, procura o número no site da transportadora, por exemplo em ctt.pt. Noutras lojas: [encontrar o número de seguimento](guide:find-tracking-number).
 
-Um número dos CTT tem 2 letras, 9 dígitos e `PT`, como `DA123456785PT` (inventado).
+Um número dos CTT tem 2 letras, 9 dígitos e `PT`, como `DA000000005PT` (inventado).
 
 Não sabes de quem é? Escreve-o aqui:
 

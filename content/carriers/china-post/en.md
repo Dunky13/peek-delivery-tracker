@@ -14,11 +14,11 @@ A China Post number has two letters, nine digits and `CN`: the international pos
 
 | Number | What it is |
 | --- | --- |
-| `LT123456785CN` | L: a tracked small packet (letter post). |
-| `RR123456785CN` | R: registered letter post. |
-| `CP123456785CN` | C: a parcel. |
-| `EA123456785CN` | E: EMS, China Post's express service. |
-| `UA123456785CN` | U: a small packet with goods "without customer-oriented tracking", in the UPU's words. Don't count on scans in your country. |
+| `LT000000005CN` | L: a tracked small packet (letter post). |
+| `RR000000005CN` | R: registered letter post. |
+| `CP000000005CN` | C: a parcel. |
+| `EA000000005CN` | E: EMS, China Post's express service. |
+| `UA000000005CN` | U: a small packet with goods "without customer-oriented tracking", in the UPU's words. Don't count on scans in your country. |
 | `ZS12345678901` | ZS, ZC or ZA and 11 digits: also answered by China Post's tracking. La Poste uses similar shapes. |
 | `LP12345678901234` | Not China Post: a [Cainiao](carrier:cainiao) (AliExpress) logistics reference. |
 | `YT1234567890123456` | Not China Post but [YunExpress](carrier:yunexpress). |

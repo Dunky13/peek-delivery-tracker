@@ -14,12 +14,12 @@ Pošta Srbije uses the [international postal format](guide:tracking-number-forma
 
 | Shape (invented) | What it is |
 | --- | --- |
-| `PE123456785RS` | Post Express, the courier service: `PE`. |
-| `CP123456785RS` | A parcel: `C` and a second letter. |
-| `RE123456785RS` | A domestic registered item: `RE`. |
-| `RR123456785RS` | A registered item to or from abroad: `R` and a second letter. |
-| `EE123456785RS` | EMS: `E` and a second letter. |
-| `RR123456785CN` | An item from abroad keeps the foreign post's number, ending in its country. |
+| `PE000000005RS` | Post Express, the courier service: `PE`. |
+| `CP000000005RS` | A parcel: `C` and a second letter. |
+| `RE000000005RS` | A domestic registered item: `RE`. |
+| `RR000000005RS` | A registered item to or from abroad: `R` and a second letter. |
+| `EE000000005RS` | EMS: `E` and a second letter. |
+| `RR000000005CN` | An item from abroad keeps the foreign post's number, ending in its country. |
 
 Insured letters start with `V`. If you're the recipient, ask the shop or sender for the number: Pošta Srbije's own SMS and Viber messages only announce an item's arrival. Can't find it? See [how to find a tracking number](guide:find-tracking-number).
 

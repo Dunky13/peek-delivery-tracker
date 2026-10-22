@@ -47,9 +47,9 @@ Desde el 1 de julio de 2026, por una nueva tasa de gestión de la UE, Etsy no ve
 
 Es el número del transportista, no uno de Etsy. Los correos usan el formato postal internacional: 13 caracteres que no cambian de un país a otro.
 
-:::anatomy RR 12345678 5 US
+:::anatomy RR 00000000 5 US
 - RR | Dos letras para el tipo de envío y el servicio
-- 12345678 | Número de serie, ocho cifras
+- 00000000 | Número de serie, ocho cifras
 - 5 | Dígito de control, calculado a partir del número de serie
 - US | País del correo que lo asignó: Estados Unidos
 :::

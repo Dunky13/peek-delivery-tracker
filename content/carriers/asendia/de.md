@@ -19,7 +19,7 @@ Diese Formen gelten als Asendias Nummern, hier mit erfundenen Ziffern:
 | `ASE1234567890` | ASE und 8 bis 37 Buchstaben und Ziffern: Asendia. |
 | `AS123456789US` | AS, 9 Ziffern, US: Asendia. |
 | `AHOY12345678` | AHOY und 8 Buchstaben und Ziffern: Asendia. |
-| `RR123456785CH` | Eine internationale Postnummer: Sie gehört der Post, die sie vergeben hat, hier der [Schweizerischen Post](carrier:swiss-post). |
+| `RR000000005CH` | Eine internationale Postnummer: Sie gehört der Post, die sie vergeben hat, hier der [Schweizerischen Post](carrier:swiss-post). |
 | `CX000000005DE` | Dasselbe für Deutschland: [DHL](carrier:dhl). |
 | `EEUS000000000US0` | Eine Referenz von eBay International Shipping: Aus der Nummer allein ergibt sich kein Paketdienst. |
 

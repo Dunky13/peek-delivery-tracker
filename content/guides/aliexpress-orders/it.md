@@ -108,7 +108,7 @@ Il reso ha un suo codice: lo segui con "Traccia Pacco di Reso" nei dettagli dell
 Sì, con il codice della pagina "Traccia ordine". Incollalo in [Peek](/), che mostra questi pacchi come "AliExpress / Cainiao". Riconosce subito i codici DOFR o CNFR con 13 cifre e HD, come `DOFR1234567890123HD`. Dalla sola forma, i codici LP, CNG e AP non sono sicuri: Peek chiede a Cainiao, e agli altri corrieri a cui la forma può corrispondere, e ti mostra quello che conosce il codice. Se lo conoscono più corrieri, ti chiede di scegliere; se mostra quello sbagliato, tocca "Cambia" e scegli "AliExpress / Cainiao".
 
 - **Una forma condivisa da più corrieri.** Le forme condivise da più corrieri funzionano allo stesso modo: un codice di 13 caratteri come `123A12345678B` può essere di Cainiao o di Poste Italiane, e Peek chiede a entrambi. Se mostra il corriere sbagliato, tocca "Cambia" e scegli quello indicato nel tracciamento di AliExpress.
-- **Codici postali.** Un codice come `RR123456785CN` va a [China Post](carrier:china-post). Per seguirlo con Cainiao, incolla il link di tracciamento di global.cainiao.com.
+- **Codici postali.** Un codice come `RR000000005CN` va a [China Post](carrier:china-post). Per seguirlo con Cainiao, incolla il link di tracciamento di global.cainiao.com.
 - **Un nuovo corriere in Italia.** Se il primo corriere indica chi prende il pacco in Italia, Peek tiene la cronologia di prima, passa al nuovo corriere appena il suo tracciamento mostra novità e ne mostra nome e codice sulla scheda.
 - **Più pacchi, più codici.** Aggiungi ogni codice. Il numero d'ordine AliExpress non è un codice di tracciamento, e Peek non può seguirlo.
 

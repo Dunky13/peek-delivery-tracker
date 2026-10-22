@@ -14,10 +14,10 @@ Posten kaller det sporingsnummer, som er en fellesbetegnelse på sendingsnummer 
 
 | Nummer (oppdiktet) | Hva det er |
 | --- | --- |
-| `RR123456785NO` | To bokstaver, ni tall og `NO`: en postsending fra Norge. |
+| `RR000000005NO` | To bokstaver, ni tall og `NO`: en postsending fra Norge. |
 | `370123456789012347` | 18 siffer som begynner på `3`. |
 | `70000000000000003` | 17 siffer som begynner på `7`. |
-| `RR123456785CN` | En pakke fra utlandet beholder nummeret fra avsenderlandet, her Kina. Posten sporer også slike pakker. |
+| `RR000000005CN` | En pakke fra utlandet beholder nummeret fra avsenderlandet, her Kina. Posten sporer også slike pakker. |
 
 **Hvor finner du nummeret?** I e-posten eller SMS-en fra nettbutikken, eller i varselet fra Posten. Bring-sporingen godtar også avsenders referanse eller mobilnummeret ditt. Er en sending på flere kolli, har hvert kolli sitt eget kollinummer.
 

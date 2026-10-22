@@ -15,7 +15,7 @@ Postes Canada utilise deux formes principales de numéros :
 | Forme (exemple) | Où tu la vois |
 | --- | --- |
 | `0000 0000 0000 0000` | 16 chiffres, l'exemple de Postes Canada lui-même : étiquettes achetées en ligne, sur le reçu ou directement sur le colis. |
-| `RR123456785CA` | 13 caractères qui se terminent par `CA` : étiquettes au comptoir, enveloppes prépayées, courrier recommandé, Xpresspost États-Unis et international, Priorité Mondial. |
+| `RR000000005CA` | 13 caractères qui se terminent par `CA` : étiquettes au comptoir, enveloppes prépayées, courrier recommandé, Xpresspost États-Unis et international, Priorité Mondial. |
 
 Si le colis vient d'une boutique, le numéro est dans son courriel de confirmation d'expédition ; si tu l'as posté, sur ton reçu. Seul l'expéditeur peut te le donner : Postes Canada ne garde aucun dossier par nom ou par adresse et ne peut pas retrouver un numéro perdu.
 

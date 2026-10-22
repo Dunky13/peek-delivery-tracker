@@ -19,8 +19,8 @@ Les formes les plus courantes selon bpost (numéros inventés) :
 | 24 chiffres commençant par 3232 ou 3299 | `323200000000000000000000` | Code-barres d'un colis |
 | 18 chiffres commençant par 3232 | `323200000000000000` | Code-barres d'un colis |
 | 27 caractères commençant par JJBEA | `JJBEA0000000000000000000001` | Code-barres d'un colis |
-| 2 lettres, 9 chiffres, BE | `CE123456785BE` | Numéro postal international venu de Belgique |
-| R, une lettre, 9 chiffres, 2 lettres | `RR123456785BE` | Recommandé international |
+| 2 lettres, 9 chiffres, BE | `CE000000005BE` | Numéro postal international venu de Belgique |
+| R, une lettre, 9 chiffres, 2 lettres | `RR000000005BE` | Recommandé international |
 | 30 chiffres commençant par 010 | `010000000000000000000000000000` | Recommandé en Belgique |
 
 Un code-barres qui commence par U sert seulement au passage en douane : l'expéditeur ou l'acheteur a choisi un envoi sans Track & Trace. Selon bpost, il arrive au plus tard 5 jours ouvrables après le dédouanement.

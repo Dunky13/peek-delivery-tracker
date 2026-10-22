@@ -12,13 +12,13 @@ MaltaPost is Malta's national post, delivering to every address in Malta and Goz
 
 MaltaPost's own registered items carry 13 characters: [two letters, nine digits](guide:tracking-number-formats) and `MT`. Its redelivery form names the local prefixes RH, RR, RT and RI.
 
-:::anatomy RR 123456785 MT
+:::anatomy RR 000000005 MT
 - RR | Item type: RR, RH, RT or RI for local registered items
-- 123456785 | Nine digits, the last one a check digit
+- 000000005 | Nine digits, the last one a check digit
 - MT | Posted in Malta
 :::
 
-An item from abroad keeps the number the foreign post gave it (`RR123456785GB`, `CP123456785CN` or another shape), and MaltaPost's tracking takes it. The page can then show both a "Foreign Barcode" and a "Local Barcode". SendOn parcels can be tracked by either barcode.
+An item from abroad keeps the number the foreign post gave it (`RR000000005GB`, `CP000000005CN` or another shape), and MaltaPost's tracking takes it. The page can then show both a "Foreign Barcode" and a "Local Barcode". SendOn parcels can be tracked by either barcode.
 
 MaltaPost's FAQ asks for the number in capital letters. If the page answers "Tracking number not recognised.", check the number with the sender. Some numbers, such as those starting with U, can't be tracked in Malta, or another local company is delivering the item. An item sent without a tracking number can't be tracked or located. Lost the number? See [where to find a tracking number](guide:find-tracking-number).
 
@@ -99,7 +99,7 @@ No. Customer care answers on weekdays from 8.30am to 2.30pm and on Saturday morn
 
 ### What does an international MaltaPost tracking number look like?
 
-An item sent from Malta abroad has two letters, nine digits and `MT`, such as `RR123456785MT`. An item coming to Malta keeps its foreign number, which MaltaPost's tracking accepts.
+An item sent from Malta abroad has two letters, nine digits and `MT`, such as `RR000000005MT`. An item coming to Malta keeps its foreign number, which MaltaPost's tracking accepts.
 
 :::sources
 - [MaltaPost: Tracking](https://www.maltapost.com/tracking) – tracking field, scan columns, progress stages, foreign and local barcodes, not-recognised reasons, customs buttons

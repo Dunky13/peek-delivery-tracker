@@ -14,8 +14,8 @@ Hrvatska pošta calls it the item number (*prijamni broj pošiljke*). Items post
 
 | Shape (invented) | What it is |
 | --- | --- |
-| `RR123456785HR` | A postal item from Croatia: 13 characters ending in `HR`. Spaces don't matter (`RR 123 456 785 HR`). |
-| `RR123456785CN` | An item from abroad keeps the foreign post's number, ending in the country it came from. |
+| `RR000000005HR` | A postal item from Croatia: 13 characters ending in `HR`. Spaces don't matter (`RR 123 456 785 HR`). |
+| `RR000000005CN` | An item from abroad keeps the foreign post's number, ending in the country it came from. |
 | Other barcodes | The form also takes other barcodes of at least 5 characters, such as `3S…` codes, 12-digit numbers and 20-digit SSCC codes. |
 
 You'll find it in the sender's message, and Hrvatska pošta's official messages carry it too: the arrival notice left in your letterbox (when the item has one) and the SMS and e-mail for parcel lockers. Lost it? See [how to find a tracking number](guide:find-tracking-number).

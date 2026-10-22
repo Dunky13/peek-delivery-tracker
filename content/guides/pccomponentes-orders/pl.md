@@ -57,7 +57,7 @@ Szukaj tutaj:
 
 Do odbioru w punkcie wystarczy dowód tożsamości i kod śledzenia albo identyfikator zakupu. W innych sklepach: [jak znaleźć numer przesyłki](guide:find-tracking-number).
 
-Numery Correos, przy zamówieniach do Melilli, wyglądają tak (cyfry zmyślone): `PR`, 15 cyfr i `C`, jak `PR123456789012345C`, albo 2 litery, 9 cyfr i `ES`, jak `RR123456785ES`. Numery GLS, przy zamówieniach do Andory, to `1` i 9 kolejnych cyfr, jak `1234567890`.
+Numery Correos, przy zamówieniach do Melilli, wyglądają tak (cyfry zmyślone): `PR`, 15 cyfr i `C`, jak `PR123456789012345C`, albo 2 litery, 9 cyfr i `ES`, jak `RR000000005ES`. Numery GLS, przy zamówieniach do Andory, to `1` i 9 kolejnych cyfr, jak `1234567890`.
 
 Masz numer i nie wiesz, czyj jest? Wpisz go tutaj:
 

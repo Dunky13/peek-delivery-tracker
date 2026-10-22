@@ -16,11 +16,11 @@ Parcelforce says its numbers can be 9, 11, 13, 14, 16 or 21 characters long, wit
 
 | Number (invented) | What it is |
 | --- | --- |
-| `EA123456785GB` | Two letters (`E` and a letter, or `CP` or `GI`), nine digits and `GB`, with a check digit before `GB`. |
+| `EA000000005GB` | Two letters (`E` and a letter, or `CP` or `GI`), nine digits and `GB`, with a check digit before `GB`. |
 | `PBAB1234567890` | A 14-character parcel number: `PB`, the consignment number and the parcel's place in it. |
 | `AB1234567` | A consignment number on its own: Royal Mail's tracker asks for each parcel's own number instead. |
 
-The 13-character shape is also Royal Mail's (`RR123456785GB` is Royal Mail, not Parcelforce), and some express48 parcels carry a Royal Mail number. Both are tracked on the same page, so that changes little for you.
+The 13-character shape is also Royal Mail's (`RR000000005GB` is Royal Mail, not Parcelforce), and some express48 parcels carry a Royal Mail number. Both are tracked on the same page, so that changes little for you.
 
 ## Parcelforce tracking statuses explained
 
@@ -80,11 +80,11 @@ There is no live chat or email address for recipients.
 
 ## Tracking Parcelforce parcels with Peek
 
-[Peek](/) names Parcelforce at once for `EA123456785GB`-style numbers with a valid check digit and for 14-character `PB` numbers. A consignment number on its own isn't tracked. A parcelforce.com link with `trackNumber=` works, and so does a Royal Mail link ending `#/tracking-results/` and a Parcelforce number.
+[Peek](/) names Parcelforce at once for `EA000000005GB`-style numbers with a valid check digit and for 14-character `PB` numbers. A consignment number on its own isn't tracked. A parcelforce.com link with `trackNumber=` works, and so does a Royal Mail link ending `#/tracking-results/` and a Parcelforce number.
 
 Peek reads Parcelforce on Royal Mail's tracking site by opening it in a real browser on its server, so a check takes longer and can fail when the site blocks automated visits. Peek then tries universal tracking services, which hold little for Parcelforce.
 
-Peek shows the status, each scan with its place (no postcodes), the expected delivery day, the delivery time and the destination country. It checks every 10 minutes, every 2 minutes once the parcel is out for delivery, puts each scan on a map and can notify you when the status changes. Statuses keep Royal Mail's English wording, and every delivered line shows as "Delivered", without the name of who signed. A scan from abroad that comes without a time zone isn't dated. For some destinations, an export with an `EA123456785GB`-style number can be followed to that country's national post once it shows progress there.
+Peek shows the status, each scan with its place (no postcodes), the expected delivery day, the delivery time and the destination country. It checks every 10 minutes, every 2 minutes once the parcel is out for delivery, puts each scan on a map and can notify you when the status changes. Statuses keep Royal Mail's English wording, and every delivered line shows as "Delivered", without the name of who signed. A scan from abroad that comes without a time zone isn't dated. For some destinations, an export with an `EA000000005GB`-style number can be followed to that country's national post once it shows progress there.
 
 ## Questions about Parcelforce tracking
 

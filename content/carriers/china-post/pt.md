@@ -14,13 +14,13 @@ Um número da China Post tem duas letras, nove algarismos e `CN`: é o formato p
 
 | Número | O que é |
 | --- | --- |
-| `LT123456785CN` | L: um pacote pequeno com seguimento, enviado como correio. |
-| `RR123456785CN` | R: correio registado. |
-| `CP123456785CN` | C: uma encomenda postal. Os CTT chamam-lhe Encomenda Postal Internacional. |
-| `EA123456785CN` | E: EMS, o serviço expresso da China Post. |
-| `UA123456785CN` | U: um pacote pequeno com mercadoria que, segundo a UPU, não tem seguimento para o cliente. Não contes com leituras em Portugal. |
+| `LT000000005CN` | L: um pacote pequeno com seguimento, enviado como correio. |
+| `RR000000005CN` | R: correio registado. |
+| `CP000000005CN` | C: uma encomenda postal. Os CTT chamam-lhe Encomenda Postal Internacional. |
+| `EA000000005CN` | E: EMS, o serviço expresso da China Post. |
+| `UA000000005CN` | U: um pacote pequeno com mercadoria que, segundo a UPU, não tem seguimento para o cliente. Não contes com leituras em Portugal. |
 | `ZS12345678901` | ZS, ZC ou ZA e 11 algarismos: o seguimento da China Post também responde. A La Poste francesa usa formas parecidas. |
-| `RR123456785PT` | Acaba em PT: um número criado pelos CTT, não pela China Post. |
+| `RR000000005PT` | Acaba em PT: um número criado pelos CTT, não pela China Post. |
 | `LP12345678901234` | Não é da China Post: é uma referência logística da [Cainiao](carrier:cainiao), a logística do AliExpress. |
 | `YT1234567890123456` | Não é da China Post: é da [YunExpress](carrier:yunexpress). |
 

@@ -21,7 +21,7 @@ No Swiss Post Cargo page says where you'll find the number. Check the shop's ema
 
 Numbers that belong on another tracker:
 
-- **Swiss Post parcels:** 18 digits starting `99` (printed `99.00.123456.12345678`) or two letters, nine digits and `CH` (`RR123456785CH`).
+- **Swiss Post parcels:** 18 digits starting `99` (printed `99.00.123456.12345678`) or two letters, nine digits and `CH` (`RR000000005CH`).
 - **PostLogistics references** like `12345678-123`: the same company's older tracker, tracking.postlogistics.ch.
 - **Germany:** the German portal, titled "Hugger" (portal-de1.swisspost-cargo.com), asks for a colli number, or a shipment number with a company number.
 

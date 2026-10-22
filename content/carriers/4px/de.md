@@ -17,7 +17,7 @@ Ein Beispiel veröffentlicht 4PX nicht. Seine Tracking-Seite nimmt 5 bis 50 Buch
 | `4PX1234567890123CN` | 4PX, 13 Ziffern, dann CN: die eigene Nummer von 4PX. |
 | `LP1234567890123CN` | LP, 13 Ziffern und CN: wahrscheinlich 4PX. |
 | `LP12345678901234` | LP und 14 Ziffern ohne CN: die Logistiknummer von AliExpress bei [Cainiao](carrier:cainiao). |
-| `RR123456785CN` | Eine internationale Postnummer, hier von China Post. |
+| `RR000000005CN` | Eine internationale Postnummer, hier von China Post. |
 | `YT1234567890123456` | Keine 4PX-Nummer, sondern [YunExpress](carrier:yunexpress). |
 
 Auf der Ergebnisseite stehen zwei Nummern: die „4PX Nr.“ und die „Sendungsverfolgungsnummer“. Die zweite gehört dem Paketdienst, der in deinem Land zustellt. Manche Shops geben dir nur diese Nummer; 4PX' Seite beantwortet einige davon trotzdem. Wem eine Nummer sonst gehören könnte, erklärt [Sendungsnummer: Welcher Paketdienst steckt dahinter?](guide:tracking-number-formats).

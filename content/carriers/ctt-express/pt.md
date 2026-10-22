@@ -17,7 +17,7 @@ O localizador da CTT Express pede o «código de envio», uma sequência longa d
 | `0012340012345678901234` | 22 algarismos: `00`, quatro algarismos, `00` e mais 14. CTT Express. |
 | `0012340012345678901234001` | Os mesmos 22 algarismos mais um contador de volume (`001` para o primeiro): 25 algarismos, CTT Express. |
 | `0000100012345678901234` | 22 algarismos a começar por `00001000`: pode ser da CTT Express, mas também da TIPSA, da Austrian Post e de outras. |
-| `DA123456785PT` | Duas letras, nove algarismos e `PT`: um código dos [CTT](carrier:ctt), seguido no ctt.pt. |
+| `DA000000005PT` | Duas letras, nove algarismos e `PT`: um código dos [CTT](carrier:ctt), seguido no ctt.pt. |
 
 Não confundas com o CTT Expresso, o serviço expresso dos CTT em Portugal: as encomendas Expresso nacionais têm códigos dos CTT com letras (`DA`, `EA`, `EN` e outras) e seguem-se no ctt.pt, não no cttexpress.com.
 

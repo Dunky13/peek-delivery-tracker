@@ -16,7 +16,7 @@ CouriersPlease calls it the consignment number, also known as the tracking numbe
 | --- | --- |
 | `CPABC1234123456` | A typical CouriersPlease consignment number: CP, letters, then digits. |
 | `CPA12345000000` | Also a CouriersPlease shape, a shorter one. |
-| `CP123456785AU` | Not CouriersPlease: two letters, nine digits and AU is a postal item number, the kind [Australia Post](carrier:australia-post) uses. |
+| `CP000000005AU` | Not CouriersPlease: two letters, nine digits and AU is a postal item number, the kind [Australia Post](carrier:australia-post) uses. |
 
 **Where to find it.** Look in the shop's order confirmation email or app. CouriersPlease's own emails always contain it, but are sent only if the sender shared your email address. They come from noreply@couriersplease.com.au, and its texts from the sender name `Courierspls`. A missed-delivery card has a redelivery card number, which the redelivery page also accepts. CouriersPlease can't look a parcel up by name or address. [How to find your tracking number](guide:find-tracking-number) lists more places to look.
 

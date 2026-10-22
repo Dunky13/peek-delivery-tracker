@@ -15,8 +15,8 @@ Posti puhuu lähetystunnuksesta, ja huijausviesteistä varoittaessaan myös seur
 | Tunnus (keksitty) | Mikä se on |
 | --- | --- |
 | `JJFI12345678901234567` | Postin paketti: `JJFI` ja 17 numeroa, yhteensä 21 merkkiä. |
-| `RR123456785FI` | Suomesta lähtenyt postilähetys kansainvälisessä muodossa: kaksi kirjainta, yhdeksän numeroa ja `FI`. |
-| `RR123456785CN` | Ulkomailta tuleva lähetys säilyttää lähtömaan tunnuksen. Tämä päättyy kirjaimiin `CN`, eli lähetys on jätetty China Postin kuljetettavaksi. |
+| `RR000000005FI` | Suomesta lähtenyt postilähetys kansainvälisessä muodossa: kaksi kirjainta, yhdeksän numeroa ja `FI`. |
+| `RR000000005CN` | Ulkomailta tuleva lähetys säilyttää lähtömaan tunnuksen. Tämä päättyy kirjaimiin `CN`, eli lähetys on jätetty China Postin kuljetettavaksi. |
 | `00064000000000000002` | 20-numeroinen SSCC-viivakoodi. `64` kolmen ensimmäisen numeron jälkeen viittaa Suomeen. |
 
 Poista tunnuksesta välilyönnit ja hae yksi tunnus kerrallaan.

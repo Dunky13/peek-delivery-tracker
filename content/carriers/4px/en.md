@@ -17,7 +17,7 @@ updated: 2026-10-11
 | `4PX1234567890123CN` | 4PX, then 13 digits, then CN: 4PX's own number. |
 | `LP1234567890123CN` | LP, 13 digits and CN: likely 4PX. |
 | `LP12345678901234` | LP and 14 digits, no CN: [Cainiao](carrier:cainiao), AliExpress's logistics reference. |
-| `RR123456785GB` | A [postal number](guide:tracking-number-formats) ending in a country code: the post of that country, here Royal Mail. |
+| `RR000000005GB` | A [postal number](guide:tracking-number-formats) ending in a country code: the post of that country, here Royal Mail. |
 | `YT1234567890123456` | Not 4PX but [YunExpress](carrier:yunexpress). |
 
 Peek also accepts lower case and spaces. 4PX's result page can show two numbers: the "4PX Order No." and a "Tracking No.", which belongs to the carrier that delivers in your country. The shop may give you that local number instead of 4PX's; 4PX's site answers some of them too.

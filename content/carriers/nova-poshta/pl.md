@@ -25,7 +25,7 @@ Nova Post nie publikuje długości ani formatu numeru. Jej polska strona śledze
 
 Podobne numery, które nie są Nova Post:
 
-- **Na końcu `UA`**, na przykład `RR123456785UA`: międzynarodowy numer pocztowy, czyli Ukrposzta, państwowa poczta Ukrainy.
+- **Na końcu `UA`**, na przykład `RR000000005UA`: międzynarodowy numer pocztowy, czyli Ukrposzta, państwowa poczta Ukrainy.
 - **13 cyfr**: krajowy numer Ukrposzty.
 - **Na końcu `G`**, na przykład `AB1234567CD12345G`: to numer [Meest](carrier:meest).
 - **Inne 14 cyfr** mogą należeć do DPD, SEUR, BRT i innych firm: sprawdź, kogo wymienia SMS albo e-mail.

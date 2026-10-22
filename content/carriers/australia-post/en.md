@@ -26,8 +26,8 @@ Australia Post publishes no number format. These are the shapes Peek knows, with
 | `12ABC123456789000123456` | The same with 2 digits in front (23 characters). |
 | `94001234567890000123456` | 23 digits starting `9400`: still Australia Post. |
 | `12ABC1234567` | Consignment number, 12 characters. |
-| `EE123456785AU` | EMS, parcel or tracked-letter number: `C`, `E` or `L`, a letter, 9 digits, `AU`. |
-| `RR123456785AU` | Other international postal number ending `AU`, such as registered mail. |
+| `EE000000005AU` | EMS, parcel or tracked-letter number: `C`, `E` or `L`, a letter, 9 digits, `AU`. |
+| `RR000000005AU` | Other international postal number ending `AU`, such as registered mail. |
 
 Lookalikes: 2 letters and 10 digits (`AB1234567890`) belong to [Aramex Australia](carrier:aramex-au) or [Aramex New Zealand](carrier:aramex-nz); a 22-digit `9400` number is USPS's. Number not found? It may be wrong or not scanned yet: Australia Post suggests trying again in 24 hours. More in [tracking number formats](guide:tracking-number-formats).
 

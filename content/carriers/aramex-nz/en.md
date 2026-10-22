@@ -20,7 +20,7 @@ Aramex doesn't publish a format. The labels seen in its tracking are 12 characte
 | `2X1234567890` | A digit, a letter, then 10 digits. |
 | `A91234567890` | A letter, a digit, then 10 digits. |
 
-Lookalikes: [Aramex Australia](carrier:aramex-au) uses exactly the same shape but is a separate network with its own tracking, and Colis Privé in France has 12-character numbers too. A number like `RR123456785NZ` (two letters, nine digits, NZ) is a postal item: track it with [NZ Post](carrier:nz-post).
+Lookalikes: [Aramex Australia](carrier:aramex-au) uses exactly the same shape but is a separate network with its own tracking, and Colis Privé in France has 12-character numbers too. A number like `RR000000005NZ` (two letters, nine digits, NZ) is a postal item: track it with [NZ Post](carrier:nz-post).
 
 ## What Aramex NZ tracking statuses mean
 

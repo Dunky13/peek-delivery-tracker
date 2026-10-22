@@ -15,13 +15,13 @@ Die Post nennt auf ihren Hilfeseiten zwei Formen (Ziffern hier erfunden):
 | Nummer | Was sie ist |
 | --- | --- |
 | `1012345678901234567890` | Die eigene Nummer der Post: 22 Ziffern, beginnt mit 10. |
-| `RR123456785AT` | Eine internationale Postnummer: zwei Buchstaben, neun Ziffern, zwei Buchstaben. Endet sie auf AT, ist es eine Nummer der Österreichischen Post. |
+| `RR000000005AT` | Eine internationale Postnummer: zwei Buchstaben, neun Ziffern, zwei Buchstaben. Endet sie auf AT, ist es eine Nummer der Österreichischen Post. |
 
 **Wo du sie findest.** In der Versandbestätigung des Shops. In der kostenlosen e-Benachrichtigung der Post per E-Mail oder in der Post App, wenn du ein Post Konto hast und der Versender seine Versanddaten übermittelt hat. Und auf dem gelben Zettel, wenn dich der Zusteller nicht angetroffen hat. Zum Verfolgen auf post.at reicht die Sendungsnummer, ein Konto brauchst du dafür nicht.
 
 Der sechsstellige CRN-Code auf dem Zollaufkleber von Paketen aus Nicht-EU-Ländern ist keine Sendungsnummer: Mit ihm lädst du die Zollanmeldung herunter.
 
-**Verwechslungsgefahr.** 22 Ziffern verwenden viele Paketdienste. `0123450123451234567890` hat die Form von TIPSA aus Spanien, `0012340012345678901234` gehört zu CTT Express, und `RR123456785DE` ist eine Postnummer aus einem anderen Land. Kennt post.at deine Nummer nicht, schau nach, welchen Paketdienst der Shop genannt hat.
+**Verwechslungsgefahr.** 22 Ziffern verwenden viele Paketdienste. `0123450123451234567890` hat die Form von TIPSA aus Spanien, `0012340012345678901234` gehört zu CTT Express, und `RR000000005DE` ist eine Postnummer aus einem anderen Land. Kennt post.at deine Nummer nicht, schau nach, welchen Paketdienst der Shop genannt hat.
 
 ## Österreichische Post Sendungsverfolgung: die Status erklärt
 

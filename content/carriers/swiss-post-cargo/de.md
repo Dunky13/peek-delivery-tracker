@@ -21,7 +21,7 @@ Wo du die Nummer findest, steht auf keiner Seite von Swiss Post Cargo. Schau in 
 
 Diese Nummern gehören in ein anderes Tracking:
 
-- **Pakete der Post:** 18 Ziffern mit 99 am Anfang (gedruckt `99.00.123456.12345678`) oder zwei Buchstaben, neun Ziffern und CH (`RR123456785CH`).
+- **Pakete der Post:** 18 Ziffern mit 99 am Anfang (gedruckt `99.00.123456.12345678`) oder zwei Buchstaben, neun Ziffern und CH (`RR000000005CH`).
 - **PostLogistics-Referenzen** wie `12345678-123`: das ältere Tracking desselben Unternehmens, tracking.postlogistics.ch.
 - **Deutschland:** Das deutsche Portal mit dem Titel „Sendungsverfolgung - Hugger“ (portal-de1.swisspost-cargo.com) fragt nach einer Collinummer oder einer Sendungsnummer mit Betriebsnummer. Laut Portal kann es in Einzelfällen etwas dauern, bis eine Collinummer im System gefunden wird.
 

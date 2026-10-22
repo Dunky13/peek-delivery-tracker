@@ -59,9 +59,9 @@ Five blocks are drawn rather than set as text:
 - Picked up | The first real scan.
 :::
 
-:::anatomy RR 12345678 5 CH
+:::anatomy RR 00000000 5 CH
 - RR | Type of mail
-- 12345678 | Serial number
+- 00000000 | Serial number
 - 5 | Check digit
 - CH | Country that issued the number
 :::

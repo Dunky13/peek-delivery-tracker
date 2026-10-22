@@ -14,7 +14,7 @@ Chronopost's number has 13 characters (two letters, nine digits, two letters), o
 
 | Shape (invented) | What it is |
 | --- | --- |
-| `XY123456785FR` | Two letters, nine digits, two letters: the usual Chronopost number. |
+| `XY000000005FR` | Two letters, nine digits, two letters: the usual Chronopost number. |
 | `AB000000000JB` | The same shape ending in JB, JF or TS. |
 | `00000000000000U` | 15 characters, 14 digits and a check letter: a parcel from abroad. |
 

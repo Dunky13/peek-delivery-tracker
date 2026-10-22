@@ -14,9 +14,9 @@ ELTA's tracking numbers have 13 characters: [two Latin letters, nine digits and 
 
 | Shape (invented) | What it is |
 | --- | --- |
-| `RR123456785GR` | A postal item from Greece. Spaces and lower case don't matter (`RR 123 456 785 GR`). |
+| `RR000000005GR` | A postal item from Greece. Spaces and lower case don't matter (`RR 123 456 785 GR`). |
 | `123456789012` | Some items from Germany carry a 12-digit barcode instead, which ELTA's tracker also accepts. |
-| `RR123456785CN` | An item from abroad keeps the foreign post's number, ending in the country it came from. |
+| `RR000000005CN` | An item from abroad keeps the foreign post's number, ending in the country it came from. |
 
 Lost the number? See [how to find a tracking number](guide:find-tracking-number).
 

@@ -14,11 +14,11 @@ Numer China Post ma dwie litery, dziewięć cyfr i `CN`. To międzynarodowy form
 
 | Numer | Co to jest |
 | --- | --- |
-| `LT123456785CN` | L: mała paczka ze śledzeniem (przesyłka listowa). |
-| `RR123456785CN` | R: przesyłka polecona (listowa). |
-| `CP123456785CN` | C: paczka pocztowa. |
-| `EA123456785CN` | E: EMS, ekspresowa usługa China Post. |
-| `UA123456785CN` | U: mała paczka z towarem, według UPU bez śledzenia dla klienta. Nie licz na skany w Polsce. |
+| `LT000000005CN` | L: mała paczka ze śledzeniem (przesyłka listowa). |
+| `RR000000005CN` | R: przesyłka polecona (listowa). |
+| `CP000000005CN` | C: paczka pocztowa. |
+| `EA000000005CN` | E: EMS, ekspresowa usługa China Post. |
+| `UA000000005CN` | U: mała paczka z towarem, według UPU bez śledzenia dla klienta. Nie licz na skany w Polsce. |
 | `ZS12345678901` | ZS, ZC lub ZA i 11 cyfr: takie numery też zna śledzenie China Post. Podobnych używa La Poste. |
 | `LP12345678901234` | To nie China Post, tylko numer logistyczny [Cainiao](carrier:cainiao) (AliExpress). |
 | `YT1234567890123456` | To nie China Post, tylko [YunExpress](carrier:yunexpress). |

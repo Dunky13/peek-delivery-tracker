@@ -16,7 +16,7 @@ updated: 2026-10-22
 | --- | --- |
 | `DR1234567890E` | Vnitrostátní balík: dvě písmena, 10 číslic a písmeno. Tenhle příklad uvádí sama Česká pošta. |
 | `RR000000005CZ` | Zásilka podaná v Česku: dvě písmena, 9 číslic a `CZ`. Takové číslo mají zásilky do zahraničí (RR je doporučená zásilka), ale `CZ` na konci může mít i doporučené psaní nebo EMS v rámci Česka. |
-| `RR123456785CN` | Zásilka ze zahraničí. Má číslo zahraniční pošty s kódem země původu na konci (tady Čína), případně i úplně jiný formát. |
+| `RR000000005CN` | Zásilka ze zahraničí. Má číslo zahraniční pošty s kódem země původu na konci (tady Čína), případně i úplně jiný formát. |
 
 Šestimístný kód pro vyzvednutí, který ti přijde v SMS nebo e-mailu, podací číslo není: slouží jen k vyzvednutí balíku.
 

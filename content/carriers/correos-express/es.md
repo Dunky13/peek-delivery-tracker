@@ -16,7 +16,7 @@ Correos Express no publica el formato de sus números: sus páginas hablan de «
 | --- | --- |
 | `1234 5678 9012 3452` | 16 cifras: Correos Express, DHL eCommerce, Canada Post, TNT o Evri UK. |
 | `12345678901234567890123` | 23 cifras: apunta a Correos Express, pero sin certeza. |
-| `RR123456785ES` | Letras y cifras: Correos, no Correos Express. |
+| `RR000000005ES` | Letras y cifras: Correos, no Correos Express. |
 | `0123/45678901` | Con barra: [NACEX](carrier:nacex), no Correos Express. |
 
 Correos Express tampoco dice dónde aparece el número ni con qué nombre firma sus SMS. Prueba en el correo de envío de la tienda o en la página de tu pedido, o mira [dónde más puedes buscarlo](guide:find-tracking-number).

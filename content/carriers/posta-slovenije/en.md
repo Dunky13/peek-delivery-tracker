@@ -15,9 +15,9 @@ Pošta Slovenije calls it the acceptance number (*sprejemna številka*). It has 
 | Shape (invented) | What it is |
 | --- | --- |
 | `CA000000005SI` | A parcel: parcels start with `CA` to `CZ`. |
-| `RR123456785SI` | A registered letter: `RA` to `RZ`. |
-| `EE123456785SI` | Express mail: `EA` to `EZ`. |
-| `RR123456785CN` | An item from abroad keeps the foreign post's number, ending in the country it came from. |
+| `RR000000005SI` | A registered letter: `RA` to `RZ`. |
+| `EE000000005SI` | Express mail: `EA` to `EZ`. |
+| `RR000000005CN` | An item from abroad keeps the foreign post's number, ending in the country it came from. |
 
 You'll usually find it in the sender's message. Pošta Slovenije's own SMS (sender "Paketomat" or "POSTA") and @posta.si emails carry it too. Parcels addressed with your phone number also appear in MojaPošta's "Moji paketi" (My Parcels) list. Lost it? See [how to find a tracking number](guide:find-tracking-number).
 

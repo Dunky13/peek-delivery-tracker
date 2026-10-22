@@ -17,8 +17,8 @@ Die Formen LP, CNG, DOFR und CNFR beschreibt keine Cainiao-Seite. Die Tracking-S
 | `LP12345678901234` | LP und 14 Ziffern: wahrscheinlich Cainiao, aber nicht sicher. |
 | `CNG12345678900000` | CNG und 14 Ziffern: Cainiao. |
 | `DOFR1234567890123HD` | DOFR oder CNFR, 13 Ziffern, dann HD: Cainiao. |
-| `RR123456785CN` | Eine Postnummer, hier von [China Post](carrier:china-post). Cainiaos Seite verfolgt diese Form auch. |
-| `LP123456785HK` | Ebenfalls eine Postnummer (Hongkong Post), trotz LP keine LP-Nummer von Cainiao. |
+| `RR000000005CN` | Eine Postnummer, hier von [China Post](carrier:china-post). Cainiaos Seite verfolgt diese Form auch. |
+| `LP000000005HK` | Ebenfalls eine Postnummer (Hongkong Post), trotz LP keine LP-Nummer von Cainiao. |
 | `YT1234567890123456` | Keine Cainiao-Nummer, sondern [YunExpress](carrier:yunexpress). |
 
 Cainiaos Sendungsverfolgung kennt noch andere Formen, etwa AP mit 14 Ziffern. Wo die Nummer außerhalb von AliExpress steht, sagt keine Cainiao-Seite, und eine SMS von Cainiao an Empfänger oder einen Absendernamen dafür beschreibt Cainiao nirgends. Hast du keine Nummer, frag den Shop danach, oder lies, [wo du die Sendungsnummer findest](guide:find-tracking-number). Zeigt die Seite gar nichts, bittet Cainiao dich zu prüfen, ob es wirklich eine Cainiao- oder AliExpress-Nummer ist. Woran du das erkennst, erklärt [Sendungsnummern erkennen](guide:tracking-number-formats).

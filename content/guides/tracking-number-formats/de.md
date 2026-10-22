@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-Buchstaben und Länge einer Sendungsnummer verraten oft, welcher Paketdienst dein Paket hat. Beginnt sie mit `1Z` und hat 18 Zeichen, ist es UPS. 18 Ziffern ab `99`, gedruckt wie `99.34.123456.12345678`, kommen von der [Schweizerischen Post](carrier:swiss-post), und 13 Zeichen wie `RR123456785CH` (zwei Buchstaben, neun Ziffern, zwei Buchstaben) stammen meist von einer nationalen Post, deren Land in den letzten zwei Buchstaben steht. Schwierig wird es bei reinen Ziffern: 10, 14 oder 22 Stellen passen jeweils zu mehreren Paketdiensten. Dann entscheidet die Versandmail oder ein Tracker, der die infrage kommenden Paketdienste durchprobiert.
+Buchstaben und Länge einer Sendungsnummer verraten oft, welcher Paketdienst dein Paket hat. Beginnt sie mit `1Z` und hat 18 Zeichen, ist es UPS. 18 Ziffern ab `99`, gedruckt wie `99.34.123456.12345678`, kommen von der [Schweizerischen Post](carrier:swiss-post), und 13 Zeichen wie `RR000000005CH` (zwei Buchstaben, neun Ziffern, zwei Buchstaben) stammen meist von einer nationalen Post, deren Land in den letzten zwei Buchstaben steht. Schwierig wird es bei reinen Ziffern: 10, 14 oder 22 Stellen passen jeweils zu mehreren Paketdiensten. Dann entscheidet die Versandmail oder ein Tracker, der die infrage kommenden Paketdienste durchprobiert.
 
 :::checker
 :::
@@ -65,7 +65,7 @@ Eine feste Länge gibt es nicht. Hier die Längen, die die Paketdienste selbst n
 | Länge | Wer sie nutzt |
 | --- | --- |
 | 10 Ziffern | DHL Express; bei DHL die kürzeste mögliche Länge |
-| 13 Zeichen | jede Post im Postformat, etwa `RR123456785CH` |
+| 13 Zeichen | jede Post im Postformat, etwa `RR000000005CH` |
 | 14 Stellen | DPD; auch bei Hermes möglich |
 | 18 Ziffern | Schweizerische Post, ab `98` oder `99`; Quickpac |
 | 20 Ziffern | DHL, etwa seine Testnummern ab `00340434` |
@@ -81,9 +81,9 @@ Wenn die Länge stimmt, ja. In Peeks Paketdienst-Daten steht `TBA`, `TBC` oder `
 
 Die nationalen Postunternehmen nutzen ein gemeinsames Format mit 13 Zeichen, festgelegt vom Weltpostverein (UPU) in seinem Standard S10. So ist es aufgebaut:
 
-:::anatomy RR 12345678 5 CH
+:::anatomy RR 00000000 5 CH
 - RR | Art der Sendung: R für Einschreiben
-- 12345678 | Seriennummer, acht Ziffern
+- 00000000 | Seriennummer, acht Ziffern
 - 5 | Prüfziffer, aus der Seriennummer berechnet
 - CH | Land, das die Nummer vergeben hat: die Schweiz
 :::
@@ -105,7 +105,7 @@ Die Prüfziffer fängt Tippfehler ab. So prüfst du eine Nummer:
 2. Teile die Summe durch 11 und zieh den Rest von 11 ab.
 3. Aus 10 wird 0, aus 11 wird 5.
 
-Für `RR123456785CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Geteilt durch 11 bleibt der Rest 6, und 11 − 6 = 5. Fällt eine abgetippte Postnummer durch diesen Test, such nach einer falschen Ziffer oder einem Zahlendreher.
+Für `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Geteilt durch 11 bleibt der Rest 6, und 11 − 6 = 5. Fällt eine abgetippte Postnummer durch diesen Test, such nach einer falschen Ziffer oder einem Zahlendreher.
 
 ### Sendungsnummer beginnt mit LX, RT oder CY?
 

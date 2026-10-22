@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-Les lettres et la longueur d'un numéro de suivi suffisent souvent à savoir quel transporteur a ton colis. `1Z` suivi de 16 lettres et chiffres, c'est UPS ; 18 chiffres qui commencent par `99`, c'est [La Poste suisse](carrier:swiss-post) ; 13 caractères construits comme `RR123456785CH` (deux lettres, neuf chiffres, deux lettres) viennent en général d'une poste nationale, et les deux dernières lettres donnent le pays qui a émis le numéro. Les numéros composés uniquement de chiffres sont plus délicats : 10, 12 ou 14 chiffres correspondent à plusieurs transporteurs, et c'est alors l'e-mail d'expédition, ou un outil qui teste chaque candidat, qui tranche.
+Les lettres et la longueur d'un numéro de suivi suffisent souvent à savoir quel transporteur a ton colis. `1Z` suivi de 16 lettres et chiffres, c'est UPS ; 18 chiffres qui commencent par `99`, c'est [La Poste suisse](carrier:swiss-post) ; 13 caractères construits comme `RR000000005CH` (deux lettres, neuf chiffres, deux lettres) viennent en général d'une poste nationale, et les deux dernières lettres donnent le pays qui a émis le numéro. Les numéros composés uniquement de chiffres sont plus délicats : 10, 12 ou 14 chiffres correspondent à plusieurs transporteurs, et c'est alors l'e-mail d'expédition, ou un outil qui teste chaque candidat, qui tranche.
 
 :::checker
 :::
@@ -93,9 +93,9 @@ Attention aux sosies. Avec ses 12 caractères, un numéro en `FR` a aussi la for
 
 Les postes nationales partagent un format de 13 caractères, fixé par l'Union postale universelle (UPU) dans sa norme S10. Le voici décomposé :
 
-:::anatomy RR 12345678 5 CH
+:::anatomy RR 00000000 5 CH
 - RR | Type d'envoi : R pour une lettre recommandée
-- 12345678 | Numéro de série, huit chiffres
+- 00000000 | Numéro de série, huit chiffres
 - 5 | Chiffre de contrôle, calculé à partir du numéro de série
 - CH | Pays qui a émis le numéro : la Suisse
 :::
@@ -117,7 +117,7 @@ Le chiffre de contrôle sert à repérer les fautes de frappe. Pour tester un nu
 2. Divise la somme par 11 et soustrais le reste de 11.
 3. Un résultat de 10 devient 0, et 11 devient 5.
 
-Pour `RR123456785CH` : 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Divisé par 11, il reste 6, et 11 − 6 = 5. Si un numéro postal recopié à la main ne passe pas ce test, cherche un chiffre mal tapé ou deux chiffres inversés.
+Pour `RR000000005CH` : 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Divisé par 11, il reste 6, et 11 − 6 = 5. Si un numéro postal recopié à la main ne passe pas ce test, cherche un chiffre mal tapé ou deux chiffres inversés.
 
 ### Numéro de suivi qui commence par U
 

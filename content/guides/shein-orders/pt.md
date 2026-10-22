@@ -39,7 +39,7 @@ Uma encomenda pode chegar em vários volumes. A Shein divide-a quando os artigos
 
 Um número novo pode parecer morto durante dias. Segundo a Shein, até a encomenda passar a alfândega e entrar no país, pode não haver atualizações da transportadora local. O número de encomenda da confirmação é a referência da Shein, não um número de seguimento. Onde o guardam outras lojas: [onde encontrar o número de seguimento](guide:find-tracking-number).
 
-Um código criado pelos CTT, uma das transportadoras que a Shein nomeia, tem duas letras, nove algarismos e `PT`, como o inventado `RR123456785PT`. Não sabes o que tens? Escreve-o aqui:
+Um código criado pelos CTT, uma das transportadoras que a Shein nomeia, tem duas letras, nove algarismos e `PT`, como o inventado `RR000000005PT`. Não sabes o que tens? Escreve-o aqui:
 
 :::checker
 :::

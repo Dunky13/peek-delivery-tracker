@@ -14,7 +14,7 @@ Selon Chronopost, le numéro de colis compte 13 caractères (2 lettres, 9 chiffr
 
 | Numéro (inventé) | Ce qu'il faut savoir |
 | --- | --- |
-| `XY123456785FR` | 2 lettres, 9 chiffres, 2 lettres : le numéro Chronopost habituel. |
+| `XY000000005FR` | 2 lettres, 9 chiffres, 2 lettres : le numéro Chronopost habituel. |
 | `AB000000000JB` | La même forme, terminée par JB, JF ou TS. |
 | `00000000000000U` | 15 caractères, 14 chiffres et une lettre de contrôle : un colis venu de l'étranger. |
 

@@ -52,7 +52,7 @@ Look in these places:
 
 To collect at a pickup point, bring your ID and the tracking code or the purchase reference. For other shops: [find your tracking number](guide:find-tracking-number).
 
-[Correos](carrier:correos-spain) numbers, for Melilla, look like this (the digits are made up): `PR`, 15 digits and `C`, as in `PR123456789012345C`, or 2 letters, 9 digits and `ES`, as in `RR123456785ES`. [GLS](carrier:gls-es) numbers, for Andorra, are a `1` and 9 more digits, as in `1234567890`.
+[Correos](carrier:correos-spain) numbers, for Melilla, look like this (the digits are made up): `PR`, 15 digits and `C`, as in `PR123456789012345C`, or 2 letters, 9 digits and `ES`, as in `RR000000005ES`. [GLS](carrier:gls-es) numbers, for Andorra, are a `1` and 9 more digits, as in `1234567890`.
 
 Not sure whose number it is? Type it here:
 

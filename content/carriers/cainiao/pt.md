@@ -18,8 +18,8 @@ Nenhuma página da Cainiao descreve as formas LP, CNG, DOFR ou CNFR. O site acei
 | `CNG12345678900000` | CNG e 14 algarismos: pode ser Cainiao. |
 | `CNG12345678975001` | O mesmo, terminado no que parece um código postal francês: Cainiao ou talvez a Colis Privé. |
 | `DOFR1234567890123HD` | DOFR ou CNFR, 13 algarismos e HD: Cainiao. |
-| `RR123456785CN` | Um [número postal](guide:tracking-number-formats), aqui da [China Post](carrier:china-post). O site da Cainiao também segue esta forma. |
-| `LP123456785HK` | Também postal (Hongkong Post): apesar do LP, não é um número LP da Cainiao. |
+| `RR000000005CN` | Um [número postal](guide:tracking-number-formats), aqui da [China Post](carrier:china-post). O site da Cainiao também segue esta forma. |
+| `LP000000005HK` | Também postal (Hongkong Post): apesar do LP, não é um número LP da Cainiao. |
 | `YT1234567890123456` | Não é Cainiao, é da [YunExpress](carrier:yunexpress). |
 
 O seguimento da Cainiao responde ainda a outras formas, como AP e 14 algarismos. Nenhuma página da Cainiao diz onde aparece o número fora do AliExpress nem fala de SMS da Cainiao a quem recebe: se não o tens, [vê onde procurar](guide:find-tracking-number) ou pede-o à loja. Se o site não mostrar nada, a Cainiao pede que confirmes que é mesmo um número Cainiao ou AliExpress.

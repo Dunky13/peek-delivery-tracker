@@ -18,7 +18,7 @@ La web de seguimiento de Cainiao admite hasta 100 números por búsqueda («Intr
 | `CNG12345678900000` | CNG y 14 cifras: probablemente Cainiao. |
 | `CNG12345678975001` | Lo mismo, pero acaba en algo parecido a un código postal francés: Cainiao o, quizá, Colis Privé. |
 | `DOFR1234567890123HD` | DOFR o CNFR, 13 cifras y HD: Cainiao. |
-| `RR123456785CN` | [Un número postal](guide:tracking-number-formats): la web de Cainiao sigue este formato, pero también el correo de origen, aquí [China Post](carrier:china-post). |
+| `RR000000005CN` | [Un número postal](guide:tracking-number-formats): la web de Cainiao sigue este formato, pero también el correo de origen, aquí [China Post](carrier:china-post). |
 | `YT1234567890123456` | No es de Cainiao, sino de [YunExpress](carrier:yunexpress). |
 
 El seguimiento de Cainiao también responde a otros formatos, como AP y 14 cifras. Ninguna página de Cainiao dice [dónde aparece el número](guide:find-tracking-number) fuera de AliExpress, y no se ha encontrado con qué nombre firma Cainiao sus SMS. En España, [Ecoscooting](carrier:ecoscooting), la empresa cuyo teléfono y correo da Cainiao España, escribe a los destinatarios por correo y, si el paquete va a un punto de recogida, también por SMS. Para compras en China en general, mira [seguimiento de paquetes de China](guide:tracking-from-china).

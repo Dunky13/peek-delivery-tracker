@@ -47,7 +47,7 @@ Los números de los transportistas de MediaMarkt tienen esta forma (las cifras s
 | Transportista | Cómo es el número |
 | --- | --- |
 | [Paack](carrier:paack) | `PK` y 18 cifras, como `PK123456789012345678` |
-| [Correos](carrier:correos-spain) | `PR`, 15 cifras y `C`, como `PR123456789012345C`, o 2 letras, 9 cifras y `ES`, como `RR123456785ES` |
+| [Correos](carrier:correos-spain) | `PR`, 15 cifras y `C`, como `PR123456789012345C`, o 2 letras, 9 cifras y `ES`, como `RR000000005ES` |
 | [SEUR](carrier:seur) | 14 cifras, entre otras formas de solo cifras |
 | [TIPSA](carrier:tipsa) | 10 cifras, o 22 con un `0` en la primera y la séptima posición |
 

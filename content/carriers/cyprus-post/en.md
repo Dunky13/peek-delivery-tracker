@@ -12,17 +12,17 @@ Cyprus Post (Κυπριακά Ταχυδρομεία) is the Republic of Cyprus'
 
 Cyprus Post's tracker reads the barcodes of registered items, EMS items, parcels and EPG parcels. They are 13 characters: [two letters, nine digits and two letters](guide:tracking-number-formats) for the country of origin.
 
-:::anatomy RR 123456785 CY
+:::anatomy RR 000000005 CY
 - RR | Item category: the first letter says what kind of item it is
-- 123456785 | Nine digits, the last one a check digit
+- 000000005 | Nine digits, the last one a check digit
 - CY | Country of origin: CY for an item posted in Cyprus
 :::
 
 | First letter (invented examples) | What it is |
 | --- | --- |
-| `RR123456785CY` | R: registered item |
-| `CP123456785CY` | C: parcel (CE for premium parcels) |
-| `EE123456785CY` | E: EMS item |
+| `RR000000005CY` | R: registered item |
+| `CP000000005CY` | C: parcel (CE for premium parcels) |
+| `EE000000005CY` | E: EMS item |
 | L | Express item |
 
 An item posted abroad keeps the number its own post gave it, ending in that country's letters (`…GB`, `…FR`, `…GR`). Cyprus Post's tracker takes it and shows the foreign post's scans too.

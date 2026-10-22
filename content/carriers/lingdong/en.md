@@ -16,7 +16,7 @@ Lingdong publishes no number format. The waybills its tracker answers are SZLD f
 | --- | --- |
 | `SZLD1234567890` | SZLD and ten digits: a Lingdong International waybill. |
 | `SZLD123456789` | Only nine digits: not a Lingdong shape. Check for a missing digit. |
-| `LX123456785CN` | Two letters, nine digits and CN: a China Post number, not Lingdong's. |
+| `LX000000005CN` | Two letters, nine digits and CN: a China Post number, not Lingdong's. |
 
 Lower case and spaces don't matter when you paste the number into Peek.
 

@@ -15,8 +15,8 @@ PostNord Denmark says a shipment number is usually 13 to 20 characters long: typ
 | Number (invented) | What it is |
 | --- | --- |
 | `00073000000000000004` | 20 digits starting `00`: a parcel barcode, as on PostNord Home or Service Point parcels. |
-| `RR123456785SE` | Two letters, nine digits, `SE`: a registered letter or small parcel posted in Sweden. |
-| `RR123456785DK` | The same ending `DK`: a tracked item from Denmark. |
+| `RR000000005SE` | Two letters, nine digits, `SE`: a registered letter or small parcel posted in Sweden. |
+| `RR000000005DK` | The same ending `DK`: a tracked item from Denmark. |
 | `12345678901SE` | 11 digits and `SE`: a Swedish Service Point parcel. |
 | `12345678901234` | 14 digits: some PostNord Home parcels. Other carriers use this length too. |
 

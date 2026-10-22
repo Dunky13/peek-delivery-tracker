@@ -21,7 +21,7 @@ Aucune page de Swiss Post Cargo ne dit où tu trouves ce numéro. Regarde les e-
 
 Ces numéros-là se suivent ailleurs :
 
-- **Colis de la Poste :** 18 chiffres commençant par `99` (imprimés `99.00.123456.12345678`), ou deux lettres, neuf chiffres et `CH` (`RR123456785CH`).
+- **Colis de la Poste :** 18 chiffres commençant par `99` (imprimés `99.00.123456.12345678`), ou deux lettres, neuf chiffres et `CH` (`RR000000005CH`).
 - **Références PostLogistics** comme `12345678-123` : l'ancien suivi de la même entreprise, tracking.postlogistics.ch.
 - **Allemagne :** le portail allemand, intitulé « Hugger » (portal-de1.swisspost-cargo.com), demande un numéro de colis (Collinummer), ou un numéro d'envoi avec un numéro d'entreprise (Betriebsnummer).
 

@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-Spesso bastano le lettere e la lunghezza del numero di tracking per capire quale corriere ha il tuo pacco. `1Z` seguito da 16 lettere e cifre è UPS, 18 cifre che iniziano con `99` sono la [Posta svizzera](carrier:swiss-post), e un codice di 13 caratteri come `RR123456785CH` (due lettere, nove cifre, due lettere) di solito è di una posta nazionale, con il Paese che l'ha emesso nelle ultime due lettere. Il caso difficile sono i codici di sole cifre: 14 cifre, per esempio, possono essere di BRT come di DPD. In quei casi l'ultima parola spetta all'e-mail di spedizione, o a un tracker che prova tutti i corrieri possibili.
+Spesso bastano le lettere e la lunghezza del numero di tracking per capire quale corriere ha il tuo pacco. `1Z` seguito da 16 lettere e cifre è UPS, 18 cifre che iniziano con `99` sono la [Posta svizzera](carrier:swiss-post), e un codice di 13 caratteri come `RR000000005CH` (due lettere, nove cifre, due lettere) di solito è di una posta nazionale, con il Paese che l'ha emesso nelle ultime due lettere. Il caso difficile sono i codici di sole cifre: 14 cifre, per esempio, possono essere di BRT come di DPD. In quei casi l'ultima parola spetta all'e-mail di spedizione, o a un tracker che prova tutti i corrieri possibili.
 
 :::checker
 :::
@@ -86,9 +86,9 @@ Non confonderlo con un codice che *finisce* con `IT`: due lettere, nove cifre e 
 
 Le poste nazionali condividono un formato di 13 caratteri, fissato dall'Unione postale universale (UPU) nel suo standard S10. Eccolo smontato:
 
-:::anatomy RR 12345678 5 CH
+:::anatomy RR 00000000 5 CH
 - RR | Tipo di invio: R per una raccomandata
-- 12345678 | Numero di serie, otto cifre
+- 00000000 | Numero di serie, otto cifre
 - 5 | Cifra di controllo, calcolata dal numero di serie
 - CH | Paese che ha emesso il codice: la Svizzera
 :::
@@ -110,7 +110,7 @@ La cifra di controllo serve a scovare gli errori di battitura. Per verificare un
 2. Dividi per 11 e sottrai il resto da 11.
 3. Se ottieni 10 la cifra è 0, se ottieni 11 è 5.
 
-Per `RR123456785CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, che diviso per 11 dà resto 6, e 11 − 6 = 5. Se un codice postale copiato a mano non supera la prova, cerca una cifra sbagliata o due cifre invertite. Attenzione però agli esempi nei moduli dei corrieri: molti, come `ZA123456789IT` di Poste, sono solo segnaposto e la prova non la superano.
+Per `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, che diviso per 11 dà resto 6, e 11 − 6 = 5. Se un codice postale copiato a mano non supera la prova, cerca una cifra sbagliata o due cifre invertite. Attenzione però agli esempi nei moduli dei corrieri: molti, come `ZA123456789IT` di Poste, sono solo segnaposto e la prova non la superano.
 
 ### Codice che inizia con UL o UU: di chi è?
 

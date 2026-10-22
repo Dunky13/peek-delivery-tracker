@@ -12,17 +12,17 @@ POST Luxembourg is Luxembourg's national post, which also runs a telecom network
 
 POST's numbers are 13 characters: [two letters, nine digits](guide:tracking-number-formats) and `LU`. Type the full number, digits and letters, as it appears on the dispatch slip.
 
-:::anatomy CP 123456785 LU
+:::anatomy CP 000000005 LU
 - CP | Kind of item: RR registered, CP parcel, LX FollowMe label
-- 123456785 | Nine digits, the last one a check digit
+- 000000005 | Nine digits, the last one a check digit
 - LU | Posted in Luxembourg
 :::
 
 | Invented example | What it is |
 | --- | --- |
-| `RR123456785LU` | Registered item |
-| `CP123456785LU` | Parcel |
-| `LX123456785LU` | FollowMe label, a tracked option for items up to 2 kg that aren't signed for |
+| `RR000000005LU` | Registered item |
+| `CP000000005LU` | Parcel |
+| `LX000000005LU` | FollowMe label, a tracked option for items up to 2 kg that aren't signed for |
 
 Only some items can be tracked: registered mail, parcels and FollowMe items. An ordinary letter has no number.
 

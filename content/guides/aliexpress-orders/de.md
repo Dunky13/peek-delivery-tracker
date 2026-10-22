@@ -103,7 +103,7 @@ Ist eine Rücksendung vereinbart, schick den Artikel mit Sendungsverfolgung an d
 
 Ja, mit der Sendungsnummer, die die Bestellung unter „Bestellung verfolgen“ zeigt. Füge sie in [Peek](/) ein, das solche Pakete als „AliExpress / Cainiao“ zeigt. DOFR oder CNFR mit 13 Ziffern und HD, etwa `DOFR1234567890123HD`, erkennt Peek sofort. Bei LP-, AP- und CNG-Nummern ist die Form allein nicht eindeutig: Peek fragt Cainiao und jeden anderen Paketdienst, zu dem die Form passt, und zeigt den, der die Nummer kennt. Kennen sie mehrere, lässt Peek dich wählen; zeigt es den falschen, tippe auf „Ändern“ und wähle „AliExpress / Cainiao“.
 
-Eine Postnummer wie `RR123456785CN` geht an [China Post](carrier:china-post). Willst du sie über Cainiao verfolgen, füg den Verfolgungslink von global.cainiao.com ein.
+Eine Postnummer wie `RR000000005CN` geht an [China Post](carrier:china-post). Willst du sie über Cainiao verfolgen, füg den Verfolgungslink von global.cainiao.com ein.
 
 Nennt der erste Paketdienst den Partner vor Ort, der übernimmt, behält Peek den ersten Verlauf, folgt dem Partner, sobald dessen Tracking neue Schritte zeigt, und zeigt auf der Karte Namen und Nummer des Partners.
 

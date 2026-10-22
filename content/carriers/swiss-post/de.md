@@ -14,7 +14,7 @@ Der Absender erzeugt die Sendungsnummer und meldet die Daten der Post, meist bev
 
 | Nummer | Was sie ist |
 | --- | --- |
-| `RR123456785CH` | Zwei Buchstaben, neun Ziffern und `CH`: eine internationale Postnummer aus der Schweiz. Die letzte Ziffer vor `CH` ist eine Prüfziffer. |
+| `RR000000005CH` | Zwei Buchstaben, neun Ziffern und `CH`: eine internationale Postnummer aus der Schweiz. Die letzte Ziffer vor `CH` ist eine Prüfziffer. |
 | `99.00.000000.00000000` | 18 Ziffern, beginnt mit `98` oder `99`, mit oder ohne Punkte und Leerzeichen: die Barcode-Nummer für Sendungen innerhalb der Schweiz. |
 
 Das Suchfeld auf post.ch heißt „Sendungsnummer oder Abholcode“: Dort funktioniert also auch ein Abholcode.

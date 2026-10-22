@@ -49,9 +49,9 @@ Seit dem 1. Juli 2026 verkauft Etsy wegen einer neuen EU-Bearbeitungsgebühr vor
 
 Es ist die Nummer des Versanddienstes, keine von Etsy. Die Posten nutzen das internationale Postformat: 13 Zeichen, die über Grenzen hinweg gleich bleiben.
 
-:::anatomy RR 12345678 5 US
+:::anatomy RR 00000000 5 US
 - RR | Zwei Buchstaben für die Art der Sendung und den Dienst
-- 12345678 | Seriennummer, acht Ziffern
+- 00000000 | Seriennummer, acht Ziffern
 - 5 | Prüfziffer, aus der Seriennummer berechnet
 - US | Land der Post, die sie vergeben hat: die USA
 :::

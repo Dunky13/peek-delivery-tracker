@@ -16,7 +16,7 @@ Correos Express publishes no number format; its tracker asks for the *número de
 | --- | --- |
 | `1234 5678 9012 3452` | 16 digits: Correos Express, but also [DHL eCommerce](carrier:dhl-ecommerce), [Canada Post](carrier:canada-post), TNT and Evri UK. |
 | `12345678901234567890123` | 23 digits: Correos Express, unless digits 15 to 17 are 000: Peek's catalog gives those to [Australia Post](carrier:australia-post). |
-| `RR123456785ES` | Letters and digits in [the postal format](guide:tracking-number-formats): Correos, the post office, not Correos Express. |
+| `RR000000005ES` | Letters and digits in [the postal format](guide:tracking-number-formats): Correos, the post office, not Correos Express. |
 | `0123/45678901` | With a slash: [NACEX](carrier:nacex), another courier. |
 
 Correos Express doesn't say where you'll find the number and publishes no SMS sender name, so check the shop's shipping email or your order page ([more places to look](guide:find-tracking-number)).

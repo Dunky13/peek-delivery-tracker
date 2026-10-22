@@ -15,8 +15,8 @@ Ukrposhta's numbers come in two shapes, and its tracking page takes up to 30 at 
 | Shape (invented) | What it is |
 | --- | --- |
 | `0500000000003` | A domestic item, within Ukraine: 13 digits. |
-| `RR123456785UA` | An international item posted in Ukraine: two letters, nine digits, `UA`. |
-| `RR123456785US` | An item coming into Ukraine keeps the sending post's number, ending in that country's code. |
+| `RR000000005UA` | An international item posted in Ukraine: two letters, nine digits, `UA`. |
+| `RR000000005US` | An item coming into Ukraine keeps the sending post's number, ending in that country's code. |
 
 For items coming into Ukraine, the first letter shows which service the sender chose:
 

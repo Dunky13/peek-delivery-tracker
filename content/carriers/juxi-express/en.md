@@ -16,7 +16,7 @@ Juxi publishes no number format. Its waybills seen so far are 17 characters: JXC
 | --- | --- |
 | `JXCAB1234567890YQ` | JXC, two letters, ten digits, YQ: a Juxi Express waybill. |
 | `JXCAB123456789YQ` | Only nine digits: not a Juxi shape. Check for a missing digit. |
-| `RR123456785CN` | Two letters, nine digits, CN: a [postal number](guide:tracking-number-formats) from China Post, one of the services Juxi resells. |
+| `RR000000005CN` | Two letters, nine digits, CN: a [postal number](guide:tracking-number-formats) from China Post, one of the services Juxi resells. |
 
 **Where to find it.** No Juxi page says how the number reaches you. The seller books the parcel with Juxi and gives the number in its shipping email or on your order page. If you can't find it, see [how to find your tracking number](guide:find-tracking-number).
 

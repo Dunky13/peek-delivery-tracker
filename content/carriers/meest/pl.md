@@ -17,7 +17,7 @@ Meest nie publikuje jednego formatu numeru. Jego amerykańska strona pisze tylko
 | Numer | Co to jest |
 | --- | --- |
 | `AB1234567CD12345G` | Dwie litery, 7 cyfr, dwie litery, 5 cyfr i G: numer zbiorczy Meest, widziany na paczkach z Chin do Europy. |
-| `RR123456785UA` | Międzynarodowy numer pocztowy. Śledzenie Meest odpowiada na niektóre, ale śledzi go też poczta, która go nadała. |
+| `RR000000005UA` | Międzynarodowy numer pocztowy. Śledzenie Meest odpowiada na niektóre, ale śledzi go też poczta, która go nadała. |
 | `20400000000000` | 14 cyfr: list przewozowy [Nowej Poczty](carrier:nova-poshta), a nie Meest. |
 
 Uwaga na długość: pole śledzenia na stronach krajowych meest.com i jego polska wersja przyjmują od 6 do 16 znaków („Numer śledzenia musi zawierać od 6 do 16 znaków bez spacji”). Numer zbiorczy z G na końcu ma 17 znaków, więc pole go odrzuci, ale ten sam numer otworzy się na t.meest-group.com.

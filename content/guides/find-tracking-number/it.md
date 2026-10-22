@@ -2,7 +2,7 @@
 title: Codice tracking: dove si trova e come fare senza
 description: Dove si trova il codice tracking tra e-mail, ordine, SMS e ricevuta, come distinguerlo dal numero d'ordine e come seguire un pacco anche senza codice.
 slug: dove-si-trova-il-codice-tracking
-picture: Un'e-mail di spedizione con il codice RR123456785CH evidenziato in giallo, un'etichetta con il codice a barre accanto e Pip che sorride.
+picture: Un'e-mail di spedizione con il codice RR000000005CH evidenziato in giallo, un'etichetta con il codice a barre accanto e Pip che sorride.
 published: 2026-10-09
 updated: 2026-10-11
 ---
@@ -130,7 +130,7 @@ Per distinguerli: un numero accanto alla parola «ordine» è del negozio (Amazo
 | La Posta | numero d'invio |
 | Amazon.it, eBay.it | numeri di tracciamento, codice della spedizione |
 
-`1Z999AA10123456784` è un codice UPS; molti invii postali hanno il formato internazionale di 13 caratteri, come `RR123456785CH`. Per capire di chi è un codice, leggi [come capire il corriere dal numero di tracking](guide:tracking-number-formats).
+`1Z999AA10123456784` è un codice UPS; molti invii postali hanno il formato internazionale di 13 caratteri, come `RR000000005CH`. Per capire di chi è un codice, leggi [come capire il corriere dal numero di tracking](guide:tracking-number-formats).
 
 ## Codice tracking non trovato: è il numero giusto?
 

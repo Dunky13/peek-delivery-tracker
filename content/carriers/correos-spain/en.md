@@ -17,7 +17,7 @@ Correos publishes no official format, but its numbers usually look like this (ex
 | `PQ0ABC0000000000000000W` | 23 characters: the parcel code. Starts with P or D and a letter (or CD), ends with a check letter. |
 | `PQ0ABC000000000B` | 16 characters: the shipment code. A shipment can hold several parcels, each with its own 23-character code. |
 | `PR000000000000000C` | PR, 15 digits and C. |
-| `RR123456785ES` | 2 letters, 9 digits, ES: an international postal number from Spain. |
+| `RR000000005ES` | 2 letters, 9 digits, ES: an international postal number from Spain. |
 
 Correos sends the code by email, text message or both and prints it on the arrival notice (aviso de llegada); shops put it in the shipping email. A Citypaq PIN only opens the locker: it isn't a tracking number.
 

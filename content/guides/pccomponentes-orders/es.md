@@ -44,7 +44,7 @@ En estos sitios:
 
 Para recoger en un punto de recogida, lleva tu DNI y el código de seguimiento o el identificador de la compra. En otras tiendas: [encontrar el número de seguimiento](guide:find-tracking-number).
 
-Los números de [Correos](carrier:correos-spain), para Melilla, tienen esta forma (las cifras son inventadas): `PR`, 15 cifras y `C`, como `PR123456789012345C`, o 2 letras, 9 cifras y `ES`, como `RR123456785ES`. Los de [GLS](carrier:gls-es), para Andorra, son un `1` y 9 cifras más, como `1234567890`.
+Los números de [Correos](carrier:correos-spain), para Melilla, tienen esta forma (las cifras son inventadas): `PR`, 15 cifras y `C`, como `PR123456789012345C`, o 2 letras, 9 cifras y `ES`, como `RR000000005ES`. Los de [GLS](carrier:gls-es), para Andorra, son un `1` y 9 cifras más, como `1234567890`.
 
 ¿No sabes de quién es un número? Escríbelo aquí:
 

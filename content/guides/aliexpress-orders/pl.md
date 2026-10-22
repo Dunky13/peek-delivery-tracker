@@ -108,7 +108,7 @@ Zwrot ma własny numer: śledzisz go przez „Śledź przesyłkę zwrotną” w 
 Tak, numerem ze strony „Śledź zamówienie”. Wklej go do [Peek](/), który pokazuje te paczki jako „AliExpress / Cainiao”. Numery DOFR albo CNFR z 13 cyframi i HD, jak `DOFR1234567890123HD`, rozpoznaje od razu. Numery LP, CNG i AP nie są pewne po samym kształcie: Peek pyta Cainiao i każdego innego przewoźnika, do którego pasuje kształt, i pokazuje tego, który zna numer. Jeśli zna go kilku, poprosi Cię o wybór; jeśli pokaże złego, naciśnij „Zmień” i wybierz „AliExpress / Cainiao”.
 
 - **Kształt numeru, który ma kilku przewoźników.** Z kształtami, które ma kilku przewoźników, jest tak samo: jeśli Peek pokaże złego przewoźnika, naciśnij „Zmień” i wybierz tego, którego podaje śledzenie AliExpress.
-- **Numery pocztowe.** Numer taki jak `RR123456785CN` Peek sprawdza w [China Post](carrier:china-post). Żeby śledzić go przez Cainiao, wklej link śledzenia z global.cainiao.com.
+- **Numery pocztowe.** Numer taki jak `RR000000005CN` Peek sprawdza w [China Post](carrier:china-post). Żeby śledzić go przez Cainiao, wklej link śledzenia z global.cainiao.com.
 - **Nowy przewoźnik w Polsce.** Jeśli pierwszy przewoźnik poda, kto przejmuje paczkę w Polsce, Peek zachowa wcześniejszą historię, przełączy się na nowego przewoźnika, gdy jego śledzenie pokaże postęp, i pokaże na karcie jego nazwę i numer.
 - **Kilka paczek, kilka numerów.** Dodaj każdy numer. Numer zamówienia AliExpress nie jest numerem śledzenia i Peek nie może go śledzić.
 

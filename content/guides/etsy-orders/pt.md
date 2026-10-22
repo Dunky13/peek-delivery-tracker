@@ -47,9 +47,9 @@ Desde 1 de julho de 2026, por causa de uma nova taxa de processamento da UE, a E
 
 É o número da transportadora, não um número da Etsy. Os correios usam o formato postal internacional: 13 caracteres que se mantêm de país para país.
 
-:::anatomy RR 12345678 5 US
+:::anatomy RR 00000000 5 US
 - RR | Duas letras para o tipo de envio e o serviço
-- 12345678 | Número de série, oito algarismos
+- 00000000 | Número de série, oito algarismos
 - 5 | Algarismo de controlo, calculado a partir do número de série
 - US | País dos correios que o atribuíram: os Estados Unidos
 :::

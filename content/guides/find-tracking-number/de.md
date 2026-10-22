@@ -2,7 +2,7 @@
 title: Sendungsnummer finden – oder Paket ohne Nummer verfolgen
 description: Wo die Sendungsnummer steht – in der Versandmail, auf der Quittung, im Kundenkonto – und wie du ein Paket notfalls auch ohne Nummer verfolgst.
 slug: sendungsnummer-finden-paket-ohne-nummer
-picture: Eine Versandmail, in der die Sendungsnummer RR123456785CH gelb markiert ist, daneben ein Etikett mit Strichcode, und Pip lächelt.
+picture: Eine Versandmail, in der die Sendungsnummer RR000000005CH gelb markiert ist, daneben ein Etikett mit Strichcode, und Pip lächelt.
 published: 2026-10-09
 updated: 2026-10-10
 ---
@@ -121,7 +121,7 @@ Nein. DHL stellt klar: „Bitte beachten Sie, dass die Sendungsnummer keine Best
 - home | Niemand zu Hause | Auch die Benachrichtigung hilft oft weiter
 :::
 
-So unterscheidest du sie: Eine Nummer, die mit „Bestellung“ oder „Bestellnummer“ beschriftet ist, gehört dem Shop und funktioniert auf der Seite des Paketdienstes nicht. Neben einer Sendungsnummer steht meist der Name eines Paketdienstes oder ein Link zu seiner Sendungsverfolgung. Eine DHL-Sendungsnummer ist 10 bis 39 Stellen lang, `1Z999AA10123456784` ist eine UPS-Nummer, und viele Postsendungen tragen das internationale Format mit 13 Zeichen, etwa `RR123456785CH`. Welcher Paketdienst hinter einer Nummer steckt, erklärt der Ratgeber [Sendungsnummern erkennen](guide:tracking-number-formats).
+So unterscheidest du sie: Eine Nummer, die mit „Bestellung“ oder „Bestellnummer“ beschriftet ist, gehört dem Shop und funktioniert auf der Seite des Paketdienstes nicht. Neben einer Sendungsnummer steht meist der Name eines Paketdienstes oder ein Link zu seiner Sendungsverfolgung. Eine DHL-Sendungsnummer ist 10 bis 39 Stellen lang, `1Z999AA10123456784` ist eine UPS-Nummer, und viele Postsendungen tragen das internationale Format mit 13 Zeichen, etwa `RR000000005CH`. Welcher Paketdienst hinter einer Nummer steckt, erklärt der Ratgeber [Sendungsnummern erkennen](guide:tracking-number-formats).
 
 ## Sendungsnummer zeigt nichts an: Ist es die richtige?
 

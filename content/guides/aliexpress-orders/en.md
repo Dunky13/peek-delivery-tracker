@@ -101,7 +101,7 @@ Once a return is agreed, send the item to the address on the request page by a t
 
 Yes, with the tracking number from the order's Track Order page. Paste it into [Peek](/), which shows these parcels as "AliExpress / Cainiao". It recognises DOFR or CNFR, 13 digits and HD, such as `DOFR1234567890123HD`, straight away. LP, AP and CNG numbers aren't certain from their shape alone, so Peek asks Cainiao, and any other carrier the shape fits, and shows the one that knows the number. If several do, it asks you to choose; if it shows the wrong one, press "Change" and pick "AliExpress / Cainiao".
 
-A postal number such as `RR123456785CN` goes to [China Post](carrier:china-post). To follow it through Cainiao instead, paste the global.cainiao.com tracking link.
+A postal number such as `RR000000005CN` goes to [China Post](carrier:china-post). To follow it through Cainiao instead, paste the global.cainiao.com tracking link.
 
 When the first carrier names the local partner taking over, Peek keeps the first history, follows the partner once its own tracking shows fresh progress, and shows the partner's name and number on the card.
 

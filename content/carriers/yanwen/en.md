@@ -15,9 +15,9 @@ Yanwen publishes no example number and no help page for recipients. The shapes Y
 | Number | Whose it is |
 | --- | --- |
 | `BYS123456789` | BYS and 9 digits: Yanwen. |
-| `UL123456785YP` | Two letters, 9 digits, then YP: Yanwen. UL and UK are common starts. |
+| `UL000000005YP` | Two letters, 9 digits, then YP: Yanwen. UL and UK are common starts. |
 | `YWABC123456789012` | YW, three letters and 12 digits: Yanwen's own delivery service in the US. |
-| `RR123456785CN` | The same postal shape ending in CN: [China Post](carrier:china-post), not Yanwen. |
+| `RR000000005CN` | The same postal shape ending in CN: [China Post](carrier:china-post), not Yanwen. |
 | `YT1234567890123456` | Not Yanwen but [YunExpress](carrier:yunexpress). |
 | `LP12345678901234` | Not Yanwen but [Cainiao](carrier:cainiao), AliExpress's logistics reference. |
 

@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-Las letras y la longitud de un número de seguimiento suelen decirte qué empresa tiene tu paquete. `1Z` seguido de 16 letras y cifras es UPS, y un código de 13 caracteres como `RR123456785CH` (dos letras, nueve cifras, dos letras) suele ser de Correos o de otro operador postal: las dos últimas letras dicen qué país lo emitió, y `ES` es España. Los números que solo llevan cifras son el caso difícil: 12, 14 o 22 cifras encajan con varias empresas, así que la última palabra la tiene el correo de envío de la tienda, o una web de seguimiento que pruebe con todas las candidatas.
+Las letras y la longitud de un número de seguimiento suelen decirte qué empresa tiene tu paquete. `1Z` seguido de 16 letras y cifras es UPS, y un código de 13 caracteres como `RR000000005CH` (dos letras, nueve cifras, dos letras) suele ser de Correos o de otro operador postal: las dos últimas letras dicen qué país lo emitió, y `ES` es España. Los números que solo llevan cifras son el caso difícil: 12, 14 o 22 cifras encajan con varias empresas, así que la última palabra la tiene el correo de envío de la tienda, o una web de seguimiento que pruebe con todas las candidatas.
 
 :::checker
 :::
@@ -87,9 +87,9 @@ Cuenta los caracteres para no confundirlo con un número postal: `ES` y 10 cifra
 
 Los operadores postales nacionales comparten un formato de 13 caracteres, fijado por la Unión Postal Universal (UPU) en su norma S10. Aquí lo tienes por partes:
 
-:::anatomy RR 12345678 5 CH
+:::anatomy RR 00000000 5 CH
 - RR | Tipo de envío: R de carta certificada
-- 12345678 | Número de serie, ocho cifras
+- 00000000 | Número de serie, ocho cifras
 - 5 | Dígito de control, calculado a partir del número de serie
 - CH | País que emitió el número: Suiza
 :::
@@ -111,7 +111,7 @@ El dígito de control sirve para detectar erratas. Para comprobar un número:
 2. Divide la suma entre 11 y resta a 11 el resto de la división.
 3. Si sale 10, el dígito es 0; si sale 11, es 5.
 
-Para `RR123456785CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204; al dividir entre 11 queda un resto de 6, y 11 − 6 = 5. Si un número postal que copiaste a mano no pasa la prueba, busca una cifra mal escrita o dos cifras cambiadas de sitio.
+Para `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204; al dividir entre 11 queda un resto de 6, y 11 − 6 = 5. Si un número postal que copiaste a mano no pasa la prueba, busca una cifra mal escrita o dos cifras cambiadas de sitio.
 
 ### Número de seguimiento que empieza por U
 

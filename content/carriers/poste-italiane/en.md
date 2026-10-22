@@ -21,7 +21,7 @@ Codes come in several shapes. These are invented:
 | `2IMA1234567890` | `2IMA` and 10 digits. |
 | `5PA1234567890` | `5P` and 11 letters or digits. |
 | `123456A123456` | Digits with a letter inside: SDA-style codes. |
-| `RR123456785IT` | An international postal number. |
+| `RR000000005IT` | An international postal number. |
 
 Many shapes are shared. A `5P` code made only of digits can also be a [La Poste (Colissimo)](carrier:la-poste) number, and plain 12- or 13-digit codes fit many carriers, so check which carrier the shop's email names. For a parcel posted abroad, poste.it shows tracking only once Poste Italiane handles it in Italy.
 

@@ -2,7 +2,7 @@
 title: Où trouver son numéro de suivi, et comment faire sans
 description: E-mail d'expédition, commande, avis de passage, preuve de dépôt : où trouver ton numéro de suivi, et comment suivre un colis quand tu ne l'as pas.
 slug: ou-trouver-numero-de-suivi
-picture: Un e-mail d'expédition où le numéro RR123456785CH est surligné en jaune, une étiquette à code-barres à côté, et Pip qui sourit.
+picture: Un e-mail d'expédition où le numéro RR000000005CH est surligné en jaune, une étiquette à code-barres à côté, et Pip qui sourit.
 published: 2026-10-09
 updated: 2026-10-10
 ---
@@ -116,7 +116,7 @@ Ce sont deux numéros différents. DHL le précise : le numéro de commande est 
 - home | Avis de passage | Si tu étais absent, l'avis porte souvent un numéro qui marche aussi
 :::
 
-Pour les distinguer : un numéro accompagné du mot « commande » est celui de la boutique et ne marchera pas sur le site du transporteur, alors qu'un numéro de suivi vient avec le nom d'un transporteur ou un lien vers sa page de suivi. Quelques repères : chez La Poste, un numéro d'envoi compte 13 caractères ou 14 chiffres ; chez Mondial Relay, 8 chiffres le plus souvent, parfois 10 ou 12 ; chez [Colis Privé](carrier:colis-prive), 12 caractères. `1Z999AA10123456784` est un numéro UPS, et beaucoup d'envois postaux portent le format postal international à 13 caractères, comme `RR123456785CH`. Le guide des [formats de numéros de suivi](guide:tracking-number-formats) t'aide à savoir à quel transporteur appartient un numéro.
+Pour les distinguer : un numéro accompagné du mot « commande » est celui de la boutique et ne marchera pas sur le site du transporteur, alors qu'un numéro de suivi vient avec le nom d'un transporteur ou un lien vers sa page de suivi. Quelques repères : chez La Poste, un numéro d'envoi compte 13 caractères ou 14 chiffres ; chez Mondial Relay, 8 chiffres le plus souvent, parfois 10 ou 12 ; chez [Colis Privé](carrier:colis-prive), 12 caractères. `1Z999AA10123456784` est un numéro UPS, et beaucoup d'envois postaux portent le format postal international à 13 caractères, comme `RR000000005CH`. Le guide des [formats de numéros de suivi](guide:tracking-number-formats) t'aide à savoir à quel transporteur appartient un numéro.
 
 ## Mon numéro de suivi ne donne rien : est-ce le bon numéro ?
 

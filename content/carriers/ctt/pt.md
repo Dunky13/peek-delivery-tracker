@@ -14,8 +14,8 @@ A maioria dos códigos dos CTT tem duas letras (o produto), nove algarismos e du
 
 | Forma (inventada) | O que é |
 | --- | --- |
-| `RR123456785PT` | Um código de envio dos CTT. O último dos nove algarismos é de controlo. |
-| `RR123456785ES` | A mesma forma de outro país: foi o correio desse país que o criou (aqui, os Correos espanhóis). |
+| `RR000000005PT` | Um código de envio dos CTT. O último dos nove algarismos é de controlo. |
+| `RR000000005ES` | A mesma forma de outro país: foi o correio desse país que o criou (aqui, os Correos espanhóis). |
 | `0012340012345678901234` | 22 algarismos: segundo o Seguir objeto, um envio que começou em Espanha. |
 | `0012340012345678901234001` | 25 algarismos. |
 

@@ -55,7 +55,7 @@ Look in these places:
 
 The El Corte Inglés order number is for talking to El Corte Inglés and collecting in store, not for tracking the parcel on a carrier's website. For a pickup at a store or at Supercor, that number or the QR code is all you need: you wait for the email saying the order is ready. For other shops: [find your tracking number](guide:find-tracking-number).
 
-If the order goes to a [Correos](carrier:correos-spain) post office, Correos numbers look like this (the digits are made up): `PR`, 15 digits and `C`, as in `PR123456789012345C`, or 2 letters, 9 digits and `ES`, as in `RR123456785ES`. Celeritas parcels are tracked at celeritastransporte.com.
+If the order goes to a [Correos](carrier:correos-spain) post office, Correos numbers look like this (the digits are made up): `PR`, 15 digits and `C`, as in `PR123456789012345C`, or 2 letters, 9 digits and `ES`, as in `RR000000005ES`. Celeritas parcels are tracked at celeritastransporte.com.
 
 Not sure whose number it is? Type it here:
 

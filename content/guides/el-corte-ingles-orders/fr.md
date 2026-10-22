@@ -55,7 +55,7 @@ Regarde à ces endroits :
 
 Le numéro de commande El Corte Inglés sert à parler à El Corte Inglés et à retirer en magasin, pas à suivre le colis sur le site d'un transporteur. Pour un retrait en magasin ou chez Supercor, ce numéro ou le QR code suffit : tu attends l'e-mail qui dit que la commande est prête. Pour d'autres boutiques : [trouver son numéro de suivi](guide:find-tracking-number).
 
-Si la commande va dans un bureau de Correos, les numéros de Correos ont cette forme (les chiffres sont inventés) : `PR`, 15 chiffres et `C`, comme `PR123456789012345C`, ou 2 lettres, 9 chiffres et `ES`, comme `RR123456785ES`. Les colis Celeritas se suivent sur celeritastransporte.com.
+Si la commande va dans un bureau de Correos, les numéros de Correos ont cette forme (les chiffres sont inventés) : `PR`, 15 chiffres et `C`, comme `PR123456789012345C`, ou 2 lettres, 9 chiffres et `ES`, comme `RR000000005ES`. Les colis Celeritas se suivent sur celeritastransporte.com.
 
 Tu ne sais pas à qui est un numéro ? Tape-le ici :
 

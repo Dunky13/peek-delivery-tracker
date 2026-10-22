@@ -44,7 +44,7 @@ En estos sitios:
 
 El número de pedido de El Corte Inglés sirve para hablar con El Corte Inglés y para recoger en tienda, no para seguir el paquete en la web de un transportista. Para una recogida en un centro comercial o en Supercor, te basta ese número o el código QR: esperas el correo que dice que el pedido está listo. En otras tiendas: [encontrar el número de seguimiento](guide:find-tracking-number).
 
-Si el pedido va a una oficina de [Correos](carrier:correos-spain), los números de Correos tienen esta forma (las cifras son inventadas): `PR`, 15 cifras y `C`, como `PR123456789012345C`, o 2 letras, 9 cifras y `ES`, como `RR123456785ES`. Los envíos de Celeritas se siguen en celeritastransporte.com.
+Si el pedido va a una oficina de [Correos](carrier:correos-spain), los números de Correos tienen esta forma (las cifras son inventadas): `PR`, 15 cifras y `C`, como `PR123456789012345C`, o 2 letras, 9 cifras y `ES`, como `RR000000005ES`. Los envíos de Celeritas se siguen en celeritastransporte.com.
 
 ¿No sabes de quién es un número? Escríbelo aquí:
 

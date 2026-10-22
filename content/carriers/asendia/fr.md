@@ -19,8 +19,8 @@ Les formes connues comme celles d'Asendia, avec des caractères inventés :
 | `ASE1234567890` | ASE, puis 8 à 37 lettres et chiffres : Asendia. |
 | `AS123456789US` | AS, 9 chiffres, US : Asendia. |
 | `AHOY12345678` | AHOY, puis 8 lettres et chiffres : Asendia. |
-| `LA123456785FR` | Un numéro postal international : celui de [La Poste / Colissimo](carrier:la-poste). |
-| `RR123456785CH` | Le même pour la Suisse : [la Poste suisse](carrier:swiss-post). |
+| `LA000000005FR` | Un numéro postal international : celui de [La Poste / Colissimo](carrier:la-poste). |
+| `RR000000005CH` | Le même pour la Suisse : [la Poste suisse](carrier:swiss-post). |
 | `EEUS000000000US0` | Une référence eBay International Shipping : aucun transporteur d'après le numéro seul. |
 
 Beaucoup de colis Asendia voyagent sous le numéro international de la poste qui les livre : deux lettres, neuf chiffres, deux lettres, et les deux dernières désignent la poste (`FR` La Poste, `CH` la Poste suisse, `GB` Royal Mail). Attention : `AS…US` est un numéro Asendia, mais `AS…CH` est un numéro de la Poste suisse. Si ton numéro ne donne rien, Asendia te demande de vérifier que tu es bien sur son propre site de suivi. Plus de repères dans [à quel transporteur appartient un numéro](guide:tracking-number-formats).

@@ -2,7 +2,7 @@
 title: Gdzie znaleźć numer przesyłki i jak śledzić bez niego
 description: Gdzie znaleźć numer przesyłki: e-mail, SMS, zamówienie w sklepie, awizo, potwierdzenie nadania. A bez numeru: aplikacja przewoźnika, numer telefonu, sprzedawca.
 slug: gdzie-znalezc-numer-przesylki
-picture: E-mail o wysyłce z numerem przesyłki RR123456785CH zaznaczonym na żółto, obok etykieta z kodem kreskowym i uśmiechnięty Pip.
+picture: E-mail o wysyłce z numerem przesyłki RR000000005CH zaznaczonym na żółto, obok etykieta z kodem kreskowym i uśmiechnięty Pip.
 published: 2026-10-09
 updated: 2026-10-11
 ---
@@ -115,7 +115,7 @@ To dwa różne numery. DHL pisze wprost, że numer przesyłki to nie numer zamó
 - home | Nieudane doręczenie | Awizo często ma numer, który też działa
 :::
 
-Jak je odróżnić? Numer opisany jako „zamówienie” należy do sklepu i u przewoźnika nie zadziała. Numer przesyłki zwykle stoi obok nazwy przewoźnika albo linku do jego śledzenia. Numer InPost ma 24 cyfry, `1Z999AA10123456784` to numer UPS, a wiele przesyłek pocztowych ma międzynarodowy format 13 znaków, jak `RR123456785CH`. Do którego przewoźnika należy numer, podpowie poradnik [jaki kurier po numerze przesyłki](guide:tracking-number-formats).
+Jak je odróżnić? Numer opisany jako „zamówienie” należy do sklepu i u przewoźnika nie zadziała. Numer przesyłki zwykle stoi obok nazwy przewoźnika albo linku do jego śledzenia. Numer InPost ma 24 cyfry, `1Z999AA10123456784` to numer UPS, a wiele przesyłek pocztowych ma międzynarodowy format 13 znaków, jak `RR000000005CH`. Do którego przewoźnika należy numer, podpowie poradnik [jaki kurier po numerze przesyłki](guide:tracking-number-formats).
 
 ## Dlaczego numer przesyłki nic nie pokazuje?
 

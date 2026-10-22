@@ -47,9 +47,9 @@ Dal 1° luglio 2026, per un nuovo onere di gestione nell'UE, Etsy non vende temp
 
 È il codice del corriere, non uno di Etsy. Le poste usano il formato postale internazionale: 13 caratteri che restano uguali da un Paese all'altro.
 
-:::anatomy RR 12345678 5 US
+:::anatomy RR 00000000 5 US
 - RR | Due lettere per il tipo di invio e il servizio
-- 12345678 | Numero di serie, otto cifre
+- 00000000 | Numero di serie, otto cifre
 - 5 | Cifra di controllo, calcolata dal numero di serie
 - US | Paese della posta che l'ha assegnato: gli Stati Uniti
 :::

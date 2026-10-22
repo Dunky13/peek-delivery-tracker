@@ -48,9 +48,9 @@ Since 1 July 2026, because of a new EU handling fee, Etsy has temporarily stoppe
 
 It's the carrier's number, not an Etsy one. Posts use the international postal format: 13 characters that stay the same across borders.
 
-:::anatomy RR 12345678 5 US
+:::anatomy RR 00000000 5 US
 - RR | Two letters for the type of item and service
-- 12345678 | Serial number, eight digits
+- 00000000 | Serial number, eight digits
 - 5 | Check digit, worked out from the serial
 - US | Country of the post that issued it: the US
 :::

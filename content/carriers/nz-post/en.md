@@ -20,7 +20,7 @@ Type it without spaces or brackets. Invented examples of the shapes:
 
 | Shape (example) | What it is |
 | --- | --- |
-| `RR123456785NZ` | Postal number: 2 letters, 9 digits, `NZ` (13 characters). |
+| `RR000000005NZ` | Postal number: 2 letters, 9 digits, `NZ` (13 characters). |
 | `12345678901234567890` | Courier parcel number, 20 digits. |
 | `1234567890123456ABC123NZ` | Courier label: 16 digits, 3 letters, 3 digits, 2 letters (24 characters). |
 
@@ -96,7 +96,7 @@ It checks every 10 minutes, every 2 minutes once the parcel is with the courier,
 
 ### How long is an NZ Post tracking number?
 
-13 characters for a postal number (`RR123456785NZ`) and 20 digits for most courier parcels. Some courier labels carry 24 characters ending in `NZ`.
+13 characters for a postal number (`RR000000005NZ`) and 20 digits for most courier parcels. Some courier labels carry 24 characters ending in `NZ`.
 
 ### Does NZ Post deliver on Saturdays?
 

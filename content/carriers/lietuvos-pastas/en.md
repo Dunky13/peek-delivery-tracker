@@ -14,7 +14,7 @@ A Lithuania Post number has 13 characters in the [international postal format](g
 
 | Shape (invented) | What it is |
 | --- | --- |
-| `RR123456785LT` | A postal item posted in Lithuania. |
+| `RR000000005LT` | A postal item posted in Lithuania. |
 | `CC123456784LT` | An LP Express parcel, such as one going to a parcel locker. |
 | `HC000000000LT` | Another LP Express parcel shape. |
 

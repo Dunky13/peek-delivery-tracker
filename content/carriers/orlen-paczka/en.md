@@ -26,7 +26,7 @@ Where it turns up:
 
 The pickup code (kod odbioru, 5 or 6 digits) opens the locker; it isn't a tracking number. You can't track by phone number. No message at all? See [how to find your tracking number](guide:find-tracking-number).
 
-Allegro Delivery parcels carry a number starting `AD`: track those in the Allegro app or on allegro.pl. An international number ending in PL, such as `RR123456785PL`, belongs to [Poczta Polska](carrier:poczta-polska).
+Allegro Delivery parcels carry a number starting `AD`: track those in the Allegro app or on allegro.pl. An international number ending in PL, such as `RR000000005PL`, belongs to [Poczta Polska](carrier:poczta-polska).
 
 ## What ORLEN Paczka's statuses mean
 

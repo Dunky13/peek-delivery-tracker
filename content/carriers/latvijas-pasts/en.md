@@ -14,10 +14,10 @@ An item posted with Latvijas Pasts has a 13-character [international postal numb
 
 | First letters (invented examples) | What it is |
 | --- | --- |
-| `RR123456785LV` | Registered item: you sign when you receive it. |
-| `LA123456785LV` | Traceable item: tracked at each stage, put in your mailbox without a signature. |
+| `RR000000005LV` | Registered item: you sign when you receive it. |
+| `LA000000005LV` | Traceable item: tracked at each stage, put in your mailbox without a signature. |
 | `CA000000005LV` | Parcel: you get an invitation to collect it at the post office. |
-| `EE123456785LV` | Express Mail Service (EMS). |
+| `EE000000005LV` | Express Mail Service (EMS). |
 
 Simple or Economy items are not registered at any stage, so small "Economy" parcels can't be tracked at all. If you have no number, the item may have been sent this way; see [how to find a tracking number](guide:find-tracking-number).
 

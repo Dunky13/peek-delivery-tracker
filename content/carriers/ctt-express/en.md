@@ -17,7 +17,7 @@ CTT Express's tracker asks for the *código de envío* (shipment code), a long s
 | `0012340012345678901234` | 22 digits: `00`, four digits, `00`, then 14 digits. CTT Express. |
 | `0012340012345678901234001` | The same 22 digits plus a parcel counter (`001` for the first parcel): 25 digits, CTT Express. |
 | `0000100012345678901234` | 22 digits starting `00001000`: CTT Express, but also [TIPSA](carrier:tipsa), Austrian Post and others. |
-| `RR123456785PT` | Two letters, nine digits, `PT`: a [CTT](carrier:ctt) postal number, tracked on ctt.pt. |
+| `RR000000005PT` | Two letters, nine digits, `PT`: a [CTT](carrier:ctt) postal number, tracked on ctt.pt. |
 
 In Portugal, CTT Expresso, the group's Portuguese express service, uses CTT's letter codes (`DA`, `EA` and so on), tracked with CTT, not on cttexpress.com.
 

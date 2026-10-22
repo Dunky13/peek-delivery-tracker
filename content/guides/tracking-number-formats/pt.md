@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-As letras e o comprimento de um número de seguimento dizem muitas vezes que transportadora tem a tua encomenda. `1Z` seguido de 16 letras e algarismos é UPS, e 13 caracteres como `RR123456785CH` (duas letras, nove algarismos, duas letras) costumam ser de um operador postal, com o país que emitiu o número nas duas últimas letras: `PT` é Portugal. Os números só com algarismos são o caso difícil: 10, 12 ou 14 algarismos podem ser de várias transportadoras, e aí quem decide é o e-mail de envio, ou um serviço de seguimento que as experimente uma a uma.
+As letras e o comprimento de um número de seguimento dizem muitas vezes que transportadora tem a tua encomenda. `1Z` seguido de 16 letras e algarismos é UPS, e 13 caracteres como `RR000000005CH` (duas letras, nove algarismos, duas letras) costumam ser de um operador postal, com o país que emitiu o número nas duas últimas letras: `PT` é Portugal. Os números só com algarismos são o caso difícil: 10, 12 ou 14 algarismos podem ser de várias transportadoras, e aí quem decide é o e-mail de envio, ou um serviço de seguimento que as experimente uma a uma.
 
 :::checker
 :::
@@ -31,7 +31,7 @@ Eis o que as transportadoras, e a norma postal, dizem sobre os números que mais
 
 | Transportadora | Como é o número |
 | --- | --- |
-| CTT | os CTT chamam-lhe «código de envio»: normalmente 2 letras, 9 algarismos e 2 letras, como `RR123456785PT`; alguns envios têm um número só com algarismos, 22 ou 25, também a forma da [CTT Express](carrier:ctt-express) |
+| CTT | os CTT chamam-lhe «código de envio»: normalmente 2 letras, 9 algarismos e 2 letras, como `RR000000005PT`; alguns envios têm um número só com algarismos, 22 ou 25, também a forma da [CTT Express](carrier:ctt-express) |
 | CTT Express | «código de envio» de 22 algarismos: `00`, quatro algarismos, `00` e mais 14; com um contador de volume no fim, 25 algarismos. Não confundas com o CTT Expresso, o serviço expresso dos CTT em Portugal, que usa códigos dos CTT com letras (`DA`, `EA`, `EN` e outras) |
 | DPD | «número de encomenda» de 14 algarismos; o Track & Trace da DPD também aceita o teu número de referência |
 | GLS | «número de encomenda» ou «ID de Rastreamento», que vem em cada cartão de notificação; a GLS não indica o comprimento |
@@ -85,9 +85,9 @@ Não confundas com um código de envio dos CTT que *termina* em `PT`: esse tem 1
 
 Os operadores postais partilham um formato de 13 caracteres, definido pela União Postal Universal (UPU) na norma S10. Aqui fica ele, peça a peça:
 
-:::anatomy RR 12345678 5 CH
+:::anatomy RR 00000000 5 CH
 - RR | Tipo de envio: R para correio registado
-- 12345678 | Número de série, oito algarismos
+- 00000000 | Número de série, oito algarismos
 - 5 | Dígito de controlo, calculado a partir do número de série
 - CH | País que emitiu o número: a Suíça
 :::
@@ -109,7 +109,7 @@ O dígito de controlo serve para apanhar erros de escrita. Para testar um númer
 2. Divide por 11 e subtrai o resto a 11.
 3. Se der 10, o dígito é 0; se der 11, é 5.
 
-Para `RR123456785CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, que dividido por 11 deixa resto 6, e 11 − 6 = 5. Se um número neste formato que copiaste à mão falhar o teste, procura um algarismo mal escrito ou dois trocados.
+Para `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, que dividido por 11 deixa resto 6, e 11 − 6 = 5. Se um número neste formato que copiaste à mão falhar o teste, procura um algarismo mal escrito ou dois trocados.
 
 ### Número que começa por UL ou UU: de quem é?
 

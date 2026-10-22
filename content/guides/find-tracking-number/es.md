@@ -2,7 +2,7 @@
 title: Cómo localizar un paquete sin número de seguimiento
 description: Dónde encontrar el número de seguimiento de un pedido y cómo localizar el paquete si no lo tienes: la tienda, el correo, los SMS y el transportista.
 slug: localizar-paquete-sin-numero-de-seguimiento
-picture: Un correo de envío con el número RR123456785CH resaltado en amarillo, una etiqueta con código de barras al lado y Pip sonriendo.
+picture: Un correo de envío con el número RR000000005CH resaltado en amarillo, una etiqueta con código de barras al lado y Pip sonriendo.
 published: 2026-10-09
 updated: 2026-10-10
 ---
@@ -120,7 +120,7 @@ No. DHL lo deja claro: el número de pedido lo asigna la tienda, y no es un núm
 - home | Entrega fallida | El aviso que te dejan suele traer un número que también sirve
 :::
 
-Para distinguirlos: el número que aparece como «Pedido» es el de la tienda (Amazon lo muestra en **Mis pedidos**, eBay lo manda en el correo «Pedido confirmado») y no sirve en la web del transportista; el de seguimiento viene con el nombre de un transportista o con un enlace a su página. `1Z999AA10123456784` es un número de UPS; muchos envíos postales llevan el formato internacional de 13 caracteres, como `RR123456785CH`. Para saber de qué transportista es un número, mira [los formatos de los números de seguimiento](guide:tracking-number-formats).
+Para distinguirlos: el número que aparece como «Pedido» es el de la tienda (Amazon lo muestra en **Mis pedidos**, eBay lo manda en el correo «Pedido confirmado») y no sirve en la web del transportista; el de seguimiento viene con el nombre de un transportista o con un enlace a su página. `1Z999AA10123456784` es un número de UPS; muchos envíos postales llevan el formato internacional de 13 caracteres, como `RR000000005CH`. Para saber de qué transportista es un número, mira [los formatos de los números de seguimiento](guide:tracking-number-formats).
 
 ## ¿Por qué no sale nada con mi número de seguimiento?
 

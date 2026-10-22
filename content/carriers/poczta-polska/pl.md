@@ -17,7 +17,7 @@ Wpisz go bez spacji i nawiasów. Śledzić można wszystkie przesyłki rejestrow
 | `PX1234567890` | PX i 10 cyfr. |
 | `0015900773123456789` | 19 cyfr. |
 | `00159007731234567899` | 20 cyfr, z 5900773 po trzech pierwszych. |
-| `RR123456785PL` | Międzynarodowy numer pocztowy: dwie litery, dziewięć cyfr i PL. |
+| `RR000000005PL` | Międzynarodowy numer pocztowy: dwie litery, dziewięć cyfr i PL. |
 
 Gdzie go szukać:
 

@@ -14,7 +14,7 @@ Bring says an item or parcel number generally has 13 characters (two letters, ni
 
 | Number (invented) | What it is |
 | --- | --- |
-| `RR123456785NO` | Two letters, nine digits, `NO`: an item number. |
+| `RR000000005NO` | Two letters, nine digits, `NO`: an item number. |
 | `370123456789012347` | 18 digits starting with `3`. |
 | `00370000000000000004` | `00` and an 18-digit number starting `370`: 20 digits in all. |
 | `70000000000000003` | 17 digits starting with `7`. |

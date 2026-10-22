@@ -85,7 +85,7 @@ Ein Tracker arbeitet meist in fünf Schritten:
 
 :::steps
 - Du fügst etwas ein | Eine Sendungsnummer, den Link des Paketdienstes oder die Versandmail. Ein Link ist am sichersten: Er nennt den Paketdienst.
-- Er prüft den Aufbau | Buchstaben, Länge und Prüfziffer grenzen die Auswahl ein. `1Z999AA10123456784` beginnt mit dem `1Z` von UPS, `RR123456785CH` hat das 13-stellige Format der Postgesellschaften.
+- Er prüft den Aufbau | Buchstaben, Länge und Prüfziffer grenzen die Auswahl ein. `1Z999AA10123456784` beginnt mit dem `1Z` von UPS, `RR000000005CH` hat das 13-stellige Format der Postgesellschaften.
 - Er wägt ab | Manche Formate passen zu mehreren Paketdiensten: Eine reine 14-stellige Ziffernfolge kann unter anderem von DPD oder Hermes stammen. Er fragt mehrere an oder lässt dich wählen.
 - Er holt die Scans | Vom Paketdienst oder von einem anderen Tracker, zusammengeführt in einem Verlauf.
 - Er schaut wieder nach | In festen Abständen. Gibt es etwas Neues, meldet er sich.

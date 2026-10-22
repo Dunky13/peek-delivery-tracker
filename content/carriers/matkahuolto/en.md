@@ -16,12 +16,12 @@ Matkahuolto doesn't publish its number formats. These are the shapes Peek's cata
 
 | Number | What it is |
 | --- | --- |
-| `MH123456785FI` | `MH`, 9 digits and `FI`. |
+| `MH000000005FI` | `MH`, 9 digits and `FI`. |
 | `MA1234567890123456789` | `MA` followed by 19 digits. |
 | `373000000000000005` | An 18-digit barcode starting `373`. |
 | `00373000000000000005` | The same kind of barcode with `00` in front. |
 
-Numbers starting `JJFI`, and [postal numbers](guide:tracking-number-formats) ending `FI` with letters other than `MH` in front (`RR123456785FI`), belong to [Posti](carrier:posti), the Finnish post. If Matkahuolto can't find it, check which carrier the shop's email names.
+Numbers starting `JJFI`, and [postal numbers](guide:tracking-number-formats) ending `FI` with letters other than `MH` in front (`RR000000005FI`), belong to [Posti](carrier:posti), the Finnish post. If Matkahuolto can't find it, check which carrier the shop's email names.
 
 Moving a parcel to another pickup point creates a new consignment ID. A GLS parcel handed to Matkahuolto in Finland shows its Matkahuolto number on GLS's tracking as "Finland parcel number", starting with 00.
 

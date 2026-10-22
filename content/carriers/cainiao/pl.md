@@ -17,8 +17,8 @@ Cainiao nie publikuje jednego formatu numeru. Jego strona przyjmuje tylko litery
 | `LP12345678901234` | LP i 14 cyfr: prawdopodobnie Cainiao, ale nie na pewno. |
 | `CNG12345678900000` | CNG i 14 cyfr: Cainiao. |
 | `DOFR1234567890123HD` | DOFR albo CNFR, 13 cyfr i HD: Cainiao. |
-| `RR123456785CN` | Numer pocztowy, tu [China Post](carrier:china-post). Strona Cainiao śledzi też taki kształt. |
-| `LP123456785HK` | Też numer pocztowy (Hongkong Post): mimo LP to nie numer LP Cainiao. |
+| `RR000000005CN` | Numer pocztowy, tu [China Post](carrier:china-post). Strona Cainiao śledzi też taki kształt. |
+| `LP000000005HK` | Też numer pocztowy (Hongkong Post): mimo LP to nie numer LP Cainiao. |
 | `YT1234567890123456` | Nie Cainiao, tylko [YunExpress](carrier:yunexpress). |
 
 Strona Cainiao odpowiada też na inne kształty, na przykład AP i 14 cyfr. Gdzie numer pojawia się poza AliExpress, żadna strona Cainiao nie mówi, i nigdzie nie opisuje SMS-ów do odbiorców ani nazwy ich nadawcy. Nie masz numeru? Poproś o niego sklep albo sprawdź, [gdzie jeszcze go szukać](guide:find-tracking-number). Na błędny numer polska strona odpowiada `Nieprawidłowy numer przesyłki`, a gdy nic nie pokazuje, Cainiao prosi, by sprawdzić, czy to na pewno numer Cainiao lub AliExpress.

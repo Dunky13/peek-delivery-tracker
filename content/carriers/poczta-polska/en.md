@@ -17,7 +17,7 @@ Type it without spaces or brackets. Tracking covers every item posted with proof
 | `PX1234567890` | PX and 10 digits. |
 | `0015900773123456789` | 19 digits. |
 | `00159007731234567899` | 20 digits, with 5900773 after the first three. |
-| `RR123456785PL` | The international postal format: two letters, nine digits, PL. |
+| `RR000000005PL` | The international postal format: two letters, nine digits, PL. |
 
 Where it turns up:
 

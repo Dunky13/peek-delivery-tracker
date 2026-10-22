@@ -21,7 +21,7 @@ I codici hanno forme diverse. Questi sono inventati:
 | `2IMA1234567890` | `2IMA` e 10 cifre. |
 | `5PA1234567890` | `5P` e 11 lettere o cifre. |
 | `123456A123456` | Cifre con una lettera in mezzo: codici in stile SDA. |
-| `RR123456785IT` | Un numero postale internazionale. |
+| `RR000000005IT` | Un numero postale internazionale. |
 
 Molte forme non sono solo di Poste. Un codice `5P` fatto di sole cifre può essere anche un numero di La Poste (Colissimo), e i codici di 12 o 13 cifre li usano tanti corrieri: controlla quale corriere nomina l'e-mail del negozio. Per un pacco spedito dall'estero, poste.it mostra il tracciamento solo da quando Poste Italiane lo prende in carico in Italia.
 

@@ -15,7 +15,7 @@ Canada Post's numbers come in two main shapes:
 | Shape (example) | Where you see it |
 | --- | --- |
 | `0000 0000 0000 0000` | 16 digits, Canada Post's own example: labels bought online, printed on the receipt or on the parcel. |
-| `RR123456785CA` | 13 characters ending in `CA`: counter labels, prepaid envelopes, Registered Mail, Xpresspost USA and International, Priority Worldwide. |
+| `RR000000005CA` | 13 characters ending in `CA`: counter labels, prepaid envelopes, Registered Mail, Xpresspost USA and International, Priority Worldwide. |
 
 From a shop, it's in the shipping confirmation email; if you posted it, on your receipt. Only the sender can give you the number: Canada Post keeps no records by name or address.
 

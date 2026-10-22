@@ -16,8 +16,8 @@ Omniva calls it the "shipment tracking code" or "shipment code (tracking number)
 | --- | --- |
 | `JJEE12345678901234567` | An Omniva parcel: `JJEE` and 17 digits, 21 characters in all. |
 | `JJEEABC12345678901` | Another Omniva parcel code: `JJEE`, three letters, 11 digits. |
-| `CE123456785EE` | Two letters, nine digits, `EE`: an item handed to Omniva, in the international postal format. Parcels delivered to parcel machines in Latvia and Lithuania carry codes ending `EE` too. |
-| `RR123456785CN` | A parcel from abroad keeps the sender's number; this one ends `CN`, posted in China. |
+| `CE000000005EE` | Two letters, nine digits, `EE`: an item handed to Omniva, in the international postal format. Parcels delivered to parcel machines in Latvia and Lithuania carry codes ending `EE` too. |
+| `RR000000005CN` | A parcel from abroad keeps the sender's number; this one ends `CN`, posted in China. |
 
 The six-digit door code in the delivery SMS opens the parcel machine and is not a tracking number; neither is the six-digit return code.
 

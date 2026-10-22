@@ -47,9 +47,9 @@ Od 1 lipca 2026 r., z powodu nowej opłaty manipulacyjnej w UE, Etsy tymczasowo 
 
 To numer przewoźnika, nie Etsy. Poczty używają międzynarodowego formatu pocztowego: 13 znaków, które nie zmieniają się na granicy.
 
-:::anatomy RR 12345678 5 US
+:::anatomy RR 00000000 5 US
 - RR | Dwie litery: rodzaj przesyłki i usługa
-- 12345678 | Numer seryjny, osiem cyfr
+- 00000000 | Numer seryjny, osiem cyfr
 - 5 | Cyfra kontrolna, wyliczona z numeru seryjnego
 - US | Kraj poczty, która go nadała: USA
 :::

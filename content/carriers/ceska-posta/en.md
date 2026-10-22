@@ -16,7 +16,7 @@ Czech Post describes its numbers as a prefix of usually two letters for the type
 | --- | --- |
 | `DR1234567890E` | A domestic parcel: two letters, 10 digits, a letter. Czech Post's own example. |
 | `RR000000005CZ` | An international number posted in Czechia: two letters, 9 digits, `CZ`. |
-| `RR123456785CN` | An item coming from abroad: it keeps the foreign post's number, ending in the country it came from. |
+| `RR000000005CN` | An item coming from abroad: it keeps the foreign post's number, ending in the country it came from. |
 
 If the shop passed on your contact details, Czech Post notifies you by email or SMS, and the email links to Track & Trace. The six-character pickup code in that message isn't a tracking number. Can't find any of these? See [where else to find a tracking number](guide:find-tracking-number).
 

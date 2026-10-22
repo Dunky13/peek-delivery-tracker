@@ -25,7 +25,7 @@ Gdzie go szukać:
 
 Kod odbioru (5 albo 6 cyfr) otwiera skrytkę, ale nie służy do śledzenia. Po numerze telefonu nie wyśledzisz paczki. Nie masz żadnej wiadomości? Zajrzyj do poradnika [gdzie znaleźć numer przesyłki](guide:find-tracking-number).
 
-Paczki z Allegro Delivery mają numer zaczynający się od `AD`: ORLEN Paczka pisze, że śledzisz je tylko w aplikacji Allegro albo na allegro.pl. Numer międzynarodowy zakończony na PL, na przykład `RR123456785PL`, należy do [Poczty Polskiej](carrier:poczta-polska).
+Paczki z Allegro Delivery mają numer zaczynający się od `AD`: ORLEN Paczka pisze, że śledzisz je tylko w aplikacji Allegro albo na allegro.pl. Numer międzynarodowy zakończony na PL, na przykład `RR000000005PL`, należy do [Poczty Polskiej](carrier:poczta-polska).
 
 ## Statusy ORLEN Paczka: co znaczą
 

@@ -17,7 +17,7 @@ A 4PX não publica nenhum número de exemplo. O site aceita de 5 a 50 letras e a
 | `4PX1234567890123CN` | 4PX, 13 algarismos e CN: o número da própria 4PX. |
 | `LP1234567890123CN` | LP, 13 algarismos e CN: muito provavelmente 4PX. |
 | `LP12345678901234` | LP e 14 algarismos, sem CN: costuma ser da [Cainiao](carrier:cainiao), a logística do AliExpress, e não da 4PX. |
-| `RR123456785CN` | Um [número postal](guide:tracking-number-formats) com o código do país no fim, aqui da China Post. |
+| `RR000000005CN` | Um [número postal](guide:tracking-number-formats) com o código do país no fim, aqui da China Post. |
 | `YT1234567890123456` | Não é 4PX, é da [YunExpress](carrier:yunexpress). |
 
 O Peek aceita também minúsculas e espaços. No resultado, a 4PX pode mostrar dois números: o `Rastreamento No. 4px`, que é o dela, e o `Numero de rastreamento`, que é o da transportadora que entrega no teu país (assim mesmo, sem acento, no site em português). A loja pode dar-te esse número local em vez do da 4PX; o site da 4PX responde a alguns deles também. As encomendas com vários volumes aparecem divididas em subencomendas.

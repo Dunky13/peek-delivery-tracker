@@ -17,7 +17,7 @@ SPS's parcel number is 14 digits starting `703`. On the label it's printed in gr
 | `70300000000000` | SPS: 14 digits starting 703. |
 | `703-010-00000000 00` | The same parcel as printed on the label, with 2 extra digits. |
 | `00000000000000` | 14 digits not starting 703: DPD, [SEUR](carrier:seur), [BRT](carrier:brt) and others, not SPS. |
-| `RR123456785SK` | A postal number ending SK: [Slovenská pošta](carrier:slovenska-posta), not SPS. |
+| `RR000000005SK` | A postal number ending SK: [Slovenská pošta](carrier:slovenska-posta), not SPS. |
 
 If sps-sro.sk answers "Please check that you entered the shipment number correctly (no spaces)", type it again without spaces or dashes. SPS says the correct format is in your confirmation email or SMS. Its tracking form can also ask for the destination postcode or the customer number to show more detail. No email at all? Ask the shop, and see [how to find your tracking number](guide:find-tracking-number).
 

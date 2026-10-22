@@ -14,13 +14,13 @@ Un número de China Post tiene dos letras, nueve cifras y `CN`: es el formato po
 
 | Número | Qué es |
 | --- | --- |
-| `LT123456785CN` | L: un paquete pequeño con seguimiento, enviado como correo. |
-| `RR123456785CN` | R: un envío certificado. |
-| `CP123456785CN` | C: un paquete postal. |
-| `EA123456785CN` | E: EMS, el servicio urgente de China Post. |
-| `UA123456785CN` | U: un paquete pequeño con mercancía que, según la UPU, no tiene seguimiento para el cliente. No cuentes con lecturas en España. |
+| `LT000000005CN` | L: un paquete pequeño con seguimiento, enviado como correo. |
+| `RR000000005CN` | R: un envío certificado. |
+| `CP000000005CN` | C: un paquete postal. |
+| `EA000000005CN` | E: EMS, el servicio urgente de China Post. |
+| `UA000000005CN` | U: un paquete pequeño con mercancía que, según la UPU, no tiene seguimiento para el cliente. No cuentes con lecturas en España. |
 | `ZS12345678901` | ZS, ZC o ZA y 11 cifras: el seguimiento de China Post también lo contesta. La Poste francesa usa formas parecidas. |
-| `RR123456785ES` | Acaba en ES: un número de Correos, no de China Post. |
+| `RR000000005ES` | Acaba en ES: un número de Correos, no de China Post. |
 | `LP12345678901234` | No es de China Post: es una referencia logística de [Cainiao](carrier:cainiao), la logística de AliExpress. |
 | `YT1234567890123456` | No es de China Post: es de [YunExpress](carrier:yunexpress). |
 

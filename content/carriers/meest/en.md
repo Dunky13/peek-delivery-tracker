@@ -17,7 +17,7 @@ Meest publishes no exact format. Its US page says only that a number "usually st
 | Number | What it is |
 | --- | --- |
 | `AB1234567CD12345G` | Two letters, 7 digits, two letters, 5 digits and G: Meest's consolidation number, seen on parcels from China to Europe. |
-| `RR123456785UA` | An international postal number. Meest's tracker answers for some, but the post that issued it tracks it too. |
+| `RR000000005UA` | An international postal number. Meest's tracker answers for some, but the post that issued it tracks it too. |
 | `20400000000000` | 14 digits: a Ukrainian waybill from [Nova Poshta](carrier:nova-poshta), not Meest. |
 
 One trap: the tracking box on us.meest.com, ca.meest.com and uk.meest.com accepts 6 to 16 characters without spaces, so a 17-character consolidation number ending in G is refused there. The same number opens on t.meest-group.com.

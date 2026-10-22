@@ -15,8 +15,8 @@ Posti calls the number the "item ID" (sometimes "shipment ID"). For Posti's own 
 | Number (invented) | What it is |
 | --- | --- |
 | `JJFI12345678901234567` | A Posti parcel: `JJFI` and 17 digits, 21 characters in all. |
-| `RR123456785FI` | A registered or tracked item posted in Finland, in the international format: two letters, nine digits, `FI`. |
-| `RR123456785CN` | A parcel from abroad keeps the sender's number. This one ends `CN`, so it was posted with China Post; Posti tracks it under the same number. |
+| `RR000000005FI` | A registered or tracked item posted in Finland, in the international format: two letters, nine digits, `FI`. |
+| `RR000000005CN` | A parcel from abroad keeps the sender's number. This one ends `CN`, so it was posted with China Post; Posti tracks it under the same number. |
 | `00064000000000000002` | A 20-digit SSCC barcode; `64` after the first three digits is Finland's prefix. |
 
 If the sender gave Posti your phone number, the parcel appears in OmaPosti by itself; otherwise add it by hand. Posti's tracking only answers an exact code, never a name or address.

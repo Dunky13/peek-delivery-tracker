@@ -10,7 +10,7 @@ Delivengo is [La Poste](carrier:la-poste)'s service for French businesses sendin
 
 ## Your Delivengo tracking number
 
-Neither La Poste nor Delivengo publishes a format of its own for Delivengo. The numbers are international postal numbers: two letters, nine digits and `FR`, such as `LD123456785FR` (invented). La Poste's tracking wants them without spaces and in capitals.
+Neither La Poste nor Delivengo publishes a format of its own for Delivengo. The numbers are international postal numbers: two letters, nine digits and `FR`, such as `LD000000005FR` (invented). La Poste's tracking wants them without spaces and in capitals.
 
 **Where it comes from.** The shop gives it to you, in its shipping email or on your order page. La Poste emails you itself only if the shop ticked that option in its Delivengo account and entered your email address; otherwise the number comes only from the shop. If you can't find it, see [how to find your tracking number](guide:find-tracking-number).
 
@@ -18,8 +18,8 @@ Neither La Poste nor Delivengo publishes a format of its own for Delivengo. The 
 
 | Shape | Whose it is |
 | --- | --- |
-| `LD123456785FR` | La Poste: Delivengo, Colissimo and other French postal items share this shape. |
-| `LD123456785GB` | The same shape with another country's letters belongs to that country's post (here [Royal Mail](carrier:royal-mail)), not to Delivengo. |
+| `LD000000005FR` | La Poste: Delivengo, Colissimo and other French postal items share this shape. |
+| `LD000000005GB` | The same shape with another country's letters belongs to that country's post (here [Royal Mail](carrier:royal-mail)), not to Delivengo. |
 | `123456789012345` | 15 digits, or 14 digits and a letter: a partner number La Poste may show for an international item, if the partner sends it. |
 
 The last two letters say which post issued the number. Nothing in a `…FR` number tells Delivengo apart from any other La Poste item, and that doesn't matter: the tracking is the same. The numbers carry a check digit, so one wrong digit makes the number invalid; Peek then takes it for a possible [Chronopost](carrier:chronopost) number. Copy the number rather than typing it.

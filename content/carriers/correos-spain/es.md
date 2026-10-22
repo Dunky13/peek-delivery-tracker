@@ -17,7 +17,7 @@ Correos no publica el formato de sus códigos, pero suelen tener una de estas fo
 | `PQ0ABC0000000000000000W` | 23 caracteres: el código del paquete. Empieza por P o D y una letra (o por CD) y acaba en una letra de control. |
 | `PQ0ABC000000000B` | 16 caracteres: el código de la expedición. Una expedición puede llevar varios paquetes, cada uno con su código de 23 caracteres. |
 | `PR000000000000000C` | PR, 15 cifras y C. |
-| `RR123456785ES` | Dos letras, 9 cifras y ES: un número postal internacional de Correos. |
+| `RR000000005ES` | Dos letras, 9 cifras y ES: un número postal internacional de Correos. |
 
 Según Correos, recibes el código de envío por correo electrónico, por SMS o por ambos, y también figura en el aviso de llegada; depende de los datos que el remitente haya dado a Correos. Si dudas, verifica el número con el remitente. El PIN de un Citypaq solo abre la taquilla: no es el número de seguimiento.
 

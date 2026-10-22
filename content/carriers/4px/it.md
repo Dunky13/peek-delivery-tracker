@@ -17,7 +17,7 @@ updated: 2026-10-11
 | `4PX1234567890123CN` | 4PX, 13 cifre e CN: il numero di 4PX. |
 | `LP1234567890123CN` | LP, 13 cifre e CN: probabilmente 4PX. |
 | `LP12345678901234` | LP e 14 cifre, senza CN: è il riferimento logistico di AliExpress, da tracciare come [Cainiao](carrier:cainiao). |
-| `RR123456785CN` | Un numero postale che finisce con la sigla di un Paese: qui China Post. |
+| `RR000000005CN` | Un numero postale che finisce con la sigla di un Paese: qui China Post. |
 | `YT1234567890123456` | Non è 4PX ma [YunExpress](carrier:yunexpress). |
 
 Peek accetta anche minuscole e spazi. La pagina dei risultati di 4PX può mostrare due numeri: il «4PX Order No.» e un «Tracking No.», che è il numero del corriere che consegna nel tuo Paese. A volte il negozio ti dà quel numero locale al posto di quello di 4PX; il sito di 4PX risponde anche per alcuni di questi.

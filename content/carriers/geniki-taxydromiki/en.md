@@ -15,7 +15,7 @@ Geniki calls it the shipment number of the courier consignment note (ΣΥ.ΔΕ.�
 | Shape (invented) | What it is |
 | --- | --- |
 | `1234567890` | A Geniki Taxydromiki voucher: 10 digits, no letters. |
-| `RR123456785GR` | Not Geniki: a postal number ending `GR` belongs to [ELTA Hellenic Post](carrier:elta). |
+| `RR000000005GR` | Not Geniki: a postal number ending `GR` belongs to [ELTA Hellenic Post](carrier:elta). |
 
 Geniki doesn't say where recipients get it: look in the shop's shipping email or order page, or ask the shop. See [how to find your tracking number](guide:find-tracking-number).
 

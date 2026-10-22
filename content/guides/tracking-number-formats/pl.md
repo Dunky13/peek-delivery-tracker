@@ -7,7 +7,7 @@ published: 2026-10-09
 updated: 2026-10-11
 ---
 
-Litery i długość numeru przesyłki często zdradzają, który przewoźnik ma Twoją paczkę. `1Z` i 16 liter lub cyfr to UPS, `PX` i 10 cyfr to [Poczta Polska](carrier:poczta-polska), numer [InPost](carrier:inpost) ma 24 cyfry, a 13 znaków w układzie `RR123456785CH` (dwie litery, dziewięć cyfr, dwie litery) to zwykle numer pocztowy, w którym dwie ostatnie litery wskazują kraj poczty, która go nadała. Najtrudniej jest z samymi cyframi: 10 albo 14 cyfr pasuje do kilku firm, więc rozstrzyga e-mail o wysyłce albo narzędzie, które sprawdzi numer u wszystkich pasujących przewoźników.
+Litery i długość numeru przesyłki często zdradzają, który przewoźnik ma Twoją paczkę. `1Z` i 16 liter lub cyfr to UPS, `PX` i 10 cyfr to [Poczta Polska](carrier:poczta-polska), numer [InPost](carrier:inpost) ma 24 cyfry, a 13 znaków w układzie `RR000000005CH` (dwie litery, dziewięć cyfr, dwie litery) to zwykle numer pocztowy, w którym dwie ostatnie litery wskazują kraj poczty, która go nadała. Najtrudniej jest z samymi cyframi: 10 albo 14 cyfr pasuje do kilku firm, więc rozstrzyga e-mail o wysyłce albo narzędzie, które sprawdzi numer u wszystkich pasujących przewoźników.
 
 :::checker
 :::
@@ -66,7 +66,7 @@ Nie ma jednej długości. Poniżej te, które przewoźnicy podają na własnych 
 | 11 cyfr | DHL eCommerce Polska, paczki krajowe |
 | 11 znaków | Packeta: `Z` i 10 cyfr |
 | 12 znaków | Poczta Polska: `PX` i 10 cyfr |
-| 13 znaków | każda poczta w formacie pocztowym, np. `RR123456785CH`; ORLEN Paczka: 13 cyfr |
+| 13 znaków | każda poczta w formacie pocztowym, np. `RR000000005CH`; ORLEN Paczka: 13 cyfr |
 | 14 znaków | DPD: w DPD Polska 13 cyfr i litera albo 14 cyfr od 13 |
 | 19 cyfr | Poczta Polska |
 | 20 cyfr | Poczta Polska, z `5900773` po trzech pierwszych cyfrach |
@@ -84,9 +84,9 @@ Jeśli zgadza się długość, najpewniej tak. W danych przewoźników, z który
 
 Poczty na całym świecie używają wspólnego 13-znakowego formatu, który Światowy Związek Pocztowy (UPU) opisał w standardzie S10. Oto jego budowa:
 
-:::anatomy RR 12345678 5 CH
+:::anatomy RR 00000000 5 CH
 - RR | Rodzaj przesyłki: R to list polecony
-- 12345678 | Numer seryjny, osiem cyfr
+- 00000000 | Numer seryjny, osiem cyfr
 - 5 | Cyfra kontrolna, wyliczona z numeru seryjnego
 - CH | Kraj, którego poczta nadała numer: Szwajcaria
 :::
@@ -110,7 +110,7 @@ Cyfra kontrolna wyłapuje literówki. Tak sprawdzisz numer:
 2. Podziel sumę przez 11 i odejmij resztę od 11.
 3. Wynik to cyfra kontrolna, z dwoma wyjątkami: 10 daje 0, a 11 daje 5.
 
-Dla `RR123456785CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Z dzielenia przez 11 zostaje reszta 6, a 11 − 6 = 5. Jeśli przepisany ręcznie numer pocztowy nie przechodzi tego testu, szukaj literówki albo dwóch przestawionych cyfr.
+Dla `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Z dzielenia przez 11 zostaje reszta 6, a 11 − 6 = 5. Jeśli przepisany ręcznie numer pocztowy nie przechodzi tego testu, szukaj literówki albo dwóch przestawionych cyfr.
 
 ### Numer przesyłki zaczyna się od UL albo UU: czyj to numer?
 

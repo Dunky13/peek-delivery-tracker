@@ -14,9 +14,9 @@ Slovak Post uses the [international postal format](guide:tracking-number-formats
 
 | Shape (invented) | What it is |
 | --- | --- |
-| `RR123456785SK` | An item posted in Slovakia: two letters, nine digits, `SK`. |
-| `CP123456785SK` | The same shape with another service code. |
-| `RR123456785CN` | An item coming from abroad keeps the foreign post's number, ending in the country it came from. |
+| `RR000000005SK` | An item posted in Slovakia: two letters, nine digits, `SK`. |
+| `CP000000005SK` | The same shape with another service code. |
+| `RR000000005CN` | An item coming from abroad keeps the foreign post's number, ending in the country it came from. |
 
 Not every item has a trackable number: if the sender didn't give you one, Slovak Post says it probably can't be tracked. If the sender entered your email or phone, the item appears in Slovak Post's app once you confirm you're the addressee. Can't find the number? See [where else to find a tracking number](guide:find-tracking-number).
 
