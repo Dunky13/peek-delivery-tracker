@@ -40,6 +40,10 @@ export default defineConfig({
   webServer: {
     // CI exercises the self-contained production server; test:dev separately
     // verifies that the development compiler can serve a real page.
+    // PLAYWRIGHT_PRODUCTION starts the build already in .next, and Next writes
+    // NEXT_PUBLIC_ values into the bundle at build time: make that build with
+    // `NEXT_PUBLIC_USE_API=false npm run build`, as the env below reaches only
+    // `npm start` there (CI's build gets it, as it runs in this command).
     command: process.env.CI
       ? 'npm run build && npm start'
       : process.env.PLAYWRIGHT_PRODUCTION
