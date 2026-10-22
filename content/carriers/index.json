@@ -139,5 +139,7 @@
   { "id": "fedex-pl", "catalog": "fedex-pl", "name": "FedEx Poland", "languages": ["en", "pl"] },
   { "id": "techlink", "catalog": "techlink", "name": "Techlink", "languages": ["en"] },
   { "id": "z-leading", "catalog": "z-leading", "name": "Z-Leading", "languages": ["en"] },
-  { "id": "imile", "catalog": "imile", "name": "iMile", "languages": ["en", "es", "it", "de"] }
+  { "id": "imile", "catalog": "imile", "name": "iMile", "languages": ["en", "es", "it", "de"] },
+  { "id": "postnl", "catalog": "spring-gds", "name": "PostNL", "languages": ["en", "nl", "it", "pl"] },
+  { "id": "dhlink", "catalog": "dhlink", "name": "DHLink", "languages": ["en"] }
 ]

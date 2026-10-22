@@ -1136,6 +1136,22 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "iMile tracking: numbers, statuses and who delivers",
       "name": "iMile",
       "color": "#0032a0"
+    },
+    {
+      "id": "postnl",
+      "catalog": "spring-gds",
+      "slug": "postnl-tracking",
+      "title": "PostNL tracking: numbers, statuses and delivery abroad",
+      "name": "PostNL",
+      "color": "#ef7d00"
+    },
+    {
+      "id": "dhlink",
+      "catalog": "dhlink",
+      "slug": "dhlink-tracking",
+      "title": "DHLink tracking: numbers, statuses and who delivers",
+      "name": "DHLink",
+      "color": "#143167"
     }
   ],
   "de": [
@@ -1910,6 +1926,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Tracking iMile: codici, stati e consegna in Italia",
       "name": "iMile",
       "color": "#0032a0"
+    },
+    {
+      "id": "postnl",
+      "catalog": "spring-gds",
+      "slug": "postnl-tracking",
+      "title": "Tracking PostNL: codici, stati e consegna in Italia",
+      "name": "PostNL",
+      "color": "#ef7d00"
     }
   ],
   "es": [
@@ -2564,6 +2588,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "FedEx Polska śledzenie przesyłki krajowej: numer i statusy",
       "name": "FedEx Poland",
       "color": "#4d148c"
+    },
+    {
+      "id": "postnl",
+      "catalog": "spring-gds",
+      "slug": "postnl-sledzenie-przesylki",
+      "title": "PostNL śledzenie przesyłki: numer, statusy, doręczenie",
+      "name": "PostNL",
+      "color": "#ef7d00"
     }
   ],
   "nl": [
@@ -2574,6 +2606,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "bpost pakje volgen: barcode, statussen en Afhaalpunt",
       "name": "bpost",
       "color": "#ef2637"
+    },
+    {
+      "id": "postnl",
+      "catalog": "spring-gds",
+      "slug": "postnl-pakket-volgen",
+      "title": "PostNL pakket volgen: track & trace, statussen, bezorging",
+      "name": "PostNL",
+      "color": "#ef7d00"
     }
   ],
   "sv": [],
