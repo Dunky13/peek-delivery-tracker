@@ -16,7 +16,7 @@ import {
 } from './carriers';
 import type { AdapterRegistry, Recognition, TrackingContext } from 'universal-parcel-scraper/node';
 import { trackCarrier } from 'universal-parcel-scraper/node';
-import { dateLocalClocks } from 'universal-parcel-scraper/places';
+import { carrierHomeZone, dateLocalClocks } from 'universal-parcel-scraper/places';
 import type { StepRecorder } from 'universal-parcel-scraper/node';
 import { createAdapterRegistry, hostAdapterEnvironment } from './adapterRegistry';
 import { normalizedLookupCountry } from './lookupCountry';
@@ -511,11 +511,14 @@ export function buildEvents(
     ? { [UNIVERSAL_PROVIDER]: result.tracking_provider } : {};
   // A scan the carrier dates by its day alone, with no clock (NACEX's calendar headings), is
   // dated in the carrier's order, newest first: a second after the scan listed after it when
-  // that one is of the same day, else at the start of its day in the result's zone. Scans that
-  // join the day later leave those dates as they are. So is a carrier's scan on a wall clock in
-  // no zone listed after a dated one (YunExpress's), in an answer of its own lookup that is no
-  // fallback; its identity keeps the clock, so two scans of a day stay two.
+  // that one is of the same day, else at the start of its day on the carrier's home clock, the
+  // one the scraper dates its wall clocks on. A catalog zone of UTC would start a USPS day on
+  // the evening before for a reader in the United States. Scans that join the day later leave
+  // those dates as they are. So is a carrier's scan on a wall clock in no zone listed after a
+  // dated one (YunExpress's), in an answer of its own lookup that is no fallback; its identity
+  // keeps the clock, so two scans of a day stay two.
   const scans = result.events ?? [];
+  const dayZone = carrierHomeZone(carrierId, result) ?? timezone;
   const stamped = scans.map((raw) => eventTimestamp(raw.time, timezone) !== null);
   const newestStamped = stamped.indexOf(true);
   const ownClocks = localClockCarrier(carrierId) && typeof result.tracking_provider !== 'string' && result.direct_local_fallback !== true;
@@ -527,7 +530,7 @@ export function buildEvents(
     const day = days[index];
     const timed = day ? null : eventTimestamp(scans[index].time, timezone);
     if (!day && !timed) continue;
-    const start = day ? DateTime.fromISO(day, { zone: timezone }) : null;
+    const start = day ? DateTime.fromISO(day, { zone: dayZone }) : null;
     const at: DateTime = start
       ? older && older >= start && older < start.plus({ days: 1 }) ? older.plus({ seconds: 1 }) : start
       : DateTime.fromISO(timed!, { zone: timezone });

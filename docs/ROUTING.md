@@ -152,10 +152,11 @@ keeps `carrier:invalid_input`, which asks for the parcel's details.
 
 A scan an adapter dates by its day alone, with no clock (NACEX's history), is stored as a
 row of that day anyway, in the carrier's order: a second after the scan before it when that
-one is of the same day, else at the start of the day in the carrier's zone. It replaces the
-stage change an earlier check stored without a time. So is a scan on a wall clock in no zone
-(YunExpress's) listed after a dated scan, in an answer of the carrier's own lookup that is no
-fallback. Its identity keeps the clock, so two scans of a day stay two, and once a release
+one is of the same day, else at the start of the day on the carrier's home clock, the one
+the scraper's `carrierHomeZone` gives. A catalog zone of UTC would put a USPS day on the
+evening before in the United States. It replaces the stage change an earlier check stored
+without a time. So is a scan on a wall clock in no zone (YunExpress's) listed after a dated
+scan, in an answer of the carrier's own lookup that is no fallback. Its identity keeps the clock, so two scans of a day stay two, and once a release
 dates the scan, the scan takes the row over: the same stage, wording, provider code and place,
 at an instant showing that wall clock. The day dates no answer for routing.
 

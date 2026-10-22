@@ -122,11 +122,11 @@ describe('tracking event normalization', () => {
         { local_time: '2026-10-18', description: 'En tránsito', stage: 'in_transit' },
         { provider_time_text: 'Unreadable heading', description: 'Recogido', stage: 'accepted' },
       ] }, 'nacex', new Date('2026-10-20T08:00:00Z'));
-    // A scan of the same day listed later is older: a second earlier, whatever its stage.
+    // A day starts at midnight in Madrid. A scan of the same day listed later is older: a second earlier, whatever its stage.
     expect(rows.map((row) => [row.occurred_at, row.stage, row.provider_event_id])).toEqual([
-      ['2026-10-19T00:00:01Z', 'exception', providerEventId('nacex', '2026-10-19', '', 'Contacta con agencia')],
-      ['2026-10-19T00:00:00Z', 'out_for_delivery', providerEventId('nacex', '2026-10-19', '', 'En reparto')],
-      ['2026-10-18T00:00:00Z', 'in_transit', providerEventId('nacex', '2026-10-18', '', 'En tránsito')],
+      ['2026-10-18T22:00:01Z', 'exception', providerEventId('nacex', '2026-10-19', '', 'Contacta con agencia')],
+      ['2026-10-18T22:00:00Z', 'out_for_delivery', providerEventId('nacex', '2026-10-19', '', 'En reparto')],
+      ['2026-10-17T22:00:00Z', 'in_transit', providerEventId('nacex', '2026-10-18', '', 'En tránsito')],
     ]);
     // Among scans with clock times, a day follows the scan before it on that day.
     expect(buildEvents({ id: 'package-1', carrier: 'dpd' }, { status: 'delivered', current_stage: 'delivered',
@@ -143,6 +143,23 @@ describe('tracking event normalization', () => {
       last_status_text: 'Entregado', last_update: null, direct_local_fallback: true,
       events: [{ local_time: '2026-10-19T10:00:00', description: 'Entregado', stage: 'delivered' }] }, 'seur', new Date('2026-10-20T08:00:00Z'))
       .map((row) => (row.raw_data as JsonObject).observed_without_provider_timestamp)).toEqual([true]);
+  });
+
+  it('starts a day on the carrier\'s home clock, not its catalog zone of UTC', () => {
+    // USPS dates pre-shipment info by its day alone; its catalog zone is UTC (synthetic scans).
+    const rows = buildEvents({ id: 'package-1', carrier: 'usps', current_stage: 'registered' }, {
+      status: 'pending', current_stage: 'registered', last_status_text: 'Pre-Shipment Info Sent to USPS', last_update: null,
+      last_update_local: '2026-10-20', events: [
+        { local_time: '2026-10-20', description: 'Pre-Shipment Info Sent to USPS', stage: 'registered' },
+      ] }, 'usps', new Date('2026-10-21T08:00:00Z'));
+    // Midnight in New York, not 20:00 there the evening before; the day stays the scan's identity.
+    expect(rows.map((row) => [row.occurred_at, row.provider_event_id])).toEqual([
+      ['2026-10-20T04:00:00Z', providerEventId('usps', '2026-10-20', '', 'Pre-Shipment Info Sent to USPS')]]);
+    // A zone the result declares is the carrier's clock.
+    expect(buildEvents({ id: 'package-1', carrier: 'usps', current_stage: 'registered' }, {
+      status: 'pending', current_stage: 'registered', last_status_text: 'Pre-Shipment Info Sent to USPS', last_update: null,
+      timezone: 'America/Los_Angeles', events: [{ local_time: '2026-10-20', description: 'Pre-Shipment Info Sent to USPS', stage: 'registered' }],
+    }, 'usps', new Date('2026-10-21T08:00:00Z')).map((row) => row.occurred_at)).toEqual(['2026-10-20T07:00:00Z']);
   });
 
   it('dates a carrier\'s scans on a wall clock in no zone by their day, among its dated scans', () => {
@@ -164,7 +181,7 @@ describe('tracking event normalization', () => {
       ['2026-10-11T00:00:02Z', 'Sorted', providerEventId('yunexpress', '2026-10-11T18:20:00', '', 'Sorted')],
       ['2026-10-11T00:00:01Z', 'Sorted', providerEventId('yunexpress', '2026-10-11T09:05:00', '', 'Sorted')],
       ['2026-10-11T00:00:00Z', 'Received', providerEventId('yunexpress', '2026-10-11T08:00:00+08:00', '', 'Received')],
-      ['2026-10-09T00:00:00Z', 'Label created', providerEventId('yunexpress', '2026-10-09T10:00:00', '', 'Label created')],
+      ['2026-10-08T16:00:00Z', 'Label created', providerEventId('yunexpress', '2026-10-09T10:00:00', '', 'Label created')],
     ]);
     const days = (result: CarrierResult, carrier = 'yunexpress') => buildEvents({ ...parcel, carrier }, result, carrier)
       .map((row) => row.description);
@@ -826,7 +843,7 @@ describe('TrackingSyncService', () => {
       [STORED_EVENT_IDENTITIES]: [observed] });
     const [, , rows, , deleted] = client.applyTrackingSync.mock.calls.at(-1)! as unknown as [JsonObject, JsonObject, JsonObject[], string[], string[]];
     expect(rows.map((row: JsonObject) => [row.occurred_at, row.description])).toEqual([
-      ['2026-10-19T00:00:00Z', 'Contacta con agencia'], ['2026-10-18T00:00:00Z', 'En reparto']]);
+      ['2026-10-18T22:00:00Z', 'Contacta con agencia'], ['2026-10-17T22:00:00Z', 'En reparto']]);
     expect(deleted).toEqual(['nacex:observed']);
     expect(client.completeSyncAttempt).toHaveBeenLastCalledWith(expect.any(String),
       expect.objectContaining({ anomaly_codes: [] }), expect.any(Array));
