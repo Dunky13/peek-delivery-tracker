@@ -2421,9 +2421,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "domains": [
           "smartposti.ee",
-          "smartposti.lt"
+          "smartposti.lt",
+          "smartposti.lv"
         ],
-        "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas)/([^/?#]+)(?:/[0-9]+)?/?$"
+        "path": "^/(?:(?:[a-z]{2}/)?tracking|saadetise-jalgimine|siuntos-sekimas|pakas-meklesana)/([^/?#]+)(?:/[0-9]+)?/?$"
       }
     ],
     "detectionRules": [
@@ -2456,7 +2457,8 @@ export const CARRIER_CAPABILITIES = {
       "SmartPosti",
       "Smartpost Itella",
       "Itella SmartPOST",
-      "Itella Estonia"
+      "Itella Estonia",
+      "Itella"
     ]
   },
   "correos-express": {
@@ -3111,7 +3113,7 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "luhn"
       },
       {
-        "pattern": "^(?!(?:BNI|BYS|CUB|GWD|LTN|MPX|NZC|QSP|RWM|XLT))[A-Z]{3}\\d{9}$",
+        "pattern": "^(?!(?:BNI|BYS|CUB|GWD|LTN|MPX|NZC|QSP|QSS|RWM|XLT))[A-Z]{3}\\d{9}$",
         "confidence": "high"
       }
     ],
@@ -6710,11 +6712,14 @@ export const CARRIER_CAPABILITIES = {
     "aliases": [
       "GLS España",
       "ASM Transporte Urgente",
-      "General Logistics Systems Spain"
+      "General Logistics Systems Spain",
+      "GLS Portugal",
+      "General Logistics Systems Portugal"
     ],
     "countries": [
       "ES",
-      "AD"
+      "AD",
+      "PT"
     ],
     "color": "#ffdd00",
     "selectable": true,
@@ -6740,7 +6745,8 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [
       {
         "domains": [
-          "mygls.gls-spain.es"
+          "mygls.gls-spain.es",
+          "mygls.gls-portugal.pt"
         ],
         "pathPattern": "^/e/?$",
         "params": [
@@ -6749,7 +6755,8 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "domains": [
-          "mygls.gls-spain.es"
+          "mygls.gls-spain.es",
+          "mygls.gls-portugal.pt"
         ],
         "path": "^/e/([A-Za-z0-9]{5,40})/[^/?#]+(?:/[a-z]{2})?/?$"
       },
@@ -6758,7 +6765,7 @@ export const CARRIER_CAPABILITIES = {
           "gls-group.com",
           "gls-group.eu"
         ],
-        "pathPattern": "^/ES/",
+        "pathPattern": "^/(?:ES|PT)/",
         "params": [
           "match",
           "parcelNumber",
@@ -30465,6 +30472,167 @@ export const CARRIER_CAPABILITIES = {
     },
     "linkRules": [],
     "detectionRules": []
+  },
+  "correos-costa-rica": {
+    "displayName": "Correos de Costa Rica",
+    "aliases": [
+      "Correos de Costa Rica S.A.",
+      "Correos Costa Rica",
+      "Costa Rica Post",
+      "CorreosCR",
+      "Pymexpress"
+    ],
+    "countries": [
+      "CR"
+    ],
+    "color": "#003057",
+    "selectable": true,
+    "timezone": "America/Costa_Rica",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://sucursal.correos.go.cr/web/rastreo"
+  },
+  "fercam": {
+    "displayName": "FERCAM",
+    "aliases": [
+      "Fercam S.p.A.",
+      "FERCAM Logistics & Transport",
+      "DACHSER & FERCAM Italia"
+    ],
+    "countries": [
+      "IT"
+    ],
+    "color": "#5a6770",
+    "selectable": true,
+    "timezone": "Europe/Rome",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^O\\d{10}$",
+        "confidence": "low"
+      }
+    ],
+    "trackingSearchUrl": "https://dachser.fercam.it/en-it/dachser-fercam-italia-shipment-tracking-707.html"
+  },
+  "gig-logistics": {
+    "displayName": "GIG Logistics",
+    "aliases": [
+      "GIGL",
+      "GIG Logistics Technologies Limited",
+      "GIGGo"
+    ],
+    "countries": [
+      "NG"
+    ],
+    "color": "#cf343a",
+    "selectable": true,
+    "timezone": "Africa/Lagos",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://giglogistics.com/track-shipment/?waybill={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "giglogistics.com"
+        ],
+        "pathPattern": "^/track-shipment/?$",
+        "params": [
+          "waybill"
+        ]
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://giglogistics.com/track-shipment/"
+  },
+  "inposdom": {
+    "displayName": "INPOSDOM",
+    "aliases": [
+      "Instituto Postal Dominicano",
+      "Dominican Postal Institute"
+    ],
+    "countries": [
+      "DO"
+    ],
+    "color": "#012a7e",
+    "selectable": true,
+    "timezone": "America/Santo_Domingo",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://inposdomtech.com/Inposoft/cliente/"
+  },
+  "sendle": {
+    "displayName": "Sendle",
+    "aliases": [
+      "Sendle Pty Ltd"
+    ],
+    "countries": [
+      "AU"
+    ],
+    "color": "#f0703f",
+    "selectable": true,
+    "timezone": "Australia/Sydney",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.sendle.com/tracking?ref={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "sendle.com"
+        ],
+        "pathPattern": "^/tracking/?$",
+        "params": [
+          "ref"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^QSS\\d{9}$",
+        "confidence": "low",
+        "preferred": true
+      }
+    ],
+    "trackingSearchUrl": "https://www.sendle.com/tracking"
+  },
+  "trunkrs": {
+    "displayName": "Trunkrs",
+    "countries": [
+      "NL",
+      "BE"
+    ],
+    "color": "#220c4a",
+    "selectable": true,
+    "timezone": "Europe/Amsterdam",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [
+      {
+        "domains": [
+          "parcel.trunkrs.nl"
+        ],
+        "path": "^/(?!barcode/)([A-Za-z0-9]{5,40})/[^/?#]+/?$"
+      }
+    ],
+    "detectionRules": [],
+    "trackingSearchUrl": "https://parcel.trunkrs.nl/"
   }
 } as const;
 
@@ -31291,7 +31459,13 @@ export const CARRIER_IDS = [
   "kun-express",
   "juxi-express",
   "techlink",
-  "z-leading"
+  "z-leading",
+  "correos-costa-rica",
+  "fercam",
+  "gig-logistics",
+  "inposdom",
+  "sendle",
+  "trunkrs"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
