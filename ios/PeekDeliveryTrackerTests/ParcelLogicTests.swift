@@ -2656,6 +2656,30 @@ extension ParcelLogicTests {
         XCTAssertEqual(navigation.chosen, other)
     }
 
+    func testTheParcelOpenWhenTheAppWasClosedOpensAgainOnceItIsBack() {
+        let (open, other) = (UUID(), UUID())
+        var navigation = DeliveriesNavigation()
+        // The parcels aren't back yet: it waits.
+        XCTAssertFalse(navigation.restore(open, among: []))
+        XCTAssertNil(navigation.shown)
+        XCTAssertTrue(navigation.restore(open, among: [other, open]))
+        XCTAssertEqual(navigation.chosen, open)
+        // It takes the place of the one shown by itself beside the list.
+        navigation = DeliveriesNavigation()
+        navigation.settle(.sideBySide, cards: [other, open])
+        XCTAssertTrue(navigation.restore(open, among: [other, open]))
+        XCTAssertEqual(navigation.chosen, open)
+        // Gone since, it opens nothing.
+        navigation = DeliveriesNavigation()
+        XCTAssertTrue(navigation.restore(open, among: [other]))
+        XCTAssertNil(navigation.shown)
+        // A parcel someone opened first, from a notification or a link, stays.
+        navigation = DeliveriesNavigation()
+        navigation.open(other)
+        XCTAssertTrue(navigation.restore(open, among: [other, open]))
+        XCTAssertEqual(navigation.chosen, other)
+    }
+
     func testAParcelThatLeavesTheListFromBesideItGivesWayToTheCardAfterIt() {
         let (a, b, c) = (UUID(), UUID(), UUID())
         let cards = [a, b, c]

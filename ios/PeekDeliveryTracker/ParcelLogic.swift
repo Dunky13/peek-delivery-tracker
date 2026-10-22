@@ -675,6 +675,15 @@ struct DeliveriesNavigation: Equatable {
         }
     }
 
+    /// Opens the parcel that was open when the system last closed the app, once the parcels are back. True once
+    /// that's settled: the parcel is open, it's gone, or someone opened another first. False while there are none yet.
+    mutating func restore(_ parcelID: UUID, among parcels: [UUID]) -> Bool {
+        if chosen != nil { return true }
+        guard !parcels.isEmpty else { return false }
+        if parcels.contains(parcelID) { open(parcelID) }
+        return true
+    }
+
     /// The parcel shown beside the list has left it from its own page, archived, brought back or deleted,
     /// and the card after it shows instead: the one before it for the last, the first for one that had none.
     /// `cards` is the list as it was before the parcel left.

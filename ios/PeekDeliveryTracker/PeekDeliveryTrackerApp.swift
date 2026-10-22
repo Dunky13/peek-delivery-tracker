@@ -58,7 +58,8 @@ struct RootView: View {
     @EnvironmentObject private var friendsActivity: FriendsActivityStore
     @EnvironmentObject private var links: ParcelLinkStore
     @Environment(\.scenePhase) private var scenePhase
-    @State private var selectedTab = 0
+    /// Kept with the window, so the tab is still there after the system closes the app and opens it again.
+    @SceneStorage("tab") private var selectedTab = 0
     @State private var deliveries = LinkDeliveries()
     private let carrierCatalog = CarrierCatalog.shared
 

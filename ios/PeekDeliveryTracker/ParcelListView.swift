@@ -198,6 +198,10 @@ private struct DeliveryListView: View {
 
     @Namespace private var parcelTransition
     @State private var navigation = DeliveriesNavigation()
+    /// The parcel someone has open, kept with the window for when the system closes the app and opens it again.
+    @SceneStorage("deliveries.parcel") private var savedParcel: String?
+    /// Until the parcel open before is open again, or isn't to be.
+    @State private var restoring = true
     /// The arrangement the window took last, which `windowArrangement` keeps near the threshold.
     @State private var lastArrangement = DeliveriesArrangement.stacked
     /// When the window last turned from side by side to stacked.
@@ -438,6 +442,15 @@ private struct DeliveryListView: View {
             settleSheets()
         }
         .onChange(of: layout.cards, initial: true) { _, cards in navigation.settle(windowArrangement, cards: cards) }
+        .onChange(of: navigation.chosen) { _, chosen in savedParcel = chosen?.uuidString }
+        // The parcel open when the system closed the app opens again, as it was, once the parcels are back.
+        .onReceive(store.$parcels) { parcels in
+            guard restoring else { return }
+            guard let parcelID = savedParcel.flatMap(UUID.init(uuidString:)) else { restoring = false; return }
+            var still = Transaction()
+            still.disablesAnimations = true
+            withTransaction(still) { restoring = !navigation.restore(parcelID, among: parcels.map(\.id)) }
+        }
     }
 
     private var largeText: Bool { typeSize.isAccessibilitySize }
@@ -680,16 +693,19 @@ private struct DeliveryListView: View {
             }
             .accessibilityLabel(localizer.text(showingSearch ? "view.hideControls" : "view.showControls"))
             .accessibilityIdentifier("deliveries.search")
-            // Pulling refreshes the list; VoiceOver users also get a button.
-            if voiceOverEnabled {
-                Button { Task { await refreshForVoiceOver() } } label: {
+            // Pulling refreshes the list. VoiceOver users also get a button, and so does a list beside a parcel,
+            // where a pointer may be all there is to pull with, as on the web. ⌘R presses it.
+            if voiceOverEnabled || windowArrangement == .sideBySide {
+                Button { Task { await refreshFromButton() } } label: {
                     Group {
                         if store.refreshing { ProgressView() }
                         else { Image(systemName: "arrow.clockwise").font(.body.weight(.regular)) }
                     }.frame(width: 44, height: 44)
                 }
                 .disabled(store.refreshing)
+                .keyboardShortcut("r", modifiers: .command)
                 .accessibilityLabel(localizer.text(store.refreshing ? "app.refreshing" : "app.refresh"))
+                .accessibilityIdentifier("deliveries.refresh")
             }
         }
         .foregroundStyle(Brand.ink)
@@ -792,12 +808,14 @@ private struct DeliveryListView: View {
         pull.settle()
     }
 
-    private func refreshForVoiceOver() async {
+    /// The button turns while the parcels are checked, then says how it went.
+    private func refreshFromButton() async {
         switch await checkAllParcels() {
         case .failed(let message)?:
             toast = ListToast(text: message, warning: true)
             AccessibilityNotification.Announcement(message).post()
         case let result?:
+            toast = ListToast(text: localizer.text(result.messageKey))
             AccessibilityNotification.Announcement(localizer.text(result.messageKey)).post()
         case nil:
             break
