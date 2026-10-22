@@ -2237,7 +2237,25 @@ export const CARRIER_CAPABILITIES = {
       "recognitionRank": 810,
       "recognitionPattern": "^(?:3232\\d{14}|(?:3232|3299)\\d{20}|[A-Z]{2}\\d{9}BE|JJBE[A-Z]\\d{18}(?:\\d{4})?)$"
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "bpost.be"
+        ],
+        "params": [
+          "itemCodes"
+        ]
+      },
+      {
+        "domains": [
+          "track.bpost.cloud"
+        ],
+        "pathPattern": "^/etr/light/performSearch\\.do$",
+        "params": [
+          "itemCodes"
+        ]
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^(?:3232\\d{14}|(?:3232|3299)\\d{20})$",
@@ -2675,6 +2693,14 @@ export const CARRIER_CAPABILITIES = {
           "poste.it"
         ],
         "fragment": "risultati-spedizioni/([^/?#]+)"
+      },
+      {
+        "domains": [
+          "sda.it"
+        ],
+        "params": [
+          "tracing.letteraVettura"
+        ]
       }
     ],
     "detectionRules": [
@@ -2729,6 +2755,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^D\\d{5}[A-Z]\\d{6}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^GF\\d{11}$",
+        "confidence": "low",
+        "preferred": true
       },
       {
         "pattern": "^\\d{12}$",
@@ -4920,6 +4951,21 @@ export const CARRIER_CAPABILITIES = {
           "mydhl.express.dhl"
         ],
         "fragment": "^/results\\?id=(\\d{10})(?:&|$)"
+      },
+      {
+        "domains": [
+          "logistics.dhl"
+        ],
+        "pathPattern": "/tracking-express\\.html$",
+        "params": [
+          "tracking-id"
+        ],
+        "ownNumbersOnly": true
+      },
+      {
+        "domains": [
+          "dhlexpress.pl"
+        ]
       }
     ],
     "detectionRules": [
@@ -12410,6 +12456,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^P\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{7}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}ID$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://www.posindonesia.co.id/id/tracking"
@@ -12843,6 +12895,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^CRDSAL\\d{10}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SA$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://splonline.com.sa/en/"
@@ -14527,7 +14585,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}UY$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.correo.com.uy/seguimientodeenvios"
   },
   "courier-it": {
@@ -16571,6 +16636,12 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^(?:RGL|PAR)\\d{8}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^[A-Z]{2}\\d{9}PK$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
       }
     ],
     "trackingSearchUrl": "https://ep.gov.pk/",
@@ -19709,7 +19780,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Bogota",
     "tracking": {
       "mode": "automatic",
-      "adapter": "4-72"
+      "adapter": "4-72",
+      "recognitionRank": 896
     },
     "trackingUrlTemplate": "https://svc2.sipost.co/TrazabilidadWeb?guia={trackingNumber}",
     "linkRules": [
@@ -19732,7 +19804,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CO$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://svc2.sipost.co/TrazabilidadWeb"
   },
   "aex-paraguay": {
@@ -21379,10 +21458,18 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Dakar",
     "tracking": {
       "mode": "automatic",
-      "adapter": "la-poste-senegal"
+      "adapter": "la-poste-senegal",
+      "recognitionRank": 892
     },
     "linkRules": [],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}SN$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.laposte.sn/"
   },
   "mailplus-au": {
@@ -22808,7 +22895,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}KG$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://post.kg/language/ru/treking-posylok/"
   },
   "la-poste-burkina-faso": {
@@ -22843,7 +22937,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}BF$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ]
   },
   "lao-post": {
     "displayName": "Lao Post",

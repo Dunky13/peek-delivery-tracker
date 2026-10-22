@@ -65232,6 +65232,7 @@
       "intl-post"
     ],
     "asked": [
+      "la-poste-burkina-faso",
       "chronopost"
     ]
   },
@@ -65434,6 +65435,7 @@
       "intl-post"
     ],
     "asked": [
+      "pos-indonesia",
       "chronopost"
     ]
   },
@@ -69500,6 +69502,7 @@
       "intl-post"
     ],
     "asked": [
+      "pakistan-post",
       "chronopost"
     ]
   },
@@ -70211,6 +70214,7 @@
       "intl-post"
     ],
     "asked": [
+      "pos-indonesia",
       "chronopost"
     ]
   },
@@ -70503,6 +70507,7 @@
       "intl-post"
     ],
     "asked": [
+      "saudi-post",
       "chronopost"
     ]
   },
@@ -70541,6 +70546,7 @@
       "intl-post"
     ],
     "asked": [
+      "saudi-post",
       "chronopost"
     ]
   },
@@ -70552,6 +70558,7 @@
       "intl-post"
     ],
     "asked": [
+      "saudi-post",
       "chronopost"
     ]
   },
@@ -70563,6 +70570,7 @@
       "intl-post"
     ],
     "asked": [
+      "saudi-post",
       "chronopost"
     ]
   },
@@ -70574,6 +70582,7 @@
       "intl-post"
     ],
     "asked": [
+      "saudi-post",
       "chronopost"
     ]
   },
@@ -70585,6 +70594,7 @@
       "intl-post"
     ],
     "asked": [
+      "saudi-post",
       "chronopost"
     ]
   },
@@ -70596,6 +70606,7 @@
       "intl-post"
     ],
     "asked": [
+      "saudi-post",
       "chronopost"
     ]
   },
@@ -72696,6 +72707,22 @@
     "carrier": "unknown",
     "confidence": "none",
     "candidates": []
+  },
+  {
+    "input": "GF00000000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "poste-italiane",
+      "la-poste"
+    ],
+    "preferred": [
+      "poste-italiane"
+    ],
+    "asked": [
+      "poste-italiane",
+      "la-poste"
+    ]
   },
   {
     "input": "GF6547710773248",
@@ -77959,6 +77986,7 @@
       "intl-post"
     ],
     "asked": [
+      "pos-indonesia",
       "chronopost"
     ]
   },
@@ -79587,6 +79615,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -81574,6 +81603,7 @@
       "intl-post"
     ],
     "asked": [
+      "correo-uruguayo",
       "chronopost"
     ]
   },
@@ -81760,6 +81790,7 @@
       "intl-post"
     ],
     "asked": [
+      "correo-uruguayo",
       "chronopost"
     ]
   },
@@ -83542,6 +83573,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -83553,6 +83585,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -83564,6 +83597,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -83575,6 +83609,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -83586,6 +83621,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -83733,6 +83769,7 @@
       "intl-post"
     ],
     "asked": [
+      "pakistan-post",
       "chronopost"
     ]
   },
@@ -83744,6 +83781,7 @@
       "intl-post"
     ],
     "asked": [
+      "pakistan-post",
       "chronopost"
     ]
   },
@@ -83755,6 +83793,7 @@
       "intl-post"
     ],
     "asked": [
+      "pakistan-post",
       "chronopost"
     ]
   },
@@ -83778,6 +83817,7 @@
       "intl-post"
     ],
     "asked": [
+      "pakistan-post",
       "chronopost"
     ]
   },
@@ -83789,6 +83829,7 @@
       "intl-post"
     ],
     "asked": [
+      "pakistan-post",
       "chronopost"
     ]
   },
@@ -84138,6 +84179,7 @@
       "intl-post"
     ],
     "asked": [
+      "correo-uruguayo",
       "chronopost"
     ]
   },
@@ -84502,6 +84544,7 @@
       "intl-post"
     ],
     "asked": [
+      "kyrgyz-post",
       "chronopost"
     ]
   },
@@ -85170,6 +85213,7 @@
       "intl-post"
     ],
     "asked": [
+      "la-poste-burkina-faso",
       "chronopost"
     ]
   },
@@ -85236,6 +85280,7 @@
       "intl-post"
     ],
     "asked": [
+      "la-poste-senegal",
       "chronopost"
     ]
   },
@@ -85247,6 +85292,7 @@
       "intl-post"
     ],
     "asked": [
+      "pos-indonesia",
       "chronopost"
     ]
   },
@@ -85338,6 +85384,7 @@
       "intl-post"
     ],
     "asked": [
+      "saudi-post",
       "chronopost"
     ]
   },
@@ -85704,6 +85751,7 @@
       "intl-post"
     ],
     "asked": [
+      "correo-uruguayo",
       "chronopost"
     ]
   },
@@ -91318,6 +91366,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -91329,6 +91378,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -91340,6 +91390,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -91351,6 +91402,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -91362,6 +91414,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -91432,6 +91485,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -91443,6 +91497,7 @@
       "intl-post"
     ],
     "asked": [
+      "4-72",
       "chronopost"
     ]
   },
@@ -92370,6 +92425,7 @@
       "intl-post"
     ],
     "asked": [
+      "la-poste-burkina-faso",
       "chronopost"
     ]
   },
