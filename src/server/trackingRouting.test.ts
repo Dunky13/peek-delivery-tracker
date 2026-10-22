@@ -134,8 +134,10 @@ describe('persistent tracking routing', () => {
     direct.mockRejectedValue(new Error('Browser tracking unavailable'));
     universal.mockResolvedValue({ ...history(), discovered_carrier: 'royal-mail' });
     const result = await router.fetch(parcel({ carrier: 'royal-mail' }), false);
+    // Routing passes the providers Royal Mail's catalog zone, unless that is UTC.
+    const zone = scraper.carrierTimezone('royal-mail');
     expect(direct).toHaveBeenCalledExactlyOnceWith(expect.any(Object), 'royal-mail');
-    expect(universal).toHaveBeenCalledExactlyOnceWith('ParcelsApp', 'TEST1234', expect.any(Number), null, null, 'royal-mail');
+    expect(universal).toHaveBeenCalledExactlyOnceWith('ParcelsApp', 'TEST1234', expect.any(Number), null, zone === 'UTC' ? null : zone, 'royal-mail');
     expect(result.result.routing).toMatchObject({ preferred_provider: 'ParcelsApp', failures: { 'royal-mail': { kind: 'transport' } } });
     expect(result.result.tracking_provider).toBe('ParcelsApp');
   });
