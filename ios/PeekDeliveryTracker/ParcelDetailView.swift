@@ -9,6 +9,8 @@ struct ParcelDetailView: View {
     var sample: Parcel?
     /// Set when the page stands beside the list rather than over it, and lets the parcel go when it leaves the list.
     var release: (() -> Void)?
+    /// Told whether the page has something of its own open over it, which the list's keys then leave alone.
+    var covering: Binding<Bool>?
 
     @EnvironmentObject private var store: ParcelStore
     @EnvironmentObject private var localizer: Localizer
@@ -16,6 +18,7 @@ struct ParcelDetailView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.keyboardInFront) private var keyboardInFront
 
     @State private var showingTitleEditor = false
     @State private var editedTitle = ""
@@ -81,6 +84,9 @@ struct ParcelDetailView: View {
                 )
             }
         }
+        .background { if keyboard { keys } }
+        .onChange(of: covered, initial: true) { _, covered in covering?.wrappedValue = covered }
+        .onDisappear { covering?.wrappedValue = false }
         .parcelFeedback(feedback, busy: showingShare || showingAlerts || showingMap || carrierEditor != nil
             || showingTitleEditor || showingDeleteConfirmation)
         .onChange(of: parcel.flatMap(feedbackPage), initial: true) { _, page in
@@ -97,9 +103,9 @@ struct ParcelDetailView: View {
             if let parcel, sample == nil {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        ParcelMenuButtons(items: ParcelMenuItem.menu(for: parcel, onCard: false), busy: working) {
-                            chose($0, on: parcel)
-                        }
+                        ParcelMenuButtons(
+                            items: ParcelMenuItem.menu(for: parcel, onCard: false), busy: working, shortcuts: keyboard
+                        ) { chose($0, on: parcel) }
                     } label: {
                         Image(systemName: "ellipsis")
                     }
@@ -676,6 +682,31 @@ struct ParcelDetailView: View {
         .foregroundStyle(.secondary)
     }
 
+    /// Something of the page's own stands over it: a sheet, the map, an alert or a question.
+    private var covered: Bool {
+        showingTitleEditor || showingDeleteConfirmation || showingShare || showingAlerts || showingMap
+            || carrierEditor != nil || errorMessage != nil || feedback.words != nil || feedback.namingCarrier
+    }
+
+    /// Whether the keyboard reaches the page: its screen is in front, and nothing stands over the page.
+    private var keyboard: Bool { keyboardInFront && !covered }
+
+    /// The keys of the ••• menu's items that have one, and Esc back to the list from a page over it.
+    private var keys: some View {
+        KeyboardShortcuts {
+            if let parcel, sample == nil {
+                ForEach(ParcelMenuItem.menu(for: parcel, onCard: false).joined().filter { $0.shortcut != nil }, id: \.self) { item in
+                    Button(localizer.text(item.titleKey)) { chose(item, on: parcel) }
+                        .keyboardShortcut(item.shortcut)
+                        .disabled(working && item == .delete)
+                }
+            }
+            if release == nil {
+                Button(localizer.text("detail.back")) { dismiss() }.keyboardShortcut(.escape, modifiers: [])
+            }
+        }
+    }
+
     /// What the ••• menu asked of the parcel. The page is open already.
     private func chose(_ item: ParcelMenuItem, on parcel: Parcel) {
         switch item {
@@ -841,15 +872,19 @@ struct ParcelMenuButtons: View {
     let items: [[ParcelMenuItem]]
     /// Delete waits while another change is saved.
     var busy = false
+    /// The items show their keys, on the parcel the keyboard acts on, while a keyboard is connected.
+    var shortcuts = false
     let choose: (ParcelMenuItem) -> Void
 
     @EnvironmentObject private var localizer: Localizer
+    @ObservedObject private var keyboard = ConnectedKeyboard.shared
 
     var body: some View {
         ForEach(Array(items.enumerated()), id: \.offset) { index, group in
             if index > 0 { Divider() }
             ForEach(group, id: \.self) { item in
                 Button(localizer.text(item.titleKey), systemImage: item.symbol) { choose(item) }
+                    .keyboardShortcut(shortcuts && keyboard.isConnected ? item.shortcut : nil)
                     .disabled(busy && item == .delete)
             }
         }

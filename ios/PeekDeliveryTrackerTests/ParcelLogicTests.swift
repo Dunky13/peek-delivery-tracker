@@ -1,4 +1,5 @@
 import Combine
+import SwiftUI
 import XCTest
 import UIKit
 @testable import PeekDeliveryTracker
@@ -2706,6 +2707,73 @@ extension ParcelLogicTests {
         XCTAssertEqual(navigation.chosen, a)
     }
 
+    func testTheArrowKeysGoThroughTheCardsBesideTheList() {
+        let (a, b, c, archived) = (UUID(), UUID(), UUID(), UUID())
+        let cards = [a, b, c]
+        var navigation = DeliveriesNavigation()
+        navigation.open(b)
+        XCTAssertEqual(navigation.step(1, through: cards), c)
+        // It opens, as a tap on its card does: it stays open through a fold, and comes back after a relaunch.
+        XCTAssertEqual(navigation.chosen, c)
+        XCTAssertEqual(navigation.step(-1, through: cards), b)
+        XCTAssertEqual(navigation.step(-1, through: cards), a)
+        XCTAssertEqual(navigation.chosen, a)
+        // From the first card shown by itself, ↓ opens the second.
+        navigation = DeliveriesNavigation()
+        navigation.settle(.sideBySide, cards: cards)
+        XCTAssertTrue(navigation.shownAutomatically)
+        XCTAssertEqual(navigation.step(1, through: cards), b)
+        XCTAssertEqual(navigation.chosen, b)
+        navigation.open(a)
+        // Past either end, the parcel shown stays.
+        XCTAssertNil(navigation.step(-1, through: cards))
+        XCTAssertEqual(navigation.chosen, a)
+        navigation.open(c)
+        XCTAssertNil(navigation.step(1, through: cards))
+        XCTAssertEqual(navigation.chosen, c)
+        // From a parcel with no card, or none, to the first card going down and the last going up.
+        navigation.open(archived)
+        XCTAssertEqual(navigation.step(1, through: cards), a)
+        navigation.open(archived)
+        XCTAssertEqual(navigation.step(-1, through: cards), c)
+        navigation = DeliveriesNavigation()
+        XCTAssertEqual(navigation.step(-1, through: cards), c)
+        // No card, nowhere to go.
+        navigation = DeliveriesNavigation()
+        XCTAssertNil(navigation.step(1, through: []))
+        XCTAssertNil(navigation.shown)
+    }
+
+    func testTheDeliveriesKeysActOnlyOnWhatIsInFront() {
+        let (a, b) = (UUID(), UUID())
+        var automatic = DeliveriesNavigation()
+        automatic.settle(.sideBySide, cards: [a, b])
+        var chosen = DeliveriesNavigation()
+        chosen.open(a)
+        func keys(
+            free: Bool = true, typing: Bool = false, _ arrangement: DeliveriesArrangement = .stacked,
+            _ navigation: DeliveriesNavigation = DeliveriesNavigation(), cards: [UUID] = [a, b],
+            hasParcels: Bool = true, canUndo: Bool = false
+        ) -> Set<DeliveriesKey> {
+            DeliveriesKey.available(free: free, typing: typing, arrangement: arrangement, navigation: navigation,
+                                    cards: cards, hasParcels: hasParcels, canUndo: canUndo)
+        }
+        // The list by itself: Add and Find, and Undo while an archive's toast shows.
+        XCTAssertEqual(keys(), [.add, .find])
+        XCTAssertEqual(keys(canUndo: true), [.add, .find, .undo])
+        XCTAssertEqual(keys(hasParcels: false), [.add])
+        // A parcel open over the list, which has its own keys: the list's toast and search are under it.
+        XCTAssertEqual(keys(.stacked, chosen, canUndo: true), [.add])
+        // Beside a parcel, the arrows, and Return while it shows by itself.
+        XCTAssertEqual(keys(.sideBySide, automatic), [.add, .find, .previous, .next, .open])
+        XCTAssertEqual(keys(.sideBySide, chosen), [.add, .find, .previous, .next])
+        XCTAssertEqual(keys(.sideBySide, chosen, cards: []), [.add, .find])
+        // Typing in the search, the field keeps the keys it edits with.
+        XCTAssertEqual(keys(typing: true, .sideBySide, automatic, canUndo: true), [.add, .find])
+        // Another tab, or a sheet, an alert or a question over the deliveries or their parcel: none.
+        XCTAssertEqual(keys(free: false, .sideBySide, automatic, canUndo: true), [])
+    }
+
     func testOnlyAParcelSomeoneOpensAndTheListTheyGoBackToCountAsScreens() {
         let (a, b) = (UUID(), UUID())
         let list = DeliveriesNavigation()
@@ -2750,6 +2818,21 @@ extension ParcelLogicTests {
         archived.archivedAt = "2026-08-02T10:00:00Z"
         XCTAssertEqual(ParcelMenuItem.menu(for: archived, onCard: true)[2], [.restore])
         XCTAssertEqual(ParcelMenuItem.menu(for: archived, onCard: false)[1], [.restore])
+    }
+
+    func testAParcelsMenuShowsMailsKeysForCopyArchiveAndDeleteEachOnce() {
+        XCTAssertEqual(ParcelMenuItem.copyTrackingNumber.shortcut, KeyboardShortcut("c", modifiers: [.command, .shift]))
+        XCTAssertEqual(ParcelMenuItem.archive.shortcut, KeyboardShortcut("a", modifiers: [.command, .control]))
+        XCTAssertEqual(ParcelMenuItem.restore.shortcut, ParcelMenuItem.archive.shortcut)
+        XCTAssertEqual(ParcelMenuItem.delete.shortcut, KeyboardShortcut(.delete, modifiers: .command))
+        var archived = makeParcel()
+        archived.archivedAt = "2026-08-02T10:00:00Z"
+        for parcel in [makeParcel(), archived] {
+            for onCard in [true, false] {
+                let items = ParcelMenuItem.menu(for: parcel, onCard: onCard).joined().filter { $0.shortcut != nil }
+                XCTAssertEqual(items, [.copyTrackingNumber, parcel.isArchived ? .restore : .archive, .delete])
+            }
+        }
     }
 
     func testACopiedTrackingNumberIsTheOneItsCarriersSiteTakes() {

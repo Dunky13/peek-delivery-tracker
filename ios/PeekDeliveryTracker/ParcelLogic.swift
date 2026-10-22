@@ -695,6 +695,21 @@ struct DeliveriesNavigation: Equatable {
         pick(after ?? before ?? cards.first { $0 != parcelID })
     }
 
+    /// Opens beside the list the card `offset` cards on from the parcel shown, in the list's `cards`, as ↑ and ↓
+    /// do, and as a tap on that card would: from a parcel with no card, or none, the first card going down and the
+    /// last going up. Returns the card, nil past either end, where the parcel shown stays.
+    @discardableResult
+    mutating func step(_ offset: Int, through cards: [UUID]) -> UUID? {
+        let card: UUID?
+        if let shown, let index = cards.firstIndex(of: shown) {
+            card = cards.indices.contains(index + offset) ? cards[index + offset] : nil
+        } else {
+            card = offset > 0 ? cards.first : cards.last
+        }
+        if let card { open(card) }
+        return card
+    }
+
     /// The screen to count once the navigation has turned from `before` to this: a parcel someone opened, or
     /// the list they went back to. A parcel shown by itself is nobody's view, and beside the list, the list
     /// was there all along.
@@ -706,6 +721,32 @@ struct DeliveriesNavigation: Equatable {
     private mutating func pick(_ parcelID: UUID?) {
         path = parcelID.map { [$0] } ?? []
         automaticPick = parcelID
+    }
+}
+
+/// A key the deliveries answer, besides the parcel's own and the refresh button's ⌘R: ⌘N adds, ⌘F finds, ⌘Z
+/// undoes an archive while its toast shows, and beside a parcel, ↑ and ↓ open the card before or after it and
+/// Return opens the one shown by itself.
+enum DeliveriesKey: Hashable {
+    case add, find, undo, previous, next, open
+
+    /// The keys that act on what is in front. SwiftUI keeps every shortcut in the window, the list's under the
+    /// parcel open over it and a tab's behind the tab chosen since, so there are none unless the deliveries are
+    /// `free`: in front, with nothing open over the list or its parcel. While someone types in the search, the
+    /// field keeps the keys it edits with.
+    static func available(
+        free: Bool, typing: Bool, arrangement: DeliveriesArrangement, navigation: DeliveriesNavigation,
+        cards: [UUID], hasParcels: Bool, canUndo: Bool
+    ) -> Set<Self> {
+        guard free else { return [] }
+        let listShown = arrangement == .sideBySide || navigation.chosen == nil
+        var keys: Set<Self> = [.add]
+        if listShown, hasParcels { keys.insert(.find) }
+        guard !typing else { return keys }
+        if listShown, canUndo { keys.insert(.undo) }
+        if arrangement == .sideBySide, !cards.isEmpty { keys.formUnion([.previous, .next]) }
+        if arrangement == .sideBySide, navigation.shownAutomatically { keys.insert(.open) }
+        return keys
     }
 }
 
@@ -731,6 +772,16 @@ enum ParcelMenuItem: Hashable {
         case .archive: "detail.archive"
         case .restore: "detail.restore"
         case .delete: "detail.delete"
+        }
+    }
+
+    /// What a keyboard presses for it, as in Mail. It acts on the parcel shown, beside the list or over it.
+    var shortcut: KeyboardShortcut? {
+        switch self {
+        case .copyTrackingNumber: KeyboardShortcut("c", modifiers: [.command, .shift])
+        case .archive, .restore: KeyboardShortcut("a", modifiers: [.command, .control])
+        case .delete: KeyboardShortcut(.delete, modifiers: .command)
+        case .open, .rename, .share, .changeCarrier: nil
         }
     }
 

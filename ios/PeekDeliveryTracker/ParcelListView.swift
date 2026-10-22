@@ -16,12 +16,14 @@ struct ParcelListView: View {
     var body: some View {
         TabView(selection: $selection) {
             DeliveryListView(isSelected: selection == 0, firstParcel: $firstParcel, adding: $adding) { selection = 0 }
+                .environment(\.keyboardInFront, inFront(0))
                 .tag(0)
                 .tabItem {
                     Label(localizer.text("native.deliveries"), systemImage: "shippingbox.fill")
                 }
 
             PassportView()
+                .environment(\.keyboardInFront, inFront(1))
                 .tag(1)
                 .tabItem {
                     Label(ExperimentalCopy(localizer: localizer).passport, systemImage: "book.closed.fill")
@@ -30,10 +32,12 @@ struct ParcelListView: View {
             Group {
                 if session.isGuest { FriendsSignedOutView() } else { FriendsView() }
             }
+                .environment(\.keyboardInFront, inFront(2))
                 .tag(2)
                 .tabItem { Label(localizer.text("friends.title"), systemImage: "person.2.fill") }
         }
         .tint(Brand.ink)
+        .background { if !showsFirstOpen { tabKeys } }
         .accessibilityHidden(showsFirstOpen)
         .overlay {
             if showsFirstOpen {
@@ -53,6 +57,22 @@ struct ParcelListView: View {
         .onChange(of: selection) { _, tab in
             DeliveryAnalytics.shared.view(tab == 1 ? "passport" : tab == 2 ? "friends" : "deliveries")
         }
+    }
+
+    /// Whether the keyboard acts on a tab: it is the one chosen, and the first screen doesn't stand over it.
+    private func inFront(_ tab: Int) -> Bool { selection == tab && !showsFirstOpen }
+
+    /// ⌘1, ⌘2 and ⌘3 choose the tabs, as the tab bar does, once nothing stands over them.
+    private var tabKeys: some View {
+        KeyboardShortcuts {
+            Button(localizer.text("native.deliveries")) { choose(0) }.keyboardShortcut("1", modifiers: .command)
+            Button(ExperimentalCopy(localizer: localizer).passport) { choose(1) }.keyboardShortcut("2", modifiers: .command)
+            Button(localizer.text("friends.title")) { choose(2) }.keyboardShortcut("3", modifiers: .command)
+        }
+    }
+
+    private func choose(_ tab: Int) {
+        if !UIApplication.shared.windowCovered { selection = tab }
     }
 }
 
@@ -195,6 +215,7 @@ private struct DeliveryListView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSize
     @Environment(\.verticalSizeClass) private var verticalSize
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.keyboardInFront) private var inFront
 
     @Namespace private var parcelTransition
     @State private var navigation = DeliveriesNavigation()
@@ -211,6 +232,10 @@ private struct DeliveryListView: View {
     @State private var topCard: UUID?
     /// The card to bring back to the top of the list once the window has turned to another arrangement.
     @State private var keptCard: UUID?
+    /// The card ↑ or ↓ went to, to bring into view.
+    @State private var steppedCard: UUID?
+    /// The parcel's page has something of its own open over it.
+    @State private var pageCovered = false
     /// The sample parcel, while its page is open from the empty deliveries.
     @State private var sample: Parcel?
     @State private var query = ""
@@ -262,6 +287,8 @@ private struct DeliveryListView: View {
         var deleting: UUID?
         /// A sheet stands over the list.
         var covers: Bool { sharing != nil || changingCarrier != nil }
+        /// Nothing the menu asked for is open: no sheet, no name being typed, no question.
+        var idle: Bool { !covers && !naming && deleting == nil }
     }
 
     var body: some View {
@@ -514,6 +541,7 @@ private struct DeliveryListView: View {
             content(layout, leaving: leaving)
         }
         .dropDestination(for: DroppedText.self) { items, _ in addDropped(items) }
+        .background { keyboard(layout) }
         .safeAreaInset(edge: .top, spacing: 0) { DemoModeBar() }
         .navigationTitle(localizer.text("native.deliveries"))
         .navigationBarTitleDisplayMode(.inline)
@@ -523,7 +551,9 @@ private struct DeliveryListView: View {
 
     private func page(_ parcelID: UUID, release: (() -> Void)? = nil) -> some View {
         ParcelDetailView(parcelID: parcelID, transition: parcelTransition,
-                         sample: parcelID == FirstOpenJourney.parcelID ? sample : nil, release: release)
+                         sample: parcelID == FirstOpenJourney.parcelID ? sample : nil, release: release,
+                         covering: $pageCovered)
+            .environment(\.keyboardInFront, keyboardFree && !searchFocused)
     }
 
     /// Opens a parcel from its card: over the list, or beside it in place of the one shown there.
@@ -546,6 +576,56 @@ private struct DeliveryListView: View {
 
     /// Whether the list is on screen: always beside a parcel, and under the stack while nobody opened one over it.
     private var listShown: Bool { windowArrangement == .sideBySide || navigation.chosen == nil }
+
+    /// Whether the keyboard reaches the deliveries: they are in front, with nothing open over the list or its parcel.
+    private var keyboardFree: Bool {
+        inFront && !showingAdd && !showingAccount && !showingFilters && sitePage == nil && prompts.idle
+            && actionError == nil && links.route == nil && !pageCovered
+    }
+
+    /// The deliveries' keys, which do what their buttons do. The parcel's own are on its page.
+    @ViewBuilder private func keyboard(_ layout: DeliveryListLayout) -> some View {
+        let keys = DeliveriesKey.available(
+            free: keyboardFree, typing: searchFocused, arrangement: windowArrangement, navigation: navigation,
+            cards: layout.cards, hasParcels: !store.parcels.isEmpty, canUndo: store.undoParcel != nil
+        )
+        if !keys.isEmpty {
+            KeyboardShortcuts {
+                if keys.contains(.add) {
+                    Button(localizer.text("app.addParcel")) { sharedDraft = nil; showingAdd = true }
+                        .keyboardShortcut("n", modifiers: .command)
+                }
+                if keys.contains(.find) {
+                    Button(localizer.text("view.search")) { find() }.keyboardShortcut("f", modifiers: .command)
+                }
+                if keys.contains(.undo), let parcel = store.undoParcel {
+                    Button(localizer.text("app.undo")) { restore(parcel) }.keyboardShortcut("z", modifiers: .command)
+                }
+                if keys.contains(.previous) {
+                    Button(localizer.text("app.previousParcel")) { step(-1, through: layout.cards) }
+                        .keyboardShortcut(.upArrow, modifiers: [])
+                }
+                if keys.contains(.next) {
+                    Button(localizer.text("app.nextParcel")) { step(1, through: layout.cards) }
+                        .keyboardShortcut(.downArrow, modifiers: [])
+                }
+                if keys.contains(.open), let parcelID = navigation.shown {
+                    Button(localizer.text("detail.open")) { open(parcelID) }.keyboardShortcut(.return, modifiers: [])
+                }
+            }
+        }
+    }
+
+    /// Opens the search with the cursor in it.
+    private func find() {
+        withAnimation(reduceMotion ? nil : .snappy(duration: 0.3)) { showingSearch = true }
+        searchFocused = true
+    }
+
+    /// Shows the card before or after the parcel beside the list, and brings it into view.
+    private func step(_ offset: Int, through cards: [UUID]) {
+        if let card = navigation.step(offset, through: cards) { steppedCard = card }
+    }
 
     private func settleSheets() {
         if !showingAdd, !showingAccount { sheetsAsForms = windowArrangement == .sideBySide }
@@ -670,12 +750,18 @@ private struct DeliveryListView: View {
                 proxy.scrollTo(id, anchor: .top)
                 keptCard = nil
             }
+            .task(id: steppedCard) {
+                guard let id = steppedCard else { return }
+                withAnimation(reduceMotion ? nil : .snappy(duration: 0.25)) { proxy.scrollTo(id) }
+                steppedCard = nil
+            }
         }
     }
 
     @ToolbarContentBuilder private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             AccountToolbarButton { showingAccount = true }
+                .environment(\.keyboardInFront, keyboardFree)
         }
 
         // The mark stands at the leading edge on its own tile, not on a control's glass.
@@ -740,7 +826,7 @@ private struct DeliveryListView: View {
                     }.frame(width: 44, height: 44)
                 }
                 .disabled(store.refreshing)
-                .keyboardShortcut("r", modifiers: .command)
+                .keyboardShortcut(keyboardFree ? KeyboardShortcut("r", modifiers: .command) : nil)
                 .accessibilityLabel(localizer.text(store.refreshing ? "app.refreshing" : "app.refresh"))
                 .accessibilityIdentifier("deliveries.refresh")
             }
@@ -891,12 +977,7 @@ private struct DeliveryListView: View {
                 button: localizer.text("app.undo"),
                 symbol: "archivebox.fill",
                 tint: ExperimentalPalette.ochre
-            ) {
-                Task {
-                    do { try await store.restore(parcel) }
-                    catch { actionError = localizer.errorMessage(error) }
-                }
-            }
+            ) { restore(parcel) }
             .padding(.horizontal, 16)
             .padding(.bottom, 5)
             .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -1230,6 +1311,8 @@ private struct DeliveryListView: View {
     private func menu(for parcel: Parcel) -> CardMenu {
         CardMenu(
             items: ParcelMenuItem.menu(for: parcel, onCard: true),
+            // The keys act on the parcel shown beside the list: its card's menu shows them.
+            shortcuts: parcel.id == selectedCard && keyboardFree && !searchFocused,
             choose: { chose($0, on: parcel) },
             deleting: Binding(get: { prompts.deleting == parcel.id }, set: { prompts.deleting = $0 ? parcel.id : nil }),
             delete: { delete(parcel) }
@@ -1253,12 +1336,16 @@ private struct DeliveryListView: View {
             AccessibilityNotification.Announcement(copied).post()
         case .changeCarrier: prompts.changingCarrier = parcel
         case .archive: Task { await archive(parcel) }
-        case .restore:
-            Task {
-                do { try await store.restore(parcel) }
-                catch { actionError = localizer.errorMessage(error) }
-            }
+        case .restore: restore(parcel)
         case .delete: prompts.deleting = parcel.id
+        }
+    }
+
+    /// Brings a parcel back from the archive: the card's Restore, and the Undo of its toast or ⌘Z.
+    private func restore(_ parcel: Parcel) {
+        Task {
+            do { try await store.restore(parcel) }
+            catch { actionError = localizer.errorMessage(error) }
         }
     }
 
@@ -1773,6 +1860,8 @@ private struct DeliveredFlightCard: View, Animatable {
 /// A card's menu, under a long press or a secondary click, and the question it asks before a delete.
 private struct CardMenu {
     let items: [[ParcelMenuItem]]
+    /// The items show their keys: the parcel is the one the keyboard acts on.
+    let shortcuts: Bool
     let choose: (ParcelMenuItem) -> Void
     let deleting: Binding<Bool>
     let delete: () -> Void
@@ -1785,7 +1874,7 @@ private extension View {
             contentShape(.hoverEffect, shape)
                 .hoverEffect(.highlight)
                 .contentShape(.contextMenuPreview, shape)
-                .contextMenu { ParcelMenuButtons(items: menu.items, choose: menu.choose) }
+                .contextMenu { ParcelMenuButtons(items: menu.items, shortcuts: menu.shortcuts, choose: menu.choose) }
                 .parcelDeleteConfirmation(isPresented: menu.deleting, delete: menu.delete)
         } else {
             self

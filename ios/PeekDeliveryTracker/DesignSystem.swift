@@ -1,3 +1,4 @@
+import GameController
 import SwiftUI
 import UIKit
 
@@ -96,14 +97,18 @@ struct AppWindowAppearance: UIViewRepresentable {
     }
 }
 
-/// One account entry point, shared by both tabs.
+/// One account entry point, shared by the tabs. ⌘, opens it from the screen in front, as Settings opens elsewhere.
 struct AccountToolbarButton: View {
     let action: () -> Void
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var localizer: Localizer
+    @Environment(\.keyboardInFront) private var keyboardInFront
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            // ⌘, reaches the button under a sheet or a popover of its screen as well: it waits for them.
+            if !UIApplication.shared.windowCovered { action() }
+        } label: {
             Group {
                 if let initial = session.user?.email?.first {
                     Text(String(initial).uppercased())
@@ -120,7 +125,47 @@ struct AccountToolbarButton: View {
             .contentShape(Circle())
         }
         .buttonStyle(TactileButtonStyle(scale: 0.94))
+        .keyboardShortcut(keyboardInFront ? KeyboardShortcut(",", modifiers: .command) : nil)
         .accessibilityLabel(localizer.text("native.account"))
+    }
+}
+
+/// Buttons only a keyboard presses, for what has no button of its own on the screen or has it in a menu. Nothing
+/// of them shows; their titles name them where the system lists the app's shortcuts. SwiftUI keeps every shortcut
+/// in the window, a tab's behind the tab chosen since and a list's under the page over it, so a screen adds these
+/// only while it is in front with nothing over it.
+struct KeyboardShortcuts<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        ZStack { content }.hidden()
+    }
+}
+
+/// Whether a keyboard is connected. Menus show their items' keys only then: without one, a phone's stay as they were.
+@MainActor final class ConnectedKeyboard: ObservableObject {
+    static let shared = ConnectedKeyboard()
+    @Published private(set) var isConnected = GCKeyboard.coalesced != nil
+
+    private init() {
+        NotificationCenter.default.publisher(for: .GCKeyboardDidConnect).map { _ in true }
+            .merge(with: NotificationCenter.default.publisher(for: .GCKeyboardDidDisconnect).map { _ in false })
+            .receive(on: RunLoop.main)
+            .assign(to: &$isConnected)
+    }
+}
+
+extension EnvironmentValues {
+    /// Whether the keyboard acts on the screen: its tab is the one chosen, and nothing of the app's stands over it.
+    @Entry var keyboardInFront = true
+}
+
+extension UIApplication {
+    /// Whether anything stands over the app's window: a sheet, a cover, an alert or a popover. The screens under it
+    /// keep their keyboard shortcuts, which wait for it.
+    var windowCovered: Bool {
+        connectedScenes.lazy.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first?
+            .rootViewController?.presentedViewController != nil
     }
 }
 

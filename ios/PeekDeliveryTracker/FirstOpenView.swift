@@ -197,6 +197,7 @@ struct FirstOpenView: View {
                 .toolbar(Self.keepsBar ? .visible : .hidden, for: .navigationBar)
                 .navigationDestination(isPresented: $showingSample) {
                     ParcelDetailView(parcelID: FirstOpenJourney.parcelID, transition: transition, sample: sample)
+                        .environment(\.keyboardInFront, !covered && links.route == nil)
                 }
             }
         }

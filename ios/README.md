@@ -59,6 +59,15 @@ bring it back, and delete it once confirmed.
 Text or a link dropped on the deliveries or on + opens Add with it, as a paste or the Share
 extension does. A drop with no tracking number in it is refused.
 
+With a keyboard, ⌘N adds a parcel, ⌘F searches, ⌘R refreshes where its button shows, ⌘1 to ⌘3
+choose the tabs and ⌘, opens Settings. On the parcel shown, beside the list or over it, ⇧⌘C
+copies its tracking number, ⌃⌘A archives it or brings it back and ⌘⌫ deletes it once confirmed;
+while a keyboard is connected, its menus show these keys. ⌘Z undoes an archive while its toast
+shows. Beside a parcel, ↑ and ↓ open the card before or after it, as a tap would, and Return
+opens the one shown by itself; Esc goes back from a parcel over the list. A key acts only on the
+screen in front, with no sheet, alert or popover over it, and the search field keeps the keys it
+edits with.
+
 ## Signing for a device
 
 1. Select your team for the app, `ShareExtension` and `DeliveryWidget` targets.
