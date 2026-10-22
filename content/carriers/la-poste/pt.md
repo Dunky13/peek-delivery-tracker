@@ -40,7 +40,7 @@ O rastreio da La Poste está em francês, com uma versão inglesa. Estas são as
 
 A que mais engana é `Votre colis est sur son site de distribution…`: parece que a encomenda ficou presa no depósito, mas é a triagem da manhã, e a entrega vem no mesmo dia. Na barra de progresso, `La livraison de votre Colissimo est retardée.` quer dizer que a entrega está atrasada.
 
-Em Portugal, o rastreio da DPD Portugal (com o número que ela te manda) escreve assim:
+Em Portugal, o rastreio da [DPD Portugal](carrier:dpd-pt) (com o número que ela te manda) escreve assim:
 
 | A DPD Portugal escreve | O que quer dizer para ti |
 | --- | --- |
@@ -60,8 +60,8 @@ No rastreio da La Poste pode aparecer o número do parceiro, de 15 caracteres, q
 Como funciona a entrega da DPD Portugal, segundo as páginas dela:
 
 - **No dia da entrega:** com o Predict, a DPD diz-te a hora exata a que a encomenda chega, e podes segui-la em tempo real (Live-Tracking).
-- **Se não estiveres:** fica um aviso de passagem. No dpd.pt, em «Receber uma encomenda», podes mudar a data ou o local, ou mandá-la para um dos cerca de 2.000 pontos Pickup. Vale sempre a última alteração que fizeres, e em alguns casos podes mudar o dia até à véspera.
-- **No ponto Pickup:** recebes um SMS quando a encomenda chega. A DPD dá 7 dias úteis numa página e 10 noutra, e o remetente pode mudar o prazo: conta com o que diz o SMS. Nos cacifos (lockers) tens 72 horas.
+- **Se não estiveres:** fica um aviso de passagem. No dpd.pt, em «Receber uma encomenda», podes mudar a data ou o local, ou mandá-la para um ponto Pickup. Vale sempre a última alteração que fizeres, e em alguns casos podes mudar o dia até à véspera.
+- **No ponto Pickup:** recebes um SMS quando a encomenda chega. As FAQ da DPD dão 7 dias úteis numa resposta e 10 noutra: conta com 7. Nos cacifos (lockers) tens 72 horas.
 - **Levantar por ti:** outra pessoa pode levantar a encomenda com um documento de identificação e um formulário de autorização preenchido por ti. No centro de distribuição da DPD não se levantam encomendas.
 
 ## Se vives em França: avis de passage e levantamento

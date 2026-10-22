@@ -1152,6 +1152,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "DHLink tracking: numbers, statuses and who delivers",
       "name": "DHLink",
       "color": "#143167"
+    },
+    {
+      "id": "dpd-pt",
+      "catalog": "dpd-pt",
+      "slug": "dpd-portugal-tracking",
+      "title": "DPD Portugal tracking: statuses, Pickup points and contact",
+      "name": "DPD Portugal",
+      "color": "#dc0032"
     }
   ],
   "de": [
@@ -2418,6 +2426,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "China Post rastreio: número, estados e entrega em Portugal",
       "name": "China Post",
       "color": "#006d46"
+    },
+    {
+      "id": "dpd-pt",
+      "catalog": "dpd-pt",
+      "slug": "dpd-portugal-rastreio",
+      "title": "DPD Portugal rastreio: estados, pontos Pickup e contactos",
+      "name": "DPD Portugal",
+      "color": "#dc0032"
     }
   ],
   "pl": [
@@ -2616,8 +2632,26 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#ef7d00"
     }
   ],
-  "sv": [],
-  "da": [],
+  "sv": [
+    {
+      "id": "postnord",
+      "catalog": "postnord",
+      "slug": "postnord-spara-paket",
+      "title": "Spåra paket med PostNord: statusar, ombud och tull",
+      "name": "PostNord",
+      "color": "#00a0d6"
+    }
+  ],
+  "da": [
+    {
+      "id": "postnord",
+      "catalog": "postnord",
+      "slug": "postnord-spor-pakke",
+      "title": "PostNord Track & Trace: spor din pakke i Danmark",
+      "name": "PostNord",
+      "color": "#00a0d6"
+    }
+  ],
   "nb": [
     {
       "id": "bring",

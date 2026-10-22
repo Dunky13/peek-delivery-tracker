@@ -40,7 +40,7 @@ O Peek mostra os estados como a Chronopost os escreve, em francês. Pela ordem e
 
 `Livraison reportée de 24h` (morada a confirmar, empresa fechada nesse dia) não quer dizer que se perdeu. Numa encomenda para o estrangeiro, `Livraison reportée`, sem «de 24h», quer dizer que o parceiro que entrega adiou a entrega; não tens nada a fazer. `Destinataire informé par SMS ou mail` e `Instruction de livraison reçue` só registam um aviso ou uma instrução tua. Um `Livraison effectuée` depois de `Colis en retour expéditeur` quer dizer que a encomenda voltou à loja.
 
-Se for a DPD Portugal a entregar, o rastreio dela mostra `EM DISTRIBUIÇÃO` (sai hoje), `AUSÊNCIA DO DESTINATÁRIO` (não estavas), `ENTREGUE PELA DPD NO PONTO DE ENTREGA` (num ponto Pickup ou cacifo) e `PROVA DE ENTREGA` (entregue).
+Se for a [DPD Portugal](carrier:dpd-pt) a entregar, o rastreio dela mostra `EM DISTRIBUIÇÃO` (sai hoje), `AUSÊNCIA DO DESTINATÁRIO` (não estavas), `ENTREGUE PELA DPD NO PONTO DE ENTREGA` (num ponto Pickup ou cacifo) e `PROVA DE ENTREGA` (entregue).
 
 ## Se estás em Portugal: quem te entrega uma Chronopost
 
@@ -52,8 +52,8 @@ A Chronopost e a DPD Portugal são duas empresas da Geopost. O aviso, o email ou
 
 - O número da DPD vem no email e no aviso de passagem. Com ele segues a entrega no [Track & Trace da DPD](https://tracking.dpd.pt/track-and-trace).
 - No dia da entrega, o Predict diz-te a hora exata a que ela chega, e podes segui-la em tempo real.
-- Se não estiveres, fica um aviso de passagem. No dpd.pt, em «Receber uma encomenda», mudas a data ou o local, ou mandas a encomenda para um dos cerca de 2.000 pontos Pickup. Conta a última alteração que fizeres.
-- Num ponto Pickup recebes um SMS quando a encomenda chega. A DPD dá 7 dias úteis numa página e 10 noutra, e o remetente pode mudar o prazo: vale o que vier no SMS. Num cacifo tens 72 horas.
+- Se não estiveres, fica um aviso de passagem. No dpd.pt, em «Receber uma encomenda», mudas a data ou o local, ou mandas a encomenda para um ponto Pickup. Conta a última alteração que fizeres.
+- Num ponto Pickup recebes um SMS quando a encomenda chega. As FAQ da DPD dão 7 dias úteis numa resposta e 10 noutra: conta com 7. Num cacifo tens 72 horas.
 - Outra pessoa pode levantá-la com um documento de identificação e uma autorização preenchida por ti.
 - A DPD também entrega nas ilhas.
 
@@ -87,7 +87,7 @@ O [Peek](/) reconhece logo a Chronopost num número de 13 caracteres começado p
 
 O Peek lê a Chronopost em francês, por isso os estados ficam em francês. Mostra no mapa o depósito de cada evento, o país de destino, a hora de entrega, o número do parceiro no estrangeiro e, enquanto a encomenda espera, o relais ou o cacifo com a morada. Não guarda a tua morada.
 
-Numa encomenda para Portugal, o Peek mostra o número do parceiro, mas continua a segui-la na Chronopost: os passos da DPD Portugal vês no site dela. Consulta a cada 10 minutos, a cada 2 quando a encomenda está em distribuição, e avisa-te com «Todas as atualizações», «Só as importantes» ou «Só no dia da entrega». Não consegue mudar uma entrega nem reclamar por ti.
+Numa encomenda para Portugal, o Peek continua a segui-la na Chronopost, que não indica o parceiro: se a DPD Portugal te mandar o número dela, adiciona-o também ao Peek. Consulta a cada 10 minutos, a cada 2 quando a encomenda está em distribuição, e avisa-te com «Todas as atualizações», «Só as importantes» ou «Só no dia da entrega». Não consegue mudar uma entrega nem reclamar por ti.
 
 ## Perguntas sobre o rastreio Chronopost
 

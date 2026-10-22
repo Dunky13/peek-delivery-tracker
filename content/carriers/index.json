@@ -59,7 +59,7 @@
   { "id": "cacesa", "catalog": "cacesa", "name": "CACESA", "languages": ["en", "es", "pt"] },
   { "id": "sunyou", "catalog": "sunyou", "name": "SunYou", "languages": ["en", "de", "fr", "it", "es", "pt", "pl"] },
   { "id": "amazon-shipping", "catalog": "amazon-shipping", "name": "Amazon Shipping", "languages": ["en", "de", "fr", "it", "es"] },
-  { "id": "postnord", "catalog": "postnord", "name": "PostNord", "languages": ["en"] },
+  { "id": "postnord", "catalog": "postnord", "name": "PostNord", "languages": ["en", "da", "sv"] },
   { "id": "bring", "catalog": "bring-posten", "name": "Bring", "languages": ["en", "nb"] },
   { "id": "posti", "catalog": "posti", "name": "Posti", "languages": ["en", "fi"] },
   { "id": "omniva", "catalog": "omniva", "name": "Omniva", "languages": ["en"] },
@@ -141,5 +141,6 @@
   { "id": "z-leading", "catalog": "z-leading", "name": "Z-Leading", "languages": ["en"] },
   { "id": "imile", "catalog": "imile", "name": "iMile", "languages": ["en", "es", "it", "de"] },
   { "id": "postnl", "catalog": "spring-gds", "name": "PostNL", "languages": ["en", "nl", "it", "pl"] },
-  { "id": "dhlink", "catalog": "dhlink", "name": "DHLink", "languages": ["en"] }
+  { "id": "dhlink", "catalog": "dhlink", "name": "DHLink", "languages": ["en"] },
+  { "id": "dpd-pt", "catalog": "dpd-pt", "name": "DPD Portugal", "languages": ["en", "pt"] }
 ]

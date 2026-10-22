@@ -3,7 +3,7 @@ title: PostNord tracking: numbers, statuses and pickup times
 description: Track a PostNord parcel in Sweden or Denmark: what the number looks like, what PostNord's English statuses mean, pickup deadlines, customs and contact.
 slug: postnord-tracking
 published: 2026-10-12
-updated: 2026-10-12
+updated: 2026-10-22
 ---
 
 PostNord is the postal and parcel group of Sweden and Denmark, formed when Post Danmark and Sweden's Posten AB merged. Track a parcel on [PostNord's tracking page](https://tracking.postnord.com/en/) or in the PostNord app with the shipment number, or paste it in the box above. The number comes from the shop that sent the parcel.
@@ -82,7 +82,7 @@ As listed on PostNord's pages on 12 October 2026:
 
 ## PostNord parcel tracking with Peek
 
-[Peek](/) names a postal number ending `SE` or `DK`, or 11 digits plus `SE`, as PostNord's straight away. For a 20-digit number starting `00` with Sweden's or Denmark's prefix, Peek asks PostNord first, together with [Swiss Post Cargo](carrier:swiss-post-cargo), [USPS](carrier:usps) and [NZ Post](carrier:nz-post), and says "PostNord has this parcel." when only PostNord knows it. Other 10- to 20-digit numbers, such as a DPD number PostNord delivers, work after "Change". Links from tracking.postnord.com work with any number; postnord.se, .dk, .no and .fi links only with an `SE` or `DK` number inside.
+[Peek](/) names a postal number ending `SE` or `DK`, or 11 digits plus `SE`, as PostNord's straight away. For a 20-digit number starting `00` with Sweden's or Denmark's prefix, Peek asks PostNord first, together with [Swiss Post Cargo](carrier:swiss-post-cargo), [USPS](carrier:usps) and [NZ Post](carrier:nz-post), and says "PostNord has this parcel." when only PostNord knows it. Other 10- to 20-digit numbers, such as a DPD number PostNord delivers, work after "Change". Links from tracking.postnord.com work with any number.
 
 Peek shows PostNord's English statuses as written, with each scan's place, the sender, service name, weight, dimensions, destination country and, while the parcel waits, the service point's address. It leaves out SMS and email notices and flags `The shipment item has been stored.` as a problem. It checks every 10 minutes (every 2 once out for delivery), draws each scan on a map and can notify you of changes. It drops your name and shows no expected delivery, even when PostNord's own tracking gives one.
 
@@ -118,10 +118,11 @@ Yes, it's Sweden's and Denmark's postal group. Messages asking for a small fee i
 - [PostNord Denmark: Kan jeg udsætte leveringen?](https://kundeservice.postnord.dk/s/article/Kan-jeg-uds%C3%A6tte-leveringen-dk?language=da) – no choice of day, Opdatér levering
 - [PostNord Denmark: FlexChange](https://kundeservice.postnord.dk/s/article/FlexChange-dk?language=da) – delivery changes
 - [PostNord Denmark: Hvornår kan jeg hente min forsendelse i PostNord Pakkeshop?](https://kundeservice.postnord.dk/s/article/Hvorn%C3%A5r-kan-jeg-hente-min-forsendelse-i-PostNord-Pakkeshop-ex?language=da) – notices, no terminal pickup
-- [PostNord Denmark: Frist for at hente i PostNord Pakkeshop eller pakkeboks](https://kundeservice.postnord.dk/s/article/Frist-for-at-hente-i-PostNord-Pakkeshop-eller-pakkeautomat-dk?language=da) – holding times
+- [PostNord Denmark: Frist for at hente i PostNord Pakkeshop eller pakkeboks](https://kundeservice.postnord.dk/s/article/Frist-for-at-hente-i-PostNord-Pakkeshop-eller-pakkeboks-dk?language=da) – holding times
 - [PostNord Denmark: Hvor lang tid har jeg til at hente?](https://kundeservice.postnord.dk/s/article/Hvor-lang-tid-har-jeg-til-at-hente-Kan-jeg-uds%C3%A6tte-afhentningen-dk?language=da) – parcel box extension
 - [PostNord Denmark: Legitimation / ID](https://kundeservice.postnord.dk/s/article/Legitimation-ID-dk?language=da) – ID and pickup code
-- [PostNord Denmark: Sådan henter du pakker i pakkeboksen](https://kundeservice.postnord.dk/s/article/S%C3%A5dan-henter-du-pakker-i-pakkeboksen?language=da) – parcel boxes via the app
+- [PostNord Denmark: Sådan bestiller du til og henter i pakkeboks](https://kundeservice.postnord.dk/s/article/S%C3%A5dan-bestiller-du-til-og-henter-i-pakkeautomat-dk?language=da) – parcel boxes via the app
+- [PostNord Denmark: Jeg har brug for hjælp til at hente min pakke i pakkeboksen eller pakketårnet](https://kundeservice.postnord.dk/s/article/Jeg-har-brug-for-hj%C3%A6lp-til-at-hente-min-pakke-i-pakkeboksen-eller-pakket%C3%A5rnet-dk?language=da) – Bluetooth for parcel boxes
 - [PostNord Denmark: Kan en anden hente min forsendelse?](https://kundeservice.postnord.dk/s/article/Kan-en-anden-hente-min-forsendelse-i-en-PostNord-Pakkeshop-dk?language=da) – collecting for someone else
 - [PostNord Denmark: Kan jeg ændre adressen på forsendelsen?](https://kundeservice.postnord.dk/s/article/Kan-jeg-%C3%A6ndre-adressen-p%C3%A5-forsendelsen-dk?language=da) – wrong address
 - [PostNord Denmark: Hvis din pakke er registreret hos afsender](https://kundeservice.postnord.dk/s/article/Hvis-din-pakke-er-registreret-hos-afsender-men-der-endnu-ikke-er-opdateringer-dk?language=da) – no updates, sender traces
