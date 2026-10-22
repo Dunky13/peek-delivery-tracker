@@ -1669,6 +1669,27 @@ describe('TrackingSyncService', () => {
       .resolves.toMatchObject({ emails_sent: 0, email_errors: 0 });
   });
 
+  it('reports failed push deliveries only when the next dispatch fails again', async () => {
+    const report = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
+    const notifier = { dispatch: vi.fn() };
+    const service = new TrackingSyncService(fakeClient() as unknown as SupabaseServiceClient,
+      { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }) }, notifier as never);
+    const parcel = { id: 'parcel', user_id: 'owner', carrier: 'swiss-post', tracking_number: 'TEST1234' };
+    const dispatch = async (...failures: number[]) => {
+      for (const failed of failures) {
+        notifier.dispatch.mockResolvedValueOnce({ attempted: 1, sent: 1 - failed, failed, expired: 0 });
+        await expect(service.syncPackage(parcel)).resolves.toMatchObject({ notification_errors: failed });
+      }
+    };
+    // A failed send stays pending, and the next dispatch delivers what a push service's blip held back.
+    await dispatch(1, 0, 1, 0);
+    expect(report).not.toHaveBeenCalled();
+    // Sends that keep failing are reported, less often as the streak goes on.
+    await dispatch(1, 1, 1, 1, 1, 1, 1, 1, 1);
+    expect(report.mock.calls.map(([, context]) => context.failureCount)).toEqual([2, 3, 4, 5, 9]);
+    expect(report).toHaveBeenCalledWith(expect.any(Error), { component: 'push', operation: 'dispatch', failureCount: 2 });
+  });
+
   it('finishes the job when the delivery emails cannot be dispatched, and reports it', async () => {
     const report = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
     const client = fakeClient();

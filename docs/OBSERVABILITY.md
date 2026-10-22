@@ -574,6 +574,9 @@ Key JSON events:
   pass forgot, how many stopped links from accounts it purged and how many alerts of
   finished journeys it ended. `parcel_link_maintenance_failed` when it could not run.
 - `parcel_link_alerts_failed`: how many alerts of parcel links a dispatch could not send.
+- `push_delivery_failed`: a notification the push service did not take, by `channel` (`web`,
+  `native` or `live_activity`), with its HTTP `status`, the APNs `reason` and the `error_type`;
+  never the endpoint or token. The scan stays pending and the next dispatch sends it again.
 - `parcel_feedback`: an answer about a parcel, with the `answer`, its `reasons`, the
   `carrier`, where it was `asked` (`page` or `back`, on the way back from the carrier's
   site), `via` an `account` or a `link`, the `app` and the `outcome` as
@@ -633,6 +636,10 @@ provider failure in an `AggregateError` so every cause is visible.
 - **Review signals**: routing signals, sync anomalies, health recoveries and covered direct
   failures open no issue;
   see [Review signals](#review-signals).
+- **Push deliveries**: a send the push service refuses, other than for a subscription that is
+  gone, is retried by the next dispatch, so a dispatch with failed deliveries is only logged.
+  While every dispatch keeps failing some, it is reported 1, 2, 3, 4, 8, 16… dispatches after
+  the first. A channel that cannot dispatch at all is reported at once.
 - **Input requirements**: requests for a postcode or other tracking input stay in logs
   and breadcrumbs without opening Sentry issues. Each lookup made with a postcode the
   owner supplied for a provider logs `provider_input_lookup` with its result.

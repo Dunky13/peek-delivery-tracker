@@ -12,7 +12,7 @@ import { languageTags } from '../lib/messages';
 import { ALERT_PRESET_STAGES } from '../lib/notificationPresets';
 import { capitalized } from '../peek/parcel/summary';
 import { recordParcelAlertRemoved, recordParcelAlertSent } from './metrics';
-import { logOperationalEvent } from './observability';
+import { errorType, logOperationalEvent } from './observability';
 import { providerCopies } from './providerCopies';
 import { lateScans, relayRepeats } from './relayCopies';
 import { messagesFor } from './requestLocale';
@@ -586,6 +586,7 @@ export class WebPushNotificationService {
           });
           summary.expired += 1;
         } else {
+          logDeliveryFailure('web', error);
           await this.client.updatePushSubscription(subscriptionId, {
             last_error: 'Push delivery failed',
           });
@@ -914,6 +915,7 @@ export class NativePushNotificationService {
           });
           summary.expired += 1;
         } else {
+          logDeliveryFailure('native', error);
           await this.client.updateNativePushDevice(deviceId, {
             last_error: 'APNs delivery failed',
           });
@@ -1081,6 +1083,7 @@ export class DeliveryLiveActivityNotificationService {
           }
           summary.expired += 1;
         } else {
+          logDeliveryFailure('live_activity', error);
           if (updateTokenId) {
             await this.client.updateLiveActivityToken(updateTokenId, {
               last_error: 'Live Activity delivery failed',
@@ -1187,6 +1190,17 @@ export class DeliveryLiveActivityNotificationService {
     }
     return { aps };
   }
+}
+
+/** Logs what the push service said about a send that failed, without its endpoint or token. */
+function logDeliveryFailure(channel: 'web' | 'native' | 'live_activity', error: unknown): void {
+  const status = typeof error === 'object' && error !== null && 'statusCode' in error ? Number(error.statusCode) : null;
+  logOperationalEvent('push_delivery_failed', {
+    channel,
+    status,
+    reason: error instanceof APNsError ? error.reason || null : null,
+    error_type: errorType(error),
+  }, 'warning');
 }
 
 /** Carries what the healthy channels delivered when another channel failed. */

@@ -16,6 +16,7 @@ import { SupabaseAuthError, SupabaseAuthenticator } from './auth';
 import { fetchBounded, parseJsonBytes } from 'universal-parcel-scraper/node';
 import { RateLimiter } from './rateLimit';
 import {
+  APNsError,
   DeliveryLiveActivityNotificationService,
   NativePushNotificationService,
   notificationExpectedDelivery,
@@ -29,6 +30,7 @@ import {
   publicSupabaseOrigin,
   serviceClient,
 } from './runtime';
+import * as observability from './observability';
 import { databaseUnavailable } from './observability';
 import { SupabaseClient, type SupabaseError } from './supabase';
 import {
@@ -1074,6 +1076,54 @@ describe('native notification boundaries', () => {
 
     await expect(fallback.dispatch()).resolves.toMatchObject({ attempted: 1, sent: 1 });
     expect(fallbackSend).toHaveBeenCalledOnce();
+  });
+
+  it('logs what the push service said about a send that failed, and leaves the scan to the next dispatch', async () => {
+    const logged = vi.spyOn(observability, 'logOperationalEvent').mockReturnValue(undefined);
+    const row = {
+      device_id: 'device-1',
+      subscription_id: 'subscription-1',
+      package_id: 'package-1',
+      event_id: 'event-1',
+      event_created_at: '2026-08-25T12:00:00.000Z',
+      stage: 'in_transit',
+    };
+    const devices = {
+      listPendingNativePushNotifications: vi.fn().mockResolvedValue([row]),
+      recordNativePushDeliveries: vi.fn().mockResolvedValue(undefined),
+      updateNativePushDevice: vi.fn().mockResolvedValue(undefined),
+    };
+    const native = new NativePushNotificationService(
+      devices as never,
+      'TEAM',
+      'KEY',
+      privateKey('prime256v1'),
+      'com.example.delivery',
+    );
+    vi.spyOn(native, 'send').mockRejectedValue(new APNsError(503, 'ServiceUnavailable'));
+
+    await expect(native.dispatch()).resolves.toEqual({ attempted: 1, sent: 0, failed: 1, expired: 0 });
+    expect(devices.recordNativePushDeliveries).not.toHaveBeenCalled();
+    expect(devices.updateNativePushDevice).toHaveBeenCalledExactlyOnceWith('device-1', { last_error: 'APNs delivery failed' });
+    expect(logged).toHaveBeenCalledExactlyOnceWith('push_delivery_failed', {
+      channel: 'native', status: 503, reason: 'ServiceUnavailable', error_type: 'APNsError',
+    }, 'warning');
+
+    const subscriptions = {
+      listPendingPushNotifications: vi.fn().mockResolvedValue([row]),
+      recordPushDeliveries: vi.fn().mockResolvedValue(undefined),
+      updatePushSubscription: vi.fn().mockResolvedValue(undefined),
+    };
+    const web = new WebPushNotificationService(subscriptions as never, 'public', 'private', 'mailto:test@example.com');
+    vi.spyOn(web, 'send').mockRejectedValue(Object.assign(new Error('Received unexpected response code'), {
+      name: 'WebPushError', statusCode: 503,
+    }));
+
+    await expect(web.dispatch()).resolves.toEqual({ attempted: 1, sent: 0, failed: 1, expired: 0 });
+    expect(subscriptions.recordPushDeliveries).not.toHaveBeenCalled();
+    expect(logged).toHaveBeenLastCalledWith('push_delivery_failed', {
+      channel: 'web', status: 503, reason: null, error_type: 'WebPushError',
+    }, 'warning');
   });
 
   it('rejects incomplete Web Push credentials during service startup', () => {

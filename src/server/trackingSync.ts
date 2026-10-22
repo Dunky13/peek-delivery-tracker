@@ -30,6 +30,7 @@ import {
   errorType,
   logOperationalEvent,
   reportRoutingEvent,
+  shouldReportRepeatedFailure,
 } from './observability';
 import type { DeliveryEmailService } from './email/deliveryEmails';
 import { PushDispatchError, type CompositePushNotificationService } from './push';
@@ -867,6 +868,8 @@ class SupersededTrackingSync extends Error {}
 export class TrackingSyncService {
   #tail: Promise<void> = Promise.resolve();
   #reportedObservationFailure = false;
+  /** Push dispatches in a row that had a delivery fail. */
+  #pushFailureStreak = 0;
   /**
    * The catalog rules this process looked for redetections with, whether it has
    * listed them yet, the parcels still to check, the most likely to change first,
@@ -1164,11 +1167,14 @@ export class TrackingSyncService {
       summary.notifications_sent += push.sent;
       summary.notification_errors += push.failed;
       summary.subscriptions_expired += push.expired;
-      if (push.failed > 0) {
+      // A failed send stays pending and the next dispatch tries it again, which heals a push
+      // service's blip: only deliveries that fail again are reported.
+      this.#pushFailureStreak = push.failed > 0 ? this.#pushFailureStreak + 1 : 0;
+      if (this.#pushFailureStreak > 1 && shouldReportRepeatedFailure(this.#pushFailureStreak - 1)) {
         captureOperationalError(new Error('Push dispatch returned failed deliveries'), {
           component: 'push',
           operation: 'dispatch',
-          failureCount: push.failed,
+          failureCount: this.#pushFailureStreak,
         });
       }
     } catch (error) {
