@@ -105,7 +105,7 @@ Die Prüfziffer fängt Tippfehler ab. So prüfst du eine Nummer:
 2. Teile die Summe durch 11 und zieh den Rest von 11 ab.
 3. Aus 10 wird 0, aus 11 wird 5.
 
-Für `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Geteilt durch 11 bleibt der Rest 6, und 11 − 6 = 5. Fällt eine abgetippte Postnummer durch diesen Test, such nach einer falschen Ziffer oder einem Zahlendreher.
+Bei `RR000000005CH` sind alle acht Ziffern der Seriennummer 0: Die Summe ist 0, geteilt durch 11 bleibt der Rest 0, und 11 − 0 = 11, also wird daraus 5. Fällt eine abgetippte Postnummer durch diesen Test, such nach einer falschen Ziffer oder einem Zahlendreher.
 
 ### Sendungsnummer beginnt mit LX, RT oder CY?
 

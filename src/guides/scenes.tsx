@@ -84,7 +84,7 @@ function Stop({ x, y, state, tone }: { x: number; y: number; state: 'done' | 'no
 function Formats() {
   return <>
     <NumberStrip x={34} y={36} tone="orange" parts={[['1Z', 'orange'], ['999AA1', 'blue'], ['01', 'green'], ['2345', 'lilac']]} />
-    <NumberStrip x={58} y={120} tone="blue" parts={[['RR', 'blue'], ['12345678', 'orange'], ['5', 'green'], ['CH', 'lilac']]} />
+    <NumberStrip x={58} y={120} tone="blue" parts={[['RR', 'blue'], ['00000000', 'orange'], ['5', 'green'], ['CH', 'lilac']]} />
     <NumberStrip x={34} y={204} tone="green" parts={[['LP', 'green'], ['00123456', 'ochre'], ['789', 'blue']]} />
     {/* The magnifier rests on the middle number's country. */}
     <g transform="translate(354 150)">
@@ -239,7 +239,7 @@ function FindNumber() {
       <rect x="22" y="72" width="204" height="8" rx="4" fill="var(--control)" />
       <rect x="22" y="88" width="170" height="8" rx="4" fill="var(--control)" />
       <rect x="16" y="110" width="218" height="36" rx="11" fill="var(--yellow)" />
-      <text x="125" y="134" textAnchor="middle" fontFamily={MONO} fontSize="16" fontWeight="650" letterSpacing="1" fill="var(--on-yellow)">RR123456785CH</text>
+      <text x="125" y="134" textAnchor="middle" fontFamily={MONO} fontSize="16" fontWeight="650" letterSpacing="1" fill="var(--on-yellow)">RR000000005CH</text>
       <rect x="22" y="160" width="150" height="8" rx="4" fill="var(--control)" />
       <rect x="22" y="176" width="96" height="8" rx="4" fill="var(--control)" />
     </Sheet>

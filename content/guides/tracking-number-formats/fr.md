@@ -117,7 +117,7 @@ Le chiffre de contrôle sert à repérer les fautes de frappe. Pour tester un nu
 2. Divise la somme par 11 et soustrais le reste de 11.
 3. Un résultat de 10 devient 0, et 11 devient 5.
 
-Pour `RR000000005CH` : 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Divisé par 11, il reste 6, et 11 − 6 = 5. Si un numéro postal recopié à la main ne passe pas ce test, cherche un chiffre mal tapé ou deux chiffres inversés.
+Pour `RR000000005CH`, les huit chiffres du numéro de série valent 0 : la somme fait 0, il ne reste rien après la division par 11, et 11 − 0 = 11, qui devient 5. Si un numéro postal recopié à la main ne passe pas ce test, cherche un chiffre mal tapé ou deux chiffres inversés.
 
 ### Numéro de suivi qui commence par U
 

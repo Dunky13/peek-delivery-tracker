@@ -111,7 +111,7 @@ El dígito de control sirve para detectar erratas. Para comprobar un número:
 2. Divide la suma entre 11 y resta a 11 el resto de la división.
 3. Si sale 10, el dígito es 0; si sale 11, es 5.
 
-Para `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204; al dividir entre 11 queda un resto de 6, y 11 − 6 = 5. Si un número postal que copiaste a mano no pasa la prueba, busca una cifra mal escrita o dos cifras cambiadas de sitio.
+Para `RR000000005CH`, las ocho cifras del número de serie son 0: la suma da 0, al dividir entre 11 el resto es 0, y 11 − 0 = 11, así que el dígito es 5. Si un número postal que copiaste a mano no pasa la prueba, busca una cifra mal escrita o dos cifras cambiadas de sitio.
 
 ### Número de seguimiento que empieza por U
 

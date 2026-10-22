@@ -110,7 +110,7 @@ Cyfra kontrolna wyłapuje literówki. Tak sprawdzisz numer:
 2. Podziel sumę przez 11 i odejmij resztę od 11.
 3. Wynik to cyfra kontrolna, z dwoma wyjątkami: 10 daje 0, a 11 daje 5.
 
-Dla `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204. Z dzielenia przez 11 zostaje reszta 6, a 11 − 6 = 5. Jeśli przepisany ręcznie numer pocztowy nie przechodzi tego testu, szukaj literówki albo dwóch przestawionych cyfr.
+W `RR000000005CH` wszystkie osiem cyfr numeru seryjnego to 0: suma wynosi 0, z dzielenia przez 11 zostaje reszta 0, a 11 − 0 = 11, co daje 5. Jeśli przepisany ręcznie numer pocztowy nie przechodzi tego testu, szukaj literówki albo dwóch przestawionych cyfr.
 
 ### Numer przesyłki zaczyna się od UL albo UU: czyj to numer?
 

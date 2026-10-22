@@ -110,7 +110,7 @@ La cifra di controllo serve a scovare gli errori di battitura. Per verificare un
 2. Dividi per 11 e sottrai il resto da 11.
 3. Se ottieni 10 la cifra è 0, se ottieni 11 è 5.
 
-Per `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, che diviso per 11 dà resto 6, e 11 − 6 = 5. Se un codice postale copiato a mano non supera la prova, cerca una cifra sbagliata o due cifre invertite. Attenzione però agli esempi nei moduli dei corrieri: molti, come `ZA123456789IT` di Poste, sono solo segnaposto e la prova non la superano.
+Per `RR000000005CH` le otto cifre del numero di serie sono tutte 0: la somma è 0, che diviso per 11 dà resto 0, e 11 − 0 = 11, quindi la cifra è 5. Se un codice postale copiato a mano non supera la prova, cerca una cifra sbagliata o due cifre invertite. Attenzione però agli esempi nei moduli dei corrieri: molti, come `ZA123456789IT` di Poste, sono solo segnaposto e la prova non la superano.
 
 ### Codice che inizia con UL o UU: di chi è?
 

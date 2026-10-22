@@ -109,7 +109,7 @@ O dígito de controlo serve para apanhar erros de escrita. Para testar um númer
 2. Divide por 11 e subtrai o resto a 11.
 3. Se der 10, o dígito é 0; se der 11, é 5.
 
-Para `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, que dividido por 11 deixa resto 6, e 11 − 6 = 5. Se um número neste formato que copiaste à mão falhar o teste, procura um algarismo mal escrito ou dois trocados.
+Para `RR000000005CH`, os oito algarismos do número de série são 0: a soma dá 0, que dividido por 11 deixa resto 0, e 11 − 0 = 11, por isso o dígito é 5. Se um número neste formato que copiaste à mão falhar o teste, procura um algarismo mal escrito ou dois trocados.
 
 ### Número que começa por UL ou UU: de quem é?
 

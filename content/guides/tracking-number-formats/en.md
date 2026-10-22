@@ -105,7 +105,7 @@ The check digit catches typos. To test a number:
 2. Divide by 11 and take the remainder away from 11.
 3. A result of 10 becomes 0, and 11 becomes 5.
 
-For `RR000000005CH`: 8 + 12 + 12 + 8 + 15 + 30 + 63 + 56 = 204, which leaves 6, and 11 − 6 = 5. If a postal number you copied by hand fails this test, look for a mistyped or swapped digit.
+For `RR000000005CH`, all eight serial digits are 0, so the sum is 0 and leaves 0, and 11 − 0 = 11, which becomes 5. If a postal number you copied by hand fails this test, look for a mistyped or swapped digit.
 
 ### Whose tracking number starts with UL or UU?
 
