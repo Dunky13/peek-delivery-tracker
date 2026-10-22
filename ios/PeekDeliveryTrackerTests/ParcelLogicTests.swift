@@ -2575,3 +2575,133 @@ extension ParcelLogicTests {
         XCTAssertEqual(arrangement(1376, regularWidth: false, from: .sideBySide), .stacked)
     }
 }
+
+extension ParcelLogicTests {
+    func testTheListsCardsRunFromNextUpToThePastDeliveriesWithoutTheArchive() throws {
+        let now = DateParser.date("2026-09-09T12:00:00Z")!
+        let parcels = DemoRepository.seed(now: now)
+        let layout = DeliveryListLayout(parcels: parcels, query: "", status: .all, carrier: nil, sort: .priority, featuresNext: true, now: now)
+        let delivered = try XCTUnwrap(layout.sections.first { $0.kind == .delivered })
+        XCTAssertEqual(layout.cards, ([layout.next].compactMap { $0 } + layout.attention + layout.remaining + delivered.parcels).map(\.id))
+        XCTAssertEqual(layout.cards.first, layout.next?.id)
+        XCTAssertEqual(Set(layout.cards), Set(parcels.filter { !$0.isArchived }.map(\.id)))
+    }
+
+    func testEveryWayAParcelOpensShowsItAsChosen() {
+        let (first, second) = (UUID(), UUID())
+        var navigation = DeliveriesNavigation()
+        navigation.open(first)
+        XCTAssertEqual(navigation.path, [first])
+        XCTAssertEqual(navigation.chosen, first)
+        // Another opened from beside the list, or from a notification over another, takes its place.
+        navigation.open(second)
+        XCTAssertEqual(navigation.path, [second])
+        // A parcel the app showed by itself becomes the person's once they open it.
+        navigation = DeliveriesNavigation()
+        navigation.settle(.sideBySide, cards: [first, second])
+        XCTAssertTrue(navigation.shownAutomatically)
+        navigation.open(first)
+        XCTAssertFalse(navigation.shownAutomatically)
+        XCTAssertEqual(navigation.chosen, first)
+    }
+
+    func testBesideTheListTheFirstCardShowsUntilSomeoneChoosesAnother() {
+        let (next, other, later) = (UUID(), UUID(), UUID())
+        var navigation = DeliveriesNavigation()
+        // Nothing to show while the list shows no card.
+        navigation.settle(.sideBySide, cards: [])
+        XCTAssertNil(navigation.shown)
+        navigation.settle(.sideBySide, cards: [next, other])
+        XCTAssertEqual(navigation.shown, next)
+        XCTAssertTrue(navigation.shownAutomatically)
+        XCTAssertNil(navigation.chosen)
+        // It stays while its card stays, wherever the card goes, and gives way to the first once it leaves.
+        navigation.settle(.sideBySide, cards: [other, next])
+        XCTAssertEqual(navigation.shown, next)
+        navigation.settle(.sideBySide, cards: [other, later])
+        XCTAssertEqual(navigation.shown, other)
+        XCTAssertTrue(navigation.shownAutomatically)
+        navigation.settle(.sideBySide, cards: [])
+        XCTAssertNil(navigation.shown)
+        // A parcel someone chose stays, even once a search hides its card.
+        navigation.open(later)
+        navigation.settle(.sideBySide, cards: [next])
+        XCTAssertEqual(navigation.shown, later)
+        XCTAssertEqual(navigation.chosen, later)
+        // Over the list, nothing opens by itself.
+        var stacked = DeliveriesNavigation()
+        stacked.settle(.stacked, cards: [next, other])
+        XCTAssertNil(stacked.shown)
+    }
+
+    func testAFoldKeepsTheParcelSomeoneChoseAndPutsBackOneShownByItself() {
+        let (next, other) = (UUID(), UUID())
+        var navigation = DeliveriesNavigation()
+        navigation.settle(.sideBySide, cards: [next, other])
+        navigation.settle(.stacked, cards: [next, other])
+        XCTAssertEqual(navigation.path, [])
+        XCTAssertFalse(navigation.shownAutomatically)
+        // Unfolded again, the first card shows by itself once more.
+        navigation.settle(.sideBySide, cards: [next, other])
+        XCTAssertEqual(navigation.shown, next)
+        navigation.open(other)
+        navigation.settle(.stacked, cards: [next, other])
+        XCTAssertEqual(navigation.path, [other])
+        navigation.settle(.sideBySide, cards: [next, other])
+        XCTAssertEqual(navigation.chosen, other)
+    }
+
+    func testAParcelThatLeavesTheListFromBesideItGivesWayToTheCardAfterIt() {
+        let (a, b, c) = (UUID(), UUID(), UUID())
+        let cards = [a, b, c]
+        var navigation = DeliveriesNavigation()
+        navigation.open(b)
+        navigation.leave(b, cards: cards)
+        XCTAssertEqual(navigation.shown, c)
+        // Nobody chose the next one: a fold puts it back into the list, and no parcel view is counted.
+        XCTAssertTrue(navigation.shownAutomatically)
+        navigation.open(c)
+        navigation.leave(c, cards: cards)
+        XCTAssertEqual(navigation.shown, b, "the last card gives way to the one before it")
+        // One brought back from the archive had no card: the first shows.
+        let archived = UUID()
+        navigation.open(archived)
+        navigation.leave(archived, cards: cards)
+        XCTAssertEqual(navigation.shown, a)
+        navigation.open(a)
+        navigation.leave(a, cards: [a])
+        XCTAssertNil(navigation.shown, "the only card leaves nothing to show")
+        // A page that is no longer the one shown changes nothing.
+        navigation.open(a)
+        navigation.leave(b, cards: cards)
+        XCTAssertEqual(navigation.chosen, a)
+    }
+
+    func testOnlyAParcelSomeoneOpensAndTheListTheyGoBackToCountAsScreens() {
+        let (a, b) = (UUID(), UUID())
+        let list = DeliveriesNavigation()
+        var opened = list
+        opened.open(a)
+        XCTAssertEqual(opened.screen(after: list), "parcel")
+        XCTAssertNil(opened.screen(after: opened))
+        XCTAssertEqual(list.screen(after: opened), "deliveries")
+        var other = opened
+        other.open(b)
+        XCTAssertEqual(other.screen(after: opened), "parcel")
+        // Shown by itself, beside the list.
+        var automatic = list
+        automatic.settle(.sideBySide, cards: [a, b])
+        XCTAssertNil(automatic.screen(after: list))
+        var chosen = automatic
+        chosen.open(a)
+        XCTAssertEqual(chosen.screen(after: automatic), "parcel")
+        // After archiving, the next parcel shows by itself beside the list, which was there all along.
+        var next = chosen
+        next.leave(a, cards: [a, b])
+        XCTAssertNil(next.screen(after: chosen))
+        // Folded, it goes back into the list, which was in view already.
+        var folded = next
+        folded.settle(.stacked, cards: [b])
+        XCTAssertNil(folded.screen(after: next))
+    }
+}

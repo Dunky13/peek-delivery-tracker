@@ -640,6 +640,65 @@ enum DeliveriesArrangement: Equatable {
     }
 }
 
+/// The parcel the deliveries show, over the list or beside it, and whether someone chose it. Every way a
+/// parcel opens comes through here: its card, a notification, a link, the widget, Add finding it followed already.
+struct DeliveriesNavigation: Equatable {
+    /// The parcels open over the list, the last on top. Beside the list, the last is the one shown.
+    var path: [UUID] = []
+    /// The parcel shown beside the list that nobody chose, so that the column isn't empty.
+    private(set) var automaticPick: UUID?
+
+    var shown: UUID? { path.last }
+    var shownAutomatically: Bool { automaticPick != nil && automaticPick == path.last }
+    /// The parcel someone opened, if the one shown is theirs.
+    var chosen: UUID? { shownAutomatically ? nil : shown }
+
+    /// Opens the parcel someone asked for: over the list, or beside it in place of the one shown there.
+    mutating func open(_ parcelID: UUID) {
+        path = [parcelID]
+        automaticPick = nil
+    }
+
+    /// Takes the window's arrangement and the list's `cards`, in order. Beside the list, a parcel always
+    /// shows: the one chosen, else the first card, and none only when the list shows no card. A parcel shown
+    /// by itself gives way to the first card once it leaves the cards. Over the list, nothing opens by
+    /// itself, and a parcel shown by itself goes back into the list: one chosen stays open over it.
+    mutating func settle(_ arrangement: DeliveriesArrangement, cards: [UUID]) {
+        switch arrangement {
+        case .stacked:
+            if shownAutomatically { path = [] }
+            automaticPick = nil
+        case .sideBySide:
+            if let shown, !shownAutomatically || cards.contains(shown) { return }
+            pick(cards.first)
+        }
+    }
+
+    /// The parcel shown beside the list has left it from its own page, archived, brought back or deleted,
+    /// and the card after it shows instead: the one before it for the last, the first for one that had none.
+    /// `cards` is the list as it was before the parcel left.
+    mutating func leave(_ parcelID: UUID, cards: [UUID]) {
+        guard shown == parcelID else { return }
+        let index = cards.firstIndex(of: parcelID)
+        let after = index.flatMap { cards[($0 + 1)...].first }
+        let before = index.flatMap { cards[..<$0].last }
+        pick(after ?? before ?? cards.first { $0 != parcelID })
+    }
+
+    /// The screen to count once the navigation has turned from `before` to this: a parcel someone opened, or
+    /// the list they went back to. A parcel shown by itself is nobody's view, and beside the list, the list
+    /// was there all along.
+    func screen(after before: Self) -> String? {
+        if let chosen { return chosen == before.chosen ? nil : "parcel" }
+        return shown == nil && before.chosen != nil ? "deliveries" : nil
+    }
+
+    private mutating func pick(_ parcelID: UUID?) {
+        path = parcelID.map { [$0] } ?? []
+        automaticPick = parcelID
+    }
+}
+
 /// The card a parcel is shown on in the deliveries.
 enum DeliveryCardKind: Equatable {
     case next, attention, onTheWay, past
@@ -676,6 +735,12 @@ struct DeliveryListLayout {
         sections = ParcelOrganizer.sections(from: visible, now: now).filter {
             $0.kind == .delivered || $0.kind == .returned || $0.kind == .archived
         }
+    }
+
+    /// The parcels on cards, in the list's order, the archive left out.
+    var cards: [UUID] {
+        let past = sections.filter { $0.kind != .archived }.flatMap(\.parcels)
+        return ([next].compactMap { $0 } + attention + remaining + past).map(\.id)
     }
 
     /// The card this parcel is shown on, outside the archive.

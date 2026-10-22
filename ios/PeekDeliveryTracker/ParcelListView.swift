@@ -15,7 +15,7 @@ struct ParcelListView: View {
 
     var body: some View {
         TabView(selection: $selection) {
-            DeliveryListView(isSelected: selection == 0, firstParcel: $firstParcel, adding: $adding)
+            DeliveryListView(isSelected: selection == 0, firstParcel: $firstParcel, adding: $adding) { selection = 0 }
                 .tag(0)
                 .tabItem {
                     Label(localizer.text("native.deliveries"), systemImage: "shippingbox.fill")
@@ -107,6 +107,15 @@ struct DemoModeBar: View {
     }
 }
 
+/// A sheet sized as a form, centred over a large window, or as it always was.
+private struct FormSizing: ViewModifier {
+    let applies: Bool
+
+    func body(content: Content) -> some View {
+        if applies { content.presentationSizing(.form) } else { content }
+    }
+}
+
 /// The foot of the deliveries: the name, then the site's landing, its privacy notice and
 /// the code. Each opens as a page of the site, read without leaving the app.
 struct DeliveriesFoot: View {
@@ -161,6 +170,8 @@ private struct DeliveryListView: View {
     /// What the first screen asked for; this list owns the sheet that adds a parcel.
     @Binding var firstParcel: FirstParcelRequest?
     @Binding var adding: Bool
+    /// Brings the deliveries forward, for a parcel asked for from outside the list.
+    let bringForward: () -> Void
     @EnvironmentObject private var store: ParcelStore
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var localizer: Localizer
@@ -172,10 +183,11 @@ private struct DeliveryListView: View {
     @Environment(\.verticalSizeClass) private var verticalSize
 
     @Namespace private var parcelTransition
-    /// The parcel open over the list, or beside it.
-    @State private var path: [UUID] = []
+    @State private var navigation = DeliveriesNavigation()
     /// The arrangement the window took last, which `windowArrangement` keeps near the threshold.
     @State private var lastArrangement = DeliveriesArrangement.stacked
+    /// When the window last turned from side by side to stacked.
+    @State private var stackedAt: Date?
     @State private var windowWidth: CGFloat = 0
     /// The card at the top of the list when it last came to rest.
     @State private var topCard: UUID?
@@ -191,6 +203,9 @@ private struct DeliveryListView: View {
     @State private var showingSearch = false
     @FocusState private var searchFocused: Bool
     @State private var showingAdd = false
+    /// Whether Add and the account open as forms, as they do beside a list with room around it. Settled
+    /// while neither is open, so that a fold or a resize keeps an open one as it is, and what was typed in it.
+    @State private var sheetsAsForms = false
     @State private var addedParcelID: UUID?
     @State private var revealParcelID: UUID?
     @State private var parcelBurstID: UUID?
@@ -288,24 +303,13 @@ private struct DeliveryListView: View {
         .onChange(of: sort) { _, _ in DeliveryAnalytics.shared.action("sort-change") }
         .onChange(of: archivedExpanded) { _, open in if open { DeliveryAnalytics.shared.action("archive-open") } }
         .sensoryFeedback(.success, trigger: parcelBurstID) { _, next in next != nil }
-        .fullScreenCover(isPresented: $showingAdd, onDismiss: {
-            scanning = false
-            if let id = addedParcelID, scenePhase == .active {
-                if !visibleParcels.contains(where: { $0.id == id }) { clearFilters() }
-                revealParcelID = id
-            }
-            addedParcelID = nil
-        }) {
-            AddParcelView(draft: sharedDraft, scanning: scanning, onOpenParcel: { parcelID in
-                showingAdd = false
-                path = [parcelID]
-            }, onAdded: { id in
-                if showingAdd && scenePhase == .active { addedParcelID = id }
-            })
-                .environmentObject(store)
-                .environmentObject(localizer)
+        .fullScreenCover(isPresented: addShown(asForm: false), onDismiss: addClosed) { addParcel }
+        .sheet(isPresented: addShown(asForm: true), onDismiss: addClosed) { addParcel.presentationSizing(.form) }
+        .onChange(of: showingAdd) { _, showing in
+            adding = showing
+            settleSheets()
         }
-        .onChange(of: showingAdd) { _, showing in adding = showing }
+        .onChange(of: showingAccount) { _, _ in settleSheets() }
         .onChange(of: firstParcel) { _, request in
             guard let request else { return }
             firstParcel = nil
@@ -325,6 +329,7 @@ private struct DeliveryListView: View {
                 .environmentObject(store)
                 .environmentObject(session)
                 .environmentObject(localizer)
+                .modifier(FormSizing(applies: sheetsAsForms))
         }
         .sheet(item: $sitePage) { SafariPage(url: $0.url).ignoresSafeArea() }
         .alert(localizer.text("native.errorTitle"), isPresented: Binding(
@@ -343,7 +348,12 @@ private struct DeliveryListView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase != .active { addedParcelID = nil; revealParcelID = nil; parcelBurstID = nil }
         }
-        .onChange(of: path) { _, value in DeliveryAnalytics.shared.view(value.isEmpty ? "deliveries" : "parcel"); revealParcelID = nil; parcelBurstID = nil }
+        .onChange(of: navigation) { before, now in
+            guard let screen = now.screen(after: before) else { return }
+            DeliveryAnalytics.shared.view(screen)
+            revealParcelID = nil
+            parcelBurstID = nil
+        }
         .onChange(of: showingAdd) { _, open in DeliveryAnalytics.shared.view(open ? "add-parcel" : "deliveries"); if open { revealParcelID = nil; parcelBurstID = nil } }
         .onChange(of: showingAccount) { _, open in DeliveryAnalytics.shared.view(open ? "account" : "deliveries"); if open { revealParcelID = nil; parcelBurstID = nil } }
         .onChange(of: showingFilters) { _, open in if open { DeliveryAnalytics.shared.action("filters-open"); revealParcelID = nil; parcelBurstID = nil } }
@@ -358,7 +368,7 @@ private struct DeliveryListView: View {
         .onChange(of: links.arrival, initial: true) { _, arrival in receive(arrival) }
         #if DEBUG
         .task {
-            if let parcel = ParcelSharePreview.parcel(in: store.parcels) ?? ParcelFeedbackPreview.parcel(in: store.parcels) { path = [parcel.id] }
+            if let parcel = ParcelSharePreview.parcel(in: store.parcels) ?? ParcelFeedbackPreview.parcel(in: store.parcels) { show(parcel.id) }
         }
         #endif
         .onChange(of: store.undoParcel?.id) { _, next in
@@ -375,32 +385,42 @@ private struct DeliveryListView: View {
         Group {
             switch windowArrangement {
             case .stacked:
-                NavigationStack(path: $path) {
+                // A parcel shown by itself beside the list goes back into it as the window turns: it never opens over the list.
+                NavigationStack(path: Binding(
+                    get: { navigation.shownAutomatically ? [] : navigation.path },
+                    set: { path in
+                        // The split view going away pops the parcel off the stack that takes its place, as the
+                        // window turns. Nobody goes back that fast: the parcel stays.
+                        if path.count < navigation.path.count, let stackedAt, stackedAt.timeIntervalSinceNow > -1 { return }
+                        navigation.path = path
+                    }
+                )) {
                     list(layout, leaving: leaving)
-                        .navigationDestination(for: UUID.self) { page($0) }
+                        .navigationDestination(for: UUID.self) { page($0).safeAreaInset(edge: .top, spacing: 0) { DemoModeBar() } }
                 }
             case .sideBySide:
-                // A fold turns the window compact before the stack takes over, and the split view folds its
-                // columns into one on the way out. Folded onto the list, it would close the parcel, and the
-                // stack would open with nothing over the list.
-                NavigationSplitView(
-                    columnVisibility: .constant(.all),
-                    preferredCompactColumn: .constant(path.isEmpty ? .sidebar : .detail)
-                ) {
+                NavigationSplitView(columnVisibility: .constant(.all)) {
                     list(layout, leaving: leaving)
                         .toolbar(removing: .sidebarToggle)
-                        .navigationSplitViewColumnWidth(min: DeliveriesArrangement.listWidth, ideal: 380, max: 460)
+                        .navigationSplitViewColumnWidth(min: DeliveriesArrangement.listWidth, ideal: 380, max: 480)
                 } detail: {
-                    besideList
+                    beside(layout)
                 }
                 .navigationSplitViewStyle(.balanced)
+                // A fold turns the window compact a moment before the stack takes over. Folded into one column
+                // on its way out, the split view would leave the parcel on the stack with no way back.
+                .environment(\.horizontalSizeClass, .regular)
             }
         }
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { windowWidth = $0 }
         .onChange(of: windowArrangement) { _, arrangement in
+            if arrangement == .stacked { stackedAt = .now }
             lastArrangement = arrangement
             keptCard = topCard
+            navigation.settle(arrangement, cards: layout.cards)
+            settleSheets()
         }
+        .onChange(of: layout.cards, initial: true) { _, cards in navigation.settle(windowArrangement, cards: cards) }
     }
 
     /// How the list and an open parcel share the window.
@@ -411,9 +431,12 @@ private struct DeliveryListView: View {
         )
     }
 
-    @ViewBuilder private var besideList: some View {
-        if let parcelID = path.last {
-            page(parcelID) { path = [] }.id(parcelID)
+    /// The parcel beside the list. It lets go of its parcel for the card after it, in the list as this
+    /// draws it: by the time the page has archived or deleted the parcel, its card has moved.
+    @ViewBuilder private func beside(_ layout: DeliveryListLayout) -> some View {
+        if let parcelID = navigation.shown {
+            page(parcelID, release: { [cards = layout.cards] in navigation.leave(parcelID, cards: cards) })
+                .id(parcelID)
         } else {
             ExperimentalBackdrop()
         }
@@ -434,16 +457,53 @@ private struct DeliveryListView: View {
     private func page(_ parcelID: UUID, release: (() -> Void)? = nil) -> some View {
         ParcelDetailView(parcelID: parcelID, transition: parcelTransition,
                          sample: parcelID == FirstOpenJourney.parcelID ? sample : nil, release: release)
-            .safeAreaInset(edge: .top, spacing: 0) { DemoModeBar() }
     }
 
-    /// Opens a parcel from its card: over the list, or beside it in place of the one open there.
-    private func open(_ parcelID: UUID) {
-        if windowArrangement == .sideBySide { path = [parcelID] } else { path.append(parcelID) }
+    /// Opens a parcel from its card: over the list, or beside it in place of the one shown there.
+    private func open(_ parcelID: UUID) { navigation.open(parcelID) }
+
+    /// Shows a parcel asked for from outside the list, from a notification, a link or the widget: on the
+    /// deliveries, with nothing left over them.
+    private func show(_ parcelID: UUID) {
+        bringForward()
+        showingAdd = false
+        showingAccount = false
+        showingFilters = false
+        sitePage = nil
+        navigation.open(parcelID)
     }
 
-    /// Whether the list is on screen: always beside a parcel, and under the stack while nothing is open over it.
-    private var listShown: Bool { windowArrangement == .sideBySide || path.isEmpty }
+    /// The parcel whose card is marked as the one shown beside the list.
+    private var selectedCard: UUID? { windowArrangement == .sideBySide ? navigation.shown : nil }
+
+    /// Whether the list is on screen: always beside a parcel, and under the stack while nobody opened one over it.
+    private var listShown: Bool { windowArrangement == .sideBySide || navigation.chosen == nil }
+
+    private func settleSheets() {
+        if !showingAdd, !showingAccount { sheetsAsForms = windowArrangement == .sideBySide }
+    }
+
+    /// Add stands over the whole screen as on a phone, or as a form where the list has room around it.
+    private func addShown(asForm: Bool) -> Binding<Bool> {
+        Binding(get: { showingAdd && sheetsAsForms == asForm }, set: { showingAdd = $0 })
+    }
+
+    private var addParcel: some View {
+        AddParcelView(draft: sharedDraft, scanning: scanning, onOpenParcel: show, onAdded: { id in
+            if showingAdd && scenePhase == .active { addedParcelID = id }
+        })
+            .environmentObject(store)
+            .environmentObject(localizer)
+    }
+
+    private func addClosed() {
+        scanning = false
+        if let id = addedParcelID, scenePhase == .active {
+            if !visibleParcels.contains(where: { $0.id == id }) { clearFilters() }
+            revealParcelID = id
+        }
+        addedParcelID = nil
+    }
 
     private func content(_ layout: DeliveryListLayout, leaving: Set<UUID>) -> some View {
         ScrollViewReader { proxy in
@@ -883,6 +943,7 @@ private struct DeliveryListView: View {
                         parcel: parcel,
                         transition: parcelTransition,
                         onName: { places.name(parcel.id, at: $0) },
+                        selected: parcel.id == selectedCard,
                         onOpen: { open(parcel.id) },
                         onArchive: { await archive(parcel) }
                     )
@@ -899,6 +960,7 @@ private struct DeliveryListView: View {
                     ExperimentalArchivedParcelGroup(
                         parcels: section.parcels,
                         transition: parcelTransition,
+                        selected: selectedCard,
                         onOpen: { open($0) }
                     )
                 }
@@ -907,6 +969,7 @@ private struct DeliveryListView: View {
                     parcels: section.parcels,
                     isExpanded: $archivedExpanded,
                     transition: parcelTransition,
+                    selected: selectedCard,
                     onOpen: { open($0) }
                 )
             }
@@ -919,6 +982,7 @@ private struct DeliveryListView: View {
                         ExperimentalNextDeliveryPass(
                             parcel: parcel,
                             transition: parcelTransition,
+                            selected: parcel.id == selectedCard,
                             onOpen: { open(parcel.id) },
                             onArchive: { await archive(parcel) }
                         )
@@ -931,6 +995,7 @@ private struct DeliveryListView: View {
                                 ? parcel.attention().map { localizer.text($0.localizationKey) }
                                 : nil,
                             transition: parcelTransition,
+                            selected: parcel.id == selectedCard,
                             onOpen: { open(parcel.id) },
                             onArchive: parcel.isArchived ? nil : { await archive(parcel) }
                         )
@@ -947,6 +1012,7 @@ private struct DeliveryListView: View {
         ExperimentalNextDeliveryPass(
             parcel: shown(parcel), transition: parcelTransition,
             arrived: delivered.holds(parcel.id), onName: { places.name(parcel.id, at: $0) },
+            selected: parcel.id == selectedCard,
             onOpen: { open(parcel.id) }, onArchive: { await archive(parcel) }
         )
         .modifier(arrivalCelebration(for: parcel.id, stubInset: 43))
@@ -962,6 +1028,7 @@ private struct DeliveryListView: View {
         return ExperimentalParcelPassCard(
             parcel: shown(parcel), notice: notice, transition: parcelTransition,
             arrived: arrived, onName: { places.name(parcel.id, at: $0) },
+            selected: parcel.id == selectedCard,
             onOpen: { open(parcel.id) }, onArchive: { await archive(parcel) }
         )
         .modifier(arrivalCelebration(for: parcel.id))
@@ -1103,7 +1170,7 @@ private struct DeliveryListView: View {
 
     private func openParcelNotification(_ parcelID: UUID?) {
         guard let parcelID else { return }
-        path = [parcelID]
+        show(parcelID)
     }
 
     /// A parcel kept from a link arrives like one just added; one already followed opens.
@@ -1117,9 +1184,10 @@ private struct DeliveryListView: View {
         sitePage = nil
         switch arrival {
         case .open(let parcelID):
-            path = [parcelID]
+            navigation.open(parcelID)
         case .added(let parcelID):
-            path = []
+            // Back to the list, which receives it. Beside a parcel, the list is in view already.
+            if !listShown { navigation.path = [] }
             let confirmation = localizer.text("link.added")
             toast = ListToast(text: confirmation)
             AccessibilityNotification.Announcement(confirmation).post()
@@ -1136,7 +1204,7 @@ private struct DeliveryListView: View {
     private func handleURL(_ url: URL) {
         switch NativeRoute(url: url) {
         case .parcel(let parcelID):
-            path = [parcelID]
+            show(parcelID)
         case .friend: break // RootView owns Friends navigation.
         case .add(let trackingInput):
             sharedDraft = SharedParcelDraft(trackingInput: trackingInput)
@@ -1156,6 +1224,8 @@ private struct ExperimentalNextDeliveryPass: View {
     var decorative = false
     /// Where the parcel's name is written, in the list's space.
     var onName: ((CGFloat) -> Void)?
+    /// The parcel shown beside the list.
+    var selected = false
     let onOpen: () -> Void
     let onArchive: () async -> Bool
 
@@ -1184,6 +1254,7 @@ private struct ExperimentalNextDeliveryPass: View {
                 )
                 .opacity(appeared ? 1 : 0)
                 .accessibilityHint(localizer.text("detail.label"))
+                .accessibilityAddTraits(selected ? .isSelected : [])
         }
     }
 
@@ -1253,6 +1324,7 @@ private struct ExperimentalNextDeliveryPass: View {
             }
         }
         .experimentalSurface(fill: identity.surface, cornerRadius: 24)
+        .overlay { SelectedCardRing(shape: RoundedRectangle(cornerRadius: 24, style: .continuous), shown: selected) }
         .modifier(DeliveredPress(arrived: arrived, dip: 0.982, wait: 0.42))
         .onAppear { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.3)) { appeared = true } }
         .task(id: placed) {
@@ -1273,6 +1345,8 @@ private struct ExperimentalParcelPassCard: View {
     var decorative = false
     /// Where the parcel's name is written, in the list's space.
     var onName: ((CGFloat) -> Void)?
+    /// The parcel shown beside the list.
+    var selected = false
     let onOpen: () -> Void
     let onArchive: (() async -> Bool)?
 
@@ -1313,6 +1387,7 @@ private struct ExperimentalParcelPassCard: View {
                     onOpen: onOpen, action: onArchive
                 )
                 .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(selected ? .isSelected : [])
         }
     }
 
@@ -1377,6 +1452,7 @@ private struct ExperimentalParcelPassCard: View {
                 .overlay { RoundedRectangle(cornerRadius: 16).fill(identity.surface.opacity(past ? 0.35 : 1)) }
         }
         .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay { SelectedCardRing(shape: RoundedRectangle(cornerRadius: 16), shown: selected) }
         .modifier(DeliveredPress(arrived: arrived, dip: 1.022, wait: 0.01))
         .task(id: placed) {
             guard placed, atlas == nil else { return }
@@ -1388,6 +1464,22 @@ private struct ExperimentalParcelPassCard: View {
     private func dateLabel(_ date: String) -> some View {
         Text(date).font(.caption).foregroundStyle(identity.ink)
             .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+/// The ring around the card of the parcel shown beside the list.
+private struct SelectedCardRing<Ring: InsettableShape>: View {
+    let shape: Ring
+    let shown: Bool
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        shape.strokeBorder(Brand.ink, lineWidth: 2)
+            .opacity(shown ? 1 : 0)
+            .animation(reduceMotion ? nil : .snappy(duration: 0.2), value: shown)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
     }
 }
 
@@ -1414,6 +1506,7 @@ private struct ExperimentalDeliveredParcelCard: View {
     let parcel: Parcel
     let transition: Namespace.ID
     var onName: ((CGFloat) -> Void)?
+    var selected = false
     let onOpen: () -> Void
     let onArchive: (() async -> Bool)?
 
@@ -1423,6 +1516,7 @@ private struct ExperimentalDeliveredParcelCard: View {
             notice: nil,
             transition: transition,
             onName: onName,
+            selected: selected,
             onOpen: onOpen,
             onArchive: onArchive
         )
@@ -2168,6 +2262,8 @@ private struct ExperimentalArchiveShelf: View {
     let parcels: [Parcel]
     @Binding var isExpanded: Bool
     let transition: Namespace.ID
+    /// The parcel shown beside the list.
+    var selected: UUID?
     let onOpen: (UUID) -> Void
 
     @EnvironmentObject private var localizer: Localizer
@@ -2216,6 +2312,7 @@ private struct ExperimentalArchiveShelf: View {
                         ExperimentalArchivedParcelRow(
                             parcel: parcel,
                             transition: transition,
+                            selected: parcel.id == selected,
                             onOpen: { onOpen(parcel.id) }
                         )
                         if index < parcels.count - 1 {
@@ -2234,6 +2331,8 @@ private struct ExperimentalArchiveShelf: View {
 private struct ExperimentalArchivedParcelGroup: View {
     let parcels: [Parcel]
     let transition: Namespace.ID
+    /// The parcel shown beside the list.
+    var selected: UUID?
     let onOpen: (UUID) -> Void
 
     var body: some View {
@@ -2242,6 +2341,7 @@ private struct ExperimentalArchivedParcelGroup: View {
                 ExperimentalArchivedParcelRow(
                     parcel: parcel,
                     transition: transition,
+                    selected: parcel.id == selected,
                     onOpen: { onOpen(parcel.id) }
                 )
                 if index < parcels.count - 1 {
@@ -2256,6 +2356,7 @@ private struct ExperimentalArchivedParcelGroup: View {
 private struct ExperimentalArchivedParcelRow: View {
     let parcel: Parcel
     let transition: Namespace.ID
+    var selected = false
     let onOpen: () -> Void
 
     @EnvironmentObject private var localizer: Localizer
@@ -2297,11 +2398,13 @@ private struct ExperimentalArchivedParcelRow: View {
             }
             .padding(.horizontal, 13)
             .frame(minHeight: 58)
+            .background { if selected { Brand.ink.opacity(0.08) } }
             .contentShape(Rectangle())
         }
         .buttonStyle(ExperimentalLiftButtonStyle())
         .matchedTransitionSource(id: parcel.id, in: transition)
         .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
 
