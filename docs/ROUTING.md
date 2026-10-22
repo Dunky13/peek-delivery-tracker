@@ -159,6 +159,12 @@ fallback. Its identity keeps the clock, so two scans of a day stay two, and once
 dates the scan, the scan takes the row over: the same stage, wording, provider code and place,
 at an instant showing that wall clock. The day dates no answer for routing.
 
+The scraper dates a scan on a wall clock in no zone on a zone it deduces: the scan's place,
+a neighbouring scan's, the destination the carrier delivers in, or the carrier's home
+(`time_zone_basis`), keeping the wall clock in `local_time`. Such an answer counts as dated.
+What follows serves the scans it cannot date: a day alone, an impossible clock, a date
+without its year.
+
 An adapter whose answer has only local clocks or an undated status summary keeps its
 evidence while a universal provider dates the timeline (`direct_local_history`, up to 100
 scans). A scan kept there on its wall clock alone goes once an answer dates it: the same

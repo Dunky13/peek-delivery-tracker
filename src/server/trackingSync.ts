@@ -16,6 +16,7 @@ import {
 } from './carriers';
 import type { AdapterRegistry, Recognition, TrackingContext } from 'universal-parcel-scraper/node';
 import { trackCarrier } from 'universal-parcel-scraper/node';
+import { dateLocalClocks } from 'universal-parcel-scraper/places';
 import type { StepRecorder } from 'universal-parcel-scraper/node';
 import { createAdapterRegistry, hostAdapterEnvironment } from './adapterRegistry';
 import { normalizedLookupCountry } from './lookupCountry';
@@ -405,7 +406,7 @@ export class CarrierTrackingAdapter implements TrackingAdapter {
     dpdPostcode?: string | null,
   ): Promise<CarrierResult> {
     const prefetched = !trackingUrl && !dpdPostcode ? takeBrowserHistory(carrierId, trackingNumber) : undefined;
-    if (prefetched) return normalizeCarrierResult(prefetched);
+    if (prefetched) return dateLocalClocks(carrierId, normalizeCarrierResult(prefetched));
     return trackCarrier(carrierId, { number: trackingNumber, trackingUrl, postcode: dpdPostcode ?? null }, {
       registry: this.registry, universal: this.universal, recorder: this.recorder,
     });

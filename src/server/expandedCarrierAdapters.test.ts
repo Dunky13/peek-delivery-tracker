@@ -112,6 +112,25 @@ describe('expanded direct coverage through the host', () => {
     if (entry.carrier === 'yamato') expect(JSON.stringify(archive)).toContain('provider_time_text');
   });
 
+  it.each(['aramex', 'four-px', 'poczta-polska', 'estafeta'])('%s answers on local clocks the scraper dated on a deduced zone without asking providers', async carrier => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const entry = cases.find(entry => entry.carrier === carrier)!;
+    const test = setup(entry);
+    const direct = await test.adapter.fetch(entry.carrier, entry.number, null);
+    expect(direct.events?.every(event => event.local_time && event.time && event.time_zone_basis)).toBe(true);
+    expect(hasUnresolvedDirectCurrent(entry.carrier, direct)).toBe(false);
+    const universal = vi.fn();
+    const router = new TrackingRouter({ direct: async () => ({ result: direct, sourceCarrierId: entry.carrier,
+      swissPostReady: null, handoffFallbackErrorType: null }), universal,
+      health: { acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'synthetic-lease' }), finishTrackingProvider: vi.fn() },
+      now: () => new Date('2026-04-02T10:00:00Z') });
+    const parcel = { carrier: entry.carrier, tracking_number: entry.number };
+    const value = await router.fetch(parcel, false);
+    expect(universal).not.toHaveBeenCalled();
+    expect(value.result.direct_local_history).toBeUndefined();
+    expect(buildEvents({ id: 'synthetic-package', carrier: entry.carrier }, value.result)).toHaveLength(direct.events!.length);
+  });
+
   it('keeps Ciblex current unknown wording separate from an older delivery', async () => {
     const entry = cases.find(entry => entry.carrier === 'ciblex')!;
     const test = setup(entry, 'unknown');
