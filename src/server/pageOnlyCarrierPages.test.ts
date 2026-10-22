@@ -2,10 +2,10 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import en from '../../shared/locales/en.json';
 
-const request = vi.hoisted(() => ({ host: 'peek.example' }));
+const request = vi.hoisted(() => ({ host: 'peek.example', page: null as string | null }));
 vi.mock('next/headers', () => ({
   cookies: async () => ({ get: () => undefined }),
-  headers: async () => new Headers({ host: request.host, 'x-forwarded-proto': 'https' }),
+  headers: async () => new Headers({ host: request.host, 'x-forwarded-proto': 'https', ...request.page ? { 'x-page-language': request.page } : {} }),
 }));
 // Outside a request there is nothing to wait for.
 vi.mock('next/server', async (original) => ({ ...await original<typeof import('next/server')>(), connection: async () => undefined }));
@@ -45,8 +45,12 @@ fixture.guide = GUIDE_LINKS.en[0].id;
 const { carrierAddresses, carrierAlternates, carrierLanguages, carrierText } = await import('./carrierTexts');
 const { CarrierRoute, carrierMetadata } = await import('./carrierPages');
 const { default: sitemap } = await import('../../app/sitemap');
+const { default: RootLayout } = await import('../../app/layout');
 
-afterEach(() => { vi.unstubAllEnvs(); });
+afterEach(() => {
+  vi.unstubAllEnvs();
+  request.page = null;
+});
 
 const finnish = CARRIER_LINKS.fi[0];
 const english = CARRIER_LINKS.en.find(({ id }) => id === fixture.id)!;
@@ -78,6 +82,17 @@ describe('a carrier’s page in a language with pages alone', () => {
     expect(await carrierMetadata('sv', finnish.slug)).toEqual({});
     await expect(CarrierRoute({ locale: 'sv', slug: finnish.slug })).rejects.toThrow(/NEXT_HTTP_ERROR_FALLBACK;404/);
     await expect(CarrierRoute({ locale: 'fi', slug: english.slug })).rejects.toThrow(/NEXT_HTTP_ERROR_FALLBACK;404/);
+  });
+
+  it('declares its language for the whole document, and English for the frame around its text', async () => {
+    // The proxy names the page's language on its request.
+    request.page = 'fi';
+    expect((await RootLayout({ children: null })).props.lang).toBe('fi');
+    request.page = null;
+    expect((await RootLayout({ children: null })).props.lang).toBe('en');
+    expect(renderToStaticMarkup(await CarrierRoute({ locale: 'fi', slug: finnish.slug }))).toContain('<div class="guide-page" lang="en">');
+    // A page in one of the site's languages is that language throughout.
+    expect(renderToStaticMarkup(await CarrierRoute({ locale: 'en', slug: english.slug }))).toContain('<div class="guide-page">');
   });
 
   it('writes its title and text in its language, and everything around them in English', async () => {

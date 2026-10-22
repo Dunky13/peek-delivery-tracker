@@ -23,7 +23,8 @@ function Mark({ size }: { size: number }) {
  * landing in the page's language, reached with a plain link so the browser
  * loads it anew: what the landing decides before its first paint only runs on
  * a fresh document. A page whose text is in a language with pages alone
- * stands in the frame of `locale`, and its foot names its own language too.
+ * stands in the frame of `locale`, which declares its own language, and its
+ * foot names its own language too.
  */
 export function GuideFrame({ locale, language = locale, t, addresses, languageNames, screen, children }: {
   locale: Locale;
@@ -39,7 +40,8 @@ export function GuideFrame({ locale, language = locale, t, addresses, languageNa
   children: ReactNode;
 }) {
   const tracker = languagePath(locale);
-  return <div className="guide-page">
+  // The document then declares the text's language, and the frame its own.
+  return <div className="guide-page" lang={language === locale ? undefined : documentLanguage(locale)}>
     <header className="guide-top">
       <a className="peek-lockup" href={tracker}>
         <Mark size={28} />

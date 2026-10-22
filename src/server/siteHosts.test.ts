@@ -6,7 +6,7 @@ import { carrierPath } from '../carriers/paths';
 import { CARRIER_LINKS } from '../generated/carriers';
 import { GUIDE_LINKS } from '../generated/guides';
 import { guidePath } from '../guides/paths';
-import { ADDRESS_LANGUAGES, PAGE_ONLY_LANGUAGES, SUPPORTED_LOCALES, type PageOnlyLanguage } from '../lib/locale';
+import { ADDRESS_LANGUAGES, PAGE_LANGUAGE_HEADER, PAGE_ONLY_LANGUAGES, SUPPORTED_LOCALES, type PageOnlyLanguage } from '../lib/locale';
 import { canonicalOrigin, legacyHostRedirect, movedOrigin, requestHost, siteHosts } from './siteHosts';
 
 const moved = { CANONICAL_ORIGIN: 'https://peek.example.test', LEGACY_HOSTS: 'delivery.example.test, old.example.test' } as unknown as NodeJS.ProcessEnv;
@@ -259,6 +259,25 @@ describe('the page proxy', () => {
         expect(response.headers.get('x-middleware-rewrite'), path).toBeNull();
         expect(response.headers.get('x-middleware-request-cookie'), path).toBe('sdt.locale=en; other=1');
       }
+    }
+  });
+
+  it('names the language of a carrier’s page in a language with pages alone to the page, and passes on no other', () => {
+    // What the page will read, and what it will not: a header left out of the list is taken off the request.
+    const named = (response: Response) => response.headers.get(`x-middleware-request-${PAGE_LANGUAGE_HEADER}`);
+    const passed = (response: Response) => response.headers.get('x-middleware-override-headers')!.split(',').includes(PAGE_LANGUAGE_HEADER);
+    const answer = (path: string, headers: Record<string, string> = {}) => page(`https://peek.example.test${path}`, { headers: { host: 'peek.example.test', ...headers } });
+    for (const language of Object.keys(PAGE_ONLY_LANGUAGES) as PageOnlyLanguage[]) {
+      for (const { slug } of CARRIER_LINKS[language]) {
+        // Its own, whatever a client sent.
+        expect(named(answer(carrierPath(language, slug), { [PAGE_LANGUAGE_HEADER]: 'de' })), slug).toBe(language);
+      }
+      expect(passed(answer(carrierPath(language, 'no-such-carrier'), { [PAGE_LANGUAGE_HEADER]: language }))).toBe(false);
+    }
+    for (const path of ['/', '/de', '/carriers', `/carriers/${CARRIER_LINKS.en[0].slug}`, guidePath('en'), '/de/carriers/no-such-carrier']) {
+      const response = answer(path, { [PAGE_LANGUAGE_HEADER]: 'fi' });
+      expect(named(response), path).toBeNull();
+      expect(passed(response), path).toBe(false);
     }
   });
 

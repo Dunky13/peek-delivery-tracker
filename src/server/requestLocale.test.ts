@@ -1,16 +1,20 @@
 import { afterEach, expect, it, vi } from 'vitest';
 
-const request = vi.hoisted(() => ({ cookie: undefined as string | undefined, acceptLanguage: null as string | null }));
+const request = vi.hoisted(() => ({ cookie: undefined as string | undefined, acceptLanguage: null as string | null, page: null as string | null }));
 vi.mock('next/headers', () => ({
   cookies: async () => ({ get: (name: string) => name === 'sdt.locale' && request.cookie ? { name, value: request.cookie } : undefined }),
-  headers: async () => new Headers(request.acceptLanguage ? { 'accept-language': request.acceptLanguage } : {}),
+  headers: async () => new Headers({
+    ...request.acceptLanguage ? { 'accept-language': request.acceptLanguage } : {},
+    ...request.page ? { 'x-page-language': request.page } : {},
+  }),
 }));
 
-const { languageFor, namedLocale, requestLanguage, requestLocale } = await import('./requestLocale');
+const { languageFor, namedLocale, requestLanguage, requestLocale, requestPageLanguage } = await import('./requestLocale');
 
 afterEach(() => {
   request.cookie = undefined;
   request.acceptLanguage = null;
+  request.page = null;
 });
 
 it('renders the language the browser prefers', async () => {
@@ -62,5 +66,18 @@ it('speaks the language an address names, whatever the request prefers, and the 
   await expect(namedLocale('pl')).resolves.toBe('pl');
   for (const named of [undefined, '', 'xx', 'PL', ['pl', 'fr']]) {
     await expect(namedLocale(named)).resolves.toBe('it');
+  }
+});
+
+it('declares the language a page’s text is in where the proxy names one with pages alone, and the request’s elsewhere', async () => {
+  request.acceptLanguage = 'de-CH,de;q=0.9';
+  request.cookie = 'en';
+  await expect(requestPageLanguage()).resolves.toBe('en');
+  request.page = 'fi';
+  await expect(requestPageLanguage()).resolves.toBe('fi');
+  await expect(requestLocale()).resolves.toBe('en');
+  for (const page of ['de', 'xx', 'FI', '']) {
+    request.page = page;
+    await expect(requestPageLanguage(), page).resolves.toBe('en');
   }
 });

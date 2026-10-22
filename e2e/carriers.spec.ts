@@ -2,7 +2,7 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 import en from '../shared/locales/en.json' with { type: 'json' };
 import italian from '../shared/locales/it.json' with { type: 'json' };
 import { CARRIER_LINKS } from '../src/generated/carriers';
-import { documentLanguage } from '../src/lib/locale';
+import { documentLanguage, isPageOnlyLanguage } from '../src/lib/locale';
 
 // The demo build keeps lookups in the browser; every number here is fictional.
 const errors = new WeakMap<Page, string[]>();
@@ -103,6 +103,25 @@ test('a carrier’s page shows its title, the tracker and whose it is not, and n
   expect(await languages.getByRole('link').evaluateAll((links) => links.map((link) => [link.getAttribute('hreflang'), (link as HTMLAnchorElement).href]))).toEqual(
     LANGUAGES.map((language) => [language, english.languages[language] ?? new URL(hub(language), english.url).href]),
   );
+});
+
+test('a carrier’s page in a language with pages alone declares its language, and English around its text', async ({ page, request }) => {
+  const [language, [written]] = Object.entries(CARRIER_LINKS).find(([language, links]) => isPageOnlyLanguage(language) && links.length > 0)!;
+  const address = `/${language}/carriers/${written.slug}`;
+  // Whatever the browser prefers, and whatever a client names itself.
+  const html = await (await request.get(address, { headers: { 'accept-language': 'de', 'x-page-language': 'sv' } })).text();
+  expect(html).toMatch(new RegExp(`<html[^>]* lang="${language}"`));
+  expect(html).toContain('<div class="guide-page" lang="en">');
+  await page.goto(address);
+  await expect(page.locator('html')).toHaveAttribute('lang', language);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveAttribute('lang', language);
+  await expect(page.locator('.guide-page')).toHaveAttribute('lang', 'en');
+  // A client names no page's language, and the 404 page below the language is in English.
+  const english = await request.get(`/carriers/${CARRIER_LINKS.en[0].slug}`, { headers: { 'x-page-language': language } });
+  expect(await english.text()).toMatch(/<html[^>]* lang="en"/);
+  const missing = await request.get(`/${language}/carriers/no-such-carrier`);
+  expect(missing.status()).toBe(404);
+  expect(await missing.text()).toMatch(/<html[^>]* lang="en"/);
 });
 
 test('a slug without a carrier’s page, or a carrier in a language it is not written in, is the site’s 404 page', async ({ page, request }) => {

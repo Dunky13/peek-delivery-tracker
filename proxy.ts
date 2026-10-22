@@ -1,11 +1,11 @@
 import { analyticsConfiguration } from './src/server/analytics';
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
-import { carrierPathLanguage, namesNoCarrier } from './src/carriers/paths';
+import { carrierPageLanguage, carrierPathLanguage, namesNoCarrier } from './src/carriers/paths';
 import { guidePathLanguage, namesNoGuide } from './src/guides/paths';
 import { APPEARANCE_BOOTSTRAP } from './src/lib/appearanceConfig';
 import { ENTRY_HINT_BOOTSTRAP } from './src/lib/entryHintConfig';
-import { LOCALE_COOKIE, pathLanguage } from './src/lib/locale';
+import { isPageOnlyLanguage, LOCALE_COOKIE, PAGE_LANGUAGE_HEADER, pathLanguage } from './src/lib/locale';
 import { MAIL_LINK_BOOTSTRAP } from './src/lib/mailLinkConfig';
 import { publicSupabaseOrigin } from './src/server/runtime';
 import { legacyHostRedirect } from './src/server/siteHosts';
@@ -65,7 +65,13 @@ export function proxy(request: NextRequest) {
   requestHeaders.set('Content-Security-Policy', contentSecurityPolicy);
   // An address below a language's guides that names none of them is the site's 404 page, written whole by the
   // server, and so is one below its carriers that names no carrier written in that language.
-  const response = namesNoGuide(pathname) || namesNoCarrier(pathname)
+  const missing = namesNoGuide(pathname) || namesNoCarrier(pathname);
+  // A carrier's page in a language with pages alone declares its text's language for the whole document, and the
+  // page learns which from here alone: a client's own header is never passed on.
+  const written = carrierPageLanguage(pathname);
+  requestHeaders.delete(PAGE_LANGUAGE_HEADER);
+  if (isPageOnlyLanguage(written) && !missing) requestHeaders.set(PAGE_LANGUAGE_HEADER, written);
+  const response = missing
     ? NextResponse.rewrite(new URL('/_not-found', request.url), { request: { headers: requestHeaders } })
     : NextResponse.next({ request: { headers: requestHeaders } });
   response.headers.set('Content-Security-Policy', contentSecurityPolicy);

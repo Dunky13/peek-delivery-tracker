@@ -7,7 +7,7 @@ import { ENTRY_HINT_BOOTSTRAP } from '../src/lib/entryHintConfig';
 import { ERROR_REPORTS_META } from '../src/lib/errorReportsConfig';
 import { documentLanguage, manifestPath } from '../src/lib/locale';
 import { browserErrorReporting } from '../src/server/browserErrors';
-import { requestLocale } from '../src/server/requestLocale';
+import { requestLocale, requestPageLanguage } from '../src/server/requestLocale';
 import { requestOrigin } from '../src/server/requestOrigin';
 import { PREVIEW_LOCALES, sitePicture, siteTitle, wordsIn } from '../src/server/sitePreview';
 
@@ -63,7 +63,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   // a page open across a deploy still names the release its scripts belong to.
   const errorReports = browserErrorReporting();
   return (
-    <html lang={documentLanguage(await requestLocale())} suppressHydrationWarning>
+    <html lang={documentLanguage(await requestPageLanguage())} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: APPEARANCE_BOOTSTRAP }} />
         {/* Tells the stylesheet, before anything is painted, who is about to see the landing. */}

@@ -1,6 +1,6 @@
 import { cookies, headers } from 'next/headers';
 import type { Messages } from '../i18n';
-import { acceptedLanguages, detectLocale, isLocale, LOCALE_COOKIE, type Locale } from '../lib/locale';
+import { acceptedLanguages, detectLocale, isLocale, isPageOnlyLanguage, LOCALE_COOKIE, PAGE_LANGUAGE_HEADER, type Locale, type PageLanguage } from '../lib/locale';
 import de from '../../shared/locales/de.json';
 import en from '../../shared/locales/en.json';
 import es from '../../shared/locales/es.json';
@@ -27,6 +27,15 @@ export async function requestLocale(): Promise<Locale> {
   const chosen = (await cookies()).get(LOCALE_COOKIE)?.value;
   if (isLocale(chosen)) return chosen;
   return detectLocale(acceptedLanguages((await headers()).get('accept-language')));
+}
+
+/**
+ * The language the document declares: its text's, which on a carrier's page in a language with pages alone is
+ * not the one around it, and the request's everywhere else.
+ */
+export async function requestPageLanguage(): Promise<PageLanguage> {
+  const written = (await headers()).get(PAGE_LANGUAGE_HEADER);
+  return isPageOnlyLanguage(written) ? written : requestLocale();
 }
 
 /**

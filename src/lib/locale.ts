@@ -4,6 +4,12 @@ export type Locale = (typeof SUPPORTED_LOCALES)[number];
 /** Mirrors a chosen language, so the server renders the first frame in it. */
 export const LOCALE_COOKIE = 'sdt.locale';
 
+/**
+ * Names, on the request a page reads, the language its text is written in when that is a language with pages
+ * alone: the proxy sets it, and never passes on one a client sent.
+ */
+export const PAGE_LANGUAGE_HEADER = 'x-page-language';
+
 export function isLocale(value: unknown): value is Locale {
   return SUPPORTED_LOCALES.includes(value as Locale);
 }

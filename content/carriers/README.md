@@ -8,8 +8,8 @@ is written in; `/carriers` and `/<language>/carriers` list them in every languag
 A page can also be written in a language the app does not speak: a national post's or a
 local courier's page in its country's own language, such as Finnish for Posti. These
 languages are `PAGE_ONLY_LANGUAGES` in [`src/lib/locale.ts`](../../src/lib/locale.ts). Such
-a page has its title and text in its language and everything around them in English; its
-language has no carriers' list, and the carrier's other pages, hreflang and the sitemap
+a page has its title and text in its language and everything around them in English (the
+document declares its language, the frame English); its language has no carriers' list, and the carrier's other pages, hreflang and the sitemap
 name it among the carrier's languages.
 
 - [`index.json`](index.json) lists the carriers in the order the site shows them, each as
