@@ -1112,6 +1112,22 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "FedEx Poland tracking: 13-digit numbers and statuses",
       "name": "FedEx Poland",
       "color": "#4d148c"
+    },
+    {
+      "id": "techlink",
+      "catalog": "techlink",
+      "slug": "techlink-tracking",
+      "title": "Techlink tracking: ZHPHD numbers, statuses and help",
+      "name": "Techlink",
+      "color": "#e73547"
+    },
+    {
+      "id": "z-leading",
+      "catalog": "z-leading",
+      "slug": "z-leading-tracking",
+      "title": "Z-Leading (Zhongling) tracking: numbers, delivery and help",
+      "name": "Z-Leading",
+      "color": "#005ab0"
     }
   ],
   "de": [
