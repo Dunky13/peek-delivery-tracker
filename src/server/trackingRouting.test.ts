@@ -1315,7 +1315,7 @@ describe('persistent tracking routing', () => {
     expect(universalCarrierHints(['La Poste', 'Posti']).discovered_carrier).toBeUndefined();
     expect(universalCarrierHints(['https://private/token'])).toEqual({ reported_carriers: [] });
     expect(universalCarrierHints(['Chronopost France'])).toMatchObject({ discovered_carrier: 'chronopost' });
-    expect(universalCarrierHints(['Correos Chile']).discovered_carrier).toBeUndefined();
+    expect(universalCarrierHints(['GLS Hungary']).discovered_carrier).toBeUndefined();
   });
   it('reports only carrier names the catalog does not know, once per parcel', async () => {
     const { router, universal } = setup();
@@ -1918,7 +1918,7 @@ describe('persistent tracking routing', () => {
       recognize.mockImplementation(async (asked: string) => ({ known: asked === 'sto' }));
       direct.mockImplementation(async (_parcel, asked: string) => local(asked));
       universal.mockResolvedValue(thinHistory());
-      const result = await router.fetch(filed({}, { tracking_number: '123456789012', current_stage: 'pending' }), false);
+      const result = await router.fetch(filed({}, { tracking_number: '770000000000001', current_stage: 'pending' }), false);
       expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ carrier: 'sto' }), 'sto');
       expect(result.correction).toBeUndefined();
       expect(result.result).toMatchObject({ tracking_provider: 'Ship24', routing: { configured_carrier: 'unknown' } });
@@ -1927,7 +1927,7 @@ describe('persistent tracking routing', () => {
     it.each([
       ['a provider named', 'TEST1234', '17feia', { discovered_carrier: '17feia' }],
       // STO's 09:00 in Shanghai is 01:00 UTC, 10 hours before the provider's scan.
-      ['recognition found for a shape detection is unsure of, whose scans the provider does not date', '123456789012', 'sto', {}],
+      ['recognition found for a shape detection is unsure of, whose scans the provider does not date', '770000000000001', 'sto', {}],
     ])('does not take a carrier %s', async (_label, trackingNumber, carrier, routing) => {
       fixedPlan('Ship24', '17TRACK');
       const { router, direct, universal, recognize } = setup();
@@ -1944,7 +1944,7 @@ describe('persistent tracking routing', () => {
 
     it.each([
       ['detection names', number, '17feia'],
-      ['recognition found', '123456789012', 'sto'],
+      ['recognition found', '770000000000001', 'sto'],
     ])('does not take a reused number\'s old label from a carrier %s', async (_label, trackingNumber, carrier) => {
       fixedPlan('Ship24', '17TRACK');
       const { router, direct, universal, recognize } = setup();
@@ -1968,7 +1968,7 @@ describe('persistent tracking routing', () => {
       // An older release's adapter refused the number; today's answers it.
       ['a provider named before, which refused the number then', 'TEST1234', '17feia', '17FEIA', { discovered_carrier: '17feia',
         failures: { '17feia': { kind: 'schema', count: 5, retry_at: '2026-09-09T06:00:00Z', user_error: 'carrier:invalid_input' } } }],
-      ['recognition found', '123456789012', 'sto', 'STO Express', {}],
+      ['recognition found', '770000000000001', 'sto', 'STO Express', {}],
     ])('takes a carrier %s once the provider dating the progress names it alone', async (_label, trackingNumber, carrier, name, routing) => {
       fixedPlan('Ship24', '17TRACK');
       const { router, direct, universal, recognize } = setup();
@@ -1988,17 +1988,17 @@ describe('persistent tracking routing', () => {
     describe('a carrier only recognition found, whose scans a provider naming no carrier dates', () => {
       // A shape detection is unsure of: recognition asks STO, whose catalog zone is Asia/Shanghai,
       // among others. Its answer's 09:00 there is 01:00 UTC.
-      const trackingNumber = '123456789012';
+      const trackingNumber = '770000000000001';
       const dating = (time = '2026-09-10T01:00:00Z', stage = 'in_transit', description = 'In transit'): CarrierResult => ({
         status: 'in_transit', current_stage: stage, last_update: time, events: [{ time, description, stage }] });
-      const check = async (known: string[], provider: CarrierResult, routing: JsonObject = {}) => {
+      const check = async (known: string[], provider: CarrierResult, routing: JsonObject = {}, number = trackingNumber) => {
         fixedPlan('Postal Ninja');
         const { router, direct, universal, recognize } = setup();
         recognize.mockImplementation(async (asked: string) => ({ known: known.includes(asked) }));
         direct.mockImplementation(async (_parcel, asked: string) => local(asked));
         universal.mockResolvedValue(provider);
         const result = await router.fetch(filed({ last_event_at: '2026-09-10T01:00:00.000Z', ...routing },
-          { tracking_number: trackingNumber }), false);
+          { tracking_number: number }), false);
         expect(direct.mock.calls.map(([, carrier]) => carrier).sort()).toEqual([...known].sort());
         return result;
       };
@@ -2027,15 +2027,16 @@ describe('persistent tracking routing', () => {
       });
 
       it.each([
-        ['scans that match by an offset that is no whole hour', ['sto'], dating('2026-09-10T01:30:00Z')],
-        ['a scan of another stage', ['sto'], dating('2026-09-10T01:00:00Z', 'out_for_delivery', 'Out for delivery')],
-        ['recognition that knows two carriers', ['sto', 'j-and-t'], dating()],
+        ['scans that match by an offset that is no whole hour', ['sto'], dating('2026-09-10T01:30:00Z'), trackingNumber],
+        ['a scan of another stage', ['sto'], dating('2026-09-10T01:00:00Z', 'out_for_delivery', 'Out for delivery'), trackingNumber],
+        // Twelve digits: no number evidence backs either carrier, so recognition settles on neither.
+        ['recognition that knows two carriers', ['brt', 'j-and-t'], dating(), '123456789012'],
         // BRT's catalog lists it in UTC: read there, its 09:00 would be the provider's.
-        ['a carrier the catalog lists in UTC', ['brt'], dating('2026-09-10T09:00:00Z')],
+        ['a carrier the catalog lists in UTC', ['brt'], dating('2026-09-10T09:00:00Z'), trackingNumber],
         // Read as UTC, it would be STO's scan.
-        ['provider times without an offset', ['sto'], dating('2026-09-10T01:00:00')],
-      ] as const)('leaves the parcel unknown on %s', async (_label, known, provider) => {
-        const result = await check([...known], provider);
+        ['provider times without an offset', ['sto'], dating('2026-09-10T01:00:00'), trackingNumber],
+      ] as const)('leaves the parcel unknown on %s', async (_label, known, provider, number) => {
+        const result = await check([...known], provider, {}, number);
         expect(result.correction).toBeUndefined();
         expect(result.result).toMatchObject({ tracking_provider: 'Postal Ninja', routing: { configured_carrier: 'unknown',
           set_aside: Object.fromEntries(known.map((carrier) => [carrier, expect.objectContaining({ reason: 'local_clock' })])) } });

@@ -1170,7 +1170,7 @@ describe('TrackingSyncService', () => {
       finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
     // A shape detection is unsure of. STO, which alone knows it, lists its scans on Shanghai's
     // clock: 09:00 there is the provider's 01:00 UTC.
-    const number = '123456789012';
+    const number = '770000000000001';
     const adapter = {
       recognize: vi.fn(async (carrier: string) => ({ known: carrier === 'sto' })),
       fetch: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: null,

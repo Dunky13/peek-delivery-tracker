@@ -17,15 +17,17 @@ beforeEach(() => {
 
 it('confirms FedEx after HTTP misses and charges the allowance once', async () => {
   const allowance = vi.fn();
+  // Twelve digits whose GLS check holds, so GLS's networks are asked too.
+  const number = '100000000150';
   // Both HTTP batches miss before the browser is asked.
-  const http = recognitionCandidates('000000000011').slice(0, 2 * MAX_RECOGNITIONS).map(({ carrier }) => carrier);
+  const http = recognitionCandidates(number).slice(0, 2 * MAX_RECOGNITIONS).map(({ carrier }) => carrier);
   expect(http.length, 'the number has a second batch').toBeGreaterThan(MAX_RECOGNITIONS);
-  expect(await detectCarrier({ trackingNumber: '000000000011' }, allowance)).toEqual({
-    trackingNumber: '000000000011', carrier: 'fedex', asked: [...http, 'fedex'],
+  expect(await detectCarrier({ trackingNumber: number }, allowance)).toEqual({
+    trackingNumber: number, carrier: 'fedex', asked: [...http, 'fedex'],
   });
   expect(allowance).toHaveBeenCalledOnce();
-  expect(mocks.http).toHaveBeenCalledWith('colis-prive', '000000000011', expect.objectContaining({ budgetMs: 3_000, signal: expect.any(AbortSignal) }));
-  expect(mocks.browser).toHaveBeenCalledWith('fedex', '000000000011', expect.objectContaining({ budgetMs: 20_000 }), undefined);
+  expect(mocks.http).toHaveBeenCalledWith('colis-prive', number, expect.objectContaining({ budgetMs: 3_000, signal: expect.any(AbortSignal) }));
+  expect(mocks.browser).toHaveBeenCalledWith('fedex', number, expect.objectContaining({ budgetMs: 20_000 }), undefined);
 });
 
 it('can ask a browser-only candidate without an HTTP recognizer', async () => {
