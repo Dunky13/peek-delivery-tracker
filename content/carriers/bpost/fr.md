@@ -3,7 +3,7 @@ title: bpost suivi : code-barres, statuts et point relais
 description: Suivre un colis bpost : où trouver le code-barres, ce que veut dire chaque statut du Track & Trace, combien de temps le colis attend et comment joindre bpost.
 slug: bpost-suivi
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-22
 ---
 
 bpost est l'entreprise postale belge, la marque du groupe bnode qui livre les colis en Belgique et aux Pays-Bas. Pour suivre ton colis, saisis son code-barres sur le [Track & Trace de bpost](https://track.bpost.cloud/), dans l'app My bpost ou dans le champ ci-dessus. Ce code-barres figure dans l'e-mail d'expédition de la boutique, dans le SMS ou l'e-mail de bpost, sur l'étiquette ou sur l'avis de passage.
@@ -88,11 +88,11 @@ Garde le code-barres sous la main. bpost ne donne pas d'adresse e-mail pour son 
 
 ## Suivre un colis bpost avec Peek
 
-[Peek](/) reconnaît tout de suite bpost pour un numéro valide de 2 lettres, 9 chiffres et BE, et pour JJBE suivi d'une lettre et de 18 ou 22 chiffres. Un numéro à 18 chiffres est demandé à bpost seul ; un numéro à 24 chiffres à bpost, InPost et Ciblex. S'il commence par 3232 ou 3299, bpost est interrogé en premier et l'emporte s'il connaît le numéro ; sinon, si deux transporteurs le connaissent, tu choisis avec « Changer ». Un recommandé belge à 30 chiffres ne se suit qu'après avoir choisi bpost avec « Changer ». Aucun lien bpost n'est lu, et bpost est interrogé sans code postal. Un code-barres en U n'est pas attribué à bpost, qui ne le suit pas : seul Chronopost est alors proposé.
+[Peek](/) reconnaît tout de suite bpost pour un numéro valide de 2 lettres, 9 chiffres et BE, et pour JJBE suivi d'une lettre et de 18 ou 22 chiffres. Un numéro à 24 chiffres qui commence par 3232 ou 3299 est demandé à bpost, Austrian Post, InPost et Ciblex ; un numéro à 18 chiffres qui commence par 3232, à bpost et Ecoscooting. Si seul bpost le connaît, Peek choisit bpost ; si plusieurs transporteurs le connaissent, tu choisis avec « Changer ». Un recommandé belge à 30 chiffres ne se suit qu'après avoir choisi bpost avec « Changer ». Un lien de bpost.be ou de la page de recherche du Track & Trace qui contient le code-barres dans `itemCodes` est attribué à bpost. Un code-barres en U n'est pas attribué à bpost, qui ne le suit pas : seul Chronopost est alors proposé.
 
-Les scans de bpost n'ont pas de fuseau horaire : Peek n'affiche donc pas la liste de scans de bpost elle-même. Il prend l'historique daté chez des services de suivi universels, redemande à bpost toutes les 6 heures et, si aucun service ne répond, affiche le statut actuel de bpost, daté du moment où il l'a vu. Un service de suivi peut demander le code postal de livraison : Peek peut alors te le signaler, et tu pourras l'ajouter une fois le colis enregistré.
+Peek interroge bpost directement, sans code postal. Tu vois les scans de bpost avec le lieu, le poids et les dimensions ; ceux faits en Belgique sont à l'heure belge. Quand le colis attend dans un Point d'enlèvement ou un Distributeur de Colis, Peek affiche son nom et son adresse, même après le retrait. Pour un colis livré en Belgique, tu vois l'heure de livraison. En journée, Peek vérifie toutes les 10 minutes, et toutes les 2 minutes quand le colis est en cours de livraison.
 
-Dans Peek, les statuts restent en anglais, tels que bpost les écrit (`Item delivered`, `Item available at Pick-up point`), et un colis rendu à l'expéditeur compte comme un retour. bpost ne donne pas de date de livraison prévue. Peek ne garde ni l'expéditeur, ni le destinataire, ni les adresses, ni les coordonnées, ni les préférences de livraison, ni la preuve de livraison. Il peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ».
+Dans Peek, les statuts restent en anglais, tels que bpost les écrit (`Item delivered`, `Item available at Pick-up point`), et un colis rendu à l'expéditeur compte comme un retour. Peek n'affiche pas de date de livraison prévue et ne garde ni l'expéditeur, ni le destinataire, ni l'adresse du destinataire, ni les coordonnées, ni les préférences de livraison, ni la preuve de livraison. Il peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ».
 
 ## Questions sur le suivi bpost
 

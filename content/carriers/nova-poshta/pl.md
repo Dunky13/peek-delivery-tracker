@@ -3,7 +3,7 @@ title: Nova Poshta (Nova Post) śledzenie: numer, statusy, odbiór
 description: Paczka z Ukrainy przez Nova Post: gdzie jest numer listu przewozowego, co znaczą statusy, ile czeka w oddziale, Paczkomacie i punkcie oraz jak się skontaktować.
 slug: nova-poshta-sledzenie
 published: 2026-10-12
-updated: 2026-10-12
+updated: 2026-10-22
 ---
 
 Nova Poshta, w Polsce Nova Post, to ukraińska firma kurierska, która sama nazywa się liderem przesyłek ekspresowych na Ukrainie; w Polsce działa jako NOVA POST POLAND z własnymi oddziałami. Paczkę śledzisz po numerze listu przewozowego na [polskiej stronie śledzenia Nova Post](https://novapost.com/pl-pl/tracking/), w aplikacji albo wklejając go w pole powyżej. Numer dostajesz od nadawcy, w SMS-ie albo w powiadomieniu z aplikacji.
@@ -59,11 +59,11 @@ Nova Post doręcza w Polsce kurierem pod adres, do swojego oddziału, do Paczkom
 
 **W oddziale** podajesz numer listu przewozowego i potwierdzasz odbiór w aplikacji, kodem z SMS-a albo dowodem tożsamości. Możesz obejrzeć paczkę na miejscu. Według regulaminu Nova Post Poland oddział trzyma paczkę bezpłatnie 7 dni kalendarzowych, od 8. do 30. dnia płacisz za przechowanie, a po 30 dniach paczka uchodzi za nieodebraną.
 
-**W Paczkomacie InPost** kod do skrytki przychodzi SMS-em i e-mailem od partnera. Strona Nova Post podaje, że paczka czeka tam 2 dni, a potem trafia do oddziału Nova Post; wtedy dzwonisz pod +48 573 504 069. Regulamin mówi o 7 dniach od powiadomienia, więc kieruj się SMS-em.
+**W Paczkomacie InPost** kod do skrytki przychodzi SMS-em i e-mailem od partnera. Paczka czeka tam 2 dni kalendarzowe, a potem Nova Post przewozi ją do swojego oddziału i Cię o tym powiadamia: tak podają i strona o Paczkomatach, i regulamin. Jeśli paczkę już zabrano z Paczkomatu, zadzwoń pod +48 573 504 069.
 
 **W punkcie Nova Post** paczka czeka do 5 dni. W punkcie nie zapłacisz za przesyłkę ani nie sprawdzisz zawartości.
 
-**Kurier** pod adres kosztuje dodatkowo 10 zł za paczkę do 30 kg. Gdy Cię nie zastanie, paczka trafia do oddziału albo do Paczkomatu.
+**Kurier** pod adres kosztuje dodatkowo 12 zł za paczkę do 30 kg. Gdy Cię nie zastanie, paczka trafia do oddziału albo do Paczkomatu.
 
 **Na Ukrainie** oddział trzyma paczkę bezpłatnie 5 dni (od 1 października 2026, wcześniej 7), potem nalicza opłatę dzienną, a po 30 dniach paczka uchodzi za nieodebraną. Automat paczkowy otwierasz w aplikacji i masz na to 5 dni.
 
@@ -79,7 +79,7 @@ Na Ukrainie skargę składasz w aplikacji, na stronie śledzenia, telefonicznie 
 
 ## Nova Post kontakt: infolinia i e-mail
 
-Stan na 12 października 2026, według stron Nova Post:
+Stan na 22 października 2026, według stron Nova Post:
 
 - **Polska:** +48 182 111 609, od poniedziałku do niedzieli 8:00–20:00, e-mail support@novapost.pl.
 - **Paczka z Paczkomatu po czasie przechowania:** +48 573 504 069.
@@ -89,7 +89,7 @@ Stan na 12 października 2026, według stron Nova Post:
 
 ## Śledzenie paczki Nova Poshta w Peek
 
-Te same kształty numerów mają inne firmy, a [Peek](/) nie może zapytać Nova Poshta o numer, więc sam jej nie wskaże. Naciśnij „Zmień” i wybierz „Nova Poshta (Ukraine)”, albo wklej link do śledzenia z novaposhta.ua. Linków z novapost.com Peek nie odczytuje: wklej sam numer. Peek śledzi ukraińskie listy przewozowe, także nadane w oddziałach Nova Post za granicą; numerów Nova Poshta Global nie śledzi.
+Te same kształty numerów mają inne firmy, więc po samym numerze [Peek](/) nie wskaże Nova Poshta. Pyta za to przewoźników, którzy takich numerów używają, a wśród nich Nova Poshta: od razu, jeśli szukasz z Ukrainy albo numer zaczyna się od 595000, a w innym wypadku dopiero wtedy, gdy pierwsi przewoźnicy go nie znają. Jeśli Nova Poshta zna numer, zobaczysz „Nova Poshta (Ukraine) ma tę przesyłkę.”. Jeśli nie, naciśnij „Zmień” i wybierz „Nova Poshta (Ukraine)” albo wklej link do śledzenia z novaposhta.ua. Linków z novapost.com Peek nie odczytuje: wklej sam numer. Peek śledzi ukraińskie listy przewozowe, także nadane w oddziałach Nova Post za granicą. Numery Nova Global z `NPG` na końcu to osobny przewoźnik, którego Peek rozpoznaje po samym numerze.
 
 Pokazuje angielskie komunikaty Nova Poshta, na przykład `Arrived at the branch 12` zamiast polskiego „Dotarła do oddziału”. Widzisz miasto każdego skanu na mapie, przewidywane dotarcie do oddziału lub pod drzwi, wagę, wymiary pojedynczej paczki, oddział lub automat, w którym czeka, kraj docelowy i godzinę doręczenia. Nazwisk, adresów i płatności nie pokazuje. Gdy przesyłka eksportowa wymienia partnera za granicą, [UPS](carrier:ups) albo GoFo Express, Peek może przejść za nią do tego przewoźnika. Sprawdza śledzenie co 10 minut, co 2 minuty, gdy paczka jest w doręczeniu, i powiadomi Cię o każdym skanie, o ważnych etapach albo tylko w dniu dostawy. Nie skontaktuje się za Ciebie z Nova Post ani nie złoży reklamacji.
 
@@ -117,11 +117,11 @@ W Polsce według regulaminu 7 dni bezpłatnie, potem płatnie do 30. dnia. Na Uk
 - [Nova Post Polska: Odbiór paczki w oddziale](https://novapost.com/pl-pl/receive/at-branch) – powiadomienia, odbiór, oględziny
 - [Nova Post Polska: Odbiór paczki w urządzeniach Paczkomat](https://novapost.com/pl-pl/receive/at-parcel-locker/) – kod, 2 dni, +48 573 504 069
 - [Nova Post Polska: Odbiór paczki w punkcie Nova Post](https://novapost.com/pl-pl/receive/at-pickup-point/) – do 5 dni, bez płatności i sprawdzania
-- [Nova Post Polska: Odbiór paczki kurierem](https://novapost.com/pl-pl/receive/at-address) – 10 zł
+- [Nova Post Polska: Odbiór paczki kurierem](https://novapost.com/pl-pl/receive/at-address) – 12 zł
 - [Nova Post Polska: Odebrać paczkę z Ukrainy w Polsce](https://novapost.com/pl-pl/international/receive-from-ukraine) – cennik, od 3 dni, kto płaci, wiadomość o przyjęciu
 - [Nova Post Polska: Czas dostawy międzynarodowej](https://novapost.com/pl-pl/international/delivery-terms) – terminy orientacyjne
 - [Nova Post Polska: Opłaty celne za przesyłki z zagranicy](https://novapost.com/pl-pl/international/customs-clearance) – kto płaci, powiadomienie, płatność
-- [Nova Post Polska: Regulamin świadczenia usług](https://novapost.com/pl-pl/more/offer/) – 7 dni, przechowanie, nieudane doręczenie, reklamacje, spółka
+- [Nova Post Polska: Regulamin świadczenia usług](https://novapost.com/pl-pl/more/offer/) – 7 dni w oddziale, 2 dni w Paczkomacie, przechowanie, nieudane doręczenie, reklamacje, spółka
 - [Nova Post Polska: strona główna](https://novapost.com/pl-pl/) – telefon, godziny, e-mail
 - [Nova Post Polska: O firmie](https://novapost.com/pl-pl/more/about) – 2001, grupa NOVA, lider, 1,5 miliona paczek, 13 krajów
 - [Nova Post: Track your parcel](https://novaposhta.ua/en/tracking/) – statusy po angielsku
@@ -129,7 +129,7 @@ W Polsce według regulaminu 7 dni bezpłatnie, potem płatnie do 30. dnia. Na Uk
 - [Nova Post: Parcel storage](https://novaposhta.ua/en/receive/additional-services/parcel-storage) – 5 dni, 30 dni na Ukrainie
 - [Нова пошта: zmiana terminu bezpłatnego przechowania](https://novaposhta.ua/news/nova-poshta-zminiuie-termin-bezplatnoho-zberihannia-posylok/) – z 7 na 5 dni od 1 października 2026
 - [Nova Post: Pick up at the parcel locker](https://novaposhta.ua/en/receive/at-parcel-locker) – aplikacja, 5 dni
-- [Нова пошта: Контакти](https://novaposhta.ua/contact) – telefony, całą dobę, e-mail
+- [Нова пошта: strona główna](https://novaposhta.ua/) – telefony w stopce, całą dobę, e-mail
 - [Nova Post: Caution, cyber attack](https://novaposhta.ua/en/caution-cyber-attack) – fałszywe e-maile o długu
 - [Нова пошта: Надійна покупка](https://novaposhta.ua/receive/additional-services/safe-purchase/) – ostrzeżenie przed fałszywymi wiadomościami
 - [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – co Peek odczytuje i pokazuje

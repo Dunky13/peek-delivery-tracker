@@ -3,7 +3,7 @@ title: Nova Poshta tracking: numbers, statuses and branches
 description: Track a Nova Poshta (Nova Post) parcel in English: where to find the EW number, what each status means, branch and locker pickup, storage days and contacts.
 slug: nova-poshta-tracking
 published: 2026-10-12
-updated: 2026-10-12
+updated: 2026-10-22
 ---
 
 Nova Poshta, "Nova Post" on its English site, is a Ukrainian express carrier delivering to branches, parcel lockers and doors across Ukraine, with branches in Poland and other European countries. Track a parcel with its express waybill number (EW) on [novaposhta.ua's tracking page](https://novaposhta.ua/en/tracking/), in its app or by pasting it in the box above. The number is at the top of the waybill, in the app and in the arrival notice.
@@ -30,24 +30,21 @@ More in [tracking number formats](guide:tracking-number-formats). If the site sa
 
 ## Nova Poshta tracking statuses in English
 
-novaposhta.ua tracks in Ukrainian or English, newest movement first, each with date, time and town. Numbers inside the wordings are branch or locker numbers.
+novaposhta.ua tracks in Ukrainian or English, newest movement first, each with date, time and town. Numbers inside the wordings are branch numbers.
 
 | Nova Poshta's status | What it means for you |
 | --- | --- |
 | `Registered and being prepared` | The sender created the waybill. Nova Poshta doesn't have the parcel yet. |
 | `Accepted at branch 12` | The sender handed it in at that branch. |
-| `Arrived at the sorting center` | It's moving through Nova Poshta's network. |
-| `Arrived at customs terminal Lviv` | An international parcel reached the customs terminal. |
 | `Customs clearance in progress` | Customs is checking it; duties may be due (below). |
 | `Delivery location has been changed` | The parcel was redirected, by you or the sender. |
+| `The recipient has changed the delivery time` | The courier delivery was moved to another time; the parcel is still on its way. |
 | `The courier has left for the recipient` | It's out for delivery to your door. |
 | `Arrived at the branch 12` | Ready for pickup at that branch. |
-| `Arrived at parcel locker 34256` | Ready in that parcel locker; open it with the app. |
 | `Received at branch 12` | You picked it up. |
 | `Delivered at the address` | The courier delivered it. |
 | `Return` | A return to the sender has been ordered. |
-
-The branch line may carry the deadline: `Arrived at the branch 1, storage until 17.10`. `Returned` means it's back at the sender's branch. Abroad, `Transferred to delivery partner UPS` means a partner has taken it over, and `The recipient received the package from a partner` means delivered.
+| `Returned` | It's back at the sender's branch. |
 
 ## Branch, parcel locker or courier: picking up your parcel
 
@@ -61,7 +58,7 @@ The branch line may carry the deadline: `Arrived at the branch 1, storage until 
 
 **Forwarding** to another branch is free until the parcel reaches its destination (60 ₴ to an address); after that it costs a new shipment.
 
-**In Poland**, Nova Post delivers to a branch, an InPost Paczkomat, a pickup point or your door. Its Paczkomat page says a parcel waits there 2 days before it moves to a Nova Post branch, while its terms give 7 days: go by the SMS with your opening code.
+**In Poland**, Nova Post delivers to a branch, an InPost Paczkomat, a pickup point or your door. The opening code comes by SMS and email. The parcel waits in the Paczkomat for 2 calendar days, then Nova Post moves it to one of its branches and tells you; for a parcel already taken from a Paczkomat, call +48 573 504 069.
 
 ## Nova Poshta parcel delayed, lost or damaged
 
@@ -75,18 +72,18 @@ In Poland, the sender makes the claim; you can claim only if the parcel was deli
 
 ## Nova Poshta customer service and phone number
 
-As listed on Nova Poshta's and Nova Post Poland's sites on 12 October 2026:
+As listed on Nova Poshta's and Nova Post Poland's sites on 22 October 2026:
 
 - **Ukraine, around the clock:** +38 098 450 0609, +38 050 450 0609, +38 093 450 0609 or +38 044 450 0609.
 - **Contact centre** 0 800 500 609, named on the FAQ and locker pages.
-- **Email** support_ua@novaposhta.ua, plus a Telegram bot and Viber linked from the [contact page](https://novaposhta.ua/contact).
+- **Email** support_ua@novaposhta.ua, plus a Telegram bot and Viber linked from the footer of [novaposhta.ua](https://novaposhta.ua/).
 - **Poland:** +48 182 111 609, daily 8:00 to 20:00, or support@novapost.pl.
 
 > Nova Poshta warns of fake emails claiming you owe it money; it sends no messages about "Reliable Purchase" and no links to forms asking for card details.
 
 ## Tracking Nova Poshta parcels with Peek
 
-Other carriers share these shapes and [Peek](/) can't ask Nova Poshta about a number, so it never names it from the number alone. Press "Change" and pick "Nova Poshta (Ukraine)", or paste a novaposhta.ua tracking link; novapost.com links aren't read. It covers Ukrainian waybills, including those booked at Nova Post branches abroad, not Nova Poshta Global references.
+Other carriers share these shapes, so [Peek](/) never names Nova Poshta from the number alone. Instead it asks the carriers that use them, Nova Poshta among them: first if you search from Ukraine or the number starts with 595000, otherwise once the first carriers don't know it. If Nova Poshta knows it, Peek shows "Nova Poshta (Ukraine) has this parcel." If not, press "Change" and pick "Nova Poshta (Ukraine)". A novaposhta.ua tracking link works too; novapost.com links aren't read, so copy the number from them. It covers Ukrainian waybills, including those booked at Nova Post branches abroad, not Nova Poshta Global references.
 
 It shows Nova Poshta's English wordings, each scan's town on a map, the expected arrival, weight, the branch or locker holding it and the delivery time, and drops names, addresses and payment. When an export names its partner abroad, [UPS](carrier:ups) or GoFo Express, Peek can follow the parcel there. It checks every 10 minutes, every 2 once out for delivery, and can notify you when the status changes.
 
@@ -120,13 +117,13 @@ In Ukraine, 5 days free from the day after arrival, then a daily fee; after 30 d
 - [Nova Post: Forwarding](https://novaposhta.ua/en/receive/additional-services/redirection) – redirection rules and fees
 - [Nova Post: Customs clearance in Ukraine](https://novaposhta.ua/en/receive/international-delivery/customs-clearance) – who pays, €150, notices
 - [Нова пошта: Правила надання послуг](https://static.novaposhta.ua/sitecard/misc/doc/Rules_for_providing_postal_services.pdf) – liability
-- [Нова пошта: Контакти](https://novaposhta.ua/contact) – phones, 24/7, email, Telegram, Viber
+- [Нова пошта: home page](https://novaposhta.ua/) – phones in the footer, 24/7, email, Telegram, Viber
 - [Nova Post: Caution, cyber attack](https://novaposhta.ua/en/caution-cyber-attack) – fake debt emails
 - [Нова пошта: Надійна покупка](https://novaposhta.ua/receive/additional-services/safe-purchase/) – scam message warning
 - [Nova Post Poland: Home](https://novapost.com/pl-pl/) – phone, hours, email
 - [Nova Post Poland: Śledź przesyłkę](https://novapost.com/pl-pl/tracking/) – languages, causes of delay
 - [Nova Post Poland: Odbiór w urządzeniach Paczkomat](https://novapost.com/pl-pl/receive/at-parcel-locker/) – 2 days, phone
-- [Nova Post Poland: Regulamin](https://novapost.com/pl-pl/more/offer/) – 7 days, claims, deadlines
+- [Nova Post Poland: Regulamin](https://novapost.com/pl-pl/more/offer/) – 2 days in a Paczkomat, claims, deadlines
 - [Nova Post Poland: O firmie](https://novapost.com/pl-pl/more/about) – founding, NOVA group, volumes
 - [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – what Peek reads
 :::

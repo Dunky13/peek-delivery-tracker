@@ -3,7 +3,7 @@ title: bpost tracking: statuses, Pick-up points and contact
 description: Track a bpost parcel: where the barcode is, what each Track & Trace status means, how long Pick-up points and lockers keep it and how to reach bpost.
 slug: bpost-tracking
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-22
 ---
 
 bpost is Belgium's postal company, the brand of the bnode group that delivers the last mile in Belgium and the Netherlands. Track a parcel on [bpost's Track & Trace](https://track.bpost.cloud/) or in the My bpost app with its barcode, or paste the number in the box above. The barcode comes from the shop's shipping email, bpost's text or email, the shipping label or the notice in your letterbox.
@@ -37,7 +37,7 @@ bpost's Track & Trace is available in English, French, Dutch and German. These a
 | `Item information registered manually at the counter` | The sender handed the parcel in at a counter. |
 | `Item is announced / Landmark Global (bpost) received the information` | A cross-border parcel was announced to [Landmark Global](carrier:landmark-global), the group's brand for parcels across borders. |
 | `Landmark Global (bpost) has received the item` | Landmark Global has the parcel. |
-| `Arrival at facilities` | The parcel reached a bpost depot. |
+| `Arrival at facilities` | A parcel posted abroad reached a sorting centre in the sending country, before bpost scans it. |
 | `Your item has been sorted` | Sorted and on its way. |
 | `Departure to country of destination` | Leaving for the country it is going to. |
 | `Your shipment has arrived at the postal operator of the country of destination and will be delivered in the coming days` | The destination's post has it and will deliver it. |
@@ -84,11 +84,11 @@ Have the barcode ready. bpost lists no customer service email address.
 
 ## Tracking bpost parcels with Peek
 
-[Peek](/) names bpost straight away for a valid number of two letters, nine digits and BE, and for `JJBE` followed by a letter and 18 or 22 digits. An 18-digit number is asked of bpost alone; a 24-digit one of bpost, InPost and Ciblex. One starting 3232 or 3299 stays with bpost when bpost knows it; otherwise, if two carriers know it, you pick with "Change". The 30-digit registered numbers work only after picking bpost with "Change". No bpost link is read, and bpost itself is asked without a postcode. A U barcode isn't named bpost, since bpost doesn't track it; Peek suggests only Chronopost for it.
+[Peek](/) names bpost straight away for a valid number of two letters, nine digits and BE, and for `JJBE` followed by a letter and 18 or 22 digits. A 24-digit number starting 3232 or 3299 is asked of bpost, Austrian Post, InPost and Ciblex; an 18-digit one starting 3232, of bpost and Ecoscooting. If only bpost knows it, Peek picks bpost; if several carriers do, you pick with "Change". The 30-digit registered numbers work only after picking bpost with "Change". A link from bpost.be or the Track & Trace search page with the barcode in `itemCodes` is read as bpost. A U barcode isn't named bpost, since bpost doesn't track it; Peek suggests only Chronopost for it.
 
-bpost's scans carry no time zone, so Peek doesn't show bpost's own scan list. It takes the dated history from universal tracking services, asks bpost again every 6 hours and, if no service answers, shows bpost's current status, dated when Peek saw it. A tracking service may need the delivery postcode, and you'll be told. Statuses keep bpost's English wording, and a parcel delivered back to the sender shows as returned. You can be notified when the status changes.
+Peek asks bpost directly, without a postcode. You see bpost's own scans in its English wording, with the place, weight and dimensions; scans in Belgium are on Belgian time. While the parcel waits at a Pick-up point or locker, Peek shows that point's name and address, and still does after you've collected it there. For a parcel delivered in Belgium you see the time of delivery, and a parcel delivered back to the sender shows as returned. By day Peek checks every 10 minutes, every 2 once the parcel is out for delivery, and can notify you when the status changes.
 
-bpost gives no expected delivery day. Peek drops the sender, recipient, addresses, contact details, delivery preferences and proof of delivery.
+Peek shows no expected delivery day, and drops the sender, recipient, the recipient's address, contact details, delivery preferences and proof of delivery.
 
 ## Questions about bpost tracking
 

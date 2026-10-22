@@ -3,7 +3,7 @@ title: Lietuvos paštas: Lithuania Post tracking, statuses, lockers
 description: Track a Lietuvos paštas (Lithuania Post, LP Express) parcel in English: the number, what each status means, parcel lockers, claims and contacts.
 slug: lietuvos-pastas-lithuania-post-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 Lietuvos paštas (Lithuania Post) is Lithuania's national post, and LP Express is its brand for parcel lockers, couriers and self-service sending. Track a parcel on [lpexpress.lt/track](https://lpexpress.lt/track), which has an English switch, or paste the number in the box above. The number is in the SMS or email Lietuvos paštas sends you, or on the receipt if you posted the item yourself.
@@ -53,7 +53,7 @@ If the page says `Your parcel could not be found`, check the number; `Without tr
 
 **Courier to your door.** The courier needn't wait more than 10 minutes; you sign on the courier's device. If nobody is found, you're told by SMS or email and the parcel is kept free at the logistics centre for 7 calendar days from the day it first went out for delivery.
 
-**Post office items.** Registered items are brought to your address once; if you're out, a notice comes by letterbox, email or SMS. Bring it with ID. Parcels and letters wait one calendar month, unless the sender's contract says otherwise.
+**Post office items.** Registered items are brought to your address once; if you're out, a notice comes by letterbox, email or SMS. Bring it with ID. Parcels and letters wait 30 days from the day after the notice, unless the sender's contract says otherwise.
 
 **From outside the EU.** Lietuvos paštas asks you to pay import charges in LP EXPRESS self-service within 7 calendar days of the payment notice; only then is the parcel sent on to a post office or locker, with nothing left to pay there. Its own fee for an item worth up to 150 € is 6.99 € (2 € when VAT was paid at checkout). See [parcels held at customs](guide:customs).
 
@@ -79,9 +79,9 @@ The channels as post.lt listed them on 13 October 2026 (the contact pages are in
 
 ## Tracking Lietuvos paštas with Peek
 
-For a postal number ending `LT` with a valid check digit, [Peek](/) asks Lietuvos paštas and [Chronopost](carrier:chronopost) at once and shows "Lietuvos paštas has this parcel." when it knows the number. If not yet, you'll see "Not found at … yet. Peek will keep checking after you add it." LP Express numbers (`CC`, `CH`, `HC`) are asked of the same two, check digit or not. Links from lpexpress.lt and post.lt tracking work too.
+For a postal number ending `LT` with a valid check digit, [Peek](/) asks Lietuvos paštas and [Chronopost](carrier:chronopost) at once and shows "Lietuvos paštas has this parcel." when it knows the number. If not yet, you're told it hasn't been found yet and that Peek will keep checking after you add it. Numbers starting `CC`, `CH` or `HC` and ending `LT` are asked of the same two, check digit or not. Links from lpexpress.lt and post.lt tracking work too.
 
-An item from abroad stays with its foreign post, but you can pick "Lietuvos paštas" with "Change".
+An item from abroad with an international-format number is first followed at the sending country's post. When that post says the item is going to Lithuania, or names no country and you're in Lithuania, Peek can also ask Lietuvos paštas; once Lietuvos paštas shows new steps, Peek follows the parcel there and keeps the earlier ones. Otherwise pick "Lietuvos paštas" with "Change".
 
 Peek reads the service behind lpexpress.lt/track in English, checks every 10 minutes (every 2 once the parcel is out for delivery) and can notify you when the status changes. It shows each step on a map with its town, sorting centre or country, customs steps, the time it was delivered and the locker or post office where the parcel waits, with its town (not the street or postcode). Lithuanian steps are on Vilnius time. There's no expected arrival day and no weight. Statuses keep Lietuvos paštas's English wording; a return shows as a problem.
 
@@ -110,7 +110,7 @@ Lietuvos paštas says a locker parcel usually reaches a locker in Lithuania the 
 - [Lietuvos paštas: Siuntos](https://www.post.lt/lt/duk/siuntos) – storage periods, collection rules
 - [Lietuvos paštas: LP EXPRESS paštomatai](https://www.post.lt/lt/duk/lp-express-pastomatai) – 72 hours, 4-day redirect, 15 days if too big, import charges paid in advance
 - [Lietuvos paštas: Siuntų siuntimas paštomatu](https://www.post.lt/lt/lp-express-pastomatai) – LP EXPRESS and Unisend names, about 1,500 lockers, PIN notice, next working day
-- [Lietuvos paštas: Pašto paslaugų teikimo taisyklės TAI-14](https://www.post.lt/sites/default/files/Dokumentai/PA%C5%A0TO%20PASLAUG%C5%B2%20TEIKIMO%20TAISYKL%C4%96S.pdf) – courier rules, 7-day hold, items brought once, ID, damage, payment within 7 days
+- [Lietuvos paštas: Pašto paslaugų teikimo nesutartiniams naudotojams taisyklės TAI-16](https://www.post.lt/sites/default/files/Dokumentai/PA%C5%A0TO%20PASLAUG%C5%B2%20TEIKIMO%20TAISYKL%C4%96S.pdf) – courier rules, 7-day hold, 30 days at the post office, items brought once, ID, damage, payment within 7 days
 - [Lietuvos paštas: Siuntų deklaravimas](https://www.post.lt/lt/siuntu-deklaravimas) – declaration fees
 - [Lietuvos paštas: Kontaktai](https://www.post.lt/lt/kontaktai) – phone numbers, hours, call cost, email, chat
 - [Lietuvos paštas: Rašykite mums](https://www.post.lt/rasykite-mums) – contact form, claim and search tabs

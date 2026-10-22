@@ -3,7 +3,7 @@ title: Slovenská pošta tracking: Slovak Post numbers and statuses
 description: Track a Slovenská pošta (Slovak Post) item: what the number looks like, what the English statuses mean, BalíkoBOX pickup, claims and contacts.
 slug: slovenska-posta-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 Slovenská pošta (Slovak Post) is Slovakia's national post. Track an item on its English [Tracking of Items](https://www.posta.sk/en/tracking-of-items) page, in its app or by pasting the number in the box above. The number comes from the sender: the shop's shipping email or order page.
@@ -82,7 +82,7 @@ Slovak Post's channels, as listed on posta.sk in October 2026 (the contact pages
 
 ## Tracking Slovenská pošta with Peek
 
-For a postal number ending `SK` with a valid check digit, [Peek](/) asks Slovak Post (and [Chronopost](carrier:chronopost)) and shows "Slovenská pošta has this parcel." when it knows the number. If it doesn't yet, you see "Not found at … yet. Peek will keep checking after you add it." With a wrong check digit Slovak Post isn't asked: check the number. Another country's postal number isn't handed to Slovak Post; pick "Slovenská pošta" with "Change". Links from posta.sk/sledovanie-zasielok and tandt.posta.sk can be pasted too.
+For a postal number ending `SK` with a valid check digit, [Peek](/) names Slovak Post from the number itself when the service code starts with C, E, L or R. With another first letter, such as a domestic parcel's B or D, it asks Slovak Post (and [Chronopost](carrier:chronopost)) and shows "Slovenská pošta has this parcel." when it knows the number. If it doesn't yet, you see "Not found at … yet. Peek will keep checking after you add it." With a wrong check digit Slovak Post isn't asked: check the number. Another country's postal number isn't handed to Slovak Post; pick "Slovenská pošta" with "Change". Links from posta.sk/sledovanie-zasielok and tandt.posta.sk can be pasted too.
 
 It checks every 10 minutes, every 2 minutes once the item is out for delivery, and can notify you when the status changes. Each step goes on a map, with the post office, BalíkoBOX or PoštaPOINT in Slovakia and the country abroad, plus the weight, destination country, delivery time and the name of the place where the item waits (not its address or pickup deadline). Slovak Post gives no expected delivery day. Times in Slovakia are Bratislava time; a step abroad in a country with several time zones doesn't appear. Statuses keep Slovak Post's English wording, except `In transit` and `Out for delivery`, which Peek puts in its own words; `Picked up` still counts as delivered. An item going to a country whose national post is in Peek's list can be followed there.
 

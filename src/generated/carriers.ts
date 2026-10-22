@@ -2534,7 +2534,16 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#4d148c"
     }
   ],
-  "nl": [],
+  "nl": [
+    {
+      "id": "bpost",
+      "catalog": "bpost",
+      "slug": "bpost-pakje-volgen",
+      "title": "bpost pakje volgen: barcode, statussen en Afhaalpunt",
+      "name": "bpost",
+      "color": "#ef2637"
+    }
+  ],
   "sv": [],
   "da": [],
   "nb": [
@@ -2567,7 +2576,16 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#002776"
     }
   ],
-  "sk": [],
+  "sk": [
+    {
+      "id": "slovenska-posta",
+      "catalog": "slovenska-posta",
+      "slug": "slovenska-posta-sledovanie-zasielok",
+      "title": "Slovenská pošta sledovanie zásielok: podacie číslo a stavy",
+      "name": "Slovenská pošta",
+      "color": "#f9bb00"
+    }
+  ],
   "hu": [],
   "ro": [],
   "bg": [],
@@ -2592,8 +2610,26 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
     }
   ],
   "sl": [],
-  "lt": [],
+  "lt": [
+    {
+      "id": "lietuvos-pastas",
+      "catalog": "lietuvos-pastas",
+      "slug": "lietuvos-pastas-siuntu-sekimas",
+      "title": "Lietuvos paštas siuntų sekimas: statusai ir paštomatai",
+      "name": "Lietuvos paštas",
+      "color": "#fedd00"
+    }
+  ],
   "lv": [],
   "et": [],
-  "uk": []
+  "uk": [
+    {
+      "id": "nova-poshta",
+      "catalog": "nova-poshta",
+      "slug": "nova-poshta-vidstezhennia",
+      "title": "Нова пошта відстеження: номер ЕН, статуси, зберігання",
+      "name": "Nova Poshta",
+      "color": "#e30613"
+    }
+  ]
 };
