@@ -407,6 +407,10 @@ private struct DeliveryListView: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                // A wide window keeps the cards to a readable column. The list's space stays the whole
+                // scroll content, which is what a card's picture and flight are measured in.
+                .frame(maxWidth: 660)
+                .frame(maxWidth: .infinity)
                 .padding(.top, 8)
                 .padding(.bottom, 28)
                 .animation(reduceMotion ? nil : .snappy(duration: 0.32), value: store.parcels.filter { !$0.isArchived }.map(\.id))

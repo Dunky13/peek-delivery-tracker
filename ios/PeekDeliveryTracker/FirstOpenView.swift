@@ -166,13 +166,18 @@ struct FirstOpenView: View {
             let heroHeight = min(446, max(300, screen - 404))
             // The picture opens on the parcel's own page, which goes back to it as any parcel's does.
             NavigationStack {
-                VStack(spacing: 0) {
+                let page = VStack(spacing: 0) {
                     hero(height: heroHeight, top: top)
                         .offset(y: appeared ? 0 : -18)
                         .opacity(appeared ? 1 : 0)
                     ask(roomy: screen >= 800)
                         .offset(y: appeared ? 0 : 14)
                         .opacity(appeared ? 1 : 0)
+                }
+                // A screen too short for the map and the question, a phone on its side, scrolls; any other holds still.
+                ViewThatFits(in: .vertical) {
+                    page.frame(maxHeight: .infinity, alignment: .top)
+                    ScrollView { page }.scrollIndicators(.hidden)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .ignoresSafeArea(edges: .top)
@@ -311,6 +316,7 @@ struct FirstOpenView: View {
             if roomy { CarrierFleet(rolling: running).padding(.bottom, 14) }
         }
         .padding(.horizontal, 24)
+        .frame(maxWidth: 560)
     }
 
     /// It reads as the field it leads to: the sheet that takes a number, a link or a whole message.

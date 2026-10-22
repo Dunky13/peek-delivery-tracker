@@ -57,6 +57,8 @@ struct ParcelDetailView: View {
                         }
                     }
                     .padding(.horizontal, 16)
+                    .frame(maxWidth: 640)
+                    .frame(maxWidth: .infinity)
                     .padding(.top, 10)
                     .padding(.bottom, 36)
                 }

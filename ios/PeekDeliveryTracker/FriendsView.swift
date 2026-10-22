@@ -190,7 +190,7 @@ struct FriendsView: View {
                         Task { if await model.act(FriendsActionRequest(action: .removeFriend, friendID: friend.id), parcels: parcels.parcels) != nil { openFriend = nil } }
                     }
                 }
-            }.padding(24)
+            }.padding(24).frame(maxWidth: 680).frame(maxWidth: .infinity)
         }
         .scrollIndicators(.hidden).background(Brand.background)
         .safeAreaInset(edge: .top, spacing: 0) { DemoModeBar() }
