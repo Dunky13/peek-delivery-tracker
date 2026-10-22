@@ -410,7 +410,8 @@ export class CarrierTrackingAdapter implements TrackingAdapter {
 
   browserOnly(carrierId: string): boolean {
     const steps = this.registry.for(carrierId)?.steps ?? [];
-    return steps.length > 0 && steps.every((step) => step === 'browser');
+    // A retry after the browser asks it again in a fresh context, within the same deadline.
+    return steps[0] === 'browser' && steps.every((step) => step === 'browser' || step === 'retry');
   }
 
   async fetch(
