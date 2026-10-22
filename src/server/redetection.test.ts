@@ -1,6 +1,7 @@
+import { recognitionCandidates } from 'universal-parcel-scraper';
 import { describe, expect, it } from 'vitest';
 import { rerouteAskable, rerouteCarrier } from './redetection';
-import { catalogRules } from './trackingRouting';
+import { catalogRules, opensBrowser } from './trackingRouting';
 import type { JsonObject } from './types';
 
 const routing = { version: 1, configured_carrier: 'unknown', failures: {}, probe_cursor: 0, discovery_cursor: 0, rules: 'older' };
@@ -17,6 +18,8 @@ it('points an unknown parcel to the carrier its number is now detected as', () =
 
 // A synthetic number no rule claims and no carrier's recognition is asked about.
 const UNCLAIMED = 'ABCD0000000001CN';
+// The carrier recognition asks about a ten-digit DHL Express waybill after DHL Express, as the scraper orders them.
+const NEXT = recognitionCandidates('1234567891')[1]!.carrier;
 
 it('points an unknown parcel to a carrier a provider named, read with the current aliases', () => {
   expect(rerouteCarrier(parcel({ tracking_number: UNCLAIMED }, { reported_carriers: ['UPS'] }))).toBe('ups');
@@ -45,7 +48,7 @@ it('points an unknown parcel to the first carrier its check would ask again, ask
     .toBe('dhl-express');
   // One still waiting is asked when its wait is over, and the next one now.
   expect(rerouteCarrier(unseen({ routing: { candidate_probes: { 'dhl-express': probe('2026-09-10T18:00:00Z') } } }), 'newer', now))
-    .toBe('relais-colis');
+    .toBe(NEXT);
   // Not for a parcel filed under a carrier.
   expect(rerouteCarrier(parcel({ carrier: 'dhl', tracking_number: '1234567891' }, { routing: { failures: { dhl: { kind: 'not_found' } } } }),
     'newer', now)).toBeNull();
@@ -144,7 +147,7 @@ it('passes over a carrier whose adapter refuses the number, until a release whos
   // The next carrier the check would ask instead.
   const now = Date.parse('2026-09-10T12:00:00Z');
   const unseen = parcel({ tracking_number: '1234567891', current_stage: 'pending' }, { tracking_provider: undefined });
-  expect(await rerouteAskable(unseen, 'newer', now, refuses(['dhl-express']))).toEqual({ carrier: 'relais-colis', rank: 2 });
+  expect(await rerouteAskable(unseen, 'newer', now, refuses(['dhl-express']))).toEqual({ carrier: NEXT, rank: 2 });
   // The adapters' own checks, which send nothing: DPD France's takes no 18 digits.
   const dpd = parcel({ tracking_number: '123456789012345678' }, { reported_carriers: ['DPD France'] });
   expect(rerouteCarrier(dpd, 'newer', now)).toBe('dpd-fr');
@@ -176,9 +179,10 @@ it('asks a carrier the parcel already asked that can open a browser again only o
     last_synced_at: checked }, { tracking_provider: undefined, routing: { candidate_probes: probes } });
   // DHL Express, whose lookup can open a browser, asked an hour ago: the next carrier its
   // recognition would ask, never asked yet.
-  expect(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe }), 'newer', now)).toBe('relais-colis');
-  // Relais Colis opens none: asked an hour ago, it is asked again at once.
-  expect(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe, 'relais-colis': probe }), 'newer', now)).toBe('relais-colis');
+  expect(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe }), 'newer', now)).toBe(NEXT);
+  // That one opens none: asked an hour ago, it is asked again at once.
+  expect(opensBrowser(NEXT)).toBe(false);
+  expect(rerouteCarrier(unseen('2026-09-10T11:00:00Z', { 'dhl-express': probe, [NEXT]: probe }), 'newer', now)).toBe(NEXT);
   // Half a day later, DHL Express is asked again.
   expect(rerouteCarrier(unseen('2026-09-09T23:00:00Z', { 'dhl-express': probe }), 'newer', now)).toBe('dhl-express');
   // So is a detected carrier whose failure's wait is over.
