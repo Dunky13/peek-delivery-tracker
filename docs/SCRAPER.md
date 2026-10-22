@@ -68,6 +68,11 @@ the public registry to check dispatch and the host recorder.
 Fallback input and persistence scenarios supply provider plans explicitly so they can
 exercise each provider independently of coverage ordering.
 
+To try a scraper change on the app before its release, install the scraper's packed tarball
+with `npm install --no-save <tarball>` and run the app's tests. Outside CI,
+[the pin check](../src/server/scraperDependency.test.ts) then skips and names both
+versions; CI installs the pin with `npm ci` and keeps it strict.
+
 ## Updating the dependency
 
 `.github/workflows/adopt-scraper.yml` moves the app to a scraper release. Once in each
