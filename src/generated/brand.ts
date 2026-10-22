@@ -688,6 +688,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "dao": "dao",
   "day-ross": "day-ross",
   "daylight-transport": "daylight-transport",
+  "dayone": "dayone",
   "dayton-freight": "dayton-freight",
   "delhivery": "delhivery",
   "delivengo": "la-poste",
@@ -14626,6 +14627,13 @@ export const CARRIER_TRUCK: TruckGeometry = {
       {
         "type": "polygon",
         "d": "M14.92 7.88L7.72 12.08L7.38 12.43L7.25 12.9L7.38 13.38L7.73 13.72L8.2 13.85L8.68 13.72L15.88 9.52L16.22 9.17L16.35 8.7L16.22 8.22L15.87 7.88L15.4 7.75Z",
+        "fill": "accent"
+      }
+    ],
+    "dayone": [
+      {
+        "type": "polygon",
+        "d": "M7.1 4.8L9.8 4.8L9.8 11.29L12.9 11.29L13.92 11.14L14.55 10.69L14.91 10.1L15.03 9.43L14.98 8.64L14.71 7.96L14.14 7.49L13.24 7.2L10.34 7.2L10.34 4.8L14.26 4.8L15.75 5.25L16.87 5.93L17.55 6.72L17.96 7.73L18.1 8.97L18.1 9.65L17.93 10.67L17.55 11.57L16.87 12.47L15.84 13.15L14.48 13.6L6.68 13.6L6.68 8.16L6.13 8.48L5.34 8.73L3.9 8.86L3.9 6.49L4.89 6.15L5.79 5.82L6.45 5.36Z",
         "fill": "accent"
       }
     ]

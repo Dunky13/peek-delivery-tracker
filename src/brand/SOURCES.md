@@ -171,6 +171,7 @@ and [`truck.json`](truck.json).
 | `dao` | [dao.as stylesheet](https://dao.as/wp-content/themes/dao-wp/public/app.css) — .bg-daoRed #e30613 |
 | `day-ross` | [dayross.com, archived](https://web.archive.org/web/20260821021605/https://dayross.com/) — logo SVG fills: ampersand `#FF5F14`, wordless mark `#FF5F14` and `#1A1919`; `theme-color` `#000000` |
 | `daylight-transport` | [dylt.com](https://www.dylt.com/) — site CSS page-header background #006bb7 (logo band #116cb6); sun #fdb827 from the apple-icon PNG (approximate) |
+| `dayone` | [dayonetrack.com](https://www.dayonetrack.com/assets/logo@2x-DuunhaSW.png) — logo PNG orange #e86d1c, its most frequent opaque pixel; the site CSS accent is #f68020 |
 | `dayton-freight` | [daytonfreight.com](https://www.daytonfreight.com/) — inline logo SVG fills #1c3f94 and #f78f1e |
 | `delhivery` | [delhivery.com](https://www.delhivery.com/) |
 | `dellin` | [commons.wikimedia.org](https://commons.wikimedia.org/wiki/File:Dellin_Logo.svg) — logo SVG symbol fill #FCAF17 |
@@ -1423,3 +1424,4 @@ and [`truck.json`](truck.json).
 | `kun-express` | White K whose arms cross and close into a loop around the stem, on blue | [kun-express.com](http://www.kun-express.com/public/static/images/logo.png) — the K of the header wordmark: a stem through a fish-shaped loop whose two strokes cross and run on as the arms |
 | `juxi-express` | White and yellow crescents closing into a C around a yellow running figure with a white head, on red | [juxiex.com](https://www.juxiex.com/images/logo.png) — the header logo mark: a red lower crescent and a yellow-to-orange upper crescent form a C around a running figure, yellow and orange with a red head, inside a red square frame (frame left out) |
 | `techlink` | A chevron with rounded ends, its upper arm peach and its lower arm white, on red | [trackship.com](https://trackship.com/wp-content/uploads/shipping-providers/300x200/techlink.png) — the logo mark: the right half of a rounded play triangle beside the Techlink 智禾 wordmark, peach at the top fading to red at the bottom |
+| `dayone` | White bold 1 and D sharing one stem, a slit parting the stem from the D's top bar, on orange | [dayonetrack.com](https://www.dayonetrack.com/assets/logo@2x-DuunhaSW.png) — the 1D of the header wordmark: a bold flagged 1 whose stem closes the bold D at the bottom, then AY and the thin outlined ONE |
