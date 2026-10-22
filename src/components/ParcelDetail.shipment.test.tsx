@@ -56,6 +56,21 @@ describe('shipment details', () => {
     expect(screen.queryByText('Not ready yet')).not.toBeInTheDocument();
   });
 
+  it('says the sender still has the parcel once its only scan, the label, is a day old', () => {
+    const label = (hoursAgo: number) => [{ id: 'label', parcelId: 'parcel', stage: 'registered' as const, description: 'Label created', occurredAt: new Date(Date.now() - hoursAgo * 3_600_000).toISOString() }];
+    const note = 'The sender has created the label but hasn’t handed the parcel to Chronopost yet. Tracking starts when they do.';
+    let view = show({ carrier: 'chronopost', events: label(30) });
+    expect(screen.getByText(note)).toHaveClass('detail__handover');
+    view.unmount();
+
+    view = show({ carrier: 'chronopost', events: label(20) });
+    expect(screen.queryByText(note)).not.toBeInTheDocument();
+    view.unmount();
+
+    show({ carrier: 'chronopost', events: label(30), archivedAt: '2026-09-12T12:00:00Z' });
+    expect(screen.queryByText(note)).not.toBeInTheDocument();
+  });
+
   it('shows available facts and omits unknown or invalid measurements', () => {
     const view = show({ pickupPoint: 'Corner shop\n12 Main Street', receiverName: 'Alex', weightKg: 1.25, dimensionsText: '20 × 30 × 10 cm' });
     expect(screen.getByText('Pickup point')).toBeInTheDocument();

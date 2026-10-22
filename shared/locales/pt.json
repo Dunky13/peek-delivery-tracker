@@ -524,6 +524,7 @@
   "parcel.pickedUpAt": "Levantada em {{place}}",
   "parcel.autoChangedCarrier": "Alterado automaticamente de {{carrier}}",
   "parcel.deliveryCarrier": "Entrega: {{carrier}}",
+  "parcel.awaitingHandover": "O remetente criou a etiqueta, mas ainda não entregou a encomenda a {{carrier}}. O seguimento começa quando a entregar.",
   "parcel.updated": "Atualizada: {{date}}",
   "peek.dailyLimit": "Já não há pesquisas por hoje. Inicia sessão para continuar.",
   "peek.onThisDevice": "Neste dispositivo",

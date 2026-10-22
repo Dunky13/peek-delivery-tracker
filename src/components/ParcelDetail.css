@@ -68,7 +68,7 @@
 /* Who delivers, as the next line of who sent it. */
 .detail--postcard .detail__sender:has(+ .detail__delivery) { margin-bottom: 0; }
 .detail--postcard .detail__sender + .detail__delivery { margin-top: 2px; }
-.detail--postcard .detail__postcode-note { margin-top: 8px; color: var(--ink-soft); font-size: 12px; line-height: 1.4; }
+.detail--postcard .detail__postcode-note, .detail--postcard .detail__handover { margin-top: 8px; color: var(--ink-soft); font-size: 12px; line-height: 1.4; }
 .detail__postcode-edit { padding: 0; border: 0; background: none; color: inherit; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
 /* The pickup point, while the parcel waits there. */
 .pickup-card { display: grid; gap: 14px; margin: 12px 24px 0; padding: 16px; border: 1px solid color-mix(in srgb, var(--tone) 18%, transparent); border-radius: 16px; background: var(--paper); }

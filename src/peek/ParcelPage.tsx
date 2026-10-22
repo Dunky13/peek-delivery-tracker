@@ -19,7 +19,7 @@ import { useCardDialog } from '../lib/cardDialog';
 import { focusClickedButton } from '../lib/modal';
 import { parcelDeliveryEstimate, parcelHasCarrierUpdate, parcelIsUnannounced } from '../lib/parcelStatus';
 import { pickupPoint } from '../lib/pickupPoint';
-import { currentEvent, isFinal, sortEventsDesc } from '../lib/stages';
+import { awaitingHandover, currentEvent, isFinal, sortEventsDesc } from '../lib/stages';
 import { useTabTitle } from '../lib/tabTitle';
 import { deviceAlert } from './alerts';
 import { linkNote, noteLink, useLinkNote } from './deviceNotes';
@@ -259,7 +259,9 @@ function Parcel({ linkId, entrance, state, view, onHome }: {
   const notes = present ? (deliveryNote ? [deliveryNote] : []) : !carrierKnown ? [number ? t('link.unknown.body', { number }) : t('link.unknown.bodyNoNumber')] : [
     previousEstimateLine(previousEstimate, parcel, wording),
     deliveryNote,
-    !checking && (parcelIsUnannounced(parcel) || stage === 'registered') ? t('link.notScanned', { carrier: displayed.name }) : null,
+    // A label a day old or more: the sender still has the parcel, and the carrier can tell nothing until they hand it over.
+    checking ? null : awaitingHandover(parcel.events, now) ? t('parcel.awaitingHandover', { carrier: displayed.name })
+      : parcelIsUnannounced(parcel) || stage === 'registered' ? t('link.notScanned', { carrier: displayed.name }) : null,
   ].filter((note): note is string => !!note);
 
   // The reveal's last beat: the parcel's own link, offered once the card has settled.

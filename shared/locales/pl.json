@@ -524,6 +524,7 @@
   "parcel.pickedUpAt": "Odebrano w {{place}}",
   "parcel.autoChangedCarrier": "Automatycznie zmieniono przewoźnika (wcześniej: {{carrier}})",
   "parcel.deliveryCarrier": "Doręcza: {{carrier}}",
+  "parcel.awaitingHandover": "Nadawca utworzył etykietę, ale nie przekazał jeszcze przesyłki przewoźnikowi {{carrier}}. Śledzenie zacznie się po przekazaniu.",
   "parcel.updated": "Aktualizacja: {{date}}",
   "peek.dailyLimit": "Na dziś nie ma już wyszukiwań. Zaloguj się, aby kontynuować.",
   "peek.onThisDevice": "Na tym urządzeniu",

@@ -381,6 +381,13 @@ struct ParcelDetailView: View {
                 }
                 .foregroundStyle(branding.ink)
                 .fixedSize(horizontal: false, vertical: true)
+                // A label a day old or more: the sender still has the parcel, and the carrier can tell nothing until they hand it over.
+                if !parcel.isArchived, parcel.awaitingHandover() {
+                    Text(localizer.text("parcel.awaitingHandover",
+                                        ["carrier": catalog.info(for: parcel.displayedCarrier, language: localizer.language).displayName]))
+                        .font(.caption).foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 if let waits = carrierWaits(parcel) {
                     ParcelFlag(text: localizer.text(waits.stage == .failedAttempt ? "attention.failed_attempt" : "attention.exception"),
                                symbol: "exclamationmark.triangle")

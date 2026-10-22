@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { TrackingEvent } from '../types';
 import {
+  awaitingHandover,
   collectedFromPickupPoint,
   CORE_STAGES,
   currentEvent,
@@ -199,5 +200,27 @@ describe('collectedFromPickupPoint', () => {
   it('is null when no scan moved the parcel', () => {
     expect(collectedFromPickupPoint([])).toBeNull();
     expect(collectedFromPickupPoint(journey('pending', 'registered', 'delivered'))).toBeNull();
+  });
+});
+
+describe('awaitingHandover', () => {
+  const now = Date.parse('2026-06-03T10:00:00.000Z');
+  const at = (stage: TrackingEvent['stage'], occurredAt: string, id = `${stage}-${occurredAt}`) => makeEvent({ id, stage, occurredAt });
+
+  it('is true once the only carrier scans are labels, the first a day old or more', () => {
+    expect(awaitingHandover([at('pending', '2026-06-01T08:00:00.000Z'), at('registered', '2026-06-02T10:00:00.000Z')], now)).toBe(true);
+    // A label reprinted since: the first still counts.
+    expect(awaitingHandover([at('registered', '2026-06-01T10:00:00.000Z'), at('registered', '2026-06-03T09:00:00.000Z')], now)).toBe(true);
+  });
+
+  it('waits a day after the label', () => {
+    expect(awaitingHandover([at('registered', '2026-06-02T10:00:01.000Z')], now)).toBe(false);
+  });
+
+  it('is false once the carrier has the parcel, or before it has said anything', () => {
+    expect(awaitingHandover([at('registered', '2026-05-30T10:00:00.000Z'), at('accepted', '2026-06-01T10:00:00.000Z')], now)).toBe(false);
+    expect(awaitingHandover([at('registered', '2026-05-30T10:00:00.000Z'), at('exception', '2026-06-01T10:00:00.000Z')], now)).toBe(false);
+    expect(awaitingHandover([at('pending', '2026-05-30T10:00:00.000Z')], now)).toBe(false);
+    expect(awaitingHandover([], now)).toBe(false);
   });
 });

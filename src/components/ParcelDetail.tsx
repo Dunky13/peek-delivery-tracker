@@ -33,7 +33,7 @@ import {
   parcelDisplayStatusKey,
   parcelHasCarrierUpdate,
 } from '../lib/parcelStatus';
-import { currentEvent } from '../lib/stages';
+import { awaitingHandover, currentEvent } from '../lib/stages';
 import { isBackSwipe, type TouchPoint } from '../lib/swipe';
 import { useCardDialog } from '../lib/cardDialog';
 import { RefreshTimeoutError, type CarrierId, type ParcelCarrierInput, type ParcelWithEvents } from '../types';
@@ -126,6 +126,8 @@ export function ParcelDetail({
   // After a missed delivery or a problem, the carrier waits on the reader: the page says so and quotes it.
   const carrierWaits = !parcel.archivedAt && (current?.stage === 'failed_attempt' || current?.stage === 'exception') ? current : null;
   const pickupFact = waitingAt ? undefined : parcel.pickupPoint?.trim();
+  // A label a day old or more: the sender still has the parcel, and the carrier can tell nothing until they hand it over.
+  const handoverNote = !parcel.archivedAt && awaitingHandover(parcel.events) ? t('parcel.awaitingHandover', { carrier: displayedCarrier.name }) : null;
   const { placed, route } = useParcelRoute(parcel, languageTag);
   const [mapOpen, setMapOpen] = useState(false);
   // Recognition found the carrier, but it needs the postcode before it can track.
@@ -568,6 +570,7 @@ export function ParcelDetail({
           </p>
         )}
         <p className="detail__state">{statusLabel}</p>
+        {handoverNote && <p className="detail__handover">{handoverNote}</p>}
         {carrierWaits && <p className="parcel-card__notice detail__flag"><Glyph name="warning" />{t(carrierWaits.stage === 'failed_attempt' ? 'attention.failed_attempt' : 'attention.exception')}</p>}
         {(completionDate || estimate) && (
           <p className="detail__arrival">

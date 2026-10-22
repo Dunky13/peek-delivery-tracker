@@ -284,6 +284,15 @@ extension Parcel {
         return nil
     }
 
+    /// Whether the carrier has only ever announced the parcel, its first label at least a day ago: the sender made the
+    /// label and still has the parcel. The carrier has nothing more to say until they hand it over.
+    func awaitingHandover(now: Date = Date()) -> Bool {
+        let carrierEvents = trackingEvents.filter { $0.stage != .pending }
+        guard !carrierEvents.isEmpty, carrierEvents.allSatisfy({ $0.stage == .registered }),
+              let first = carrierEvents.compactMap({ DateParser.date($0.occurredAt) }).min() else { return false }
+        return now.timeIntervalSince(first) >= 86_400
+    }
+
     private static let expectedDayPattern = try? NSRegularExpression(pattern: "^(\\d{4}-\\d{2}-\\d{2})(?:$|[ T])")
 
     var expectedDayKey: String? {

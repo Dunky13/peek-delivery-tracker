@@ -524,6 +524,7 @@
   "parcel.pickedUpAt": "Abgeholt bei {{place}}",
   "parcel.autoChangedCarrier": "Automatisch von {{carrier}} gewechselt",
   "parcel.deliveryCarrier": "Zustellung durch {{carrier}}",
+  "parcel.awaitingHandover": "Der Absender hat das Etikett erstellt, das Paket aber noch nicht an {{carrier}} übergeben. Die Sendungsverfolgung beginnt mit der Übergabe.",
   "parcel.updated": "Aktualisiert: {{date}}",
   "peek.dailyLimit": "Für heute sind keine Abfragen mehr übrig. Melde dich an, um weiterzumachen.",
   "peek.onThisDevice": "Auf diesem Gerät",

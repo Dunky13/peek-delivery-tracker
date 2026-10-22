@@ -106,6 +106,21 @@ export function currentEvent(events: TrackingEvent[]): TrackingEvent | null {
   return current;
 }
 
+/** How long a label may wait before the page explains that the sender still has the parcel. */
+export const HANDOVER_WAIT_MS = 24 * 3_600_000;
+
+/**
+ * Whether the carrier has only ever announced the parcel, its first label at
+ * least a day ago: the sender made the label and still has the parcel. The
+ * carrier has nothing more to say until they hand it over.
+ */
+export function awaitingHandover(events: readonly Pick<TrackingEvent, 'stage' | 'occurredAt'>[], now = Date.now()): boolean {
+  const carrier = events.filter((event) => event.stage !== 'pending');
+  if (!carrier.length || carrier.some((event) => event.stage !== 'registered')) return false;
+  const first = Math.min(...carrier.map((event) => Date.parse(event.occurredAt) || now));
+  return now - first >= HANDOVER_WAIT_MS;
+}
+
 /** Stages that move a parcel: notices (announced, posted), problem reports and a delivery itself do not. */
 const MOVEMENTS: ReadonlySet<Stage> = new Set<Stage>([...MOVING_STAGES, 'returned']);
 

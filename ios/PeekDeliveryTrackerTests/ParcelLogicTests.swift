@@ -946,6 +946,25 @@ final class ParcelLogicTests: XCTestCase {
         XCTAssertNil(recentUnannounced.attention(now: now))
     }
 
+    func testAwaitingHandoverMatchesWebApp() {
+        let now = DateParser.date("2026-08-09T12:00:00Z")!
+        let id = UUID()
+        let labelled = makeParcel(id: id, events: [
+            event(id, .pending, "2026-08-07T08:00:00Z"), event(id, .registered, "2026-08-08T12:00:00Z")
+        ])
+        XCTAssertTrue(labelled.awaitingHandover(now: now))
+        // A label reprinted since: the first still counts.
+        let reprinted = makeParcel(id: id, events: [event(id, .registered, "2026-08-07T12:00:00Z"), event(id, .registered, "2026-08-09T11:00:00Z")])
+        XCTAssertTrue(reprinted.awaitingHandover(now: now))
+
+        XCTAssertFalse(makeParcel(id: id, events: [event(id, .registered, "2026-08-08T12:00:01Z")]).awaitingHandover(now: now))
+        XCTAssertFalse(makeParcel(id: id, events: [
+            event(id, .registered, "2026-08-05T12:00:00Z"), event(id, .accepted, "2026-08-07T12:00:00Z")
+        ]).awaitingHandover(now: now))
+        XCTAssertFalse(makeParcel(id: id, events: [event(id, .pending, "2026-08-05T12:00:00Z")]).awaitingHandover(now: now))
+        XCTAssertFalse(makeParcel(id: id).awaitingHandover(now: now))
+    }
+
     func testFiltersSearchCompactTrackingNumbers() {
         let parcel = makeParcel(trackingNumber: "99.34.123456.12345678")
         let result = ParcelOrganizer.visible(

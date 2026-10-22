@@ -267,7 +267,15 @@ describe('ParcelPage stages and troubles', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Label created' })).toBeVisible();
     expect(within(card()).getByText('No delivery date yet')).toBeVisible();
     expect(within(card()).getByText('DHL hasn’t scanned the parcel yet. That usually happens within a day or two.')).toBeVisible();
+    expect(within(card()).queryByText(/^The sender has created the label/)).toBeNull();
     expect(freshness()).toHaveTextContent('Last checked: 2 min ago');
+  });
+
+  it('says the sender still has the parcel once its label is a day old', async () => {
+    await shown(view([scan('registered', 30)], { carrier: 'chronopost' }));
+    expect(screen.getByRole('heading', { level: 1, name: 'Label created' })).toBeVisible();
+    expect(within(card()).getByText('The sender has created the label but hasn’t handed the parcel to Chronopost yet. Tracking starts when they do.')).toBeVisible();
+    expect(within(card()).queryByText(/hasn’t scanned the parcel yet/)).toBeNull();
   });
 
   it('keeps a number no carrier knows on a neutral card, and says to keep the page', async () => {

@@ -447,6 +447,13 @@ private struct SharedParcelCard: View {
                         }
                         .font(.caption).foregroundStyle(.secondary)
                     }
+                    // A label a day old or more: the sender still has the parcel, and the carrier can tell nothing until they
+                    // hand it over.
+                    if !gift, parcel.awaitingHandover() {
+                        Text(localizer.text("parcel.awaitingHandover",
+                                            ["carrier": catalog.info(for: parcel.displayedCarrier, language: localizer.language).displayName]))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                 }
                 .multilineTextAlignment(arrived ? .center : .leading)
                 .fixedSize(horizontal: false, vertical: true)
