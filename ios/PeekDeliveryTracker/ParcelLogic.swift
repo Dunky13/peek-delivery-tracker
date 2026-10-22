@@ -660,10 +660,11 @@ struct DeliveriesNavigation: Equatable {
         automaticPick = nil
     }
 
-    /// Takes the window's arrangement and the list's `cards`, in order. Beside the list, a parcel always
-    /// shows: the one chosen, else the first card, and none only when the list shows no card. A parcel shown
-    /// by itself gives way to the first card once it leaves the cards. Over the list, nothing opens by
-    /// itself, and a parcel shown by itself goes back into the list: one chosen stays open over it.
+    /// Takes the window's arrangement and the list's `cards`, in order, with the archive's rows after them while
+    /// they show. Beside the list, a parcel always shows: the one chosen, else the first card or row, and none only
+    /// when the list shows neither. A parcel shown by itself gives way to the first card once it leaves the cards.
+    /// Over the list, nothing opens by itself, and a parcel shown by itself goes back into the list: one chosen
+    /// stays open over it.
     mutating func settle(_ arrangement: DeliveriesArrangement, cards: [UUID]) {
         switch arrangement {
         case .stacked:
@@ -841,6 +842,13 @@ struct DeliveryListLayout {
     var cards: [UUID] {
         let past = sections.filter { $0.kind != .archived }.flatMap(\.parcels)
         return ([next].compactMap { $0 } + attention + remaining + past).map(\.id)
+    }
+
+    /// The parcels the list shows, in its order: the cards, then the archive's rows while they show, under a
+    /// filter or in the opened shelf. Beside the list, the parcel shown by itself is one of these.
+    func rows(archiveOpen: Bool) -> [UUID] {
+        guard archiveOpen, let archive = sections.last(where: { $0.kind == .archived }) else { return cards }
+        return cards + archive.parcels.map(\.id)
     }
 
     /// The card this parcel is shown on, outside the archive.

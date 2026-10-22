@@ -499,10 +499,10 @@ private struct DeliveryListView: View {
             if arrangement == .stacked { stackedAt = .now }
             lastArrangement = arrangement
             keptCard = topCard
-            navigation.settle(arrangement, cards: layout.cards)
+            navigation.settle(arrangement, cards: rows(layout))
             settleSheets()
         }
-        .onChange(of: layout.cards, initial: true) { _, cards in navigation.settle(windowArrangement, cards: cards) }
+        .onChange(of: rows(layout), initial: true) { _, rows in navigation.settle(windowArrangement, cards: rows) }
         .onChange(of: navigation.chosen) { _, chosen in savedParcel = chosen?.uuidString }
         // The parcel open when the system closed the app opens again, as it was, once the parcels are back.
         .onReceive(store.$parcels) { parcels in
@@ -528,7 +528,7 @@ private struct DeliveryListView: View {
     /// draws it: by the time the page has archived or deleted the parcel, its card has moved.
     @ViewBuilder private func beside(_ layout: DeliveryListLayout) -> some View {
         if let parcelID = navigation.shown {
-            page(parcelID, release: { [cards = layout.cards] in navigation.leave(parcelID, cards: cards) })
+            page(parcelID, release: { [rows = rows(layout)] in navigation.leave(parcelID, cards: rows) })
                 .id(parcelID)
         } else {
             ExperimentalBackdrop()
@@ -571,6 +571,11 @@ private struct DeliveryListView: View {
         navigation.open(parcelID)
     }
 
+    /// The parcels the list shows a card or a row for, in its order: the archive's rows count while they show.
+    private func rows(_ layout: DeliveryListLayout) -> [UUID] {
+        layout.rows(archiveOpen: hasCustomView || archivedExpanded)
+    }
+
     /// The parcel whose card is marked as the one shown beside the list.
     private var selectedCard: UUID? { windowArrangement == .sideBySide ? navigation.shown : nil }
 
@@ -587,7 +592,7 @@ private struct DeliveryListView: View {
     @ViewBuilder private func keyboard(_ layout: DeliveryListLayout) -> some View {
         let keys = DeliveriesKey.available(
             free: keyboardFree, typing: searchFocused, arrangement: windowArrangement, navigation: navigation,
-            cards: layout.cards, hasParcels: !store.parcels.isEmpty, canUndo: store.undoParcel != nil
+            cards: rows(layout), hasParcels: !store.parcels.isEmpty, canUndo: store.undoParcel != nil
         )
         if !keys.isEmpty {
             KeyboardShortcuts {
@@ -602,11 +607,11 @@ private struct DeliveryListView: View {
                     Button(localizer.text("app.undo")) { restore(parcel) }.keyboardShortcut("z", modifiers: .command)
                 }
                 if keys.contains(.previous) {
-                    Button(localizer.text("app.previousParcel")) { step(-1, through: layout.cards) }
+                    Button(localizer.text("app.previousParcel")) { step(-1, through: rows(layout)) }
                         .keyboardShortcut(.upArrow, modifiers: [])
                 }
                 if keys.contains(.next) {
-                    Button(localizer.text("app.nextParcel")) { step(1, through: layout.cards) }
+                    Button(localizer.text("app.nextParcel")) { step(1, through: rows(layout)) }
                         .keyboardShortcut(.downArrow, modifiers: [])
                 }
                 if keys.contains(.open), let parcelID = navigation.shown {
@@ -1352,7 +1357,7 @@ private struct DeliveryListView: View {
     /// Deletes a parcel its card's menu asked about. Beside the list, a card that was shown gives way as it
     /// does when the parcel is deleted from its page.
     private func delete(_ parcel: Parcel) {
-        let cards = arrangement(of: delivered.arranged(store.parcels)).cards
+        let cards = rows(arrangement(of: delivered.arranged(store.parcels)))
         Task {
             do {
                 try await store.permanentlyDelete(parcel)

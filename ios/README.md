@@ -63,10 +63,10 @@ With a keyboard, ⌘N adds a parcel, ⌘F searches, ⌘R refreshes where its but
 choose the tabs and ⌘, opens Settings. On the parcel shown, beside the list or over it, ⇧⌘C
 copies its tracking number, ⌃⌘A archives it or brings it back and ⌘⌫ deletes it once confirmed;
 while a keyboard is connected, its menus show these keys. ⌘Z undoes an archive while its toast
-shows. Beside a parcel, ↑ and ↓ open the card before or after it, as a tap would, and Return
-opens the one shown by itself; Esc goes back from a parcel over the list. A key acts only on the
-screen in front, with no sheet, alert or popover over it, and the search field keeps the keys it
-edits with.
+shows. Beside a parcel, ↑ and ↓ open the one before or after it in the list, as a tap would, and
+Return opens the one shown by itself; Esc goes back from a parcel over the list. A key acts only
+on the screen in front, with no sheet, alert or popover over it, and the search field keeps the
+keys it edits with.
 
 ## Signing for a device
 

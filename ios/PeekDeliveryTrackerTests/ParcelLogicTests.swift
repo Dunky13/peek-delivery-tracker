@@ -2707,6 +2707,33 @@ extension ParcelLogicTests {
         XCTAssertEqual(navigation.chosen, a)
     }
 
+    func testBesideTheListAnArchiveThatShowsItsRowsCountsAsTheListsOwn() throws {
+        let onTheWay = makeParcel()
+        var older = makeParcel()
+        older.archivedAt = "2026-08-09T12:00:00Z"
+        var newer = makeParcel()
+        newer.archivedAt = "2026-08-10T12:00:00Z"
+        let parcels = [onTheWay, older, newer]
+        let all = DeliveryListLayout(parcels: parcels, query: "", status: .all, carrier: nil, sort: .priority, featuresNext: true)
+        let archive = try XCTUnwrap(all.sections.first { $0.kind == .archived }).parcels.map(\.id)
+        XCTAssertEqual(Set(archive), [older.id, newer.id])
+        // A closed shelf shows no row; an open one, or a filter, shows them after the cards.
+        XCTAssertEqual(all.rows(archiveOpen: false), [onTheWay.id])
+        XCTAssertEqual(all.rows(archiveOpen: true), [onTheWay.id] + archive)
+        // The Archived filter shows rows and no card: the first row shows beside the list by itself.
+        let archived = DeliveryListLayout(parcels: parcels, query: "", status: .archived, carrier: nil, sort: .priority, featuresNext: false)
+        XCTAssertEqual(archived.cards, [])
+        let rows = archived.rows(archiveOpen: true)
+        XCTAssertEqual(Set(rows), [older.id, newer.id])
+        var navigation = DeliveriesNavigation()
+        navigation.settle(.sideBySide, cards: rows)
+        XCTAssertEqual(navigation.shown, rows.first)
+        XCTAssertTrue(navigation.shownAutomatically)
+        // Leaving the filter, the first card takes its place.
+        navigation.settle(.sideBySide, cards: all.rows(archiveOpen: false))
+        XCTAssertEqual(navigation.shown, onTheWay.id)
+    }
+
     func testTheArrowKeysGoThroughTheCardsBesideTheList() {
         let (a, b, c, archived) = (UUID(), UUID(), UUID(), UUID())
         let cards = [a, b, c]
