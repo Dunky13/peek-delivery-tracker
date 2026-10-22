@@ -2180,6 +2180,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#5b2dee"
     },
     {
+      "id": "chronopost",
+      "catalog": "chronopost",
+      "slug": "chronopost-rastreio",
+      "title": "Chronopost rastreio: estados e entrega em Portugal",
+      "name": "Chronopost",
+      "color": "#0056a7"
+    },
+    {
       "id": "seur",
       "catalog": "seur",
       "slug": "seur-encomenda",
@@ -2210,6 +2218,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "4PX rastreio: números, estados e contacto em Portugal",
       "name": "4PX",
       "color": "#005add"
+    },
+    {
+      "id": "swiss-post",
+      "catalog": "swiss-post",
+      "slug": "correios-suicos-rastreio",
+      "title": "Swiss Post rastreio: correios suíços e entrega em Portugal",
+      "name": "Swiss Post",
+      "color": "#ffcc00"
     },
     {
       "id": "ctt-express",
@@ -2314,6 +2330,30 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "DHL Paket rastreio: estados e envios para Portugal",
       "name": "DHL Paket",
       "color": "#ffcc00"
+    },
+    {
+      "id": "la-poste",
+      "catalog": "la-poste",
+      "slug": "colissimo-la-poste-rastreio",
+      "title": "Colissimo e La Poste rastreio: estados e entrega em Portugal",
+      "name": "La Poste / Colissimo",
+      "color": "#ffcf00"
+    },
+    {
+      "id": "correos-spain",
+      "catalog": "correos-spain",
+      "slug": "correos-espanha-rastreio",
+      "title": "Correos rastreio: encomendas de Espanha para Portugal",
+      "name": "Correos",
+      "color": "#ffcd00"
+    },
+    {
+      "id": "royal-mail",
+      "catalog": "royal-mail",
+      "slug": "royal-mail-rastreio",
+      "title": "Royal Mail rastreio: estados, IVA e entrega em Portugal",
+      "name": "Royal Mail",
+      "color": "#da202a"
     },
     {
       "id": "china-post",
