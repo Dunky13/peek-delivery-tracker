@@ -169,7 +169,10 @@ describe('public product metadata', () => {
   it('has a page for each language’s address and for nothing else that short: any other one-part address is no route at all', () => {
     // A route for any one-part address would answer an unknown one itself, with a page only the browser draws.
     const routes = readdirSync('app', { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => entry.name);
-    expect(routes.filter((name) => name.includes('['))).toEqual([]);
+    // The one part that varies holds only the carriers' pages of the languages with pages alone, three parts long.
+    expect(routes.filter((name) => name.includes('['))).toEqual(['[language]']);
+    expect(readdirSync('app/[language]')).toEqual(['carriers']);
+    expect(readdirSync('app/[language]/carriers')).toEqual(['[slug]']);
     expect(routes.filter((name) => /^[a-z]{2}$/.test(name)).sort()).toEqual([...ADDRESS_LANGUAGES].sort());
     for (const language of ADDRESS_LANGUAGES) expect(existsSync(`app/${language}/page.tsx`), language).toBe(true);
     // English is at `/`: `/en` is a redirect, not a page.
