@@ -188,6 +188,8 @@ describe('what a carrier’s page tells a search engine', () => {
   });
 
   it('sets a French page’s words as French is set, its code aside', async () => {
+    // Each file read once, as in production: rendering every page re-reads them otherwise, too slowly for a busy runner.
+    vi.stubEnv('NODE_ENV', 'production');
     const pages = [
       renderToStaticMarkup(await CarrierIndexRoute({ locale: 'fr' })),
       ...await Promise.all(carrierLinks('fr').map(async ({ slug }) => renderToStaticMarkup(await CarrierRoute({ locale: 'fr', slug })))),
