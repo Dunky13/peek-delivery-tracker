@@ -19,7 +19,7 @@ DHL Express opisuje dwa kształty (cyfry wymyślone):
 | `1234567891` | List przewozowy: 10 cyfr, numer całej przesyłki. Tym śledzisz. |
 | `JD014600001234567890` | Identyfikator paczki: 20 znaków od `JD`, osobny dla każdej paczki w przesyłce. |
 
-Dziesięć cyfr mają też numery Mondial Relay, Relais Colis, TIPSA, Estafety i DHL eCommerce Iberia, więc sprawdź, jakiego przewoźnika wymienia e-mail ze sklepu. Numer z literami albo o innej długości to według DHL najpewniej przesyłka innego działu grupy, z własnym śledzeniem: DHL eCommerce (w Polsce [DHL eCommerce Poland](carrier:dhl-ecommerce-pl)) albo DHL Paket z Niemiec.
+Dziesięć cyfr mają też numery Mondial Relay, Relais Colis, TIPSA, Estafety i DHL eCommerce Iberia, więc sprawdź, jakiego przewoźnika wymienia e-mail ze sklepu. Numer z literami albo o innej długości to według DHL najpewniej przesyłka innego działu grupy, z własnym śledzeniem: DHL eCommerce (w Polsce [DHL eCommerce Poland](carrier:dhl-ecommerce-pl)) albo [DHL Paket](carrier:dhl) z Niemiec.
 
 DHL co jakiś czas używa numerów listów przewozowych ponownie, więc śledzenie może przez chwilę pokazywać historię innej przesyłki. Twoja paczka jedzie mimo to pod swój adres.
 

@@ -49,7 +49,7 @@ El seguimiento puede quedarse varios días en `Arrived at Destination Hub` o en 
 
 ## Quién entrega SpeedPAK en España
 
-SpeedPAK no reparte en tu puerta: su historial nombra a la empresa que se encarga del paquete en tu país. En los historiales consultados para esta página, USPS, UniUni y DHL eCommerce (y luego USPS) entregaban en Estados Unidos, y PostNL (escrito «NL Post») llevaba paquetes a Suiza y Portugal.
+SpeedPAK no reparte en tu puerta: su historial nombra a la empresa que se encarga del paquete en tu país. En los historiales consultados para esta página, [USPS](carrier:usps), UniUni y DHL eCommerce (y luego USPS) entregaban en Estados Unidos, y PostNL (escrito «NL Post») llevaba paquetes a Suiza y Portugal.
 
 Ninguna página de eBay ni de Orange Connex dice qué empresa entrega los paquetes SpeedPAK en España. No lo adivines: espera a la línea `LM Carrier` o pregúntale al vendedor.
 

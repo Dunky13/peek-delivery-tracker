@@ -19,7 +19,7 @@ DHL Express descrive due forme (cifre inventate):
 | `1234567891` | La lettera di vettura: 10 cifre, il numero con cui segui tutta la spedizione. |
 | `JD014600001234567890` | L'identificativo del collo: 20 caratteri che iniziano con `JD`, uno per ogni pacco della spedizione. |
 
-Anche Mondial Relay, Relais Colis, TIPSA, Estafeta e DHL eCommerce Iberia usano numeri di 10 cifre, quindi guarda quale corriere nomina l'e-mail del negozio. Un numero di un'altra forma è con ogni probabilità di un'altra divisione di DHL, come DHL eCommerce o DHL Paket, che hanno un tracking tutto loro.
+Anche Mondial Relay, Relais Colis, TIPSA, Estafeta e DHL eCommerce Iberia usano numeri di 10 cifre, quindi guarda quale corriere nomina l'e-mail del negozio. Un numero di un'altra forma è con ogni probabilità di un'altra divisione di DHL, come DHL eCommerce o [DHL Paket](carrier:dhl), che hanno un tracking tutto loro.
 
 DHL ricicla periodicamente i numeri di lettera di vettura, quindi il tracking può mostrare per poco tempo i dati di un'altra spedizione. Il tuo pacco va comunque al suo indirizzo.
 

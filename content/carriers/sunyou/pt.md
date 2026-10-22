@@ -56,7 +56,7 @@ Na alfândega, as linhas a vigiar são `Customs Clearance Hold` e `Delivery fail
 
 ## Quem entrega a SunYou em Portugal
 
-A SunYou não entrega nada na Europa: a linha comercial dela passa as encomendas a transportadoras locais no país de destino, e o seguimento nomeia essa transportadora. Nos históricos lidos no seguimento dela, quem entregou foi a Royal Mail no Reino Unido, a DHL Paket na Alemanha, a USPS ou a GOFO nos Estados Unidos e a Canada Post no Canadá. A SunYou não diz quem entrega em Portugal, e os CTT não aparecem entre os parceiros que mostra no site. O histórico diz-te quem tem a tua depois de `Departed Sunyou Facility`, com o número dessa transportadora.
+A SunYou não entrega nada na Europa: a linha comercial dela passa as encomendas a transportadoras locais no país de destino, e o seguimento nomeia essa transportadora. Nos históricos lidos no seguimento dela, quem entregou foi a Royal Mail no Reino Unido, a [DHL Paket](carrier:dhl) na Alemanha, a USPS ou a GOFO nos Estados Unidos e a Canada Post no Canadá. A SunYou não diz quem entrega em Portugal, e os CTT não aparecem entre os parceiros que mostra no site. O histórico diz-te quem tem a tua depois de `Departed Sunyou Facility`, com o número dessa transportadora.
 
 A SunYou não publica regras para tentativas de entrega, avisos, pontos de levantamento nem o tempo que uma encomenda fica à espera. São as regras da transportadora local: com o nome e o número dela, vê no site dela como pedir nova entrega ou onde a encomenda está à espera.
 

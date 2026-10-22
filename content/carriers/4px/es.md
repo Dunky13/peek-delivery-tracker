@@ -40,7 +40,7 @@ Aunque pongas la web en español, las líneas de cada escaneo salen en el texto 
 | `Delivery attempt unsuccessful` | El repartidor no ha podido entregarlo. |
 | `Delivered, in/at mailbox` | Dejado en tu buzón. |
 
-`Shipping information received`, `Waybill generated`, `Shipping label created` y `Advance notice - package information received.` significan lo mismo que la primera fila. `Shipping label created, usps awaiting item` quiere decir que hay una etiqueta de USPS, el correo de Estados Unidos, que aún no ha escaneado el paquete.
+`Shipping information received`, `Waybill generated`, `Shipping label created` y `Advance notice - package information received.` significan lo mismo que la primera fila. `Shipping label created, usps awaiting item` quiere decir que hay una etiqueta de [USPS](carrier:usps), el correo de Estados Unidos, que aún no ha escaneado el paquete.
 
 Además, la web de 4PX clasifica cada paquete en una pestaña de resumen. En español la traducción es bastante literal y a veces engaña:
 

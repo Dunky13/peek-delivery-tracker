@@ -120,7 +120,7 @@ I tracker che collegano i numeri, come ParcelsApp, uniscono A e B quando B compa
 
 Tutto ciò che il corriere non ha pubblicato. ParcelsApp lo dice chiaramente: «non può creare una registrazione che il corriere non ha fatto». In più un tracker vede ogni scansione dopo il corriere, e i ritardi si sommano:
 
-- DHL Paket, in Germania, scrive che una nuova spedizione può metterci fino a 24 ore per comparire anche nel suo tracking.
+- [DHL Paket](carrier:dhl), in Germania, scrive che una nuova spedizione può metterci fino a 24 ore per comparire anche nel suo tracking.
 - Parcel dice che la sua app arriva fino a 90 minuti dopo il sito del corriere, 45 in media.
 
 **I corrieri decidono chi può leggere i loro dati.** Negli Stati Uniti, dal 1° aprile 2026 USPS lega l'accesso ai dati di tracking al Mailer ID contenuto nel codice a barre, e gli altri servizi possono ottenerlo a pagamento; 17TRACK avverte che le ricerche USPS non verificate saranno rallentate, rese a pagamento o bloccate del tutto. In Svizzera, Deliveries mostra gli invii della Posta solo in una vista web, secondo la sua pagina dei servizi aggiornata a maggio 2023. Se un pacco USPS o della Posta svizzera mostra poco in un tracker, controlla sul sito del corriere.

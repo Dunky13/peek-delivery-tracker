@@ -19,7 +19,7 @@ DHL Express décrit deux formes :
 | `1234567891` | Le bordereau : 10 chiffres, le numéro qui suit tout l'envoi. |
 | `JD014600001234567890` | L'identifiant de pièce : 20 caractères commençant par `JD`, un par colis de l'envoi. |
 
-[Mondial Relay](carrier:mondial-relay), [Relais Colis](carrier:relais-colis), TIPSA, Estafeta et DHL eCommerce Iberia utilisent aussi des numéros à 10 chiffres : regarde quel transporteur nomme l'e-mail de la boutique. Un numéro avec des lettres ou d'une autre longueur appartient très probablement à une autre division de DHL, comme DHL eCommerce ou DHL Paket, qui a son propre suivi.
+[Mondial Relay](carrier:mondial-relay), [Relais Colis](carrier:relais-colis), TIPSA, Estafeta et DHL eCommerce Iberia utilisent aussi des numéros à 10 chiffres : regarde quel transporteur nomme l'e-mail de la boutique. Un numéro avec des lettres ou d'une autre longueur appartient très probablement à une autre division de DHL, comme DHL eCommerce ou [DHL Paket](carrier:dhl), qui a son propre suivi.
 
 DHL réutilise de temps en temps ses numéros de bordereau : le suivi peut donc afficher un moment les étapes d'un autre envoi. Ton colis, lui, va bien à ta propre adresse. Autre surprise possible : la ville affichée à l'enlèvement et à la livraison est celle de l'agence DHL qui s'en occupe, pas forcément la tienne.
 

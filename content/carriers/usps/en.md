@@ -3,7 +3,7 @@ title: USPS tracking: numbers, statuses and missed deliveries
 description: Track a USPS parcel: where the tracking number is, what USPS's statuses mean, redelivery and Post Office pickup, lost parcels and how to reach USPS.
 slug: usps-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 USPS, the U.S. Postal Service, delivers to every address in the United States, and tracking comes free with most of its domestic parcel services. Type the number into USPS Tracking on usps.com, text it to 28777 or paste it in the box above. The number comes from the sender, usually in the shop's shipping email.
@@ -19,7 +19,7 @@ USPS numbers are 13 to 34 characters long. The ones you'll usually meet:
 | `9400 1000 0000 0000 0000 06` | 22 digits starting `94`, `95`, `93`, `92` or `91`: the usual parcel label. |
 | `9205 5900 0000 0000 0000 0000 02` | 26 digits starting `92`. |
 | `420 12345 9400 1000 0000 0000 0000 06` | The full barcode as a scanner reads it: `420`, your ZIP Code, then the number. The ZIP part at the start can be left out. |
-| `RR123456785US` | An international postal number: 2 letters, 9 digits, `US`. |
+| `RR000000005US` | An international postal number: 2 letters, 9 digits, `US`. |
 
 The barcode number on a PS Form 3849 missed-delivery notice works in USPS Tracking too.
 
@@ -85,7 +85,7 @@ Read on usps.com on 13 October 2026:
 
 Peek opens USPS's tracking page in a browser on its own server. That is slower, and USPS can refuse it; tracking services then fill in, though they don't always hold USPS's history. Peek shows the status, each scan on a map, timed in the state where it happened, and the expected delivery day, and can notify you at every scan, at important steps or on delivery day only. It drops the signatory and delivery instructions.
 
-Statuses stay in USPS's English; delivered scans read "Delivered". `Arrived at Post Office` and `Available for Pickup` show as out for delivery, so read USPS's wording. When [UPS](carrier:ups) or [FedEx](carrier:fedex) hand a parcel to USPS, or a parcel from abroad reaches the US, Peek can follow it on USPS once USPS shows progress. Redelivery and Informed Delivery stay on usps.com.
+Statuses stay in USPS's English; delivered scans read "Delivered". Peek shows `Arrived at Post Office` as "Ready for pickup", though USPS is usually still preparing the parcel for delivery, so read USPS's wording. When [UPS](carrier:ups) or [FedEx](carrier:fedex) hand a parcel to USPS, or a parcel from abroad reaches the US, Peek can follow it on USPS once USPS shows progress. Redelivery and Informed Delivery stay on usps.com.
 
 ## Questions about USPS tracking
 

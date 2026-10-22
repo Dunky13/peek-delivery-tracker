@@ -19,7 +19,7 @@ A DHL Express descreve duas formas:
 | `1234567891` | A carta de porte: 10 algarismos, o número que segue o envio inteiro. |
 | `JD014600001234567890` | O identificador de volume: 20 caracteres que começam por `JD`, um por cada volume do envio. |
 
-A [Mondial Relay](carrier:mondial-relay), a Relais Colis, a TIPSA, a Estafeta e a [DHL eCommerce Iberia](carrier:dhl-ecommerce-es) também usam números de 10 algarismos, por isso confirma no e-mail da loja qual é a transportadora. Um número com letras ou com outro tamanho é, muito provavelmente, de outra divisão da DHL, como a DHL eCommerce ou a DHL Paket, que têm o seu próprio seguimento.
+A [Mondial Relay](carrier:mondial-relay), a Relais Colis, a TIPSA, a Estafeta e a [DHL eCommerce Iberia](carrier:dhl-ecommerce-es) também usam números de 10 algarismos, por isso confirma no e-mail da loja qual é a transportadora. Um número com letras ou com outro tamanho é, muito provavelmente, de outra divisão da DHL, como a DHL eCommerce ou a [DHL Paket](carrier:dhl), que têm o seu próprio seguimento.
 
 A DHL reutiliza números de carta de porte de tempos a tempos. Por isso, o seguimento pode mostrar por pouco tempo os dados de outro envio, mas a tua encomenda continua a caminho da tua morada.
 

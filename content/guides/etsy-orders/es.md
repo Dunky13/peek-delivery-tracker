@@ -33,7 +33,7 @@ El que elige el vendedor. Etsy solo vende etiquetas de envío a vendedores de Es
 
 | Vendedor en | Etiquetas que vende Etsy | Transportistas que Etsy nombra para el extranjero |
 | --- | --- | --- |
-| Estados Unidos | USPS, [FedEx](carrier:fedex), [UPS](carrier:ups) (solo dentro de EE. UU.), Global Postal Shipping | [DHL Express](carrier:dhl-express), FedEx, UPS, USPS |
+| Estados Unidos | [USPS](carrier:usps), [FedEx](carrier:fedex), [UPS](carrier:ups) (solo dentro de EE. UU.), Global Postal Shipping | [DHL Express](carrier:dhl-express), FedEx, UPS, USPS |
 | Reino Unido | Royal Mail, Evri | DHL, Evri, Royal Mail, UPS |
 | Canadá | Canada Post, Chit Chats | Canada Post, Chit Chats, DHL, FedEx, UPS |
 | España | Ninguna | [Correos de España](carrier:correos-spain) |

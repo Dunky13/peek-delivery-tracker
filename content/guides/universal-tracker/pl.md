@@ -113,7 +113,7 @@ Trackery, które wiążą ze sobą numery (na przykład ParcelsApp), połączą 
 
 Niczego, czego przewoźnik nie opublikował. ParcelsApp mówi to wprost: nie stworzy skanu, którego firma nie zapisała. Przy listach poleconych Poczta Polska podaje tylko dzień nadania i doręczenia, „bez drogi ich przemieszczania”, więc tracker nie ma skąd wziąć reszty. Tracker widzi też każdy skan dopiero po przewoźniku, więc opóźnienia się sumują:
 
-- DHL Paket w Niemczech podaje, że nowa przesyłka może się pojawić w jego śledzeniu nawet po 24 godzinach.
+- [DHL Paket](carrier:dhl) w Niemczech podaje, że nowa przesyłka może się pojawić w jego śledzeniu nawet po 24 godzinach.
 - Parcel podaje, że jego aplikacja jest opóźniona względem strony przewoźnika nawet o 90 minut (średnio o 45).
 
 **Paczki Allegro Delivery śledzisz w Allegro.** ORLEN Paczka pisze, że jej przesyłki wysłane metodą Allegro Delivery „można śledzić i odbierać wyłącznie w aplikacji i na stronie Allegro”, numerem zaczynającym się od `AD`. Jeśli taki numer nic nie pokazuje w trackerze, zajrzyj do zakładki „Moje przesyłki” w Allegro.

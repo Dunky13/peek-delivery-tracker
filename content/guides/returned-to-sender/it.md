@@ -39,7 +39,7 @@ Quasi tutti i servizi per fermare o richiamare un pacco sono riservati al mitten
 | Corriere | Servizio | Chi può usarlo | Costi e limiti |
 | --- | --- | --- | --- |
 | UPS | Delivery Intercept, opzione `Return to Sender` | Il mittente | Solo prima della consegna; UPS dice che possono esserci costi, addebitati solo se l'intercettazione riesce |
-| DHL Paket (Germania) | Paketstopp | Clienti business | 0 € per chiederlo, 4,50 € di rientro se va a buon fine |
+| [DHL Paket](carrier:dhl) (Germania) | Paketstopp | Clienti business | 0 € per chiederlo, 4,50 € di rientro se va a buon fine |
 | BRT | Nuove disposizioni per una giacenza, nella sezione «rintraccia giacenza» | Chi ha l'area riservata BRT | Solo mentre il pacco è in giacenza, prima che riparta |
 
 Poste Italiane e la Posta, nelle pagine per i clienti, non presentano un servizio per richiamare un pacco già partito. Finché il pacco sta ancora arrivando, chiedi al venditore. Se vuoi che venga consegnato altrove, leggi [come cambiare indirizzo di consegna](guide:change-delivery-address).

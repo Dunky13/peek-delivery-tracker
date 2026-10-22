@@ -116,7 +116,7 @@ Os serviços que ligam números, como a ParcelsApp, juntam A e B quando B aparec
 
 Nada que a transportadora não tenha publicado. A ParcelsApp di-lo sem rodeios: não consegue criar uma leitura que a empresa não registou. E um serviço de seguimento vê cada leitura depois da transportadora, por isso nunca é exatamente em tempo real. Os atrasos somam-se:
 
-- A DHL Paket, na Alemanha, diz que um envio novo pode demorar até 24 horas a aparecer no seu próprio seguimento.
+- A [DHL Paket](carrier:dhl), na Alemanha, diz que um envio novo pode demorar até 24 horas a aparecer no seu próprio seguimento.
 - A Parcel diz que a sua app fica até 90 minutos atrás do site da transportadora (45, em média).
 
 **As transportadoras também põem limites.** Desde 1 de abril de 2026, os correios dos EUA (USPS) ligam o acesso aos seus dados de seguimento ao Mailer ID do código de barras, e os outros serviços passam a pagar por esse acesso. O 17TRACK avisa que as consultas à USPS que não se possam verificar vão ser abrandadas, cobradas ou bloqueadas. Se um número mostra pouco num serviço de seguimento, vê o site da transportadora.

@@ -54,7 +54,7 @@ Przy cle zwróć uwagę na `Customs Clearance Hold` i `Delivery failed, Reason: 
 
 ## Kto doręcza paczki SunYou w Polsce
 
-SunYou sam nie doręcza w Europie: jego linia komercyjna oddaje paczki lokalnym przewoźnikom w kraju docelowym, a śledzenie podaje nazwę tego przewoźnika i jego numer. W historiach odczytanych na stronie SunYou w Wielkiej Brytanii doręczał Royal Mail, w Niemczech DHL Paket, w USA USPS albo GOFO, a w Kanadzie Canada Post.
+SunYou sam nie doręcza w Europie: jego linia komercyjna oddaje paczki lokalnym przewoźnikom w kraju docelowym, a śledzenie podaje nazwę tego przewoźnika i jego numer. W historiach odczytanych na stronie SunYou w Wielkiej Brytanii doręczał Royal Mail, w Niemczech [DHL Paket](carrier:dhl), w USA USPS albo GOFO, a w Kanadzie Canada Post.
 
 Dla Polski SunYou nie podaje przewoźnika: nie wymienia jej wśród krajów swojej linii komercyjnej, a wśród logotypów partnerów nie ma ani Poczty Polskiej, ani InPostu. Kto doręcza Twoją paczkę, sprawdzisz więc tylko w jej historii, po `Departed Sunyou Facility`.
 

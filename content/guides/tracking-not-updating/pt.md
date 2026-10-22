@@ -37,7 +37,7 @@ Horas ou dias. Muitas vezes a etiqueta já existe, mas a transportadora ainda n�
 
 - **CTT:** `Aguarda entrada nos CTT` quer dizer que os CTT receberam a informação eletrónica do envio, mas a encomenda ainda não entrou na rede deles: o expedidor pode ainda estar a prepará-la. Quando a recebem, o estado passa a `Aceite`. Se o código não der resultados, pode ser de um envio sem seguimento, cujo código só serve para a alfândega, ou de um envio entregue em Portugal por outra empresa: os CTT mandam contactar o remetente.
 - **UPS:** `Etiqueta Criada` quer dizer que a UPS recebeu os detalhes do envio do remetente, mas ainda não tem a encomenda.
-- **DHL:** os eventos aparecem «normalmente 24 a 48 horas» depois de receberes o número de localização. Na Alemanha, a DHL Paket fala de até 24 horas.
+- **DHL:** os eventos aparecem «normalmente 24 a 48 horas» depois de receberes o número de localização. Na Alemanha, a [DHL Paket](carrier:dhl) fala de até 24 horas.
 - **Amazon:** o número pode faltar porque a encomenda ainda vai a caminho da transportadora. Aparece em **Os meus pedidos** depois da primeira leitura.
 - **Vinted:** a informação de envio pode demorar até 48 horas a aparecer pela primeira vez. Com a InPost, quem vende tem 5 dias úteis para imprimir a etiqueta, colá-la e entregar a encomenda num Ponto Pack.
 

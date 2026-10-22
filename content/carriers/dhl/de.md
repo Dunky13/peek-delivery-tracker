@@ -3,7 +3,7 @@ title: DHL Paket Sendungsverfolgung: Nummer, Status, Packstation
 description: DHL Sendungsverfolgung für Pakete: wie die Sendungsnummer aussieht, was die Status heißen, Filiale, Packstation, Nachforschung und Kontakt.
 slug: dhl-paket-sendungsverfolgung
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 DHL Paket ist der deutsche Paketdienst der DHL Group, unterwegs unter den Marken Deutsche Post und DHL. Dein Paket verfolgst du kostenlos mit der Sendungsnummer auf dhl.de, in der Post & DHL App oder indem du die Nummer oben ins Feld einfügst. Die Nummer bekommst du vom Absender: Shops schicken sie meist mit der Versandbestätigung.
@@ -17,8 +17,8 @@ Diese Formen siehst du am häufigsten (Ziffern erfunden):
 | Nummer (erfunden) | Was sie ist |
 | --- | --- |
 | `JJD000123456789012345` | Eine Etikettennummer: `JJD` und 18 Ziffern. |
-| `00340434123456789012` | Eine 20-stellige Barcode-Nummer, die mit `00340434`, `00340433` oder `00340435` beginnt. |
-| `CA123456785DE` | Eine Postnummer: `C` oder `L`, ein weiterer Buchstabe, neun Ziffern und `DE`. |
+| `00340434100000000007` | Eine 20-stellige Barcode-Nummer, die mit `00340434`, `00340433` oder `00340435` beginnt. |
+| `CA000000005DE` | Eine Postnummer: `C` oder `L`, ein weiterer Buchstabe, neun Ziffern und `DE`. |
 | `123456789016` | Ein 12-stelliger Identcode. |
 
 Eine neue Nummer kann laut DHL bis zu 24 Stunden brauchen, bis sie in der Sendungsverfolgung auftaucht. Meldet DHL sie als ungültig, prüf zuerst auf Tippfehler. Sonst ist es vielleicht ein Päckchen (ohne Sendungsverfolgung), ein Brief, eine Express-Sendung, ein Paket aus dem Ausland, das [DHL eCommerce](carrier:dhl-ecommerce) verfolgt, oder die Sendung eines anderen Paketdiensts. Eine 10-stellige Nummer gehört meist zu [DHL Express](carrier:dhl-express).
@@ -81,7 +81,7 @@ Wurde dein Paket im Ausland zugestellt, kümmert sich bei fehlendem Inhalt das Z
 
 ## DHL Paket mit Peek verfolgen
 
-[Peek](/) erkennt DHL sofort an einer `JJD`-Etikettennummer mit 18 Ziffern, einer `0034043…`-Barcode-Nummer mit gültiger Prüfziffer oder einer `C…DE`- oder `L…DE`-Nummer mit gültiger Prüfziffer. Einen 12-stelligen Identcode oder eine 10-stellige Nummer nutzen auch andere Paketdienste, und DHL lässt sich dazu nicht direkt fragen. Wähle dann „DHL“ über „Paketdienst ändern“. So korrigierst du auch ein Paket, das unter dem falschen DHL-Bereich gelandet ist. Links von dhl.de, deutschepost.de und nolp.dhl.de kannst du ebenfalls einfügen.
+[Peek](/) erkennt DHL sofort an einer `JJD`-Etikettennummer mit 18 Ziffern, einer `0034043…`-Barcode-Nummer mit gültiger Prüfziffer oder einer `C…DE`- oder `L…DE`-Nummer mit gültiger Prüfziffer. Einen 12-stelligen Identcode nutzen auch andere Paketdienste: Peek fragt mehrere davon, ob sie die Nummer kennen, DHL darunter. Eine 10-stellige Nummer fügst du trotzdem ein, denn Peek verfolgt mehr als 3.500 Paketdienste. Landet das Paket nicht bei DHL, wähle „DHL“ über „Paketdienst ändern“. So korrigierst du auch ein Paket, das unter dem falschen DHL-Bereich gelandet ist. Links von dhl.de, deutschepost.de und nolp.dhl.de kannst du ebenfalls einfügen.
 
 Peek liest die Sendungsverfolgung von dhl.de auf Englisch und öffnet sie in einem Browser auf dem eigenen Server, wenn DHL die Anfrage ablehnt. Will DHL eine Postleitzahl oder sagt, die Nummer gehöre zu einem anderen DHL-Dienst, helfen Tracking-Dienste aus. Nachgefragt wird alle 10 Minuten, sobald das Paket in Zustellung ist alle 2 Minuten. Auf Wunsch bekommst du Mitteilungen bei jedem Scan, nur bei wichtigen Schritten oder nur am Liefertag.
 

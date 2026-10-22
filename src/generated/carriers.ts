@@ -1646,6 +1646,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#ffcc00"
     },
     {
+      "id": "dhl",
+      "catalog": "dhl",
+      "slug": "dhl-paket-suivi-colis",
+      "title": "Suivi colis DHL Paket\u00a0: numéro, statuts et livraison",
+      "name": "DHL Paket",
+      "color": "#ffcc00"
+    },
+    {
       "id": "la-poste",
       "catalog": "la-poste",
       "slug": "suivi-la-poste-colissimo",
@@ -1864,6 +1872,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#ffcc00"
     },
     {
+      "id": "dhl",
+      "catalog": "dhl",
+      "slug": "dhl-paket-tracking",
+      "title": "DHL Paket tracking: numero, stati e consegna in Italia",
+      "name": "DHL Paket",
+      "color": "#ffcc00"
+    },
+    {
       "id": "china-post",
       "catalog": "china-post",
       "slug": "china-post-tracking",
@@ -2074,12 +2090,28 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#ffcc00"
     },
     {
+      "id": "dhl",
+      "catalog": "dhl",
+      "slug": "dhl-paket-seguimiento",
+      "title": "DHL Paket seguimiento: estados y envíos a España",
+      "name": "DHL Paket",
+      "color": "#ffcc00"
+    },
+    {
       "id": "correos-spain",
       "catalog": "correos-spain",
       "slug": "seguimiento-correos",
       "title": "Correos seguimiento: estados, entregas, aduanas y teléfono",
       "name": "Correos",
       "color": "#ffcd00"
+    },
+    {
+      "id": "usps",
+      "catalog": "usps",
+      "slug": "usps-seguimiento",
+      "title": "USPS seguimiento: estados, reintento de entrega y envíos",
+      "name": "USPS",
+      "color": "#004b87"
     },
     {
       "id": "china-post",
@@ -2276,6 +2308,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#ffcc00"
     },
     {
+      "id": "dhl",
+      "catalog": "dhl",
+      "slug": "dhl-paket-rastreio",
+      "title": "DHL Paket rastreio: estados e envios para Portugal",
+      "name": "DHL Paket",
+      "color": "#ffcc00"
+    },
+    {
       "id": "china-post",
       "catalog": "china-post",
       "slug": "china-post-rastreio",
@@ -2427,6 +2467,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "slug": "dhl-express-sledzenie-przesylki",
       "title": "DHL Express śledzenie przesyłki: numer, statusy i kontakt",
       "name": "DHL Express",
+      "color": "#ffcc00"
+    },
+    {
+      "id": "dhl",
+      "catalog": "dhl",
+      "slug": "dhl-paket-sledzenie-przesylki",
+      "title": "DHL Paket śledzenie przesyłki: numer, statusy i odbiór",
+      "name": "DHL Paket",
       "color": "#ffcc00"
     },
     {
