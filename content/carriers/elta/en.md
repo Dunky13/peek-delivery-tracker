@@ -3,7 +3,7 @@ title: ELTA Hellenic Post tracking: statuses, pickup, contacts
 description: Track an ELTA Hellenic Post or ELTA Courier parcel in Greece: the GR number, what the English statuses mean, PostBox lockers, notices, claims and contacts.
 slug: elta-hellenic-post-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 ELTA Hellenic Post (ΕΛΤΑ) is Greece's national post, and ELTA Courier is now part of it. Track an item on ELTA's [English tracking page](https://www.elta.gr/en/track), which takes up to five numbers at once, or paste the number in the box above. The number comes from the sender: the receipt of posting, the courier voucher or the shop's message.
@@ -85,7 +85,7 @@ For a number ending `GR` with a valid check digit, [Peek](/) asks ELTA (and [Chr
 
 An item from abroad stays with its foreign post, but ELTA's lookup takes it too: pick "ELTA Hellenic Post" with "Change". A parcel can also be followed into ELTA when the carrier abroad names it, though not every parcel is.
 
-ELTA's times carry no time zone, so Peek doesn't list ELTA's own history. It takes a dated history from [universal tracking services](guide:universal-tracker) when one knows the parcel and asks ELTA again every 6 hours; if no service answers, it shows the current status, dated when Peek saw it. Statuses keep ELTA's English wording, and Peek can show the post office or courier agency where the parcel waits, and can notify you when the status changes. There's no expected delivery day and no weight.
+ELTA gives each scan a date and time but no time zone: Peek reads them on the clock of the scan's place, Greek time for scans in Greece, and lists ELTA's own history with ELTA's English wording. It can show the post office or courier agency where the parcel waits and notify you when the status changes. ELTA gives no expected delivery day and no weight.
 
 ## Questions about ELTA tracking
 

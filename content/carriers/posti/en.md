@@ -3,7 +3,7 @@ title: Posti tracking: item ID, statuses, lockers and contact
 description: Track a Posti parcel in Finland: what the JJFI item ID looks like, what each English status means, how long lockers keep parcels and how to reach Posti.
 slug: posti-tracking
 published: 2026-10-12
-updated: 2026-10-12
+updated: 2026-10-22
 ---
 
 Posti is Finland's postal and parcel company. Track a parcel on [Posti's tracking page](https://www.posti.fi/en/tracking) or in Posti's OmaPosti app with its item ID, or paste the number in the box above. The number comes from the sender, and it is also on Posti's notice of arrival in OmaPosti, by SMS or by email.
@@ -83,11 +83,11 @@ Posti lists no customer email address.
 
 ## Posti parcel tracking with Peek
 
-[Peek](/) names a `JJFI` number as Posti's straight away. A posti.fi tracking link (`/tracking/` or `/en/tracking/` followed by the number) works for any number; Finnish `/fi/seuranta` links only when a `JJFI` number is inside. No postcode needed.
+[Peek](/) names a `JJFI` number as Posti's straight away. A posti.fi tracking link (`/tracking/`, `/en/tracking/` or `/fi/tracking/` followed by the number) names Posti for any number. From a Finnish `/seuranta` link Peek takes the number alone and reads it as if typed, so a `JJFI` number goes straight to Posti. No postcode needed.
 
 For a postal number ending `FI`, Peek asks Posti first, with Chronopost, and names Posti once it knows it. If Posti doesn't know it yet, you see "Not found at … yet. Peek will keep checking after you add it." Peek then asks again after 1, 2 and 4 hours, then every 6 hours, then daily, for up to a month. With a wrong check digit, or for an SSCC that several carriers know, pick Posti with "Change". A foreign number tracks at Posti after "Change" or from a posti.fi link, and Peek can follow some international parcels to Posti.
 
-Peek reads Posti in English and shows each status with Posti's explanation line, the town of each scan, the weight, the dimensions and the pickup point's name and address. It checks every 10 minutes (every 2 once out for delivery), draws each scan on a map and can notify you of changes. It drops the pickup code and your address, and shows no expected delivery or sender. A number covering several parcels isn't tracked, and old parcels read as not found.
+Peek reads Posti in English and shows each status with Posti's explanation line, the town of each scan, the weight, the dimensions and the pickup point's name and address. By day it checks every 10 minutes (every 2 once out for delivery), draws each scan on a map and can notify you of changes. It drops the pickup code and your address, and shows no expected delivery or sender. A number covering several parcels isn't tracked, and old parcels read as not found.
 
 ## Questions about Posti tracking
 

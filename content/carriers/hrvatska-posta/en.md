@@ -3,7 +3,7 @@ title: Hrvatska pošta tracking: statuses, lockers and contacts
 description: Track a Hrvatska pošta (Croatian Post) parcel: the item number, what the English statuses mean, paketomat lockers, post office pickup, claims and contacts.
 slug: hrvatska-posta-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 Hrvatska pošta (Croatian Post) is Croatia's national post, with its Paket24 parcel service. Track an item on its [English tracking page](https://posiljka.posta.hr/en/tracking) (the plain posiljka.posta.hr address opens in Croatian), or paste the number in the box above. The number comes from the sender: the shop's shipping email or order page, or Hrvatska pošta's own SMS and notices.
@@ -66,7 +66,7 @@ The notice gives the exact deadline, counted from the day on it.
 
 Hrvatska pošta aims to deliver 85% of domestic items in its fastest category the next working day; Paket 24 takes one to three working days (three for islands). If nothing moves for days, see [tracking that isn't updating](guide:tracking-not-updating).
 
-**Customs.** For goods from outside the EU, Hrvatska pošta acts as your customs representative and collects VAT (and duty where due) plus its fee on delivery: 2.46 € for items up to 150 € without an IOSS number, 4.91 € from 150 to 1,000 €. Items with IOSS cost nothing extra. See [parcels held at customs](guide:customs).
+**Customs.** For goods from outside the EU, Hrvatska pošta acts as your customs representative and collects VAT (and duty where due) plus its fee on delivery: 2.46 € for items up to 150 € without an IOSS number, 4.91 € from 150 to 1,000 €. With an IOSS number the shop has charged the VAT already, so neither the VAT nor Hrvatska pošta's fee is charged again. Since 1 July 2026, though, each item in a parcel up to 150 € carries a flat customs duty of 3 €, IOSS or not. See [parcels held at customs](guide:customs).
 
 **Complaints** (loss, delay, damage, missing contents): within 3 months of posting for domestic items, 6 months for international ones, at a post office or with the web form. Report damage when the item is handed over, so a report can be drawn up; for a locker parcel, within one hour of collection. Hrvatska pošta answers within 30 days (60 internationally); then the Consumer Complaints Committee and the regulator HAKOM. Compensation goes to the sender, so for an online order, the shop claims.
 
@@ -85,11 +85,11 @@ Hrvatska pošta's channels, as posta.hr listed them in October 2026:
 
 ## Tracking Hrvatska pošta parcels with Peek
 
-For a postal number ending `HR` with a valid check digit, [Peek](/) asks Hrvatska pošta (and [Chronopost](carrier:chronopost)) at once and shows "Hrvatska pošta has this parcel." when it knows the number, or "Not found at … yet. Peek will keep checking after you add it." With a wrong check digit Hrvatska pošta isn't asked: check the number, or pick the carrier with "Change". A posiljka.posta.hr tracking link with the number in it always names Hrvatska pošta. Its other barcodes, typed, never do: use "Change".
+[Peek](/) names a postal number starting C, E, L or R and ending `HR` as Hrvatska pošta's straight away when its check digit is valid. For other valid numbers ending `HR`, such as `UA…HR` or `VV…HR`, it asks Hrvatska pošta (and [Chronopost](carrier:chronopost)) at once and shows "Hrvatska pošta has this parcel." when it knows the number, or "Not found at … yet. Peek will keep checking after you add it." With a wrong check digit Hrvatska pošta isn't asked: check the number, or pick the carrier with "Change". A posiljka.posta.hr tracking link with the number in it always names Hrvatska pošta. Its other barcodes, typed, never do: use "Change".
 
 An item from abroad stays with its foreign post in Peek, but Hrvatska pošta's lookup takes it: pick "Hrvatska pošta" with "Change".
 
-Hrvatska pošta's times carry no time zone, so Peek doesn't list its own history. It takes a dated history from [universal tracking services](guide:universal-tracker) when one knows the parcel and asks Hrvatska pošta again every 6 hours; if no service answers, it shows the current status, dated when Peek saw it. Statuses keep Hrvatska pošta's English wording. Peek can show the post office or parcel locker where the parcel waits (by name) and the weight, and can notify you when the status changes. There's no expected delivery day, and postcodes are left out.
+Peek lists Hrvatska pošta's own history, in the English wording of its English site. Hrvatska pošta's times carry no time zone, so Peek dates scans at Croatian post offices and parcel lockers on Croatian time, and scans abroad on the local time of the facility's country when its office code shows one. Peek can show the post office or parcel locker where the parcel waits (by name) and the weight. There's no expected delivery day, and postcodes are left out. By day Peek checks every 10 minutes (every 2 once out for delivery) and can notify you when the status changes.
 
 ## Questions about Croatian Post tracking
 
@@ -117,6 +117,7 @@ Yes, with the postal number the sender gave you, which ends in the sending count
 - [Hrvatska pošta: Uvjeti korištenja Paketomata](https://www.posta.hr/UserDocsImages/Dokumenti_2024/Uvjeti%20kori%C5%A1tenja%20Paketomata%20-%201.1.2025%20.pdf) – missed deliveries to lockers, one-hour damage report
 - [Hrvatska pošta: Unutarnji promet](https://www.posta.hr/unutarnji-promet-2153?pojam=&page=1) – notice, 5 working days, delivery attempt, redelivery, holding, who may collect
 - [Hrvatska pošta: Međunarodni promet](https://www.posta.hr/medjunarodni-promet?pojam=&page=1) – customs fees, IOSS, VAT refund, items stuck abroad
+- [Croatian Customs Administration: Nova pravila za robu koja se nabavlja putem prodaje na daljinu – e-trgovina](https://carina.gov.hr/pristup-informacijama/propisi-i-sporazumi/carinsko-postupanje/nova-pravila-za-robu-koja-se-nabavlja-putem-prodaje-na-daljinu-e-trgovina/2718) – flat 3 € duty per item from 1 July 2026, whatever the VAT route
 - [Hrvatska pošta: Opći uvjeti za obavljanje univerzalne usluge](https://www.posta.hr/UserDocsImages/Dokumenti_2026/Op%C4%87i_uvjeti_za_obavljanje_univerzalne%20usluge_1.8.2026.pdf) – arrival notice, 5 and 15 working days, e-mail, compensation to the sender
 - [Hrvatska pošta: Opći uvjeti za obavljanje ostalih poštanskih usluga](https://www.posta.hr/UserDocsImages/Dokumenti_2026/Op%C4%87i_uvjeti_za_obavljanje_ostalih_po%C5%A1tanskih_usluga_1.8.2026.pdf) – Paket 15 working days, Paket 24 5 working days, lockers 3 days
 - [Hrvatska pošta: Rokovi uručenja pošiljaka](https://www.posta.hr/UserDocsImages/Dokumenti_2025/Rokovi_urucenja_posiljaka_20251120.pdf) – delivery times, Paket 24

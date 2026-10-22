@@ -3,7 +3,7 @@ title: Česká pošta (Czech Post) tracking: numbers and statuses
 description: Track a Czech Post or Balíkovna parcel: where the number is, what Česká pošta's English statuses mean, missed deliveries, pickup deadlines and contacts.
 slug: ceska-posta-czech-post-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-22
 ---
 
 Česká pošta (Czech Post) is the Czech national post, and Balíkovna is its parcel brand. Track a parcel on Czech Post's English [Track & Trace](https://www.postaonline.cz/en/trackandtrace), in the Pošta Online app, or by pasting the number in the box above. The number is on the shipping label, in Czech Post's SMS or email, or on the notice in your mailbox.
@@ -15,7 +15,7 @@ Czech Post describes its numbers as a prefix of usually two letters for the type
 | Shape (invented) | What it is |
 | --- | --- |
 | `DR1234567890E` | A domestic parcel: two letters, 10 digits, a letter. Czech Post's own example. |
-| `RR123456785CZ` | An international number posted in Czechia: two letters, 9 digits, `CZ`. |
+| `RR000000005CZ` | An international number posted in Czechia: two letters, 9 digits, `CZ`. |
 | `RR123456785CN` | An item coming from abroad: it keeps the foreign post's number, ending in the country it came from. |
 
 If the shop passed on your contact details, Czech Post notifies you by email or SMS, and the email links to Track & Trace. The six-character pickup code in that message isn't a tracking number. Can't find any of these? See [where else to find a tracking number](guide:find-tracking-number).
@@ -75,9 +75,9 @@ Czech Post's channels, as listed on its sites in October 2026:
 
 ## Tracking Česká pošta parcels with Peek
 
-[Peek](/) recognises Czech Post's domestic numbers starting with `B` or `D` straight away. Other letters in that shape name no carrier: pick "Česká pošta" with "Change". For international numbers ending `CZ` with a valid check digit, Peek asks Czech Post (and [Chronopost](carrier:chronopost)) and shows "Česká pošta has this parcel." when it knows the number, or "Not found at … yet" until it does. A number from another country's post isn't handed to Czech Post: use "Change". Links from postaonline.cz with `/trackandtrace/-/zasilka/` and the number can be pasted too.
+[Peek](/) recognises Czech Post's domestic numbers starting with `B` or `D` straight away. Other letters in that shape name no carrier: pick "Česká pošta" with "Change". For international numbers ending `CZ` with a valid check digit, Peek asks Czech Post (and [Chronopost](carrier:chronopost)) and shows "Česká pošta has this parcel." when it knows the number, or "Not found at … yet" until it does. A number from another country's post stays with that post and is handed to Czech Post only when the carrier abroad names it, which not every parcel gets: use "Change". Links from postaonline.cz with `/trackandtrace/-/zasilka/` and the number can be pasted too.
 
-Czech Post dates each step without a time, so Peek doesn't list its own history. It takes a dated history from [universal tracking services](guide:universal-tracker) when one knows the parcel and asks Czech Post again every 6 hours; if no service answers, it shows Czech Post's current status, dated when Peek saw it. Statuses keep Czech Post's English wording. Peek can show the post office or Balíkovna point where the parcel waits (by name, not address) and the weight. Czech Post gives no expected delivery day. Peek leaves out postcodes, cash-on-delivery details and the parcel count, and can notify you when the status changes.
+Czech Post dates each step by its day, with no time. Peek first looks for a history with times at [universal tracking services](guide:universal-tracker) and, when one has the parcel, asks Czech Post again every 6 hours; when none has it, Peek lists Czech Post's own steps, each under its day with no time. Statuses keep Czech Post's English wording. Peek can show the post office or Balíkovna point where the parcel waits (by name, not address) and the weight. Czech Post gives no expected delivery day. Peek leaves out postcodes, cash-on-delivery details and the parcel count, and can notify you when the status changes.
 
 ## Questions about Czech Post tracking
 

@@ -2433,15 +2433,60 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
   "nl": [],
   "sv": [],
   "da": [],
-  "nb": [],
-  "fi": [],
-  "cs": [],
+  "nb": [
+    {
+      "id": "bring",
+      "catalog": "bring-posten",
+      "slug": "bring-sporing",
+      "title": "Posten- og Bring-sporing: nummer, status og hentefrister",
+      "name": "Bring",
+      "color": "#56b529"
+    }
+  ],
+  "fi": [
+    {
+      "id": "posti",
+      "catalog": "posti",
+      "slug": "posti-seuranta",
+      "title": "Postin seuranta: lähetystunnus, tilat ja pakettiautomaatit",
+      "name": "Posti",
+      "color": "#ff8000"
+    }
+  ],
+  "cs": [
+    {
+      "id": "ceska-posta",
+      "catalog": "ceska-posta",
+      "slug": "ceska-posta-sledovani-zasilek",
+      "title": "Česká pošta sledování zásilek: podací číslo a stavy",
+      "name": "Česká pošta",
+      "color": "#002776"
+    }
+  ],
   "sk": [],
   "hu": [],
   "ro": [],
   "bg": [],
-  "el": [],
-  "hr": [],
+  "el": [
+    {
+      "id": "elta",
+      "catalog": "elta",
+      "slug": "elta-entopismos-dematos",
+      "title": "Εντοπισμός δέματος ΕΛΤΑ: κωδικός, καταστάσεις, PostBox",
+      "name": "ELTA Hellenic Post",
+      "color": "#0063a9"
+    }
+  ],
+  "hr": [
+    {
+      "id": "hrvatska-posta",
+      "catalog": "hrvatska-posta",
+      "slug": "hrvatska-posta-pracenje-posiljke",
+      "title": "Praćenje pošiljke Hrvatske pošte: statusi, rokovi i kontakt",
+      "name": "Hrvatska pošta",
+      "color": "#ffd100"
+    }
+  ],
   "sl": [],
   "lt": [],
   "lv": [],
