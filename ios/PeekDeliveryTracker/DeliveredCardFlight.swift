@@ -39,6 +39,16 @@ enum DeliveryListSpace {
         scrollView.map { CGRect(origin: $0.contentOffset, size: $0.bounds.size) }
     }
 
+    /// The first card that shows under the bars, to find again in the list laid out anew; none while the
+    /// list shows from its head.
+    var topmost: UUID? {
+        guard let scrollView else { return nil }
+        let top = scrollView.contentOffset.y + scrollView.adjustedContentInset.top
+        let showing = frames.filter { $0.value.maxY > top }
+        guard showing.count < frames.count else { return nil }
+        return showing.min { $0.value.minY < $1.value.minY }?.key
+    }
+
     func see(pip frame: CGRect, on id: UUID) { pip = (id, frame) }
 
     /// Where on the screen something comes out of a parcel's card: the mouth of Pip's box when he is on it,

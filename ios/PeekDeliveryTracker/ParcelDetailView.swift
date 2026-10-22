@@ -7,6 +7,8 @@ struct ParcelDetailView: View {
     /// A made-up parcel, shown as a followed one would be. Nobody follows it, so nothing on it can be changed, shared or
     /// checked, and it asks nothing.
     var sample: Parcel?
+    /// Set when the page stands beside the list rather than over it, and lets the parcel go when it leaves the list.
+    var release: (() -> Void)?
 
     @EnvironmentObject private var store: ParcelStore
     @EnvironmentObject private var localizer: Localizer
@@ -86,7 +88,8 @@ struct ParcelDetailView: View {
         // The card says which parcel this is: no bar names the page over it.
         .toolbar(removing: .title)
         .navigationTransition(.zoom(sourceID: parcelID, in: transition))
-        .toolbar(.hidden, for: .tabBar)
+        // Over the list, the page has the screen to itself; beside it, the tabs stay at hand.
+        .toolbar(release == nil ? .hidden : .automatic, for: .tabBar)
         .toolbar {
             if let parcel, sample == nil {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -700,24 +703,29 @@ struct ParcelDetailView: View {
         }
     }
 
+    /// Back to the list: off it, or from beside it.
+    private func leave() {
+        if let release { release() } else { dismiss() }
+    }
+
     private func archive(_ parcel: Parcel) {
         run {
             try await store.archive(parcel)
-            dismiss()
+            leave()
         }
     }
 
     private func restore(_ parcel: Parcel) {
         run {
             try await store.restore(parcel)
-            dismiss()
+            leave()
         }
     }
 
     private func delete(_ parcel: Parcel) {
         run {
             try await store.permanentlyDelete(parcel)
-            dismiss()
+            leave()
         }
     }
 

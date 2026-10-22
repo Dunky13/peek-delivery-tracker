@@ -618,6 +618,28 @@ struct DeliveredHold: Equatable {
     }
 }
 
+/// How the deliveries stand in their window: a list that opens a parcel over itself, as on a phone, or
+/// the list beside the parcel, where both fit side by side.
+enum DeliveriesArrangement: Equatable {
+    case stacked
+    case sideBySide
+
+    /// About an iPhone's width for the list, and for the parcel beside it.
+    static let listWidth: CGFloat = 320
+    static let parcelWidth: CGFloat = 390
+    /// How far a window resized across the line goes before the arrangement turns, so that it doesn't
+    /// turn back and forth while the window is being dragged.
+    static let slack: CGFloat = 20
+
+    /// Side by side needs a window that is wide and tall in its own right, as an iPad's or an open
+    /// iPhone Duo's, and room for both columns. A phone on its side is wide but short, and keeps its list.
+    static func resolve(width: CGFloat, regularWidth: Bool, regularHeight: Bool, current: Self) -> Self {
+        guard regularWidth, regularHeight else { return .stacked }
+        let both = listWidth + parcelWidth
+        return width >= (current == .sideBySide ? both - slack : both + slack) ? .sideBySide : .stacked
+    }
+}
+
 /// The card a parcel is shown on in the deliveries.
 enum DeliveryCardKind: Equatable {
     case next, attention, onTheWay, past

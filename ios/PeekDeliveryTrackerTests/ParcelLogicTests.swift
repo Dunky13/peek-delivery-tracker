@@ -2550,3 +2550,28 @@ extension ParcelLogicTests {
         }
     }
 }
+
+extension ParcelLogicTests {
+    func testTheDeliveriesStandBesideTheParcelOnlyInAWindowLargeEnoughForBoth() {
+        func arrangement(_ width: CGFloat, regularWidth: Bool = true, regularHeight: Bool = true,
+                         from current: DeliveriesArrangement = .stacked) -> DeliveriesArrangement {
+            DeliveriesArrangement.resolve(width: width, regularWidth: regularWidth, regularHeight: regularHeight, current: current)
+        }
+        // An iPad, and an open iPhone Duo held like a book, less its bar.
+        XCTAssertEqual(arrangement(1376), .sideBySide)
+        XCTAssertEqual(arrangement(887), .sideBySide)
+        // An open Duo turned tall is regular both ways, but two columns there would each be narrower than a phone.
+        XCTAssertEqual(arrangement(669), .stacked)
+        // A phone on its side, a narrow iPad window and the Duo's cover keep the list.
+        XCTAssertEqual(arrangement(956, regularHeight: false), .stacked)
+        XCTAssertEqual(arrangement(1024, regularWidth: false), .stacked)
+        XCTAssertEqual(arrangement(678, regularWidth: false, regularHeight: false), .stacked)
+        // A window dragged across the line turns once, past the slack, and not back until past it the other way.
+        XCTAssertEqual(arrangement(720), .stacked)
+        XCTAssertEqual(arrangement(731), .sideBySide)
+        XCTAssertEqual(arrangement(700, from: .sideBySide), .sideBySide)
+        XCTAssertEqual(arrangement(689, from: .sideBySide), .stacked)
+        // Size classes rule before width: side by side ends at once when the window becomes compact.
+        XCTAssertEqual(arrangement(1376, regularWidth: false, from: .sideBySide), .stacked)
+    }
+}
