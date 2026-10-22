@@ -28,6 +28,13 @@ const step = (body, name) => {
   return body.slice(start).split(/\n {6}- /)[0];
 };
 
+// An outage of the audit endpoint skips the audit; a vulnerability still fails the job.
+it('audits the production dependencies through the script that tells the two apart', () => {
+  const ci = read('.github/workflows/ci.yml');
+  assert.match(job(ci, 'checks'), /\n {6}- run: node scripts\/npm-audit\.mjs --omit=dev\n/);
+  assert.doesNotMatch(ci, /run: npm audit/);
+});
+
 // CI hands a tested commit over; deploy.yml waits for newer ones and deploys (scripts/deploy-gate.mjs).
 it('hands a tested commit on main to the Deploy workflow, which alone deploys', () => {
   const ci = read('.github/workflows/ci.yml');

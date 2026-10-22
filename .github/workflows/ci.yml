@@ -59,7 +59,9 @@ jobs:
       - run: npm run build
       - run: npm run test:deployment
       - run: npm run test:pwa
-      - run: npm audit --omit=dev
+      # A vulnerability fails the job. An audit endpoint that keeps failing skips the audit
+      # with a warning (scripts/npm-audit.mjs).
+      - run: node scripts/npm-audit.mjs --omit=dev
 
   unit:
     name: Unit tests
