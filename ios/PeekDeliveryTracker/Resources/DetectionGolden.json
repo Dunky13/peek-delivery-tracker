@@ -1778,94 +1778,34 @@
   },
   {
     "input": "00370724762415449269",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "usps",
-      "nz-post"
-    ],
-    "preferred": [
-      "bring-posten",
       "helthjem"
-    ],
-    "asked": [
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "nz-post"
     ]
   },
   {
     "input": "00370724762895252120",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "usps",
-      "nz-post"
-    ],
-    "preferred": [
-      "bring-posten",
       "helthjem"
-    ],
-    "asked": [
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "nz-post"
     ]
   },
   {
     "input": "00370724763174567744",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "usps",
-      "nz-post"
-    ],
-    "preferred": [
-      "bring-posten",
       "helthjem"
-    ],
-    "asked": [
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "nz-post"
     ]
   },
   {
     "input": "00370724763556781546",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "usps",
-      "nz-post"
-    ],
-    "preferred": [
-      "bring-posten",
       "helthjem"
-    ],
-    "asked": [
-      "helthjem",
-      "swiss-post-cargo",
-      "postnord",
-      "nz-post"
     ]
   },
   {
@@ -34646,109 +34586,49 @@
   },
   {
     "input": "370724762256293441",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724762415288240",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724762866178565",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724763060278426",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724763559618351",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
   {
     "input": "370724763572871481",
-    "carrier": "unknown",
-    "confidence": "low",
+    "carrier": "helthjem",
+    "confidence": "high",
     "candidates": [
-      "bring-posten",
-      "helthjem",
-      "bpost",
-      "ecoscooting"
-    ],
-    "preferred": [
-      "bring-posten",
-      "helthjem"
-    ],
-    "asked": [
       "helthjem"
     ]
   },
@@ -62528,6 +62408,20 @@
     ]
   },
   {
+    "input": "ABC1UW2DEFGHI34J",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "vinted-go"
+    ],
+    "preferred": [
+      "vinted-go"
+    ],
+    "asked": [
+      "vinted-go"
+    ]
+  },
+  {
     "input": "ABC26197473",
     "carrier": "l-post",
     "confidence": "high",
@@ -68122,6 +68016,14 @@
   },
   {
     "input": "CY123456785DE",
+    "carrier": "dhl",
+    "confidence": "high",
+    "candidates": [
+      "dhl"
+    ]
+  },
+  {
+    "input": "CY226550310DE",
     "carrier": "dhl",
     "confidence": "high",
     "candidates": [
@@ -77583,6 +77485,22 @@
     ]
   },
   {
+    "input": "LO427778687GB",
+    "carrier": "royal-mail",
+    "confidence": "high",
+    "candidates": [
+      "royal-mail"
+    ]
+  },
+  {
+    "input": "LO433506042GB",
+    "carrier": "royal-mail",
+    "confidence": "high",
+    "candidates": [
+      "royal-mail"
+    ]
+  },
+  {
     "input": "LP00061214526423",
     "carrier": "unknown",
     "confidence": "low",
@@ -78368,6 +78286,14 @@
     "confidence": "high",
     "candidates": [
       "correos-spain"
+    ]
+  },
+  {
+    "input": "LX310671202JP",
+    "carrier": "japan-post",
+    "confidence": "high",
+    "candidates": [
+      "japan-post"
     ]
   },
   {
@@ -88987,6 +88913,14 @@
     ]
   },
   {
+    "input": "UF164782444SE",
+    "carrier": "postnord",
+    "confidence": "high",
+    "candidates": [
+      "postnord"
+    ]
+  },
+  {
     "input": "UH000000005TW",
     "carrier": "chunghwa-post",
     "confidence": "high",
@@ -91589,6 +91523,20 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "china-post"
+    ],
+    "preferred": [
+      "china-post"
+    ],
+    "asked": [
+      "china-post"
+    ]
+  },
+  {
+    "input": "ZA10000000009",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
       "china-post",
       "la-poste"
     ],
@@ -91655,15 +91603,13 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "china-post",
-      "la-poste"
+      "china-post"
     ],
     "preferred": [
       "china-post"
     ],
     "asked": [
-      "china-post",
-      "la-poste"
+      "china-post"
     ]
   },
   {
@@ -91829,15 +91775,13 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "china-post",
-      "la-poste"
+      "china-post"
     ],
     "preferred": [
       "china-post"
     ],
     "asked": [
-      "china-post",
-      "la-poste"
+      "china-post"
     ]
   },
   {

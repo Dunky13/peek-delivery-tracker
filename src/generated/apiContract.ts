@@ -1228,8 +1228,13 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low"
       },
       {
-        "pattern": "^[A-Z0-9]{2}\\d{11}$",
+        "pattern": "^(?!Z[ACS])[A-Z0-9]{2}\\d{11}$",
         "confidence": "low"
+      },
+      {
+        "pattern": "^Z[ACS]\\d{11}$",
+        "confidence": "low",
+        "checksum": "colissimo"
       },
       {
         "pattern": "^(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}FR$",
@@ -4342,7 +4347,18 @@ export const CARRIER_CAPABILITIES = {
       "adapter": "china-post",
       "recognitionRank": 905
     },
-    "linkRules": [],
+    "linkRules": [
+      {
+        "domains": [
+          "ems.com.cn"
+        ],
+        "params": [
+          "mailNum",
+          "TrackingNumber"
+        ],
+        "ownNumbersOnly": true
+      }
+    ],
     "detectionRules": [
       {
         "pattern": "^[A-Z]{2}\\d{9}CN$",
@@ -4369,7 +4385,10 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CN"
     ],
-    "trackingSearchUrl": "https://www.ems.com.cn/mailtracking/you_jian_cha_xun.html"
+    "trackingSearchUrl": "https://www.ems.com.cn/mailtracking/you_jian_cha_xun.html",
+    "aliases": [
+      "China EMS"
+    ]
   },
   "packeta": {
     "displayName": "Packeta",
@@ -8311,15 +8330,13 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^37072476\\d{10}$",
-        "confidence": "low",
-        "checksum": "gs1",
-        "preferred": true
+        "confidence": "high",
+        "checksum": "gs1"
       },
       {
         "pattern": "^0037072476\\d{10}$",
-        "confidence": "low",
-        "checksum": "sscc",
-        "preferred": true
+        "confidence": "high",
+        "checksum": "sscc"
       }
     ],
     "trackingSearchUrl": "https://helthjem.no/sporing"
@@ -9028,7 +9045,7 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       },
       {
-        "pattern": "^FMP\\dUW\\d[A-Z]{9}$",
+        "pattern": "^[A-Z]{3}\\dUW\\d[A-Z0-9]{9}$",
         "confidence": "low",
         "preferred": true
       }
@@ -23702,6 +23719,13 @@ export const CARRIER_CAPABILITIES = {
         ],
         "pathPattern": "^/(?:pl-pl|en-pl)/online/domestic-tracking\\.html$",
         "fragment": "^/preview\\?(?:[^#]*&)?trackingKey=(\\d{13})(?:&|$)"
+      },
+      {
+        "domains": [
+          "fedex.com"
+        ],
+        "pathPattern": "^/(?:(?:apps/)?fedextrack|wtrk/track)(?:/|$)",
+        "query": "(?:^|&)(?:trknbr|tracknumbers)=(\\d{13})(?=[&,|]|$)"
       },
       {
         "domains": [
