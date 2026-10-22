@@ -138,5 +138,6 @@
   { "id": "china-post", "catalog": "china-post", "name": "China Post", "languages": ["en", "de", "fr", "it", "es", "pt", "pl"] },
   { "id": "fedex-pl", "catalog": "fedex-pl", "name": "FedEx Poland", "languages": ["en", "pl"] },
   { "id": "techlink", "catalog": "techlink", "name": "Techlink", "languages": ["en"] },
-  { "id": "z-leading", "catalog": "z-leading", "name": "Z-Leading", "languages": ["en"] }
+  { "id": "z-leading", "catalog": "z-leading", "name": "Z-Leading", "languages": ["en"] },
+  { "id": "imile", "catalog": "imile", "name": "iMile", "languages": ["en", "es", "it", "de"] }
 ]

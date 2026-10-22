@@ -1128,6 +1128,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Z-Leading (Zhongling) tracking: numbers, delivery and help",
       "name": "Z-Leading",
       "color": "#005ab0"
+    },
+    {
+      "id": "imile",
+      "catalog": "imile",
+      "slug": "imile-tracking",
+      "title": "iMile tracking: numbers, statuses and who delivers",
+      "name": "iMile",
+      "color": "#0032a0"
     }
   ],
   "de": [
@@ -1354,6 +1362,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "China Post Sendungsverfolgung: Nummer, Status, Zustellung",
       "name": "China Post",
       "color": "#006d46"
+    },
+    {
+      "id": "imile",
+      "catalog": "imile",
+      "slug": "imile-sendungsverfolgung",
+      "title": "iMile Sendungsverfolgung: Nummer, Status, Zustellung",
+      "name": "iMile",
+      "color": "#0032a0"
     }
   ],
   "fr": [
@@ -1886,6 +1902,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Tracking China Post: codice, stati in cinese e consegna",
       "name": "China Post",
       "color": "#006d46"
+    },
+    {
+      "id": "imile",
+      "catalog": "imile",
+      "slug": "imile-tracking",
+      "title": "Tracking iMile: codici, stati e consegna in Italia",
+      "name": "iMile",
+      "color": "#0032a0"
     }
   ],
   "es": [
@@ -2120,6 +2144,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "China Post seguimiento: número, estados y entrega en España",
       "name": "China Post",
       "color": "#006d46"
+    },
+    {
+      "id": "imile",
+      "catalog": "imile",
+      "slug": "imile-seguimiento",
+      "title": "Seguimiento iMile: números, estados y quién reparte",
+      "name": "iMile",
+      "color": "#0032a0"
     }
   ],
   "pt": [
