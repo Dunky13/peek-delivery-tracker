@@ -3814,7 +3814,9 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "japan-post"
+      "adapter": "japan-post",
+      "recognitionRank": 4,
+      "recognitionPattern": "^\\d{12}$"
     },
     "linkRules": [
       {
@@ -6165,7 +6167,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^6[05]\\d{11}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://www.araskargo.com.tr/"
   },
   "box-now": {
@@ -10992,10 +10999,11 @@ export const CARRIER_CAPABILITIES = {
     ],
     "color": "#004a98",
     "selectable": true,
-    "timezone": "Asia/Dubai",
+    "timezone": "UTC",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "emirates-post",
+      "browserRecognitionRank": 100
     },
     "trackingUrlTemplate": "https://www.emiratespost.ae/all-services/track-a-package/step-two?q={trackingNumber}",
     "linkRules": [
@@ -11020,7 +11028,14 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AE$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.emiratespost.ae/all-services/track-a-package"
   },
   "flash-express": {
@@ -15643,7 +15658,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "ecms-express"
     },
     "trackingUrlTemplate": "https://www.ecmsglobal.com/en-us/tracking.html?orderNumber={trackingNumber}",
     "linkRules": [
