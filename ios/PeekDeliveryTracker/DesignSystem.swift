@@ -146,6 +146,16 @@ extension View {
         }
     }
 
+    /// In an iPad window, steps aside for the window's buttons in its top leading corner.
+    @ViewBuilder
+    func clearOfWindowControls() -> some View {
+        if #available(iOS 26.0, *) {
+            containerCornerOffset(.leading)
+        } else {
+            self
+        }
+    }
+
     @ViewBuilder
     func glassSurface<S: Shape>(in shape: S) -> some View {
         if #available(iOS 26.0, *) {

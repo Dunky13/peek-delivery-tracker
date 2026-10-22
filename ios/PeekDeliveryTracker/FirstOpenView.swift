@@ -251,7 +251,7 @@ struct FirstOpenView: View {
         .overlay(alignment: .top) {
             VStack(spacing: 12) {
                 HStack {
-                    PeekLockup()
+                    PeekLockup().clearOfWindowControls()
                     Spacer()
                     Button(localizer.text("arrival.signInTitle")) { session.showSignIn() }
                         .font(.subheadline.weight(.medium))
