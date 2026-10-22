@@ -80,17 +80,13 @@ struct DemoModeBar: View {
             Button {
                 session.showWelcome()
             } label: {
-                HStack(spacing: 12) {
-                    Text(localizer.text("app.demo"))
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(.secondary)
-                    Spacer(minLength: 8)
-                    Text(localizer.text("native.exitDemo"))
-                        .font(.subheadline.weight(.semibold))
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title3)
-                        .symbolRenderingMode(.hierarchical)
+                // A bar keeps to one line, as the system's do: at the largest sizes it says only how to leave.
+                ViewThatFits(in: .horizontal) {
+                    bar(named: true)
+                    bar(named: false)
                 }
+                .lineLimit(1)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 .foregroundStyle(Brand.ink)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 6)
@@ -103,6 +99,23 @@ struct DemoModeBar: View {
             .overlay(alignment: .bottom) { Divider().opacity(0.45) }
             .accessibilityLabel("\(localizer.text("app.demo")), \(localizer.text("native.exitDemo"))")
             .accessibilityIdentifier("demo.exit")
+            .accessibilityShowsLargeContentViewer()
+        }
+    }
+
+    private func bar(named: Bool) -> some View {
+        HStack(spacing: 12) {
+            if named {
+                Text(localizer.text("app.demo"))
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+            }
+            Spacer(minLength: 8)
+            Text(localizer.text("native.exitDemo"))
+                .font(.subheadline.weight(.semibold))
+            Image(systemName: "xmark.circle.fill")
+                .font(.title3)
+                .symbolRenderingMode(.hierarchical)
         }
     }
 }
@@ -181,6 +194,7 @@ private struct DeliveryListView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.horizontalSizeClass) private var horizontalSize
     @Environment(\.verticalSizeClass) private var verticalSize
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     @Namespace private var parcelTransition
     @State private var navigation = DeliveriesNavigation()
@@ -402,7 +416,10 @@ private struct DeliveryListView: View {
                 NavigationSplitView(columnVisibility: .constant(.all)) {
                     list(layout, leaving: leaving)
                         .toolbar(removing: .sidebarToggle)
-                        .navigationSplitViewColumnWidth(min: DeliveriesArrangement.listWidth, ideal: 380, max: 480)
+                        .navigationSplitViewColumnWidth(
+                            min: DeliveriesArrangement.listWidth(largeText: largeText),
+                            ideal: largeText ? 480 : 380, max: largeText ? 560 : 480
+                        )
                 } detail: {
                     beside(layout)
                 }
@@ -423,11 +440,13 @@ private struct DeliveryListView: View {
         .onChange(of: layout.cards, initial: true) { _, cards in navigation.settle(windowArrangement, cards: cards) }
     }
 
+    private var largeText: Bool { typeSize.isAccessibilitySize }
+
     /// How the list and an open parcel share the window.
     private var windowArrangement: DeliveriesArrangement {
         DeliveriesArrangement.resolve(
             width: windowWidth, regularWidth: horizontalSize == .regular, regularHeight: verticalSize == .regular,
-            current: lastArrangement
+            largeText: largeText, current: lastArrangement
         )
     }
 
@@ -524,6 +543,8 @@ private struct DeliveryListView: View {
                             )
                         }
                         listEmptyState(layout)
+                        // At the largest text sizes the invitation would cover the list: it scrolls with it instead.
+                        if shouldShowNotificationInvitation, largeText { NotificationPromptView().id(session.user?.id) }
                         if let nextParcel = layout.next { nextCard(nextParcel, leaving: leaving) }
                         ForEach(layout.attention) { parcel in card(parcel, flagged: true, leaving: leaving) }
                         ForEach(layout.remaining) { parcel in card(parcel, flagged: false, leaving: leaving) }
@@ -633,14 +654,19 @@ private struct DeliveryListView: View {
     private func listOverview(_ layout: DeliveryListLayout) -> some View {
         HStack(spacing: 8) {
             if !layout.active.isEmpty {
+                // At the largest text sizes the heading gets a little smaller rather than break in two.
                 Text(localizer.text("app.onTheWaySection"))
                     .font(.headline.weight(.semibold))
+                    .lineLimit(largeText ? 1 : nil)
+                    .minimumScaleFactor(largeText ? 0.75 : 1)
+                    .layoutPriority(1)
                 Text("\(layout.active.count)")
                     .contentTransition(.numericText())
                     .font(.caption2.monospacedDigit())
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 6).frame(minHeight: 20)
                     .background(.secondary.opacity(0.09), in: Capsule())
+                    .fixedSize()
             }
             Spacer(minLength: 0)
             Button {
@@ -835,7 +861,7 @@ private struct DeliveryListView: View {
                 try? await Task.sleep(for: .seconds(4))
                 if self.toast == toast { self.toast = nil }
             }
-        } else if shouldShowNotificationInvitation {
+        } else if shouldShowNotificationInvitation, !largeText {
             HStack {
                 Spacer(minLength: 0)
                 NotificationPromptView()
@@ -910,7 +936,8 @@ private struct DeliveryListView: View {
             }
             .font(.caption.weight(.semibold))
             .padding(.horizontal, 11)
-            .frame(height: 34)
+            .padding(.vertical, largeText ? 6 : 0)
+            .frame(minHeight: 34)
             .background(Brand.ink.opacity(0.06), in: Capsule())
         }
         .buttonStyle(.plain)
@@ -1264,12 +1291,15 @@ private struct ExperimentalNextDeliveryPass: View {
                 CarrierFleetMark(identity: identity)
                 Spacer(minLength: 0)
                 // A parcel that has arrived is nobody's next: the words keep their room and go.
+                // It keeps to the top of the card, clear of the route drawn below it.
                 Text(localizer.text("app.nextUp"))
                     .font(.caption2)
                     .textCase(.uppercase)
                     .tracking(1.2)
                     .foregroundStyle(identity.ink.opacity(0.75))
-                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                     .opacity(arrived ? 0 : 1)
                     .accessibilityHidden(arrived)
             }
@@ -1352,6 +1382,7 @@ private struct ExperimentalParcelPassCard: View {
 
     @EnvironmentObject private var localizer: Localizer
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var atlas: WorldAtlas?
     @ObservedObject private var catalog = CarrierCatalog.shared
 
@@ -1361,10 +1392,12 @@ private struct ExperimentalParcelPassCard: View {
     private var date: String? { localizer.parcelDeliveryEstimate(parcel) ?? localizer.parcelCompletionDate(parcel) }
     /// Scans with places are drawn as a small route at the end of the card.
     private var placed: Bool { parcel.trackingEvents.contains { $0.place != nil } }
+    /// At the largest text sizes the words take the whole card, and the route goes.
+    private var drawsRoute: Bool { placed && !typeSize.isAccessibilitySize }
     /// A past delivery's card is paler, once it stands among the past deliveries.
     private var past: Bool { !arrived && (parcel.currentStage?.isFinal == true || parcel.isArchived) }
     /// The words under the top row keep clear of the route.
-    private var clearance: CGFloat { placed ? CardRoute.clearance : 0 }
+    private var clearance: CGFloat { drawsRoute ? CardRoute.clearance : 0 }
     /// Customs and a pickup say all they need in the status line; after a missed delivery or a problem, the carrier waits on the reader.
     private var flag: String? {
         let carrierIssue = [TrackingStage.customs, .readyForPickup].contains { $0 == parcel.currentStage }
@@ -1437,7 +1470,7 @@ private struct ExperimentalParcelPassCard: View {
         .padding(.horizontal, 15)
         .frame(minHeight: 102)
         .background(alignment: .trailing) {
-            if placed, let atlas {
+            if drawsRoute, let atlas {
                 GeometryReader { proxy in
                     CardRoute(atlas: atlas, route: ParcelRoute(parcel: parcel, atlas: atlas, language: localizer.language), ink: identity.ink,
                               surface: past ? Brand.paper.mix(with: identity.surface, by: 0.35, in: .device) : identity.surface)
@@ -2095,6 +2128,8 @@ private struct ExperimentalSwipeToArchiveModifier: ViewModifier {
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
                 }
+                // The action keeps its width: its word stops growing before it outgrows it.
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 .foregroundStyle(Brand.color(light: "#FFFFFF", dark: "#292820"))
                 .frame(width: actionWidth)
                 .frame(maxHeight: .infinity)
@@ -2360,43 +2395,46 @@ private struct ExperimentalArchivedParcelRow: View {
     let onOpen: () -> Void
 
     @EnvironmentObject private var localizer: Localizer
+    @Environment(\.dynamicTypeSize) private var typeSize
     @ObservedObject private var catalog = CarrierCatalog.shared
+
+    /// At the largest text sizes the row gives its words the width, and the date goes under them.
+    private var large: Bool { typeSize.isAccessibilitySize }
 
     var body: some View {
         let tint = ExperimentalPalette.tint(for: parcel)
 
         Button(action: onOpen) {
             HStack(spacing: 10) {
-                Image(systemName: parcel.currentStage?.metadata.symbol ?? "shippingbox.fill")
-                    .font(.subheadline)
-                    .foregroundStyle(tint)
-                    .frame(width: 28)
+                if !large {
+                    Image(systemName: parcel.currentStage?.metadata.symbol ?? "shippingbox.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(tint)
+                        .frame(width: 28)
+                }
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(parcel.label.nonEmpty ?? localizer.text("common.parcel"))
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.primary)
-                        .lineLimit(1)
+                        .lineLimit(large ? nil : 1)
                     Text("\(catalog.info(for: parcel.activeTrackingCarrier, language: localizer.language).displayName) · \(localizer.parcelStatus(parcel))")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                        .lineLimit(large ? nil : 1)
+                    if large { archivedDate }
                 }
 
                 Spacer(minLength: 6)
 
-                if let date = parcel.experimentalArchivedDisplayDate {
-                    Text(localizer.shortDate(date))
-                        .font(.caption.weight(.semibold).monospacedDigit())
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
+                if !large { archivedDate }
 
                 Image(systemName: "chevron.right")
                     .font(.caption2.weight(.bold))
                     .foregroundStyle(.tertiary)
             }
             .padding(.horizontal, 13)
+            .padding(.vertical, large ? 10 : 0)
             .frame(minHeight: 58)
             .background { if selected { Brand.ink.opacity(0.08) } }
             .contentShape(Rectangle())
@@ -2405,6 +2443,15 @@ private struct ExperimentalArchivedParcelRow: View {
         .matchedTransitionSource(id: parcel.id, in: transition)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+
+    @ViewBuilder private var archivedDate: some View {
+        if let date = parcel.experimentalArchivedDisplayDate {
+            Text(localizer.shortDate(date))
+                .font(.caption.weight(.semibold).monospacedDigit())
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
     }
 }
 

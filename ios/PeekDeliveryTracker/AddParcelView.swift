@@ -12,6 +12,7 @@ struct AddParcelView: View {
     @EnvironmentObject private var localizer: Localizer
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     @State private var label: String
     @State private var trackingInput: String
@@ -55,36 +56,40 @@ struct AddParcelView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                heading
+                if !dynamicTypeSize.isAccessibilitySize { heading }
 
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        VStack(alignment: .leading, spacing: 6) {
-                            trackingField
-                            if !parsed.trackingNumber.isEmpty {
-                                carrierFeedback
+                    VStack(spacing: 0) {
+                        // At the largest text sizes the heading wraps and scrolls with the form, leaving room above the keyboard.
+                        if dynamicTypeSize.isAccessibilitySize { heading }
+                        VStack(alignment: .leading, spacing: 20) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                trackingField
+                                if !parsed.trackingNumber.isEmpty {
+                                    carrierFeedback
+                                        .transition(reduceMotion ? .opacity : .offset(y: 6).combined(with: .opacity))
+                                }
+                            }
+
+                            if needsRequiredDetails {
+                                requiredDetails
                                     .transition(reduceMotion ? .opacity : .offset(y: 6).combined(with: .opacity))
                             }
-                        }
 
-                        if needsRequiredDetails {
-                            requiredDetails
-                                .transition(reduceMotion ? .opacity : .offset(y: 6).combined(with: .opacity))
-                        }
+                            nameField
 
-                        nameField
-
-                        if let errorMessage {
-                            errorBanner(errorMessage)
-                                .transition(.opacity)
+                            if let errorMessage {
+                                errorBanner(errorMessage)
+                                    .transition(.opacity)
+                            }
                         }
+                        .disabled(saving)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 4)
+                        .padding(.bottom, 24)
+                        .frame(maxWidth: 560)
+                        .frame(maxWidth: .infinity)
                     }
-                    .disabled(saving)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 4)
-                    .padding(.bottom, 24)
-                    .frame(maxWidth: 560)
-                    .frame(maxWidth: .infinity)
                 }
                 .scrollIndicators(.hidden)
                 .scrollDismissesKeyboard(.interactively)
@@ -395,24 +400,27 @@ struct AddParcelView: View {
                     }
                 }
                 .frame(width: 27)
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text(name).font(.subheadline.weight(.medium))
-                        lineDetailText(detail)
-                    }
+                // At the largest text sizes the words have the line to themselves, and the way to change them goes under.
+                if dynamicTypeSize.isAccessibilitySize {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(name).font(.subheadline.weight(.medium))
                         lineDetailText(detail)
+                        lineAction
+                    }
+                } else {
+                    ViewThatFits(in: .horizontal) {
+                        HStack(alignment: .firstTextBaseline, spacing: 8) {
+                            Text(name).font(.subheadline.weight(.medium))
+                            lineDetailText(detail)
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(name).font(.subheadline.weight(.medium))
+                            lineDetailText(detail)
+                        }
                     }
                 }
                 Spacer(minLength: 0)
-                if !amazonNumber {
-                    Text(localizer.text(choosingCarrier ? "add.line.choose" : "add.line.change"))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .underline()
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+                if !dynamicTypeSize.isAccessibilitySize { lineAction }
             }
             .frame(minHeight: 44)
             .contentShape(Rectangle())
@@ -422,6 +430,17 @@ struct AddParcelView: View {
         .accessibilityHint(localizer.text(choosingCarrier ? "add.line.choose" : "add.line.change"))
         .accessibilityIdentifier("addParcel.carrier")
         .disabled(amazonNumber)
+    }
+
+    /// Says that the line opens the picker. An Amazon number keeps its carrier.
+    @ViewBuilder private var lineAction: some View {
+        if !amazonNumber {
+            Text(localizer.text(choosingCarrier ? "add.line.choose" : "add.line.change"))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .underline()
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 
     @ViewBuilder
@@ -576,6 +595,10 @@ struct AddParcelView: View {
                 }
             }
             .font(.headline)
+            // Pinned above the keyboard, it keeps to one line at the largest text sizes, as the system's bars do.
+            .lineLimit(dynamicTypeSize.isAccessibilitySize ? 1 : nil)
+            .minimumScaleFactor(dynamicTypeSize.isAccessibilitySize ? 0.7 : 1)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility2)
             .foregroundStyle(Brand.onAccent)
             .frame(maxWidth: .infinity, minHeight: 50)
             .padding(.horizontal, 16)
@@ -584,6 +607,7 @@ struct AddParcelView: View {
             .contentTransition(.opacity)
         }
         .buttonStyle(TactileButtonStyle())
+        .accessibilityShowsLargeContentViewer()
         .accessibilityIdentifier("addParcel.save")
         .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: canSave)
         .disabled(!canSave || saving)

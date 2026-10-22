@@ -86,6 +86,7 @@ struct ParcelMapScreen: View {
 
     @EnvironmentObject private var localizer: Localizer
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var chosen: ParcelRoute.Mode?
     @State private var free = false
     @State private var recenter = 0
@@ -115,8 +116,7 @@ struct ParcelMapScreen: View {
                 .accessibilityLabel(label)
                 .accessibilityAddTraits(.isImage)
 
-                bar
-                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { barHeight = $0 }
+                bar(maxHeight: proxy.size.height / 2)
                     .padding(.horizontal, 12)
                     .padding(.bottom, 12)
             }
@@ -145,7 +145,31 @@ struct ParcelMapScreen: View {
         return end == origin ? localizer.text("map.labelOne", ["place": origin]) : localizer.text("map.label", ["from": origin, "to": end])
     }
 
-    private var bar: some View {
+    /// At the largest text sizes the summary keeps to `maxHeight` and scrolls, so the map stays in view.
+    @ViewBuilder private func bar(maxHeight: CGFloat) -> some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            ViewThatFits(in: .vertical) {
+                surfaced(barContent)
+                surfaced(
+                    ScrollView { barContent }
+                        .scrollBounceBehavior(.basedOnSize)
+                        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                )
+            }
+            .frame(maxHeight: maxHeight, alignment: .bottom)
+        } else {
+            surfaced(barContent)
+        }
+    }
+
+    /// The summary on its glass. The map keeps clear of its height.
+    private func surfaced(_ content: some View) -> some View {
+        content
+            .glassSurface(in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { barHeight = $0 }
+    }
+
+    private var barContent: some View {
         VStack(alignment: .leading, spacing: 14) {
             summary
             // With every place close by there is only one view: no buttons, even once the map is moved.
@@ -162,7 +186,6 @@ struct ParcelMapScreen: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .glassSurface(in: RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 
     @ViewBuilder private var summary: some View {
@@ -173,29 +196,41 @@ struct ParcelMapScreen: View {
             let end = route.destination ?? current.place
             let endLabel = delivered ? "map.delivered" : route.destination != nil ? "map.to" : route.latestLocated ? "map.now" : "map.lastSeen"
             let single = route.stops.count == 1 && route.destination == nil
+            // At the largest text sizes the two places stand one under the other.
+            let stacked = dynamicTypeSize.isAccessibilitySize
+            let places = stacked
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
+                : AnyLayout(HStackLayout(alignment: .top, spacing: 14))
             VStack(alignment: .leading, spacing: 10) {
-                HStack(alignment: .top, spacing: 14) {
+                places {
                     if !single { endpoint(localizer.text("map.from"), origin.place, alignment: .leading) }
-                    endpoint(localizer.text(endLabel), end, alignment: single ? .leading : .trailing)
+                    endpoint(localizer.text(endLabel), end, alignment: single || stacked ? .leading : .trailing)
                 }
                 if !single {
-                    HStack(spacing: 16) {
-                        if route.kilometres >= 1 {
-                            let distance = kilometres(route.kilometres)
-                            Text(finished ? distance : localizer.text("map.soFar", ["distance": distance]))
-                        }
-                        if !finished, let remaining = route.remainingKilometres {
-                            Text(localizer.text("map.toGo", ["distance": kilometres(remaining)]))
-                        }
-                        if route.countries.count > 1 {
-                            Text(localizer.text("map.countries.many", ["count": route.countries.count]))
-                        }
+                    // The figures go one under the other when they don't fit on one line.
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 16) { figures(finished: finished) }
+                        VStack(alignment: .leading, spacing: 4) { figures(finished: finished) }
                     }
                     .font(.caption)
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
                 }
             }
+        }
+    }
+
+    /// How far the parcel has come, how far it has to go, and through how many countries.
+    @ViewBuilder private func figures(finished: Bool) -> some View {
+        if route.kilometres >= 1 {
+            let distance = kilometres(route.kilometres)
+            Text(finished ? distance : localizer.text("map.soFar", ["distance": distance]))
+        }
+        if !finished, let remaining = route.remainingKilometres {
+            Text(localizer.text("map.toGo", ["distance": kilometres(remaining)]))
+        }
+        if route.countries.count > 1 {
+            Text(localizer.text("map.countries.many", ["count": route.countries.count]))
         }
     }
 
@@ -206,6 +241,8 @@ struct ParcelMapScreen: View {
     private func endpoint(_ title: String, _ place: RoutePlace, alignment: HorizontalAlignment) -> some View {
         let country = TrackingLocation.countryName(place.country, language: localizer.language)
         let name = place.name(sites: true)
+        // At the largest text sizes a long name wraps rather than end in "…".
+        let lines: Int? = dynamicTypeSize.isAccessibilitySize ? nil : 1
         return VStack(alignment: alignment, spacing: 2) {
             Text(title)
                 .font(.caption2.weight(.medium))
@@ -214,11 +251,11 @@ struct ParcelMapScreen: View {
                 .foregroundStyle(.secondary)
             Text(name)
                 .font(.title2.weight(.semibold))
-                .lineLimit(1)
+                .lineLimit(lines)
             Text("\(TrackingLocation.flag(place.country)) \(country)")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .lineLimit(1)
+                .lineLimit(lines)
         }
         .frame(maxWidth: .infinity, alignment: alignment == .leading ? .leading : .trailing)
         .multilineTextAlignment(alignment == .leading ? .leading : .trailing)

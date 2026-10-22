@@ -624,18 +624,19 @@ enum DeliveriesArrangement: Equatable {
     case stacked
     case sideBySide
 
-    /// About an iPhone's width for the list, and for the parcel beside it.
-    static let listWidth: CGFloat = 320
-    static let parcelWidth: CGFloat = 390
+    /// About an iPhone's width for the list, and for the parcel beside it. At the accessibility text sizes
+    /// each needs more, or a parcel's name breaks in the middle of its words.
+    static func listWidth(largeText: Bool) -> CGFloat { largeText ? 440 : 320 }
+    static func parcelWidth(largeText: Bool) -> CGFloat { largeText ? 480 : 390 }
     /// How far a window resized across the line goes before the arrangement turns, so that it doesn't
     /// turn back and forth while the window is being dragged.
     static let slack: CGFloat = 20
 
     /// Side by side needs a window that is wide and tall in its own right, as an iPad's or an open
     /// iPhone Duo's, and room for both columns. A phone on its side is wide but short, and keeps its list.
-    static func resolve(width: CGFloat, regularWidth: Bool, regularHeight: Bool, current: Self) -> Self {
+    static func resolve(width: CGFloat, regularWidth: Bool, regularHeight: Bool, largeText: Bool, current: Self) -> Self {
         guard regularWidth, regularHeight else { return .stacked }
-        let both = listWidth + parcelWidth
+        let both = listWidth(largeText: largeText) + parcelWidth(largeText: largeText)
         return width >= (current == .sideBySide ? both - slack : both + slack) ? .sideBySide : .stacked
     }
 }

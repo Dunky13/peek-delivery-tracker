@@ -2553,9 +2553,10 @@ extension ParcelLogicTests {
 
 extension ParcelLogicTests {
     func testTheDeliveriesStandBesideTheParcelOnlyInAWindowLargeEnoughForBoth() {
-        func arrangement(_ width: CGFloat, regularWidth: Bool = true, regularHeight: Bool = true,
+        func arrangement(_ width: CGFloat, regularWidth: Bool = true, regularHeight: Bool = true, largeText: Bool = false,
                          from current: DeliveriesArrangement = .stacked) -> DeliveriesArrangement {
-            DeliveriesArrangement.resolve(width: width, regularWidth: regularWidth, regularHeight: regularHeight, current: current)
+            DeliveriesArrangement.resolve(width: width, regularWidth: regularWidth, regularHeight: regularHeight,
+                                          largeText: largeText, current: current)
         }
         // An iPad, and an open iPhone Duo held like a book, less its bar.
         XCTAssertEqual(arrangement(1376), .sideBySide)
@@ -2573,6 +2574,10 @@ extension ParcelLogicTests {
         XCTAssertEqual(arrangement(689, from: .sideBySide), .stacked)
         // Size classes rule before width: side by side ends at once when the window becomes compact.
         XCTAssertEqual(arrangement(1376, regularWidth: false, from: .sideBySide), .stacked)
+        // At the accessibility text sizes each column needs more: the open Duo keeps one column, an iPad still has room for two.
+        XCTAssertEqual(arrangement(887, largeText: true), .stacked)
+        XCTAssertEqual(arrangement(887, largeText: true, from: .sideBySide), .stacked)
+        XCTAssertEqual(arrangement(1032, largeText: true), .sideBySide)
     }
 }
 

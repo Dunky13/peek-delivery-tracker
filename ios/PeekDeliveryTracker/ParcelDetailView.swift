@@ -15,6 +15,7 @@ struct ParcelDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     @State private var showingTitleEditor = false
     @State private var editedTitle = ""
@@ -32,6 +33,8 @@ struct ParcelDetailView: View {
     @State private var atlas: WorldAtlas?
     /// Where the delivering carrier's mark stands on the card, which the map keeps clear of.
     @State private var deliveryMark: CGRect?
+    /// How tall the card's top row stands, which at the largest text sizes holds the buttons on a line of their own.
+    @State private var headerHeight: CGFloat = 0
 
     @ObservedObject private var catalog = CarrierCatalog.shared
     @StateObject private var feedback = ParcelFeedbackModel()
@@ -243,6 +246,8 @@ struct ParcelDetailView: View {
         let delivery = delivering.map { CarrierVisualIdentity.of($0, catalog: catalog, language: localizer.language) }
         // With a second mark over its map, the card is two lines taller, all of them map.
         let room = delivery == nil ? 0 : RouteEngraving.handoverRoom
+        // At the largest text sizes the buttons' line under the marks pushes the map down by as much as it adds.
+        let lower = typeSize.isAccessibilitySize ? max(0, headerHeight - 44) : 0
         let deliveryLine = delivering.map {
             localizer.text("parcel.deliveryCarrier", ["carrier": catalog.info(for: $0, language: localizer.language).displayName])
         }
@@ -256,8 +261,11 @@ struct ParcelDetailView: View {
 
         return VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 16) {
-                // The buttons sit a tap apart, as on the web, which leaves a long carrier name its line.
-                HStack(spacing: 0) {
+                // The buttons sit a tap apart, as on the web, which leaves a long carrier name its line. At the
+                // largest text sizes the name takes the whole line, and the buttons go under it.
+                let header = typeSize.isAccessibilitySize
+                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4)) : AnyLayout(HStackLayout(spacing: 0))
+                header {
                     let marks = CarrierFleetMark(identity: branding)
                         .overlay(alignment: .topLeading) {
                             if let delivery {
@@ -284,55 +292,58 @@ struct ParcelDetailView: View {
                     } else {
                         marks
                     }
-                    Spacer(minLength: 8)
-                    if placed {
-                        Button(action: openMap) {
-                            Image(systemName: "globe")
-                                .font(.system(size: 17))
-                                .frame(width: 44, height: 44)
-                                .contentShape(Rectangle())
+                    if !typeSize.isAccessibilitySize { Spacer(minLength: 8) }
+                    HStack(spacing: 0) {
+                        if placed {
+                            Button(action: openMap) {
+                                Image(systemName: "globe")
+                                    .font(.system(size: 17))
+                                    .frame(width: 44, height: 44)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(branding.ink.opacity(0.75))
+                            .disabled(route == nil)
+                            .accessibilityLabel(localizer.text("map.open"))
                         }
-                        .buttonStyle(.plain)
-                        .foregroundStyle(branding.ink.opacity(0.75))
-                        .disabled(route == nil)
-                        .accessibilityLabel(localizer.text("map.open"))
-                    }
-                    if sample == nil {
-                        Button { showingShare = true } label: {
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: 16))
-                                .frame(width: 44, height: 44)
-                                .contentShape(Rectangle())
+                        if sample == nil {
+                            Button { showingShare = true } label: {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 16))
+                                    .frame(width: 44, height: 44)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(branding.ink.opacity(0.75))
+                            .accessibilityLabel(localizer.text("link.shareAria"))
                         }
-                        .buttonStyle(.plain)
-                        .foregroundStyle(branding.ink.opacity(0.75))
-                        .accessibilityLabel(localizer.text("link.shareAria"))
-                    }
-                    // Alerts need an account: a parcel followed without one has no bell.
-                    if !store.isGuest, sample == nil {
-                    Button {
-                        if opensAlerts {
-                            showingAlerts = true
-                            return
+                        // Alerts need an account: a parcel followed without one has no bell.
+                        if !store.isGuest, sample == nil {
+                            Button {
+                                if opensAlerts {
+                                    showingAlerts = true
+                                    return
+                                }
+                                run {
+                                    try await store.setMuted(parcel, muted: !parcel.notificationsMuted)
+                                    notificationAnimation += 1
+                                    UISelectionFeedbackGenerator().selectionChanged()
+                                }
+                            } label: {
+                                ParcelNotificationBell(muted: opensAlerts ? parcel.allAlertsMuted : parcel.notificationsMuted,
+                                                       trigger: notificationAnimation)
+                                    .frame(width: 44, height: 44)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(branding.ink.opacity(0.75))
+                            .disabled(working)
+                            .accessibilityLabel(localizer.text(opensAlerts ? "email.parcel.open"
+                                : parcel.notificationsMuted ? "detail.unmute" : "detail.mute"))
                         }
-                        run {
-                            try await store.setMuted(parcel, muted: !parcel.notificationsMuted)
-                            notificationAnimation += 1
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }
-                    } label: {
-                        ParcelNotificationBell(muted: opensAlerts ? parcel.allAlertsMuted : parcel.notificationsMuted,
-                                               trigger: notificationAnimation)
-                            .frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(branding.ink.opacity(0.75))
-                    .disabled(working)
-                    .accessibilityLabel(localizer.text(opensAlerts ? "email.parcel.open"
-                        : parcel.notificationsMuted ? "detail.unmute" : "detail.mute"))
                     }
                 }
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { headerHeight = $0 }
                 if placed {
                     // Room for the route engraved behind this part of the card.
                     Color.clear.frame(height: 68 + room).allowsHitTesting(false)
@@ -403,11 +414,11 @@ struct ParcelDetailView: View {
             .coordinateSpace(.named(Self.cardSpace))
             .background(alignment: .top) {
                 // A map that keeps clear of the second mark waits to know where it stands, rather than moving once it does.
-                if let atlas, let route, delivery == nil || deliveryMark != nil {
+                if let atlas, let route, delivery == nil || deliveryMark != nil, !typeSize.isAccessibilitySize || headerHeight > 0 {
                     // The title is written over the bottom of the map, so Pip stays above it.
-                    RouteEngraving(atlas: atlas, route: route, stage: parcel.currentStage, identity: branding, floor: 160 + room,
-                                   covered: delivery == nil ? nil : deliveryMark, room: room)
-                        .frame(height: 176 + room)
+                    RouteEngraving(atlas: atlas, route: route, stage: parcel.currentStage, identity: branding, floor: 160 + room + lower,
+                                   covered: delivery == nil ? nil : deliveryMark, room: room + lower)
+                        .frame(height: 176 + room + lower)
                         .clipShape(UnevenRoundedRectangle(topLeadingRadius: 18, topTrailingRadius: 18))
                         .contentShape(Rectangle())
                         .onTapGesture(perform: openMap)
@@ -522,12 +533,14 @@ struct ParcelDetailView: View {
     private func pickupPointCard(_ point: PickupPoint, identity: CarrierVisualIdentity) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 12) {
-                Image(systemName: "storefront")
-                    .font(.system(size: 17))
-                    .foregroundStyle(identity.ink)
-                    .frame(width: 40, height: 40)
-                    .background(identity.surface, in: RoundedRectangle(cornerRadius: 12))
-                    .accessibilityHidden(true)
+                if !typeSize.isAccessibilitySize {
+                    Image(systemName: "storefront")
+                        .font(.system(size: 17))
+                        .foregroundStyle(identity.ink)
+                        .frame(width: 40, height: 40)
+                        .background(identity.surface, in: RoundedRectangle(cornerRadius: 12))
+                        .accessibilityHidden(true)
+                }
                 VStack(alignment: .leading, spacing: 2) {
                     Text(localizer.text("detail.pickupPoint")).font(.caption).foregroundStyle(.secondary)
                     Text(point.name).font(.callout.weight(.semibold))
@@ -538,7 +551,9 @@ struct ParcelDetailView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityElement(children: .combine)
             }
-            HStack(spacing: 8) {
+            // At the largest text sizes each button takes the card's width.
+            let buttons = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: 8)) : AnyLayout(HStackLayout(spacing: 8))
+            buttons {
                 Button {
                     DeliveryAnalytics.shared.action("parcel-pickup-directions")
                     if let url = point.mapsURL { openURL(url) }
@@ -593,8 +608,11 @@ struct ParcelDetailView: View {
         let numbers = parcel.trackingNumbers
         let pages = ParcelTrackingLink.byNumber(links, numbers: numbers)
         return VStack(alignment: .leading, spacing: 0) {
+            // At the largest text sizes the number takes the line, and its button goes under it.
+            let row = typeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 0)) : AnyLayout(HStackLayout(alignment: .center, spacing: 8))
             ForEach(Array(numbers.enumerated()), id: \.element.number) { index, entry in
-                HStack(alignment: .center, spacing: 8) {
+                row {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(numbers.count > 1
                             ? catalog.info(for: entry.carrier, language: localizer.language).displayName
@@ -605,11 +623,19 @@ struct ParcelDetailView: View {
                             .fixedSize(horizontal: false, vertical: true)
                             .textSelection(.enabled)
                     }
-                    Spacer(minLength: 0)
+                    if !typeSize.isAccessibilitySize { Spacer(minLength: 0) }
                     Button { copy(entry.number, carrier: entry.carrier) } label: {
-                        Image(systemName: copiedNumber == entry.number ? "checkmark" : "doc.on.doc")
-                            .font(.system(size: 14, weight: .regular))
-                            .frame(width: 44, height: 44).contentShape(Rectangle())
+                        let symbol = copiedNumber == entry.number ? "checkmark" : "doc.on.doc"
+                        if typeSize.isAccessibilitySize {
+                            // Under the number, the button says what it does.
+                            Label(localizer.text(copiedNumber == entry.number ? "detail.copied" : "detail.copyTracking"), systemImage: symbol)
+                                .font(.footnote)
+                                .frame(minHeight: 44).contentShape(Rectangle())
+                        } else {
+                            Image(systemName: symbol)
+                                .font(.system(size: 14, weight: .regular))
+                                .frame(width: 44, height: 44).contentShape(Rectangle())
+                        }
                     }
                     .buttonStyle(.plain).foregroundStyle(.secondary)
                     .accessibilityLabel(localizer.text(copiedNumber == entry.number ? "detail.copied" : "detail.copyTracking")
@@ -1262,13 +1288,18 @@ private struct JournalEventRow: View {
     let isCurrent: Bool
     let syncing: Bool
     @EnvironmentObject private var localizer: Localizer
+    @Environment(\.dynamicTypeSize) private var typeSize
+    /// The time's column grows with its text; at the largest sizes the time goes above the scan instead.
+    @ScaledMetric(relativeTo: .caption2) private var timeWidth: CGFloat = 38
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
+        let layout = typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 2)) : AnyLayout(HStackLayout(alignment: .top, spacing: 12))
+        layout {
             Text(time)
                 .font(.caption2).monospacedDigit()
                 .foregroundStyle(isCurrent ? tint : Color.secondary)
-                .frame(width: 38, alignment: .leading)
+                .frame(width: typeSize.isAccessibilitySize ? nil : timeWidth, alignment: .leading)
                 .padding(.top, 2)
             VStack(alignment: .leading, spacing: 4) {
                 Text(syncing && isCurrent && event.stage == .pending

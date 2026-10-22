@@ -362,6 +362,7 @@ struct AccountView: View {
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var localizer: Localizer
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @AppStorage(AppAppearance.storageKey) private var appearance = AppAppearance.defaultValue
     @State private var working = false
     @State private var exportURL: URL?
@@ -410,16 +411,7 @@ struct AccountView: View {
                     SettingsGroup(title: localizer.text("settings.preferences")) {
                         SettingsAppearancePicker(appearance: $appearance)
                         settingsDivider
-                        HStack {
-                            Text(localizer.text("language.label")).font(.subheadline)
-                            Spacer()
-                            Picker(localizer.text("language.label"), selection: $localizer.language) {
-                                ForEach(AppLanguage.allCases) { language in Text(language.nativeName).tag(language) }
-                            }
-                            .labelsHidden().pickerStyle(.menu).tint(.secondary)
-                        }
-                        .frame(minHeight: 54)
-                        .padding(.horizontal, 15)
+                        languageRow
                     }
                     SettingsGroup {
                         NavigationLink { accountPage } label: {
@@ -517,6 +509,33 @@ struct AccountView: View {
         return localizer.text(NotificationPreset.matching(preferences.enabledStages).titleKey)
     }
 
+    /// At the largest text sizes the language goes under its label.
+    @ViewBuilder private var languageRow: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(localizer.text("language.label")).font(.subheadline)
+                languagePicker
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(15)
+        } else {
+            HStack {
+                Text(localizer.text("language.label")).font(.subheadline)
+                Spacer()
+                languagePicker
+            }
+            .frame(minHeight: 54)
+            .padding(.horizontal, 15)
+        }
+    }
+
+    private var languagePicker: some View {
+        Picker(localizer.text("language.label"), selection: $localizer.language) {
+            ForEach(AppLanguage.allCases) { language in Text(language.nativeName).tag(language) }
+        }
+        .labelsHidden().pickerStyle(.menu).tint(.secondary)
+    }
+
     @ViewBuilder private var profile: some View {
         if store.isGuest { signInOffer } else { account }
     }
@@ -545,6 +564,8 @@ struct AccountView: View {
         HStack(spacing: 11) {
             Text(accountInitial)
                 .font(.caption.weight(.semibold))
+                // The tile keeps its size, so its letter stops growing before it outgrows it.
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 .frame(width: 37, height: 37)
                 .foregroundStyle(Brand.color(light: "#695824", dark: "#E2D08D"))
                 .background(Brand.color(light: "#F7EFC9", dark: "#49452A"), in: RoundedRectangle(cornerRadius: 12))
@@ -703,18 +724,30 @@ private struct SettingsRow: View {
     var chevron = false
     var padded = true
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
+        // At the largest text sizes the value goes under the title, as in the system's settings,
+        // and the symbol gives its room to the words.
+        let stacked = dynamicTypeSize.isAccessibilitySize
         HStack(spacing: 11) {
-            if let symbol {
+            if let symbol, !stacked {
                 Image(systemName: symbol).font(.system(size: 15, weight: .light))
                     .foregroundStyle(.secondary).frame(width: 17)
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(title).font(.subheadline).foregroundStyle(Brand.ink)
+                if stacked, let value, !value.isEmpty {
+                    // A value of one word, such as an address, gets smaller rather than break in the middle.
+                    let oneWord = !value.contains(" ")
+                    Text(value).font(.caption).foregroundStyle(.secondary)
+                        .lineLimit(oneWord ? 1 : nil).minimumScaleFactor(oneWord ? 0.5 : 1)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 if let detail { Text(detail).font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true) }
             }
             Spacer(minLength: 4)
-            if let value, !value.isEmpty { Text(value).font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.trailing) }
+            if !stacked, let value, !value.isEmpty { Text(value).font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.trailing) }
             if chevron { Image(systemName: "chevron.right").font(.system(size: 10, weight: .light)).foregroundStyle(.secondary) }
         }
         .padding(padded ? 15 : 0)
@@ -725,19 +758,27 @@ private struct SettingsRow: View {
 
 private struct SettingsAppearancePicker: View {
     @EnvironmentObject private var localizer: Localizer
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Binding var appearance: AppAppearance
 
     var body: some View {
+        // At the largest text sizes the choices stand one under the other, without their pictures,
+        // so each name has the whole width.
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 8))
+            : AnyLayout(HStackLayout(spacing: 8))
         VStack(alignment: .leading, spacing: 13) {
             Text(localizer.text("native.appearance.title")).font(.subheadline)
-            HStack(spacing: 8) {
+            layout {
                 ForEach(AppAppearance.allCases) { option in
                     Button {
                         appearance = option
                         DeliveryAnalytics.shared.action("appearance-change")
                     } label: {
                         VStack(spacing: 8) {
-                            miniature(option).frame(width: 60, height: 43)
+                            if !dynamicTypeSize.isAccessibilitySize {
+                                miniature(option).frame(width: 60, height: 43)
+                            }
                             Text(localizer.text(option.titleKey)).font(.caption)
                                 .foregroundStyle(appearance == option ? Brand.ink : .secondary)
                         }

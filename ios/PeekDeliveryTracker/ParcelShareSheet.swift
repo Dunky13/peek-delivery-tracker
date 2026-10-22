@@ -12,6 +12,7 @@ struct ParcelShareSheet: View {
 
     @EnvironmentObject private var localizer: Localizer
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var typeSize
     @StateObject private var model: ParcelShareModel
     @State private var handingOut: HandedAddress?
     @State private var copied = false
@@ -174,15 +175,20 @@ struct ParcelShareSheet: View {
     }
 
     /// The link, or what stands in its place while there is none, and the way to copy it.
+    /// At the largest text sizes the button goes under the link, which then has the whole width.
     private var linkRow: some View {
-        HStack(spacing: 8) {
+        let stacked = typeSize.isAccessibilitySize
+        let layout = stacked
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+            : AnyLayout(HStackLayout(spacing: 8))
+        return layout {
             Group {
                 if model.loading {
                     ProgressView().controlSize(.small)
                 } else if let address = model.address {
                     Text(address.absoluteString.replacingOccurrences(of: "^https?://", with: "", options: .regularExpression))
                         .font(.system(.footnote, design: .monospaced).weight(.medium))
-                        .lineLimit(1)
+                        .lineLimit(stacked ? 3 : 1)
                         .truncationMode(.tail)
                         .accessibilityLabel(localizer.text("share.address"))
                         .accessibilityValue(address.absoluteString)
@@ -208,6 +214,7 @@ struct ParcelShareSheet: View {
         .padding(.leading, 16)
         .padding(.trailing, 6)
         .padding(.vertical, 6)
+        .padding(.top, stacked ? 6 : 0)
         .frame(minHeight: 56)
         .background(Brand.paper, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Brand.separator.opacity(0.6)))
@@ -215,24 +222,39 @@ struct ParcelShareSheet: View {
 
     private func switchRow(symbol: String, title: String, value: String? = nil, isOn: Binding<Bool>) -> some View {
         Toggle(isOn: isOn) {
-            HStack(spacing: 0) {
-                Image(systemName: symbol)
-                    .font(.system(size: 16))
-                    .foregroundStyle(.secondary)
-                    .frame(width: 22)
-                    .padding(.trailing, 12)
-                    .accessibilityHidden(true)
-                Text(title)
-                    .font(.subheadline.weight(.semibold))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .layoutPriority(1)
-                if let value {
-                    Spacer(minLength: 10)
-                    Text(value)
-                        .font(.caption)
+            // At the largest text sizes the title has the row to itself, and the value goes under it.
+            if typeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.subheadline.weight(.semibold))
+                        .fixedSize(horizontal: false, vertical: true)
+                    if let value {
+                        Text(value)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
+                }
+            } else {
+                HStack(spacing: 0) {
+                    Image(systemName: symbol)
+                        .font(.system(size: 16))
                         .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
+                        .frame(width: 22)
+                        .padding(.trailing, 12)
+                        .accessibilityHidden(true)
+                    Text(title)
+                        .font(.subheadline.weight(.semibold))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .layoutPriority(1)
+                    if let value {
+                        Spacer(minLength: 10)
+                        Text(value)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                    }
                 }
             }
         }

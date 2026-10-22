@@ -91,7 +91,8 @@ struct PassportView: View {
         let hasMore = collection.contains { !$0.earned && !upcoming.contains($0.id) }
         return VStack(alignment: .leading, spacing: 16) {
             Text(copy.stamps).font(.subheadline.weight(.semibold))
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8, alignment: .top), count: dynamicTypeSize.isAccessibilitySize ? 2 : 4), alignment: .leading, spacing: 16) {
+            // Fewer stamps to a row as the text grows, so their names have room.
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8, alignment: .top), count: dynamicTypeSize.isAccessibilitySize ? 2 : dynamicTypeSize >= .xxLarge ? 3 : 4), alignment: .leading, spacing: 16) {
                 ForEach(visible) { milestone in
                     let id = PassportSelection.milestone(milestone.id)
                     Button { toggle(id) } label: {

@@ -193,6 +193,7 @@ struct CarrierPickerView: View {
 
     @EnvironmentObject private var localizer: Localizer
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ObservedObject private var catalog = CarrierCatalog.shared
     @State private var query = ""
     @State private var openingSections: [PickerSection]
@@ -284,23 +285,31 @@ struct CarrierPickerView: View {
     }
 
     private func automaticRow(_ automatic: Automatic) -> some View {
-        Button { choose(nil) } label: {
+        // At the largest text sizes the tag stands above the description, which then has the whole width, and the
+        // symbol gives its room to the words.
+        let stacked = dynamicTypeSize.isAccessibilitySize
+        let layout = stacked
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 3))
+            : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 6))
+        return Button { choose(nil) } label: {
             HStack(spacing: 12) {
-                Group {
-                    if automatic.busy {
-                        ProgressView().controlSize(.small)
-                    } else {
-                        Image(systemName: "wand.and.sparkles")
-                            .foregroundStyle(ExperimentalPalette.ochre)
+                if !stacked {
+                    Group {
+                        if automatic.busy {
+                            ProgressView().controlSize(.small)
+                        } else {
+                            Image(systemName: "wand.and.sparkles")
+                                .foregroundStyle(ExperimentalPalette.ochre)
+                        }
                     }
+                    .frame(width: 27)
                 }
-                .frame(width: 27)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(localizer.text("add.detect"))
                         .foregroundStyle(Brand.ink)
-                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    layout {
                         if automatic.recommended {
-                            tag(localizer.text("picker.recommended"), found: false)
+                            tag(localizer.text("picker.recommended"), found: false, wraps: stacked)
                         }
                         Text(automatic.description)
                             .font(.caption)
@@ -325,20 +334,19 @@ struct CarrierPickerView: View {
                 TrackingLocation.countryName($0, language: localizer.language)
             }
         let selected = selection == carrier
+        let identity = CarrierVisualIdentity.of(carrier, language: localizer.language)
         return Button { choose(carrier) } label: {
+            // At the largest text sizes the tag goes under the name, which then has the row's width.
             HStack(spacing: 12) {
-                CarrierTruckMark(identity: CarrierVisualIdentity.of(carrier, language: localizer.language))
+                CarrierTruckMark(identity: identity)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(highlighted(definition.displayName, highlight))
-                        .foregroundStyle(Brand.ink)
-                    if !subtitle.isEmpty {
-                        Text(subtitle)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                    nameLines(definition.displayName, highlight: highlight, subtitle: subtitle)
+                    if dynamicTypeSize.isAccessibilitySize, let tag = tags[carrier] {
+                        self.tag(tag.label, found: tag.found, wraps: true).padding(.top, 3)
                     }
                 }
                 Spacer(minLength: 8)
-                if let tag = tags[carrier] { self.tag(tag.label, found: tag.found) }
+                if !dynamicTypeSize.isAccessibilitySize, let tag = tags[carrier] { self.tag(tag.label, found: tag.found) }
                 if selected { checkmark }
             }
             .contentShape(Rectangle())
@@ -350,6 +358,17 @@ struct CarrierPickerView: View {
         .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
     }
 
+    /// A carrier's name, and its countries or the other name it was found by.
+    @ViewBuilder private func nameLines(_ name: String, highlight: Range<Int>?, subtitle: String) -> some View {
+        Text(highlighted(name, highlight))
+            .foregroundStyle(Brand.ink)
+        if !subtitle.isEmpty {
+            Text(subtitle)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
     private var checkmark: some View {
         Image(systemName: "checkmark")
             .font(.body.weight(.semibold))
@@ -357,14 +376,16 @@ struct CarrierPickerView: View {
             .accessibilityHidden(true)
     }
 
-    private func tag(_ label: String, found: Bool) -> some View {
+    /// A tag that `wraps` may take several lines, in a rounded box rather than a capsule.
+    private func tag(_ label: String, found: Bool, wraps: Bool = false) -> some View {
         Text(label)
             .font(.caption2.weight(.semibold))
             .foregroundStyle(found ? ExperimentalPalette.delivered : Color.secondary)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
-            .background(found ? ExperimentalPalette.deliveredSurface : Brand.cream, in: Capsule())
-            .fixedSize()
+            .background(found ? ExperimentalPalette.deliveredSurface : Brand.cream,
+                        in: wraps ? AnyShape(RoundedRectangle(cornerRadius: 8, style: .continuous)) : AnyShape(Capsule()))
+            .fixedSize(horizontal: !wraps, vertical: true)
     }
 
     private func highlighted(_ name: String, _ range: Range<Int>?) -> AttributedString {

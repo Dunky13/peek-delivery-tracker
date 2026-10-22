@@ -323,10 +323,12 @@ struct FirstOpenView: View {
     private var field: some View {
         HStack(spacing: 6) {
             Button { onAdd(.type) } label: {
+                // A long placeholder takes a second line rather than being cut off.
                 Text(localizer.text("add.trackingPlaceholder"))
                     .font(.body)
                     .foregroundStyle(.tertiary)
-                    .lineLimit(1)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, minHeight: 58, alignment: .leading)
                     .contentShape(Rectangle())
             }
@@ -505,12 +507,10 @@ struct DeliveriesEmptyState: View {
             }
             .accessibilityIdentifier("deliveries.empty.paste")
             .padding(.top, 22)
-            HStack(spacing: 10) {
-                if canScan {
-                    Button { onAdd(.scan) } label: { quiet(localizer.text("add.scan"), symbol: "barcode.viewfinder") }
-                }
-                Button { onAdd(.type) } label: { quiet(localizer.text("app.addParcel"), symbol: "keyboard") }
-                    .accessibilityIdentifier("deliveries.empty.add")
+            // Side by side while both fit; otherwise one under the other, each across the column.
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 10) { quietButtons(wraps: false) }
+                VStack(spacing: 10) { quietButtons(wraps: true) }
             }
             .padding(.top, 10)
             hint.padding(.top, 14)
@@ -535,10 +535,19 @@ struct DeliveriesEmptyState: View {
             .accessibilityHidden(true)
     }
 
-    private func quiet(_ title: String, symbol: String) -> some View {
+    @ViewBuilder private func quietButtons(wraps: Bool) -> some View {
+        if canScan {
+            Button { onAdd(.scan) } label: { quiet(localizer.text("add.scan"), symbol: "barcode.viewfinder", wraps: wraps) }
+        }
+        Button { onAdd(.type) } label: { quiet(localizer.text("app.addParcel"), symbol: "keyboard", wraps: wraps) }
+            .accessibilityIdentifier("deliveries.empty.add")
+    }
+
+    /// One under the other, a button has the column's width and its words may take a second line.
+    private func quiet(_ title: String, symbol: String, wraps: Bool) -> some View {
         HStack(spacing: 8) {
             Image(systemName: symbol).font(.subheadline)
-            Text(title).font(.subheadline.weight(.medium)).lineLimit(1).minimumScaleFactor(0.8)
+            Text(title).font(.subheadline.weight(.medium)).lineLimit(wraps ? nil : 1).minimumScaleFactor(0.8).multilineTextAlignment(.center)
         }
         .foregroundStyle(Brand.ink)
         .frame(maxWidth: .infinity)
@@ -561,10 +570,15 @@ private struct PipPressStyle: ButtonStyle {
 struct DeviceAccountRow: View {
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var localizer: Localizer
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         Button { session.showSignIn() } label: {
-            HStack(spacing: 12) {
+            // At the largest text sizes the button goes under the words, which keep the row's width.
+            let layout = dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
+                : AnyLayout(HStackLayout(spacing: 12))
+            layout {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(localizer.text("link.account.title"))
                         .font(.subheadline.weight(.medium))
@@ -575,7 +589,7 @@ struct DeviceAccountRow: View {
                 }
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
-                Spacer(minLength: 8)
+                if !dynamicTypeSize.isAccessibilitySize { Spacer(minLength: 8) }
                 Text(localizer.text("arrival.signInTitle"))
                     .font(.footnote.weight(.medium))
                     .foregroundStyle(Brand.ink)
@@ -583,6 +597,7 @@ struct DeviceAccountRow: View {
                     .frame(minHeight: 34)
                     .background(Brand.cream, in: Capsule())
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
             .frame(minHeight: 66)
@@ -598,6 +613,9 @@ struct DeviceAccountRow: View {
 struct FriendsSignedOutView: View {
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var localizer: Localizer
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    /// The title keeps its size until the largest text sizes, then grows with them.
+    @ScaledMetric(relativeTo: .title) private var titleSize: CGFloat = 26
     @State private var showingAccount = false
 
     var body: some View {
@@ -605,7 +623,7 @@ struct FriendsSignedOutView: View {
             ScrollView {
                 VStack(spacing: 22) {
                     FriendsPostagePair().padding(.bottom, 12)
-                    Text(localizer.text("friends.title")).font(.system(size: 26, weight: .semibold))
+                    Text(localizer.text("friends.title")).font(.system(size: dynamicTypeSize.isAccessibilitySize ? titleSize : 26, weight: .semibold))
                     Text(localizer.text("friends.introSummary"))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)

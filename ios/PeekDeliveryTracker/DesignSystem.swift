@@ -309,6 +309,8 @@ struct InlineToast: View {
     /// Who asks the question, where the symbol stands.
     private let asker: AnyView?
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     init(
         text: String,
         button: String?,
@@ -337,40 +339,71 @@ struct InlineToast: View {
     }
 
     var body: some View {
-        HStack(spacing: asker == nil ? 14 : 10) {
-            if let asker { asker } else { Image(systemName: symbol).foregroundStyle(tint) }
-            Text(text).font(.subheadline.weight(.medium)).lineLimit(answers.isEmpty ? 2 : 3)
-            Spacer(minLength: 4)
-            if let button, let action {
-                Button(button, action: action)
-                    .font(.subheadline.weight(.bold))
-                    .foregroundStyle(tint)
-            }
-            if !answers.isEmpty {
-                HStack(spacing: 6) {
-                    ForEach(Array(answers.enumerated()), id: \.offset) { _, answer in
-                        Button(action: answer.action) {
-                            Text(answer.title)
-                                .font(.subheadline.weight(.semibold))
-                                .padding(.horizontal, 14)
-                                .frame(minHeight: 36)
-                                .background(Brand.ink.opacity(0.08), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                .frame(minHeight: 44)
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(TactileButtonStyle(scale: 0.96))
-                    }
+        content
+            .padding(.leading, asker == nil ? 17 : 11)
+            .padding(.trailing, answers.isEmpty ? 17 : 9)
+            .frame(minHeight: 54)
+            .foregroundStyle(.primary)
+            .glassSurface(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .shadow(color: .black.opacity(0.13), radius: 8, y: 4)
+            // One button is the toast's own action; two are reached one by one.
+            .accessibilityElement(children: answers.isEmpty ? .combine : .contain)
+    }
+
+    /// At the largest text sizes the words take every line they need, and the buttons go under them.
+    @ViewBuilder private var content: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: asker == nil ? .firstTextBaseline : .top, spacing: asker == nil ? 14 : 10) {
+                    lead
+                    Text(text).font(.subheadline.weight(.medium))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .fixedSize()
+                actionButton
+                if !answers.isEmpty {
+                    HStack(spacing: 6) { answerButtons }
+                }
+            }
+            .padding(.vertical, 12)
+        } else {
+            HStack(spacing: asker == nil ? 14 : 10) {
+                lead
+                Text(text).font(.subheadline.weight(.medium)).lineLimit(answers.isEmpty ? 2 : 3)
+                Spacer(minLength: 4)
+                actionButton
+                if !answers.isEmpty {
+                    HStack(spacing: 6) { answerButtons }
+                        .fixedSize()
+                }
             }
         }
-        .padding(.leading, asker == nil ? 17 : 11)
-        .padding(.trailing, answers.isEmpty ? 17 : 9)
-        .frame(minHeight: 54)
-        .foregroundStyle(.primary)
-        .glassSurface(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .shadow(color: .black.opacity(0.13), radius: 8, y: 4)
-        // One button is the toast's own action; two are reached one by one.
-        .accessibilityElement(children: answers.isEmpty ? .combine : .contain)
+    }
+
+    @ViewBuilder private var lead: some View {
+        if let asker { asker } else { Image(systemName: symbol).foregroundStyle(tint) }
+    }
+
+    @ViewBuilder private var actionButton: some View {
+        if let button, let action {
+            Button(button, action: action)
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(tint)
+        }
+    }
+
+    private var answerButtons: some View {
+        ForEach(Array(answers.enumerated()), id: \.offset) { _, answer in
+            Button(action: answer.action) {
+                Text(answer.title)
+                    .font(.subheadline.weight(.semibold))
+                    .padding(.horizontal, 14)
+                    .frame(minHeight: 36)
+                    .background(Brand.ink.opacity(0.08), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(TactileButtonStyle(scale: 0.96))
+        }
     }
 }

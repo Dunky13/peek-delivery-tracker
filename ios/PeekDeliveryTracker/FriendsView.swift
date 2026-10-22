@@ -10,6 +10,8 @@ struct FriendsView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    /// The intro's title keeps its size until the largest text sizes, then grows with them.
+    @ScaledMetric(relativeTo: .title) private var titleSize: CGFloat = 26
     @StateObject private var model = FriendsStore()
     @State private var showingAccount = false
     @State private var visible = false
@@ -44,7 +46,7 @@ struct FriendsView: View {
                         else {
                             VStack(spacing: 22) {
                                 FriendsPostagePair().padding(.bottom, 12)
-                                Text(text("friends.title")).font(.system(size: 26, weight: .semibold))
+                                Text(text("friends.title")).font(.system(size: dynamicTypeSize.isAccessibilitySize ? titleSize : 26, weight: .semibold))
                                 Text(text("friends.introSummary")).font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
                                 Button { panel = .create } label: { Text(text("friends.join")).frame(maxWidth: .infinity, minHeight: 46) }
                                     .buttonStyle(.borderedProminent).tint(Brand.accent).foregroundStyle(Brand.onAccent)
@@ -143,10 +145,14 @@ struct FriendsView: View {
                     .buttonStyle(.borderedProminent).tint(Brand.accent).foregroundStyle(Brand.onAccent)
             }.padding(.vertical, 45).frame(maxWidth: .infinity)
         } else {
-            HStack(alignment: .center) {
+            // At the largest text sizes the button goes under the title, across the column.
+            let header = dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+                : AnyLayout(HStackLayout(alignment: .center))
+            header {
                 HStack(alignment: .firstTextBaseline, spacing: 4) { Text(text("friends.circle")).font(.subheadline.weight(.semibold)); Text(data.friends.count.formatted()).font(.caption2).foregroundStyle(.secondary) }
-                Spacer(minLength: 8)
-                Button { noticeKey = nil; panel = .invite } label: { Label(text("friends.invite"), systemImage: "plus").font(.caption.weight(.medium)).padding(.horizontal, 10).frame(minHeight: 36) }
+                if !dynamicTypeSize.isAccessibilitySize { Spacer(minLength: 8) }
+                Button { noticeKey = nil; panel = .invite } label: { Label(text("friends.invite"), systemImage: "plus").font(.caption.weight(.medium)).padding(.horizontal, 10).frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : nil, minHeight: 36) }
                     .buttonStyle(.plain).foregroundStyle(Brand.onAccent).background(Brand.accent, in: RoundedRectangle(cornerRadius: 11))
             }
             VStack(spacing: 9) {
@@ -447,22 +453,37 @@ private struct FriendsInvitationView: View {
 struct FriendsInvitationParcel: View {
     @EnvironmentObject private var localizer: Localizer
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let nickname: String
     @State private var iteration = 0
     @State private var open = 0.0
     var body: some View {
-        HStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 3) { Text(localizer.text("friends.from")).font(.caption2); Text(nickname).font(.subheadline.weight(.semibold)) }.foregroundStyle(ExperimentalPalette.delivered)
-            Spacer(minLength: 0)
-            Button { iteration += 1 } label: { UnwrappingParcel(open: open, celebrating: open > 0, senderName: nickname).frame(width: 158, height: 163) }
-                .buttonStyle(.plain).accessibilityLabel(localizer.text("friends.replayParcel"))
-        }.padding(.leading, 17).padding(.trailing, 8).frame(maxWidth: .infinity, minHeight: 157).background(ExperimentalPalette.deliveredSurface, in: RoundedRectangle(cornerRadius: 16)).clipped()
+        content.padding(.leading, 17).padding(.trailing, 8).frame(maxWidth: .infinity, minHeight: 157).background(ExperimentalPalette.deliveredSurface, in: RoundedRectangle(cornerRadius: 16)).clipped()
             .task(id: iteration) {
                 var transaction = Transaction(); transaction.disablesAnimations = true
                 withTransaction(transaction) { open = 0 }
                 do { try await Task.sleep(for: .milliseconds(80)) } catch { return }
                 withAnimation(reduceMotion ? .linear(duration: 0.1) : .easeOut(duration: 1.5)) { open = 1 }
             }
+    }
+    /// At the largest text sizes the name goes under the parcel, with the card's width to itself.
+    @ViewBuilder private var content: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 4) { parcel.frame(maxWidth: .infinity); sender }.padding(.bottom, 18)
+        } else {
+            HStack(spacing: 0) {
+                sender
+                Spacer(minLength: 0)
+                parcel
+            }
+        }
+    }
+    private var sender: some View {
+        VStack(alignment: .leading, spacing: 3) { Text(localizer.text("friends.from")).font(.caption2); Text(nickname).font(.subheadline.weight(.semibold)) }.foregroundStyle(ExperimentalPalette.delivered)
+    }
+    private var parcel: some View {
+        Button { iteration += 1 } label: { UnwrappingParcel(open: open, celebrating: open > 0, senderName: nickname).frame(width: 158, height: 163) }
+            .buttonStyle(.plain).accessibilityLabel(localizer.text("friends.replayParcel"))
     }
 }
 
@@ -484,7 +505,8 @@ private struct FriendDetailView: View {
                     metric(stats.averageDays.map { localizer.text($0 == 1 ? "friends.day" : "friends.days", ["count": $0]) } ?? "—", localizer.text("passport.average"))
                 }
                 Text(localizer.text("passport.stamps")).font(.subheadline.weight(.semibold))
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), alignment: .top), count: dynamicTypeSize.isAccessibilitySize ? 2 : 4), spacing: 16) {
+                // Fewer stamps to a row as the text grows, so their names have room.
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), alignment: .top), count: dynamicTypeSize.isAccessibilitySize ? 2 : dynamicTypeSize >= .xxLarge ? 3 : 4), spacing: 16) {
                     ForEach(visibleStamps(stats.stamps)) { value in
                         let earned = stats.stamps.contains(value)
                         Button { stamp = value } label: {
