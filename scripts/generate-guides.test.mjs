@@ -180,6 +180,8 @@ test('a page the list names is there, and nothing it does not name is', () => {
 test('a page with a long title, a short description, or its sources anywhere but last is refused', () => {
   refusesCarriers(({ first: carrier, edit }) => edit(carrier.id, 'en', /^title: .+$/m, `title: ${'long '.repeat(13)}`), /the title has 64 characters/);
   refusesCarriers(({ first: carrier, edit }) => edit(carrier.id, 'en', /^description: .+$/m, 'description: Too short.'), /the description has 10 characters; write 110 to 165/);
+  // Quotes around a title are kept, so the page would show them.
+  refusesCarriers(({ first: carrier, edit }) => edit(carrier.id, 'en', /^title: (.+)$/m, 'title: "$1"'), /en\.md: the title is wrapped in quotes, which the page would show/);
   refusesCarriers(({ first: carrier, edit }) => edit(carrier.id, 'en', /\n:::sources\n/, '\n:::sources\n- [Twice](https://source.example/)\n:::\n\n:::sources\n'), /a carrier page ends with its ":::sources"/);
   refusesCarriers(({ first: carrier, file }) => writeFileSync(file(carrier.id, 'en'), `${readFileSync(file(carrier.id, 'en'), 'utf8').trimEnd()}\n\nA last word.\n`), /a carrier page ends with its ":::sources"/);
 });
@@ -262,11 +264,31 @@ test('a page in a language with pages alone is listed under its language, and li
     assert.match(written, /export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink\[\]>/);
     const links = JSON.parse(written.slice(written.indexOf('= {') + 2, written.lastIndexOf(';')));
     assert.deepEqual(Object.keys(links), ['en', 'de', 'fr', 'it', 'es', 'pt', 'pl', 'nl', 'sv', 'da', 'nb', 'fi', 'cs', 'sk', 'hu', 'ro', 'bg', 'el', 'hr', 'sl', 'lt', 'lv', 'et', 'uk']);
-    assert.deepEqual(links.fi.map(({ id, slug }) => ({ id, slug })), [{ id: carrier.id, slug: 'lahetysten-seuranta' }]);
-    assert.deepEqual(links.sv, []);
+    assert.deepEqual(links.fi.filter(({ id }) => id === carrier.id).map(({ id, slug }) => ({ id, slug })), [{ id: carrier.id, slug: 'lahetysten-seuranta' }]);
+    // A language no carrier is written in lists none.
+    for (const language of Object.keys(links).filter((language) => language !== 'fi' && !index.some(({ languages }) => languages.includes(language)))) {
+      assert.deepEqual(links[language], []);
+    }
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }
   refusesCarriers(finnish('[Nobody](carrier:no-such-carrier).'), /fi\.md: "carrier:no-such-carrier" leads to no other carrier's page in this language/);
   refusesCarriers(finnish(`[Itself](carrier:${carrier.id}).`), new RegExp(`fi\\.md: "carrier:${carrier.id}" leads to no other carrier's page`));
+});
+
+test('a Greek page asks its questions with ";", as Greek does', () => {
+  const index = carrierIndex();
+  const carrier = index.find(({ languages }) => !languages.includes('el'));
+  const greek = (mark) => ({ list, file }) => {
+    list(index.map((listed) => (listed === carrier ? { ...carrier, languages: [...carrier.languages, 'el'] } : listed)));
+    const questions = [1, 2, 3].map((number) => `### Ερώτηση ${number}${mark}\n\nΑπάντηση ${number}.`);
+    writeFileSync(file(carrier.id, 'el'), asking(readFileSync(file(carrier.id, 'en'), 'utf8').replace(/^slug: .+$/m, 'slug: entopismos'), ...questions));
+  };
+  const directory = copyCarriers(greek(';'));
+  try {
+    assert.ok(readCarriers(directory).find(({ id }) => id === carrier.id).pages.el);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+  refusesCarriers(greek('?'), /el\.md: "Ερώτηση 1\?" stands among the questions, and ends with ";"/);
 });

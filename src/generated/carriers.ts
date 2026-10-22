@@ -389,7 +389,7 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "id": "gofo-fr",
       "catalog": "gofo-fr",
       "slug": "gofo-france-tracking",
-      "title": "\"GOFO France tracking: statuses, delivery and contact\"",
+      "title": "GOFO France tracking: statuses, delivery and contact",
       "name": "GOFO France",
       "color": "#fc4c02"
     },
@@ -933,7 +933,7 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "id": "intelcom",
       "catalog": "intelcom",
       "slug": "intelcom-dragonfly-tracking",
-      "title": "\"Intelcom / Dragonfly tracking: numbers, statuses, contact\"",
+      "title": "Intelcom / Dragonfly tracking: numbers, statuses, contact",
       "name": "Intelcom / Dragonfly",
       "color": "#13a58f"
     },
@@ -965,7 +965,7 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "id": "lso",
       "catalog": "lso",
       "slug": "lso-tracking",
-      "title": "\"LSO tracking: airbill numbers, statuses and delivery help\"",
+      "title": "LSO tracking: airbill numbers, statuses and delivery help",
       "name": "LSO",
       "color": "#0047ba"
     },
@@ -1005,7 +1005,7 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "id": "couriersplease",
       "catalog": "couriersplease",
       "slug": "couriersplease-tracking",
-      "title": "\"CouriersPlease tracking: numbers, statuses and help\"",
+      "title": "CouriersPlease tracking: numbers, statuses and help",
       "name": "CouriersPlease",
       "color": "#c21e36"
     },
@@ -1657,7 +1657,7 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "id": "intelcom",
       "catalog": "intelcom",
       "slug": "intelcom-dragonfly-suivi-colis",
-      "title": "\"Intelcom / Dragonfly suivi colis\u00a0: statuts et contact\"",
+      "title": "Intelcom / Dragonfly suivi colis\u00a0: statuts et contact",
       "name": "Intelcom / Dragonfly",
       "color": "#13a58f"
     },

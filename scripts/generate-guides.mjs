@@ -19,6 +19,9 @@ const LIMITS = { title: 60, description: [110, 165], words: 600, translated: [.6
 
 /** What a guide and a carrier's page share: a title and a description a search result shows whole, and its sources last. */
 function searchable(text, where, kind) {
+  for (const field of ['title', 'description']) {
+    if (/^(["']).*\1$/s.test(text[field])) throw new Error(`${where}: the ${field} is wrapped in quotes, which the page would show; write it bare`);
+  }
   if (text.title.length > LIMITS.title) throw new Error(`${where}: the title has ${text.title.length} characters; a search result shows about ${LIMITS.title}`);
   const [shortest, longest] = LIMITS.description;
   if (text.description.length < shortest || text.description.length > longest) {
@@ -127,6 +130,11 @@ export function readCarrierIndex(directory = carriersRoot) {
   return carriers;
 }
 
+/** The mark a question ends with in a language: Greek asks with ";". */
+export function questionMark(language) {
+  return language === 'el' ? ';' : '?';
+}
+
 /**
  * Every carrier's page in each of its languages, read and checked as the guides are, and its questions too:
  * a page that would publish half-made, link nowhere or ask what it does not answer stops the build here.
@@ -144,8 +152,9 @@ export function readCarriers(directory = carriersRoot, guides = JSON.parse(readF
       if (asked.length < fewest || asked.length > most) {
         throw new Error(`${where}: its last section asks ${asked.length} questions, each a "### " heading; ask ${fewest} to ${most}`);
       }
+      const mark = questionMark(locale);
       for (const { question, answer } of asked) {
-        if (!question.endsWith('?')) throw new Error(`${where}: "${question}" stands among the questions, and ends with "?"`);
+        if (!question.endsWith(mark)) throw new Error(`${where}: "${question}" stands among the questions, and ends with "${mark}"`);
         if (!answer.length) throw new Error(`${where}: "${question}" has no answer below it`);
       }
       for (const linked of linkedGuides(page.blocks)) if (!guides.includes(linked)) throw new Error(`${where}: "guide:${linked}" leads nowhere`);

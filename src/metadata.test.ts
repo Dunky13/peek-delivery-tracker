@@ -29,7 +29,7 @@ import { carrierPath } from './carriers/paths';
 import { CARRIER_LINKS } from './generated/carriers';
 import { GUIDE_LINKS } from './generated/guides';
 import { guidePath } from './guides/paths';
-import { ADDRESS_LANGUAGES, documentLanguage, SUPPORTED_LOCALES, type Locale } from './lib/locale';
+import { ADDRESS_LANGUAGES, documentLanguage, PAGE_LANGUAGES, SUPPORTED_LOCALES, type Locale, type PageLanguage } from './lib/locale';
 import { SOURCE_URL } from './lib/source';
 import { messagesFor } from './server/requestLocale';
 
@@ -237,15 +237,18 @@ describe('public product metadata', () => {
       const address = (locale: Locale) => `${origin}${guidePath(locale, id && GUIDE_LINKS[locale].find((link) => link.id === id)!.slug)}`;
       return { ...Object.fromEntries(SUPPORTED_LOCALES.map((locale) => [locale, address(locale)])) as Record<Locale, string>, 'x-default': address('en') };
     };
-    /** The carriers' own page in every language, or one carrier's page in each of its languages only; in English for a reader of none. */
+    /**
+     * The carriers' own page in every language, or one carrier's page in each of its languages only, those with pages
+     * alone included; in English for a reader of none.
+     */
     const carriers = (id?: string) => {
-      const languages = id ? SUPPORTED_LOCALES.filter((locale) => CARRIER_LINKS[locale].some((link) => link.id === id)) : SUPPORTED_LOCALES;
-      const address = (locale: Locale) => `${origin}${carrierPath(locale, id && CARRIER_LINKS[locale].find((link) => link.id === id)!.slug)}`;
-      return { ...Object.fromEntries(languages.map((locale) => [locale, address(locale)])) as Partial<Record<Locale, string>>, 'x-default': address('en') };
+      const languages = id ? PAGE_LANGUAGES.filter((language) => CARRIER_LINKS[language].some((link) => link.id === id)) : SUPPORTED_LOCALES;
+      const address = (language: PageLanguage) => `${origin}${carrierPath(language, id && CARRIER_LINKS[language].find((link) => link.id === id)!.slug)}`;
+      return { ...Object.fromEntries(languages.map((language) => [language, address(language)])) as Partial<Record<PageLanguage, string>>, 'x-default': address('en') };
     };
     const ids = GUIDE_LINKS.en.map(({ id }) => id);
     const carrierIds = CARRIER_LINKS.en.map(({ id }) => id);
-    const carrierPages = carrierIds.flatMap((id) => SUPPORTED_LOCALES.filter((locale) => carriers(id)[locale]).map((locale) => ({ id, locale })));
+    const carrierPages = carrierIds.flatMap((id) => PAGE_LANGUAGES.filter((language) => carriers(id)[language]).map((locale) => ({ id, locale })));
     expect(entries.map(({ url }) => url)).toEqual([
       'https://peek.example.test/', 'https://peek.example.test/de', 'https://peek.example.test/fr', 'https://peek.example.test/it',
       'https://peek.example.test/es', 'https://peek.example.test/pt', 'https://peek.example.test/pl',
@@ -275,7 +278,7 @@ describe('public product metadata', () => {
       expect(entry.lastModified).toBe(updated(id, locale));
     }));
     // The carriers' own page names every language; a carrier's page only those it is written in, each dated as a guide is.
-    const checked = (id: string, locale: Locale) => /^updated: (\S+)$/m.exec(readFileSync(`content/carriers/${id}/${locale}.md`, 'utf8'))![1];
+    const checked = (id: string, locale: PageLanguage) => /^updated: (\S+)$/m.exec(readFileSync(`content/carriers/${id}/${locale}.md`, 'utf8'))![1];
     expect(carrierPages.length).toBeGreaterThan(carrierIds.length);
     SUPPORTED_LOCALES.forEach((locale, at) => {
       expect(hubs[at].alternates?.languages).toEqual(carriers());

@@ -1,9 +1,9 @@
 ---
-title: "CouriersPlease tracking: numbers, statuses and help"
+title: CouriersPlease tracking: numbers, statuses and help
 description: Track a CouriersPlease parcel in Australia: what the consignment number looks like, what each status means, collection points, redelivery and contact.
 slug: couriersplease-tracking
 published: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-22
 ---
 
 CouriersPlease is an Australian parcel delivery company, part of FMH Group, that delivers through local Franchise Partners across metropolitan and regional Australia. To track a parcel, enter its consignment number on [CouriersPlease's tracking page](https://www.couriersplease.com.au/tools-track), or paste it in the box above. The number comes from the shop or sender that booked CouriersPlease.

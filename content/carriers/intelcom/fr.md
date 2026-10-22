@@ -1,9 +1,9 @@
 ---
-title: "Intelcom / Dragonfly suivi colis : statuts et contact"
+title: Intelcom / Dragonfly suivi colis : statuts et contact
 description: Suivre un colis Intelcom ou Dragonfly au Québec et au Canada : où trouver le numéro, ce que disent les statuts, la livraison retardée, les arnaques et qui appeler.
 slug: intelcom-dragonfly-suivi-colis
 published: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-22
 ---
 
 Intelcom est un livreur montréalais du dernier kilomètre : il apporte chez toi les commandes en ligne de marchands comme Amazon, Walmart, Canadian Tire ou Simons. Au Québec, il garde le nom Intelcom ; dans les autres provinces, la même compagnie s'appelle maintenant Dragonfly. Ton numéro de suivi est dans le courriel d'expédition du marchand ou sur ta page de commande : entre-le sur intelcom.ca ou dragonflyshipping.ca, ou colle-le dans le champ ci-dessus.

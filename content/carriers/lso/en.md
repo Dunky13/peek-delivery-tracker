@@ -1,9 +1,9 @@
 ---
-title: "LSO tracking: airbill numbers, statuses and delivery help"
+title: LSO tracking: airbill numbers, statuses and delivery help
 description: Track an LSO (Lone Star Overnight) parcel: what the airbill number looks like, what each status means, missed deliveries, claims and how to reach LSO.
 slug: lso-tracking
 published: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-22
 ---
 
 LSO, short for Lone Star Overnight, is a regional parcel carrier based in Texas that delivers across Texas and Oklahoma and in major metropolitan areas of Louisiana, Arkansas, Kansas and Missouri. To track a parcel, enter its number on [LSO's tracking page](https://www.lso.com/tracking), or paste it in the box above. LSO calls that number the airbill number, and the shop or sender that booked LSO has it.

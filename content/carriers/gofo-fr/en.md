@@ -1,9 +1,9 @@
 ---
-title: "GOFO France tracking: statuses, delivery and contact"
+title: GOFO France tracking: statuses, delivery and contact
 description: Track a GOFO parcel in France: where the GFFR or CIFR number is, what GOFO's French statuses mean, missed deliveries, lost parcels and who to call.
 slug: gofo-france-tracking
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-22
 ---
 
 GOFO France is a last-mile delivery company that brings online orders to homes across France for e-commerce platforms, marketplaces and shops; since 2025 it includes the former CIRRO Parcel. Track one with its number starting `GFFR` or `CIFR` on [GOFO's tracking page](https://www.gofo.com/fr/en/tracking-results/), which takes several numbers at once. The number comes from the shop: look in the order confirmation or shipping email.

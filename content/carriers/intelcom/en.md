@@ -1,9 +1,9 @@
 ---
-title: "Intelcom / Dragonfly tracking: numbers, statuses, contact"
+title: Intelcom / Dragonfly tracking: numbers, statuses, contact
 description: Track an Intelcom or Dragonfly parcel in Canada: where the tracking number is, what the cheerful statuses mean, missed deliveries, scams and phone numbers.
 slug: intelcom-dragonfly-tracking
 published: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-22
 ---
 
 Intelcom is a Montreal last-mile courier that delivers online orders across Canada for shops such as Amazon, Walmart and Canadian Tire. Outside Quebec it now trades as Dragonfly (Dragonfly Shipping), so the same parcel may say either name. Track it on dragonflyshipping.ca or intelcom.ca with the number from the shop's shipping email or order page, or paste that number in the box above.
