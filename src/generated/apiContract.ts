@@ -2329,6 +2329,17 @@ export const CARRIER_CAPABILITIES = {
           "id",
           "ID"
         ]
+      },
+      {
+        "domains": [
+          "postnord.dk",
+          "postnord.se",
+          "postnord.no",
+          "postnord.fi"
+        ],
+        "params": [
+          "shipmentId"
+        ]
       }
     ],
     "detectionRules": [
@@ -2383,7 +2394,16 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "posti.fi"
         ],
-        "path": "^/(?:[a-z]{2}/)?tracking/([^/?#]+)(?:/[0-9]+)?/?$"
+        "path": "^/(?:[a-z]{2}/)?(?:tracking|seuranta|uppfoljning)/([^/?#]+)(?:/[0-9]+)?/?$"
+      },
+      {
+        "domains": [
+          "posti.fi"
+        ],
+        "pathPattern": "^/itemtracking/posti/search_by_shipment_id/?$",
+        "params": [
+          "ShipmentId"
+        ]
       },
       {
         "domains": [
@@ -4201,6 +4221,10 @@ export const CARRIER_CAPABILITIES = {
         "checksum": "gs1"
       },
       {
+        "pattern": "^R\\d{24}$",
+        "confidence": "low"
+      },
+      {
         "pattern": "^[CEL][A-Z]\\d{9}AU$",
         "confidence": "high",
         "checksum": "s10"
@@ -4520,7 +4544,8 @@ export const CARRIER_CAPABILITIES = {
           "sporing.posten.no"
         ],
         "params": [
-          "q"
+          "q",
+          "PackageNumber"
         ]
       },
       {
@@ -6153,12 +6178,15 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "postaonline.cz"
         ],
-        "path": "^/trackandtrace/-/zasilka/([^/?#]+)/?$"
+        "params": [
+          "parcelNumbers"
+        ],
+        "path": "^/(?:[a-z]{2}/)?trackandtrace/-/zasilka/([^/?#]+)/?$"
       }
     ],
     "detectionRules": [
       {
-        "pattern": "^[BD][A-Z]\\d{10}[A-Z]$",
+        "pattern": "^(?:[BD][A-Z]|N[BPR])\\d{10}[A-Z]$",
         "confidence": "high"
       },
       {
@@ -8106,10 +8134,16 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "elta.gr"
         ],
-        "pathPattern": "^/(?:el-gr/tabid/93|en-us/personal/tracktrace\\.aspx)/?$",
+        "pathPattern": "^/(?:el-gr/(?:tabid/93|[^/]+\\.aspx)|en-us/personal/tracktrace\\.aspx)/?$",
         "params": [
           "qc"
         ]
+      },
+      {
+        "domains": [
+          "elta.gr"
+        ],
+        "path": "^/personal/tracktrace/tabid/[0-9]+/qc/([^/?#]+)(?:/|$)"
       }
     ],
     "detectionRules": [
@@ -8367,9 +8401,18 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "posiljka.posta.hr"
         ],
-        "pathPattern": "^/(?:hr/|en/)?tracking/trackingdata/?$",
+        "pathPattern": "^/(?:hr/|en/)?tracking/(?:trackingdata|details)/?$",
         "params": [
           "barcode"
+        ]
+      },
+      {
+        "domains": [
+          "posta.hr"
+        ],
+        "pathPattern": "^/pracenje-postanskih-posiljaka-track-trace/[0-9]+/?$",
+        "params": [
+          "broj"
         ]
       }
     ],
@@ -8469,9 +8512,19 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "post.lt"
         ],
-        "pathPattern": "^/(?:lt/pagalba/siuntu-paieska|en/help/parcel-search)/index/?$",
+        "pathPattern": "^/(?:lt/pagalba/siuntu-paieska|en/help/parcel-search)(?:/index)?/?$",
         "params": [
-          "num"
+          "num",
+          "parcel_number"
+        ]
+      },
+      {
+        "domains": [
+          "post.lt"
+        ],
+        "pathPattern": "^/(?:[a-z]{2}/)?siuntu-sekimas/?$",
+        "params": [
+          "parcels"
         ]
       }
     ],
@@ -8889,7 +8942,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "tandt.posta.sk"
         ],
-        "path": "^/en/items/([^/?#]+)/?$"
+        "path": "^/(?:en/items|zasielky)/([^/?#]+)/?$"
       },
       {
         "domains": [
