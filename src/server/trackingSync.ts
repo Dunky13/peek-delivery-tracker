@@ -1439,16 +1439,7 @@ export class TrackingSyncService {
       }, () => ({ automatic: true }));
 
       operation = 'fetch';
-      let fetched: {
-        correction?: { carrier: string; trackingUrl: string | null; postcode: string | null };
-        result: CarrierResult;
-        sourceCarrierId: string;
-        swissPostReady: boolean | null;
-        handoffFallbackErrorType: string | null;
-        earlierResult?: CarrierResult;
-        earlierCarrierId?: string;
-        earlierFollowUp?: boolean;
-      };
+      let fetched: RoutedResult;
       const fetchStartedAt = performance.now();
       // The check sees the routing its number shares with the other copies in the run.
       const checks = lookups?.for(parcel);
@@ -1622,7 +1613,7 @@ export class TrackingSyncService {
       const progressDisappeared = anomalies.includes('progress_disappeared');
       // A fallback that knows less is no error: what is saved stays, as with an older snapshot.
       const fallbackWithoutProgress = anomalies.includes('fallback_without_progress');
-      const keepSaved = progressDisappeared || fallbackWithoutProgress;
+      const keepSaved = progressDisappeared || fallbackWithoutProgress || fetched.preserveHistory === true;
       // A reworded scan (DPD with and without the postcode) updates its stored row in place,
       // and a scan both a carrier and a universal provider reported is stored once.
       // A handoff's batch also carries the earlier carrier's scans, under that carrier's policy.

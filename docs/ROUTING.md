@@ -642,6 +642,12 @@ is going outlives the summary that named it: a reply that names no destination k
 saved one, and an older reply names it for a newer summary that lacks it, unless the router
 swapped carriers. The map draws the rest of the way to it.
 
+After a provider fills China Post's partial history, scheduled checks that fetch the exact
+same direct preview keep the saved summary, scans and source. Providers backfill the rest
+hourly; a changed preview, lookup input, carrier or scraper release, or a manual refresh,
+asks for it immediately. The preview is still partial, and keeping history does not claim
+a fresh provider lookup or change any scan's clock. Parcel checks keep their existing cadence.
+
 ## Tracking links
 
 The link shown in the app follows `tracking_provider` of the result on screen: a 17TRACK,

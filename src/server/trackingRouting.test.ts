@@ -1466,6 +1466,95 @@ describe('persistent tracking routing', () => {
       expect(universal).not.toHaveBeenCalled();
     });
   });
+  describe('China Post partial history backfills', () => {
+    const input = (extra: JsonObject = {}) => parcel({ carrier: 'china-post', tracking_number: 'ZA00000000001', current_stage: 'in_transit', ...extra });
+    const preview = (local = false): RoutedResult => ({ ...directValue('china-post'), result: {
+      ...history(), history_truncated: true, ...(local ? { last_update: null, last_update_local: '2026-09-10T11:00:00' } : {}),
+      events: [{ ...(local ? { local_time: '2026-09-10T11:00:00' } : { time: '2026-09-10T11:00:00Z' }),
+        description: 'In transit', stage: 'in_transit', location: 'Synthetic hub', provider_code: 'MOVING' }],
+    } });
+    const full = (): CarrierResult => ({ ...history(), events: [...history().events!,
+      { time: '2026-09-09T08:00:00Z', description: 'Collected', stage: 'accepted' }] });
+    async function saved(local = false): Promise<JsonObject> {
+      fixedPlan('Ship24');
+      const first = setup();
+      first.direct.mockResolvedValue(preview(local));
+      first.universal.mockResolvedValue(full());
+      const value = await first.router.fetch(input(), true);
+      expect(value.result.routing).toMatchObject({ partial_history: { provider: 'Ship24', checked_at: time.toISOString() } });
+      expect((value.result.routing as JsonObject).direct_retry_at).toBeUndefined();
+      return { ...input(), carrier_data: value.result };
+    }
+
+    it.each([false, true])('keeps saved fuller history after a fresh identical preview (local clocks: %s)', async local => {
+      let filed = await saved(local);
+      for (const at of ['12:15', '12:45']) {
+        const next = setup(new Date(`2026-09-10T${at}:00Z`));
+        next.direct.mockResolvedValue(preview(local));
+        const value = await next.router.fetch(filed, true);
+        expect(next.direct).toHaveBeenCalledOnce();
+        expect(next.universal).not.toHaveBeenCalled();
+        expect(next.health.acquireTrackingProvider).not.toHaveBeenCalled();
+        expect(value).toMatchObject({ sourceCarrierId: 'china-post', preserveHistory: true,
+          result: { history_truncated: true, routing: { partial_history: { checked_at: time.toISOString() } } } });
+        // The sync retains the saved provider result and persists only the fresh route.
+        filed = { ...filed, carrier_data: { ...filed.carrier_data as JsonObject, routing: value.result.routing } };
+      }
+      const due = setup(new Date('2026-09-10T13:00:00Z'));
+      due.direct.mockResolvedValue(preview(local));
+      due.universal.mockResolvedValue(full());
+      expect(await due.router.fetch(filed, true)).not.toHaveProperty('preserveHistory');
+      expect(due.universal).toHaveBeenCalledOnce();
+    });
+
+    it.each(['time', 'description', 'location', 'provider_code'] as const)('backfills a changed %s even with the same scan count and stage', async field => {
+      const filed = await saved();
+      const next = setup(new Date('2026-09-10T12:15:00Z'));
+      const changed = preview();
+      changed.result.events![0]![field] = field === 'time' ? '2026-09-10T11:01:00Z' : 'Changed';
+      next.direct.mockResolvedValue(changed);
+      next.universal.mockResolvedValue(full());
+      expect(await next.router.fetch(filed, true)).not.toHaveProperty('preserveHistory');
+      expect(next.universal).toHaveBeenCalledOnce();
+    });
+
+    it.each(['manual', 'number', 'postcode', 'provider', 'release', 'stage', 'future clock'] as const)('does not reuse after a changed %s', async change => {
+      const filed = await saved();
+      const data = filed.carrier_data as JsonObject;
+      const routing = data.routing as JsonObject;
+      if (change === 'number') filed.tracking_number = 'ZA00000000002';
+      if (change === 'postcode') filed.dpd_postcode = '00000';
+      if (change === 'provider') data.tracking_provider = '17TRACK';
+      if (change === 'release') routing.rules = 'older';
+      if (change === 'stage') filed.current_stage = 'out_for_delivery';
+      if (change === 'future clock') (routing.partial_history as JsonObject).checked_at = '2026-09-10T14:00:00Z';
+      const next = setup(new Date('2026-09-10T12:15:00Z'));
+      next.direct.mockResolvedValue(preview());
+      next.universal.mockResolvedValue(full());
+      expect(await next.router.fetch(filed, change !== 'manual')).not.toHaveProperty('preserveHistory');
+      expect(next.universal).toHaveBeenCalledOnce();
+    });
+
+    it('uses the normal fallback when the carrier fails, and forgets the earlier preview', async () => {
+      const filed = await saved();
+      const next = setup(new Date('2026-09-10T12:15:00Z'));
+      next.direct.mockRejectedValue(new ChallengeError('china-post'));
+      next.universal.mockResolvedValue(full());
+      const value = await next.router.fetch(filed, true);
+      expect(next.universal).toHaveBeenCalledOnce();
+      expect(value.result.routing).not.toHaveProperty('partial_history');
+    });
+
+    it('keeps complete direct answers without fetching or retaining the provider result', async () => {
+      const filed = await saved();
+      const next = setup(new Date('2026-09-10T12:15:00Z'));
+      next.direct.mockResolvedValue({ ...directValue('china-post'), result: full() });
+      const value = await next.router.fetch(filed, true);
+      expect(next.universal).not.toHaveBeenCalled();
+      expect(value).not.toHaveProperty('preserveHistory');
+      expect(value.result).not.toHaveProperty('tracking_provider');
+    });
+  });
   it('ignores an older parcel of another carrier that a universal returns for a reused number', async () => {
     fixedPlan('Ship24', '17TRACK');
     const { router, direct, universal } = setup();

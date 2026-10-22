@@ -4910,6 +4910,58 @@ function eventStore() {
   };
 }
 
+it.each([false, true])('retains China Post provider history between hourly backfills (local clocks: %s)', async local => {
+  vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+  vi.spyOn(scraper, 'universalPlan').mockReturnValue({ sources: ['Ship24'], carrier: null, tier: () => 'unknown', rank: () => 0 });
+  const store = eventStore();
+  const client = { ...store.client,
+    acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
+    finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+  const scan = { time: '2026-09-10T11:00:00Z', description: 'In transit', stage: 'in_transit' };
+  const older = { time: '2026-09-09T08:00:00Z', description: 'Collected', stage: 'accepted' };
+  const provider: CarrierResult = { status: 'in_transit', current_stage: 'in_transit', last_status_text: 'In transit',
+    last_update: scan.time, events: [scan, older] };
+  const direct: CarrierResult = { ...provider, history_truncated: true, events: [scan] };
+  if (local) {
+    direct.last_update = null;
+    direct.last_update_local = '2026-09-10T11:00:00';
+    direct.events = [{ local_time: '2026-09-10T11:00:00', description: scan.description, stage: 'in_transit' }];
+  }
+  const adapter = { fetch: vi.fn(async () => structuredClone(direct)), fetchUniversal: vi.fn(async () => structuredClone(provider)) };
+  let now = new Date('2026-09-10T12:00:00Z');
+  const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+  let parcel: JsonObject = { id: 'partial-history', carrier: 'china-post', tracking_number: 'ZA00000000001', current_stage: 'in_transit' };
+  const sync = async () => {
+    await service.syncPackage({ ...parcel, [STORED_EVENT_IDENTITIES]: store.identities() }, { trigger: 'scheduled' });
+    parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
+  };
+  await sync();
+  expect(adapter.fetchUniversal).toHaveBeenCalledOnce();
+  const saved = structuredClone(parcel.carrier_data) as JsonObject;
+  const rows = structuredClone([...store.rows.values()]);
+  expect(rows).toHaveLength(2);
+  now = new Date('2026-09-10T12:15:00Z');
+  await sync();
+  expect(adapter.fetch).toHaveBeenCalledTimes(2);
+  expect(adapter.fetchUniversal).toHaveBeenCalledOnce();
+  expect(client.acquireTrackingProvider).toHaveBeenCalledOnce();
+  expect([...store.rows.values()]).toEqual(rows);
+  const data = parcel.carrier_data as JsonObject;
+  expect(data).toMatchObject({ tracking_provider: 'Ship24', last_update: saved.last_update,
+    routing: { last_event_at: (saved.routing as JsonObject).last_event_at, last_success_at: now.toISOString(),
+      partial_history: { checked_at: '2026-09-10T12:00:00.000Z' }, next_check_at: '2026-09-10T12:30:00.000Z' } });
+  expect(parcel.last_status_text).toBe('In transit');
+  expect(parcel.current_stage).toBe('in_transit');
+  expect(store.batch()).toEqual([]);
+  // An older scan uploaded later does not appear in the direct window. The bounded backfill still finds it.
+  provider.events!.push({ time: '2026-09-09T10:00:00Z', description: 'Sorted', stage: 'in_transit' });
+  now = new Date('2026-09-10T13:00:00Z');
+  await sync();
+  expect(adapter.fetchUniversal).toHaveBeenCalledTimes(2);
+  expect([...store.rows.values()]).toEqual(expect.arrayContaining(rows));
+  expect(store.rows.size).toBe(3);
+});
+
 it('lets a carrier\'s scan, once dated, take over the row of its day', async () => {
   const store = eventStore();
   const parcel = { id: 'yunexpress-day', user_id: 'owner', carrier: 'yunexpress', tracking_number: 'YT0000000000000001' };

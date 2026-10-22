@@ -37,6 +37,8 @@ export interface ProviderHealth {
 }
 export interface RoutedResult {
   correction?: { carrier: string; trackingUrl: string | null; postcode: string | null };
+  /** A fresh, unchanged partial answer checked the parcel; its saved fuller history stays. */
+  preserveHistory?: true;
   result: CarrierResult;
   sourceCarrierId: string;
   swissPostReady: boolean | null;
@@ -84,6 +86,8 @@ export interface RoutingState extends JsonObject {
   provider_input_needed?: { provider: string; field: 'dpdPostcode' };
   /** When providers last held no fuller history than the filed carrier's partial answer. */
   partial_checked_at?: string;
+  /** The China Post preview whose fuller provider history was last fetched. The digest binds the lookup inputs and scraper rules too. */
+  partial_history?: { fingerprint: string; provider: string; checked_at: string };
   /**
    * The filed carrier's local-clock answer that a provider's history last matched, adding no scan or stage,
    * or only guessing the clock of a scan the carrier dates by its day alone: then the carrier's answer was kept.
@@ -531,6 +535,11 @@ export class TrackingRouter {
     let localHistory: JsonObject | undefined;
     // The filed carrier's status alone, or part of its history, while providers are asked for the rest.
     let partialDirect: { value: RoutedResult; carrier: string } | undefined;
+    const partialHistoryKey = (value: RoutedResult): string | undefined => declared === 'china-post'
+      && value.sourceCarrierId === declared && !metadata.original_carrier && isPartialAnswer(value.result)
+      && hasRoutingProgress(value.result)
+      ? createHash('sha256').update(JSON.stringify([state.rules, declared, number, parcel.tracking_url,
+        parcel.dpd_postcode, metadata.universal_input, value.result])).digest('base64url') : undefined;
     // Carriers asked in this check whose own answer for the number moved but had only
     // local clocks: the answer, the local history it brought, and how to confirm the carrier.
     const localAnswers = new Map<string, { value: RoutedResult; history: JsonObject | undefined; confirm: () => void }>();
@@ -646,7 +655,7 @@ export class TrackingRouter {
       // A future-dated scan must not make every later real update look older.
       const eventTime = Math.min(now().getTime(), Math.max(latest(value), value.earlierResult && !value.earlierFollowUp
         ? latestResultTime(value.earlierResult, value.earlierCarrierId ?? value.sourceCarrierId) : 0));
-      state.last_event_at = eventTime && !withoutProgress && value.result.direct_local_fallback !== true ? iso(eventTime) : state.last_event_at;
+      state.last_event_at = eventTime && !withoutProgress && !value.preserveHistory && value.result.direct_local_fallback !== true ? iso(eventTime) : state.last_event_at;
       // Universal checks are deliberately less frequent than direct in-transit polls.
       state.next_check_at = sources.includes(provider as UniversalSource)
         ? iso(now().getTime() + universalSpacing(now())) : undefined;
@@ -932,6 +941,21 @@ export class TrackingRouter {
       state.direct_retry_at = undefined;
       return keepLocal({ value: answer.value, carrier });
     };
+    // A freshly checked preview can keep the already saved fuller history for an hour.
+    // Compare the whole answer: a new scan can replace one in a fixed-size window without
+    // changing its count or stage. A manual refresh still asks for the rest immediately.
+    const partial = partialDirect ?? localDirectFallback;
+    const held = state.partial_history;
+    const historyAge = now().getTime() - millis(held?.checked_at);
+    if (scheduled && !changed && !released && universalNumber === number && partial && held
+      && held.fingerprint === partialHistoryKey(partial.value) && historyAge >= 0 && historyAge < HOUR
+      && metadata.tracking_provider === held.provider && sources.includes(held.provider as UniversalSource)
+      && resultStage(partial.value.result) === parcel.current_stage) {
+      state.direct_retry_at = undefined;
+      const kept = persistResult({ ...partial.value, preserveHistory: true }, partial.carrier);
+      state.next_check_at = iso(now().getTime() + universalSpacing(now()));
+      return kept;
+    }
     // A provider held exactly the scans and stage of that answer in the last 6 h.
     const copy = state.provider_copy;
     const local = localDirectFallback && localAnswer(localDirectFallback.value.result);
@@ -1338,6 +1362,15 @@ export class TrackingRouter {
       if (undisputed) {
         value = { ...value, result: undisputed };
         report('delivery_disputed', chosen);
+      }
+      delete state.partial_history;
+      const partialAnswer = partialDirect ?? localDirectFallback;
+      const fingerprint = partialAnswer && universalNumber === number ? partialHistoryKey(partialAnswer.value) : undefined;
+      if (fingerprint && partialAnswer && !withoutProgress && !undisputed
+        && resultStage(partialAnswer.value.result) === resultStage(value.result)
+        && fillPartialAnswer(declared, number, partialAnswer.value.result, value.result)) {
+        state.partial_history = { fingerprint, provider: chosen, checked_at: now().toISOString() };
+        state.direct_retry_at = undefined;
       }
       return persistResult(value, chosen, withoutProgress);
     }
