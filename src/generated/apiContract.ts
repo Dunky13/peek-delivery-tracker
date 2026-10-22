@@ -1143,7 +1143,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "relais-colis",
-      "recognitionRank": 690
+      "recognitionRank": 690,
+      "recognitionPattern": "^[A-Z0-9]{12,16}$"
     },
     "linkRules": [
       {
@@ -3544,7 +3545,7 @@ export const CARRIER_CAPABILITIES = {
     "displayName": "Correos de Chile",
     "color": "#d9232d",
     "selectable": true,
-    "timezone": "UTC",
+    "timezone": "America/Santiago",
     "tracking": {
       "mode": "automatic",
       "adapter": "correos-chile"
@@ -3565,7 +3566,10 @@ export const CARRIER_CAPABILITIES = {
     "countries": [
       "CL"
     ],
-    "trackingSearchUrl": "https://www.correos.cl/seguimiento-en-linea"
+    "trackingSearchUrl": "https://www.correos.cl/seguimiento-en-linea",
+    "aliases": [
+      "Correos Chile"
+    ]
   },
   "yunexpress": {
     "displayName": "YunExpress",
@@ -3884,7 +3888,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sto",
-      "recognitionRank": 540
+      "recognitionRank": 540,
+      "recognitionPattern": "^77\\d{13}$"
     },
     "linkRules": [],
     "detectionRules": [
@@ -3978,8 +3983,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "zto",
-      "recognitionRank": 51
+      "adapter": "zto"
     },
     "linkRules": [],
     "detectionRules": [
@@ -5726,7 +5730,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl-ecommerce-uk",
-      "recognitionRank": 610
+      "recognitionRank": 610,
+      "recognitionPattern": "^(?:31|41|55|60)\\d{12}$"
     },
     "trackingUrlTemplate": "https://track.dhlecommerce.co.uk/?con={trackingNumber}",
     "linkRules": [
@@ -6151,7 +6156,8 @@ export const CARRIER_CAPABILITIES = {
       "GR",
       "BG",
       "HR",
-      "CY"
+      "CY",
+      "SI"
     ],
     "color": "#44d62c",
     "selectable": true,
@@ -6162,7 +6168,12 @@ export const CARRIER_CAPABILITIES = {
       "recognitionRank": 250
     },
     "linkRules": [],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{10}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://boxnow.cy/track"
   },
   "cdek": {
