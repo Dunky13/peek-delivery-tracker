@@ -10478,7 +10478,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "coordinadora",
-      "recognitionRank": 973
+      "recognitionRank": 973,
+      "recognitionServedCountriesOnly": true
     },
     "trackingUrlTemplate": "https://rastreo.coordinadora.com/?guia={trackingNumber}",
     "linkRules": [
@@ -10525,7 +10526,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://rastreo.coordinadora.com/"
   },
   "correo-argentino": {
@@ -15252,6 +15258,10 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^MMXQP\\d{9}[ENR]$",
+        "confidence": "high"
+      },
+      {
+        "pattern": "^DOMC\\d{9}R$",
         "confidence": "high"
       },
       {
@@ -30746,6 +30756,46 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://m.ztoglobal.com/?path=Search&lang=en"
+  },
+  "dayone": {
+    "displayName": "DayOne",
+    "aliases": [
+      "Dayone",
+      "Day One",
+      "Day One Track",
+      "DayOneTrack",
+      "Dayone Tracking"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#f68020",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://www.dayonetrack.com/track?trackNo={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "dayonetrack.com",
+          "www.dayonetrack.com"
+        ],
+        "pathPattern": "^/track/?$",
+        "params": [
+          "trackNo"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^DOT\\d{16}$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://www.dayonetrack.com/"
   }
 } as const;
 
@@ -31580,7 +31630,8 @@ export const CARRIER_IDS = [
   "inposdom",
   "sendle",
   "trunkrs",
-  "zto-international"
+  "zto-international",
+  "dayone"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
