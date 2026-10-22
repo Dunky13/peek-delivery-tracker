@@ -52,11 +52,13 @@ final class DeliveryAPIClient {
     private let configuration: AppConfiguration
     private let session: SessionStore
     private let transport: URLSession
+    private let verification: NativeVerification
 
-    init(configuration: AppConfiguration, session: SessionStore, transport: URLSession = .shared) {
+    init(configuration: AppConfiguration, session: SessionStore, transport: URLSession = .shared, verification: NativeVerification = .shared) {
         self.configuration = configuration
         self.session = session
         self.transport = transport
+        self.verification = verification
     }
 
     func friendsSnapshot() async throws -> FriendsSnapshot {
@@ -440,6 +442,13 @@ final class DeliveryAPIClient {
             throw DeliveryAPIError.invalidResponse
         }
 
+        let send: NativeVerification.Send = { [transport] request in
+            let (data, response) = try await transport.data(for: request)
+            guard let http = response as? HTTPURLResponse else { throw DeliveryAPIError.invalidResponse }
+            return (data, http)
+        }
+        let signs = Self.signsWithAppAttest(path, method: method)
+
         func perform(token: String?) async throws -> (Data, HTTPURLResponse) {
             try session.checkGeneration(generation)
             var request = URLRequest(url: url)
@@ -451,10 +460,13 @@ final class DeliveryAPIClient {
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             if body != nil { request.setValue("application/json", forHTTPHeaderField: "Content-Type") }
             if let token { request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
-            let (data, response) = try await transport.data(for: request)
+            let result = signs
+                ? try await verification.sendSignedIn(request, baseURL: configuration.apiBaseURL, using: send)
+                : try await send(request)
             try session.checkGeneration(generation)
-            guard let http = response as? HTTPURLResponse else { throw DeliveryAPIError.invalidResponse }
-            return (data, http)
+            // An App Attest refusal says nothing about the session, so it never signs the user out.
+            if NativeVerification.needsVerification(result.1) { throw NativeVerificationFailed() }
+            return result
         }
 
         var token = try await session.accessToken()
@@ -484,6 +496,14 @@ final class DeliveryAPIClient {
             throw DeliveryAPIError.serviceFailed(result.1.statusCode)
         }
         return result
+    }
+
+    /// Requests that have carriers asked or checks queued; the server counts their App Attest signatures.
+    static func signsWithAppAttest(_ path: String, method: String) -> Bool {
+        guard method == "POST" else { return false }
+        let parts = path.split(separator: "/")
+        return ["/api/packages", "/api/carriers/detect", "/api/sync"].contains(path)
+            || (parts.count == 4 && parts[0] == "api" && parts[1] == "packages" && UUID(uuidString: String(parts[2])) != nil && parts[3] == "sync")
     }
 
     private func rawRequest(_ path: String, method: String = "GET", body: Data? = nil) async throws -> (Data, HTTPURLResponse) {

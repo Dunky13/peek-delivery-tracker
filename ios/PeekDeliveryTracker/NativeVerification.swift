@@ -48,6 +48,8 @@ actor NativeVerification {
     private var pauseAttestUntil: [String: Date] = [:]
     private var busy = false
     private var waiters: [CheckedContinuation<Void, Never>] = []
+    /// Signed-in requests waiting for their signature or their deadline, whichever comes first.
+    private var accountWaiters: [UUID: CheckedContinuation<URLRequest?, Never>] = [:]
 
     init(provider: NativeAttestProvider = .live,
          present: @escaping Present = { try await NativeTurnstilePresenter.shared.token(at: $0) },
@@ -146,6 +148,76 @@ actor NativeVerification {
         return result
     }
 
+    /// Signs a signed-in request with this installation's registered key and sends it. A device that
+    /// cannot sign, a failure or a signature not ready within `limit` sends it unsigned: account budgets
+    /// still apply, so these requests never open the browser check or register a key. A refusal gets
+    /// one fresh signature; a signed request refused again drops the key for the next launch to replace.
+    func sendSignedIn(_ original: URLRequest, baseURL: URL, limit: Duration = .seconds(2), using transport: @escaping Send) async throws -> (Data, HTTPURLResponse) {
+        let first = try await attemptSignedIn(original, baseURL: baseURL, limit: limit, using: transport)
+        guard Self.needsVerification(first.response.1) else { return first.response }
+        try Task.checkCancellation()
+        let second = try await attemptSignedIn(original, baseURL: baseURL, limit: limit, using: transport)
+        if second.signed, Self.needsVerification(second.response.1) {
+            records[baseURL.absoluteString] = nil
+            save(records)
+        }
+        return second.response
+    }
+
+    private func attemptSignedIn(_ original: URLRequest, baseURL: URL, limit: Duration, using transport: @escaping Send) async throws -> (signed: Bool, response: (Data, HTTPURLResponse)) {
+        var request = original
+        request.setValue("1", forHTTPHeaderField: "X-Native-Verification")
+        let unsigned = request
+        let id = UUID()
+        var deadline: Task<Void, Never>?
+        let signed: URLRequest? = await withTaskCancellationHandler {
+            await withCheckedContinuation { continuation in
+                accountWaiters[id] = continuation
+                Task.detached { await self.signForAccount(id, unsigned, baseURL: baseURL, using: transport) }
+                deadline = Task.detached {
+                    try? await Task.sleep(for: limit)
+                    await self.answer(id, nil)
+                }
+            }
+        } onCancel: { Task { await self.answer(id, nil) } }
+        deadline?.cancel()
+        guard let signed else { return (false, try await transport(request)) }
+        // The signer holds the lock until this response, so assertions reach the server in order.
+        defer { release() }
+        return (true, try await transport(signed))
+    }
+
+    private func signForAccount(_ id: UUID, _ request: URLRequest, baseURL: URL, using transport: @escaping Send) async {
+        guard provider.supported() else { answer(id, nil); return }
+        await acquire()
+        // Once the deadline has sent the request unsigned, no assertion is spent on it.
+        if accountWaiters[id] != nil, let signed = await accountSignature(request, baseURL: baseURL, using: transport), answer(id, signed) {
+            return
+        }
+        answer(id, nil)
+        release()
+    }
+
+    private func accountSignature(_ request: URLRequest, baseURL: URL, using transport: Send) async -> URLRequest? {
+        let base = baseURL.absoluteString
+        guard (pauseAttestUntil[base] ?? .distantPast) <= Date(),
+              let appID = try? await configuration(baseURL, using: transport).appAttestAppId,
+              records[base]?.appID == appID, records[base]?.registered == true else { return nil }
+        do { return try await signed(request, baseURL: baseURL, appID: appID, using: transport) }
+        catch {
+            forgetInvalidKey(error, base: base)
+            pauseAttestUntil[base] = Date().addingTimeInterval(600)
+            return nil
+        }
+    }
+
+    @discardableResult
+    private func answer(_ id: UUID, _ request: URLRequest?) -> Bool {
+        guard let waiter = accountWaiters.removeValue(forKey: id) else { return false }
+        waiter.resume(returning: request)
+        return true
+    }
+
     private func forgetInvalidKey(_ error: Error, base: String) {
         if let error = error as? DCError, error.code == .invalidKey {
             records[base] = nil
@@ -169,7 +241,7 @@ actor NativeVerification {
         let hash = SHA256.hash(data: request.httpBody ?? Data()).map { String(format: "%02x", $0) }.joined()
         return "native-request-v1\n\(challenge)\n\(request.httpMethod ?? "GET")\n\(request.url!.path)\n\(hash)"
     }
-    private static func needsVerification(_ response: HTTPURLResponse) -> Bool {
+    static func needsVerification(_ response: HTTPURLResponse) -> Bool {
         response.statusCode == 403 && response.value(forHTTPHeaderField: "X-Lookup-Verification") == "required"
     }
     private func configuration(_ baseURL: URL, using transport: Send) async throws -> Configuration {

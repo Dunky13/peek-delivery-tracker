@@ -71,7 +71,11 @@ New anonymous lookups verify silently with App Attest when the server enables it
 Otherwise a small Turnstile sheet appears when needed; its proof lasts fifteen
 minutes in memory. Cancelling keeps the form intact. Detection while typing uses an existing proof
 or silent App Attest and never opens the sheet. Saved parcels and local
-carrier detection do not need a check. Debug uses development App Attest keys,
+carrier detection do not need a check. Signed in, parcel additions, detection
+that asks carriers and refreshes are signed with the registered key when the
+signature is ready within two seconds, and go unsigned otherwise; they never open
+the sheet or register a key. A refused one is signed again once, and a refusal
+never signs the user out. Debug uses development App Attest keys,
 Release uses production keys; only a separate development server accepts the
 former. Server settings are in [DEPLOYMENT.md](../docs/DEPLOYMENT.md).
 

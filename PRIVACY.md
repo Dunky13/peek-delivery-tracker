@@ -95,8 +95,10 @@ check. Apple attests a key held on the device; Peek stores its public key,
 identifier, assertion counter and last-use time to prevent replay and limit
 anonymous lookups. New key registrations remove keys unused for ninety days and
 their usage counters. New verified requests clear daily counters older than
-seven days and expired challenges. Keys are not linked to accounts or parcel
-inputs. Turnstile remains available when App Attest cannot be used.
+seven days and expired challenges. The app signs signed-in requests with the same
+key; checking one updates its counter and last-use time and records nothing
+about the account. Keys are not linked to accounts or parcel inputs. Turnstile
+remains available when App Attest cannot be used.
 
 To get a parcel's history, the service sends its tracking number to the
 carrier. When needed, it also asks other carriers the number could belong to, a

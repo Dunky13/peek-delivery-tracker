@@ -1651,13 +1651,15 @@ private final class MemorySessionPersistence: SessionPersistence {
 
 private final class SessionTestURLProtocol: URLProtocol {
     nonisolated(unsafe) static var handler: ((URLRequest, @escaping (Result<(Int, Data), Error>) -> Void) -> Void)?
+    /// Headers every response carries besides its content type.
+    nonisolated(unsafe) static var headers: [String: String] = [:]
     override class func canInit(with request: URLRequest) -> Bool { request.url?.host == "session.test" }
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
     override func startLoading() {
         Self.handler?(request) { result in
             switch result {
             case .success(let (status, data)):
-                self.client?.urlProtocol(self, didReceive: HTTPURLResponse(url: self.request.url!, statusCode: status, httpVersion: nil, headerFields: ["Content-Type": "application/json"])!, cacheStoragePolicy: .notAllowed)
+                self.client?.urlProtocol(self, didReceive: HTTPURLResponse(url: self.request.url!, statusCode: status, httpVersion: nil, headerFields: Self.headers.merging(["Content-Type": "application/json"]) { $1 })!, cacheStoragePolicy: .notAllowed)
                 self.client?.urlProtocol(self, didLoad: data)
                 self.client?.urlProtocolDidFinishLoading(self)
             case .failure(let error): self.client?.urlProtocol(self, didFailWithError: error)
@@ -1875,6 +1877,27 @@ final class SessionIsolationTests: XCTestCase {
         retainedSession?.forceSignOut()
         client = nil
         XCTAssertNil(retainedSession)
+    }
+    @MainActor func testAppAttestRefusalOfASignedInRequestKeepsTheSession() async throws {
+        let transport = transport()
+        defer { transport.invalidateAndCancel() }
+        let session = SessionStore(configuration: configuration, persistence: MemorySessionPersistence(), transport: transport)
+        defer { session.forceSignOut() }
+        try await authorize(session)
+        let unsupported = NativeAttestProvider(supported: { false }, generateKey: { "" }, attest: { _, _ in Data() }, assert: { _, _ in Data() })
+        let verification = NativeVerification(provider: unsupported, present: { _ in XCTFail("Unexpected browser check"); return "" },
+                                              records: [:], save: { _ in })
+        let client = DeliveryAPIClient(configuration: configuration, session: session, transport: transport, verification: verification)
+        let log = RequestLog()
+        SessionTestURLProtocol.headers = ["X-Lookup-Verification": "required"]
+        defer { SessionTestURLProtocol.headers = [:] }
+        respond(Data(#"{"error":"Please verify this device and try again."}"#.utf8), status: 403, recording: log)
+        do {
+            _ = try await client.queueRefreshAll()
+            XCTFail("Expected the refusal")
+        } catch is NativeVerificationFailed {}
+        XCTAssertNotNil(session.user)
+        XCTAssertEqual(log.requests.map { $0.path }, ["/api/sync", "/api/sync"])
     }
     @MainActor func testForcedSignOutClearsParcelsBeforeNextAccountLoads() async throws {
         let transport = transport()

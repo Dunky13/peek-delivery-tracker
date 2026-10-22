@@ -13,6 +13,16 @@ final class NativeVerificationTests: XCTestCase {
         return request
     }
     private let unsupported = NativeAttestProvider(supported: { false }, generateKey: { "unused" }, attest: { _, _ in Data() }, assert: { _, _ in Data() })
+    private func refresh() -> URLRequest {
+        var request = URLRequest(url: base.appending(path: "api/sync"))
+        request.httpMethod = "POST"
+        return request
+    }
+    private var registered: [String: NativeAttestRecord] {
+        [base.absoluteString: NativeAttestRecord(keyID: "synthetic-key", appID: "TESTTEAM01.com.example.Peek", registered: true)]
+    }
+    private let neverRegisters = NativeAttestProvider(supported: { true }, generateKey: { XCTFail("Unexpected new key"); return "" },
+        attest: { _, _ in XCTFail("Unexpected registration"); return Data() }, assert: { _, _ in XCTFail("Unexpected assertion"); return Data() })
 
     func testFreeBuildExchangesTokenThroughNativeTransportAndReusesProof() async throws {
         let server = NativeTestServer()
@@ -136,6 +146,117 @@ final class NativeVerificationTests: XCTestCase {
     }
 }
 
+extension NativeVerificationTests {
+    func testSignedInRequestSignsItsEmptyBodyWithTheRegisteredKey() async throws {
+        let server = NativeTestServer(paid: true, initialStatus: 202)
+        let expected = Data(SHA256.hash(data: Data(NativeVerification.payload(refresh(), challenge: "synthetic-assertion-challenge").utf8)))
+        let provider = NativeAttestProvider(supported: { true }, generateKey: { XCTFail("Unexpected new key"); return "" },
+            attest: { _, _ in XCTFail("Unexpected registration"); return Data() }, assert: { key, hash in
+                XCTAssertEqual(key, "synthetic-key")
+                XCTAssertEqual(hash, expected)
+                return Data("synthetic-assertion".utf8)
+            })
+        let verifier = NativeVerification(provider: provider, present: { _ in XCTFail("Unexpected browser check"); return "" },
+            records: registered, save: { _ in XCTFail("Unexpected key change") })
+        let result = try await verifier.sendSignedIn(refresh(), baseURL: base, using: { try await server.send($0) })
+        XCTAssertEqual(result.1.statusCode, 201)
+        let requests = await server.requests
+        let sent = requests.filter { $0.url?.path == "/api/sync" }
+        XCTAssertEqual(sent.count, 1)
+        XCTAssertEqual(sent.first?.value(forHTTPHeaderField: "X-App-Attest-Key-Id"), "synthetic-key")
+        XCTAssertEqual(sent.first?.value(forHTTPHeaderField: "X-App-Attest-Challenge"), "synthetic-assertion-challenge")
+        XCTAssertEqual(sent.first?.value(forHTTPHeaderField: "X-App-Attest-Assertion"), Data("synthetic-assertion".utf8).base64EncodedString())
+        XCTAssertEqual(sent.first?.value(forHTTPHeaderField: "X-Native-Verification"), "1")
+        XCTAssertNil(sent.first?.httpBody)
+    }
+
+    func testSignedInRequestGoesUnsignedWhenThisInstallationCannotSign() async throws {
+        let unregistered = [base.absoluteString: NativeAttestRecord(keyID: "synthetic-key", appID: "TESTTEAM01.com.example.Peek", registered: false)]
+        let otherApp = [base.absoluteString: NativeAttestRecord(keyID: "synthetic-key", appID: "TESTTEAM01.com.example.Other", registered: true)]
+        let cases: [(NativeAttestProvider, [String: NativeAttestRecord], Bool)] = [
+            (unsupported, registered, true), (neverRegisters, [:], true), (neverRegisters, unregistered, true),
+            (neverRegisters, otherApp, true), (neverRegisters, registered, false),
+        ]
+        for (provider, records, paid) in cases {
+            let server = NativeTestServer(paid: paid, initialStatus: 202)
+            let verifier = NativeVerification(provider: provider, present: { _ in XCTFail("Unexpected browser check"); return "" },
+                records: records, save: { _ in XCTFail("Unexpected key change") })
+            let result = try await verifier.sendSignedIn(refresh(), baseURL: base, using: { try await server.send($0) })
+            XCTAssertEqual(result.1.statusCode, 202)
+            let requests = await server.requests
+            XCTAssertEqual(requests.filter { $0.url?.path == "/api/sync" }.count, 1)
+            XCTAssertNil(requests.last?.value(forHTTPHeaderField: "X-App-Attest-Assertion"))
+            XCTAssertEqual(requests.last?.value(forHTTPHeaderField: "X-Native-Verification"), "1")
+            XCTAssertFalse(requests.contains { $0.url?.path == "/api/public/native/challenge" })
+            XCTAssertFalse(requests.contains { $0.url?.path == "/api/public/native/verification" && $0.httpMethod == "POST" })
+        }
+    }
+
+    func testSlowChallengeSendsSignedInRequestUnsignedOnTime() async throws {
+        let server = NativeTestServer(paid: true, initialStatus: 202, challengeDelay: .seconds(3))
+        let provider = NativeAttestProvider(supported: { true }, generateKey: { "" }, attest: { _, _ in Data() }, assert: { _, _ in Data("late".utf8) })
+        let verifier = NativeVerification(provider: provider, present: { _ in XCTFail("Unexpected browser check"); return "" },
+            records: registered, save: { _ in })
+        let clock = ContinuousClock()
+        let started = clock.now
+        let result = try await verifier.sendSignedIn(refresh(), baseURL: base, limit: .milliseconds(200), using: { try await server.send($0) })
+        XCTAssertLessThan(clock.now - started, .seconds(2))
+        XCTAssertEqual(result.1.statusCode, 202)
+        let requests = await server.requests
+        XCTAssertNil(requests.last { $0.url?.path == "/api/sync" }?.value(forHTTPHeaderField: "X-App-Attest-Assertion"))
+    }
+
+    func testChallengeFailureSendsSignedInRequestsUnsignedAndBacksOff() async throws {
+        let server = NativeTestServer(paid: true, initialStatus: 202, challengeStatus: 503)
+        let provider = NativeAttestProvider(supported: { true }, generateKey: { "" }, attest: { _, _ in Data() }, assert: { _, _ in
+            XCTFail("Unexpected assertion"); return Data()
+        })
+        let verifier = NativeVerification(provider: provider, present: { _ in XCTFail("Unexpected browser check"); return "" },
+            records: registered, save: { _ in XCTFail("Unexpected key change") })
+        for _ in 0..<2 {
+            let result = try await verifier.sendSignedIn(refresh(), baseURL: base, using: { try await server.send($0) })
+            XCTAssertEqual(result.1.statusCode, 202)
+        }
+        let requests = await server.requests
+        XCTAssertEqual(requests.filter { $0.url?.path == "/api/public/native/challenge" }.count, 1)
+        XCTAssertTrue(requests.filter { $0.url?.path == "/api/sync" }.allSatisfy { $0.value(forHTTPHeaderField: "X-App-Attest-Assertion") == nil })
+    }
+
+    func testRefusedSignedInRequestIsSignedAgainOnceThenDropsTheKey() async throws {
+        let server = NativeTestServer(paid: true, refuseAssertions: true)
+        let assertions = NativeTestAssertions()
+        let removed = expectation(description: "Refused key removed")
+        let provider = NativeAttestProvider(supported: { true }, generateKey: { XCTFail("Unexpected new key"); return "" },
+            attest: { _, _ in Data() }, assert: { _, _ in
+                let count = await assertions.next()
+                return Data("synthetic-assertion-\(count)".utf8)
+            })
+        let verifier = NativeVerification(provider: provider, present: { _ in XCTFail("Unexpected browser check"); return "" },
+            records: registered, save: { records in XCTAssertTrue(records.isEmpty); removed.fulfill() })
+        let result = try await verifier.sendSignedIn(refresh(), baseURL: base, using: { try await server.send($0) })
+        XCTAssertEqual(result.1.statusCode, 403)
+        await fulfillment(of: [removed], timeout: 1)
+        let requests = await server.requests
+        XCTAssertEqual(requests.filter { $0.url?.path == "/api/sync" }.compactMap { $0.value(forHTTPHeaderField: "X-App-Attest-Assertion") },
+                       ["synthetic-assertion-1", "synthetic-assertion-2"].map { Data($0.utf8).base64EncodedString() })
+        let presented = await server.presented
+        XCTAssertTrue(presented.isEmpty)
+    }
+
+    func testConcurrentSignedInRequestsReachTheServerInSigningOrder() async throws {
+        let server = NativeTestServer(paid: true, initialStatus: 202)
+        let provider = NativeAttestProvider(supported: { true }, generateKey: { "" }, attest: { _, _ in Data() }, assert: { _, _ in Data("synthetic-assertion".utf8) })
+        let verifier = NativeVerification(provider: provider, present: { _ in XCTFail("Unexpected browser check"); return "" },
+            records: registered, save: { _ in })
+        async let first = verifier.sendSignedIn(refresh(), baseURL: base, using: { try await server.send($0) })
+        async let second = verifier.sendSignedIn(refresh(), baseURL: base, using: { try await server.send($0) })
+        let results = try await [first, second]
+        XCTAssertEqual(results.map { $0.1.statusCode }, [201, 201])
+        let maximum = await server.maximumConcurrent
+        XCTAssertEqual(maximum, 1)
+    }
+}
+
 private actor NativeTestServer {
     var requests: [URLRequest] = []
     var presented: [URL] = []
@@ -144,8 +265,13 @@ private actor NativeTestServer {
     private let paid: Bool
     private let initialStatus: Int
     private let rejectProof: Bool
-    init(paid: Bool = false, initialStatus: Int = 403, rejectProof: Bool = false) {
+    private let refuseAssertions: Bool
+    private let challengeStatus: Int
+    private let challengeDelay: Duration
+    init(paid: Bool = false, initialStatus: Int = 403, rejectProof: Bool = false, refuseAssertions: Bool = false,
+         challengeStatus: Int = 200, challengeDelay: Duration = .zero) {
         self.paid = paid; self.initialStatus = initialStatus; self.rejectProof = rejectProof
+        self.refuseAssertions = refuseAssertions; self.challengeStatus = challengeStatus; self.challengeDelay = challengeDelay
     }
     func present(_ url: URL) { presented.append(url) }
     func send(_ request: URLRequest) async throws -> (Data, HTTPURLResponse) {
@@ -161,12 +287,14 @@ private actor NativeTestServer {
             if request.httpMethod == "POST" { status = 204 }
             else { body = ["appAttestAppId": paid ? "TESTTEAM01.com.example.Peek" as Any : NSNull(), "turnstile": true] }
         case "/api/public/native/challenge":
+            try await Task.sleep(for: challengeDelay)
+            status = challengeStatus
             let object = try JSONSerialization.jsonObject(with: request.httpBody!) as! [String: String]
             body = ["challenge": "synthetic-\(object["purpose"]!)-challenge"]
         case "/api/public/verification":
             body = ["proof": "synthetic-proof", "expiresAt": Date().addingTimeInterval(900).timeIntervalSince1970 * 1000]
         default:
-            if request.value(forHTTPHeaderField: "X-App-Attest-Assertion") != nil || (!rejectProof && request.value(forHTTPHeaderField: "X-Lookup-Proof") != nil) { status = 201 }
+            if (!refuseAssertions && request.value(forHTTPHeaderField: "X-App-Attest-Assertion") != nil) || (!rejectProof && request.value(forHTTPHeaderField: "X-Lookup-Proof") != nil) { status = 201 }
             else { status = initialStatus }
             if status == 403 { headers["X-Lookup-Verification"] = "required" }
         }
