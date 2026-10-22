@@ -81,3 +81,12 @@ export function leftScheduleUnseen(parcel: JsonObject, now: Date): boolean {
   const unseen = parcel.one_off === true ? unseenFor(parcel, now) : null;
   return unseen !== null && unseen >= UNSEEN_HOURLY_MS;
 }
+
+/**
+ * With `TRACKING_ENABLE_SPARSE_LOOKUP_RECHECKS=true`, a check nobody asked for of such a
+ * lookup, a scraper release's re-check, contacts one universal provider at most, as an
+ * account's parcel's recheck does.
+ */
+export function sparseLookupRecheck(parcel: JsonObject, now: Date): boolean {
+  return process.env.TRACKING_ENABLE_SPARSE_LOOKUP_RECHECKS === 'true' && leftScheduleUnseen(parcel, now);
+}

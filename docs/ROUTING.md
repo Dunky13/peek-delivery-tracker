@@ -295,7 +295,10 @@ that one waits stands in for it. One filed under no carrier stays on the schedul
 days after it was added, every 6 hours by day, after the followed ones, once a carrier or
 provider has answered for its number: a check can find its carrier. One whose number nobody
 has seen 6 h after it was added leaves the schedule, followed or not; opening a link still queues a
-check at its cadence, daily rather than weekly after 7 days, since someone is looking. One whose links nobody opened in the last hour and that has no alert
+check at its cadence, daily rather than weekly after 7 days, since someone is looking. With
+`TRACKING_ENABLE_SPARSE_LOOKUP_RECHECKS=true` (off by default), a release's re-check of one
+that left the schedule unseen contacts one universal provider at most, picked as for an
+account's recheck (below). One whose links nobody opened in the last hour and that has no alert
 on is checked every 3 hours by day and waits for the morning overnight: nobody reads it,
 and a number no carrier is known for asks every provider in turn. A scheduled run checks at most ten of them, after every
 account's share, the least recently checked first. Their own checks queue behind every account's

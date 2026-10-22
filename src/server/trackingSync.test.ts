@@ -5913,22 +5913,36 @@ describe('rechecks of an account\'s parcel whose number nobody has answered', ()
     await expect(checked([{ ...parcel, last_synced_at: '2026-09-04T10:00:05Z' }], '2026-09-04T10:02:00Z')).resolves.toEqual([]);
   });
 
+  // The universal providers a check asks of a number no carrier or provider knows.
+  const asked = async (check: (service: TrackingSyncService) => Promise<unknown>, parcels: JsonObject[], at = '2026-09-04T10:00:00Z') => {
+    const client = { ...fakeClient(parcels), acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
+    const adapter = { fetch: vi.fn().mockRejectedValue(new NotFoundError('Carrier')),
+      fetchUniversal: vi.fn().mockRejectedValue(new NotFoundError('Provider')) };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date(at));
+    await check(service);
+    return adapter.fetchUniversal.mock.calls.map(([source]) => source);
+  };
+  const every = ['ParcelsApp', 'Ship24', '17TRACK'];
+
   it('asks one universal provider at a recheck nobody asked for, each one when someone asks', async () => {
     const parcel = unseen('unseen', { last_synced_at: '2026-09-02T10:00:15Z' });
-    const asked = async (check: (service: TrackingSyncService) => Promise<unknown>) => {
-      const client = { ...fakeClient([parcel]), acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
-        finishTrackingProvider: vi.fn().mockResolvedValue(undefined) };
-      const adapter = { fetch: vi.fn().mockRejectedValue(new NotFoundError('Carrier')),
-        fetchUniversal: vi.fn().mockRejectedValue(new NotFoundError('Provider')) };
-      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-04T10:00:00Z'));
-      await check(service);
-      return adapter.fetchUniversal.mock.calls.map(([source]) => source);
-    };
-    const every = ['ParcelsApp', 'Ship24', '17TRACK'];
-    await expect(asked((service) => service.sync())).resolves.toEqual(every);
+    await expect(asked((service) => service.sync(), [parcel])).resolves.toEqual(every);
     vi.stubEnv('TRACKING_ENABLE_UNSEEN_RECHECKS', 'true');
-    await expect(asked((service) => service.sync())).resolves.toEqual(['ParcelsApp']);
-    await expect(asked((service) => service.syncPackage(parcel, { trigger: 'release' }))).resolves.toEqual(['ParcelsApp']);
-    await expect(asked((service) => service.syncPackage(parcel, { trigger: 'refresh' }))).resolves.toEqual(every);
+    await expect(asked((service) => service.sync(), [parcel])).resolves.toEqual(['ParcelsApp']);
+    await expect(asked((service) => service.syncPackage(parcel, { trigger: 'release' }), [parcel])).resolves.toEqual(['ParcelsApp']);
+    await expect(asked((service) => service.syncPackage(parcel, { trigger: 'refresh' }), [parcel])).resolves.toEqual(every);
+  });
+
+  it('asks one universal provider at a release\'s re-check of a lookup that left the schedule unseen, with its flag', async () => {
+    const lookup = unseen('lookup', { user_id: null, one_off: true, last_synced_at: '2026-09-02T10:00:15Z' });
+    const release = (parcel: JsonObject) => (service: TrackingSyncService) => service.syncPackage(parcel, { trigger: 'release' });
+    vi.stubEnv('TRACKING_ENABLE_UNSEEN_RECHECKS', 'true');
+    await expect(asked(release(lookup), [])).resolves.toEqual(every);
+    vi.stubEnv('TRACKING_ENABLE_SPARSE_LOOKUP_RECHECKS', 'true');
+    await expect(asked(release(lookup), [])).resolves.toEqual(['ParcelsApp']);
+    await expect(asked((service) => service.syncPackage(lookup, { trigger: 'refresh' }), [])).resolves.toEqual(every);
+    // Five hours after it was added, the lookup is still on its hourly schedule.
+    await expect(asked(release({ ...lookup, last_synced_at: null }), [], '2026-09-01T14:00:00Z')).resolves.toEqual(every);
   });
 });

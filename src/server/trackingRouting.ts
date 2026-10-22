@@ -257,7 +257,7 @@ export function suggestedInput(parcel: JsonObject, state: RoutingState): Routing
   return carrier ? { carrier, field: 'dpdPostcode' } : undefined;
 }
 /**
- * The universal providers a recheck of a number nobody has answered for a day may ask, of
+ * The universal providers a recheck of a number nobody has answered may ask, of
  * `ordered`, the check's own order; it contacts one of them at most. The first carrier its
  * detection names or lists with coverage evidence gives those that had history for it, fuller
  * first. A number pointing to no such carrier, or to one no provider had history for, gets
@@ -448,8 +448,8 @@ export class TrackingRouter {
   }) {}
 
   /**
-   * `sparse`: a recheck of a number nobody has answered for a day, which asks the carriers
-   * as usual and contacts one universal provider at most (recheckSources).
+   * `sparse`: a recheck nobody asked for of a number nobody has answered, which asks the
+   * carriers as usual and contacts one universal provider at most (recheckSources).
    */
   async fetch(parcel: JsonObject, scheduled: boolean, signal?: AbortSignal, addition = false, sparse = false): Promise<RoutedResult> {
     const now = () => this.options.now?.() ?? new Date();

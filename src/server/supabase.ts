@@ -986,7 +986,7 @@ export class SupabaseServiceClient extends SupabaseClient {
    * identities instead of the public event list, which the worker never reads.
    */
   override async getPackage(packageId: string): Promise<JsonObject | null> {
-    const select = `${PACKAGE_COLUMNS},current_stage,tracking_generation,user_id,${SYNC_EVENT_IDENTITIES}`;
+    const select = `${PACKAGE_COLUMNS},current_stage,tracking_generation,user_id,one_off,${SYNC_EVENT_IDENTITIES}`;
     const params = query({
       select,
       id: `eq.${packageId}`,

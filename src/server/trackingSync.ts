@@ -50,7 +50,7 @@ import type { UniversalSource } from 'universal-parcel-scraper';
 import { answeredWithoutHistory, catalogRules, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { REDETECTION_WINDOW_MS, rerouteAskable } from './redetection';
 import { upuHistory } from './upuHistory';
-import { UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours, unseenRecheckDue } from './unseenLookup';
+import { sparseLookupRecheck, UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours, unseenRecheckDue } from './unseenLookup';
 import { collectedPickupPoint } from './collectedPickupPoint';
 import { directHistoryNumber, directLocalHistory, directLocalSnapshotIsOlder, hasUnresolvedDirectCurrent, localClockCarrier } from './directLocalHistory';
 import { carrierMovedAt, eventStage, showsDelivery, UNCONFIRMED_DELIVERY_MS } from './disputedDelivery';
@@ -1410,8 +1410,10 @@ export class TrackingSyncService {
         && candidate.carrier_data.delivery_probe === undefined
         ? { ...candidate, carrier_data: { ...candidate.carrier_data, delivery_probe: savedProbe } } : candidate;
       const keepProbe = (probe: JsonObject) => { lookupProbe = probe; };
-      // A check nobody asked for of an account's number nobody has answered for a day contacts one provider at most.
-      const sparse = !askedForCheck(context.trigger) && unseenRecheckDue(subject, now) !== undefined;
+      // A check nobody asked for of a number nobody has answered, an account's for a day or a lookup's
+      // that left the schedule, contacts one provider at most.
+      const sparse = !askedForCheck(context.trigger)
+        && (unseenRecheckDue(subject, now) !== undefined || sparseLookupRecheck(subject, now));
       // Only a check someone asked for, or a lookup's, skips the scheduled cadence: a release's re-check keeps it.
       try {
         fetched = await audit.observeFetch(async () => this.adapter.fetchUniversal && carrierId !== 'amazon-shipping'
