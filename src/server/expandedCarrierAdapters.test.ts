@@ -1,4 +1,5 @@
 import records from './fixtures/expandedResults.json';
+import { undeduced } from '../test/carrierResults';
 import { CarrierError, type CarrierErrorKind } from 'universal-parcel-scraper';
 // @vitest-environment node
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -74,7 +75,7 @@ function setup(entry: typeof cases[number], variant = '') {
     return structuredClone(record.result!);
   });
   const universal = { fetch: vi.fn() };
-  return { adapter: new CarrierTrackingAdapter(universal as unknown as UniversalTracker, registry, NOOP_RECORDER), registry, track };
+  return { adapter: new CarrierTrackingAdapter(universal as unknown as UniversalTracker, registry, NOOP_RECORDER), registry, track, record };
 }
 
 afterEach(() => vi.restoreAllMocks());
@@ -92,7 +93,8 @@ describe('expanded direct coverage through the host', () => {
   it.each(cases.filter(entry => entry.unresolved))('$carrier saves unresolved direct dates while using dated provider progress', async entry => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const test = setup(entry);
-    const direct = await test.adapter.fetch(entry.carrier, entry.number, null);
+    // As the scraper answers when it cannot date the clocks.
+    const direct = undeduced(await test.adapter.fetch(entry.carrier, entry.number, null), test.record.result!);
     expect(hasUnresolvedDirectCurrent(entry.carrier, direct)).toBe(true);
     const universal = vi.fn().mockResolvedValue({ status: 'delivered', current_stage: 'delivered',
       last_update: '2026-04-01T10:00:00Z', events: [{ time: '2026-04-01T10:00:00Z', stage: 'delivered', description: 'Delivered' }] });

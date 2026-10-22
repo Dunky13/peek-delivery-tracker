@@ -1,4 +1,5 @@
 import records from './fixtures/topResults.json';
+import { undeduced } from '../test/carrierResults';
 import type { CarrierResult } from 'universal-parcel-scraper';
 // @vitest-environment node
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -26,7 +27,11 @@ function setup(carrier: string, fixtureName: string, unknownRegions: 'all' | 'de
   const registry = createAdapterRegistry({ trawl: null, browserExecutablePath: null, env: {}, recorder: NOOP_RECORDER });
   const track = vi.spyOn(registry.for(carrier)!, 'track').mockResolvedValue(structuredClone(result) as CarrierResult);
   const universal = { fetch: vi.fn().mockRejectedValue(new Error('Unexpected universal lookup')) };
-  return { adapter: new CarrierTrackingAdapter(universal as unknown as UniversalTracker, registry, NOOP_RECORDER), track, universal, registry };
+  const adapter = new CarrierTrackingAdapter(universal as unknown as UniversalTracker, registry, NOOP_RECORDER);
+  // These answers stand for local clocks the scraper cannot date.
+  const fetch = adapter.fetch.bind(adapter);
+  vi.spyOn(adapter, 'fetch').mockImplementation(async (...args) => undeduced(await fetch(...args), result as CarrierResult));
+  return { adapter, track, universal, registry };
 }
 
 afterEach(() => vi.restoreAllMocks());
