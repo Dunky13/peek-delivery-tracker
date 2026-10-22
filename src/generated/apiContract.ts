@@ -10379,7 +10379,14 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/seguimiento_envios/consultar/oidn/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}AR$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.correoargentino.com.ar/formularios/e-commerce"
   },
   "courier-center": {
