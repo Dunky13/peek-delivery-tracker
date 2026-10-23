@@ -810,6 +810,23 @@ export function stageToSave(previousStage: string, selectedStage: string): strin
 }
 
 /**
+ * Whether the stored rows past an answer of the parcel's own carrier are only a provider's
+ * notices of a stage that answer shows: a label printed again at the origin (DPD China's
+ * "Order Printed" for a parcel BRT shows accepted) moves the parcel no further, so the answer
+ * is not older and serves the parcel. After an exception, a delivery or a return, a new
+ * label starts over.
+ */
+function noticesOnlyPast(answer: CarrierResult, rows: readonly JsonObject[]): boolean {
+  const rank = (stage: string) => MOVING_STAGES.has(stage) ? EARLY_STAGES.length : EARLY_STAGES.indexOf(stage);
+  const stages = [answer.current_stage, ...(answer.events ?? []).filter(isRecord).map(eventStage)]
+    .filter((stage): stage is string => typeof stage === 'string');
+  if (!rows.length || !stages.length || stages.some((stage) => rank(stage) < 0)) return false;
+  const reached = Math.max(...stages.map(rank));
+  return rows.every((row) => typeof row.universal_provider === 'string' && EARLY_STAGES.includes(String(row.stage))
+    && rank(String(row.stage)) <= reached);
+}
+
+/**
  * The saved stage `stageToSave` may hold: the saved one while a scan the
  * parcel keeps still shows it, else the furthest stage one shows. A scraper
  * fix can re-read the scan that moved the parcel as an earlier stage, and then
@@ -1675,9 +1692,12 @@ export class TrackingSyncService {
           && Date.parse(String(row.occurred_at)) <= carrierMoved)
         ? savedDeliveries.map((row) => String(row.provider_event_id)) : [];
       // An answer of the parcel's own carrier that disputes the saved delivery is not older either:
-      // the watermark came from the provider whose delivery it disputes.
+      // the watermark came from the provider whose delivery it disputes. Nor is one past which the
+      // stored rows are only a provider's notices of a stage it shows (noticesOnlyPast): the saved
+      // watermark stays, so the provider repeating them in an outage takes the summary back no more.
+      const noticesPast = ownAnswer === answered && returnedEventTime < previousEventTime && noticesOnlyPast(answered, ahead);
       const olderSnapshot = Number.isFinite(previousEventTime) && Number.isFinite(returnedEventTime)
-        && returnedEventTime < previousEventTime && !retracted && !disputedRows.length;
+        && returnedEventTime < previousEventTime && !retracted && !disputedRows.length && !noticesPast;
       // UPU wall time cannot prove freshness against another source. It may
       // establish initial progress, or update its own saved local-time summary.
       const unprovenUpuSummary = result.tracking_provider === 'UPU' && (
@@ -1708,7 +1728,7 @@ export class TrackingSyncService {
       const routing = isRecord(result.routing) ? { ...result.routing } : null;
       if (routing) {
         // A fallback's scan that is kept out must not make the carrier's next reply look older.
-        const keepWatermark = olderSnapshot || keepSaved || unprovenProviderSummary;
+        const keepWatermark = olderSnapshot || keepSaved || unprovenProviderSummary || noticesPast;
         const watermark = keepWatermark ? previousEventTime : withoutCopyDrift(
           Date.parse(String(routing.last_event_at ?? '')), events, stored, matches, { also: [returnedEventTime,
             fetched.earlierResult && !fetched.earlierFollowUp

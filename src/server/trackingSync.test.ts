@@ -1052,6 +1052,59 @@ describe('TrackingSyncService', () => {
     });
   });
 
+  describe('a provider\'s notice after the carrier\'s newest scan', () => {
+    // A BRT import whose origin printed its label again after BRT's pre-advice; numbers, wording and clocks are invented.
+    const own: CarrierResult = { status: 'pending', current_stage: 'registered', last_status_text: 'Shipping info sent to BRT',
+      last_update: '2026-10-13T13:33:00+02:00', events: [
+        { time: '2026-10-13T13:33:00+02:00', description: 'Shipping info sent to BRT', stage: 'registered', location: 'Hub' },
+        { time: '2026-10-13T08:21:18+08:00', description: 'Parcel handed to DPD', stage: 'accepted' }] };
+    const provider = (...newer: Array<{ time: string; description: string; stage: string }>): CarrierResult => ({
+      status: 'pending', current_stage: newer[0]?.stage ?? 'registered', last_status_text: newer[0]?.description ?? 'Order printed',
+      last_update: newer[0]?.time ?? '2026-10-15T03:12:05Z', events: [...newer,
+        { time: '2026-10-15T03:12:05Z', description: 'Order printed', stage: 'registered' },
+        { time: '2026-10-13T08:25:09Z', description: 'Order created', stage: 'registered' }] });
+    const parcel = () => {
+      const store = eventStore();
+      const client = Object.assign(store.client, {
+        acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
+        finishTrackingProvider: vi.fn().mockResolvedValue(undefined) });
+      let saved: JsonObject = { id: 'origin-notice', carrier: 'brt', tracking_number: '12345678901234', current_stage: 'pending',
+        created_at: '2026-10-20T09:00:00Z' };
+      return async (at: string, carrier: CarrierResult | Error, answer: CarrierResult) => {
+        const adapter = { fetch: carrier instanceof Error ? vi.fn().mockRejectedValue(carrier) : vi.fn().mockResolvedValue(carrier),
+          fetchUniversal: vi.fn().mockResolvedValue(answer) };
+        await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date(at))
+          .syncPackage({ ...saved, [STORED_EVENT_IDENTITIES]: store.identities() });
+        saved = { ...saved, ...client.applyTrackingSync.mock.calls.at(-1)![1] };
+        return saved;
+      };
+    };
+
+    it('gives the summary to the carrier\'s answer once it shows that stage, and keeps the watermark', async () => {
+      const check = parcel();
+      const first = await check('2026-10-20T09:01:00Z', new Error('down'), provider());
+      expect(first).toMatchObject({ current_stage: 'registered', last_status_text: 'Order printed',
+        carrier_data: { tracking_provider: expect.any(String) } });
+      const answered = await check('2026-10-21T06:08:00Z', own, provider());
+      expect(answered).toMatchObject({ current_stage: 'registered', last_status_text: 'Shipping info sent to BRT',
+        carrier_data: { routing: { last_event_at: '2026-10-15T03:12:05.000Z' } } });
+      expect(answered.carrier_data).not.toHaveProperty('tracking_provider');
+      // The provider answering while the carrier is down repeats the notice: the carrier's summary stays.
+      const down = await check('2026-10-21T08:00:00Z', new Error('down'), provider());
+      expect(down).toMatchObject({ last_status_text: 'Shipping info sent to BRT' });
+      expect(down.carrier_data).not.toHaveProperty('tracking_provider');
+    });
+
+    it('leaves the summary to a provider whose later scan moved the parcel further', async () => {
+      const check = parcel();
+      const moved = { time: '2026-10-16T02:00:00Z', description: 'Departed from origin', stage: 'in_transit' };
+      await check('2026-10-20T09:01:00Z', new Error('down'), provider(moved));
+      const kept = await check('2026-10-21T06:08:00Z', own, provider(moved));
+      expect(kept).toMatchObject({ current_stage: 'in_transit', last_status_text: 'Departed from origin',
+        carrier_data: { tracking_provider: expect.any(String), routing: { last_event_at: '2026-10-16T02:00:00.000Z' } } });
+    });
+  });
+
   it('saves provider identity for an unknown parcel without claiming a direct answer', async () => {
     const client = { ...fakeClient(),
       acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '' }),
