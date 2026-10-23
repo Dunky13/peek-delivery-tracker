@@ -415,9 +415,11 @@ shown as-is; known app-generated timeline messages are translated
 ([LOCALIZATION.md](LOCALIZATION.md)). Errors map to localized guidance and never show raw
 diagnostics. Status labels don't imply a carrier delay when only our check failed.
 
-Push registrations store the device language, and so does each alert for a parcel link. The apps send it again on every start and change of language: the iPhone
-with its device token, the web for the account's subscription and for the link alerts
-whenever the language differs from the one it last sent, which it notes on the device.
+Push registrations store the device language, and so does each alert for a parcel link.
+The apps send it again on every start and change of language: the iPhone with its device
+token and with the alerts of the parcels it follows without an account, the web for the
+account's subscription and for the link alerts whenever the language differs from the one
+it last sent, which it notes on the device.
 The Share extension reads it from the app group. The delivery email is written in the
 language the account's apps last stored with its sign-in.
 

@@ -64,6 +64,7 @@ final class ParcelStore: ObservableObject {
     private let liveActivityRevocations: LiveActivityRevocations
     private let demo: DemoRepository
     private let device: DeviceParcels
+    private let deviceNotifications: DeviceNotificationAccess
     private let demoShares = DemoParcelShares()
     private let shareNotes = ParcelShareNotes()
     private let deliveryWidgetStore: DeliveryWidgetSharedStore?
@@ -103,8 +104,9 @@ final class ParcelStore: ObservableObject {
     private static let installationIDKey = "sdt.installationID.v1"
 
     init(configuration: AppConfiguration = .current, session: SessionStore, localizer: Localizer, transport: URLSession = .shared,
-         device: DeviceParcels? = nil) {
+         device: DeviceParcels? = nil, deviceNotifications: DeviceNotificationAccess = .system) {
         self.configuration = configuration
+        self.deviceNotifications = deviceNotifications
         self.session = session
         self.localizer = localizer
         installationID = Self.installationIdentifier()
@@ -268,6 +270,7 @@ final class ParcelStore: ObservableObject {
             await load()
             guard (try? session.checkGeneration(generation)) != nil else { return }
             beginDevicePolling()
+            await resumeDeviceAlerts()
             return
         }
         if !isDemo { await claimDeviceParcels() }
@@ -377,6 +380,8 @@ final class ParcelStore: ObservableObject {
             try session.checkGeneration(generation)
             // Its carrier answers in a moment: ask again soon.
             beginDevicePolling()
+            let language = localizer.language
+            Task { await askForDeviceAlerts(language: language) }
         } else {
             let response = try await api.add(request)
             parcel = response.package
@@ -389,11 +394,12 @@ final class ParcelStore: ObservableObject {
     }
 
     /// Keeps a parcel shared through a link in this account, under the name the link suggests.
-    /// The list is then reloaded, so the parcel is on it before the sheet closes.
+    /// The list is then reloaded, so the parcel is on it before the sheet closes. A link the site
+    /// handed over with its owner key goes with the key, as a lookup made on this iPhone would.
     func keep(_ link: ParcelLinkRoute) async throws -> ParcelLinkClaim {
         guard session.user != nil else { throw DeliveryAPIError.authenticationExpired }
         let generation = session.generation
-        let response = try await api.claimParcels(ClaimParcelsRequest(links: [ClaimParcelLink(id: link.id, label: link.name)]))
+        let response = try await api.claimParcels(ClaimParcelsRequest(links: [ClaimParcelLink(id: link.id, key: link.key, label: link.name)]))
         try session.checkGeneration(generation)
         guard let claim = ParcelLinkClaim(response: response, linkID: link.id) else { throw DeliveryAPIError.invalidResponse }
         switch claim {
@@ -401,6 +407,76 @@ final class ParcelStore: ObservableObject {
         case .full, .unavailable: break
         }
         return claim
+    }
+
+    /// Follows the parcel behind a link on this iPhone, without an account: as its own when the
+    /// site handed its owner key over, else as its reader. The demo or the sign-in screen gives way
+    /// to the device's parcels, and notifications are asked for. `.already` when it was here.
+    func follow(_ link: ParcelLinkRoute, _ response: PublicParcelResponse) async throws -> ParcelLinkClaim {
+        guard tracksWithoutAccount, session.user == nil else { throw DeliveryAPIError.serviceFailed(503) }
+        if !isGuest { session.showWelcome() }
+        // A wrapped gift's name is what is inside.
+        let followed = try device.follow(response, key: link.key, label: response.gift == .wrapped ? nil : link.name)
+        mutationRevision += 1
+        parcels = device.list()
+        beginDevicePolling()
+        let language = localizer.language
+        Task { await askForDeviceAlerts(language: language) }
+        return followed.added ? .added(followed.id) : .already(followed.id)
+    }
+
+    /// The parcel this iPhone follows itself behind a link, by the link or by the parcel.
+    func followedHere(_ response: PublicParcelResponse) -> UUID? {
+        guard tracksWithoutAccount, session.user == nil else { return nil }
+        return device.parcelID(linkID: response.link.id) ?? device.list().first { $0.id == response.package.id }?.id
+    }
+
+    /// The parcel this iPhone follows through a link, for a notification about it.
+    func followedHere(linkID: String) -> UUID? { device.parcelID(linkID: linkID) }
+
+    /// Shows the parcels this iPhone follows itself, leaving the demo or the sign-in screen.
+    func showDeviceParcels() {
+        guard session.user == nil, !isGuest else { return }
+        session.showWelcome()
+    }
+
+    /// The link of a parcel followed here through someone else's link: all this iPhone may share
+    /// of it, and the sign that its carrier and details are not this iPhone's to change.
+    func viewerLink(for parcel: Parcel) -> String? {
+        isGuest ? device.viewerLink(id: parcel.id) : nil
+    }
+
+    // MARK: - Notifications without an account
+
+    /// Asks for notifications once a parcel comes to this iPhone without an account: iOS asks for
+    /// permission the first time, and the device's parcels are signed up once the token is known.
+    func askForDeviceAlerts(language: AppLanguage) async {
+        guard tracksWithoutAccount, !isDemo, device.hasParcelsOnTheirWay else { return }
+        var status = await deviceNotifications.status()
+        if status == .notDetermined {
+            await deviceNotifications.request()
+            status = await deviceNotifications.status()
+        }
+        guard NotificationDevicePolicy.isAuthorized(status) else { return }
+        deviceNotifications.register()
+        if let token = deviceNotifications.token() { await registerDeviceAlerts(token: token, language: language) }
+    }
+
+    /// At launch, with permission given already, iOS hands the token over again and the parcels
+    /// are signed up on it. Nothing is asked.
+    private func resumeDeviceAlerts() async {
+        guard tracksWithoutAccount, !isDemo, device.hasParcelsOnTheirWay,
+              NotificationDevicePolicy.isAuthorized(await deviceNotifications.status()) else { return }
+        deviceNotifications.register()
+    }
+
+    /// Signs the device's own parcels up for notifications on this token, in this language.
+    /// Signed in, these are the parcels the account could not take over; the account's own
+    /// registration stays as it is, and so does its choice to have no notifications on this iPhone.
+    func registerDeviceAlerts(token: String, language: AppLanguage) async {
+        guard tracksWithoutAccount, !isDemo else { return }
+        if session.user != nil, UserDefaults.standard.bool(forKey: notificationOptOutKey) { return }
+        await device.registerAlerts(token: token, locale: NativePushLocale(language))
     }
 
     /// How the share sheet reaches this parcel's link: through the service, or the demo's own
@@ -1467,8 +1543,14 @@ final class ParcelStore: ObservableObject {
                 // What was archived here stays archived there.
                 if let id = result.packageID, device.isArchived(linkID: result.id) { try? await api.archive(id: id) }
             }
-            // A parcel the account has no room for stays on the device.
-            device.release(Set(response.results.filter { $0.outcome != .quota }.map(\.id)))
+            // A parcel the account has no room for stays on the device, and so does someone else's that it could not keep.
+            device.release(Set(response.results.filter { result in
+                switch result.outcome {
+                case .kept, .already: true
+                case .quota: false
+                case .unavailable: !device.isViewer(linkID: result.id)
+                }
+            }.map(\.id)))
         }
     }
 
@@ -1504,6 +1586,22 @@ final class ParcelStore: ObservableObject {
         }
         return nil
     }
+}
+
+/// How the store reaches iOS for the notifications of the parcels this iPhone follows itself:
+/// the permission, the question for it, the registration and the token. Tests answer for iOS.
+struct DeviceNotificationAccess {
+    var status: @MainActor () async -> UNAuthorizationStatus
+    var request: @MainActor () async -> Void
+    var register: @MainActor () -> Void
+    var token: @MainActor () -> String?
+
+    static let system = DeviceNotificationAccess(
+        status: { await UNUserNotificationCenter.current().notificationSettings().authorizationStatus },
+        request: { _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) },
+        register: { UIApplication.shared.registerForRemoteNotifications() },
+        token: { AppDelegate.currentDeviceToken }
+    )
 }
 
 /// What the widget displays; the snapshot's timestamp alone never needs a reload.

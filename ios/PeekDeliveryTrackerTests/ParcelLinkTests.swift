@@ -194,7 +194,7 @@ final class ParcelLinkTests: XCTestCase {
     @MainActor func testAnAddedParcelClosesTheSheetAndReachesTheListOnceItHasGone() throws {
         let (defaults, suite) = defaults()
         defer { defaults.removePersistentDomain(forName: suite) }
-        let store = ParcelLinkStore(defaults: defaults, read: { _ in nil })
+        let store = ParcelLinkStore(defaults: defaults, read: { _, _ in nil })
         let kept = UUID()
         store.open(ParcelLinkRoute(id: linkID, name: "Moon lamp"))
 
@@ -214,7 +214,7 @@ final class ParcelLinkTests: XCTestCase {
         defer { defaults.removePersistentDomain(forName: suite) }
         var answer = try fixture().publicParcel
         answer.link.gift = true
-        let store = ParcelLinkStore(defaults: defaults, read: { _ in answer })
+        let store = ParcelLinkStore(defaults: defaults, read: { _, _ in answer })
         store.open(ParcelLinkRoute(id: linkID))
         await store.load()
         XCTAssertNil(store.route?.name)
@@ -232,7 +232,7 @@ final class ParcelLinkTests: XCTestCase {
         let (defaults, suite) = defaults()
         defer { defaults.removePersistentDomain(forName: suite) }
         let shown = try fixture().publicParcel
-        let store = ParcelLinkStore(defaults: defaults, read: { _ in shown })
+        let store = ParcelLinkStore(defaults: defaults, read: { _, _ in shown })
         let existing = UUID()
         store.open(ParcelLinkRoute(id: linkID))
         await store.load()
@@ -269,7 +269,7 @@ final class ParcelLinkTests: XCTestCase {
         let shown = try fixture().publicParcel
         var answer: Result<PublicParcelResponse?, Error> = .success(shown)
         var asked: [String] = []
-        let store = ParcelLinkStore(defaults: defaults, read: { id in asked.append(id); return try answer.get() })
+        let store = ParcelLinkStore(defaults: defaults, read: { id, _ in asked.append(id); return try answer.get() })
 
         await store.load()
         XCTAssertTrue(asked.isEmpty, "Nothing is read until a link opens")
@@ -453,7 +453,7 @@ final class ParcelLinkTests: XCTestCase {
         defer { defaults.removePersistentDomain(forName: suite) }
         var now = Date(timeIntervalSince1970: 1_790_000_000)
         let link = ParcelLinkRoute(id: linkID, name: "Moon lamp")
-        let store = ParcelLinkStore(defaults: defaults, now: { now }, read: { _ in nil })
+        let store = ParcelLinkStore(defaults: defaults, now: { now }, read: { _, _ in nil })
 
         store.open(link)
         store.resume()
@@ -464,7 +464,7 @@ final class ParcelLinkTests: XCTestCase {
 
         // The app may be relaunched by the sign-in round trip.
         now += 6 * 86_400
-        let relaunched = ParcelLinkStore(defaults: defaults, now: { now }, read: { _ in nil })
+        let relaunched = ParcelLinkStore(defaults: defaults, now: { now }, read: { _, _ in nil })
         XCTAssertNil(relaunched.route, "Nothing reopens until someone is signed in")
         relaunched.resume()
         XCTAssertEqual(relaunched.route, link)
@@ -483,7 +483,7 @@ final class ParcelLinkTests: XCTestCase {
         var now = Date(timeIntervalSince1970: 1_790_000_000)
         let link = ParcelLinkRoute(id: linkID)
         let other = ParcelLinkRoute(id: "22222222222A")
-        let store = ParcelLinkStore(defaults: defaults, now: { now }, read: { _ in nil })
+        let store = ParcelLinkStore(defaults: defaults, now: { now }, read: { _, _ in nil })
         func remember() {
             store.open(link)
             store.rememberForSignIn()
@@ -531,6 +531,100 @@ final class ParcelLinkTests: XCTestCase {
         defaults.set(Data(#"{"id":"not-a-link","receivedAt":0}"#.utf8), forKey: "sdt.pendingParcelLink.v1")
         XCTAssertNil(store.remembered)
         XCTAssertNil(defaults.object(forKey: "sdt.pendingParcelLink.v1"))
+    }
+
+    // MARK: - Following on this iPhone
+
+    @MainActor func testAHandedOverLinkIsReadWithItsKeyWhichIsNeverRemembered() async throws {
+        let (defaults, suite) = defaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let key = String(repeating: "K", count: 43)
+        var answer = try fixture().publicParcel
+        answer.link.role = .owner
+        var sent: [String?] = []
+        let store = ParcelLinkStore(defaults: defaults, read: { _, key in sent.append(key); return answer })
+
+        store.open(ParcelLinkRoute(id: linkID, name: "Moon lamp", key: key))
+        await store.load()
+        XCTAssertEqual(sent, [key])
+        XCTAssertEqual(store.route?.key, key, "The owner's link keeps its key, for the parcel to come along")
+
+        // Kept for after sign-in, the link goes without its key.
+        store.rememberForSignIn()
+        XCTAssertEqual(store.remembered?.name, "Moon lamp")
+        XCTAssertNil(store.remembered?.key)
+        let pending = try XCTUnwrap(defaults.data(forKey: "sdt.pendingParcelLink.v1"))
+        XCTAssertFalse(String(decoding: pending, as: UTF8.self).contains(key))
+
+        // A key the link does not answer to as its owner's is dropped, and is not sent again.
+        answer.link.role = .viewer
+        store.open(ParcelLinkRoute(id: linkID, key: key))
+        await store.load()
+        XCTAssertNil(store.route?.key)
+        await store.load()
+        XCTAssertEqual(sent, [key, key, nil])
+    }
+
+    @MainActor func testAHandedOverLinkSendsItsKeyInAHeaderAlone() async throws {
+        let transport = LinkTestURLProtocol.transport()
+        defer { transport.invalidateAndCancel() }
+        let body = try JSONEncoder.deliveryTracker.encode(try fixture().publicParcel)
+        nonisolated(unsafe) var requests: [URLRequest] = []
+        LinkTestURLProtocol.handler = { request in requests.append(request); return (200, [:], body) }
+        let key = String(repeating: "K", count: 43)
+
+        _ = try await DeliveryAPIClient.publicParcel(linkID: linkID, key: key, configuration: LinkTestURLProtocol.configuration, transport: transport)
+
+        let request = try XCTUnwrap(requests.first)
+        XCTAssertEqual(request.url?.absoluteString, "https://links.test/api/public/parcels/\(linkID)")
+        XCTAssertEqual(request.value(forHTTPHeaderField: "X-Parcel-Key"), key)
+        XCTAssertFalse(request.httpShouldHandleCookies)
+        XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
+    }
+
+    @MainActor func testAppAlertsGoWithTheKeyOnlyForTheOwnerAndStopWithTheTokenAlone() async throws {
+        let transport = LinkTestURLProtocol.transport()
+        defer { transport.invalidateAndCancel() }
+        nonisolated(unsafe) var requests: [URLRequest] = []
+        nonisolated(unsafe) var status = 204
+        LinkTestURLProtocol.handler = { request in requests.append(request); return (status, [:], Data()) }
+        let client = DeviceParcelClient.api(configuration: LinkTestURLProtocol.configuration, transport: transport)
+        let key = String(repeating: "K", count: 43)
+        let alert = ParcelAppAlertRequest(token: "a1b2c3d4", environment: .production, preset: .all, locale: .fr)
+
+        let owned = try await client.setAlert(linkID, key, alert)
+        let read = try await client.setAlert(linkID, nil, alert)
+
+        XCTAssertEqual([owned, read], [.on, .on])
+        XCTAssertEqual(requests.map(\.httpMethod), ["PUT", "PUT"])
+        XCTAssertEqual(Set(requests.map { $0.url?.absoluteString }), ["https://links.test/api/public/parcels/\(linkID)/app-alerts"])
+        XCTAssertEqual(requests.map { $0.value(forHTTPHeaderField: "X-Parcel-Key") }, [key, nil])
+        for request in requests {
+            XCTAssertFalse(request.httpShouldHandleCookies)
+            XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
+            let body = try XCTUnwrap(JSONSerialization.jsonObject(with: LinkTestURLProtocol.body(of: request)) as? [String: String])
+            XCTAssertEqual(body, ["token": "a1b2c3d4", "environment": "production", "preset": "all", "locale": "fr"])
+        }
+
+        for (code, expected) in [(404, DeviceAlertAnswer.gone), (409, .full), (410, .stopped), (503, .unavailable)] {
+            status = code
+            let answer = try await client.setAlert(linkID, nil, alert)
+            XCTAssertEqual(answer, expected, "\(code)")
+        }
+        status = 429
+        do {
+            _ = try await client.setAlert(linkID, nil, alert)
+            XCTFail("Expected a rate limit")
+        } catch DeliveryAPIError.rateLimited {}
+
+        requests = []
+        status = 204
+        try await client.removeAlert(linkID, DeleteParcelAppAlertRequest(token: "a1b2c3d4"))
+        let removal = try XCTUnwrap(requests.first)
+        XCTAssertEqual(removal.httpMethod, "DELETE")
+        XCTAssertEqual(removal.url?.absoluteString, "https://links.test/api/public/parcels/\(linkID)/app-alerts")
+        XCTAssertNil(removal.value(forHTTPHeaderField: "X-Parcel-Key"))
+        XCTAssertEqual(try JSONSerialization.jsonObject(with: LinkTestURLProtocol.body(of: removal)) as? [String: String], ["token": "a1b2c3d4"])
     }
 }
 

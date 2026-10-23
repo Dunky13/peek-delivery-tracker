@@ -999,6 +999,8 @@
   "email.off.askTitle": "Zustell-E-Mails ausschalten?",
   "email.off.askBody": "Peek schreibt dir dann nicht mehr, wenn ein Paket zugestellt wird oder abholbereit ist. Deine Mitteilungen bleiben, wie sie sind.",
   "native.guest.kept": "Vorerst nur auf diesem iPhone.",
+  "native.follow.action": "Auf diesem iPhone verfolgen",
+  "native.follow.hint": "Peek schickt diesem iPhone Mitteilungen, bis das Paket zugestellt ist. Kein Konto nötig.",
   "native.pasteLead": "Füge eine Nummer, einen Link oder eine ganze E-Mail ein.",
   "door.verification.title": "Eine kurze Browserprüfung",
   "door.verification.body": "Die Prüfung konnte nicht abgeschlossen werden. Schließe sie ab, falls sie angezeigt wird, und versuche es erneut. Deine Nummer bleibt erhalten.",

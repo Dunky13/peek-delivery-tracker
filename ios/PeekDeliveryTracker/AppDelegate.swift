@@ -5,6 +5,7 @@ extension Notification.Name {
     static let didReceiveAPNSToken = Notification.Name("SDTDidReceiveAPNSToken")
     static let didFailAPNSRegistration = Notification.Name("SDTDidFailAPNSRegistration")
     static let didOpenParcelNotification = Notification.Name("SDTDidOpenParcelNotification")
+    static let didOpenLinkNotification = Notification.Name("SDTDidOpenLinkNotification")
     static let didOpenFriendNotification = Notification.Name("SDTDidOpenFriendNotification")
     static let didReceiveFriendActivity = Notification.Name("SDTDidReceiveFriendActivity")
 }
@@ -14,6 +15,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
     static private(set) var currentDeviceToken: String?
     static private(set) var pendingParcelID: UUID?
     static private(set) var pendingFriendID: UUID?
+    /// A notification about a parcel followed through its link without an account, tapped before the app could open it.
+    static private(set) var pendingLinkID: String?
 
     static func consumePendingFriendID() -> UUID? {
         defer { pendingFriendID = nil }
@@ -27,6 +30,17 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
     static func consumePendingParcelID() -> UUID? {
         defer { pendingParcelID = nil }
         return pendingParcelID
+    }
+
+    static func consumePendingLinkID() -> String? {
+        defer { pendingLinkID = nil }
+        return pendingLinkID
+    }
+
+    /// Has the deliveries list open the parcel, now or once it shows.
+    static func openParcel(_ parcelID: UUID) {
+        pendingParcelID = parcelID
+        NotificationCenter.default.post(name: .didOpenParcelNotification, object: parcelID)
     }
 
     func application(
@@ -75,8 +89,11 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
             NotificationCenter.default.post(name: .didOpenFriendNotification, object: friendID)
         }
         if case .parcel(let parcelID) = NativeRoute(remoteNotification: payload) {
-            Self.pendingParcelID = parcelID
-            NotificationCenter.default.post(name: .didOpenParcelNotification, object: parcelID)
+            Self.openParcel(parcelID)
+        }
+        if case .link(let linkID) = NativeRoute(remoteNotification: payload) {
+            Self.pendingLinkID = linkID
+            NotificationCenter.default.post(name: .didOpenLinkNotification, object: linkID)
         }
     }
 }

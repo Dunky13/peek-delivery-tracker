@@ -154,7 +154,8 @@ enum ParcelLinkFailure: Equatable, Sendable {
 }
 
 /// The parcel link on screen. Anyone may look at it; a signed-in person keeps the parcel with
-/// one tap. A link opened before signing in is remembered on this device for up to seven days.
+/// one tap, and anyone else may follow it on this iPhone. A link opened before signing in is
+/// remembered on this device for up to seven days, without the owner key a handed-over link carries.
 @MainActor
 final class ParcelLinkStore: ObservableObject {
     enum Phase: Equatable {
@@ -173,7 +174,8 @@ final class ParcelLinkStore: ObservableObject {
         case open(UUID)
     }
 
-    typealias Reader = @MainActor (String) async throws -> PublicParcelResponse?
+    /// Reads a link, with its owner key when the site handed the parcel over.
+    typealias Reader = @MainActor (_ linkID: String, _ key: String?) async throws -> PublicParcelResponse?
 
     @Published private(set) var route: ParcelLinkRoute?
     @Published private(set) var presentationID = UUID()
@@ -206,7 +208,7 @@ final class ParcelLinkStore: ObservableObject {
         if let read {
             self.read = read
         } else if configuration.mode == .api {
-            self.read = { linkID in try await DeliveryAPIClient.publicParcel(linkID: linkID, configuration: configuration) }
+            self.read = { linkID, key in try await DeliveryAPIClient.publicParcel(linkID: linkID, key: key, configuration: configuration) }
         } else {
             self.read = nil
         }
@@ -228,13 +230,17 @@ final class ParcelLinkStore: ObservableObject {
         generation += 1
         let current = generation
         do {
-            let response = try await read(route.id)
+            let response = try await read(route.id, route.key)
             guard current == generation, !Task.isCancelled else { return }
             refreshFailure = nil
             if let response {
+                var next = route
+                // A key the link does not answer to as its owner's is no key.
+                if response.link.role != .owner { next.key = nil }
                 if response.gift != .wrapped, let words = response.link.giftWords {
-                    self.route = ParcelLinkRoute(id: route.id, name: words.name, note: words.note, from: words.from)
+                    next = ParcelLinkRoute(id: route.id, name: words.name, note: words.note, from: words.from, key: next.key)
                 }
+                if next != route { self.route = next }
                 phase = .shown(response)
             } else { gone() }
         } catch is ParcelLinkStopped {
@@ -408,7 +414,7 @@ extension ParcelLinkStore {
             response?.package.lastSyncedAt = DateParser.isoString(now.addingTimeInterval(-120))
         }
         let shown = variant == "gone" ? nil : response
-        let store = ParcelLinkStore(defaults: defaults, read: { _ in
+        let store = ParcelLinkStore(defaults: defaults, read: { _, _ in
             if variant == "stopped" { throw ParcelLinkStopped() }
             return shown
         })

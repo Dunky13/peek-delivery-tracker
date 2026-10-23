@@ -999,6 +999,8 @@
   "email.off.askTitle": "Wyłączyć e-maile o dostarczeniu?",
   "email.off.askBody": "Peek przestanie pisać, gdy przesyłka zostanie dostarczona lub będzie gotowa do odbioru. Powiadomienia zostają bez zmian.",
   "native.guest.kept": "Na razie tylko na tym iPhonie.",
+  "native.follow.action": "Śledź na tym iPhonie",
+  "native.follow.hint": "Peek powiadamia ten iPhone, dopóki przesyłka nie zostanie doręczona. Bez konta.",
   "native.pasteLead": "Wklej numer, link albo cały e-mail.",
   "door.verification.title": "Szybkie sprawdzenie przeglądarki",
   "door.verification.body": "Nie udało się zakończyć weryfikacji. Wykonaj sprawdzenie, jeśli się pojawi, i spróbuj ponownie. Twój numer nadal tu jest.",

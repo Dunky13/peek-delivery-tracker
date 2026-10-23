@@ -1,3 +1,4 @@
+import UserNotifications
 import XCTest
 @testable import PeekDeliveryTracker
 
@@ -49,7 +50,8 @@ final class DeviceParcelTests: XCTestCase {
     }
 
     private func client(_ calls: Calls, lookup: PublicLookupResponse? = nil,
-                        read: @escaping @Sendable (String) throws -> PublicParcelResponse? = { _ in nil }) -> DeviceParcelClient {
+                        read: @escaping @Sendable (String) throws -> PublicParcelResponse? = { _ in nil },
+                        alert: @escaping @Sendable (String) throws -> DeviceAlertAnswer = { _ in .on }) -> DeviceParcelClient {
         DeviceParcelClient(
             lookup: { request in
                 calls.add("lookup \(request.trackingNumber) \(request.carrier?.rawValue ?? "-")")
@@ -58,7 +60,7 @@ final class DeviceParcelTests: XCTestCase {
                 guard let lookup else { throw DeviceLookupsSpent() }
                 return lookup
             },
-            read: { linkID, key in calls.add("read \(linkID) \(key.prefix(1))"); return try read(linkID) },
+            read: { linkID, key in calls.add("read \(linkID) \((key ?? "-").prefix(1))"); return try read(linkID) },
             forget: { linkID, _ in calls.add("forget \(linkID)") },
             update: { linkID, _, change in
                 calls.add("update \(linkID) shared=\(change.shared.map(String.init) ?? "-")")
@@ -71,8 +73,22 @@ final class DeviceParcelTests: XCTestCase {
             detect: { number, prefixOfSaved in
                 calls.add("detect \(number)\(prefixOfSaved ? " prefix" : "")")
                 throw DeliveryAPIError.serviceFailed(503)
-            }
+            },
+            setAlert: { linkID, key, request in
+                calls.add("alert \(linkID) \((key ?? "-").prefix(1)) \(request.preset.rawValue) \(request.token) \(request.locale.rawValue) \(request.environment.rawValue)")
+                return try alert(linkID)
+            },
+            removeAlert: { linkID, request in calls.add("unalert \(linkID) \(request.token)") }
         )
+    }
+
+    private func reader(_ id: String, canKeep: Bool = true) -> ParcelLink {
+        ParcelLink(id: id, role: .viewer, kind: .shared, createdAt: "2026-10-01T08:00:00Z", numberShown: false, canKeep: canKeep)
+    }
+
+    /// iOS as a test sees it: no notifications, and nothing asked.
+    private func quietNotifications() -> DeviceNotificationAccess {
+        DeviceNotificationAccess(status: { .denied }, request: {}, register: {}, token: { nil })
     }
 
     func testALookupIsKeptWithItsKeyUnderTheNameGivenHere() async throws {
@@ -465,7 +481,8 @@ final class DeviceParcelTests: XCTestCase {
         let session = SessionStore(configuration: configuration, persistence: PostcodeTestSessionPersistence(), transport: transport)
         defer { session.forceSignOut() }
         session.showWelcome()
-        let store = ParcelStore(configuration: configuration, session: session, localizer: Localizer(), transport: transport, device: device)
+        let store = ParcelStore(configuration: configuration, session: session, localizer: Localizer(), transport: transport, device: device,
+                                deviceNotifications: quietNotifications())
         store.setDeliveryWidgetEnabled(false)
         store.setDeliveryLiveActivitiesEnabled(false)
 
@@ -547,6 +564,220 @@ final class DeviceParcelTests: XCTestCase {
         XCTAssertEqual(calls.all, ["read 22222222222A k", "update 22222222222A shared=true", "update 22222222222A shared=false"])
     }
 
+    // MARK: - Following a link
+
+    func testAParcelFollowedThroughSomeoneElsesLinkNeedsNoKeyAndIsForgottenHereAlone() async throws {
+        let id = UUID()
+        var now = Date(timeIntervalSince1970: 1_800_000_000)
+        let storage = Memory()
+        let calls = Calls()
+        let shown = PublicParcelResponse(link: reader("33333333333A"), package: package(id))
+        let device = DeviceParcels(client: client(calls), storage: storage, now: { now })
+
+        let followed = try device.follow(shown, key: nil, label: "Books for Ana")
+        XCTAssertEqual(followed.id, id)
+        XCTAssertTrue(followed.added)
+        XCTAssertFalse(try device.follow(shown, key: nil, label: "Again").added, "Followed once")
+        XCTAssertEqual(device.list().map(\.label), ["Books for Ana"])
+        XCTAssertTrue(storage.keys.isEmpty)
+        XCTAssertEqual(storage.parcels.map(\.isViewer), [true])
+        XCTAssertEqual(device.viewerLink(id: id), "33333333333A")
+        XCTAssertEqual(device.parcelID(linkID: "33333333333A"), id)
+        // An account may keep it as the link allows, with no key.
+        XCTAssertEqual(device.claims, [ClaimParcelLink(id: "33333333333A", label: "Books for Ana")])
+        XCTAssertThrowsError(try device.follow(PublicParcelResponse(link: reader("not-a-link"), package: package(UUID())), key: nil, label: nil))
+
+        // After a restart it is read as anyone with the link may, and the link says whether an account may keep it.
+        let moved = PublicParcelResponse(link: reader("33333333333A", canKeep: false), package: package(id, stage: .outForDelivery))
+        let again = DeviceParcels(client: client(calls, read: { _ in moved }), storage: storage, now: { now })
+        XCTAssertEqual(again.list().map(\.label), ["Books for Ana"])
+        now += DeviceParcels.fresh + 1
+        try await again.refresh()
+        XCTAssertEqual(calls.all, ["read 33333333333A -"])
+        XCTAssertEqual(again.list().first?.currentStage, .outForDelivery)
+        XCTAssertEqual(again.claims, [], "Its link no longer lets an account keep it")
+        _ = try again.rename(id: id, label: "Ana's books")
+        await XCTAssertThrowsErrorAsync(try await again.changeCarrier(id: id, carrier: .ups, trackingURL: nil, dpdPostcode: nil))
+
+        // Forgotten here alone: the link is not this iPhone's to forget.
+        try await again.forget(id: id)
+        XCTAssertEqual(calls.all, ["read 33333333333A -"])
+        XCTAssertTrue(again.isEmpty)
+        XCTAssertTrue(storage.parcels.isEmpty)
+    }
+
+    func testOnlyParcelsOfThisIPhonesOwnNeedTheirKeysOnFile() throws {
+        let own = DeviceParcel(linkID: "22222222222A", label: "", archivedAt: nil, parcel: Parcel(shared: package(UUID())), checkedAt: Date())
+        let lost = DeviceParcel(linkID: "22222222222B", label: "", archivedAt: nil, parcel: Parcel(shared: package(UUID())), checkedAt: Date())
+        var followed = DeviceParcel(linkID: "33333333333A", label: "", archivedAt: nil, parcel: Parcel(shared: package(UUID())), checkedAt: Date())
+        followed.viewer = true
+        let loaded = DeviceParcelFiles.matched([own, lost, followed], keys: ["22222222222A": key, "33333333333A": key, "22222222222C": key])
+        XCTAssertEqual(loaded.parcels.map(\.linkID), ["22222222222A", "33333333333A"])
+        XCTAssertEqual(loaded.keys, ["22222222222A": key], "A key beside someone else's parcel, or beside none, opens nothing")
+        XCTAssertEqual(DeviceParcelFiles.matched([followed], keys: [:]).parcels, [followed])
+
+        // A file written before parcels could be followed this way still opens, every parcel its own.
+        let file = try JSONEncoder.deliveryTracker.encode([own])
+        XCTAssertFalse(String(decoding: file, as: UTF8.self).contains("viewer"))
+        XCTAssertEqual(try JSONDecoder.deliveryTracker.decode([DeviceParcel].self, from: file).map(\.isViewer), [false])
+        let saved = try JSONDecoder.deliveryTracker.decode([DeviceParcel].self, from: JSONEncoder.deliveryTracker.encode([followed]))
+        XCTAssertEqual(saved, [followed])
+    }
+
+    func testAHandedOverKeyMakesTheParcelThisIPhonesOwn() async throws {
+        let id = UUID()
+        let storage = Memory()
+        let calls = Calls()
+        let device = DeviceParcels(client: client(calls), storage: storage)
+        _ = try device.follow(PublicParcelResponse(link: reader("33333333333A"), package: package(id)), key: nil, label: nil)
+
+        // A key the service does not own the link with, or that is no key at all, changes nothing.
+        XCTAssertFalse(try device.follow(PublicParcelResponse(link: reader("33333333333A"), package: package(id)), key: key, label: nil).added)
+        XCTAssertFalse(try device.follow(PublicParcelResponse(link: link("33333333333A"), package: package(id)), key: "short", label: nil).added)
+        XCTAssertTrue(storage.keys.isEmpty)
+        XCTAssertTrue(device.isViewer(linkID: "33333333333A"))
+
+        let owned = try device.follow(PublicParcelResponse(link: link("33333333333A"), package: package(id)), key: key, label: nil)
+        XCTAssertEqual(owned.id, id)
+        XCTAssertFalse(owned.added)
+        XCTAssertEqual(storage.keys, ["33333333333A": key])
+        XCTAssertFalse(device.isViewer(linkID: "33333333333A"))
+        XCTAssertNil(device.viewerLink(id: id))
+        XCTAssertEqual(device.claims, [ClaimParcelLink(id: "33333333333A", key: key)])
+
+        // A key handed over for a parcel not here yet makes it this iPhone's own from the start.
+        let other = UUID()
+        XCTAssertTrue(try device.follow(PublicParcelResponse(link: link("22222222222B"), package: package(other, number: "TESTPARCEL999")), key: key, label: "Lamp").added)
+        XCTAssertEqual(storage.keys["22222222222B"], key)
+        try await device.forget(id: other)
+        XCTAssertEqual(calls.all, ["forget 22222222222B"])
+    }
+
+    // MARK: - Notifications
+
+    func testNotificationsAreAskedForOnceForEveryParcelOnItsWayWithTheKeyOnlyForThisIPhonesOwn() async throws {
+        let mine = UUID(), theirs = UUID(), arrived = UUID()
+        let storage = Memory()
+        storage.keys = ["22222222222A": key, "22222222222C": key]
+        var followed = DeviceParcel(linkID: "33333333333B", label: "", archivedAt: nil, parcel: Parcel(shared: package(theirs, stage: .registered)), checkedAt: Date())
+        followed.viewer = true
+        storage.parcels = [
+            DeviceParcel(linkID: "22222222222A", label: "", archivedAt: nil, parcel: Parcel(shared: package(mine)), checkedAt: Date()),
+            followed,
+            DeviceParcel(linkID: "22222222222C", label: "", archivedAt: nil, parcel: Parcel(shared: package(arrived, stage: .delivered)), checkedAt: Date()),
+        ]
+        let calls = Calls()
+        let device = DeviceParcels(client: client(calls), storage: storage)
+        XCTAssertTrue(device.hasParcelsOnTheirWay)
+
+        await device.registerAlerts(token: "token1", locale: .fr, environment: .development)
+        // Every scan while nothing has moved yet, the steps that matter after; nothing for a parcel that arrived.
+        XCTAssertEqual(calls.all, ["alert 22222222222A k important token1 fr development", "alert 33333333333B - all token1 fr development"])
+        XCTAssertEqual(storage.parcels.map(\.alertToken), ["token1", "token1", nil])
+        XCTAssertEqual(storage.parcels.map(\.alertPreset), [.important, .all, nil])
+
+        await device.registerAlerts(token: "token1", locale: .fr, environment: .development)
+        XCTAssertEqual(calls.all.count, 2, "Asked once a launch")
+
+        // A new token takes the old one's place, and the preset first chosen stays.
+        await device.registerAlerts(token: "token2", locale: .fr, environment: .development)
+        XCTAssertEqual(Array(calls.all.dropFirst(2)), [
+            "alert 22222222222A k important token2 fr development", "unalert 22222222222A token1",
+            "alert 33333333333B - all token2 fr development", "unalert 33333333333B token1",
+        ])
+        // Another language asks again.
+        await device.registerAlerts(token: "token2", locale: .de, environment: .development)
+        XCTAssertEqual(calls.all.count, 8)
+
+        // A launch asks again, in case the service lost them.
+        let relaunched = DeviceParcels(client: client(calls), storage: storage)
+        await relaunched.registerAlerts(token: "token2", locale: .de, environment: .development)
+        XCTAssertEqual(calls.all.count, 10)
+        XCTAssertFalse(calls.all.contains("unalert 22222222222A token2"))
+
+        // Forgetting a parcel, or letting an account take it over, stops its notifications here.
+        try await relaunched.forget(id: theirs)
+        XCTAssertEqual(calls.all.last, "unalert 33333333333B token2")
+        relaunched.release(["22222222222A"])
+        for _ in 0..<50 where calls.all.last != "unalert 22222222222A token2" { await Task.yield() }
+        XCTAssertEqual(calls.all.last, "unalert 22222222222A token2")
+    }
+
+    func testARoundOfNotificationRequestsEndsQuietlyWhenTheServiceWantsAPause() async {
+        let storage = Memory()
+        storage.keys = ["22222222222A": key, "22222222222B": key]
+        storage.parcels = [
+            DeviceParcel(linkID: "22222222222A", label: "", archivedAt: nil, parcel: Parcel(shared: package(UUID())), checkedAt: Date()),
+            DeviceParcel(linkID: "22222222222B", label: "", archivedAt: nil, parcel: Parcel(shared: package(UUID(), number: "TESTPARCEL999")), checkedAt: Date()),
+        ]
+        let calls = Calls()
+        let off = DeviceParcels(client: client(calls, alert: { _ in .unavailable }), storage: storage)
+        await off.registerAlerts(token: "token1", locale: .en)
+        XCTAssertEqual(calls.all.count, 1, "A server without notifications for iPhones is asked once")
+        let busy = DeviceParcels(client: client(calls, alert: { _ in throw DeliveryAPIError.rateLimited(60) }), storage: storage)
+        await busy.registerAlerts(token: "token1", locale: .en)
+        XCTAssertEqual(calls.all.count, 2)
+        XCTAssertEqual(storage.parcels.compactMap(\.alertToken), [])
+
+        // A link with no room, or no longer shared, is left alone until the next launch.
+        let full = DeviceParcels(client: client(calls, alert: { $0 == "22222222222A" ? .full : .stopped }), storage: storage)
+        await full.registerAlerts(token: "token1", locale: .en)
+        await full.registerAlerts(token: "token1", locale: .en)
+        XCTAssertEqual(calls.all.count, 4)
+        XCTAssertEqual(storage.parcels.compactMap(\.alertToken), [])
+    }
+
+    func testAParcelsNotificationsTellEveryScanUntilItsCarrierHasNews() {
+        func preset(_ stage: TrackingStage?) -> ParcelAlertPreset { DeviceParcels.alertPreset(for: Parcel(shared: package(UUID(), stage: stage))) }
+        XCTAssertEqual(preset(nil), .all)
+        XCTAssertEqual(preset(.pending), .all)
+        XCTAssertEqual(preset(.registered), .all)
+        XCTAssertEqual(preset(.accepted), .important)
+        XCTAssertEqual(preset(.inTransit), .important)
+    }
+
+    func testFollowingALinkWithoutAnAccountAsksForNotificationsOnce() async throws {
+        let transport = PostcodeTestURLProtocol.transport()
+        defer { transport.invalidateAndCancel() }
+        PostcodeTestURLProtocol.handler = { _ in (404, Data()) }
+        let id = UUID()
+        let shown = PublicParcelResponse(link: reader("33333333333A"), package: package(id, stage: .registered))
+        let calls = Calls()
+        let device = DeviceParcels(client: client(calls, read: { _ in shown }), storage: Memory())
+        var status = UNAuthorizationStatus.notDetermined
+        var asked: [String] = []
+        let notifications = DeviceNotificationAccess(
+            status: { asked.append("status"); return status },
+            request: { asked.append("request"); status = .authorized },
+            register: { asked.append("register") },
+            token: { "token1" }
+        )
+        let configuration = PostcodeTestURLProtocol.configuration
+        let session = SessionStore(configuration: configuration, persistence: PostcodeTestSessionPersistence(), transport: transport)
+        defer { session.forceSignOut() }
+        let localizer = Localizer()
+        let store = ParcelStore(configuration: configuration, session: session, localizer: localizer, transport: transport, device: device,
+                                deviceNotifications: notifications)
+        store.setDeliveryWidgetEnabled(false)
+        store.setDeliveryLiveActivitiesEnabled(false)
+        XCTAssertNil(store.followedHere(shown))
+
+        let claim = try await store.follow(ParcelLinkRoute(id: "33333333333A", name: "Books"), shown)
+
+        XCTAssertEqual(claim, .added(id))
+        XCTAssertTrue(session.isGuest, "The sign-in screen gives way to the parcels on this iPhone")
+        XCTAssertEqual(store.parcels.map(\.label), ["Books"])
+        XCTAssertEqual(store.followedHere(shown), id)
+        XCTAssertEqual(store.followedHere(linkID: "33333333333A"), id)
+        XCTAssertEqual(store.viewerLink(for: try XCTUnwrap(store.parcels.first)), "33333333333A")
+        let alert = "alert 33333333333A - all token1 \(NativePushLocale(localizer.language).rawValue) \(NativePushEnvironment.current.rawValue)"
+        for _ in 0..<200 where !calls.all.contains(alert) { await Task.yield() }
+        XCTAssertEqual(calls.all.filter { $0.hasPrefix("alert") }, [alert])
+        XCTAssertEqual(asked, ["status", "request", "status", "register"])
+        let again = try await store.follow(ParcelLinkRoute(id: "33333333333A"), shown)
+        XCTAssertEqual(again, .already(id))
+    }
+
     func testTheSampleJourneyAddsOneScanAtATime() {
         let now = Date(timeIntervalSince1970: 1_800_000_000)
         let stages = (1...FirstOpenJourney.steps).map { FirstOpenJourney.parcel(step: $0, name: "New sneakers", now: now).currentStage }
@@ -611,4 +842,10 @@ private final class PostcodeTestURLProtocol: URLProtocol {
         client?.urlProtocolDidFinishLoading(self)
     }
     override func stopLoading() {}
+}
+
+/// XCTAssertThrowsError for an expression that awaits.
+@MainActor
+private func XCTAssertThrowsErrorAsync<T>(_ expression: @autoclosure () async throws -> T, file: StaticString = #filePath, line: UInt = #line) async {
+    do { _ = try await expression(); XCTFail("No error was thrown", file: file, line: line) } catch {}
 }

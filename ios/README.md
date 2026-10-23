@@ -49,6 +49,17 @@ A parcel's detail shares the parcel through such a link, built on the host of
 they stay on the device and never reach the API. In the demo the link is made up and leads
 nowhere.
 
+Without an account, a parcel link offers **Follow on this iPhone**. The parcel joins the
+iPhone's own parcels, read through its link without a key like any viewer's; the iPhone can
+rename it and share the same link, and forgetting it forgets it on the iPhone only. An
+account that signs in later keeps it if the link allows. A gift still wrapped can't be
+followed.
+
+The site hands a parcel it looked up over to the app with its owner key after the `#`
+(`#k=<key>`, beside the other words). The app follows it as its own, with the key in the
+keychain, as if it had looked the parcel up itself; signed in, it keeps it in the account
+with the key. The key goes into no link, share, log or analytics event.
+
 ## The deliveries
 
 A long press on a parcel's card, or a secondary click, opens its menu; a pointer lights the
@@ -115,9 +126,21 @@ former. Server settings are in [DEPLOYMENT.md](../docs/DEPLOYMENT.md).
 
 ## Notifications and widgets
 
-- The app asks for notification permission only after the user taps Enable (from a small
-  prompt above the tab bar, or from Account). The device token goes to the API and isn't
-  stored locally. Debug builds use the APNs sandbox and Release builds use production.
+- With an account, the app asks for notification permission only after the user taps Enable
+  (from a small prompt above the tab bar, or from Account). Debug builds use the APNs
+  sandbox and Release builds use production.
+- Without an account, it asks when a parcel first comes to the iPhone: looked up, followed
+  from a link or handed over by the site. Each parcel still on its way is then signed up on
+  the device token through `/api/public/parcels/{linkId}/app-alerts`, with the owner key
+  only for the iPhone's own: every scan while nothing has moved, the important steps after
+  that, as the site's alerts do. It signs them up again at each launch and when the token or
+  the language changes, a few at a time, and stops quietly when the server sends no
+  notifications or asks for a pause. Signed in, the parcels the account couldn't take over
+  stay signed up this way, unless notifications are switched off on this iPhone. Tapping
+  one opens the parcel.
+- The device token goes to the API. The app keeps it only beside the parcels it follows
+  without an account, so that forgetting one, or an account taking it over, stops its
+  notifications here.
 - **Live Activities** are switched off (`ParcelStore.offersLiveActivities`, and
   `NSSupportsLiveActivities` in `Info.plist`). Settings has no switch for them, and the
   app ends any still showing and withdraws the iPhone's registration, so the server

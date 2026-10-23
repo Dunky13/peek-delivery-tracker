@@ -1,6 +1,6 @@
 # Peek privacy notice
 
-Effective: 16 October 2026
+Effective: 23 October 2026
 
 Peek follows parcels, on the web and in its iPhone app. This notice says what
 the official service at peektracker.com processes to do that. Peek does not
@@ -249,19 +249,22 @@ browsers of the people who have the link. The browser you share from remembers
 what you chose to send along, until the parcel is forgotten on that device. A
 gift's page shows its recipient none of it before the parcel is delivered.
 
-Anyone who has a link can turn on notifications in their browser for that one
-parcel, without an account. The service then stores that browser's Web Push
-endpoint and encryption keys, its language, which updates to announce, and
-whether the device that made the lookup turned notifications on. This is deleted when
-the parcel is delivered or returned, when the browser turns notifications off
-or its push subscription ends, when the link is forgotten, and, for everyone
-but the device that made the lookup, when sharing is stopped. The notifications
-carry the parcel's status and never its number or name; a gift's do not say
-where it is before it arrives.
+Anyone who has a link can turn on notifications for that one parcel, without an
+account, in their browser or in the iPhone app. The service then stores that
+browser's Web Push endpoint and encryption keys, or that iPhone's APNs device
+token, with its language, which updates to announce, and whether the device
+that made the lookup turned notifications on. This is deleted when the parcel is
+delivered or returned, when the browser or iPhone turns notifications off, its
+push subscription ends or Apple says the token is no longer valid, when the link
+is forgotten, and, for everyone but the device that made the lookup, when
+sharing is stopped. The notifications carry the parcel's status and never its
+number or name; a gift's do not say where it is before it arrives.
 
 Your browser is asked for notifications, and creates its push subscription,
-only when you choose "Turn on". Adding a delivery to your calendar makes a
-calendar file in the browser; nothing is sent for it.
+only when you choose "Turn on". The iPhone app asks when a parcel first comes to
+it without an account, and keeps the device token beside the parcels it follows
+that way so that forgetting one turns its notifications off. Adding a delivery
+to your calendar makes a calendar file in the browser; nothing is sent for it.
 
 ## Answering whether a parcel is right
 

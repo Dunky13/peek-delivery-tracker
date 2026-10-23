@@ -2,7 +2,8 @@ import SwiftUI
 import UIKit
 
 /// A parcel someone shared, opened over whatever was on screen: its card, its history, and one
-/// button to keep it. Nothing here changes the parcel.
+/// button to keep it, in an account or on this iPhone. Nothing here changes the parcel. A link the
+/// site handed over with its owner key comes along by itself.
 struct ParcelLinkSheet: View {
     @EnvironmentObject private var links: ParcelLinkStore
     @EnvironmentObject private var session: SessionStore
@@ -10,6 +11,8 @@ struct ParcelLinkSheet: View {
     @EnvironmentObject private var localizer: Localizer
 
     @State private var adding = false
+    /// The link handed over with its owner key that was taken along, so it is taken once.
+    @State private var handedOver: UUID?
     @State private var refreshing = false
     @State private var errorMessage: String?
     @StateObject private var feedback = ParcelFeedbackModel()
@@ -47,6 +50,11 @@ struct ParcelLinkSheet: View {
             errorMessage = nil
             await links.load()
         }
+        .task(id: handOver == nil ? nil : links.presentationID) {
+            guard let response = handOver, handedOver != links.presentationID else { return }
+            handedOver = links.presentationID
+            if signedIn { add() } else { follow(response) }
+        }
         .onChange(of: feedbackPage, initial: true) { _, page in
             feedback.show(page, through: links.route.map { parcels.feedbackClient(forLink: $0.id) })
         }
@@ -76,7 +84,9 @@ struct ParcelLinkSheet: View {
 
     /// A gift keeps the sheet to itself; so does a link that shows nothing.
     private var title: String {
-        switch links.phase {
+        // A parcel the site hands over is the person's own, and the sheet only passes by.
+        if links.route?.key != nil { return "" }
+        return switch links.phase {
         case .shown(let response): response.gift == .wrapped || response.gift == .opened ? "" : localizer.text("link.shared")
         case .stopped: ""
         case .loading, .unavailable, .failed: localizer.text("link.shared")
@@ -115,7 +125,7 @@ struct ParcelLinkSheet: View {
                     GiftNote(note: links.route?.note, from: links.route?.from, inside: links.route?.name)
                 }
                 // A gift cannot be kept before it is delivered: that would show its number.
-                if response.link.canKeep, !wrapped { keeping }
+                keeping(response, keepable: response.link.canKeep && !wrapped, followable: !wrapped)
                 VStack(alignment: .leading, spacing: 20) {
                     // The number and the carrier's own page would tell where a gift comes from.
                     if !wrapped {
@@ -140,27 +150,62 @@ struct ParcelLinkSheet: View {
         .refreshable { await Task { await refresh() }.value }
     }
 
-    /// What a link that may be kept offers: one tap for someone signed in, sign-in for anyone else.
-    @ViewBuilder private var keeping: some View {
+    /// What a link offers: one tap to keep it for someone signed in. Anyone else follows it on
+    /// this iPhone, with notifications and no account, or signs in to keep it.
+    @ViewBuilder private func keeping(_ response: PublicParcelResponse, keepable: Bool, followable: Bool) -> some View {
         if signedIn {
-            if case .already(let parcelID) = links.claim {
-                alreadyFollowed(parcelID)
-            } else {
-                VStack(spacing: 8) {
-                    if links.claim == .full { note(localizer.text("linkapp.full")) }
-                    if let errorMessage { note(errorMessage) }
-                    primaryButton(localizer.text("link.add"), symbol: "plus", busy: adding, action: add)
-                    Text(localizer.text("link.addHint"))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity)
+            if keepable {
+                if case .already(let parcelID) = links.claim {
+                    alreadyFollowed(parcelID)
+                } else {
+                    VStack(spacing: 8) {
+                        if links.claim == .full { note(localizer.text("linkapp.full")) }
+                        if let errorMessage { note(errorMessage) }
+                        primaryButton(localizer.text("link.add"), symbol: "plus", busy: adding, action: add)
+                        hint(localizer.text("link.addHint"))
+                    }
                 }
             }
-        } else if canSignIn {
+        } else if let parcelID = parcels.followedHere(response) {
+            alreadyFollowed(parcelID, here: true)
+        } else if followable, followsHere {
+            VStack(spacing: 8) {
+                if let errorMessage { note(errorMessage) }
+                primaryButton(localizer.text("native.follow.action"), symbol: "bell", busy: adding) { follow(response) }
+                hint(localizer.text("native.follow.hint"))
+                if keepable, canSignIn {
+                    Button(localizer.text("link.signInToAdd"), action: signIn)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(Brand.ink)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .disabled(adding)
+                }
+            }
+        } else if keepable, canSignIn {
             primaryButton(localizer.text("link.signInToAdd"), symbol: nil, busy: false, action: signIn)
         }
+    }
+
+    private func hint(_ text: String) -> some View {
+        Text(text)
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity)
+    }
+
+    /// Following without an account: a build with a server, once the saved account, if any, has reopened.
+    private var followsHere: Bool {
+        if case .loading = session.state { return false }
+        return parcels.tracksWithoutAccount
+    }
+
+    /// The link on screen, read with the owner key the site handed over, and nothing done with it yet.
+    private var handOver: PublicParcelResponse? {
+        guard case .shown(let response) = links.phase, links.route?.key != nil, response.link.role == .owner else { return nil }
+        if case .loading = session.state { return nil }
+        return signedIn || followsHere ? response : nil
     }
 
     /// Not while the saved account is still being reopened, and not in a build with no way to sign in.
@@ -198,7 +243,8 @@ struct ParcelLinkSheet: View {
         .disabled(busy)
     }
 
-    private func alreadyFollowed(_ parcelID: UUID?) -> some View {
+    /// `here`: the parcel is among the ones this iPhone follows itself, which show when it opens.
+    private func alreadyFollowed(_ parcelID: UUID?, here: Bool = false) -> some View {
         let name = parcelID.flatMap { id in parcels.parcels.first { $0.id == id } }?.label.nonEmpty
         return VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 12) {
@@ -219,6 +265,7 @@ struct ParcelLinkSheet: View {
             if let parcelID {
                 Button {
                     DeliveryAnalytics.shared.action("parcel-link-open-existing")
+                    if here { parcels.showDeviceParcels() }
                     links.openExisting(parcelID)
                 } label: {
                     HStack(spacing: 6) {
@@ -321,6 +368,27 @@ struct ParcelLinkSheet: View {
                 let claim = try await parcels.keep(link)
                 // The person may have closed this link, or opened another, while it was kept.
                 if links.route == link { links.resolve(claim) }
+            } catch is CancellationError {
+            } catch {
+                errorMessage = localizer.errorMessage(error)
+            }
+            adding = false
+        }
+    }
+
+    /// Follows the parcel on this iPhone. One that was here already opens.
+    private func follow(_ response: PublicParcelResponse) {
+        guard !adding, let link = links.route else { return }
+        DeliveryAnalytics.shared.action("parcel-link-alerts")
+        adding = true
+        errorMessage = nil
+        Task {
+            do {
+                let claim = try await parcels.follow(link, response)
+                // The person may have closed this link, or opened another, meanwhile.
+                if links.route == link {
+                    if case .already(let parcelID?) = claim { links.openExisting(parcelID) } else { links.resolve(claim) }
+                }
             } catch is CancellationError {
             } catch {
                 errorMessage = localizer.errorMessage(error)

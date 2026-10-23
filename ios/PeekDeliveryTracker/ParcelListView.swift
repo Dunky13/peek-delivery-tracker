@@ -1367,7 +1367,7 @@ private struct DeliveryListView: View {
     /// A card's menu: the actions of the parcel's page, with opening and sharing the parcel.
     private func menu(for parcel: Parcel) -> CardMenu {
         CardMenu(
-            items: ParcelMenuItem.menu(for: parcel, onCard: true),
+            items: ParcelMenuItem.menu(for: parcel, onCard: true, reader: store.viewerLink(for: parcel) != nil),
             // The keys act on the parcel shown beside the list: its card's menu shows them.
             shortcuts: parcel.id == selectedCard && keyboardFree && !searchFocused,
             choose: { chose($0, on: parcel) },
@@ -1495,7 +1495,7 @@ private struct DeliveryListView: View {
         switch NativeRoute(url: url) {
         case .parcel(let parcelID):
             show(parcelID)
-        case .friend: break // RootView owns Friends navigation.
+        case .friend, .link: break // RootView owns Friends navigation and the links' notifications.
         case .add(let trackingInput):
             sharedDraft = SharedParcelDraft(trackingInput: trackingInput)
             showingAdd = true

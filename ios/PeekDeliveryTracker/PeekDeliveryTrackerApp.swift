@@ -150,6 +150,21 @@ struct RootView: View {
             guard session.user != nil, scenePhase == .active else { return }
             Task { await friendsActivity.refresh(session: session) }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .didOpenLinkNotification)) { _ in openLinkNotification() }
+        .onChange(of: sessionIdentity, initial: true) { _, _ in openLinkNotification() }
+    }
+
+    /// A notification about a parcel followed through its link: the parcel opens among the ones
+    /// this iPhone follows itself, or the link opens when this iPhone no longer has it there.
+    private func openLinkNotification() {
+        guard sessionIdentity != "loading", let linkID = AppDelegate.consumePendingLinkID() else { return }
+        if session.user == nil, let parcelID = parcels.followedHere(linkID: linkID) {
+            parcels.showDeviceParcels()
+            AppDelegate.openParcel(parcelID)
+        } else {
+            DeliveryAnalytics.shared.action("notification-open")
+            links.open(ParcelLinkRoute(id: linkID))
+        }
     }
 
     /// A parcel link opens as a sheet over whatever is on screen, signed in or not.
@@ -187,6 +202,7 @@ struct RootView: View {
             guard let token = notification.object as? String else { return }
             Task {
                 await parcels.forwardNativePushToken(token, language: localizer.language)
+                await parcels.registerDeviceAlerts(token: token, language: localizer.language)
             }
         }
         .task {
@@ -200,7 +216,10 @@ struct RootView: View {
             parcels.demoLanguageChanged()
             parcels.refreshDeliverySurfaces()
             guard let token = AppDelegate.currentDeviceToken else { return }
-            Task { await parcels.forwardNativePushToken(token, language: language) }
+            Task {
+                await parcels.forwardNativePushToken(token, language: language)
+                await parcels.registerDeviceAlerts(token: token, language: language)
+            }
         }
     }
 

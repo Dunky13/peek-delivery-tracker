@@ -162,12 +162,18 @@ struct ParcelLinkWords: Equatable, Sendable {
 
 /// A parcel link, `/p/<id>`. The id is the capability. A name someone gave the parcel, and a
 /// gift's note and signature, can be read from older fragments or from the service after delivery.
-struct ParcelLinkRoute: Equatable, Sendable {
+struct ParcelLinkRoute: Equatable, Sendable, CustomStringConvertible, CustomDebugStringConvertible {
     let id: String
     var name: String? = nil
     /// A gift's note and who it is from. Shown only once the parcel is delivered.
     var note: String? = nil
     var from: String? = nil
+    /// The link's owner key, when the site hands a parcel it followed over to this iPhone with
+    /// `#k=<key>`. A credential: it goes to the keychain and never into an address or a log.
+    var key: String? = nil
+
+    var description: String { "ParcelLinkRoute(\(id))" }
+    var debugDescription: String { description }
 
     private static let alphabet = Array("23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
     private static let symbols = Set(alphabet)
@@ -181,11 +187,26 @@ struct ParcelLinkRoute: Equatable, Sendable {
         String((0..<12).map { _ in alphabet.randomElement(using: &generator)! })
     }
 
-    init(id: String, name: String? = nil, note: String? = nil, from: String? = nil) {
+    init(id: String, name: String? = nil, note: String? = nil, from: String? = nil, key: String? = nil) {
         self.id = id
         self.name = name
         self.note = note
         self.from = from
+        self.key = key.flatMap { Self.validKey($0) ? $0 : nil }
+    }
+
+    /// An owner key as the service makes them: 32 random bytes in base64url, 43 characters.
+    static func validKey(_ value: String) -> Bool {
+        value.utf8.count == 43 && value.utf8.allSatisfy { byte in
+            (byte >= 0x30 && byte <= 0x39) || (byte >= 0x41 && byte <= 0x5A) || (byte >= 0x61 && byte <= 0x7A) || byte == 0x2D || byte == 0x5F
+        }
+    }
+
+    /// `k=<owner key>` in an address's `#` part; nil when it is missing or not a key.
+    static func key(inFragment fragment: String?) -> String? {
+        guard let part = fragment?.split(separator: "&").first(where: { $0.hasPrefix("k=") }) else { return nil }
+        let value = String(part.dropFirst(2))
+        return validKey(value) ? value : nil
     }
 
     /// The link's address on the site, with an optional public name. Gift messages never go in URLs.
@@ -216,10 +237,12 @@ struct ParcelLinkRoute: Equatable, Sendable {
         }
         guard Self.validID(id) else { return nil }
         self.id = id
-        let words = ParcelLinkWords(fragment: URLComponents(url: url, resolvingAgainstBaseURL: false)?.percentEncodedFragment)
+        let fragment = URLComponents(url: url, resolvingAgainstBaseURL: false)?.percentEncodedFragment
+        let words = ParcelLinkWords(fragment: fragment)
         name = words.name
         note = words.note
         from = words.from
+        key = Self.key(inFragment: fragment)
     }
 
     /// `n=<percent-encoded name>`, cleaned to what a parcel's name may hold.
@@ -232,6 +255,8 @@ enum NativeRoute: Equatable {
     case parcel(UUID)
     case friend(UUID)
     case add(trackingInput: String)
+    /// A notification about a parcel followed through its link on this iPhone, without an account.
+    case link(String)
 
     init?(url: URL) {
         guard url.scheme?.lowercased() == OAuthFlow.callbackScheme else { return nil }
@@ -255,6 +280,11 @@ enum NativeRoute: Equatable {
     init?(remoteNotification payload: [AnyHashable: Any]) {
         if payload["kind"] as? String == "friend_accepted", let raw = payload["friend_id"] as? String,
            let friendID = UUID(uuidString: raw) { self = .friend(friendID); return }
+        if let linkID = payload["link_id"] as? String {
+            guard ParcelLinkRoute.validID(linkID) else { return nil }
+            self = .link(linkID)
+            return
+        }
         guard let raw = payload["parcel_id"] as? String,
               let parcelID = UUID(uuidString: raw) else { return nil }
         self = .parcel(parcelID)

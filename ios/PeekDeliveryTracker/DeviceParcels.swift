@@ -1,7 +1,8 @@
 import Foundation
 
 /// A parcel followed on this iPhone without an account: the link the service made for it, the
-/// key that owns the link, and what this device knows about the parcel.
+/// key that owns the link, and what this device knows about the parcel. A parcel followed
+/// through someone else's link has no key: this iPhone reads it as anyone with the link may.
 struct DeviceParcel: Codable, Equatable, Sendable {
     var linkID: String
     /// The name given on this device; the service never learns it.
@@ -11,6 +12,30 @@ struct DeviceParcel: Codable, Equatable, Sendable {
     var checkedAt: Date
     /// The parcel this one took the place of when its carrier was changed, so an open page keeps showing it.
     var replaced: UUID? = nil
+    /// Followed through someone else's link: read without a key, and forgotten on this iPhone alone.
+    var viewer: Bool? = nil
+    /// Whether an account may keep the parcel behind someone else's link, as the link last said.
+    var canKeep: Bool? = nil
+    /// What its notifications on this iPhone tell, chosen when they were first turned on.
+    var alertPreset: ParcelAlertPreset? = nil
+    /// The device token the service last answered about for this parcel's notifications.
+    var alertToken: String? = nil
+
+    var isViewer: Bool { viewer == true }
+}
+
+/// How the service answered when this iPhone asked for a parcel's notifications.
+enum DeviceAlertAnswer: Equatable, Sendable {
+    /// On, or the journey is over and there is nothing left to tell.
+    case on
+    /// The link leads nowhere now.
+    case gone
+    /// The link has as many alerts as it may.
+    case full
+    /// Its owner stopped sharing it.
+    case stopped
+    /// The server sends no notifications to iPhones.
+    case unavailable
 }
 
 /// The last postcodes given for lookups without an account, with their carriers, newest first.
@@ -58,8 +83,8 @@ struct DeviceLookupsSpent: Error, Equatable {}
 /// its owner key only.
 struct DeviceParcelClient: Sendable {
     var lookup: @Sendable (PublicLookupRequest) async throws -> PublicLookupResponse
-    /// Nil when the service no longer has the parcel.
-    var read: @Sendable (_ linkID: String, _ key: String) async throws -> PublicParcelResponse?
+    /// Nil when the service no longer has the parcel, or no longer shares it with a reader without the key.
+    var read: @Sendable (_ linkID: String, _ key: String?) async throws -> PublicParcelResponse?
     var forget: @Sendable (_ linkID: String, _ key: String) async throws -> Void
     /// Changes what the link shows to others, or stops and resumes its sharing.
     var update: @Sendable (_ linkID: String, _ key: String, UpdateParcelLinkRequest) async throws -> PublicParcelResponse
@@ -67,6 +92,10 @@ struct DeviceParcelClient: Sendable {
     var detect: @Sendable (_ trackingNumber: String, _ prefixOfSaved: Bool) async throws -> CarrierDetectionResponse
     /// What a reader says of the parcel behind a link. The owner key goes along when this iPhone holds it.
     var feedback: @Sendable (_ linkID: String, _ key: String?, ParcelFeedbackRequest) async throws -> Void = { _, _, _ in }
+    /// Turns this iPhone's notifications on for the parcel behind a link, with the owner key when this iPhone holds it.
+    var setAlert: @Sendable (_ linkID: String, _ key: String?, ParcelAppAlertRequest) async throws -> DeviceAlertAnswer = { _, _, _ in .unavailable }
+    /// Turns them off. Anyone with the link and the token may.
+    var removeAlert: @Sendable (_ linkID: String, DeleteParcelAppAlertRequest) async throws -> Void = { _, _ in }
 
     static func api(configuration: AppConfiguration, transport: URLSession = .shared, verification: NativeVerification = .shared) -> DeviceParcelClient {
         @Sendable func send(_ path: String, method: String, key: String? = nil, body: Data? = nil) async throws -> (Data, HTTPURLResponse) {
@@ -135,6 +164,21 @@ struct DeviceParcelClient: Sendable {
             feedback: { linkID, key, answer in
                 let (data, response) = try await send("api/public/parcels/\(linkID)/feedback", method: "POST", key: key, body: try JSONEncoder.deliveryTracker.encode(answer))
                 guard response.statusCode == 204 else { throw failure(data, response) }
+            },
+            setAlert: { linkID, key, alert in
+                let (data, response) = try await send("api/public/parcels/\(linkID)/app-alerts", method: "PUT", key: key, body: try JSONEncoder.deliveryTracker.encode(alert))
+                switch response.statusCode {
+                case 204: return .on
+                case 404: return .gone
+                case 409: return .full
+                case 410: return .stopped
+                case 503: return .unavailable
+                default: throw failure(data, response)
+                }
+            },
+            removeAlert: { linkID, alert in
+                let (data, response) = try await send("api/public/parcels/\(linkID)/app-alerts", method: "DELETE", body: try JSONEncoder.deliveryTracker.encode(alert))
+                guard response.statusCode == 204 else { throw failure(data, response) }
             }
         )
     }
@@ -152,11 +196,16 @@ struct DeviceParcelFiles: DeviceParcelStorage {
 
     func load() -> (parcels: [DeviceParcel], keys: [String: String]) {
         let keys: [String: String] = keychain.load() ?? [:]
-        guard !keys.isEmpty, let url = try? Self.fileURL(), let data = try? Data(contentsOf: url),
+        guard let url = try? Self.fileURL(), let data = try? Data(contentsOf: url),
               let parcels = try? JSONDecoder.deliveryTracker.decode([DeviceParcel].self, from: data) else { return ([], [:]) }
-        // A parcel without its key cannot be read or forgotten, and a key without its parcel opens nothing.
-        let kept = parcels.filter { keys[$0.linkID] != nil }
-        return (kept, keys.filter { key, _ in kept.contains { $0.linkID == key } })
+        return Self.matched(parcels, keys: keys)
+    }
+
+    /// A parcel of this iPhone's own without its key cannot be read or forgotten, and a key without
+    /// its parcel opens nothing. A parcel followed through someone else's link needs no key.
+    static func matched(_ parcels: [DeviceParcel], keys: [String: String]) -> (parcels: [DeviceParcel], keys: [String: String]) {
+        let kept = parcels.filter { $0.isViewer || keys[$0.linkID] != nil }
+        return (kept, keys.filter { key, _ in kept.contains { $0.linkID == key && !$0.isViewer } })
     }
 
     func save(_ parcels: [DeviceParcel], keys: [String: String]) {
@@ -167,7 +216,8 @@ struct DeviceParcelFiles: DeviceParcelStorage {
             return
         }
         // The keys go first: a parcel on file always has its key.
-        guard (try? keychain.save(keys)) != nil, let data = try? JSONEncoder.deliveryTracker.encode(parcels) else { return }
+        if keys.isEmpty { keychain.delete() } else if (try? keychain.save(keys)) == nil { return }
+        guard let data = try? JSONEncoder.deliveryTracker.encode(parcels) else { return }
         try? data.write(to: url, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
     }
 
@@ -182,6 +232,7 @@ struct DeviceParcelFiles: DeviceParcelStorage {
 
 /// The parcels someone follows before signing in. They live on this iPhone; the service keeps
 /// each behind a link only this device's key owns, and forgets it some time after it arrives.
+/// A parcel followed through someone else's link is read as its reader, with no key.
 @MainActor
 final class DeviceParcels {
     /// How long an answer is good for: a parcel on its way moves, one that arrived rests, and
@@ -189,6 +240,8 @@ final class DeviceParcels {
     static let fresh: TimeInterval = 5 * 60
     static let settledFresh: TimeInterval = 12 * 60 * 60
     static let waitingFresh: TimeInterval = 1.5
+    /// How many parcels one round asks notifications for; the rest wait for the next round.
+    static let alertsPerRound = 25
 
     private let client: DeviceParcelClient?
     private let storage: any DeviceParcelStorage
@@ -197,6 +250,11 @@ final class DeviceParcels {
     private let now: () -> Date
     private var entries: [DeviceParcel]
     private var keys: [String: String]
+    /// The token and language a round of notification requests is under way for.
+    private var alertRound: String?
+    /// The token and language each parcel's notifications were asked for since launch. Each
+    /// launch asks again, in case the service lost them.
+    private var alertsAsked: [String: String] = [:]
 
     /// A build without a server follows nothing.
     init(client: DeviceParcelClient?, storage: any DeviceParcelStorage = DeviceParcelFiles(),
@@ -247,7 +305,13 @@ final class DeviceParcels {
         // The service gives one parcel one link for each lookup; a second lookup of a parcel takes the first one's place.
         if let twin = entries.firstIndex(where: { $0.parcel.id == response.package.id }) {
             let old = entries.remove(at: twin)
-            if let key = keys.removeValue(forKey: old.linkID) { Task { try? await client.forget(old.linkID, key) } }
+            let key = keys.removeValue(forKey: old.linkID)
+            if key != nil || old.alertToken != nil {
+                Task {
+                    if let token = old.alertToken { try? await client.removeAlert(old.linkID, DeleteParcelAppAlertRequest(token: token)) }
+                    if let key { try? await client.forget(old.linkID, key) }
+                }
+            }
             // The parcel being replaced came back unchanged: only its link is new.
             if old.parcel.id == id {
                 entry.label = old.label
@@ -269,7 +333,8 @@ final class DeviceParcels {
         guard let client else { return }
         var trouble: Error?
         for entry in entries where id == nil || entry.parcel.id == id {
-            guard let key = keys[entry.linkID] else { continue }
+            let key = keys[entry.linkID]
+            guard key != nil || entry.isViewer else { continue }
             let age = now().timeIntervalSince(entry.checkedAt)
             let fresh = Self.waiting(entry.parcel) ? Self.waitingFresh
                 : entry.parcel.currentStage?.isFinal == true ? Self.settledFresh : Self.fresh
@@ -280,6 +345,7 @@ final class DeviceParcels {
                 if let response {
                     entries[index].parcel = Parcel(shared: response.package)
                     entries[index].checkedAt = now()
+                    if entry.isViewer { entries[index].canKeep = response.link.canKeep }
                 } else {
                     entries.remove(at: index)
                     keys[entry.linkID] = nil
@@ -301,10 +367,14 @@ final class DeviceParcels {
         try update(id) { $0.archivedAt = archived ? DateParser.isoString(self.now()) : nil }
     }
 
-    /// The service forgets the parcel, then the device does.
+    /// The service forgets the parcel, then the device does. Someone else's parcel is forgotten
+    /// here alone: its notifications on this iPhone stop, and its link goes on working for others.
     func forget(id: UUID) async throws {
         guard let index = entries.firstIndex(where: { $0.parcel.id == id }) else { return }
         let entry = entries[index]
+        if let client, let token = entry.alertToken {
+            try? await client.removeAlert(entry.linkID, DeleteParcelAppAlertRequest(token: token))
+        }
         if let client, let key = keys[entry.linkID] { try await client.forget(entry.linkID, key) }
         entries.removeAll { $0.linkID == entry.linkID }
         keys[entry.linkID] = nil
@@ -322,7 +392,8 @@ final class DeviceParcels {
 
     /// Follows the same number with another carrier, link or postcode: a new lookup, which takes the old one's place and name.
     func changeCarrier(id: UUID, carrier: CarrierID, trackingURL: String?, dpdPostcode: String?) async throws -> Parcel {
-        guard let entry = entries.first(where: { $0.parcel.id == id }) else { throw DeliveryAPIError.parcelMissing }
+        // Someone else's parcel is followed as its link shows it, and its carrier stays theirs to change.
+        guard let entry = entries.first(where: { $0.parcel.id == id }), !entry.isViewer else { throw DeliveryAPIError.parcelMissing }
         let added = try await lookUp(CreatePackageRequest(
             trackingNumber: entry.parcel.trackingNumber, label: entry.label, carrier: carrier,
             trackingURL: trackingURL, dpdPostcode: dpdPostcode,
@@ -373,16 +444,125 @@ final class DeviceParcels {
     /// Whether any of the device's parcels is archived, for the account that takes them over.
     func isArchived(linkID: String) -> Bool { entries.first { $0.linkID == linkID }?.archivedAt != nil }
 
-    /// What an account needs to take the device's parcels over.
+    /// What an account needs to take the device's parcels over: its own with their keys, and
+    /// someone else's that the link lets an account keep.
     var claims: [ClaimParcelLink] {
-        entries.compactMap { entry in keys[entry.linkID].map { ClaimParcelLink(id: entry.linkID, key: $0, label: entry.label.nonEmpty) } }
+        entries.compactMap { entry in
+            if entry.isViewer { return entry.canKeep == true ? ClaimParcelLink(id: entry.linkID, label: entry.label.nonEmpty) : nil }
+            return keys[entry.linkID].map { ClaimParcelLink(id: entry.linkID, key: $0, label: entry.label.nonEmpty) }
+        }
     }
 
-    /// The account has these parcels now, or their links lead nowhere: the device lets go of them.
+    /// Whether the parcel behind this link is someone else's, followed here as its reader.
+    func isViewer(linkID: String) -> Bool { entries.first { $0.linkID == linkID }?.isViewer == true }
+
+    /// The link of a parcel followed here through someone else's link, which is all this iPhone may share of it.
+    func viewerLink(id: UUID) -> String? { entries.first { $0.parcel.id == id && $0.isViewer }?.linkID }
+
+    /// The parcel this iPhone follows through a link, as the list shows it.
+    func parcelID(linkID: String) -> UUID? { entries.first { $0.linkID == linkID }?.parcel.id }
+
+    /// The account has these parcels now, or their links lead nowhere: the device lets go of them,
+    /// and of their notifications here, which the account's own take over.
     func release(_ linkIDs: Set<String>) {
+        let alerts = entries.compactMap { entry in
+            linkIDs.contains(entry.linkID) ? entry.alertToken.map { (entry.linkID, $0) } : nil
+        }
         entries.removeAll { linkIDs.contains($0.linkID) }
         for id in linkIDs { keys[id] = nil }
         save()
+        if let client, !alerts.isEmpty {
+            Task {
+                for (linkID, token) in alerts { try? await client.removeAlert(linkID, DeleteParcelAppAlertRequest(token: token)) }
+            }
+        }
+    }
+
+    // MARK: - Following a link
+
+    /// Keeps the parcel behind a link on this iPhone. With the link's owner key, handed over by
+    /// the site, the parcel is this iPhone's own, as a lookup made here would be; without it, it is
+    /// followed as its reader. A parcel here already stays as it is, unless the key makes
+    /// someone else's parcel this iPhone's own. `added` is false when it was here already.
+    func follow(_ response: PublicParcelResponse, key: String?, label: String?) throws -> (id: UUID, added: Bool) {
+        let linkID = response.link.id
+        guard ParcelLinkRoute.validID(linkID) else { throw DeliveryAPIError.invalidResponse }
+        let key = key.flatMap { response.link.role == .owner && ParcelLinkRoute.validKey($0) ? $0 : nil }
+        if let index = entries.firstIndex(where: { $0.linkID == linkID || $0.parcel.id == response.package.id }) {
+            guard let key, entries[index].isViewer else { return (entries[index].parcel.id, false) }
+            let old = entries[index]
+            entries[index].linkID = linkID
+            entries[index].viewer = nil
+            entries[index].canKeep = nil
+            entries[index].parcel = Parcel(shared: response.package)
+            entries[index].checkedAt = now()
+            if old.linkID != linkID {
+                // Another link's notifications give way to this one's, asked for on the next round.
+                entries[index].alertToken = nil
+                if let client, let token = old.alertToken {
+                    Task { try? await client.removeAlert(old.linkID, DeleteParcelAppAlertRequest(token: token)) }
+                }
+            }
+            keys[linkID] = key
+            save()
+            return (entries[index].parcel.id, false)
+        }
+        var entry = DeviceParcel(linkID: linkID, label: label?.nonEmpty ?? "", archivedAt: nil,
+                                 parcel: Parcel(shared: response.package), checkedAt: now())
+        if let key {
+            keys[linkID] = key
+        } else {
+            entry.viewer = true
+            entry.canKeep = response.link.canKeep
+        }
+        entries.append(entry)
+        save()
+        return (entry.parcel.id, true)
+    }
+
+    // MARK: - Notifications
+
+    /// What a parcel's notifications tell when they are first turned on, as on the site: every scan
+    /// while nothing has moved yet, the steps that matter after that.
+    static func alertPreset(for parcel: Parcel) -> ParcelAlertPreset {
+        !parcel.hasCarrierUpdate || parcel.currentStage == .registered ? .all : .important
+    }
+
+    /// Whether a parcel is still on its way, with something left to tell.
+    var hasParcelsOnTheirWay: Bool { entries.contains { $0.parcel.currentStage?.isFinal != true } }
+
+    /// Turns notifications on, on this iPhone's token and in its language, for every parcel still
+    /// on its way: once a launch, and again when the token or the language changes. A parcel that
+    /// arrived needs none. A round is short and quiet: a few parcels at most, and it ends at the
+    /// first sign that the service wants a pause or sends no notifications. A link that leads
+    /// nowhere, has no room or is no longer shared is left until the next launch.
+    func registerAlerts(token: String, locale: NativePushLocale, environment: NativePushEnvironment = .current) async {
+        let asked = "\(token) \(locale.rawValue)"
+        guard let client, alertRound != asked else { return }
+        alertRound = asked
+        defer { alertRound = nil }
+        let due = entries.filter { alertsAsked[$0.linkID] != asked && $0.parcel.currentStage?.isFinal != true }.prefix(Self.alertsPerRound)
+        for entry in due {
+            let preset = entry.alertPreset ?? Self.alertPreset(for: entry.parcel)
+            let answer: DeviceAlertAnswer
+            do {
+                answer = try await client.setAlert(entry.linkID, keys[entry.linkID],
+                                                   ParcelAppAlertRequest(token: token, environment: environment, preset: preset, locale: locale))
+            } catch {
+                break
+            }
+            if answer == .unavailable { break }
+            alertsAsked[entry.linkID] = asked
+            guard answer == .on, let index = entries.firstIndex(where: { $0.linkID == entry.linkID }) else { continue }
+            let old = entries[index].alertToken
+            entries[index].alertToken = token
+            entries[index].alertPreset = preset
+            save()
+            // The token changed: the old one hears nothing more of this parcel.
+            if let old, old != token {
+                try? await client.removeAlert(entry.linkID, DeleteParcelAppAlertRequest(token: old))
+            }
+        }
     }
 
     private func update(_ id: UUID, _ change: (inout DeviceParcel) -> Void) throws -> Parcel {

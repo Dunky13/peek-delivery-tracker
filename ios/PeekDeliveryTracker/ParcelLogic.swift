@@ -770,9 +770,13 @@ enum ParcelMenuItem: Hashable {
 
     /// The items in groups that a line sets apart. A card's menu also opens the parcel, and shares it as the
     /// page's own button does. Every parcel in the list can be changed, in the demo and without an account as
-    /// well: an archived one is brought back rather than archived.
-    static func menu(for parcel: Parcel, onCard: Bool) -> [[Self]] {
-        let changes: [Self] = [.rename] + (onCard ? [.share] : []) + [.copyTrackingNumber, .changeCarrier]
+    /// well: an archived one is brought back rather than archived. A `reader` follows someone else's parcel
+    /// through its link: its page shares the link as it is, its carrier is not the reader's to change, and a
+    /// number the link hides cannot be copied.
+    static func menu(for parcel: Parcel, onCard: Bool, reader: Bool = false) -> [[Self]] {
+        let changes: [Self] = reader
+            ? [.rename] + (parcel.trackingNumber.isEmpty ? [] : [.copyTrackingNumber])
+            : [.rename] + (onCard ? [.share] : []) + [.copyTrackingNumber, .changeCarrier]
         return (onCard ? [[.open]] : []) + [changes, [parcel.isArchived ? .restore : .archive], [.delete]]
     }
 

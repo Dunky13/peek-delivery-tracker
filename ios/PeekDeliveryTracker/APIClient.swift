@@ -104,14 +104,15 @@ final class DeliveryAPIClient {
         catch { throw DeliveryAPIError.invalidResponse }
     }
 
-    /// Reads a parcel link as a viewer: no sign-in, no cookies and never an owner key.
-    /// Nil when the link leads nowhere, whether it was forgotten or never existed. A link whose
-    /// owner stopped sharing it throws `ParcelLinkStopped`.
-    static func publicParcel(linkID: String, configuration: AppConfiguration = .current, transport: URLSession = .shared) async throws -> PublicParcelResponse? {
+    /// Reads a parcel link: no sign-in and no cookies. Nil when the link leads nowhere, whether it
+    /// was forgotten or never existed. A link whose owner stopped sharing it throws `ParcelLinkStopped`.
+    /// `key`: the link's owner key, only when the site handed the parcel over to this iPhone. It goes in a header alone.
+    static func publicParcel(linkID: String, key: String? = nil, configuration: AppConfiguration = .current, transport: URLSession = .shared) async throws -> PublicParcelResponse? {
         var request = URLRequest(url: configuration.apiBaseURL.appending(path: "api/public/parcels").appending(path: linkID),
                                  cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 15)
         request.httpShouldHandleCookies = false
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        if let key { request.setValue(key, forHTTPHeaderField: "X-Parcel-Key") }
         let (data, response) = try await transport.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw DeliveryAPIError.invalidResponse }
         switch response.statusCode {
@@ -291,19 +292,14 @@ final class DeliveryAPIClient {
         language: AppLanguage,
         sendTest: Bool
     ) async throws -> Bool {
-        #if DEBUG
-        let environment = NativePushEnvironment.development
-        #else
-        let environment = NativePushEnvironment.production
-        #endif
         let response: PushSubscriptionResponse = try await request(
             "/api/push/devices",
             method: "POST",
             body: NativePushDeviceRequest(
                 token: token,
                 installationID: installationID,
-                environment: environment,
-                locale: NativePushLocale(rawValue: language.rawValue) ?? .en,
+                environment: .current,
+                locale: NativePushLocale(language),
                 deviceName: UIDevice.current.name,
                 sendTest: sendTest
             )
@@ -610,5 +606,23 @@ final class LiveActivityRevocations {
             }
             self?.retryTask = nil
         }
+    }
+}
+
+extension NativePushEnvironment {
+    /// The APNs environment this build's tokens belong to.
+    static var current: NativePushEnvironment {
+        #if DEBUG
+        .development
+        #else
+        .production
+        #endif
+    }
+}
+
+extension NativePushLocale {
+    /// The language notifications are written in: the app's own.
+    init(_ language: AppLanguage) {
+        self = NativePushLocale(rawValue: language.rawValue) ?? .en
     }
 }

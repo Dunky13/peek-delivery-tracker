@@ -113,7 +113,8 @@ struct ParcelDetailView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         ParcelMenuButtons(
-                            items: ParcelMenuItem.menu(for: parcel, onCard: false), busy: working, shortcuts: keyboard
+                            items: ParcelMenuItem.menu(for: parcel, onCard: false, reader: store.viewerLink(for: parcel) != nil),
+                            busy: working, shortcuts: keyboard
                         ) { chose($0, on: parcel) }
                     } label: {
                         Image(systemName: "ellipsis")
@@ -233,13 +234,16 @@ struct ParcelDetailView: View {
         let deliveryLine = delivering.map {
             localizer.text("parcel.deliveryCarrier", ["carrier": catalog.info(for: $0, language: localizer.language).displayName])
         }
-        // A made-up number has no page at its carrier.
-        let trackingLinks = sample == nil ? catalog.trackingLinks(for: parcel, language: localizer.language) : []
+        // A made-up number has no page at its carrier, and neither has one a link hides.
+        let trackingLinks = sample == nil && !parcel.trackingNumber.isEmpty ? catalog.trackingLinks(for: parcel, language: localizer.language) : []
         let placed = parcel.trackingEvents.contains { $0.place != nil }
         let route = placed ? atlas.map { ParcelRoute(parcel: parcel, atlas: $0, language: localizer.language) } : nil
         let email = store.deliveryEmail
         // While the account's email is on, the bell opens the parcel's alerts instead of muting.
         let opensAlerts = email?.bellOpensAlerts(for: parcel) == true
+        // Someone else's parcel, followed through its link: the link is shared as it is, and the carrier is theirs to change.
+        let readerLink = store.viewerLink(for: parcel)
+        let editable = sample == nil && readerLink == nil
 
         return VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 16) {
@@ -262,7 +266,7 @@ struct ParcelDetailView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                             }
                         }
-                    if sample == nil {
+                    if editable {
                         Button { carrierEditor = CarrierEditorRequest() } label: { marks }
                             .buttonStyle(.plain)
                             .accessibilityLabel([
@@ -288,7 +292,17 @@ struct ParcelDetailView: View {
                             .disabled(route == nil)
                             .accessibilityLabel(localizer.text("map.open"))
                         }
-                        if sample == nil {
+                        if let readerLink {
+                            ShareLink(item: ParcelLinkRoute.address(id: readerLink)) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 16))
+                                    .frame(width: 44, height: 44)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(branding.ink.opacity(0.75))
+                            .accessibilityLabel(localizer.text("link.shareAria"))
+                        } else if sample == nil {
                             Button { showingShare = true } label: {
                                 Image(systemName: "square.and.arrow.up")
                                     .font(.system(size: 16))
@@ -331,16 +345,18 @@ struct ParcelDetailView: View {
                     Color.clear.frame(height: 68 + room).allowsHitTesting(false)
                 }
                 AutomaticCarrierNotice(parcel: parcel)
-                if let needed = parcel.carrierData?.routing?.providerInputNeeded, !parcel.isArchived {
+                if editable, let needed = parcel.carrierData?.routing?.providerInputNeeded, !parcel.isArchived {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(localizer.text("detail.providerInputNeeded", ["provider": needed.provider]))
                         Button(localizer.text("detail.inputNeededAction")) { carrierEditor = CarrierEditorRequest() }
                     }.font(.footnote)
                 }
-                if let needed = parcel.inputNeededPrompt {
-                    inputNeededPrompt(needed.carrier, text: "detail.inputNeeded", tint: branding.ink)
-                } else if let suggested = parcel.inputSuggestedPrompt {
-                    inputNeededPrompt(suggested.carrier, text: "detail.inputSuggested", tint: branding.ink)
+                if editable {
+                    if let needed = parcel.inputNeededPrompt {
+                        inputNeededPrompt(needed.carrier, text: "detail.inputNeeded", tint: branding.ink)
+                    } else if let suggested = parcel.inputSuggestedPrompt {
+                        inputNeededPrompt(suggested.carrier, text: "detail.inputSuggested", tint: branding.ink)
+                    }
                 }
                 HStack(alignment: .center, spacing: 18) {
                     Text(parcel.label.nonEmpty ?? localizer.text("common.parcel"))
@@ -364,7 +380,7 @@ struct ParcelDetailView: View {
                         Text(localizer.text("detail.postcodeNotVerified", ["carrier": carrier.displayName, "postcode": postcode]))
                             .font(.caption).foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
-                        if parcel.archivedAt == nil {
+                        if parcel.archivedAt == nil, editable {
                             Button(localizer.text("detail.editPostcode")) { carrierEditor = CarrierEditorRequest() }
                                 .font(.caption.weight(.semibold))
                         }
@@ -445,7 +461,7 @@ struct ParcelDetailView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text(localizer.text(parcel.amazonShippingHistoryExpired ? "add.amazonHistoryExpired" : catalog.trackingHintKey(for: parcel.activeTrackingCarrier), ["carrier": carrier.displayName]))
                         .font(.footnote).foregroundStyle(.secondary)
-                    if !catalog.requiresAmazonAccount(parcel.activeTrackingCarrier) && !parcel.amazonShippingHistoryExpired {
+                    if editable, !catalog.requiresAmazonAccount(parcel.activeTrackingCarrier) && !parcel.amazonShippingHistoryExpired {
                         Button(localizer.text("detail.changeCarrier")) { carrierEditor = CarrierEditorRequest() }
                             .font(.footnote).foregroundStyle(branding.ink)
                     }
@@ -453,7 +469,7 @@ struct ParcelDetailView: View {
             } else if let error = parcel.syncError {
                 Text(localizer.trackingFailureMessage(error))
                     .font(.footnote).foregroundStyle(Brand.warning)
-                if error == "carrier:input_required", parcel.activeTrackingCarrier == parcel.carrier,
+                if editable, error == "carrier:input_required", parcel.activeTrackingCarrier == parcel.carrier,
                    !catalog.requirements(for: parcel.carrier, trackingNumber: parcel.trackingNumber).isEmpty {
                     Button(localizer.text("detail.updateTrackingDetails")) { carrierEditor = CarrierEditorRequest() }
                         .font(.footnote).foregroundStyle(branding.ink)
@@ -587,7 +603,8 @@ struct ParcelDetailView: View {
     }
 
     private func shipmentIdentity(_ parcel: Parcel, links: [ParcelTrackingLink], tint: Color) -> some View {
-        let numbers = parcel.trackingNumbers
+        // A number the link of someone else's parcel hides is not shown.
+        let numbers = parcel.trackingNumbers.filter { !$0.number.isEmpty }
         let pages = ParcelTrackingLink.byNumber(links, numbers: numbers)
         return VStack(alignment: .leading, spacing: 0) {
             // At the largest text sizes the number takes the line, and its button goes under it.
@@ -710,7 +727,8 @@ struct ParcelDetailView: View {
     private var keys: some View {
         KeyboardShortcuts {
             if let parcel, sample == nil {
-                ForEach(ParcelMenuItem.menu(for: parcel, onCard: false).joined().filter { $0.shortcut != nil }, id: \.self) { item in
+                ForEach(ParcelMenuItem.menu(for: parcel, onCard: false, reader: store.viewerLink(for: parcel) != nil)
+                    .joined().filter { $0.shortcut != nil }, id: \.self) { item in
                     Button(localizer.text(item.titleKey)) { chose(item, on: parcel) }
                         .keyboardShortcut(item.shortcut)
                         .disabled(working && item == .delete)

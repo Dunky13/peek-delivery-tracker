@@ -999,6 +999,8 @@
   "email.off.askTitle": "Desativar os e-mails de entrega?",
   "email.off.askBody": "O Peek deixa de te escrever quando uma encomenda for entregue ou estiver pronta para levantamento. As tuas notificações não mudam.",
   "native.guest.kept": "Por agora, só neste iPhone.",
+  "native.follow.action": "Seguir neste iPhone",
+  "native.follow.hint": "O Peek envia notificações para este iPhone até a encomenda ser entregue. Não precisas de conta.",
   "native.pasteLead": "Cola um número, uma ligação ou um e-mail inteiro.",
   "door.verification.title": "Uma verificação rápida",
   "door.verification.body": "Não foi possível concluir a verificação. Faz a verificação se aparecer e tenta novamente. O teu número continua aqui.",

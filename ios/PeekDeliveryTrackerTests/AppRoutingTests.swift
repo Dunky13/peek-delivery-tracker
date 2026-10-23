@@ -272,6 +272,43 @@ final class AppRoutingTests: XCTestCase {
         XCTAssertNil(ParcelLinkRoute.name(inFragment: nil))
     }
 
+    func testAHandedOverLinkCarriesItsOwnerKeyBesideItsWords() throws {
+        let base = URL(string: "https://peektracker.com")!
+        let id = "k7Qm2xHd9RtW"
+        let key = "Ab3_-" + String(repeating: "x", count: 38)
+        func route(_ address: String) -> ParcelLinkRoute? {
+            ParcelLinkRoute(url: URL(string: address)!, baseURL: base, linkHosts: ["delivery.plhery.com"])
+        }
+
+        // The site opens the app on the host it answered on before, or on the app's own scheme.
+        let handed = try XCTUnwrap(route("https://delivery.plhery.com/p/\(id)#k=\(key)"))
+        XCTAssertEqual(handed.id, id)
+        XCTAssertEqual(handed.key, key)
+        XCTAssertEqual(route("peekdeliverytracker://p/\(id)#k=\(key)")?.key, key)
+
+        // The other words stay readable around it, in any order.
+        let worded = try XCTUnwrap(route("https://delivery.plhery.com/p/\(id)#n=Moon%20lamp&k=\(key)&g=Enjoy&f=Sam"))
+        XCTAssertEqual(worded, ParcelLinkRoute(id: id, name: "Moon lamp", note: "Enjoy", from: "Sam", key: key))
+        XCTAssertEqual(route("https://peektracker.com/p/\(id)#k=\(key)&n=Moon%20lamp")?.name, "Moon lamp")
+
+        // Anything that is not a key is no key, and the link still opens.
+        for fragment in ["", "#k=", "#k=\(key.dropLast())", "#k=\(key)x", "#k=\(key.dropLast())%2B", "#k=\(key.dropLast())=",
+                         "#K=\(key)", "#key=\(key)", "#n=k%3D\(key)", "?k=\(key)"] {
+            let opened = route("https://delivery.plhery.com/p/\(id)\(fragment)")
+            XCTAssertEqual(opened?.id, id, fragment)
+            XCTAssertNil(opened?.key, fragment)
+        }
+        XCTAssertNil(ParcelLinkRoute(id: id, key: "short").key)
+        XCTAssertTrue(ParcelLinkRoute.validKey(key))
+        XCTAssertFalse(ParcelLinkRoute.validKey(String(repeating: "é", count: 43)))
+
+        // The key never goes into an address the app builds, nor into what the route says of itself.
+        let address = ParcelLinkRoute.address(id: id, words: ParcelLinkWords(name: "Moon lamp"), baseURL: base)
+        XCTAssertEqual(address.absoluteString, "https://peektracker.com/p/\(id)#n=Moon%20lamp")
+        XCTAssertFalse("\(worded)".contains(key))
+        XCTAssertFalse(String(reflecting: worded).contains(key))
+    }
+
     func testParsesParcelDeepLink() {
         let parcelID = UUID()
         let url = URL(string: "peekdeliverytracker://parcel/\(parcelID.uuidString)")!
@@ -300,6 +337,15 @@ final class AppRoutingTests: XCTestCase {
         )
         XCTAssertNil(NativeRoute(remoteNotification: ["parcel_id": "not-a-uuid"]))
         XCTAssertNil(NativeRoute(remoteNotification: ["other": parcelID.uuidString]))
+    }
+
+    func testANotificationAboutAFollowedLinkOpensThatLink() {
+        let payload: [AnyHashable: Any] = ["aps": ["alert": ["title": "Out for delivery"], "thread-id": "link-k7Qm2xHd9RtW"],
+                                           "link_id": "k7Qm2xHd9RtW"]
+        XCTAssertEqual(NativeRoute(remoteNotification: payload), .link("k7Qm2xHd9RtW"))
+        XCTAssertNil(NativeRoute(remoteNotification: ["link_id": "not-a-link"]))
+        XCTAssertNil(NativeRoute(remoteNotification: ["link_id": "k7Qm2xHd9RtW0"]))
+        XCTAssertNil(NativeRoute(remoteNotification: ["link_id": 12]))
     }
 
     func testGoogleAuthorizationURLReturnsToNativeAppWithPKCE() throws {

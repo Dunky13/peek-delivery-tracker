@@ -226,7 +226,7 @@ final class ParcelShareTests: XCTestCase {
         defer { defaults.removePersistentDomain(forName: suite) }
         let shown = try fixture().publicGiftParcel
         var answer: Result<PublicParcelResponse?, Error> = .failure(ParcelLinkStopped())
-        let store = ParcelLinkStore(defaults: defaults, read: { _ in try answer.get() })
+        let store = ParcelLinkStore(defaults: defaults, read: { _, _ in try answer.get() })
         let link = ParcelLinkRoute(id: linkID, name: "Lamp", note: "Enjoy", from: "Sam")
 
         store.open(link)
