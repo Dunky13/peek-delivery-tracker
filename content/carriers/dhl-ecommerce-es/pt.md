@@ -3,7 +3,7 @@ title: DHL eCommerce Iberia rastreio: estados e ServicePoints
 description: Rastreio DHL eCommerce (antiga DHL Parcel) em Portugal: onde está o número, o que quer dizer cada estado, prazos no ServicePoint e contactos.
 slug: dhl-ecommerce-iberia-rastreio
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-23
 ---
 
 A DHL eCommerce Iberia é o serviço de encomendas standard da DHL em Portugal e Espanha, que em muitos sítios ainda aparece como DHL Parcel. Segues a encomenda na caixa de seguimento do [dhl.com/pt-pt/ecommerce](https://www.dhl.com/pt-pt/ecommerce/home.html) ou colas o número na caixa acima. O número vem da loja, ou do email ou SMS da DHL eCommerce com a data prevista de entrega.
@@ -82,7 +82,7 @@ O 707 103 050 é a linha para empresas, não para quem recebe encomendas. Se a e
 
 ## Rastrear DHL eCommerce Iberia com o Peek
 
-Para duas letras, 7 algarismos e `0`, o [Peek](/) consulta só a DHL eCommerce Iberia. Para 10 algarismos consulta a Relais Colis, a TIPSA e a DHL eCommerce Iberia, e primeiro a DHL Express quando o dígito de controlo dela bate certo; se a DHL Express também conhecer o número, fica ela. Se o número for conhecido por transportadoras de marcas diferentes, ou por nenhuma, escolhes com «Alterar transportadora». Outros números da DHL (12 ou 22 algarismos, códigos `JJD`, `JVGL` ou `3S`, números postais internacionais) só funcionam depois de escolheres aí «DHL eCommerce Iberia». Não é preciso código postal.
+Para duas letras, 7 algarismos e `0`, o [Peek](/) consulta a DHL eCommerce Iberia e a TNT Itália, cujos números têm a mesma forma. Para 10 algarismos consulta a Relais Colis, a TIPSA e a DHL eCommerce Iberia, e primeiro a DHL Express quando o dígito de controlo dela bate certo; se a DHL Express também conhecer o número, fica ela. Se o número for conhecido por transportadoras de marcas diferentes, ou por nenhuma, escolhes com «Alterar transportadora». Outros números da DHL (12 ou 22 algarismos, códigos `JJD`, `JVGL` ou `3S`, números postais internacionais) só funcionam depois de escolheres aí «DHL eCommerce Iberia». Não é preciso código postal.
 
 Também podes colar ligações do clientesparcel.dhl.es, da versão portuguesa, espanhola ou inglesa do portal (`/LiveTracking/ModificarMeuEnvio/`, `ModificarEnvio` ou `ModifyMyShipment`), como a que a caixa de rastreio do site português abre. Indicam logo a DHL eCommerce Iberia, seja qual for o formato do número. Se a ligação tiver um código postal no fim, o Peek não o usa, porque não precisa dele.
 

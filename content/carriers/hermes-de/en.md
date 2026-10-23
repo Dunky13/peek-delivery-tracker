@@ -3,7 +3,7 @@ title: Hermes tracking: German statuses explained in English
 description: Track a Hermes parcel in Germany: where the number is, what Hermes's German statuses mean in English, ParcelShops, missed deliveries and how to reach Hermes.
 slug: hermes-tracking
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-23
 ---
 
 Hermes Germany is the Otto Group's Hamburg-based parcel carrier, focused on deliveries within Germany. Track a parcel with its Sendungsnummer (tracking number) on [myhermes.de](https://www.myhermes.de/empfangen/sendungsverfolgung/), in German only, or paste the number in the box above. The sender has the number; Hermes's own emails reach you if the sender passed on your email address.
@@ -75,9 +75,9 @@ Hermes lists no customer-service phone line, hours or chat; the head-office numb
 
 ## Tracking a Hermes parcel with Peek
 
-[Peek](/) recognises `H` and 16 to 19 digits at once. For 14 digits it asks Hermes first when the last digit fits Hermes's check digit; otherwise press "Change" and pick Hermes Germany. For `H` and 15 digits it asks only Hermes Germany. With an extra leading zero, a 14-digit number isn't recognised as Hermes's: drop the zero. Other lengths Hermes accepts, such as `H` and 20 digits, need "Change" too. myhermes.de links can be pasted; no postcode is needed.
+[Peek](/) recognises `H` and 16 to 19 digits at once. For 14 digits it asks Hermes among the likely carriers when the last digit fits Hermes's check digit; otherwise press "Change" and pick Hermes Germany. For `H` and 15 digits it asks Hermes Germany, and Evri too when the number also fits Evri's check digit. With an extra leading zero, a 14-digit number isn't recognised as Hermes's: drop the zero. Other numbers Hermes accepts (14 to 20 letters or digits) need "Change" too. myhermes.de links can be pasted; no postcode is needed.
 
-It shows the status, history, expected day (not Hermes's time window), sending shop and delivery time. At a ParcelShop it shows "Ready for pickup" with the shop's name and address. It drops your name, address and booked preferences. Each scan keeps Hermes's German sentence; delivery to a neighbour, or pickup at a ParcelShop, counts as delivered. A parcel in a Hermes Box shows "Ready for pickup" until you take it out with its pickup TAN. Hermes gives no scan places, so the map stays empty.
+It shows the status, history, expected day (not Hermes's time window), sending shop and delivery time. At a ParcelShop it shows "Ready for pickup" with the shop's name and address. It drops your name, address and booked preferences. Each scan keeps Hermes's own sentence, which Peek asks for in English, though some lines stay German; delivery to a neighbour, or pickup at a ParcelShop, counts as delivered. A parcel in a Hermes Box shows "Ready for pickup" until you take it out with its pickup TAN. Hermes gives no scan places, so the map stays empty.
 
 Peek checks every 10 minutes, every 2 once out for delivery, and can notify you of every scan, important steps only or delivery day only. It doesn't follow parcels to other carriers, and old numbers show as not found once Hermes deletes them after 30 days. Hermes Einrichtungs-Service (furniture) is a separate carrier, picked by hand.
 

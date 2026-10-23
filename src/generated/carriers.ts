@@ -1160,6 +1160,22 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "DPD Portugal tracking: statuses, Pickup points and contact",
       "name": "DPD Portugal",
       "color": "#dc0032"
+    },
+    {
+      "id": "tnt-it",
+      "catalog": "tnt-it",
+      "slug": "tnt-italy-tracking",
+      "title": "TNT Italy tracking: waybill, statuses and missed delivery",
+      "name": "TNT Italy",
+      "color": "#ff6600"
+    },
+    {
+      "id": "tnt",
+      "catalog": "tnt",
+      "slug": "tnt-tracking",
+      "title": "TNT tracking: consignment number, statuses and delivery",
+      "name": "TNT",
+      "color": "#ff6600"
     }
   ],
   "de": [
@@ -1942,6 +1958,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Tracking PostNL: codici, stati e consegna in Italia",
       "name": "PostNL",
       "color": "#ef7d00"
+    },
+    {
+      "id": "tnt-it",
+      "catalog": "tnt-it",
+      "slug": "tnt-italy-tracking",
+      "title": "TNT tracking: lettera di vettura, stati e giacenza",
+      "name": "TNT Italy",
+      "color": "#ff6600"
     }
   ],
   "es": [
@@ -1984,6 +2008,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Mondial Relay seguimiento: estados, Punto Pack e InPost",
       "name": "Mondial Relay",
       "color": "#ef3026"
+    },
+    {
+      "id": "hermes-de",
+      "catalog": "hermes-de",
+      "slug": "hermes-seguimiento",
+      "title": "Hermes seguimiento: paquetes de Alemania a España",
+      "name": "Hermes",
+      "color": "#0091cd"
     },
     {
       "id": "paack",
@@ -2434,6 +2466,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "DPD Portugal rastreio: estados, pontos Pickup e contactos",
       "name": "DPD Portugal",
       "color": "#dc0032"
+    },
+    {
+      "id": "tnt",
+      "catalog": "tnt",
+      "slug": "tnt-rastreio",
+      "title": "TNT rastreio: carta de porte, estados e entrega",
+      "name": "TNT",
+      "color": "#ff6600"
     }
   ],
   "pl": [

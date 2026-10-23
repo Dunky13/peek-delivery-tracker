@@ -10,7 +10,7 @@
   { "id": "mondial-relay", "catalog": "mondial-relay", "name": "Mondial Relay", "languages": ["en", "fr", "es", "pt"] },
   { "id": "gls-de", "catalog": "gls-de", "name": "GLS Germany", "languages": ["en", "de"] },
   { "id": "dpd-de", "catalog": "dpd-de", "name": "DPD Germany", "languages": ["en", "de"] },
-  { "id": "hermes-de", "catalog": "hermes-de", "name": "Hermes", "languages": ["en", "de"] },
+  { "id": "hermes-de", "catalog": "hermes-de", "name": "Hermes", "languages": ["en", "de", "es"] },
   { "id": "gls-ch", "catalog": "gls-ch", "name": "GLS Switzerland", "languages": ["en", "de", "fr", "it"] },
   { "id": "dpd-ch", "catalog": "dpd", "name": "DPD Switzerland", "languages": ["en", "de", "fr", "it"] },
   { "id": "inpost", "catalog": "inpost", "name": "InPost", "languages": ["en", "pl", "it", "pt"] },
@@ -142,5 +142,7 @@
   { "id": "imile", "catalog": "imile", "name": "iMile", "languages": ["en", "es", "it", "de"] },
   { "id": "postnl", "catalog": "spring-gds", "name": "PostNL", "languages": ["en", "nl", "it", "pl"] },
   { "id": "dhlink", "catalog": "dhlink", "name": "DHLink", "languages": ["en"] },
-  { "id": "dpd-pt", "catalog": "dpd-pt", "name": "DPD Portugal", "languages": ["en", "pt"] }
+  { "id": "dpd-pt", "catalog": "dpd-pt", "name": "DPD Portugal", "languages": ["en", "pt"] },
+  { "id": "tnt-it", "catalog": "tnt-it", "name": "TNT Italy", "languages": ["en", "it"] },
+  { "id": "tnt", "catalog": "tnt", "name": "TNT", "languages": ["en", "pt"] }
 ]

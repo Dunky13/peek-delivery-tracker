@@ -3,7 +3,7 @@ title: DHL eCommerce Iberia tracking: statuses and ServicePoints
 description: Track a DHL eCommerce parcel in Spain or Portugal: where the number is, what each status means, ServicePoint and locker deadlines and who to call.
 slug: dhl-ecommerce-iberia-tracking
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-23
 ---
 
 DHL eCommerce Iberia is DHL's standard parcel service in Spain and Portugal, still called DHL Parcel in places. Track a parcel in the tracking box on [dhl.com/es-es/ecommerce](https://www.dhl.com/es-es/ecommerce/home/private-shipments/customer-service/receive-a-parcel/tracking-your-shipment.html), or paste the number in the box above. The number comes from the shop, or from DHL's own email or SMS with the expected delivery date.
@@ -80,7 +80,7 @@ As DHL's Spanish and Portuguese pages listed them on 11 October 2026 (there is n
 
 ## Tracking DHL eCommerce Iberia parcels with Peek
 
-[Peek](/) asks DHL eCommerce Iberia alone about two letters, 7 digits and `0`. For 10 digits it asks Relais Colis, TIPSA and DHL eCommerce Iberia, and DHL Express first when its check digit passes; if DHL Express knows the number too, it wins. If carriers of different brands know it, or none does, you pick with "Change carrier". DHL's other numbers (12 or 22 digits, `JJD` plates, postal numbers) work only after picking "DHL eCommerce Iberia" there. No postcode is needed.
+[Peek](/) asks DHL eCommerce Iberia and [TNT Italy](carrier:tnt-it), whose waybills have the same shape, about two letters, 7 digits and `0`. For 10 digits it asks Relais Colis, TIPSA and DHL eCommerce Iberia, and DHL Express first when its check digit passes; if DHL Express knows the number too, it wins. If carriers of different brands know it, or none does, you pick with "Change carrier". DHL's other numbers (12 or 22 digits, `JJD` plates, postal numbers) work only after picking "DHL eCommerce Iberia" there. No postcode is needed.
 
 Links from clientesparcel.dhl.es can be pasted too, from the portal's Spanish, Portuguese or English version (`/LiveTracking/ModificarEnvio/`, `ModificarMeuEnvio` or `ModifyMyShipment`). They name DHL eCommerce Iberia straight away, whatever the number's shape. A postcode at the end of the link is left out, as none is needed.
 
