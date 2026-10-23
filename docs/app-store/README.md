@@ -70,12 +70,13 @@ A parcel of your own can follow the last line when submitting. Keep it out of th
 
 ## Screenshots
 
-The app is iPhone-only. Take them in the demo, whose parcels are made up, on an iPhone 18 Pro
-Max simulator: a Debug build launched with `-sdt.native.experience.v1 demo
--sdt.debug.storeScreenshots YES`, which leaves out the demo's top bar. 1320 × 2868 PNG
-without alpha, for the 6.9" display; App Store Connect scales them for smaller iPhones. The
-store frames put a headline in each language above them; the English (U.S.) frames say
-“package” where the English (U.K.) ones say “parcel”.
+Take them in the demo, whose parcels are made up: a Debug build launched with
+`-sdt.native.experience.v1 demo -sdt.debug.storeScreenshots YES`, which leaves out the demo's
+top bar. PNG without alpha, 1320 × 2868 from an iPhone 18 Pro Max simulator for the 6.9"
+display, and 2064 × 2752 from an iPad Pro 13-inch simulator for the 13" display, which the app
+needs since it runs on iPad. App Store Connect scales them for smaller devices. The store
+frames put a headline in each language above them; the English (U.S.) frames say “package”
+where the English (U.K.) ones say “parcel”.
 
 ## First submission
 
