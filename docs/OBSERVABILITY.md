@@ -421,18 +421,22 @@ Each row names the lane that acts on it:
   carrier missing from the catalog, a reader's answer about a parcel with no carrier or the
   wrong one;
 - **adapters**: a carrier without an adapter, a failing adapter or provider, an adapter that
-  refuses a number its carrier issues or answers it only in part, without movement, on
+  refuses a number its carrier issues or answers it only in part with no provider filling in
+  the rest, without movement, on
   local clocks only, without dates or behind a provider's delivered or returned stage, wording no map reads, a reader's answer that a carrier's status, steps,
   times or places are off;
 - **captcha**: an adapter stopped by a verification or captcha page;
 - **delivery-tracker**: the app's routing, such as parcels left with a provider although
   their carrier's adapter answers other parcels and was not asked for them or had its answer
-  set aside as older than the parcel's newest scan, a check whose worker died, or a reader's
+  set aside as older than the parcel's newest scan without the parcel showing that answer's
+  newest scan, a check whose worker died, or a reader's
   answer that gives no reason.
 
 A parcel a provider tracks can also be **dormant**, not checked for 24 h because nobody
 follows it any more, or need **none**: its carrier answers and the provider's fuller history
-is kept.
+is kept, a provider filled in the carrier's partial answer (`routing.partial_history`), or the
+parcel already shows the newest scan of a carrier answer set aside as older, so that carrier
+only knows an earlier leg.
 
 Whatever its lane, a signal that comes from a wrong routing decision is a delivery-tracker
 fix. Mark a signal reviewed so that the next run leaves it out:

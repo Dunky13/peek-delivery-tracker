@@ -244,6 +244,54 @@ begin
 end;
 $$;
 
+-- filled: a carrier's partial answer 17TRACK filled in, checked minutes ago, and one nobody
+-- checked for 2 days; half: a partial answer no provider filled. kept: a lookup whose carrier
+-- answers, ParcelsApp's history kept, nobody checked for 2 days. leg: a carrier's answer set
+-- aside as older whose newest scan the parcel already shows.
+insert into public.packages (id, user_id, one_off, tracking_number, carrier, current_stage, sync_status, created_at, last_synced_at, carrier_data)
+values
+  ('f4000000-0000-4000-8000-000000000017', null, true, 'GOALS0014', 'la-poste',
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '6 minutes',
+    '{"tracking_provider": "17TRACK", "carrier_answered": true, "routing": {"partial_history": {"provider": "17TRACK",
+      "checked_at": "2026-10-08T11:00:00Z", "fingerprint": "goals"}}}'),
+  ('f4000000-0000-4000-8000-000000000018', null, true, 'GOALS0015', 'la-poste',
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '2 days',
+    '{"tracking_provider": "17TRACK", "carrier_answered": true, "routing": {"partial_history": {"provider": "17TRACK",
+      "checked_at": "2026-10-08T11:00:00Z", "fingerprint": "goals"}}}'),
+  ('f4000000-0000-4000-8000-000000000019', null, true, 'GOALS0016', 'la-poste',
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '6 minutes',
+    '{"tracking_provider": "17TRACK", "carrier_answered": true}'),
+  ('f4000000-0000-4000-8000-00000000001a', null, true, 'GOALS0017', 'la-poste',
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '2 days',
+    '{"tracking_provider": "ParcelsApp", "routing": {"confirmed_carrier": "la-poste"}}'),
+  ('f4000000-0000-4000-8000-00000000001b', null, true, 'GOALS0018', 'la-poste',
+    'in_transit', 'ok', now() - interval '3 days', now() - interval '6 minutes',
+    '{"tracking_provider": "ParcelsApp", "routing": {"set_aside": {"la-poste": {"reason": "older", "checked_at": "2026-10-08T11:00:00Z",
+      "newest": "2026-10-07T23:01:00Z", "watermark": "2026-10-08T05:46:00Z", "count": 1}}}}');
+insert into public.tracking_events (package_id, stage, description, occurred_at, provider_event_id, raw_data)
+values
+  ('f4000000-0000-4000-8000-00000000001b', 'registered', 'Label created', '2026-10-07T23:01:00Z', 'goals-label', '{}'),
+  ('f4000000-0000-4000-8000-00000000001b', 'in_transit', 'In transit', '2026-10-08T05:46:00Z', 'goals-transit', '{}');
+
+-- A partial answer a provider filled is the carrier answering, with the provider's history
+-- kept; a parcel nobody checked for 24 h is dormant first; an older answer the parcel already
+-- shows only knows an earlier leg, which routing cannot change.
+do $$
+begin
+  if (select array_agg(row(tracking_number, why, reason, lane)::text order by tracking_number)
+      from private.tracking_gaps where tracking_number between 'GOALS0014' and 'GOALS0018')
+      is distinct from array[
+        row('GOALS0014', 'carrier answers, history kept', 'provider history fuller', 'none')::text,
+        row('GOALS0015', 'not checked for 24 h', 'not checked', 'dormant')::text,
+        row('GOALS0016', 'carrier answered in part', 'half-answers', 'adapters')::text,
+        row('GOALS0017', 'not checked for 24 h', 'not checked', 'dormant')::text,
+        row('GOALS0018', 'answer shows an earlier leg', 'carrier knows an earlier leg', 'none')::text] then
+    raise exception 'A filled, dormant or earlier-leg parcel was misread: %', (select array_agg(row(tracking_number, why, reason, lane)::text)
+      from private.tracking_gaps where tracking_number between 'GOALS0014' and 'GOALS0018');
+  end if;
+end;
+$$;
+
 -- Grafana's role reads the counts, not the parcels behind them.
 set local role metrics_reader;
 select day, parcels, stale_parcels from metrics.goals_daily order by day desc limit 1;
