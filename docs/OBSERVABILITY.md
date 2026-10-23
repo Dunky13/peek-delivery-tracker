@@ -433,7 +433,7 @@ Each row names the lane that acts on it:
   answer that gives no reason.
 
 A parcel a provider tracks can also be **dormant**, not checked for 24 h because nobody
-follows it any more, or need **none**: its carrier answers and the provider's fuller history
+follows it any more, whatever its last check stored, a failure included, or need **none**: its carrier answers and the provider's fuller history
 is kept, a provider filled in the carrier's partial answer (`routing.partial_history`), or the
 parcel already shows the newest scan of a carrier answer set aside as older, so that carrier
 only knows an earlier leg.
