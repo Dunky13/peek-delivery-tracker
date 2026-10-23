@@ -20,8 +20,8 @@ export type DeliveredWhen =
 
 /**
  * The scan the email tells of, delivered or ready to collect: the newest one,
- * as the app orders scans. A relay copy gives way to the scan it repeats,
- * which is served with it.
+ * as the app orders scans. A scan served under another (`relayOf`) gives way
+ * to that one.
  */
 export function deliveredScan(parcel: ParcelWithEvents, stage: EmailStage = 'delivered'): TrackingEvent | null {
   return sortEventsDesc(parcel.events.filter((event) => event.stage === stage && !event.relayOf))[0] ?? null;

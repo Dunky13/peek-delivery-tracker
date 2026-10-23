@@ -11,9 +11,9 @@ const OPEN_DAYS = 2;
 const LISTED_DAYS = 3;
 
 /**
- * The scans the journal lists, and the relay copies each one has: an earlier
- * carrier's copy of a scan (`relayOf`) is a line under that scan, and keeps a
- * row of its own when that scan is not there.
+ * The scans the journal lists, and the relay copies each one has: a scan of a
+ * relay pair (`relayOf`) is a line under the scan it names, and keeps a row of
+ * its own when that scan is not there.
  */
 function withRelays(events: TrackingEvent[]): { listed: TrackingEvent[]; relays: Map<string, TrackingEvent[]> } {
   const byId = new Map(events.map(event => [event.id, event]));

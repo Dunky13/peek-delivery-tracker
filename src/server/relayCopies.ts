@@ -6,9 +6,10 @@
  * the seconds: India Post tells La Poste's, DHL and Spring GDS tell Swiss
  * Post's, Chronopost tells DPD's. Both rows are stored and kept, because the
  * same rule would pair two distinct scans now and then. The parcel's timeline
- * serves the copy with `relay_of`, the id of the scan it repeats, and the apps
- * show it under that scan (eventPlaces.ts). Of the two rows, the one that
- * reached the parcel second announces nothing (push.ts).
+ * serves the copy with `relay_of`, the id of the scan it repeats, or the scan
+ * with the copy's when the copy alone says where it was, and the apps show the
+ * row with `relay_of` under the other (eventPlaces.ts). Of the two rows, the one
+ * that reached the parcel second announces nothing (push.ts).
  *
  * The earlier carrier also publishes some of its own scans late, after the
  * new carrier's later ones are stored (trackingSync.ts asks it again for a day

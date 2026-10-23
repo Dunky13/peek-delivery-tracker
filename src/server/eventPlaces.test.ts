@@ -146,6 +146,35 @@ describe('withEventPlaces', () => {
       .some((scan) => 'relay_of' in scan)).toBe(false);
   });
 
+  it('serves a relay pair under the row that says where the scan was', () => {
+    const scan = (id: string, source: string, occurredAt: string, location: string | null, description = 'Scan') => ({
+      ...event(id, location, occurredAt), description, provider_event_id: `${source}:${id}`,
+    });
+    const row = {
+      id: 'parcel', carrier: 'yunexpress', carrier_data: { original_carrier: 'yunexpress', active_tracking_carrier: 'ecoscooting' },
+      tracking_events: [
+        // The earlier carrier alone names the town: the delivery carrier's scan goes under its copy.
+        scan('arrived', 'ecoscooting', '2026-10-21T08:00:00+00:00', null, 'Arrived at the delivery station'),
+        scan('arrived-copy', 'yunexpress', '2026-10-21T08:00:00+00:00', 'Salamanca', 'Arrived at the delivery station'),
+        // Both or neither name a place: the copy goes under the scan.
+        scan('sorted', 'ecoscooting', '2026-10-21T10:00:00+00:00', 'Salamanca'),
+        scan('sorted-copy', 'yunexpress', '2026-10-21T10:00:00+00:00', 'Salamanca'),
+        scan('out', 'ecoscooting', '2026-10-22T07:00:00+00:00', null),
+        scan('out-copy', 'yunexpress', '2026-10-22T07:00:00+00:00', null),
+        // Nor does a copy that names none go over a scan that does.
+        scan('left', 'ecoscooting', '2026-10-22T09:00:00+00:00', 'Salamanca'),
+        scan('left-copy', 'yunexpress', '2026-10-22T09:00:00+00:00', null),
+      ],
+    };
+    const served = (withEventPlaces(row) as { tracking_events: Record<string, unknown>[] }).tracking_events;
+    expect(served.map(({ id, relay_of }) => [id, relay_of])).toEqual([
+      ['arrived', 'arrived-copy'], ['arrived-copy', undefined],
+      ['sorted', undefined], ['sorted-copy', 'sorted'],
+      ['out', undefined], ['out-copy', 'out'],
+      ['left', undefined], ['left-copy', 'left'],
+    ]);
+  });
+
   it('leaves out a provider\'s copy of a confirmed carrier\'s scan, and pairs relay copies without it', () => {
     const scan = (id: string, source: string, occurredAt: string, extra: Record<string, unknown> = {}) => ({
       ...event(id, null, occurredAt), provider_event_id: `${source}:${id}`, ...extra,

@@ -12,10 +12,10 @@ let reported = false;
 /**
  * The stored point only feeds the place, and the source and provider only tell
  * Peek's own rows, relay copies and provider copies apart: the API returns none
- * of them. A relay copy names the
- * scan it repeats instead. A scan dated by its day alone names that day. A stage
- * change Peek saw with no words from the carrier (AliExpress's undated record) is
- * served without Peek's stand-in, so the apps name the stage.
+ * of them. A row of a relay pair names the other row instead (`relayLeads`). A
+ * scan dated by its day alone names that day. A stage change Peek saw with no
+ * words from the carrier (AliExpress's undated record) is served without
+ * Peek's stand-in, so the apps name the stage.
  */
 function served(event: JsonObject, relayOf?: string): JsonObject {
   const rest: JsonObject = { ...dated(event), ...(relayOf ? { relay_of: relayOf } : {}),
@@ -94,21 +94,39 @@ function eventPoint(value: unknown): EventPoint | null {
   return typeof latitude === 'number' && typeof longitude === 'number' ? { latitude, longitude } : null;
 }
 
+/** Whether a stored scan says where it was: in words or as a point. */
+function placed(event: JsonObject): boolean {
+  return (typeof event.location === 'string' && event.location.trim() !== '') || eventPoint(event.point) !== null;
+}
+
+/**
+ * Each relay pair as it is served: the row the apps show under the other, and that row's id
+ * (`relay_of`). The earlier carrier's copy goes under the scan it repeats, unless the copy alone
+ * says where it was: YunExpress and Yanwen tell Ecoscooting's scans with the town Ecoscooting's
+ * own leave out, Chronopost tells DPD's with the depot. The apps show the lower row's words, not
+ * its place.
+ */
+function relayLeads(events: readonly JsonObject[], relays: Map<string, string>): Map<string, string> {
+  const byId = new Map(events.map((event) => [String(event.id), event]));
+  return new Map([...relays].map(([copy, scan]): [string, string] => (
+    placed(byId.get(copy)!) && !placed(byId.get(scan)!) ? [scan, copy] : [copy, scan])));
+}
+
 /**
  * An API package row as it is served. Every scan gets a `place`: where its
  * free text locates it, or null. Places are worked out when the package is
  * served, so improving the gazetteer improves every parcel, old ones
  * included. A universal provider's copy of a confirmed carrier's scan is left
  * out (providerCopies.ts), so is Peek's own opening row once carrier scans
- * reach back to it (see `timeline`), and an earlier carrier's relay copy of a
- * scan names that scan (`relay_of`, see relayCopies.ts).
+ * reach back to it (see `timeline`), and a row of a relay pair names the row it
+ * is shown under (`relay_of`, see `relayLeads` and relayCopies.ts).
  */
 export function withEventPlaces(row: JsonObject): JsonObject {
   const stored = row;
   row = withoutServiceData(row);
   if (!Array.isArray(row.tracking_events) || !row.tracking_events.length) return row;
   const events = shownEvents(stored);
-  const relays = relayCopies({ ...row, tracking_events: events });
+  const relays = relayLeads(events, relayCopies({ ...row, tracking_events: events }));
   const shown = (event: JsonObject) => served(event, relays.get(String(event.id)));
   const carrierData = isRecord(row.carrier_data) ? row.carrier_data : {};
   try {

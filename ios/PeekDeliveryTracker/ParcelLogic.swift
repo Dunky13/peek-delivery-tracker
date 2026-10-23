@@ -133,9 +133,9 @@ extension Parcel {
         trackingEvents.sorted(by: Self.eventPrecedes)
     }
 
-    /// The journal's rows, newest first. An earlier carrier's copy of a scan
-    /// (`relayOf`) is a line under that scan, and keeps a row of its own when
-    /// that scan is not there.
+    /// The journal's rows, newest first. A scan of a relay pair (`relayOf`) is
+    /// a line under the scan it names, and keeps a row of its own when that
+    /// scan is not there.
     var journalEntries: [JournalEntry] {
         let byID = Dictionary(trackingEvents.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         var relays: [UUID: [TrackingEvent]] = [:]

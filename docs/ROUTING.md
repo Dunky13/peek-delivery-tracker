@@ -562,9 +562,12 @@ A parcel often changes carrier at the border. The origin history is always kept.
   words, within a minute of them. Both rows are stored, since the same rule now and then
   pairs two scans of their own. A row of the earlier carrier at the same stage as another
   source's, within 60 s either way, is served with `relay_of`, that row's id (closest pairs
-  first, one pair per row). The apps show its words as a line under that row instead of a
-  step of its own. Of a pair, the row stored second announces no push or link alert, and
-  the delivered email quotes the other one ([`relayCopies.ts`](../src/server/relayCopies.ts)).
+  first, one pair per row); when only the earlier carrier's row says where the scan was, the
+  other row is served with `relay_of` instead. The apps show the words of the row with
+  `relay_of` as a line under the other row instead of a step of its own. Of a pair, the row
+  stored second announces no push or link alert, and the delivered email quotes the row
+  without `relay_of` ([`relayCopies.ts`](../src/server/relayCopies.ts),
+  [`eventPlaces.ts`](../src/server/eventPlaces.ts)).
 - Compatibility: AliExpress `L…CH` numbers keep a Swiss Post confirmation probe, and
   selected Swiss postal routes keep their Cainiao fallback. On such a route Swiss Post is
   asked first; once it has missed the item, Cainiao answers first. Cainiao's news asks Swiss
