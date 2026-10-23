@@ -11,14 +11,21 @@ struct ParcelDetailView: View {
     var release: (() -> Void)?
     /// Told whether the page has something of its own open over it, which the list's keys then leave alone.
     var covering: Binding<Bool>?
+    /// The deliveries are in front and the list has nothing open over it. Beside the list, the page asks for no rating
+    /// while the list has something open, as the list asks for none while the page has.
+    var listFree = true
 
     @EnvironmentObject private var store: ParcelStore
     @EnvironmentObject private var localizer: Localizer
+    @EnvironmentObject private var session: SessionStore
+    @EnvironmentObject private var links: ParcelLinkStore
+    @EnvironmentObject private var invitation: FriendInvitationStore
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.keyboardInFront) private var keyboardInFront
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var showingTitleEditor = false
     @State private var editedTitle = ""
@@ -92,6 +99,8 @@ struct ParcelDetailView: View {
         .onChange(of: parcel.flatMap(feedbackPage), initial: true) { _, page in
             feedback.show(page, through: parcel.map { store.feedbackClient(for: $0) })
         }
+        // A "Yes" that was the moment to ask for a rating: once its thanks has gone and nothing else is over the page.
+        .askingForReview(due: feedback.reviewDue, ready: reviewReady) { feedback.takeReviewMoment() }
         .navigationTitle(localizer.text("detail.label"))
         .navigationBarTitleDisplayMode(.inline)
         // The card says which parcel this is: no bar names the page over it.
@@ -186,6 +195,14 @@ struct ParcelDetailView: View {
             carrier: catalog.info(for: parcel.displayedCarrier, language: localizer.language).displayName,
             language: localizer.language
         )
+    }
+
+    /// The page could ask for a rating now (`ReviewPrompt`): it is in front of the reader with nothing over it, nothing
+    /// said at its foot and no offer of the delivery email, and nothing in the app stands in the way.
+    private var reviewReady: Bool {
+        guard let parcel, sample == nil, listFree, scenePhase == .active, !covered, feedback.word == nil else { return false }
+        if let email = store.deliveryEmail, emailOffer == .accepted || email.isOffered(on: parcel) { return false }
+        return ReviewPrompt.settled(session: session, store: store, links: links, invitation: invitation)
     }
 
     /// The card, from its top left corner: where its map is drawn from.
@@ -764,7 +781,11 @@ struct ParcelDetailView: View {
         errorMessage = nil
         Task {
             do { try await operation() }
-            catch { errorMessage = localizer.errorMessage(error) }
+            catch {
+                errorMessage = localizer.errorMessage(error)
+                // What failed in front of the reader keeps a rating from being asked for today.
+                ReviewPrompt().noteBadMoment(at: Date())
+            }
             working = false
         }
     }

@@ -169,7 +169,8 @@ extension ParcelFeedbackModel.Page {
     /// demo tells its stories with, is not something to judge.
     init?(parcel: Parcel, subject: ParcelFeedbackSubject, showsHistory: Bool, madeUp: Bool, carrier: String, language: AppLanguage) {
         guard !madeUp, let question = ParcelFeedbackQuestion(parcel: parcel, showsHistory: showsHistory) else { return nil }
-        self.init(subject: subject, question: question, scan: parcel.feedbackScan, carrier: carrier, language: language)
+        self.init(subject: subject, question: question, scan: parcel.feedbackScan, carrier: carrier, language: language,
+                  untroubled: parcel.untroubled())
     }
 }
 
@@ -210,6 +211,8 @@ final class ParcelFeedbackModel: ObservableObject {
         var carrier: String
         /// The language the page speaks, which an answer says too.
         var language: AppLanguage
+        /// Nothing about the parcel is wrong (`Parcel.untroubled`): a "Yes" may be the moment to ask for a rating.
+        var untroubled = false
     }
 
     /// The sheet that takes what is off.
@@ -244,10 +247,13 @@ final class ParcelFeedbackModel: ObservableObject {
     @Published var namingCarrier = false
     @Published private(set) var word: Word?
     @Published private(set) var sending = false
+    /// A "Yes" the service took was the moment to ask for a rating (`ReviewPrompt`), and the page has not asked yet.
+    @Published private(set) var reviewDue = false
 
     private let memory: ParcelFeedbackMemory
     private let now: () -> Date
     private let report: @MainActor (String, DeliveryAnalytics.Outcome) -> Void
+    private let review: ReviewPrompt
     private var client: ParcelFeedbackClient?
     /// The answer whose reason was given in place, for the note that may follow it.
     private var given: Words?
@@ -255,10 +261,12 @@ final class ParcelFeedbackModel: ObservableObject {
     private var visit: (site: String, left: Date?)?
 
     init(memory: ParcelFeedbackMemory = ParcelFeedbackMemory(), now: @escaping () -> Date = Date.init,
-         report: @escaping @MainActor (String, DeliveryAnalytics.Outcome) -> Void = { DeliveryAnalytics.shared.action($0, $1) }) {
+         report: @escaping @MainActor (String, DeliveryAnalytics.Outcome) -> Void = { DeliveryAnalytics.shared.action($0, $1) },
+         review: ReviewPrompt = ReviewPrompt()) {
         self.memory = memory
         self.now = now
         self.report = report
+        self.review = review
     }
 
     /// The question standing on the page, or nil while there is none to ask. It stands on every
@@ -276,6 +284,7 @@ final class ParcelFeedbackModel: ObservableObject {
             namingCarrier = false
             word = nil
             visit = nil
+            reviewDue = false
         }
         if before?.subject != page?.subject || before?.question != page?.question {
             moment = .ask
@@ -332,6 +341,8 @@ final class ParcelFeedbackModel: ObservableObject {
 
     func notQuite() {
         guard moment == .ask else { return }
+        // Something is off: no rating is asked for today.
+        review.noteBadMoment(at: now())
         moment = .reasons
     }
 
@@ -356,12 +367,14 @@ final class ParcelFeedbackModel: ObservableObject {
 
     /// The carrier's own site says something else.
     func wrongOnReturn() {
+        review.noteBadMoment(at: now())
         word = nil
         words = Words(id: UUID(), reasons: [], asked: .back)
     }
 
     /// The carrier's own site shows the parcel: the reader says whose it is.
     func elsewhere() {
+        review.noteBadMoment(at: now())
         namingCarrier = true
     }
 
@@ -410,11 +423,23 @@ final class ParcelFeedbackModel: ObservableObject {
             try await client.send(feedback)
             if counted { report(action, .success) }
             memory.rememberAnswer(page.subject, scan: page.scan)
+            // The reader found the page right: on a parcel with nothing wrong, the moment to ask for a rating.
+            if feedback.answer == .right, review.isDue(at: now(), calm: page.untroubled) { reviewDue = true }
             return true
         } catch {
             if counted { report(action, .error) }
+            review.noteBadMoment(at: now())
             return false
         }
+    }
+
+    /// The page asks for a rating now, a moment after the "Yes" that made it due: true once, with nothing said at its
+    /// foot and the rule still holding for what it shows. The page says when nothing else is over it.
+    func takeReviewMoment() -> Bool {
+        guard reviewDue else { return false }
+        reviewDue = false
+        guard let page, word == nil else { return false }
+        return review.take(at: now(), calm: page.untroubled)
     }
 }
 

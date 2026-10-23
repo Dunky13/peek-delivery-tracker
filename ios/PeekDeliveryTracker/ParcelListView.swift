@@ -209,6 +209,7 @@ private struct DeliveryListView: View {
     @EnvironmentObject private var session: SessionStore
     @EnvironmentObject private var localizer: Localizer
     @EnvironmentObject private var links: ParcelLinkStore
+    @EnvironmentObject private var invitation: FriendInvitationStore
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
     @Environment(\.scenePhase) private var scenePhase
@@ -269,6 +270,8 @@ private struct DeliveryListView: View {
     @State private var flightRound = 0
     @State private var postmarks = 0
     @State private var paper: DeliveredPaperBurst?
+    /// A parcel seen arriving was the moment to ask for a rating (`ReviewPrompt`), and the list has not asked yet.
+    @State private var reviewDue = false
 
     @ObservedObject private var catalog = CarrierCatalog.shared
 
@@ -296,7 +299,7 @@ private struct DeliveryListView: View {
         let layout = arrangement(of: delivered.arranged(store.parcels))
         // The cards that are others once the held parcels are let go: those leave without a trace, and are flown.
         let leaving = delivered.isEmpty ? [] : Set(layout.changing(into: arrangement(of: store.parcels)).keys)
-        return holdingDelivered(prompting(screen(layout, leaving: leaving)))
+        return reviewing(holdingDelivered(prompting(screen(layout, leaving: leaving))))
     }
 
     /// What a card's menu opens over the list, kept apart from the screen's own modifiers as `holdingDelivered` is.
@@ -317,6 +320,24 @@ private struct DeliveryListView: View {
                 ChangeCarrierView(parcel: parcel)
                     .environmentObject(store)
                     .environmentObject(localizer)
+            }
+    }
+
+    /// A parcel seen arriving asks for a rating a moment after its card has landed, while the list is still looked at
+    /// with nothing over it or at its foot. The days the list is in use count towards the first ask; a failure shown
+    /// on it keeps any ask away for the day.
+    private func reviewing(_ screen: some View) -> some View {
+        screen
+            .askingForReview(due: reviewDue, ready: reviewReady) {
+                guard reviewDue else { return false }
+                reviewDue = false
+                return ReviewPrompt().take(at: Date(), calm: true)
+            }
+            .onChange(of: scenePhase == .active && settled, initial: true) { _, inUse in
+                if inUse { ReviewPrompt().used(at: Date()) }
+            }
+            .onChange(of: failureShown) { _, shown in
+                if shown { ReviewPrompt().noteBadMoment(at: Date()) }
             }
     }
 
@@ -544,7 +565,7 @@ private struct DeliveryListView: View {
     private func page(_ parcelID: UUID, release: (() -> Void)? = nil) -> some View {
         ParcelDetailView(parcelID: parcelID, transition: parcelTransition,
                          sample: parcelID == FirstOpenJourney.parcelID ? sample : nil, release: release,
-                         covering: $pageCovered)
+                         covering: $pageCovered, listFree: isSelected && !listCovered)
             .environment(\.keyboardInFront, keyboardFree && !searchFocused)
     }
 
@@ -1228,6 +1249,29 @@ private struct DeliveryListView: View {
             && sitePage == nil && !prompts.covers && !hasCustomView && !reduceMotion
     }
 
+    /// Nothing in the app stands in the way of asking for a rating (`ReviewPrompt.settled`).
+    private var settled: Bool {
+        ReviewPrompt.settled(session: session, store: store, links: links, invitation: invitation)
+    }
+
+    /// The list could ask for a rating now: it is looked at with its cards at rest, and nothing is said at its foot or
+    /// over it, nor over the parcel beside it.
+    private var reviewReady: Bool {
+        watching && !listCovered && !pageCovered && delivered.isEmpty && flights.isEmpty && toast == nil
+            && store.undoParcel == nil && !shouldShowNotificationInvitation && !store.refreshing && !showingSearch && settled
+    }
+
+    /// Something the list opened stands over it: Add, the account, the filters, a page of the site, an alert, or what a
+    /// card's menu asked for. A parcel beside the list asks for no rating meanwhile.
+    private var listCovered: Bool {
+        showingAdd || showingAccount || showingFilters || sitePage != nil || !prompts.idle || actionError != nil
+    }
+
+    /// Something failed in front of the reader: the list's notice, a check, or an action.
+    private var failureShown: Bool {
+        scenePhase == .active && (store.errorMessage != nil || toast?.warning == true || actionError != nil)
+    }
+
     /// The parcel as it is now, for a card arranged as it was.
     private func shown(_ parcel: Parcel) -> Parcel {
         delivered.isEmpty ? parcel : store.parcels.first { $0.id == parcel.id } ?? parcel
@@ -1242,6 +1286,8 @@ private struct DeliveryListView: View {
     private func letGo() {
         let ids = delivered.ids
         guard !ids.isEmpty else { return }
+        // The reader saw a parcel arrive: the moment to ask for a rating, once its card has landed.
+        if ReviewPrompt().isDue(at: Date(), calm: settled) { reviewDue = true }
         let now = arrangement(of: store.parcels)
         let changes = arrangement(of: delivered.arranged(store.parcels)).changing(into: now)
         let visible = places.visible

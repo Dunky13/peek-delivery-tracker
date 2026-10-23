@@ -63,6 +63,9 @@ are virtual names, never real URLs.
   page is still in sight a moment later) and copying the link for Safari.
 - **Parcel feedback**: an answer that a parcel's page is right or wrong, or naming the
   carrier of a parcel none was found for. Never the reasons, the words or the parcel.
+- **Rating** (iPhone): each time the app asks for an App Store rating with the system's
+  prompt, on the screen it asks from: `parcel` after a "Yes" there, `deliveries` after a
+  parcel seen arriving. Apple doesn't say whether the prompt showed, so these are asks.
 - **Discovery**: search used (never the query), filters, sorting.
 - **Friends**: profile save, invitation create/revoke/accept/share, remove, disable.
 - **Settings**: language, appearance, notifications, widgets, export,

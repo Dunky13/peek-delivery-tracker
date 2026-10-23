@@ -50,7 +50,8 @@ final class ParcelFeedbackTests: XCTestCase {
     /// A page as one visit holds it: another visit is another model over the same memory.
     private func visit(_ page: ParcelFeedbackModel.Page, _ sent: Sent, _ store: UserDefaults, _ clock: Clock) -> ParcelFeedbackModel {
         let model = ParcelFeedbackModel(memory: ParcelFeedbackMemory(defaults: store, now: { clock.now }), now: { clock.now },
-                                        report: { name, outcome in sent.counted.append("\(name) \(outcome.rawValue)") })
+                                        report: { name, outcome in sent.counted.append("\(name) \(outcome.rawValue)") },
+                                        review: ReviewPrompt(defaults: store))
         sent.model = model
         model.show(page, through: sent.client)
         return model
