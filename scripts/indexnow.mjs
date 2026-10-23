@@ -1,15 +1,19 @@
-// Tells IndexNow which pages a deploy added to the sitemap or redated, so that Bing, whose index
-// most search visitors come through, and the other engines that listen read them within days.
-// deploy.yml saves the live sitemap before the deploy and runs this once the new site answers:
+// Tells IndexNow which pages were added to the sitemap or redated since it last took the site's
+// pages, so that Bing, whose index most search visitors come through, and the other engines that
+// listen read them within days. deploy.yml runs this once a deploy is in:
 //
-//   node scripts/indexnow.mjs --before=<saved sitemap> https://peek.example.com
+//   node scripts/indexnow.mjs --since=refs/indexnow/submitted https://peek.example.com
 //   node scripts/indexnow.mjs --all https://peek.example.com     (every page of the sitemap)
 //
-// A page is submitted when it is new or its <lastmod> changed; one that left the sitemap is
-// not. Without a saved sitemap nothing is submitted. --dry-run lists the pages and sends
-// nothing; --endpoint=<url> asks one engine directly, such as https://www.bing.com/indexnow.
-// A refusal or an unreachable engine exits with 1, which the deploy shows but ignores.
-import { readFileSync } from 'node:fs';
+// --since names the ref of origin that keeps the sitemap IndexNow last took. A page is submitted
+// when that sitemap lacks it or dates it otherwise; one that left the sitemap is not. Once
+// IndexNow takes them all, the ref moves to the sitemap just read, and only then: the pages of a
+// deploy that told IndexNow nothing (a refusal, a failed step) go with the next run. Where origin
+// has no such ref, nothing is submitted and the ref starts at the live sitemap. --dry-run lists
+// the pages, and sends and moves nothing; --endpoint=<url> asks one engine directly, such as
+// https://www.bing.com/indexnow. A refusal or an unreachable engine exits with 1, which the deploy
+// shows but ignores.
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -21,7 +25,9 @@ export const INDEXNOW_KEY = 'dba8d6fc9878f88c622a3c7363b75bed'; // gitleaks:allo
 export const DEFAULT_ENDPOINT = 'https://api.indexnow.org/indexnow';
 export const MAX_URLS_PER_REQUEST = 10_000;
 const TIMEOUT_MS = 30_000;
-const USAGE = 'Usage: node scripts/indexnow.mjs (--before=<saved sitemap> | --all) [--dry-run] [--endpoint=<url>] https://peek.example.com';
+const USAGE = 'Usage: node scripts/indexnow.mjs (--since=<ref> | --all) [--dry-run] [--endpoint=<url>] https://peek.example.com';
+/** The file of the ref's commits that holds the sitemap. */
+const SITEMAP_FILE = 'sitemap.xml';
 
 const entities = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
 
@@ -115,15 +121,31 @@ async function readSitemap(origin, fetchImpl) {
     signal: AbortSignal.timeout(TIMEOUT_MS),
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return parseSitemap(await response.text());
+  return response.text();
 }
 
-function readSaved(file) {
-  try {
-    return parseSitemap(readFileSync(file, 'utf8'));
-  } catch {
-    return [];
-  }
+const git = (cwd, args, input = '') => execFileSync('git', args, { cwd, input, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
+
+/**
+ * The sitemap IndexNow last took, as `ref` of origin keeps it: the ref's commit and the sitemap's
+ * text, or null where origin has no such ref.
+ */
+export function readSubmitted(ref, cwd) {
+  if (!git(cwd, ['ls-remote', 'origin', ref]).trim()) return null;
+  git(cwd, ['fetch', '--quiet', '--no-tags', 'origin', `+${ref}:${ref}`]);
+  return { commit: git(cwd, ['rev-parse', ref]).trim(), xml: git(cwd, ['show', `${ref}:${SITEMAP_FILE}`]) };
+}
+
+/**
+ * Moves `ref` of origin to a commit of the sitemap `xml` that follows `parent`, the commit it was
+ * read at. The push is not forced, so it fails if another run moved the ref since.
+ */
+export function recordSubmitted(ref, { xml, parent, message }, cwd) {
+  const blob = git(cwd, ['hash-object', '-w', '--stdin'], xml).trim();
+  const tree = git(cwd, ['mktree'], `100644 blob ${blob}\t${SITEMAP_FILE}\n`).trim();
+  const commit = git(cwd, ['commit-tree', tree, ...(parent ? ['-p', parent] : []), '-m', message]).trim();
+  git(cwd, ['push', '--quiet', 'origin', `${commit}:${ref}`]);
+  return commit;
 }
 
 function httpOrigin(address) {
@@ -135,57 +157,86 @@ function httpOrigin(address) {
   }
 }
 
-/** Runs the command line `args` and returns its exit code. */
-export async function run(args, { fetchImpl = fetch, log = console.log } = {}) {
+/**
+ * Runs the command line `args` and returns its exit code. `cwd` is the clone of the repository
+ * whose origin keeps the ref of --since.
+ */
+export async function run(args, { fetchImpl = fetch, log = console.log, cwd = process.cwd() } = {}) {
   const flags = new Set();
   const values = new Map();
   const positional = [];
   for (const argument of args) {
-    const option = argument.match(/^--(?:(all|dry-run)|(before|endpoint)=(.+))$/);
+    const option = argument.match(/^--(?:(all|dry-run)|(since|endpoint)=(.+))$/);
     if (option?.[1]) flags.add(option[1]);
     else if (option) values.set(option[2], option[3]);
     else positional.push(argument);
   }
   const origin = positional.length === 1 && !positional[0].startsWith('--') ? httpOrigin(positional[0]) : null;
-  const before = values.get('before');
+  const since = values.get('since');
   const endpoint = values.get('endpoint') ?? DEFAULT_ENDPOINT;
-  if (!origin || !httpOrigin(endpoint) || flags.has('all') === (before !== undefined)) {
+  if (!origin || !httpOrigin(endpoint) || flags.has('all') === (since !== undefined) || (since !== undefined && !since.startsWith('refs/'))) {
     log(USAGE);
     return 2;
   }
+  const dryRun = flags.has('dry-run');
 
-  let saved = null;
-  if (before !== undefined) {
-    saved = readSaved(before);
-    if (saved.length === 0) {
-      log(`${before} holds no sitemap saved before the deploy: nothing is submitted. --all submits every page.`);
-      return 0;
+  let submitted = null;
+  if (since !== undefined) {
+    try {
+      submitted = readSubmitted(since, cwd);
+    } catch (error) {
+      log(`${since} could not be read from origin: ${reason(error)}`);
+      return 1;
     }
   }
-  let pages;
+  let xml;
   try {
-    pages = await readSitemap(origin, fetchImpl);
+    xml = await readSitemap(origin, fetchImpl);
   } catch (error) {
     log(`${origin}/sitemap.xml could not be read: ${reason(error)}`);
     return 1;
   }
+  const pages = parseSitemap(xml);
+  if (pages.length === 0) {
+    log(`${origin}/sitemap.xml lists no page: nothing is submitted.`);
+    return 1;
+  }
+  /** Moves the ref of --since to the live sitemap, and says whether it could. */
+  const record = message => {
+    if (since === undefined || dryRun) return true;
+    try {
+      recordSubmitted(since, { xml, parent: submitted?.commit ?? null, message }, cwd);
+      log(`${since} now holds the live sitemap.`);
+      return true;
+    } catch (error) {
+      log(`${since} could not be moved: ${reason(error)}`);
+      return false;
+    }
+  };
+  if (since !== undefined && !submitted) {
+    log(`Origin has no ${since}: nothing is submitted, and ${dryRun ? 'it would start' : 'it starts'} at the live sitemap,`
+      + ' which the next run compares with. --all submits every page.');
+    return record(`Start at the sitemap of ${pages.length} pages`) ? 0 : 1;
+  }
+
   const { host } = new URL(origin);
-  const urls = pagesToSubmit(pages, saved, host);
+  const urls = pagesToSubmit(pages, submitted && parseSitemap(submitted.xml), host);
   const elsewhere = pages.filter(page => !onHost(page.url, host)).length;
-  log(`${origin}/sitemap.xml lists ${pages.length} pages, ${urls.length} of them ${saved ? 'new or redated' : `on ${host}`}.`
+  log(`${origin}/sitemap.xml lists ${pages.length} pages, ${urls.length} of them ${submitted ? `new or redated since ${since}` : `on ${host}`}.`
     + (elsewhere ? ` ${elsewhere} on another host are left out.` : ''));
   if (urls.length === 0) {
     log('Nothing to submit.');
     return 0;
   }
-  if (flags.has('dry-run')) {
+  if (dryRun) {
     for (const url of urls) log(url);
     log(`Dry run: ${urls.length} pages would go to ${endpoint} in ${requestBodies(urls, origin).length} requests. Nothing was sent.`);
     return 0;
   }
   const accepted = await submit(urls, origin, { endpoint, fetchImpl, log });
   log(`Submitted ${accepted} of ${urls.length} pages to ${endpoint}.`);
-  return accepted === urls.length ? 0 : 1;
+  if (accepted < urls.length) return 1;
+  return record(`Submit ${urls.length} pages to ${endpoint}`) ? 0 : 1;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

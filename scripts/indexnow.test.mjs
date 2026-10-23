@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { after, describe, it } from 'node:test';
 import {
-  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, decodeXml, pagesToSubmit, parseSitemap, requestBodies, run, submit,
+  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, decodeXml, pagesToSubmit, parseSitemap, readSubmitted, requestBodies, run, submit,
 } from './indexnow.mjs';
 
 const origin = 'https://peek.example.test';
@@ -134,35 +135,81 @@ describe('submitting', () => {
 describe('the command', () => {
   const directory = mkdtempSync(path.join(tmpdir(), 'indexnow-'));
   after(() => rmSync(directory, { recursive: true, force: true }));
-  const saved = (name, text) => {
-    const file = path.join(directory, name);
-    writeFileSync(file, text);
-    return file;
+  const ref = 'refs/indexnow/submitted';
+  // A clone whose origin is a bare repository, as the Deploy workflow's checkout of the app's.
+  let clones = 0;
+  const repository = () => {
+    const root = path.join(directory, `repository-${clones += 1}`);
+    const clone = path.join(root, 'clone');
+    mkdirSync(clone, { recursive: true });
+    const git = (...args) => execFileSync('git', args, { cwd: clone, encoding: 'utf8' }).trim();
+    execFileSync('git', ['init', '--quiet', '--bare', path.join(root, 'origin.git')]);
+    git('init', '--quiet');
+    git('config', 'user.name', 'CI');
+    git('config', 'user.email', 'ci@example.com');
+    git('remote', 'add', 'origin', path.join(root, 'origin.git'));
+    const atOrigin = () => git('ls-remote', 'origin', ref).split('\t')[0] || null;
+    return { clone, git, atOrigin };
   };
   const live = sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-17'), page(`${origin}/guides/new`, '2026-10-17')]);
-  const command = async (args, xml = live, status = 200) => {
+  const command = async (args, xml = live, status = 200, cwd = directory) => {
     const lines = [];
     const io = engine(xml, status);
-    const code = await run(args, { fetchImpl: io.fetchImpl, log: line => lines.push(line) });
+    const code = await run(args, { fetchImpl: io.fetchImpl, log: line => lines.push(line), cwd });
     return { code, lines, ...io };
   };
 
-  it('submits what changed since the sitemap saved before the deploy', async () => {
-    const before = saved('before.xml', sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-01')]));
-    const { code, lines, gets, posts } = await command([`--before=${before}`, `${origin}/`]);
+  it('starts the ref at the live sitemap, submitting nothing, where origin has none', async () => {
+    const { clone, atOrigin } = repository();
+    const dry = await command([`--since=${ref}`, '--dry-run', origin], live, 200, clone);
+    assert.deepEqual([dry.code, dry.posts.length, atOrigin()], [0, 0, null]);
+    const { code, lines, posts } = await command([`--since=${ref}`, origin], live, 200, clone);
+    assert.equal(code, 0);
+    assert.equal(posts.length, 0);
+    assert.match(lines.join('\n'), /nothing is submitted/);
+    assert.equal(readSubmitted(ref, clone)?.xml, live);
+  });
+
+  it('submits what changed since the sitemap IndexNow last took, then moves the ref to the live one', async () => {
+    const { clone, git, atOrigin } = repository();
+    const earlier = sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-01'), page(`${origin}/guides/gone`, '2026-10-01')]);
+    await command([`--since=${ref}`, origin], earlier, 200, clone);
+    const start = atOrigin();
+    const { code, lines, gets, posts } = await command([`--since=${ref}`, `${origin}/`], live, 200, clone);
     assert.equal(code, 0);
     assert.deepEqual(gets, [`${origin}/sitemap.xml`]);
     assert.deepEqual(posts.map(post => post.body.urlList), [[`${origin}/guides/a`, `${origin}/guides/new`]]);
-    assert.equal(lines.at(-1), `Submitted 2 of 2 pages to ${DEFAULT_ENDPOINT}.`);
+    assert.ok(lines.includes(`Submitted 2 of 2 pages to ${DEFAULT_ENDPOINT}.`));
+    assert.equal(readSubmitted(ref, clone)?.xml, live);
+    assert.equal(git('rev-parse', `${atOrigin()}^`), start);
   });
 
-  it('submits nothing, and says so, without a saved sitemap', async () => {
-    for (const before of [path.join(directory, 'missing.xml'), saved('empty.xml', ''), saved('error.html', '<html>Bad gateway</html>')]) {
-      const { code, lines, gets, posts } = await command([`--before=${before}`, origin]);
-      assert.equal(code, 0);
-      assert.equal(gets.length + posts.length, 0);
-      assert.match(lines.join('\n'), /nothing is submitted/);
-    }
+  it('keeps the ref where it is until IndexNow takes the pages, so a later run sends them', async () => {
+    const { clone, atOrigin } = repository();
+    await command([`--since=${ref}`, origin], sitemap([page(`${origin}/`)]), 200, clone);
+    const start = atOrigin();
+    // A refusal, then a deploy that changed nothing: the pages wait for a run IndexNow answers.
+    assert.equal((await command([`--since=${ref}`, origin], live, 429, clone)).code, 1);
+    assert.equal(atOrigin(), start);
+    const { code, posts } = await command([`--since=${ref}`, origin], live, 200, clone);
+    assert.equal(code, 0);
+    assert.deepEqual(posts.map(post => post.body.urlList), [[`${origin}/guides/a`, `${origin}/guides/new`]]);
+    assert.notEqual(atOrigin(), start);
+    // Then nothing is new, and the ref stays.
+    const moved = atOrigin();
+    const again = await command([`--since=${ref}`, origin], live, 200, clone);
+    assert.deepEqual([again.code, again.posts.length, again.lines.at(-1), atOrigin()], [0, 0, 'Nothing to submit.', moved]);
+  });
+
+  it('lists the pages without sending them or moving the ref on a dry run', async () => {
+    const { clone, atOrigin } = repository();
+    await command([`--since=${ref}`, origin], sitemap([page(`${origin}/`)]), 200, clone);
+    const start = atOrigin();
+    const { code, lines, posts } = await command([`--since=${ref}`, '--dry-run', origin], live, 200, clone);
+    assert.equal(code, 0);
+    assert.equal(posts.length, 0);
+    assert.match(lines.at(-1), /^Dry run: 2 pages would go to .* in 1 requests\. Nothing was sent\.$/);
+    assert.equal(atOrigin(), start);
   });
 
   it('submits every page with --all, to the engine asked', async () => {
@@ -172,17 +219,11 @@ describe('the command', () => {
     assert.equal(posts[0].body.urlList.length, 3);
   });
 
-  it('lists the pages without sending them on a dry run', async () => {
-    const { code, lines, posts } = await command(['--all', '--dry-run', origin]);
-    assert.equal(code, 0);
-    assert.equal(posts.length, 0);
-    assert.match(lines.at(-1), /^Dry run: 3 pages would go to .* in 1 requests\. Nothing was sent\.$/);
-  });
-
-  it('exits with 1 when IndexNow refuses or the sitemap cannot be read, and 2 when misused', async () => {
+  it('exits with 1 when IndexNow refuses or the sitemap cannot be read or lists nothing, and 2 when misused', async () => {
     assert.equal((await command(['--all', origin], live, 429)).code, 1);
     assert.equal((await command(['--all', origin], null)).code, 1);
-    for (const args of [[origin], ['--all', `--before=${path.join(directory, 'x')}`, origin], ['--all'],
+    assert.equal((await command(['--all', origin], '<html>Bad gateway</html>')).code, 1);
+    for (const args of [[origin], ['--all', `--since=${ref}`, origin], ['--since=indexnow', origin], ['--all'],
       ['--all', 'peek.example.test'], ['--all', '--endpoint=nowhere', origin], ['--all', '--everything', origin]]) {
       assert.equal((await command(args)).code, 2, args.join(' '));
     }

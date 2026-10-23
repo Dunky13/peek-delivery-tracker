@@ -175,12 +175,16 @@ runs `deploy <commit>` over SSH on the target and the smoke test on `DEPLOY_URL`
 the key on the host to a command that accepts only that request and starts the published
 image.
 
-Once the deploy is in, even when the smoke test then fails, the pages it added to the sitemap
-or redated go to IndexNow ([indexnow.mjs](../scripts/indexnow.mjs)), which Bing and the
-engines using its index read.
-Its key is public by design, in a file of its name at the root of `public`. A refusal is
-shown but never fails the deploy. To submit every page of the sitemap, run
-`node scripts/indexnow.mjs --all https://peektracker.com`.
+After every deploy that started, even one whose smoke test failed, a job of its own tells
+IndexNow ([indexnow.mjs](../scripts/indexnow.mjs)), which Bing and the engines using its index
+read, about the pages added to the sitemap or redated since it last took them. The ref
+`refs/indexnow/submitted` keeps that sitemap (`git fetch origin refs/indexnow/submitted` and
+`git log -p FETCH_HEAD` show it) and moves only once IndexNow takes every page, so pages a
+deploy could not send go with the next. The job alone may push; the deploy's token stays
+read-only. Its key is public by design, in a file of its name at the root of `public`. A
+refusal is shown but never fails the deploy. To send the pages sooner, run
+`node scripts/indexnow.mjs --since=refs/indexnow/submitted https://peektracker.com`
+(`--dry-run` lists them; `--all` submits every page of the sitemap and leaves the ref alone).
 
 ## Delivery email
 

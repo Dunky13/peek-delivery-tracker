@@ -77,15 +77,22 @@ it('waits in a job a newer commit replaces, and deploys in one that is never cut
   }
 });
 
-// A live deploy whose smoke check failed still tells IndexNow: the next deploy compares with the
-// sitemap this one put there, so its pages would never be sent.
-it('tells IndexNow about a live deploy even when the smoke check fails, without ever failing it', () => {
-  const deploy = job(read('.github/workflows/deploy.yml'), 'deploy');
-  assert.match(step(deploy, DEPLOY_STEP), /\n {8}id: deploy\n/);
-  const indexNow = step(deploy, 'Tell IndexNow about new and redated pages');
-  assert.ok(deploy.indexOf('- name: Tell IndexNow') > deploy.indexOf('- name: Check the public site'));
-  assert.match(indexNow, /\n {8}if: \$\{\{ !cancelled\(\) && steps\.deploy\.outcome == 'success' \}\}\n/);
-  assert.match(indexNow, /\n {8}continue-on-error: true\n/);
+// IndexNow compares the live sitemap with the one it last took (refs/indexnow/submitted), so it
+// may run after any deploy that started, even one whose smoke check failed: the pages of a deploy
+// it missed go with the next. It runs in a job of its own, which alone may push, and never fails.
+it('tells IndexNow after every deploy that started, from a job of its own, without ever failing it', () => {
+  const workflow = read('.github/workflows/deploy.yml');
+  const deploy = job(workflow, 'deploy');
+  assert.doesNotMatch(deploy, /indexnow|sitemap|contents: write/i);
+  assert.match(workflow, /\npermissions:\n {2}contents: read\n/);
+  const indexNow = job(workflow, 'indexnow');
+  assert.match(indexNow, /\n {4}needs: \[settle, deploy\]\n {4}if: \$\{\{ !cancelled\(\) && needs\.deploy\.result != 'skipped' \}\}\n/);
+  assert.match(indexNow, /\n {4}permissions:\n {6}contents: write\n {4}steps:/);
+  assert.match(indexNow, /concurrency:\n {6}group: indexnow\n {6}cancel-in-progress: false\n/);
+  assert.match(indexNow, /ref: \$\{\{ needs\.settle\.outputs\.commit \}\}/);
+  const tell = step(indexNow, 'Tell IndexNow about new and redated pages');
+  assert.match(tell, /\n {8}continue-on-error: true\n/);
+  assert.match(tell, /run: node scripts\/indexnow\.mjs --since=refs\/indexnow\/submitted "\$DEPLOY_URL"\n/);
 });
 
 // The app names its Sentry release after the image's commit; telling Sentry about a deploy is
