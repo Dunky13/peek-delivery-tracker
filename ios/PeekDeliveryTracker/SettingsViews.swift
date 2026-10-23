@@ -426,6 +426,14 @@ struct AccountView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("settings.homePage")
+                        settingsDivider
+                        // A mail to Peek, open at any time, under the version it would be about.
+                        Link(destination: AppConfiguration.feedbackURL()) {
+                            SettingsRow(title: localizer.text("settings.sendFeedback"),
+                                        detail: localizer.text("settings.version", ["version": AppConfiguration.version]), chevron: true)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("settings.feedback")
                     }
                 }
                 .padding(24)

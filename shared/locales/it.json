@@ -780,6 +780,8 @@
   "settings.yourData": "I tuoi dati",
   "settings.deliveryUpdates": "Notifiche",
   "settings.off": "Disattivati",
+  "settings.sendFeedback": "Invia feedback",
+  "settings.version": "Versione {{version}}",
   "friends.yourSharing": "Cosa condividi",
   "friends.introSummary": "Condividi francobolli e traguardi delle consegne con gli amici.",
   "friends.stampCount": "{{count}} francobolli",

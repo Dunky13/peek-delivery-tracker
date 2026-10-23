@@ -780,6 +780,8 @@
   "settings.yourData": "Twoje dane",
   "settings.deliveryUpdates": "Powiadomienia",
   "settings.off": "Wyłączone",
+  "settings.sendFeedback": "Wyślij opinię",
+  "settings.version": "Wersja {{version}}",
   "friends.yourSharing": "Co udostępniasz",
   "friends.introSummary": "Udostępniaj znajomym znaczki i ważne momenty dostaw.",
   "friends.stampCount": "{{count}} znaczków",

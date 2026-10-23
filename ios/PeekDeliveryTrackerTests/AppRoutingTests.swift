@@ -226,6 +226,12 @@ final class AppRoutingTests: XCTestCase {
         XCTAssertEqual(AppConfiguration.linkHosts(in: "https://delivery.plhery.com delivery.plhery.com:443 localhost user@old.example.com *.example.com -a.example.com"), [])
     }
 
+    func testAMailToPeekNamesTheVersionAndNothingElse() {
+        XCTAssertEqual(AppConfiguration.feedbackURL(version: "1.0.2").absoluteString,
+                       "mailto:hello@peektracker.com?subject=Peek%201.0.2%20feedback")
+        XCTAssertFalse(AppConfiguration.version.isEmpty)
+    }
+
     func testATappedWebLinkDeliveredTwiceOpensOnce() {
         let link = URL(string: "https://peektracker.com/p/k7Qm2xHd9RtW")!
         let other = URL(string: "https://peektracker.com/i/Ab7kP2mQ9xR4tY6n")!

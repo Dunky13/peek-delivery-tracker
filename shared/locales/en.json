@@ -780,6 +780,8 @@
   "settings.yourData": "Your data",
   "settings.deliveryUpdates": "Notifications",
   "settings.off": "Off",
+  "settings.sendFeedback": "Send feedback",
+  "settings.version": "Version {{version}}",
   "friends.yourSharing": "What you share",
   "friends.introSummary": "Share stamps and delivery milestones with friends.",
   "friends.stampCount": "{{count}} stamps",

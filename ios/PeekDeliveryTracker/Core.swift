@@ -75,6 +75,18 @@ struct AppConfiguration: Sendable {
     /// Where Peek's code is published.
     static let sourceURL = URL(string: "https://github.com/plhery/peek-delivery-tracker")!
 
+    /// The app's version, as the App Store shows it.
+    static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+
+    /// A mail to Peek. Its subject names the version it is about, and nothing else goes with it.
+    static func feedbackURL(version: String = version) -> URL {
+        var mail = URLComponents()
+        mail.scheme = "mailto"
+        mail.path = "hello@peektracker.com"
+        mail.queryItems = [URLQueryItem(name: "subject", value: "Peek \(version) feedback")]
+        return mail.url!
+    }
+
     private static func value(_ key: String) -> String {
         guard let raw = Bundle.main.object(forInfoDictionaryKey: key) as? String else { return "" }
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)

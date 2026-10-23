@@ -780,6 +780,8 @@
   "settings.yourData": "Tes données",
   "settings.deliveryUpdates": "Notifications",
   "settings.off": "Désactivées",
+  "settings.sendFeedback": "Envoyer un commentaire",
+  "settings.version": "Version {{version}}",
   "friends.yourSharing": "Ce que tu partages",
   "friends.introSummary": "Partage tes timbres et les moments clés de tes livraisons avec tes amis.",
   "friends.stampCount": "{{count}} timbres",

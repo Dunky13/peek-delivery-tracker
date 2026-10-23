@@ -124,6 +124,8 @@ final class LocalizationTests: XCTestCase {
             "native.appearance.dark",
             "native.error.authenticationExpired",
             "native.auth.invalidResponse",
+            "settings.sendFeedback",
+            "settings.version",
             "widget.galleryName",
             "widget.galleryDescription",
             "widget.settingTitle",

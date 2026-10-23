@@ -780,6 +780,8 @@
   "settings.yourData": "Deine Daten",
   "settings.deliveryUpdates": "Mitteilungen",
   "settings.off": "Aus",
+  "settings.sendFeedback": "Feedback senden",
+  "settings.version": "Version {{version}}",
   "friends.yourSharing": "Was du teilst",
   "friends.introSummary": "Teile Briefmarken und besondere Liefermomente mit Freunden.",
   "friends.stampCount": "{{count}} Briefmarken",

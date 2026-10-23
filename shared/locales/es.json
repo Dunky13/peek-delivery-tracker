@@ -780,6 +780,8 @@
   "settings.yourData": "Tus datos",
   "settings.deliveryUpdates": "Notificaciones",
   "settings.off": "Desactivadas",
+  "settings.sendFeedback": "Enviar comentarios",
+  "settings.version": "Versión {{version}}",
   "friends.yourSharing": "Lo que compartes",
   "friends.introSummary": "Comparte sellos y momentos clave de tus entregas con amigos.",
   "friends.stampCount": "{{count}} sellos",
