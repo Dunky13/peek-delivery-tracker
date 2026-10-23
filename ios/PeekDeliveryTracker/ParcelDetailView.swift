@@ -95,7 +95,7 @@ struct ParcelDetailView: View {
         .onChange(of: covered, initial: true) { _, covered in covering?.wrappedValue = covered }
         .onDisappear { covering?.wrappedValue = false }
         .parcelFeedback(feedback, busy: showingShare || showingAlerts || showingMap || carrierEditor != nil
-            || showingTitleEditor || showingDeleteConfirmation)
+            || showingTitleEditor || showingDeleteConfirmation || errorMessage != nil)
         .onChange(of: parcel.flatMap(feedbackPage), initial: true) { _, page in
             feedback.show(page, through: parcel.map { store.feedbackClient(for: $0) })
         }

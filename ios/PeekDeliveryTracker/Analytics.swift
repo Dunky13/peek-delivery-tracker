@@ -143,7 +143,7 @@ final class DeliveryAnalytics {
                     // Umami filters bare app user agents as bots. Keep the app suffix
                     // on a standard iOS-compatible agent; explicit payload fields identify native.
                     let osVersion = UIDevice.current.systemVersion.replacingOccurrences(of: ".", with: "_")
-                    request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS \(osVersion) like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1 DeliveryTracker/1.0", forHTTPHeaderField: "User-Agent")
+                    request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS \(osVersion) like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1 DeliveryTracker/\(AppConfiguration.version)", forHTTPHeaderField: "User-Agent")
                     if let cache { request.setValue(cache, forHTTPHeaderField: "x-umami-cache") }
                     request.httpBody = try JSONSerialization.data(withJSONObject: ["type": "event", "payload": Self.payload(event, configuration: configuration)])
                     let (data, response) = try await transport.data(for: request)
