@@ -92,6 +92,7 @@ struct ParcelDetailView: View {
             }
         }
         .background { if keyboard { keys } }
+        .focusedSceneValue(\.parcelMenu, MenuBar.shown && keyboard ? parcelMenu : nil)
         .onChange(of: covered, initial: true) { _, covered in covering?.wrappedValue = covered }
         .onDisappear { covering?.wrappedValue = false }
         .parcelFeedback(feedback, busy: showingShare || showingAlerts || showingMap || carrierEditor != nil
@@ -737,6 +738,14 @@ struct ParcelDetailView: View {
             if release == nil {
                 Button(localizer.text("detail.back")) { dismiss() }.keyboardShortcut(.escape, modifiers: [])
             }
+        }
+    }
+
+    /// The menu bar's Parcel menu, which the page answers.
+    private var parcelMenu: ParcelMenu? {
+        guard let parcel, sample == nil else { return nil }
+        return ParcelMenu(items: ParcelMenu.items(for: parcel, reader: store.viewerLink(for: parcel) != nil), busy: working) {
+            chose($0, on: parcel)
         }
     }
 

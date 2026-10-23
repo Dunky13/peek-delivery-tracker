@@ -47,6 +47,7 @@ struct PeekDeliveryTrackerApp: App {
                 .background { AppWindowAppearance(appearance: appearance) }
                 .tint(Brand.accent)
         }
+        .commands { PeekCommands(localizer: localizer) }
     }
 }
 

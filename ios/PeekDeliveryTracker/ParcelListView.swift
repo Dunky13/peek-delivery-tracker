@@ -38,6 +38,7 @@ struct ParcelListView: View {
         }
         .tint(Brand.ink)
         .background { if !showsFirstOpen { tabKeys } }
+        .focusedSceneValue(\.tabsMenu, MenuBar.shown && !showsFirstOpen ? TabsMenu(choose: choose) : nil)
         .accessibilityHidden(showsFirstOpen)
         .overlay {
             if showsFirstOpen {
@@ -65,9 +66,9 @@ struct ParcelListView: View {
     /// ⌘1, ⌘2 and ⌘3 choose the tabs, as the tab bar does, once nothing stands over them.
     private var tabKeys: some View {
         KeyboardShortcuts {
-            Button(localizer.text("native.deliveries")) { choose(0) }.keyboardShortcut("1", modifiers: .command)
-            Button(ExperimentalCopy(localizer: localizer).passport) { choose(1) }.keyboardShortcut("2", modifiers: .command)
-            Button(localizer.text("friends.title")) { choose(2) }.keyboardShortcut("3", modifiers: .command)
+            Button(localizer.text("native.deliveries")) { choose(0) }.keyboardShortcut(MenuKey.tab(0))
+            Button(ExperimentalCopy(localizer: localizer).passport) { choose(1) }.keyboardShortcut(MenuKey.tab(1))
+            Button(localizer.text("friends.title")) { choose(2) }.keyboardShortcut(MenuKey.tab(2))
         }
     }
 
@@ -555,6 +556,7 @@ private struct DeliveryListView: View {
         }
         .dropDestination(for: DroppedText.self) { items, _ in addDropped(items) }
         .background { keyboard(layout) }
+        .focusedSceneValue(\.deliveriesMenu, MenuBar.shown ? menu(layout) : nil)
         .safeAreaInset(edge: .top, spacing: 0) { DemoModeBar() }
         .navigationTitle(localizer.text("native.deliveries"))
         .navigationBarTitleDisplayMode(.inline)
@@ -611,10 +613,10 @@ private struct DeliveryListView: View {
             KeyboardShortcuts {
                 if keys.contains(.add) {
                     Button(localizer.text("app.addParcel")) { sharedDraft = nil; showingAdd = true }
-                        .keyboardShortcut("n", modifiers: .command)
+                        .keyboardShortcut(MenuKey.add)
                 }
                 if keys.contains(.find) {
-                    Button(localizer.text("view.search")) { find() }.keyboardShortcut("f", modifiers: .command)
+                    Button(localizer.text("view.search")) { find() }.keyboardShortcut(MenuKey.find)
                 }
                 if keys.contains(.undo), let parcel = store.undoParcel {
                     Button(localizer.text("app.undo")) { restore(parcel) }.keyboardShortcut("z", modifiers: .command)
@@ -632,6 +634,20 @@ private struct DeliveryListView: View {
                 }
             }
         }
+    }
+
+    /// What the menu bar's Add, Search and Refresh do now. Refresh also works where the list has no button.
+    private func menu(_ layout: DeliveryListLayout) -> DeliveriesMenu {
+        let keys = DeliveriesKey.available(
+            free: keyboardFree, typing: searchFocused, arrangement: windowArrangement, navigation: navigation,
+            cards: rows(layout), hasParcels: !store.parcels.isEmpty, canUndo: store.undoParcel != nil
+        )
+        return DeliveriesMenu(
+            add: keys.contains(.add) ? { sharedDraft = nil; showingAdd = true } : nil,
+            find: keys.contains(.find) ? find : nil,
+            refresh: keyboardFree && listShown && !store.parcels.isEmpty && !store.refreshing
+                ? { Task { await refreshFromButton() } } : nil
+        )
     }
 
     /// Opens the search with the cursor in it.
@@ -854,7 +870,7 @@ private struct DeliveryListView: View {
                     }.frame(width: 44, height: 44)
                 }
                 .disabled(store.refreshing)
-                .keyboardShortcut(keyboardFree ? KeyboardShortcut("r", modifiers: .command) : nil)
+                .keyboardShortcut(keyboardFree ? MenuKey.refresh : nil)
                 .accessibilityLabel(localizer.text(store.refreshing ? "app.refreshing" : "app.refresh"))
                 .accessibilityIdentifier("deliveries.refresh")
             }

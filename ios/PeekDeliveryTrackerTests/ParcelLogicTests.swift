@@ -2862,6 +2862,32 @@ extension ParcelLogicTests {
         }
     }
 
+    func testTheMenuBarsParcelMenuIsTheCardsWithoutOpenAndDimsTheSameItemsWithoutAParcel() {
+        let parcel = makeParcel()
+        XCTAssertEqual(ParcelMenu.items(for: parcel, reader: false), [
+            [.rename, .share, .copyTrackingNumber, .changeCarrier], [.archive], [.delete],
+        ])
+        XCTAssertEqual(ParcelMenu.placeholder, ParcelMenu.items(for: parcel, reader: false))
+        // Someone else's parcel, followed through its link: no carrier to change, nothing to copy the link hides.
+        var hidden = parcel
+        hidden.trackingNumber = ""
+        XCTAssertEqual(ParcelMenu.items(for: hidden, reader: true), [[.rename], [.archive], [.delete]])
+    }
+
+    func testTheMenuBarListsMailsKeysOnceEachBesideTheParcelsOwn() {
+        XCTAssertEqual(MenuKey.account, KeyboardShortcut(",", modifiers: .command))
+        XCTAssertEqual(MenuKey.add, KeyboardShortcut("n", modifiers: .command))
+        XCTAssertEqual(MenuKey.find, KeyboardShortcut("f", modifiers: .command))
+        XCTAssertEqual(MenuKey.refresh, KeyboardShortcut("r", modifiers: .command))
+        XCTAssertEqual((0..<3).map { MenuKey.tab($0).key.character }, ["1", "2", "3"])
+        let keys = [MenuKey.account, MenuKey.add, MenuKey.find, MenuKey.refresh] + (0..<3).map(MenuKey.tab)
+            + ParcelMenu.placeholder.joined().compactMap(\.shortcut)
+        XCTAssertEqual(keys.count, 10)
+        XCTAssertEqual(Set(keys.map { "\($0.key.character)\($0.modifiers.rawValue)" }).count, keys.count)
+        // A phone has no menu bar: its screens' own keys answer, as before.
+        XCTAssertFalse(MenuBar.shown)
+    }
+
     func testACopiedTrackingNumberIsTheOneItsCarriersSiteTakes() {
         XCTAssertEqual(TrackingNumberCopy.text("1Z999AA10123456784", carrier: .ups), "1Z999AA10123456784")
         // PostLogistics prints its references with a dash, and its site searches for them so.

@@ -105,10 +105,7 @@ struct AccountToolbarButton: View {
     @Environment(\.keyboardInFront) private var keyboardInFront
 
     var body: some View {
-        Button {
-            // ⌘, reaches the button under a sheet or a popover of its screen as well: it waits for them.
-            if !UIApplication.shared.windowCovered { action() }
-        } label: {
+        Button(action: open) {
             Group {
                 if let initial = session.user?.email?.first {
                     Text(String(initial).uppercased())
@@ -125,8 +122,14 @@ struct AccountToolbarButton: View {
             .contentShape(Circle())
         }
         .buttonStyle(TactileButtonStyle(scale: 0.94))
-        .keyboardShortcut(keyboardInFront ? KeyboardShortcut(",", modifiers: .command) : nil)
+        .keyboardShortcut(keyboardInFront ? MenuKey.account : nil)
+        .focusedSceneValue(\.accountMenu, MenuBar.shown && keyboardInFront ? AccountMenu(open: open) : nil)
         .accessibilityLabel(localizer.text("native.account"))
+    }
+
+    /// ⌘, reaches the button under a sheet or a popover of its screen as well: it waits for them.
+    private func open() {
+        if !UIApplication.shared.windowCovered { action() }
     }
 }
 
