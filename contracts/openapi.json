@@ -1970,7 +1970,7 @@
       "linkRules": [],
       "detectionRules": [
         {
-          "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+          "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
           "confidence": "high",
           "checksum": "s10"
         }
@@ -6455,7 +6455,12 @@
           ]
         }
       ],
-      "detectionRules": [],
+      "detectionRules": [
+        {
+          "pattern": "^(?:AL|AT|BA|BE|BG|CH|CY|CZ|DE|DK|EE|ES|FI|FR|GB|GR|HR|HU|IE|IS|IT|LI|LT|LU|LV|MD|ME|MK|MT|NL|NO|PL|PT|RO|RS|SE|SI|SK|TR|UA)[A-Z]{3}\\d{9}$",
+          "confidence": "low"
+        }
+      ],
       "trackingSearchUrl": "https://mydsv.com/track-shipment"
     },
     "dx": {
@@ -11046,6 +11051,11 @@
         }
       ],
       "detectionRules": [
+        {
+          "pattern": "^[CELR][A-Z]\\d{9}AE$",
+          "confidence": "high",
+          "checksum": "s10"
+        },
         {
           "pattern": "^[A-Z]{2}\\d{9}AE$",
           "confidence": "low",
@@ -30828,7 +30838,8 @@
       "timezone": "Asia/Shanghai",
       "tracking": {
         "mode": "automatic",
-        "adapter": "universal"
+        "adapter": "shouwu",
+        "recognitionRank": 63
       },
       "trackingUrlTemplate": "https://admin.shshouwu.com/track.html?q={trackingNumber}",
       "linkRules": [
