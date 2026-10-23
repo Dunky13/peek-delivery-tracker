@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { it } from 'node:test';
 import { execFileSync } from 'node:child_process';
 import { DEPLOY_JOB, DEPLOY_STEP, HANDOFF_JOB, MAX_WAIT_MS } from './deploy-gate.mjs';
@@ -96,11 +98,17 @@ it('normalizes the production image repository for mixed-case forks and configur
   const script = setup.split('run: |\n')[1];
   assert.ok(script, 'the image reference is set before Docker uses it');
   const commit = 'a'.repeat(40);
-  for (const repository of ['Dunky13/peek-delivery-tracker', 'CustomOwner/ConfiguredImage']) {
-    const output = execFileSync('sh', ['-c', script], {
-      encoding: 'utf8',
-      env: { ...process.env, IMAGE_REPOSITORY: repository, GITHUB_SHA: commit, GITHUB_ENV: '/dev/stdout' },
-    });
-    assert.equal(output.trim(), `IMAGE=ghcr.io/${repository.toLowerCase()}:${commit}`);
+  const directory = mkdtempSync(join(tmpdir(), 'peek-image-env-'));
+  try {
+    for (const [index, repository] of ['Dunky13/peek-delivery-tracker', 'CustomOwner/ConfiguredImage'].entries()) {
+      const envFile = join(directory, `${index}.env`);
+      execFileSync('sh', ['-c', script], {
+        encoding: 'utf8',
+        env: { ...process.env, IMAGE_REPOSITORY: repository, GITHUB_SHA: commit, GITHUB_ENV: envFile },
+      });
+      assert.equal(readFileSync(envFile, 'utf8').trim(), `IMAGE=ghcr.io/${repository.toLowerCase()}:${commit}`);
+    }
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
   }
 });
