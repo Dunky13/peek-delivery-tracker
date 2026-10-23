@@ -2885,7 +2885,9 @@ extension ParcelLogicTests {
         XCTAssertEqual(keys.count, 10)
         XCTAssertEqual(Set(keys.map { "\($0.key.character)\($0.modifiers.rawValue)" }).count, keys.count)
         // A phone has no menu bar: its screens' own keys answer, as before.
-        XCTAssertFalse(MenuBar.shown)
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            XCTAssertFalse(MenuBar.shown)
+        }
     }
 
     func testACopiedTrackingNumberIsTheOneItsCarriersSiteTakes() {
