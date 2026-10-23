@@ -22864,7 +22864,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-pt",
-      "recognitionRank": 894
+      "recognitionRank": 815
     },
     "trackingUrlTemplate": "https://tracking.dpd.pt/track-and-trace?reference={trackingNumber}",
     "linkRules": [
@@ -22890,6 +22890,15 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "low",
         "checksum": "dpd",
         "preferred": true
+      },
+      {
+        "pattern": "^\\d{14}$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^\\d{14}[0-9A-Z]$",
+        "confidence": "low",
+        "checksum": "dpd"
       }
     ],
     "trackingSearchUrl": "https://tracking.dpd.pt/track-and-trace"
@@ -30615,7 +30624,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Africa/Lagos",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "gig-logistics"
     },
     "trackingUrlTemplate": "https://giglogistics.com/track-shipment/?waybill={trackingNumber}",
     "linkRules": [
@@ -30665,7 +30674,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Australia/Sydney",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "sendle",
+      "recognitionRank": 64
     },
     "trackingUrlTemplate": "https://www.sendle.com/tracking?ref={trackingNumber}",
     "linkRules": [
@@ -30796,6 +30806,44 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://www.dayonetrack.com/"
+  },
+  "shouwu": {
+    "displayName": "Shouwu International",
+    "aliases": [
+      "SWE",
+      "守务国际",
+      "上海守务国际",
+      "Shanghai Shouwu International"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#be2c33",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "trackingUrlTemplate": "https://admin.shshouwu.com/track.html?q={trackingNumber}",
+    "linkRules": [
+      {
+        "domains": [
+          "admin.shshouwu.com"
+        ],
+        "pathPattern": "^/track\\.html$",
+        "params": [
+          "q"
+        ]
+      }
+    ],
+    "detectionRules": [
+      {
+        "pattern": "^SWECN\\d{12}YQ$",
+        "confidence": "high"
+      }
+    ],
+    "trackingSearchUrl": "https://admin.shshouwu.com/track.html"
   }
 } as const;
 
@@ -31631,7 +31679,8 @@ export const CARRIER_IDS = [
   "sendle",
   "trunkrs",
   "zto-international",
-  "dayone"
+  "dayone",
+  "shouwu"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
