@@ -78505,8 +78505,13 @@
   {
     "input": "L20001711000223891",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "whistl"
+    ],
+    "asked": [
+      "whistl"
+    ]
   },
   {
     "input": "L2680760J",
@@ -89530,9 +89535,11 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
-      "colis-prive"
+      "colis-prive",
+      "straightship"
     ],
     "asked": [
+      "straightship",
       "colis-prive"
     ]
   },
@@ -94276,8 +94283,13 @@
   {
     "input": "l11731111000252808",
     "carrier": "unknown",
-    "confidence": "none",
-    "candidates": []
+    "confidence": "low",
+    "candidates": [
+      "whistl"
+    ],
+    "asked": [
+      "whistl"
+    ]
   },
   {
     "input": "ll357362359lu",

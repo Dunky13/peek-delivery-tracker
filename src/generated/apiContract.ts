@@ -7802,7 +7802,12 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/tracking/([^/?#]+)/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^L\\d{17}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://web.parcelhub.net/Tracking"
   },
   "xdp": {
@@ -25567,6 +25572,10 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^STR(?:TD\\d{9}|TD\\d{16,17}|CA\\d{13})$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^STSH[A-Z]{2}\\d{11}$",
+        "confidence": "low"
       }
     ],
     "trackingSearchUrl": "https://www.straightship.com/"
