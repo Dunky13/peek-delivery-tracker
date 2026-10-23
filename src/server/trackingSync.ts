@@ -1944,11 +1944,18 @@ export class TrackingSyncService {
       });
       // One scan from two sources on clocks a zone apart: a provider's clock the scraper should fix. So is
       // a provider's scan stored whole hours after the carrier's copy of it, or dated past the check.
-      const misread = eventsToPersist.some((event) => {
+      const misread = eventsToPersist.find((event) => {
         const at = misdated.get(String(event.provider_event_id));
         return at !== undefined && !(Date.parse(String(event.occurred_at)) - at < 60 * 60 * 1_000);
       });
-      if ([...shared.shifted].some((id) => persistedIds.has(id)) || misread) anomalies = [...anomalies, 'provider_clock_offset'];
+      // The log line names the stored row of the scan: the row a copy repeats, or the copy's own.
+      const offsetScan = [...shared.shifted].find((id) => persistedIds.has(id)) ?? misread?.provider_event_id;
+      const anomalyScans: Partial<Record<SyncAnomalyCode, string>> = {};
+      if (offsetScan !== undefined) {
+        anomalies = [...anomalies, 'provider_clock_offset'];
+        const id = String(offsetScan);
+        anomalyScans.provider_clock_offset = matches.reused.get(id) ?? matches.skipped.get(id) ?? dated.reused.get(id) ?? id;
+      }
       await this.recordStatusObservations(eventsToPersist, sourceCarrierId, context, new Map([...matches.reused, ...matches.skipped]), [
         ...(fetched.earlierResult && fetched.earlierCarrierId
           ? localStatusObservationEvents(parcel, fetched.earlierResult, fetched.earlierCarrierId) : []),
@@ -1970,7 +1977,7 @@ export class TrackingSyncService {
         supportEvidence: trackingSupportEvidence(parcel, result, sourceCarrierId, outcome, preserveSummary),
       } as const;
       await audit.finish(completion);
-      audit.reportAnomalies(anomalies, completion);
+      audit.reportAnomalies(anomalies, completion, anomalyScans);
       return outcome === 'error' ? 'errors' : outcome;
     } catch (error) {
       context.signal?.throwIfAborted();

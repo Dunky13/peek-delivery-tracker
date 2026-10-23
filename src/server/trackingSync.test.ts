@@ -5740,6 +5740,7 @@ describe('scans a carrier and a universal provider both report', () => {
 
   it('stores once a scan a provider words its own way on a clock two hours early, and records the offset', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const offsets = anomalyLogs(vi.spyOn(observability, 'logOperationalEvent').mockImplementation(() => undefined), 'provider_clock_offset');
     const store = eventStore();
     const client = { ...store.client,
       acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
@@ -5773,6 +5774,8 @@ describe('scans a carrier and a universal provider both report', () => {
     // Down again: the copy stores nothing and still shows the offset.
     expect(await sync('in_transit')).toEqual({ batch: [], anomalies: expect.arrayContaining(['provider_clock_offset']) });
     expect(store.rows.size).toBe(2);
+    // Each line names the row both readings share.
+    expect(offsets().map((line) => (line as JsonObject).scan_id)).toEqual([copyId, copyId]);
   });
 
   it('does not take the carrier reply after a fallback for older history', async () => {

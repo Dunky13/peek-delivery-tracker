@@ -550,7 +550,9 @@ Key JSON events:
 - `tracking_sync_audit_write_failed`, `tracking_sync_audit_maintenance_failed`,
   `tracking_status_observation_write_failed`;
 - `tracking_sync_anomaly` (warning, by `attempt_id`): one per anomaly code of a check,
-  with the previous, reported and selected stage, the provider status and the event counts;
+  with the previous, reported and selected stage, the provider status and the event counts.
+  A `provider_clock_offset` line also has `scan_id`, the `provider_event_id` of the stored
+  row whose scan came on two clocks: the row a provider's copy repeats, or the copy's own;
 - `tracking_health_incident`: a health incident opened, still fails six hours on (warning,
   info for a direct step whose every failure a fallback step covered), recovered, or closed once no sample of it was left or the carrier answers without its
   direct step (info), with its `kind`, `subject`,

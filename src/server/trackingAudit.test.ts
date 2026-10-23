@@ -259,6 +259,18 @@ describe('review signals', () => {
     expect(captureOperationalError).not.toHaveBeenCalled();
   });
 
+  it('names the stored row an anomaly is about on its line only', () => {
+    const audit = new TrackingSyncAudit({} as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'usps', 'in_transit', { trigger: 'scheduled' });
+    audit.reportAnomalies(['provider_clock_offset', 'early_stage_regression'], { providerStatus: 'in_transit' },
+      { provider_clock_offset: 'usps:synthetic-scan' });
+    const lines = vi.mocked(logOperationalEvent).mock.calls.filter(([event]) => event === 'tracking_sync_anomaly')
+      .map(([, fields]) => fields as Record<string, unknown>);
+    expect(lines.map((line) => [line.anomaly_code, line.scan_id])).toEqual([
+      ['provider_clock_offset', 'usps:synthetic-scan'], ['early_stage_regression', undefined]]);
+    expect(lines[1]).not.toHaveProperty('scan_id');
+  });
+
   it('acknowledges a recovery or a closing without Sentry, and an outage once Sentry has it', async () => {
     const recovered = { id: 'recovered-incident', kind: 'provider', subject: '17TRACK', state: 'recovered',
       attempts: 5, failures: 0, window_hours: 24 };

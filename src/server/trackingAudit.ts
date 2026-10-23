@@ -305,17 +305,20 @@ export class TrackingSyncAudit {
 
   /**
    * Anomalies are review signals, not errors: the attempt keeps their codes, and each
-   * is a log line and a count. None reaches Sentry.
+   * is a log line and a count. None reaches Sentry. `scans` names the stored row an
+   * anomaly is about, by its `provider_event_id`, where one is.
    */
   reportAnomalies(
     anomalies: SyncAnomalyCode[],
     completion: Omit<SyncAuditCompletion, 'outcome' | 'anomalyCodes' | 'error'>,
+    scans: Partial<Record<SyncAnomalyCode, string>> = {},
   ): void {
     for (const anomalyCode of new Set(anomalies)) {
       try { recordSyncAnomaly(this.configuredCarrier, anomalyCode); } catch { /* metrics only */ }
       logOperationalEvent('tracking_sync_anomaly', {
         ...this.logContext(),
         anomaly_code: anomalyCode,
+        ...(scans[anomalyCode] ? { scan_id: scans[anomalyCode] } : {}),
         previous_stage: this.previousStage,
         provider_status: completion.providerStatus ?? null,
         reported_stage: completion.reportedStage ?? null,
