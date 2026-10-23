@@ -1184,6 +1184,22 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "SF Express tracking: waybill numbers, statuses and delivery",
       "name": "SF Express",
       "color": "#dc1e32"
+    },
+    {
+      "id": "straightship",
+      "catalog": "straightship",
+      "slug": "straightship-tracking",
+      "title": "Straightship tracking: STRTD numbers, statuses and delivery",
+      "name": "Straightship",
+      "color": "#6aae66"
+    },
+    {
+      "id": "correios-br",
+      "catalog": "correios-br",
+      "slug": "correios-brazil-tracking",
+      "title": "Correios Brazil tracking: codes, statuses and customs",
+      "name": "Correios Brazil",
+      "color": "#ffd500"
     }
   ],
   "de": [

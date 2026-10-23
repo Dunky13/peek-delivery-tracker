@@ -3,14 +3,14 @@ title: Poste Italiane tracking: codice, stati, giacenza e ritiro
 description: Tracking Poste Italiane: dove trovi il codice spedizione, cosa vogliono dire gli stati, giacenza, Punto Poste, reclami e numero verde per parlare con un operatore.
 slug: poste-italiane-tracking
 published: 2026-10-11
-updated: 2026-10-11
+updated: 2026-10-23
 ---
 
 Poste Italiane consegna i pacchi dei negozi online italiani e quelli che arrivano dall'estero. Per seguire il tuo pacco cerca il codice spedizione in «Cerca Spedizioni» su poste.it o nell'App Poste Italiane, oppure incollalo nel box qui sopra. Il codice è sulla ricevuta di chi ha spedito; se hai comprato online, te lo dà il venditore.
 
 ## Codice spedizione Poste Italiane: dove si trova e com'è fatto
 
-Poste lo chiama «codice spedizione». Sulla ricevuta o sulla lettera di vettura sta sotto il codice a barre: scrivilo senza spazi e senza trattino; vanno bene sia le maiuscole sia le minuscole. Per un ordine online guarda l'e-mail di spedizione del negozio o la pagina dell'ordine. Se il mittente l'ha attivato, con Scegli Tu Poste ti manda anche un'e-mail e/o un SMS con la data di consegna prevista e un link. Il «Codice Prenotazione Ritiro» (CP più cifre) serve a prenotare il ritiro a domicilio, non a seguire il pacco.
+Poste lo chiama «codice spedizione». Sulla ricevuta o sulla lettera di vettura sta sotto il codice a barre: scrivilo senza spazi e senza trattino; vanno bene sia le maiuscole sia le minuscole. Per un ordine online guarda l'e-mail di spedizione del negozio o la pagina dell'ordine. Se il mittente l'ha attivato, con Scegli Tu Poste ti manda anche un'e-mail e/o un SMS con la data di consegna prevista e un link. Il «Codice Prenotazione Ritiro» (CP più cifre) serve a prenotare il ritiro a domicilio, non a seguire il pacco. Per la Posta Ordinaria, che prima si chiamava Posta4, Poste scrive che «non è possibile conoscere l'esito della consegna».
 
 I codici hanno forme diverse. Questi sono inventati:
 
@@ -84,11 +84,15 @@ Per la privacy, l'assistenza risponde solo all'intestatario della registrazione:
 
 ## Seguire un pacco Poste Italiane con Peek
 
-[Peek](/) riconosce subito Poste Italiane dai codici `RA`, `1UW`, `3UW`, `2IMA` e `5P`. Un codice `5P` di sole cifre che vale anche per La Poste viene chiesto a entrambi, prima a Poste Italiane se sei in Italia; i codici in stile SDA vengono chiesti solo a Poste Italiane. Per altri codici, per esempio di 12 cifre, scegli il corriere con «Cambia». Funziona anche un link di poste.it che finisce con `#/risultati-spedizioni/` e il codice. Peek non può chiedere a Poste Italiane i numeri postali internazionali che finiscono con `IT`, nemmeno dentro un link di poste.it: li segue tramite servizi di tracciamento universali.
+[Peek](/) riconosce subito Poste Italiane dai codici `RA`, `1UW`, `3UW`, `2IMA` e `5P`. Un codice `5P` di sole cifre che vale anche per La Poste viene chiesto a entrambi, prima a Poste Italiane se sei in Italia; i codici in stile SDA vengono chiesti solo a Poste Italiane. Altri codici, per esempio di 12 cifre, vanno bene per più corrieri: Peek verifica con quelli che usano quella forma, Poste Italiane compresa, e con «Cambia» puoi scegliere tu il corriere. Funziona anche un link di poste.it che finisce con `#/risultati-spedizioni/` e il codice. Anche per i numeri postali internazionali che finiscono con `IT` Peek interroga direttamente Poste Italiane, e quelli che iniziano con `C`, `E`, `L` o `R` li attribuisce subito a Poste.
 
-Peek controlla ogni 10 minuti, ogni 2 quando il pacco è in consegna, e può mandarti notifiche quando lo stato cambia. Mostra lo stato, le 20 scansioni più recenti con l'ufficio postale o la città su una mappa, il giorno di consegna previsto e il nome del servizio, con le frasi italiane di Poste e gli orari esatti. Lascia fuori mittente, destinatario, indirizzo, firma, peso, dimensioni e ufficio di ritiro. Un codice sconosciuto e uno troppo vecchio risultano entrambi non trovati, e Peek non segue il pacco se passa a un altro corriere.
+Di giorno Peek controlla ogni 10 minuti, ogni 2 quando il pacco è in consegna, e di notte ogni ora; può mandarti notifiche quando lo stato cambia. Mostra lo stato, le 20 scansioni più recenti con l'ufficio postale o la città su una mappa, il giorno di consegna previsto e il nome del servizio, con le frasi italiane di Poste e gli orari esatti. Lascia fuori mittente, destinatario, indirizzo, firma, peso, dimensioni e ufficio di ritiro. Un codice sconosciuto e uno troppo vecchio risultano entrambi non trovati, e Peek non segue il pacco se passa a un altro corriere.
 
 ## Domande sul tracking Poste Italiane
+
+### Codice 1UW o 3UW: che corriere è?
+
+È Poste Italiane: `1UW` e `3UW`, seguiti da 10 lettere o cifre, sono codici spedizione di Poste. A quale servizio corrispondano, poste.it non lo dice. Puoi seguire il pacco in «Cerca Spedizioni» su poste.it o nell'App Poste Italiane, oppure incollare il codice nel box qui sopra.
 
 ### Poste Italiane consegna il sabato?
 
@@ -119,7 +123,8 @@ Chiama l'803 160 da rete fissa o il +39 06 4526 3160 da cellulare, dal lunedì a
 - [Poste Italiane: Come difendersi dalle truffe](https://www.poste.it/sicurezza-online/guide-per-operare-in-sicurezza/come-difendersi-dalle-truffe) – SMS falsi, antiphishing
 - [Poste Italiane: Poste Delivery Express](https://www.poste.it/prodotti/poste-delivery-express.html) – tempi di consegna
 - [Poste Italiane: Carta dei servizi postali](https://www.media.poste.it/37381c9f-a87e-4292-8b89-00e88fa53323/web/carta-servizi-non-universali) – Crono, secondo tentativo, danni, reclami, 45 giorni, sabato
-- [Poste Italiane: Carta dei servizi postali universali](https://www.media.poste.it/c919f7cf-8236-428e-82fc-f8b2be8428b8/web/carta-servizi-universali) – termini di reclamo Poste Delivery Standard
+- [Poste Italiane: Carta dei servizi postali universali](https://www.media.poste.it/c919f7cf-8236-428e-82fc-f8b2be8428b8/web/carta-servizi-universali) – termini di reclamo Poste Delivery Standard, Posta4 vecchio nome della Posta Ordinaria
+- [Poste Italiane: Posta Ordinaria](https://www.poste.it/lettera/posta-ordinaria) – esito della consegna non disponibile
 - [Poste Italiane: Receiving from abroad](https://www.poste.it/receiving-from-abroad) – oneri d'importazione, tariffe di sdoganamento
 - [ADM: Dazi spedizioni modico valore](https://www.adm.gov.it/portale/en/dazi-spedizioni-modico-valore) – dazio di 3 € per articolo
 - [Universal Parcel Scraper](https://github.com/plhery/universal-parcel-scraper) – cosa legge e mostra Peek

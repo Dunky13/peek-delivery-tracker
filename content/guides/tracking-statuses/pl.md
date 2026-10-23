@@ -1,13 +1,13 @@
 ---
 title: Statusy przesyłek – co oznaczają, krok po kroku
-description: Co oznaczają statusy przesyłek: od „przygotowana przez nadawcę” i „w tranzycie” przez odprawę celną po „wydana do doręczenia”, awizo i zwrot.
+description: „Przesyłka utworzona” znaczy, że przewoźnik nie ma jeszcze paczki. A co znaczą „w tranzycie”, odprawa celna, „wydana do doręczenia”, awizo czy zwrot?
 slug: statusy-przesylek-co-oznaczaja
 picture: Kręta trasa z odhaczonymi przystankami (etykieta z kodem kreskowym, magazyn, samolot), furgonetka na obecnym przystanku, dom jeszcze przed nią i pędzący Pip.
 published: 2026-10-09
-updated: 2026-10-10
+updated: 2026-10-23
 ---
 
-Status przesyłki to ostatni skan przewoźnika w kilku słowach i zwykle niczego od Ciebie nie wymaga. „Przygotowana przez nadawcę” znaczy, że przewoźnik nie ma jeszcze Twojej paczki, „w trasie” albo „w tranzycie”, że jest gdzieś między dwoma skanami, a „wydana do doręczenia”, że jedzie już do Ciebie. Działać musisz tylko w kilku sytuacjach: po nieudanej próbie doręczenia, gdy paczka czeka w automacie albo punkcie, gdy trzeba zapłacić należności celne i gdy status brzmi „doręczona”, a paczki nie ma.
+Status przesyłki to ostatni skan przewoźnika w kilku słowach i zwykle niczego od Ciebie nie wymaga. „Przesyłka utworzona” albo „przygotowana przez nadawcę” znaczy, że przewoźnik nie ma jeszcze Twojej paczki, „w trasie” albo „w tranzycie”, że jest gdzieś między dwoma skanami, a „wydana do doręczenia”, że jedzie już do Ciebie. Działać musisz tylko w kilku sytuacjach: po nieudanej próbie doręczenia, gdy paczka czeka w automacie albo punkcie, gdy trzeba zapłacić należności celne i gdy status brzmi „doręczona”, a paczki nie ma.
 
 ## Przez jakie etapy przechodzi paczka?
 
@@ -39,13 +39,15 @@ Te same etapy, inne słowa. [InPost](carrier:inpost) inaczej opisuje paczkę do 
 
 Polski słowniczek FedEx nie opisuje statusów „gotowa do odbioru” i „doręczona”, dlatego w tych wierszach jest kreska.
 
-## „Przygotowana przez nadawcę”: czy przewoźnik ma już paczkę?
+## „Przesyłka utworzona” albo „przygotowana przez nadawcę”: co to znaczy?
 
-Nie. Sprzedawca wydrukował etykietę i przesłał dane, nic więcej. InPost przy `Przygotowana przez Nadawcę.` pisze, że paczka „wkrótce zostanie przekazana w nasze ręce”, a jeszcze wcześniej może pokazać `Przesyłka utworzona.`, czyli przesyłkę, która „nie jest gotowa do nadania”. [FedEx](carrier:fedex) przy `Utworzono etykietę` wyjaśnia, że nadawca dopiero przygotowuje paczkę do przekazania. Status zmienia się na `Mamy Twoją paczkę`, gdy kurier FedEx ją odbierze albo nadawca zostawi ją w oddziale.
+Tylko tyle, że przewoźnik ma dane Twojej paczki, ale nie samą paczkę. U InPost `Przesyłka utworzona.` znaczy, że przesyłka „nie jest gotowa do nadania”, a `Przygotowana przez Nadawcę.`, że „wkrótce zostanie przekazana w nasze ręce”. [FedEx](carrier:fedex) przy `Utworzono etykietę` wyjaśnia, że nadawca dopiero przygotowuje paczkę do przekazania. Status zmienia się na `Mamy Twoją paczkę`, gdy kurier FedEx ją odbierze albo nadawca zostawi ją w oddziale.
+
+Ile może to trwać, InPost w opisach tych statusów nie podaje. Etykieta może jednak stracić ważność albo zostać anulowana: wtedy status zmienia się na `Anulowano etykietę.`, a InPost dopisuje, że przesyłka „nie została wysłana do Odbiorcy”.
+
+Jeśli pierwszy status długo się nie zmienia albo etykietę anulowano, napisz do sprzedawcy, nie do przewoźnika: paczka wciąż jest u sprzedawcy. Tak samo radzi [Cainiao](carrier:cainiao) przy zamówieniach z Chin bez danych śledzenia: zamówienie „jest przetwarzane”, a po szczegóły trzeba się zwrócić do sprzedawcy.
 
 Paczka nadana w automacie też nie od razu rusza: `Paczka nadana w automacie Paczkomat.` znaczy, że czeka, aż doręczyciel wyjmie ją ze skrytki i zawiezie do oddziału InPost.
-
-Jeśli pierwszy status długo się nie zmienia, napisz do sprzedawcy, nie do przewoźnika: paczka wciąż jest u sprzedawcy. Tak samo radzi [Cainiao](carrier:cainiao) przy zamówieniach z Chin bez danych śledzenia: zamówienie „jest przetwarzane”, a po szczegóły trzeba się zwrócić do sprzedawcy.
 
 ## Przesyłka w trasie albo w tranzycie: co to znaczy?
 
