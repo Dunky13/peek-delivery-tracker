@@ -30870,6 +30870,29 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "trackingSearchUrl": "https://admin.shshouwu.com/track.html"
+  },
+  "meihoo-pegasus": {
+    "displayName": "MeiHoo Pegasus",
+    "aliases": [
+      "MeiHoo"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#e0c060",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "universal"
+    },
+    "linkRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^MYH\\d{9}CN$",
+        "confidence": "high"
+      }
+    ]
   }
 } as const;
 
@@ -31706,7 +31729,8 @@ export const CARRIER_IDS = [
   "trunkrs",
   "zto-international",
   "dayone",
-  "shouwu"
+  "shouwu",
+  "meihoo-pegasus"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
