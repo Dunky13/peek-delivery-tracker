@@ -456,7 +456,10 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   cannot ask without it (Mondial Relay's 8-digit shipments, and Paack's SHEIN numbers, whose
   postcode is optional because other sources are asked without it): `routing.input_suggested`, set
   at each check. The prompt says the carrier may have the parcel; the owner adding the postcode
-  files it there. Lookups without an account show no prompt.
+  files it there. The front door offers the same carrier when detection names it
+  (`inputSuggested`, for an unknown answer without tracking history): the postcode field is
+  optional, a paste stops once to show it, and the lookup names that carrier only with the
+  postcode, sent in the request body like any other.
   A transient failure of a matching carrier and failures of an already confirmed carrier
   do not trigger recognition.
 - **Retries.** Answers are kept in `routing.candidate_probes`, not with the carrier

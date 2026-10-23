@@ -219,6 +219,8 @@ const swiftSchemaNames = {
 
 const swiftInlineNames = {
   'AccountExportResponse.account': 'AccountExportAccount',
+  'CarrierDetectionResponse.inputSuggested': 'CarrierDetectionInputSuggested',
+  'CarrierDetectionResponse.inputSuggested.field': 'CarrierDetectionInputSuggestedField',
   'PackageRow.carrier_data': 'CarrierData',
   'PackageRow.carrier_data.routing': 'CarrierDataRouting',
   'PackageRow.carrier_data.routing.provider_input_needed': 'ProviderInputNeeded',

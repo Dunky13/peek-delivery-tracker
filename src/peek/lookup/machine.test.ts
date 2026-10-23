@@ -314,6 +314,31 @@ describe('what a carrier asks for', () => {
   });
 });
 
+describe('a carrier that may have the number', () => {
+  const SHEIN = 'E25010100000001'; // A SHEIN shape: Paack may have it, and answers only with the delivery postcode.
+  const answer: LookupEvent = { type: 'answer', answer: { trackingNumber: SHEIN, carrier: 'unknown', inputSuggested: { carrier: 'paack', field: 'dpdPostcode' } } };
+
+  it('offers its postcode, optional, and names the carrier only with the postcode', () => {
+    const pasting = run([pasted(SHEIN), answer]);
+    expect(pasting.job).toBeNull();
+    expect(survey(pasting)).toMatchObject({ carrier: 'unknown', source: 'none', suggested: 'paack', inputCarrier: 'paack',
+      fields: [{ field: 'dpdPostcode', optional: true }], missing: null, need: null });
+    expect(pasting.offered).toBe(`paack:${SHEIN}`);
+    // Without the postcode the lookup goes on as before; with it, it names the carrier.
+    expect(run([track], [], pasting).job).toEqual({ type: 'lookup', carrier: 'unknown', input: { trackingNumber: SHEIN } });
+    const filled = run([{ type: 'fill', carrier: 'paack', field: 'dpdPostcode', value: '1201' }, track], [], pasting);
+    expect(filled.job).toEqual({ type: 'lookup', carrier: 'paack', input: { trackingNumber: SHEIN, carrier: 'paack', dpdPostcode: '1201' } });
+  });
+
+  it('gives way to a carrier chosen by hand, and offers nothing without a suggestion', () => {
+    const pasting = run([pasted(SHEIN), answer]);
+    expect(survey(run([{ type: 'choose', carrier: 'gls-es' }], [], pasting))).toMatchObject({ suggested: null, carrier: 'gls-es' });
+    const unknown = run([pasted(SHEIN), { type: 'answer', answer: { trackingNumber: SHEIN, carrier: 'unknown' } }]);
+    expect(survey(unknown)).toMatchObject({ suggested: null, fields: [] });
+    expect(unknown.job).toEqual({ type: 'lookup', carrier: 'unknown', input: { trackingNumber: SHEIN } });
+  });
+});
+
 describe('a postcode this device gave before', () => {
   const GLS = 'gls-ch';
   const choose = (carrier: GivenPostcode['carrier'], postcodes: readonly GivenPostcode[]) =>

@@ -16,6 +16,7 @@ import type { SupabaseServiceClient } from './supabase';
 import { retainDetectionSupport } from './trackingSupport';
 import type { JsonObject } from './types';
 import { getRecognitionPriorities } from './recognitionRanking';
+import { suggestedPostcodeCarrier } from './trackingRouting';
 
 /** The Add sheet waits this long for each batch of carriers it asks; the first sync asks again after saving. */
 const RECOGNITION_BUDGET_MS = 3_000;
@@ -131,5 +132,8 @@ export async function detectCarrier(
   recordDetection(answer.carrier !== 'unknown' ? 'high' : detected.confidence);
   // The start of a number the device follows is most likely that number typed again: no case for it.
   if (supportClient && !signal?.aborted && body.prefixOfSaved !== true) await retainDetectionSupport(supportClient, answer, userId);
-  return answer;
+  // Nobody knows the number: a carrier that answers only with the delivery postcode may have it, as a parcel's page offers.
+  const suggested = answer.carrier === 'unknown' && !answer.recognized && !answer.trackingFound
+    ? suggestedPostcodeCarrier(trackingNumber, countryHint ?? null) : undefined;
+  return suggested ? { ...answer, inputSuggested: { carrier: suggested as ApiCarrierId, field: 'dpdPostcode' } } : answer;
 }

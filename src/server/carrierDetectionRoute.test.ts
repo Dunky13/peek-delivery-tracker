@@ -386,6 +386,21 @@ it('answers the front door without a session, the same way, within a limit per c
   expect((await withoutAccount('1Z999AA10123456784', '198.51.100.31')).status).toBe(200);
 });
 
+it('suggests at the front door a carrier that cannot be asked without the postcode, when nobody knows the number', async () => {
+  vi.spyOn(SupabaseServiceClient.prototype, 'claimPublicAllowance').mockResolvedValue({ allowed: true, scope: null, overallUsed: 1 });
+  const detect = async (trackingNumber: string, lookupCountryHint: string) => (await detectWithoutAccount(new NextRequest('https://delivery.example/api/public/detect', {
+    method: 'POST', headers: { 'content-type': 'application/json', 'x-real-ip': '198.51.100.32' }, body: JSON.stringify({ trackingNumber, lookupCountryHint }),
+  }), { params: Promise.resolve({}) })).json();
+  // An 8-digit shipment fits Mondial Relay, which recognition cannot ask without the recipient's postcode.
+  expect(await detect('12345670', 'FR')).toMatchObject({ carrier: 'unknown', inputSuggested: { carrier: 'mondial-relay', field: 'dpdPostcode' } });
+  // Not from a country the carrier does not serve, nor once a tracking service has the number's history.
+  expect(await detect('12345671', 'DE')).not.toHaveProperty('inputSuggested');
+  vi.mocked(preflightTracking).mockResolvedValue({ trackingFound: true, providers: [{ provider: 'Ship24', outcome: 'history' }] });
+  const found = await detect('12345672', 'FR');
+  expect(found).toMatchObject({ carrier: 'unknown', trackingFound: true });
+  expect(found).not.toHaveProperty('inputSuggested');
+});
+
 it('refuses an oversized or malformed body at the front door at once', async () => {
   const encoder = new TextEncoder();
   // Next passes the body on as a stream of the chunks as they arrive.

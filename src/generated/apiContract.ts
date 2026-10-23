@@ -31013,6 +31013,10 @@ export interface ApiCarrierDetectionResponse {
   "unanswered"?: Array<ApiCarrierId>;
   "providers"?: Array<ApiTrackingProviderCheck>;
   "trackingFound"?: boolean;
+  "inputSuggested"?: {
+  "carrier": ApiCarrierId;
+  "field": "dpdPostcode";
+};
 }
 
 export interface ApiAccountExportResponse {

@@ -136,6 +136,14 @@ export interface Survey {
   source: 'device' | 'chosen' | 'found' | 'shape' | 'none';
   /** The carrier was selected by its shape, recognition or the visitor. */
   certain: boolean;
+  /**
+   * Nobody answered for the number, and its shape points to this carrier,
+   * which cannot be asked without the delivery postcode: its postcode field is
+   * offered, and the lookup names the carrier only once the postcode is in.
+   */
+  suggested: CarrierId | null;
+  /** The carrier the inputs are for: the lookup's, or the suggested one. */
+  inputCarrier: CarrierId;
   /** The inputs to show for the carrier. */
   fields: CarrierInputRequirement[];
   /** The first input that is required and not filled in properly. */
@@ -205,13 +213,19 @@ export function survey(state: LookupState, device: readonly DeviceParcel[] = [],
             : shape ? [shape, 'shape'] : ['unknown', 'none'];
   const certain = source !== 'none' && carrier !== 'intl-post' && !(amazon && !shipping);
 
-  const requirements = match && !onDevice && carrier !== 'unknown' ? carrierRequirements(carrier, match.trackingNumber) : [];
+  const suggested = match && source === 'none' && state.carrier === 'auto' && answer?.inputSuggested?.field === 'dpdPostcode'
+    && ['none', 'unasked', 'failed'].includes(check.status) ? answer.inputSuggested.carrier : null;
+  const inputCarrier = suggested ?? carrier;
+  const requirements = !match || onDevice ? []
+    : suggested ? carrierRequirements(suggested, match.trackingNumber)
+      .filter((requirement) => requirement.field === 'dpdPostcode').map((requirement) => ({ ...requirement, optional: true }))
+      : carrier !== 'unknown' ? carrierRequirements(carrier, match.trackingNumber) : [];
   const pastedUrl = match && match.carrier === carrier ? match.trackingUrl : undefined;
   // A required postcode starts from one given before; an optional one is only offered.
   const postcodeField = requirements.find((requirement) => requirement.field === 'dpdPostcode');
-  const remembered = (postcodeField && rememberedPostcode(carrier, postcodeField, postcodes)) || null;
+  const remembered = (postcodeField && rememberedPostcode(inputCarrier, postcodeField, postcodes)) || null;
   const input = (field: CarrierInputField) => field === 'trackingUrl' && pastedUrl ? pastedUrl
-    : state.inputs[carrier]?.[field] ?? (field === 'dpdPostcode' && !postcodeField?.optional ? remembered : null) ?? '';
+    : state.inputs[inputCarrier]?.[field] ?? (field === 'dpdPostcode' && !postcodeField?.optional ? remembered : null) ?? '';
   // A link that came with the paste needs no field of its own.
   const fields = requirements.filter((requirement) =>
     !(requirement.field === 'trackingUrl' && pastedUrl && requirementSatisfied(requirement, pastedUrl)));
@@ -227,19 +241,23 @@ export function survey(state: LookupState, device: readonly DeviceParcel[] = [],
   return {
     reading, several, match, normalized, nothing, order: order && (state.raised || calm.order) ? order : null, typo,
     pickup: code && (state.raised || settledNumber === normalized), onDevice, amazon, account,
-    check, carrier, source, certain, fields, missing, input, remembered, ask, need,
+    check, carrier, source, certain, suggested, inputCarrier, fields, missing, input, remembered, ask, need,
   };
 }
 
-/** What the lookup sends: the number, the carrier when one is known, and the inputs that carrier asked for. */
+/**
+ * What the lookup sends: the number, the carrier when one is known, and the
+ * inputs that carrier asked for. A suggested carrier goes only with its postcode.
+ */
 function lookupInput(found: Survey): ParcelLookupInput {
+  const carrier = found.suggested && found.input('dpdPostcode').trim() ? found.suggested : found.carrier;
   const wanted = (field: CarrierInputField) =>
-    carrierRequirements(found.carrier, found.match!.trackingNumber).some((requirement) => requirement.field === field);
-  const trackingUrl = wanted('trackingUrl') ? found.input('trackingUrl').trim() : found.match!.carrier === found.carrier ? found.match!.trackingUrl : undefined;
+    carrierRequirements(carrier, found.match!.trackingNumber).some((requirement) => requirement.field === field);
+  const trackingUrl = wanted('trackingUrl') ? found.input('trackingUrl').trim() : found.match!.carrier === carrier ? found.match!.trackingUrl : undefined;
   const dpdPostcode = wanted('dpdPostcode') ? found.input('dpdPostcode').trim() : undefined;
   return {
     trackingNumber: found.normalized,
-    ...(found.carrier !== 'unknown' ? { carrier: found.carrier } : {}),
+    ...(carrier !== 'unknown' ? { carrier } : {}),
     ...(trackingUrl ? { trackingUrl } : {}),
     ...(dpdPostcode ? { dpdPostcode } : {}),
   };
@@ -258,7 +276,7 @@ function advance(state: LookupState, device: readonly DeviceParcel[], postcodes:
   if (found.need === 'wait') return state;
   if (found.need === 'code' || found.need === 'account' || found.need === 'carrier') return stop();
   if (found.fields.length || found.missing) {
-    const offered = offer(found.carrier, found.normalized);
+    const offered = offer(found.inputCarrier, found.normalized);
     if (!track) return stop({ offered });
     if (found.missing) {
       return stop({ offered, trouble: { kind: 'validation', message: found.missing.field === 'trackingUrl' ? 'error.trackingLink' : 'error.postcode' } });
@@ -266,7 +284,8 @@ function advance(state: LookupState, device: readonly DeviceParcel[], postcodes:
     // The carrier only just turned out to want something: the visitor gets to see the field before the lookup goes.
     if (state.offered !== offered) return stop({ offered });
   }
-  return { ...state, intent: 'none', trouble: null, job: { type: 'lookup', input: lookupInput(found), carrier: found.carrier } };
+  const input = lookupInput(found);
+  return { ...state, intent: 'none', trouble: null, job: { type: 'lookup', input, carrier: input.carrier ?? found.carrier } };
 }
 
 /** A limit outlasts an edit: the countdown and the day's refusal are about the network, not about the text. */
@@ -309,7 +328,7 @@ export function lookupStep(
         asked: before.normalized || state.asked,
         // Pressing Track with the question about the check digit in view answers it: track it as typed.
         asTyped: before.typo ? before.normalized : state.asTyped,
-        offered: before.fields.length ? offer(before.carrier, before.normalized) : state.offered,
+        offered: before.fields.length ? offer(before.inputCarrier, before.normalized) : state.offered,
       }, device, postcodes);
     }
     case 'asTyped': {

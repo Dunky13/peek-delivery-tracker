@@ -145,6 +145,8 @@ export function LookupFeedback({ lookup, pointer, onSignIn, onPickCarrier, onSug
 
     {found.fields.map((requirement) => {
       const id = `door-${requirement.field}`;
+      // A suggested carrier's field speaks for that carrier, which may have the parcel.
+      const fieldCarrier = found.suggested ? carrierInfo(found.suggested, locale) : carrier;
       const postcode = requirement.field === 'dpdPostcode';
       const value = found.input(requirement.field);
       // The postcode this device gave before: an empty optional field offers it, and a field holding it can forget it.
@@ -157,24 +159,24 @@ export function LookupFeedback({ lookup, pointer, onSignIn, onPickCarrier, onSug
         </label>
         <input id={id} className={`door-input__field${lettersPostcode(requirement) ? ' door-input__field--postcode' : ''}`}
           type={requirement.type} inputMode={requirement.inputMode} autoComplete={requirement.autoComplete}
-          value={value} placeholder={postcodeExample(found.carrier, requirement)} pattern={requirement.pattern} maxLength={requirement.maxLength}
+          value={value} placeholder={postcodeExample(found.inputCarrier, requirement)} pattern={requirement.pattern} maxLength={requirement.maxLength}
           readOnly={Boolean(state.job)} required={!requirement.optional} aria-describedby={`${id}-help`}
           aria-invalid={inputTrouble && found.missing?.field === requirement.field ? true : undefined}
           autoCapitalize={requirement.type === 'url' ? 'none' : lettersPostcode(requirement) ? 'characters' : undefined} autoCorrect="off" spellCheck={false}
           onChange={(event) => send({
             type: 'fill',
-            carrier: found.carrier,
+            carrier: found.inputCarrier,
             field: requirement.field,
             value: typedRequirementValue(requirement, event.target.value),
           })} />
         {remembered && !value && requirement.optional && <button type="button" className="door-suggestion" disabled={Boolean(state.job)}
-          onClick={() => send({ type: 'fill', carrier: found.carrier, field: requirement.field, value: remembered })}>
+          onClick={() => send({ type: 'fill', carrier: found.inputCarrier, field: requirement.field, value: remembered })}>
           {t('add.usePostcode', { postcode: remembered })}
         </button>}
         {holdsRemembered && <button type="button" className="door-input__forget" disabled={Boolean(state.job)}
           onClick={() => {
             forgetPostcode(remembered);
-            send({ type: 'fill', carrier: found.carrier, field: requirement.field, value: '' });
+            send({ type: 'fill', carrier: found.inputCarrier, field: requirement.field, value: '' });
             // The button goes with the postcode: the focus stays with the field it emptied.
             document.getElementById(id)?.focus();
           }}>
@@ -182,9 +184,10 @@ export function LookupFeedback({ lookup, pointer, onSignIn, onPickCarrier, onSug
         </button>}
         {inputTrouble && found.missing?.field === requirement.field && <p className="door-message" role="alert">{t(validation)}</p>}
         <p id={`${id}-help`} className="door-aside">
-          {t(!postcode ? 'add.requirement.trackingUrlHelp' : requirement.optional ? 'add.requirement.dpdPostcodeOptionalHelp' : 'add.requirement.dpdPostcodeHelp', { carrier: carrier.name })}
+          {t(found.suggested ? 'detail.inputSuggested' : !postcode ? 'add.requirement.trackingUrlHelp'
+            : requirement.optional ? 'add.requirement.dpdPostcodeOptionalHelp' : 'add.requirement.dpdPostcodeHelp', { carrier: fieldCarrier.name })}
         </p>
-        <p className="door-private"><Icon name="lock" />{t('door.postcode.private', { carrier: carrier.name })}</p>
+        <p className="door-private"><Icon name="lock" />{t('door.postcode.private', { carrier: fieldCarrier.name })}</p>
       </div>;
     })}
 

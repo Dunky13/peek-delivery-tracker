@@ -33463,6 +33463,26 @@
           "trackingFound": {
             "type": "boolean",
             "description": "A universal provider returned tracking history; carrier identity can still need direct confirmation."
+          },
+          "inputSuggested": {
+            "description": "When no carrier knows the number, a carrier its shape and the lookup country point to that answers only with the delivery postcode, which recognition cannot ask about it without. Nothing says that carrier has the parcel.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "carrier",
+              "field"
+            ],
+            "properties": {
+              "carrier": {
+                "$ref": "#/components/schemas/CarrierId"
+              },
+              "field": {
+                "type": "string",
+                "enum": [
+                  "dpdPostcode"
+                ]
+              }
+            }
           }
         }
       },

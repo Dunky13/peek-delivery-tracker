@@ -26,6 +26,7 @@ struct CarrierDetectionResponse: Codable, Equatable, Hashable, Sendable {
     var unanswered: [CarrierID]? = nil
     var providers: [TrackingProviderCheck]? = nil
     var trackingFound: Bool? = nil
+    var inputSuggested: CarrierDetectionInputSuggested? = nil
 }
 
 struct AccountExportResponse: Codable, Equatable, Hashable, Sendable {
@@ -2436,6 +2437,11 @@ enum CarrierDetectionResponseAmazonShippingStatus: String, Codable, CaseIterable
     var id: String { rawValue }
 }
 
+struct CarrierDetectionInputSuggested: Codable, Equatable, Hashable, Sendable {
+    var carrier: CarrierID
+    var field: CarrierDetectionInputSuggestedField
+}
+
 struct AccountExportAccount: Codable, Equatable, Hashable, Sendable, Identifiable {
     var id: UUID
     var email: String? = nil
@@ -2578,6 +2584,12 @@ enum ParcelFeedbackRequestAsked: String, Codable, CaseIterable, Hashable, Sendab
 enum ParcelFeedbackRequestApp: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
     case web
     case ios
+
+    var id: String { rawValue }
+}
+
+enum CarrierDetectionInputSuggestedField: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
+    case dpdPostcode
 
     var id: String { rawValue }
 }
