@@ -5,17 +5,19 @@ name: Adopt scraper release
 
 on:
   # The newest release once in each 2-hour slot, from 06:07 to 22:07 UTC: one
-  # deploy takes every release published since the last slot. GitHub starts
-  # scheduled runs hours late or drops them, so the schedule ticks every half
-  # hour and a CI run that ends on main starts a run too. The first of them in
-  # a slot adopts; the others end at once (the Due job).
+  # deploy takes every release published since the last slot. A timer on the
+  # netcup production server dispatches the workflow at each of the 9 slots.
+  # GitHub starts scheduled runs hours late or drops them, so the schedule,
+  # every half hour, and a CI run that ends on main are only a backup. The
+  # first run in a slot adopts; the others end at once (the Due job).
   schedule:
     - cron: '7,37 6-23 * * *'
   workflow_run:
     workflows: [CI]
     types: [completed]
     branches: [main]
-  # An urgent release, or one the database gate stopped.
+  # The server's timer at each slot, an urgent release, or one the database
+  # gate stopped.
   workflow_dispatch:
     inputs:
       version:
