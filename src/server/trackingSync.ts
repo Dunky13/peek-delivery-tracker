@@ -1373,9 +1373,11 @@ export class TrackingSyncService {
     const firstAnswer = context.trigger === 'added' && String(parcel.current_stage ?? 'pending') === 'pending';
     try {
       const outcome = await untilShutdown(this.check(parcel, context, audit, now, lookups), context.signal);
-      // A first check that failed or found nothing may be a mistyped number: counted for review, never suggested.
-      if (firstAnswer && outcome !== 'updated' && outcome !== 'superseded') {
-        noteTypoCandidate(String(parcel.tracking_number ?? ''), typeof parcel.user_id === 'string' ? 'account' : 'lookup');
+      // A number that reads as mistyped is counted for review, never suggested, and apart when
+      // its first check found scans all the same.
+      if (firstAnswer && outcome !== 'superseded') {
+        noteTypoCandidate(String(parcel.tracking_number ?? ''), typeof parcel.user_id === 'string' ? 'account' : 'lookup',
+          outcome === 'updated' ? 'answered' : 'unanswered');
       }
       return outcome;
     } catch (error) {

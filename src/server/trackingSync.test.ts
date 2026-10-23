@@ -4813,7 +4813,7 @@ describe('TrackingSyncService', () => {
     }));
   });
 
-  it('counts a likely typo when the first check of a parcel just added fails or finds nothing', async () => {
+  it('counts a likely typo at the first check of a parcel just added, apart when it found scans', async () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined);
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
     const counted = vi.spyOn(metrics, 'recordTypoCandidate').mockImplementation(() => undefined);
@@ -4830,14 +4830,15 @@ describe('TrackingSyncService', () => {
       fetch: vi.fn().mockRejectedValue(new NotFoundError('la-poste', 'Unknown parcel')),
     });
     await notFound.syncPackage({ id: 'not-found', carrier: 'la-poste', tracking_number: typed, user_id: 'user-1' }, added);
-    // A first check that stored scans was answered.
+    // A first check that stored scans all the same.
     const answering = new TrackingSyncService(client as unknown as SupabaseServiceClient, {
       fetch: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'in_transit', last_update: '2026-10-20T08:00:00Z',
         events: [{ time: '2026-10-20T08:00:00Z', description: 'Parcel sorted', stage: 'in_transit' }] }),
     });
     await expect(answering.syncPackage({ id: 'scanned', carrier: 'la-poste', tracking_number: typed, user_id: 'user-1' }, added))
       .resolves.toMatchObject({ updated: 1 });
-    expect(counted.mock.calls).toEqual([['s10', 'la-poste', 'account'], ['s10', 'la-poste', 'lookup'], ['s10', 'la-poste', 'account']]);
+    expect(counted.mock.calls).toEqual([['s10', 'la-poste', 'account', 'unanswered'], ['s10', 'la-poste', 'lookup', 'unanswered'],
+      ['s10', 'la-poste', 'account', 'unanswered'], ['s10', 'la-poste', 'account', 'answered']]);
   });
 
   it('keeps failed lookup diagnostics in logs without creating an immediate Sentry issue', async () => {

@@ -15,6 +15,8 @@ describe('typo candidates', () => {
       .toEqual({ checksum: 's10', carrier: 'la-poste' });
     // A carrier whose high-confidence rule shares the check with a low-confidence one.
     expect(typoCandidate(doubled(`RA${s10('20481357')}IT`, 9))).toEqual({ checksum: 's10', carrier: 'poste-italiane' });
+    // Fourteen characters, which no rule takes, of a German item.
+    expect(typoCandidate(doubled(`CP${s10('12345678')}DE`, 5))).toEqual({ checksum: 's10', carrier: 'dhl' });
   });
 
   it('reads other high-confidence check digits too', () => {
@@ -34,22 +36,25 @@ describe('typo candidates', () => {
     expect(typoCandidate('JJDA00123456789')).toBeNull();
   });
 
-  it('logs and counts the checksum, carrier and origin, never the number', () => {
+  it('logs and counts the checksum, carrier, origin and first check, never the number', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     const counted = vi.spyOn(metrics, 'recordTypoCandidate').mockImplementation(() => undefined);
     const typed = doubled(`RR${s10('12345678')}FR`, 5);
-    noteTypoCandidate(typed, 'lookup');
-    noteTypoCandidate('RR1234567890FR', 'account');
-    expect(counted).toHaveBeenCalledExactlyOnceWith('s10', 'la-poste', 'lookup');
-    expect(log).toHaveBeenCalledOnce();
-    const line = JSON.parse(String(log.mock.calls[0][0]));
-    expect(line).toEqual({ timestamp: expect.any(String), level: 'info', event: 'typo_candidate',
-      checksum: 's10', carrier: 'la-poste', origin: 'lookup' });
-    expect(String(log.mock.calls[0][0])).not.toMatch(/\d{9}/);
+    noteTypoCandidate(typed, 'lookup', 'unanswered');
+    noteTypoCandidate('RR1234567890FR', 'account', 'unanswered');
+    noteTypoCandidate(doubled(`CP${s10('12345678')}DE`, 5), 'lookup', 'answered');
+    expect(counted.mock.calls).toEqual([['s10', 'la-poste', 'lookup', 'unanswered'], ['s10', 'dhl', 'lookup', 'answered']]);
+    expect(log).toHaveBeenCalledTimes(2);
+    const lines = log.mock.calls.map(([line]) => JSON.parse(String(line)));
+    expect(lines).toEqual([
+      { timestamp: expect.any(String), level: 'info', event: 'typo_candidate', checksum: 's10', carrier: 'la-poste', origin: 'lookup', first_check: 'unanswered' },
+      { timestamp: expect.any(String), level: 'info', event: 'typo_candidate', checksum: 's10', carrier: 'dhl', origin: 'lookup', first_check: 'answered' },
+    ]);
+    for (const [line] of log.mock.calls) expect(String(line)).not.toMatch(/\d{9}/);
   });
 
   it('never lets telemetry fail a check', () => {
     vi.spyOn(metrics, 'recordTypoCandidate').mockImplementation(() => { throw new Error('registry'); });
-    expect(() => noteTypoCandidate(doubled(`RR${s10('12345678')}FR`, 5), 'account')).not.toThrow();
+    expect(() => noteTypoCandidate(doubled(`RR${s10('12345678')}FR`, 5), 'account', 'unanswered')).not.toThrow();
   });
 });

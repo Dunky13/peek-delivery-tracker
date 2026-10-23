@@ -54,14 +54,15 @@ export function typoCandidate(trackingNumber: string): TypoCandidate | null {
 }
 
 /**
- * Logs and counts the typo candidate of a number whose first check failed or found nothing,
- * by checksum, carrier and whether an account or a lookup added it. Never the number.
+ * Logs and counts the typo candidate of a number by checksum, carrier, whether an account or a
+ * lookup added it, and its first check: `unanswered` when it failed or found nothing, `answered`
+ * when it found scans all the same. Never the number.
  */
-export function noteTypoCandidate(trackingNumber: string, origin: 'account' | 'lookup'): void {
+export function noteTypoCandidate(trackingNumber: string, origin: 'account' | 'lookup', firstCheck: 'answered' | 'unanswered'): void {
   try {
     const candidate = typoCandidate(trackingNumber);
     if (!candidate) return;
-    recordTypoCandidate(candidate.checksum, candidate.carrier, origin);
-    logOperationalEvent('typo_candidate', { checksum: candidate.checksum, carrier: candidate.carrier, origin });
+    recordTypoCandidate(candidate.checksum, candidate.carrier, origin, firstCheck);
+    logOperationalEvent('typo_candidate', { checksum: candidate.checksum, carrier: candidate.carrier, origin, first_check: firstCheck });
   } catch { /* Telemetry must never change a tracking result. */ }
 }

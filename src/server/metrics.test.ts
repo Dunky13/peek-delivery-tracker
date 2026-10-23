@@ -237,19 +237,21 @@ describe('prometheus carrier metrics', () => {
     expect(sentry.newTraces).toBe(1);
   });
 
-  it('counts typo candidates by checksum, carrier and origin only', async () => {
-    metrics.recordTypoCandidate('s10', 'la-poste', 'lookup');
-    metrics.recordTypoCandidate('s10', 'la-poste', 'lookup');
-    metrics.recordTypoCandidate('ups', 'ups', 'account');
+  it('counts typo candidates by checksum, carrier, origin and first check only', async () => {
+    metrics.recordTypoCandidate('s10', 'la-poste', 'lookup', 'unanswered');
+    metrics.recordTypoCandidate('s10', 'la-poste', 'lookup', 'unanswered');
+    metrics.recordTypoCandidate('s10', 'dhl', 'lookup', 'answered');
+    metrics.recordTypoCandidate('ups', 'ups', 'account', 'unanswered');
     const text = await scraped();
-    expect(text).toContain('typo_candidate_total{checksum="s10",carrier="la-poste",origin="lookup"} 2');
-    expect(text).toContain('typo_candidate_total{checksum="ups",carrier="ups",origin="account"} 1');
+    expect(text).toContain('typo_candidate_total{checksum="s10",carrier="la-poste",origin="lookup",first_check="unanswered"} 2');
+    expect(text).toContain('typo_candidate_total{checksum="s10",carrier="dhl",origin="lookup",first_check="answered"} 1');
+    expect(text).toContain('typo_candidate_total{checksum="ups",carrier="ups",origin="account",first_check="unanswered"} 1');
     sentry.initialized = true;
     sentry.count.mockClear();
     sentry.newTraces = 0;
-    metrics.recordTypoCandidate('s10', 'swiss-post', 'account');
+    metrics.recordTypoCandidate('s10', 'swiss-post', 'account', 'answered');
     sentry.initialized = false;
-    expect(sentry.count.mock.calls).toEqual([['tracking.typo_candidate', 1, { attributes: { checksum: 's10', carrier: 'swiss-post', origin: 'account' } }]]);
+    expect(sentry.count.mock.calls).toEqual([['tracking.typo_candidate', 1, { attributes: { checksum: 's10', carrier: 'swiss-post', origin: 'account', first_check: 'answered' } }]]);
     expect(sentry.newTraces).toBe(1);
   });
 

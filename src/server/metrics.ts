@@ -25,7 +25,7 @@ import { UNKNOWN_ITEM_REASONS } from './trackingFailure';
  * never by number, link, client or push endpoint. The delivery emails are
  * counted by how they ended and why: never by account, address or parcel.
  * A checksum rejection is counted by carrier and detection rule id only, a
- * typo candidate by checksum, carrier and origin only.
+ * typo candidate by checksum, carrier, origin and first check only.
  * Routing signals, sync anomalies and health incidents, which the review
  * queues keep in Postgres, are counted by code and carrier or provider id only.
  * App Attest is counted by the request's kind, how it ended and a reason code,
@@ -59,7 +59,7 @@ interface PrometheusRuntime {
   deliveryEmailTotal: Counter<'outcome' | 'reason'>;
   providerInputTotal: Counter<'provider' | 'step'>;
   checksumRejectionTotal: Counter<'carrier' | 'rule'>;
-  typoCandidateTotal: Counter<'checksum' | 'carrier' | 'origin'>;
+  typoCandidateTotal: Counter<'checksum' | 'carrier' | 'origin' | 'first_check'>;
   dpdAppSessionTotal: Counter<'outcome' | 'trigger'>;
   routingSignalTotal: Counter<'signal' | 'carrier' | 'subject'>;
   syncAnomalyTotal: Counter<'carrier' | 'anomaly'>;
@@ -213,8 +213,8 @@ function createRuntime(): PrometheusRuntime {
     }),
     typoCandidateTotal: new Counter({
       name: 'typo_candidate_total',
-      help: 'Numbers whose first check failed or found nothing and which a high-confidence rule\'s check digit accepts with one digit of a doubled pair left out, by that checksum, the carrier it points to and origin (account, lookup).',
-      labelNames: ['checksum', 'carrier', 'origin'] as const,
+      help: 'Numbers that a high-confidence rule\'s check digit accepts with one digit of a doubled pair left out, by that checksum, the carrier it points to, origin (account, lookup) and first check (unanswered: it failed or found nothing; answered: it found scans all the same).',
+      labelNames: ['checksum', 'carrier', 'origin', 'first_check'] as const,
       registers: [registry],
     }),
     dpdAppSessionTotal: new Counter({
@@ -519,15 +519,15 @@ export function recordChecksumRejection(carrier: string, rule: string): void {
 }
 
 /**
- * A number whose first check failed or found nothing reads as a typed digit doubled
- * (typoCandidate.ts). Also a Sentry metric, so the rare cases stay countable across
+ * A number of a parcel just added reads as a typed digit doubled (typoCandidate.ts), whether its
+ * first check answered or not. Also a Sentry metric, so the rare cases stay countable across
  * deploys, in a trace of its own so it links to no parcel's events.
  */
-export function recordTypoCandidate(checksum: string, carrier: string, origin: 'account' | 'lookup'): void {
-  count(runtime.typoCandidateTotal, 'typo_candidate_total', { checksum, carrier, origin });
+export function recordTypoCandidate(checksum: string, carrier: string, origin: 'account' | 'lookup', firstCheck: 'answered' | 'unanswered'): void {
+  count(runtime.typoCandidateTotal, 'typo_candidate_total', { checksum, carrier, origin, first_check: firstCheck });
   try {
     if (initObservability()) {
-      Sentry.startNewTrace(() => Sentry.metrics.count('tracking.typo_candidate', 1, { attributes: { checksum, carrier, origin } }));
+      Sentry.startNewTrace(() => Sentry.metrics.count('tracking.typo_candidate', 1, { attributes: { checksum, carrier, origin, first_check: firstCheck } }));
     }
   } catch { /* Telemetry must never change a tracking result. */ }
 }
