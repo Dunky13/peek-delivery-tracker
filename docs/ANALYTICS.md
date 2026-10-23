@@ -110,6 +110,11 @@ Gaps:
 - Installing the web app isn't counted; later events just carry `platform=pwa`. A web
   notification opened isn't counted either; the iPhone counts `notification-open`.
 
+Downloads of the iPhone app are App Store Connect's to count, not Umami's. Each link to the
+App Store carries a campaign token (`ct`) naming its place on the site, listed in
+[`src/lib/appStore.ts`](../src/lib/appStore.ts); Safari's banner is `web-banner`, the
+README's link `github-readme`.
+
 ## Privacy
 
 Never sent: emails, account or parcel ids, parcel link ids or owner keys, the token of an

@@ -4,6 +4,7 @@ import { Icon } from '../../components/Icon';
 import { PeekMark } from '../../components/PeekMark';
 import { ProgressTrack } from '../../components/ProgressTrack';
 import { useI18n } from '../../i18n';
+import { appStoreLink } from '../../lib/appStore';
 import { carrierBrand } from '../../lib/carrierBrand';
 import { carrierInfo } from '../../lib/carriers';
 import { JOURNEY, JOURNEY_CARRIER } from './journey';
@@ -28,10 +29,12 @@ export function Moves({ scan, card }: {
   const near = useNear(card);
   const carrier = carrierInfo(JOURNEY_CARRIER, locale);
   const parcel = t('landing.parcel.sneakers');
+  // The iPhone the answer names is the way to the app.
+  const [before, after] = t('landing.moves.body').split('{{iphone}}');
   return <section className="landing-section landing-moves" aria-labelledby="landing-moves-title">
     <div className="landing-moves__text">
       <h2 id="landing-moves-title">{t('landing.moves.title')}</h2>
-      <p>{t('landing.moves.body')}</p>
+      <p>{before}<a href={appStoreLink('web-moves')} target="_blank" rel="noopener noreferrer">{t('landing.moves.iphone')}</a>{after}</p>
       <ul className="landing-chips">
         <li><Icon name="clock" />{t('landing.moves.every10')}</li>
         <li><Icon name="truck" />{t('landing.moves.lastMile')}</li>

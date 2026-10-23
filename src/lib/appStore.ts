@@ -1,0 +1,23 @@
+/** Peek's iPhone app on the App Store. */
+const APP_ID = '6823615370';
+/** The App Store Connect account a campaign link is counted under. */
+const PROVIDER_TOKEN = '129628155';
+
+/**
+ * Where a link to the App Store sits, as App Store Connect's campaign report names it (30
+ * characters at most). `web-banner` is Safari's banner, `web-qr` the code a computer shows.
+ */
+export type AppStoreCampaign = 'web-banner' | 'web-more' | 'web-moves' | 'web-footer' | 'web-qr' | 'web-notify';
+
+/** The app's page on the App Store, counted under a campaign. */
+export function appStoreLink(campaign: AppStoreCampaign): string {
+  return `https://apps.apple.com/app/apple-store/id${APP_ID}?pt=${PROVIDER_TOKEN}&ct=${campaign}&mt=8`;
+}
+
+/**
+ * Safari's Smart App Banner on an iPhone: it offers the app, or, where the app is installed,
+ * opens it at `address`. Safari reads it once, from the page as the server sends it.
+ */
+export function smartAppBanner(address: string): Record<string, string> {
+  return { 'apple-itunes-app': `app-id=${APP_ID}, app-argument=${address}, affiliate-data=pt=${PROVIDER_TOKEN}&ct=web-banner` };
+}

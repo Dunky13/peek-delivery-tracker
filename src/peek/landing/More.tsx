@@ -3,10 +3,11 @@ import { Icon, type IconName } from '../../components/Icon';
 import { Seal } from '../../components/Seal';
 import { PeekMark } from '../../components/PeekMark';
 import { useI18n, type MessageKey } from '../../i18n';
+import { appStoreLink } from '../../lib/appStore';
 import { DEMO_PATH } from '../../lib/experience';
 import { usePeekSession } from '../session';
 import { LandingIcon } from './glyphs';
-import { followDemoLink, followInPlace, IOS_APP_URL } from './links';
+import { followDemoLink, followInPlace } from './links';
 import { lazyPicture, useNear, useRise } from './useLive';
 import './More.css';
 
@@ -95,7 +96,13 @@ export function More({ onSignIn, landed }: {
             <span>{t('arrival.signInTitle')}{' '}<span className="sr-only">{t('landing.more.signInFor')}</span></span>
           </button>}
         <a className="button button--secondary" href={DEMO_PATH} onClick={followDemoLink}>{t('landing.more.demo')}</a>
-        {IOS_APP_URL && <a className="button button--secondary" href={IOS_APP_URL} target="_blank" rel="noopener noreferrer"><LandingIcon name="iphone" />{t('landing.more.app')}</a>}
+        <a className="button button--secondary" href={appStoreLink('web-more')} target="_blank" rel="noopener noreferrer"><LandingIcon name="iphone" />{t('landing.more.app')}</a>
+      </div>
+      {/* On a computer the app is a scan away. */}
+      <div className="landing-qr">
+        {/* eslint-disable-next-line @next/next/no-img-element -- a small drawing, fetched only where it shows */}
+        <img src="/landing/app-store-qr.svg" alt="" width={92} height={92} loading="lazy" />
+        <span><strong>{t('landing.more.qr.title')}</strong><span>{t('landing.more.qr.body')}</span></span>
       </div>
     </div>
   </section>;

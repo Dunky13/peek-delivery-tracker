@@ -96,27 +96,22 @@ describe('Landing', () => {
     window.removeEventListener('popstate', arrived);
   });
 
-  it('offers the iPhone app only to a build that names its page', async () => {
+  it('offers the iPhone app where the answer names it and after the list, each link counted under its own campaign', () => {
     render(<Landing onSignIn={onSignIn} />);
-    expect(screen.queryByRole('link', { name: 'Get the iPhone app' })).not.toBeInTheDocument();
-    const { publicLink } = await import('./links');
-    expect(publicLink('https://apps.example.test/peek')).toBe('https://apps.example.test/peek');
-    expect(publicLink(' https://apps.example.test/peek ')).toBe('https://apps.example.test/peek');
-    // Nothing but a secure address becomes a link.
-    for (const value of [undefined, '', 'http://apps.example.test/peek', 'javascript:alert(1)', 'apps.example.test']) expect(publicLink(value)).toBeNull();
-
-    vi.resetModules();
-    vi.stubEnv('NEXT_PUBLIC_IOS_APP_URL', 'https://apps.example.test/peek');
-    const fresh = await import('./More');
-    render(<fresh.More onSignIn={onSignIn} landed={false} />);
-    expect(screen.getByRole('link', { name: 'Get the iPhone app' })).toHaveAttribute('href', 'https://apps.example.test/peek');
+    expect(screen.getByRole('link', { name: 'Get the iPhone app' })).toHaveAttribute('href', 'https://apps.apple.com/app/apple-store/id6823615370?pt=129628155&ct=web-more&mt=8');
+    const iphone = screen.getByRole('link', { name: 'your iPhone' });
+    expect(iphone).toHaveAttribute('href', expect.stringContaining('&ct=web-moves&'));
+    expect(iphone.parentElement).toHaveTextContent(/Peek notifies you when it matters, on your iPhone or in your browser\.$/);
+    // A computer is shown the App Store's address as a code to scan.
+    expect(screen.getByText('Scan with your iPhone').closest('.landing-qr')?.querySelector('img')).toHaveAttribute('src', '/landing/app-store-qr.svg');
   });
 
-  it('ends with the name, the privacy notice, the code and the language', () => {
+  it('ends with the name, the privacy notice, the iPhone app, the code and the language', () => {
     render(<LandingFooter />);
     const footer = screen.getByRole('contentinfo');
     expect(footer).toHaveTextContent('Peek · Universal Parcel Tracker');
     expect(within(footer).getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy.html');
+    expect(within(footer).getByRole('link', { name: 'iPhone app' })).toHaveAttribute('href', expect.stringContaining('&ct=web-footer&'));
     expect(within(footer).getByRole('link', { name: 'GitHub' })).toHaveAttribute('target', '_blank');
     expect(within(footer).getByRole('combobox', { name: 'Language' })).toHaveValue('en');
   });

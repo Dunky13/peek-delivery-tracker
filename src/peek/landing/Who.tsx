@@ -3,6 +3,7 @@ import { Icon } from '../../components/Icon';
 import { PeekMark } from '../../components/PeekMark';
 import { LanguageControl, useI18n, type MessageKey } from '../../i18n';
 import { trackAction } from '../../lib/analytics';
+import { appStoreLink } from '../../lib/appStore';
 import { LANDING_PATH, landingAtRoot } from '../../lib/experience';
 import { usePeekSession } from '../session';
 import { LandingIcon, XLogo } from './glyphs';
@@ -35,7 +36,7 @@ export function Who() {
   </section>;
 }
 
-/** The foot of the page: the name, the guides, the privacy notice, the code, the language, and what else its author makes. */
+/** The foot of the page: the name, the guides, the privacy notice, the iPhone app, the code, the language, and what else its author makes. */
 export function LandingFooter() {
   const { t, locale } = useI18n();
   const { account } = usePeekSession();
@@ -45,6 +46,7 @@ export function LandingFooter() {
     <span className="landing-footer__name"><PeekMark size={18} />{t('app.title')} · {t('app.tagline')}</span>
     <GuidesLink />
     <a href="/privacy.html" onClick={() => trackAction('privacy-open')}>{t('auth.privacyLink')}</a>
+    <a href={appStoreLink('web-footer')} target="_blank" rel="noopener noreferrer">{t('landing.footer.app')}</a>
     <a href={SOURCE_URL} target="_blank" rel="noopener noreferrer"><LandingIcon name="github" />GitHub</a>
     <LanguageControl englishAddress={englishAddress} />
     {/* The sentence is cut around the three names, which are the links. What touches a name, a comma or the "d’" before it, stays on

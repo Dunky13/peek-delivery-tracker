@@ -1,6 +1,7 @@
 import 'server-only';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import { smartAppBanner } from '../lib/appStore';
 import { SAMPLE_LINK_ID, SAMPLE_PATH } from '../peek/sample';
 import { parcelLinkPreview } from './parcelLinkPreview';
 import { isParcelLinkId } from './publicParcels';
@@ -29,6 +30,7 @@ function shared(url: URL, image: URL, title: string, description: string): Pick<
  * carrier as the title, the estimate as the description, and the preview
  * image. A parcel link is a capability, so it is never indexed and never
  * leaves as a referrer; a link that leads nowhere gets Peek's own preview.
+ * Safari's banner opens the parcel in the iPhone app.
  */
 export async function parcelLinkMetadata(linkId: unknown): Promise<Metadata> {
   const locale = await requestLocale();
@@ -50,6 +52,7 @@ export async function parcelLinkMetadata(linkId: unknown): Promise<Metadata> {
     robots: { index: false, follow: false },
     referrer: 'no-referrer',
     ...shared(url, image, title, description),
+    other: smartAppBanner(url.href),
   };
 }
 

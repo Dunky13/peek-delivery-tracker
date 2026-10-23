@@ -102,6 +102,12 @@ describe('public product metadata', () => {
     request.language = 'en';
   });
 
+  it('offers the iPhone app above every page, counted as the banner’s download, and opens it where it is installed', async () => {
+    expect((await layoutMetadata()).other).toEqual({
+      'apple-itunes-app': 'app-id=6823615370, app-argument=https://delivery.example.test/, affiliate-data=pt=129628155&ct=web-banner',
+    });
+  });
+
   it('draws the browser tab with the mark on its rounded tile and the Home Screen with the full-bleed icon', async () => {
     expect((await layoutMetadata()).icons).toEqual({
       icon: { url: '/icons/favicon.svg', type: 'image/svg+xml' },

@@ -56,6 +56,15 @@
 
 .landing-more__actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .landing-more__actions .button svg { width: 19px; height: 19px; }
+/* The App Store's address as a code to scan, for a computer only: on a phone or a tablet the button is the way. */
+.landing-qr { display: none; }
+@media (hover: hover) and (pointer: fine) and (min-width: 820px) {
+  .landing-qr { display: flex; align-items: center; gap: 14px; width: max-content; max-width: 100%; margin-top: 14px; padding: 12px 16px 12px 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+}
+.landing-qr img { display: block; width: 92px; height: 92px; border-radius: 6px; }
+.landing-qr > span { display: grid; gap: 3px; font-size: 13px; line-height: 1.4; }
+.landing-qr strong { font-weight: 600; }
+.landing-qr > span > span { color: var(--ink-soft); }
 
 @keyframes landing-bob { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-2.5px) rotate(2deg); } }
 @keyframes landing-stamp { from { opacity: 0; transform: scale(1.4) rotate(-20deg); } }

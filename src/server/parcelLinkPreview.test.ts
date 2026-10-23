@@ -193,6 +193,8 @@ describe('the parcel page’s metadata', () => {
         images: [{ url: picture, width: 1200, height: 630, type: 'image/png', alt: 'In Zustellung · DHL' }],
       },
       twitter: { card: 'summary_large_image', images: [{ url: picture }] },
+      // Safari's banner opens the parcel in the iPhone app.
+      other: { 'apple-itunes-app': `app-id=6823615370, app-argument=https://peek.example.test/p/${linkId}, affiliate-data=pt=129628155&ct=web-banner` },
     });
     expect(metadata.alternates).toBeUndefined();
     expect(JSON.stringify(metadata)).not.toMatch(PRIVATE);
@@ -231,6 +233,7 @@ describe('the parcel page’s metadata', () => {
     expect(malformed.title).toBe(gone.title);
     expect(malformed.openGraph).toMatchObject({ url: 'https://peek.example.test/', images: [{ url: 'https://peek.example.test/api/public/parcels/unavailable/image?lang=en' }] });
     expect(JSON.stringify(malformed)).not.toMatch(/<script|%3Cscript/i);
+    expect(malformed.other).toEqual({ 'apple-itunes-app': `app-id=6823615370, app-argument=https://peek.example.test/, affiliate-data=pt=129628155&ct=web-banner` });
     expect(found).toHaveBeenCalledTimes(1);
   });
 

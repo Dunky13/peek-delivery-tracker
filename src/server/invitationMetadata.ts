@@ -1,6 +1,7 @@
 import 'server-only';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import { smartAppBanner } from '../lib/appStore';
 import { isInvitationPreviewId } from '../lib/invitationLinkFormat';
 import { invitationSocialNickname, invitationTitle } from './invitationSocial';
 import { requestLocale } from './requestLocale';
@@ -36,5 +37,7 @@ export async function invitationMetadata(preview: string | string[] | undefined)
       images: [{ url: image.href, width: 1200, height: 630, type: 'image/png', alt: title }],
     },
     twitter: { card: 'summary_large_image', title, description: invitationDescription, images: [{ url: image.href, alt: title }] },
+    // Safari's banner opens a short invitation in the iPhone app. An older one keeps its code after the `#`, which the server never sees.
+    other: smartAppBanner(short ? url.href : new URL('/', origin).href),
   };
 }

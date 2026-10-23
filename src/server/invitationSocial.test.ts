@@ -49,6 +49,8 @@ it.each([undefined, code, 'bad', [preview, preview]])('uses generic metadata for
   expect(metadata.title).toBe('An invitation for you');
   expect(JSON.stringify(metadata)).not.toContain('Spoofed');
   expect(metadata.alternates?.canonical).toBe('https://delivery.example.test/invite');
+  // The code of an older invitation is after the `#`: the app is opened, not the invitation.
+  expect(metadata.other).toEqual({ 'apple-itunes-app': `app-id=6823615370, app-argument=https://delivery.example.test/, affiliate-data=pt=129628155&ct=web-banner` });
   expect(request).not.toHaveBeenCalled();
 });
 
@@ -91,6 +93,8 @@ it('uses the same working short key for canonical metadata and invitation action
     description: 'Tap to open your invitation on Peek.',
     alternates: { canonical: `https://delivery.example.test/i/${previewId}` },
     openGraph: { url: `https://delivery.example.test/i/${previewId}`, images: [{ url: `https://delivery.example.test/api/friends/invite-image?preview=${previewId}&lang=en` }] },
+    // Safari's banner opens the invitation in the iPhone app.
+    other: { 'apple-itunes-app': `app-id=6823615370, app-argument=https://delivery.example.test/i/${previewId}, affiliate-data=pt=129628155&ct=web-banner` },
   });
   const query = new URL(request.mock.calls[0][0], 'https://database.example').searchParams;
   expect(query.get('preview_id')).toBe(`eq.${previewId}`);

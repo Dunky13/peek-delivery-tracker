@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import '../src/styles.css';
 import { authConfigFromEnvironment } from '../src/auth/authConfig';
 import { APPEARANCE_BOOTSTRAP } from '../src/lib/appearanceConfig';
+import { smartAppBanner } from '../src/lib/appStore';
 import { ENTRY_HINT_BOOTSTRAP } from '../src/lib/entryHintConfig';
 import { ERROR_REPORTS_META } from '../src/lib/errorReportsConfig';
 import { documentLanguage, manifestPath } from '../src/lib/locale';
@@ -27,7 +28,8 @@ const site: Metadata = {
 /**
  * Peek's name and what it is, in the reader's language, for the page and for the app a
  * browser installs from it. A page that draws no preview of its own shares Peek's picture,
- * under its own title and description.
+ * under its own title and description. On an iPhone, Safari offers the app above every page,
+ * or opens it where it is installed: at the page's own address where the page names one.
  */
 export async function generateMetadata(): Promise<Metadata> {
   const origin = await requestOrigin();
@@ -42,6 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
     manifest: manifestPath(locale),
     openGraph: { type: 'website', siteName: 'Peek', locale: PREVIEW_LOCALES[locale], images: [picture] },
     twitter: { card: 'summary_large_image', images: [picture.url] },
+    other: smartAppBanner(new URL('/', origin).href),
   };
 }
 

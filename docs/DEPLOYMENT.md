@@ -66,9 +66,6 @@ docker build \
 
 The build fails early unless API mode is on and at least one sign-in method is enabled.
 
-`NEXT_PUBLIC_IOS_APP_URL` is an optional build argument: the https address of the iPhone
-app's page. The landing shows "Get the iPhone app" only when it is set.
-
 `IMAGE_COMMIT` is an optional build argument too: the full commit the image is built from.
 It names the Sentry release, unless the platform sets `IMAGE_COMMIT` at runtime.
 
