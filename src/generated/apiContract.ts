@@ -12058,7 +12058,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "mainfreight",
-      "recognitionRank": 923
+      "recognitionRank": 923,
+      "recognitionServedCountriesOnly": true
     },
     "trackingUrlTemplate": "https://www.mainfreight.com/tracking?trackingnumber={trackingNumber}",
     "linkRules": [
@@ -12080,7 +12081,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^\\d{11}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://www.mainfreight.com/tracking"
   },
   "maritime-ontario": {
@@ -30091,7 +30097,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dpd-ro",
-      "recognitionRank": 934
+      "recognitionRank": 934,
+      "recognitionServedCountriesOnly": true
     },
     "trackingUrlTemplate": "https://tracking.dpd.ro/?shipmentNumber={trackingNumber}",
     "linkRules": [
@@ -30114,7 +30121,12 @@ export const CARRIER_CAPABILITIES = {
         ]
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^8\\d{10}$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://www.dpd.com/ro/ro/"
   },
   "huahan": {
