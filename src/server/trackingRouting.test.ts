@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { freshnessWindow, recheckSources, recognizers, RoutingDeferred, routingState, suggestedInput, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { refusesNumber } from './numberRefusal';
+import { STORED_EVENT_IDENTITIES } from './supabase';
 import type { JsonObject } from './types';
 import type { CarrierResult, UniversalSource } from 'universal-parcel-scraper';
 import * as monitoring from './observability';
@@ -265,6 +266,21 @@ describe('persistent tracking routing', () => {
       last_success_at: '2026-09-10T11:50:00Z',
       failures: { Ship24: { kind: 'rate_limited' }, '17TRACK': { kind: 'transport' } },
     } });
+  });
+  it('looks for no progress that only an old reading of a provider\'s scan showed', async () => {
+    const { router, universal } = setup();
+    universal.mockRejectedValue(new Error('timeout')).mockResolvedValueOnce(thinHistory());
+    const relay = { provider_event_id: 'unknown:relay', occurred_at: '2026-09-10T10:00:00Z', stage: 'in_transit',
+      description: 'Shipment in Transit to the ePost Global Processing Center' };
+    const fetch = (row: JsonObject) => router.fetch(parcel({ current_stage: 'in_transit', [STORED_EVENT_IDENTITIES]: [row],
+      carrier_data: { routing: state({ preferred_provider: 'ParcelsApp' }) } }), false);
+    // ParcelsApp's relay of a label, stored as in transit before the scraper read it as the label.
+    await fetch({ ...relay, universal_provider: 'ParcelsApp' });
+    expect(universal.mock.calls.map(([source]) => source)).toEqual(['ParcelsApp']);
+    // A carrier's own row still shows the parcel moving: the other providers are asked for it.
+    universal.mockClear().mockResolvedValueOnce(thinHistory());
+    await fetch(relay);
+    expect(universal.mock.calls.map(([source]) => source)).toEqual(['ParcelsApp', 'Ship24', '17TRACK']);
   });
   it.each(['pending', 'in_transit'])('keeps movement ahead of a newer pending-only shadow answer for a %s parcel', async (stage) => {
     const { router, universal } = setup();

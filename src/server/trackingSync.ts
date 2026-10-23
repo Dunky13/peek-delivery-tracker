@@ -47,7 +47,7 @@ import {
 import { isRecord, type JsonObject } from './types';
 import { UniversalTracker } from 'universal-parcel-scraper/node';
 import type { UniversalSource } from 'universal-parcel-scraper';
-import { answeredWithoutHistory, catalogRules, clearConfirmation, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, RoutingDeferred, routingFailure, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
+import { answeredWithoutHistory, catalogRules, clearConfirmation, detectionExpects, directCarrier, freshnessWindow, hasRoutingProgress, rereadStage, RoutingDeferred, routingFailure, routingState, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { REDETECTION_WINDOW_MS, rerouteAskable } from './redetection';
 import { upuHistory } from './upuHistory';
 import { sparseLookupRecheck, UNSEEN_HOURLY_MS, unseenFor, unseenIntervalHours, unseenRecheckDue } from './unseenLookup';
@@ -914,7 +914,9 @@ export function detectSyncAnomalies(
   if (result.status === 'delivered' && selectedStage !== 'delivered') {
     anomalies.add('delivered_status_conflict');
   }
-  if (previousStage !== 'pending' && !(previousStage === 'registered' ? resultHasUpdate(result) : hasRoutingProgress(result))) {
+  // Progress only an old reading of a provider's scan showed is none an answer can take back.
+  const progressStage = rereadStage(parcel);
+  if (progressStage !== 'pending' && !(progressStage === 'registered' ? resultHasUpdate(result) : hasRoutingProgress(result))) {
     // A fallback provider that knows less than the source of the saved summary
     // contradicts nothing while the carrier's own adapter is asked again within
     // hours. That adapter, or the provider the summary came from, answering

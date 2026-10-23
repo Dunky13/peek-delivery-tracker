@@ -8,6 +8,7 @@ import { appInputField, detectCarrierMatch } from '../lib/carriers';
 import { activeRequirements, AUTOMATIC_CARRIER_IDS, carrierAdapter, carrierTimezone, requiredRequirements } from './carriers';
 import { checksumRejections, fillPartialAnswer, inferStage, isPartialAnswer, normalizeCarrierResult, resultStage, STAGES, type CarrierResult } from 'universal-parcel-scraper';
 import { isRecord, type JsonObject } from './types';
+import { STORED_EVENT_IDENTITIES } from './supabase';
 import { priorityUniversalSource, universalPlan, universalSourceBudget } from 'universal-parcel-scraper';
 import type { UniversalSource } from 'universal-parcel-scraper';
 import { isCarrierFeedName, isKnownCarrierName } from 'universal-parcel-scraper/app';
@@ -325,6 +326,24 @@ const PROGRESS_STAGES = new Set<string>(STAGES.filter((stage) => !['pending', 'r
 export function hasRoutingProgress(result: CarrierResult): boolean {
   return PROGRESS_STAGES.has(resultStage(result) ?? '') || (result.events ?? []).some((event) =>
     PROGRESS_STAGES.has(event.stage ?? '') || PROGRESS_STAGES.has(inferStage(event.description ?? '', 'pending')));
+}
+/**
+ * The saved stage as today's scraper reads the scans the parcel keeps, for the progress an answer
+ * must show. A row only a universal provider wrote is staged by its wording, which a scraper fix
+ * can re-read as an earlier stage (ParcelsApp's relay of ePost Global's "in transit to the
+ * processing center" is its label). Once no row reads past registration, neither does the parcel:
+ * an answer without progress takes nothing back. A parcel loaded without its rows, whose saved
+ * progress no row showed, or that is delivered, returned or held by an exception keeps its stage.
+ */
+export function rereadStage(parcel: JsonObject): string {
+  const saved = String(parcel.current_stage ?? 'pending');
+  const stored = parcel[STORED_EVENT_IDENTITIES];
+  if (!PROGRESS_STAGES.has(saved) || ['delivered', 'returned', 'exception'].includes(saved) || !Array.isArray(stored)) return saved;
+  const rows = stored.filter(isRecord);
+  const read = rows.map((row) => typeof row.universal_provider === 'string'
+    ? inferStage(String(row.description ?? ''), String(row.stage ?? 'pending')) : String(row.stage ?? 'pending'));
+  if (!rows.some((row) => PROGRESS_STAGES.has(String(row.stage ?? ''))) || read.some((stage) => PROGRESS_STAGES.has(stage))) return saved;
+  return read.includes('registered') ? 'registered' : 'pending';
 }
 /** What a carrier's local-clock answer shows: its scans and its stage. */
 function localAnswer(result: CarrierResult): { scans: number; stage: string | null } {
@@ -1236,7 +1255,7 @@ export class TrackingRouter {
 
     // A label-only answer must not stop discovery or displace a source that
     // supplied progress. Keep it only if no eligible provider has progress.
-    const needsProgress = PROGRESS_STAGES.has(String(parcel.current_stage ?? ''));
+    const needsProgress = PROGRESS_STAGES.has(rereadStage(parcel));
     let thinAnswer: { value: RoutedResult; source: UniversalSource } | undefined;
     let selected: { value: RoutedResult; source: UniversalSource } | undefined;
     for (const source of ordered) {

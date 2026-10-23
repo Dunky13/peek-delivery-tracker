@@ -4982,6 +4982,20 @@ describe('tracking anomaly detection', () => {
     expect(detect('pending')).toEqual([]);
     expect(detect('registered')).toEqual([]);
   });
+  it('holds an answer only to progress a stored scan shows as the scraper reads it now', () => {
+    const label: CarrierResult = { status: 'pending', current_stage: 'registered', tracking_provider: '17TRACK',
+      events: [{ time: '2026-08-31T09:00:00Z', description: 'Shipping Label Created', stage: 'registered' }] };
+    const relay = { provider_event_id: 'unknown:relay', occurred_at: '2026-08-31T10:00:00Z', stage: 'in_transit',
+      description: 'Shipment in Transit to the ePost Global Processing Center' };
+    const detect = (rows: JsonObject[]) => detectSyncAnomalies({ carrier: 'intl-post', current_stage: 'in_transit',
+      carrier_data: { tracking_provider: 'ParcelsApp' }, [STORED_EVENT_IDENTITIES]: rows }, label, [], 'unknown', 'registered',
+    new Date('2026-08-31T12:00:00Z'));
+    // ParcelsApp's relay of ePost Global's label, stored as in transit before the scraper read it as the label.
+    expect(detect([{ ...relay, universal_provider: 'ParcelsApp' }])).toEqual([]);
+    // A carrier's own row keeps its stage, and a provider's row that still reads as moving holds its progress.
+    expect(detect([relay])).toEqual(['progress_disappeared']);
+    expect(detect([{ ...relay, universal_provider: 'ParcelsApp', description: 'Departed facility' }])).toEqual(['progress_disappeared']);
+  });
 });
 
 /** The `tracking_sync_anomaly` log lines a spy saw for one anomaly code. */
