@@ -79,7 +79,7 @@ background, notifications and the two apps.
 
 ## Run it locally
 
-You need Node.js 26. No account, no database, no `.env` file.
+You need Node.js 26.12.1. No account, no database, no `.env` file.
 
 ```bash
 git clone https://github.com/plhery/peek-delivery-tracker.git

@@ -10,7 +10,7 @@ scraper; see its [corpus](https://github.com/plhery/universal-parcel-scraper/blo
 ## Setup
 
 ```bash
-nvm use        # Node 26
+nvm use        # Node 26.12.1
 npm install
 npm run dev    # self-contained demo, no account or database needed
 ```
