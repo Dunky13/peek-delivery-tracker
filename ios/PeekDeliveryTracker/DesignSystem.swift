@@ -201,6 +201,17 @@ extension View {
         }
     }
 
+    /// A sheet as tall as what it shows. On a phone, a detent that follows the content, with the room to open fully;
+    /// on an iPad, a form fitted to the content, as iPadOS keeps a sheet's detent at the height it opened with.
+    @ViewBuilder
+    func fittedSheet(height: CGFloat, detent: Binding<PresentationDetent>) -> some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            presentationSizing(.form.fitted(horizontal: false, vertical: true))
+        } else {
+            presentationDetents([.height(height), .large], selection: detent)
+        }
+    }
+
     @ViewBuilder
     func glassSurface<S: Shape>(in shape: S) -> some View {
         if #available(iOS 26.0, *) {

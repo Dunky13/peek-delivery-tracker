@@ -246,8 +246,8 @@ private struct DeliveryListView: View {
     @State private var showingSearch = false
     @FocusState private var searchFocused: Bool
     @State private var showingAdd = false
-    /// Whether Add and the account open as forms, as they do beside a list with room around it. Settled
-    /// while neither is open, so that a fold or a resize keeps an open one as it is, and what was typed in it.
+    /// Whether Add and the account open as forms, and the filters in a popover, as they do beside a list with room
+    /// around it. Settled while none is open, so that a fold or a resize keeps an open one as it is, and what was typed in it.
     @State private var sheetsAsForms = false
     @State private var addedParcelID: UUID?
     @State private var revealParcelID: UUID?
@@ -394,15 +394,7 @@ private struct DeliveryListView: View {
             firstParcel = nil
             add(request)
         }
-        .sheet(isPresented: $showingFilters) {
-            ParcelFilterView(
-                status: $statusFilter,
-                carrier: $carrierFilter,
-                sort: $sort,
-                carriers: availableCarriers
-            )
-            .environmentObject(localizer)
-        }
+        .sheet(isPresented: filtersShown(asPopover: false)) { filters }
         .sheet(isPresented: $showingAccount) {
             AccountView()
                 .environmentObject(store)
@@ -435,7 +427,7 @@ private struct DeliveryListView: View {
         }
         .onChange(of: showingAdd) { _, open in DeliveryAnalytics.shared.view(open ? "add-parcel" : "deliveries"); if open { revealParcelID = nil; parcelBurstID = nil } }
         .onChange(of: showingAccount) { _, open in DeliveryAnalytics.shared.view(open ? "account" : "deliveries"); if open { revealParcelID = nil; parcelBurstID = nil } }
-        .onChange(of: showingFilters) { _, open in if open { DeliveryAnalytics.shared.action("filters-open"); revealParcelID = nil; parcelBurstID = nil } }
+        .onChange(of: showingFilters) { _, open in settleSheets(); if open { DeliveryAnalytics.shared.action("filters-open"); revealParcelID = nil; parcelBurstID = nil } }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
             consumeSharedDraft()
         }
@@ -633,7 +625,17 @@ private struct DeliveryListView: View {
     }
 
     private func settleSheets() {
-        if !showingAdd, !showingAccount { sheetsAsForms = windowArrangement == .sideBySide }
+        if !showingAdd, !showingAccount, !showingFilters { sheetsAsForms = windowArrangement == .sideBySide }
+    }
+
+    /// The filters open in a sheet as on a phone, or in a popover where the list has room around it.
+    private func filtersShown(asPopover: Bool) -> Binding<Bool> {
+        Binding(get: { showingFilters && sheetsAsForms == asPopover }, set: { showingFilters = $0 })
+    }
+
+    private var filters: some View {
+        ParcelFilterView(status: $statusFilter, carrier: $carrierFilter, sort: $sort, carriers: availableCarriers)
+            .environmentObject(localizer)
     }
 
     /// Add stands over the whole screen as on a phone, or as a form where the list has room around it.
@@ -867,6 +869,10 @@ private struct DeliveryListView: View {
                 Image(systemName: "line.3.horizontal.decrease").frame(width: 44, height: 44).contentShape(Rectangle())
             }
             .accessibilityLabel(localizer.text("view.showControls"))
+            // Beside a parcel, a popover off the button, over the list it filters.
+            .popover(isPresented: filtersShown(asPopover: true)) {
+                filters.frame(minWidth: 340, idealWidth: 380, minHeight: 440, idealHeight: 620)
+            }
         }
         .font(.subheadline)
         .buttonStyle(.plain)

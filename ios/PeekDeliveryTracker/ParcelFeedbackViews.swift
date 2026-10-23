@@ -639,7 +639,7 @@ private struct FeedbackSheet<Content: View>: View {
         .background(Brand.background)
         .tint(Brand.ink)
         .environment(\.locale, localizer.language.locale)
-        .presentationDetents([fitted, .large], selection: $detent)
+        .fittedSheet(height: contentHeight, detent: $detent)
         .presentationDragIndicator(.visible)
         .presentationBackground(Brand.background)
         .interactiveDismissDisabled(busy)

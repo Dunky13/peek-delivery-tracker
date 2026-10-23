@@ -116,7 +116,9 @@ struct ParcelMapScreen: View {
                 .accessibilityLabel(label)
                 .accessibilityAddTraits(.isImage)
 
+                // Over a large screen the summary keeps to about a phone's width, centred.
                 bar(maxHeight: proxy.size.height / 2)
+                    .frame(maxWidth: 420)
                     .padding(.horizontal, 12)
                     .padding(.bottom, 12)
             }
