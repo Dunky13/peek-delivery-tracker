@@ -743,6 +743,10 @@ export class TrackingRouter {
     const attemptedDirect = new Set<string>();
     // Carriers whose own lookup answered not found or without history for the number in this check.
     const emptyDirect = new Set<string>();
+    // Candidates whose probe found the parcel held behind an input the catalog lists as optional,
+    // and those whose probe failed on the way (a rate limit, a challenge): no answer about the number.
+    const heldDirect = new Set<string>();
+    const unsettledDirect = new Set<string>();
     let attempts = 0;
     // Probes are this parcel's own guesses: they are no evidence of provider health.
     let probeContacts = 0;
@@ -898,6 +902,8 @@ export class TrackingRouter {
         signal?.throwIfAborted();
         const failure = fail(carrier, error);
         if (failure.kind === 'not_found' || failure.kind === 'no_history') emptyDirect.add(carrier);
+        if (probe && error instanceof CarrierError && error.reason === 'parcel_found') heldDirect.add(carrier);
+        if (probe && ['rate_limited', 'verification', 'schema', 'transport'].includes(failure.kind)) unsettledDirect.add(carrier);
         // The carrier does not issue this number (a failed check digit): a
         // provider's name for it, saved by an older check, stops being asked.
         if (carrierErrorKind(error) === 'invalid_input' && state.discovered_carrier === carrier) delete state.discovered_carrier;
@@ -1082,14 +1088,21 @@ export class TrackingRouter {
         state.direct_retry_at = retry;
       }
       // A carrier that knows the number but needs the user's input (GLS's
-      // postcode) is offered to the user instead.
-      const needing = settleRecognition(outcomes.filter((outcome) => outcome.needsInput), now()).carrier;
-      const field = outcomes.find((outcome) => outcome.carrier === needing)?.needsInput;
+      // postcode) is offered to the user instead, as is one whose lookup found
+      // the parcel behind an input it lists as optional (DHL's postcode, when
+      // several shipments share the number).
+      const asking = outcomes.map((outcome) => ({ ...outcome, needsInput: outcome.needsInput
+        ?? (heldDirect.has(outcome.carrier) ? activeRequirements(outcome.carrier, number)[0]?.field ?? null : null) }))
+        .filter((outcome) => outcome.needsInput);
+      const needing = settleRecognition(asking, now()).carrier;
+      const field = asking.find((outcome) => outcome.carrier === needing)?.needsInput;
       if (needing && field) {
         if (state.input_needed?.carrier !== needing) report('carrier_input_needed', needing);
         state.input_needed = { carrier: needing, field: appInputField(field) };
-      } else if (outcomes.some((outcome) => outcome.carrier === state.input_needed?.carrier && outcome.status !== 'failed')) {
-        // Asked again, it no longer knows the number (or only an old parcel with it).
+      } else if (outcomes.some((outcome) => outcome.carrier === state.input_needed?.carrier && outcome.status !== 'failed'
+        && !(unsettledDirect.has(outcome.carrier) && settleRecognition([outcome], now()).carrier === outcome.carrier))) {
+        // Asked again, it no longer knows the number (or only an old parcel with it), or
+        // tracks it without the input. A lookup that failed on the way leaves the request.
         delete state.input_needed;
       }
       // Nothing adopted: ask again after 1, 2, 4, then 6 hours, since a parcel

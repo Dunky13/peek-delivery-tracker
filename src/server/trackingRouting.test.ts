@@ -921,6 +921,32 @@ describe('persistent tracking routing', () => {
       expect(asked(later.recognize)).toContain('gls-de');
       expect(forgotten.result.routing).not.toHaveProperty('input_needed');
     });
+    it('offers a carrier whose lookup finds the parcel behind the postcode it lists as optional', async () => {
+      // DHL asks for a twelve-digit number's postcode only when several shipments share the number.
+      const number = '123456789016';
+      const held = () => new InputRequiredError('DHL', 'a postcode or shipping date', 'DHL requires additional verification', { reason: 'parcel_found' });
+      const { router, direct, recognize } = setup();
+      recognize.mockImplementation(knows('dhl'));
+      direct.mockRejectedValue(held());
+      const result = await router.fetch(parcel({ tracking_number: number }), false);
+      expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ tracking_number: number, dpd_postcode: null }), 'dhl');
+      expect(result.result.routing).toMatchObject({ input_needed: { carrier: 'dhl', field: 'dpdPostcode' }, failures: {} });
+      expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('carrier_input_needed', expect.objectContaining({ provider: 'dhl' }));
+      // A lookup that fails on the way leaves the request.
+      const next = setup(new Date('2026-09-10T13:05:00Z'));
+      next.recognize.mockImplementation(knows('dhl'));
+      next.direct.mockRejectedValue(new RateLimitedError('DHL'));
+      const limited = await next.router.fetch(parcel({ tracking_number: number, carrier_data: result.result }), false);
+      expect(next.direct).toHaveBeenCalledOnce();
+      expect(limited.result.routing).toMatchObject({ input_needed: { carrier: 'dhl', field: 'dpdPostcode' } });
+      // One that answers without it ends it.
+      const later = setup(new Date('2026-09-10T15:10:00Z'));
+      later.recognize.mockImplementation(knows('dhl'));
+      later.direct.mockRejectedValue(new NotFoundError('DHL'));
+      const answered = await later.router.fetch(parcel({ tracking_number: number, carrier_data: limited.result }), false);
+      expect(later.direct).toHaveBeenCalledOnce();
+      expect(answered.result.routing).not.toHaveProperty('input_needed');
+    });
     it('suggests a carrier that cannot be asked about the number without the postcode', async () => {
       // An 8-digit shipment fits Mondial Relay, which needs the recipient's postcode for it, so
       // recognition cannot ask it; a parcel looked up from France is offered it.

@@ -451,7 +451,9 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   "Swapped automatically" notice. A carrier whose lookup hands the parcel to its delivery
   carrier in the same check is adopted the same way, with the delivery carrier as the parcel's
   current leg. A carrier that needs the user's input is saved as
-  `routing.input_needed`, and the parcel asks the user for it.
+  `routing.input_needed`, and the parcel asks the user for it. So is one whose lookup finds
+  the parcel behind an input it lists as optional (DHL's postcode, when several shipments
+  share a twelve-digit number); a lookup that fails on the way leaves the request.
   A parcel filed under no carrier that no carrier or provider has answered for yet is offered
   the first carrier detection lists for its number that serves the country it was looked up
   from and takes only the delivery postcode for numbers of its shape, which recognition
@@ -713,7 +715,7 @@ detection or the adapters could act on: each check saves them for the hourly rev
 | `detected_carrier_confirmed` | The carrier detection names or lists first for the number tracks a parcel filed as unknown or under another carrier, such as one added before a detection rule existed |
 | `candidate_probe_confirmed` | Carrier recognition found the carrier and it tracks the parcel |
 | `foreign_history_rejected` | A source returned an older parcel for the number (`provider` is the universal, or the carrier whose own adapter answered): one never delivered or returned, or, from a universal, another carrier's |
-| `carrier_input_needed` | A recognized carrier needs the user's input (the GLS postcode); the parcel asks for it |
+| `carrier_input_needed` | A recognized carrier needs the user's input (the GLS postcode, or DHL's for a parcel it holds behind one); the parcel asks for it |
 | `direct_support_opportunity` | Signal: a carrier without an adapter of its own is tracked through a provider, a candidate for an adapter. Reported once per number |
 | `carrier_coverage_discovered` | Signal: a provider named a carrier the catalog doesn't know |
 | `fresher_provider_found` | A shadow check found newer history at another provider and the parcel moved to it. Evidence to revisit the default order |
