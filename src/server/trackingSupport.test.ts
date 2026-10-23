@@ -122,7 +122,7 @@ describe('tracking support context', () => {
     expect(trackingSupportContext('123456789012', 'fedex', 'fedex').reasons).toEqual([]);
     // Another carrier, or a filed one the shape does not fit, settles nothing.
     expect(trackingSupportContext('123456789012', 'fedex', 'dhl').reasons).toEqual(['ambiguous_shape']);
-    expect(trackingSupportContext('HL123456789FR', 'dhl', 'dhl').reasons).toEqual(['ambiguous_shape']);
+    expect(trackingSupportContext('HL123456789RV', 'dhl', 'dhl').reasons).toEqual(['ambiguous_shape']);
     expect(trackingSupportContext('zz-test 1234', 'ups', 'ups').reasons).toEqual(['unknown_shape']);
   });
 
@@ -147,7 +147,7 @@ describe('tracking support context', () => {
   });
 
   it('records a wrong selected carrier separately from the ambiguous shape', () => {
-    expect(trackingSupportContext('HL123456789FR', 'dhl')).toMatchObject({
+    expect(trackingSupportContext('HL123456789RV', 'dhl')).toMatchObject({
       detection_candidates: ['chronopost'], reasons: ['ambiguous_shape', 'carrier_mismatch'],
     });
   });

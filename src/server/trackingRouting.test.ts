@@ -837,7 +837,7 @@ describe('persistent tracking routing', () => {
         if (carrier === 'dhl') throw new Error('upstream unavailable');
         return directValue('chronopost');
       });
-      const result = await router.fetch(parcel({ carrier: 'dhl', tracking_number: 'HL123456789FR',
+      const result = await router.fetch(parcel({ carrier: 'dhl', tracking_number: 'HL123456789RV',
         tracking_url: 'https://private.invalid/capability', dpd_postcode: '8000' }), false);
       expect(asked(recognize)).toEqual(['chronopost']);
       expect(direct.mock.calls.map(([, carrier]) => carrier)).toEqual(['dhl', 'chronopost']);
@@ -963,8 +963,8 @@ describe('persistent tracking routing', () => {
     it('retains a confirmed carrier even when the number shape points elsewhere', async () => {
       const { router, direct, recognize } = setup();
       direct.mockRejectedValue(new Error('upstream unavailable'));
-      await router.fetch(parcel({ carrier: 'dhl', tracking_number: 'HL123456789FR', carrier_data: {
-        routing: state({ configured_carrier: 'dhl', confirmed_carrier: 'dhl', confirmed_number: 'HL123456789FR' }),
+      await router.fetch(parcel({ carrier: 'dhl', tracking_number: 'HL123456789RV', carrier_data: {
+        routing: state({ configured_carrier: 'dhl', confirmed_carrier: 'dhl', confirmed_number: 'HL123456789RV' }),
       } }), false);
       expect(recognize).not.toHaveBeenCalled();
     });

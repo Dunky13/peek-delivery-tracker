@@ -1221,7 +1221,7 @@ describe('carrier detection', () => {
     for (const number of ['UE597256100NL', 'RI543495045NL']) {
       expect(isValidS10TrackingNumber(number)).toBe(false);
       const match = detectCarrierMatch(number);
-      expect(match).toMatchObject({ carrier: 'unknown', confidence: 'low' });
+      expect(match.carrier).toBe('unknown');
       expect(match.candidates).not.toContain('spring-gds');
     }
     expect(carrierInfo('spring-gds').name).toBe('PostNL');

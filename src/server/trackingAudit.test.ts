@@ -27,10 +27,10 @@ describe('tracking support audit persistence', () => {
     const client = new SupabaseServiceClient('https://database.example', 'service-key');
     const request = vi.spyOn(client, 'request').mockResolvedValue(true);
     const lease = { jobId: 'synthetic-job', workerId: 'synthetic-worker' };
-    const audit = new TrackingSyncAudit(client, 'synthetic-package', 'hl-123456789 fr', 'dhl', 'pending',
+    const audit = new TrackingSyncAudit(client, 'synthetic-package', 'hl-123456789 rv', 'dhl', 'pending',
       { trigger: 'scheduled', jobId: lease.jobId, lease }, new Date('2026-09-10T12:00:00Z'));
     await audit.start();
-    const evidence = trackingSupportEvidence({ tracking_number: 'HL123456789FR' }, {
+    const evidence = trackingSupportEvidence({ tracking_number: 'HL123456789RV' }, {
       status: 'in_transit', current_stage: 'in_transit', last_update: '2026-09-10T11:00:00Z',
     }, 'chronopost', 'updated', false);
     await audit.finish({ outcome: 'updated', sourceCarrier: 'chronopost', supportEvidence: evidence, evaluateHealth: false });
@@ -41,7 +41,7 @@ describe('tracking support audit persistence', () => {
         p_values: expect.objectContaining({
           package_id: 'synthetic-package', configured_carrier: 'dhl', started_at: '2026-09-10T12:00:00.000Z',
           support_context: expect.objectContaining({
-            tracking_number: 'HL123456789FR', configured_carrier: 'dhl',
+            tracking_number: 'HL123456789RV', configured_carrier: 'dhl',
             reasons: ['ambiguous_shape', 'carrier_mismatch'],
           }),
         }),
@@ -53,7 +53,7 @@ describe('tracking support audit persistence', () => {
         p_values: expect.objectContaining({ outcome: 'updated', source_carrier: 'chronopost' }),
         p_steps: [expect.objectContaining({
           step: 'complete', status: 'succeeded', details: {
-            outcome: 'updated', support_lookup_number: 'HL123456789FR',
+            outcome: 'updated', support_lookup_number: 'HL123456789RV',
             support_provider: null, support_direct_progress: true, support_settled: false,
           },
         })],
@@ -64,7 +64,7 @@ describe('tracking support audit persistence', () => {
   it('does not call a number another carrier tracked directly a mismatch', async () => {
     const client = new SupabaseServiceClient('https://database.example', 'service-key');
     const request = vi.spyOn(client, 'request').mockResolvedValue(true);
-    const audit = new TrackingSyncAudit(client, 'synthetic-package', 'HL123456789FR', 'dhl', 'pending',
+    const audit = new TrackingSyncAudit(client, 'synthetic-package', 'HL123456789RV', 'dhl', 'pending',
       { trigger: 'package' }, new Date('2026-09-10T12:00:00Z'), 'chronopost');
     await audit.start();
     expect(request).toHaveBeenNthCalledWith(1, '/rest/v1/tracking_sync_attempts', expect.objectContaining({

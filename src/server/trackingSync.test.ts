@@ -4078,8 +4078,8 @@ describe('TrackingSyncService', () => {
   });
 
   it('tells support the carrier that confirmed the number directly', async () => {
-    const parcel = { id: 'package-1', user_id: 'user-1', carrier: 'dhl', tracking_number: 'HL123456789FR', current_stage: 'pending',
-      carrier_data: { routing: { version: 1, confirmed_carrier: 'chronopost', confirmed_number: 'HL123456789FR' } } };
+    const parcel = { id: 'package-1', user_id: 'user-1', carrier: 'dhl', tracking_number: 'HL123456789RV', current_stage: 'pending',
+      carrier_data: { routing: { version: 1, confirmed_carrier: 'chronopost', confirmed_number: 'HL123456789RV' } } };
     const client = fakeClient([parcel]);
     const adapter: TrackingAdapter = { fetch: vi.fn().mockResolvedValue({ status: 'in_transit', events: [] }) };
     await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter).syncPackage(parcel);
