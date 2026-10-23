@@ -1775,6 +1775,35 @@ export class SupabaseServiceClient extends SupabaseClient {
     throw new SupabaseError('Supabase did not return the alert');
   }
 
+  /** Turns on an alert in the iPhone app for a link, or updates the one its iPhone has. Answers as addParcelLinkAlert. */
+  async addParcelLinkAppAlert(
+    linkId: string,
+    ownerKeyHash: string | null,
+    alert: { token: string; environment: string; locale: string; preset: string },
+  ): Promise<'added' | 'updated' | 'full' | 'finished' | 'stopped' | null> {
+    const result = await this.request('/rest/v1/rpc/add_parcel_link_app_alert', {
+      method: 'POST',
+      body: {
+        p_link_id: linkId,
+        p_owner_key_hash: ownerKeyHash,
+        p_token: alert.token,
+        p_environment: alert.environment,
+        p_locale: alert.locale,
+        p_preset: alert.preset,
+      },
+    });
+    if (result === null) return null;
+    if (result === 'added' || result === 'updated' || result === 'full' || result === 'finished' || result === 'stopped') return result;
+    throw new SupabaseError('Supabase did not return the alert');
+  }
+
+  /** Turns an iPhone's alert for a link off; false when there was none. */
+  async removeParcelLinkAppAlert(linkId: string, token: string): Promise<boolean> {
+    return await this.request('/rest/v1/rpc/remove_parcel_link_app_alert', {
+      method: 'POST', body: { p_link_id: linkId, p_token: token },
+    }) === true;
+  }
+
   /** Turns a browser's alert for a link off; false when there was none. */
   async removeParcelLinkAlert(linkId: string, endpoint: string): Promise<boolean> {
     return await this.request('/rest/v1/rpc/remove_parcel_link_alert', {
@@ -1782,9 +1811,13 @@ export class SupabaseServiceClient extends SupabaseClient {
     }) === true;
   }
 
-  /** The scans no link alert has handled yet, one row per alert and scan, with the alert's push credentials. */
-  async listPendingParcelLinkAlerts(): Promise<JsonObject[]> {
-    const params = query({ select: '*', order: 'event_created_at.asc', limit: '1000' });
+  /**
+   * The scans no link alert has handled yet, one row per alert and scan, with the alert's push credentials:
+   * a browser's (`endpoint`) or an iPhone's (`apns_token`), only those of the channels named.
+   */
+  async listPendingParcelLinkAlerts(channels: { web: boolean; app: boolean } = { web: true, app: true }): Promise<JsonObject[]> {
+    const only: Record<string, string> = channels.web && channels.app ? {} : channels.web ? { apns_token: 'is.null' } : { endpoint: 'is.null' };
+    const params = query({ select: '*', ...only, order: 'event_created_at.asc', limit: '1000' });
     return rows(await this.request(`/rest/v1/pending_parcel_link_alerts?${params}`));
   }
 

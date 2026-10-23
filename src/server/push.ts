@@ -653,18 +653,18 @@ const MAX_LINK_ALERT_FAILURES = 3;
 const FINISHED_STAGES = new Set(['delivered', 'returned']);
 
 /**
- * Browser notifications for parcel links, for people without an account. An
- * alert is told about its parcel's scans with the words an account gets, in
- * the alert's language, when its preset covers the scan's stage. It never
- * carries the parcel's name or number.
+ * Notifications for parcel links, for people without an account, in a browser
+ * or in the iPhone app. An alert is told about its parcel's scans with the
+ * words an account gets, in the alert's language, when its preset covers the
+ * scan's stage. It never carries the parcel's name or number.
  *
  * - A batch of new scans announces its newest covered one, unless that is not
  *   news (`isOldNews`), as for accounts. A parcel its account archived is
  *   still announced to the people it was shared with, not to its owner.
  * - A gift on its way is announced as one: without the place of a scan, and
  *   without the scans its page leaves out.
- * - An alert on a browser the parcel's owner gets account notifications on is
- *   passed over, so nobody is told twice.
+ * - An alert on a browser or iPhone the parcel's owner gets account
+ *   notifications on is passed over, so nobody is told twice.
  * - An alert ends with the journey, when the push service says its
  *   subscription is gone, and after a few failed sends in a row. A failed send
  *   is not repeated: anyone with a link can add an endpoint, so one that never
@@ -672,13 +672,27 @@ const FINISHED_STAGES = new Set(['delivered', 'returned']);
  *   are logged and counted in metrics, not reported as errors.
  */
 export class ParcelLinkAlertService {
-  constructor(readonly web: WebPushNotificationService) {}
+  readonly client: SupabaseServiceClient;
+
+  constructor(
+    readonly web: WebPushNotificationService | null,
+    readonly native: NativePushNotificationService | null = null,
+  ) {
+    const client = web?.client ?? native?.client;
+    if (!client) throw new TypeError('Parcel link alerts need Web Push or APNs');
+    this.client = client;
+  }
+
+  /** Milliseconds, whichever channel keeps the clock. */
+  now(): number {
+    return this.web ? this.web.now() : this.native!.now() * 1_000;
+  }
 
   async dispatch(signal?: AbortSignal): Promise<PushSummary> {
     signal?.throwIfAborted();
-    const { client } = this.web;
+    const { client } = this;
     const grouped = new Map<string, JsonObject[]>();
-    for (const row of await client.listPendingParcelLinkAlerts()) {
+    for (const row of await client.listPendingParcelLinkAlerts({ web: this.web !== null, app: this.native !== null })) {
       const alertId = stringField(row, 'alert_id');
       grouped.set(alertId, [...(grouped.get(alertId) ?? []), row]);
     }
@@ -688,6 +702,8 @@ export class ParcelLinkAlertService {
     for (const [alertId, events] of grouped) {
       signal?.throwIfAborted();
       const newest = announcedScan(events.filter((event) => this.announces(event)), times);
+      const app = stringField(events[0]!, 'apns_token') !== '';
+      const channel = app ? 'ios' : 'web';
       const finished = FINISHED_STAGES.has(stringField(events[0]!, 'package_stage'));
       const failures = Number(events[0]!.failures ?? 0);
       const eventIds = events.map((event) => stringField(event, 'event_id')).filter(Boolean);
@@ -703,24 +719,25 @@ export class ParcelLinkAlertService {
       };
 
       if (!newest || newest.account_endpoint === true || (newest.owner === true && putAway(newest, times))
-        || isOldNews(newest, times, this.web.now())) {
+        || isOldNews(newest, times, this.now())) {
         await settle(failures);
-        recordParcelAlertSent('skipped');
+        recordParcelAlertSent('skipped', channel);
         continue;
       }
       summary.attempted += 1;
       try {
-        await this.web.send(newest, this.payload(newest));
+        if (app) await this.native!.send(this.appDevice(newest), this.appPayload(newest), `link-${stringField(newest, 'link_id')}`);
+        else await this.web!.send(newest, this.payload(newest));
       } catch (error) {
         signal?.throwIfAborted();
         const status = typeof error === 'object' && error !== null && 'statusCode' in error ? Number(error.statusCode) : 0;
-        if (GONE_SUBSCRIPTION.has(status)) {
+        if (app ? this.native!.isExpired(error) : GONE_SUBSCRIPTION.has(status)) {
           await remove('expired');
-          recordParcelAlertSent('expired');
+          recordParcelAlertSent('expired', channel);
           summary.expired += 1;
         } else {
           failed += 1;
-          recordParcelAlertSent('failed');
+          recordParcelAlertSent('failed', channel);
           if (failures + 1 >= MAX_LINK_ALERT_FAILURES) await remove('failed');
           else await settle(failures + 1);
         }
@@ -728,7 +745,7 @@ export class ParcelLinkAlertService {
       }
       signal?.throwIfAborted();
       await settle(0);
-      recordParcelAlertSent('sent');
+      recordParcelAlertSent('sent', channel);
       summary.sent += 1;
     }
     if (failed > 0) logOperationalEvent('parcel_link_alerts_failed', { failed }, 'error');
@@ -765,12 +782,27 @@ export class ParcelLinkAlertService {
       // keeps to itself. Nobody chose a timezone: Zurich's, as for an account without one.
       body: notificationBody(
         { ...row, timezone: 'Europe/Zurich', location: this.wrappedGift(row) ? null : row.location },
-        locale, this.web.now(), lead,
+        locale, this.now(), lead,
       ),
       ...WEB_NOTIFICATION_PICTURES,
       tag: `parcel-link-${linkId}`,
       lang: locale,
       data: { url: `/p/${linkId}` },
+    };
+  }
+
+  /** Where APNs sends an iPhone's alert. */
+  private appDevice(row: JsonObject): JsonObject {
+    return { token: stringField(row, 'apns_token'), environment: stringField(row, 'apns_environment') };
+  }
+
+  /** The same words for the iPhone app, which opens the link it follows when the notification is tapped. */
+  appPayload(row: JsonObject): JsonObject {
+    const { title, body } = this.payload(row);
+    const linkId = stringField(row, 'link_id');
+    return {
+      aps: { alert: { title, body }, sound: 'default', badge: 1, 'thread-id': `link-${linkId}` },
+      link_id: linkId,
     };
   }
 }
@@ -931,7 +963,8 @@ export class NativePushNotificationService {
     await this.send(device, this.payload(copy.test_title!, copy.test_body!, null));
   }
 
-  async send(row: JsonObject, payload?: JsonObject): Promise<void> {
+  /** `collapseId` replaces a later notification for the same thing; a parcel's id, or a friend's, unless given. */
+  async send(row: JsonObject, payload?: JsonObject, collapseId?: string): Promise<void> {
     const environment = stringField(row, 'environment') || 'production';
     const host = environment === 'development'
       ? 'api.sandbox.push.apple.com'
@@ -945,8 +978,8 @@ export class NativePushNotificationService {
       'apns-expiration': String(Math.floor(this.now()) + 86_400),
       'content-type': 'application/json',
     };
-    const collapseId = packageId || (row.friend_id ? `friend-${String(row.friend_id)}` : '');
-    if (collapseId) headers['apns-collapse-id'] = collapseId.slice(0, 64);
+    const collapse = collapseId ?? (packageId || (row.friend_id ? `friend-${String(row.friend_id)}` : ''));
+    if (collapse) headers['apns-collapse-id'] = collapse.slice(0, 64);
     const response = await postApns(
       host,
       `/3/device/${stringField(row, 'token')}`,
@@ -1313,7 +1346,7 @@ export function pushServices(client: SupabaseServiceClient): CompositePushNotifi
         web,
         native,
         native ? new DeliveryLiveActivityNotificationService(client, native) : null,
-        web ? new ParcelLinkAlertService(web) : null,
+        web || native ? new ParcelLinkAlertService(web, native) : null,
       ),
     };
   }

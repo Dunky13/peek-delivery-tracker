@@ -208,11 +208,36 @@ export function parcelAlert(payload: JsonObject): ParcelAlertValues {
   } catch (error) {
     throw new HttpError(400, 'Send valid push encryption keys', undefined, { cause: error });
   }
-  const preset = payload.preset;
+  return { endpoint, p256dh, auth, locale: nativePushLocale(payload.locale), preset: alertPreset(payload.preset) };
+}
+
+function alertPreset(preset: unknown): ApiParcelAlertPreset {
   if (typeof preset !== 'string' || !Object.hasOwn(ALERT_PRESET_STAGES, preset)) {
     throw new HttpError(400, 'Choose what the alert announces');
   }
-  return { endpoint, p256dh, auth, locale: nativePushLocale(payload.locale), preset: preset as ApiParcelAlertPreset };
+  return preset as ApiParcelAlertPreset;
+}
+
+export interface ParcelAppAlertValues {
+  token: string;
+  environment: NativePushEnvironment;
+  locale: NativePushLocale;
+  preset: ApiParcelAlertPreset;
+}
+
+/** An alert for a parcel link in the iPhone app: its device token, checked as an account's is. */
+export function parcelAppAlert(payload: JsonObject): ParcelAppAlertValues {
+  return {
+    token: apnsToken(payload.token),
+    environment: nativePushEnvironment(payload.environment),
+    locale: nativePushLocale(payload.locale),
+    preset: alertPreset(payload.preset),
+  };
+}
+
+/** The device token whose alert for a link is turned off. */
+export function parcelAppAlertToken(payload: JsonObject): string {
+  return apnsToken(payload.token);
 }
 
 /**

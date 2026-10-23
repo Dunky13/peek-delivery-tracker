@@ -279,6 +279,16 @@ describe('useParcelLink', () => {
     expect(mocks.read).toHaveBeenCalledTimes(3);
   });
 
+  it('takes the owner key a link for the iPhone app carried out of the address, and never adopts it', async () => {
+    history.replaceState(null, '', `/p/${LINK_ID}#k=${OWNER_KEY}&n=Boots`);
+    answers(testView({ owner: false }));
+    const hook = renderHook(() => useParcelLink(LINK_ID));
+    expect(location.hash).toBe('#n=Boots');
+    await pass(0);
+    expect(hook.result.current).toMatchObject({ name: 'Boots' });
+    expect(recentFor(LINK_ID)).toMatchObject({ name: 'Boots', key: null });
+  });
+
   it('takes the name in the address once, saves it for a parcel without a name, and leaves the address alone', async () => {
     history.replaceState(null, '', `/p/${LINK_ID}#n=${encodeURIComponent('From Ada')}`);
     answers(testView({ owner: false }));

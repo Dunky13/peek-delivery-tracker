@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { HomeScreenSteps } from '../../components/HomeScreenSteps';
 import { Icon } from '../../components/Icon';
+import { PeekMark } from '../../components/PeekMark';
 import { useI18n, type MessageKey } from '../../i18n';
 import { trackAction } from '../../lib/analytics';
+import { appStoreLink } from '../../lib/appStore';
 import { homeScreenPath } from '../../lib/homeScreen';
 import { AlertError, alertSupport, deviceAlert, turnOffAlert, turnOnAlert, type AlertSupport } from '../alerts';
+import { appParcelURL, appStoreVisited, noteAppStoreVisit } from '../appLink';
 import { useLinkNote } from '../deviceNotes';
 import { PARCEL_ALERT_PRESETS, ParcelLinkError, parcelLinkErrorKey, type ParcelAlertPreset, type ParcelAlerts } from '../links';
 import { Glyph } from './glyphs';
@@ -50,11 +53,17 @@ function Presets({ value, disabled, onChange }: { value: ParcelAlertPreset; disa
  * put Peek there, instead of a button that cannot work, after the email that
  * signing in brings, which needs no Home Screen. An app's own browser, which
  * has no way to the Home Screen, gets the way to Safari instead of the steps.
+ * Where the iPhone app notifies for a link without an account, it comes
+ * first, and the steps fold into a line: "Get" goes to the App Store, then
+ * "Open" opens the parcel in the app, with the owner key when this device
+ * holds it.
  */
-export function AlertsSheet({ linkId, ownerKey, alerts, initialPreset, calendar, onCalendar, onSignIn, onClose }: {
+export function AlertsSheet({ linkId, ownerKey, name = null, alerts, initialPreset, calendar, onCalendar, onSignIn, onClose }: {
   linkId: string;
   /** The owner key, when this device holds it. */
   ownerKey: string | null;
+  /** The parcel's name, which the app takes along. */
+  name?: string | null;
   alerts: ParcelAlerts | undefined;
   /** What a first alert announces unless the reader chooses otherwise. */
   initialPreset: ParcelAlertPreset;
@@ -76,6 +85,8 @@ export function AlertsSheet({ linkId, ownerKey, alerts, initialPreset, calendar,
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<MessageKey | null>(null);
   const [said, setSaid] = useState<MessageKey | null>(null);
+  const [visited, setVisited] = useState(appStoreVisited);
+  const [steps, setSteps] = useState(false);
   const on = noted ?? null;
   const demo = !!alerts?.available && !alerts.vapidPublicKey;
 
@@ -144,10 +155,31 @@ export function AlertsSheet({ linkId, ownerKey, alerts, initialPreset, calendar,
     const emailFirst = emails && !!onSignIn;
     const signIn = !emailFirst && onSignIn;
     // An app's own browser gets one line about Safari in place of the steps, and nothing before it.
-    const intro = homeScreenPath() === 'safari' ? undefined : t('alerts.iphone.body');
-    return <Sheet title={t('alerts.iphone.title')} intro={emailFirst ? undefined : intro} className="peeks-alerts" onClose={onClose}>{(dismiss) => <>
-      {emailFirst && <>{account(dismiss)}{intro && <p className="peeks__intro">{intro}</p>}</>}
-      <HomeScreenSteps then="ping" cards />
+    const safari = homeScreenPath() === 'safari';
+    const intro = safari ? undefined : t('alerts.iphone.body');
+    const app = alerts?.app === true;
+    const appRow = app && <div className="peeks-account peeks-app">
+      <span aria-hidden="true"><PeekMark size={30} /></span>
+      <span><strong>{t('alerts.app.title')}</strong><small>{t('alerts.app.body')}</small></span>
+      {visited
+        ? <a href={appParcelURL(linkId, { key: ownerKey, name, origin: alerts.appOrigin })}
+          onClick={() => trackAction('parcel-link-app-open')}>{t('alerts.app.open')}</a>
+        : <a href={appStoreLink('web-notify')}
+          onClick={() => { trackAction('parcel-link-app-get'); noteAppStoreVisit(); setVisited(true); }}>{t('alerts.app.get')}</a>}
+    </div>;
+    // Beside the app, the Home Screen is the other way: one line, with its steps a tap away.
+    const homeScreen = app && !safari
+      ? <>
+        <p className="peeks__intro">{t('alerts.app.homeScreen')}{!steps && <> <button type="button" className="peeks__more"
+          onClick={() => setSteps(true)}>{t('alerts.app.steps')}</button></>}</p>
+        {steps && <HomeScreenSteps then="ping" cards />}
+      </>
+      : <HomeScreenSteps then="ping" cards />;
+    return <Sheet title={t('alerts.iphone.title')} intro={emailFirst || app ? undefined : intro} className="peeks-alerts" onClose={onClose}>{(dismiss) => <>
+      {appRow}
+      {emailFirst && account(dismiss)}
+      {emailFirst && !app && intro && <p className="peeks__intro">{intro}</p>}
+      {homeScreen}
       {feedback}
       {(calendar || signIn) && <div className="peeks__actions">
         {calendar && <button type="button" className="button button--secondary" onClick={addToCalendar}><Glyph name="calendar" /><span>{t('alerts.calendar.or')}</span></button>}

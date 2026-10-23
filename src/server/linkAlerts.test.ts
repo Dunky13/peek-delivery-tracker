@@ -1,3 +1,4 @@
+import { generateKeyPairSync } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { runInNewContext } from 'node:vm';
@@ -12,7 +13,14 @@ import type { Locale } from '../lib/locale';
 import * as webPresets from '../lib/pushNotifications';
 import * as metrics from './metrics';
 import * as observability from './observability';
-import { CompositePushNotificationService, ParcelLinkAlertService, pushServices, WebPushNotificationService } from './push';
+import {
+  APNsError,
+  CompositePushNotificationService,
+  NativePushNotificationService,
+  ParcelLinkAlertService,
+  pushServices,
+  WebPushNotificationService,
+} from './push';
 import { messagesFor } from './requestLocale';
 import { SupabaseServiceClient } from './supabase';
 import type { JsonObject } from './types';
@@ -40,6 +48,7 @@ let handled: MockInstance<SupabaseServiceClient['recordParcelLinkAlertDeliveries
 let removed: MockInstance<SupabaseServiceClient['deleteParcelLinkAlert']>;
 let failures: MockInstance<SupabaseServiceClient['setParcelLinkAlertFailures']>;
 const pending = (rows: JsonObject[]) => vi.spyOn(client, 'listPendingParcelLinkAlerts').mockResolvedValue(rows);
+const apnsKey = () => generateKeyPairSync('ec', { namedCurve: 'prime256v1' }).privateKey.export({ type: 'pkcs8', format: 'pem' }).toString();
 const refused = (statusCode: number) => Object.assign(new Error('Received unexpected response code'), { statusCode });
 
 beforeEach(() => {
@@ -98,7 +107,7 @@ describe('what an alert announces', () => {
     expect(handled).toHaveBeenCalledExactlyOnceWith('alert-1', ['accepted', 'held', 'customs', 'transit']);
     expect(removed).not.toHaveBeenCalled();
     expect(failures).not.toHaveBeenCalled();
-    expect(counted).toHaveBeenCalledExactlyOnceWith('sent');
+    expect(counted).toHaveBeenCalledExactlyOnceWith('sent', 'web');
   });
 
   it('records scans its preset does not cover as handled, without a notification', async () => {
@@ -107,7 +116,7 @@ describe('what an alert announces', () => {
     expect(await alerts.dispatch()).toEqual({ attempted: 0, sent: 0, failed: 0, expired: 0 });
     expect(send).not.toHaveBeenCalled();
     expect(handled).toHaveBeenCalledExactlyOnceWith('alert-1', ['event-1']);
-    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped');
+    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped', 'web');
   });
 
   it('announces only the parcel\'s newest scan: a backfilled older one is handled silently', async () => {
@@ -130,7 +139,7 @@ describe('what an alert announces', () => {
     const counted = vi.spyOn(metrics, 'recordParcelAlertSent');
     expect(await alerts.dispatch()).toMatchObject({ attempted: 0, sent: 0 });
     expect(send).not.toHaveBeenCalled();
-    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped');
+    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped', 'web');
   });
 
   it('handles a relay copy told after the scan it repeats silently, as for accounts', async () => {
@@ -147,7 +156,7 @@ describe('what an alert announces', () => {
     expect(await alerts.dispatch()).toMatchObject({ attempted: 0, sent: 0 });
     expect(send).not.toHaveBeenCalled();
     expect(handled).toHaveBeenCalledExactlyOnceWith('alert-1', ['copy']);
-    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped');
+    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped', 'web');
   });
 
   it('handles what the parcel already showed when it was added silently, as for accounts', async () => {
@@ -156,7 +165,7 @@ describe('what an alert announces', () => {
     const counted = vi.spyOn(metrics, 'recordParcelAlertSent');
     expect(await alerts.dispatch()).toMatchObject({ attempted: 0, sent: 0 });
     expect(send).not.toHaveBeenCalled();
-    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped');
+    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped', 'web');
   });
 
   it('tells someone a parcel was shared with of its scans after its owner archived it', async () => {
@@ -174,7 +183,7 @@ describe('what an alert announces', () => {
     expect(await alerts.dispatch()).toMatchObject({ attempted: 0, sent: 0 });
     expect(send).not.toHaveBeenCalled();
     expect(handled).toHaveBeenCalledExactlyOnceWith('alert-1', ['event-1']);
-    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped');
+    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped', 'web');
   });
 
   it('tells each alert of a link apart, in its own language and with its own preset', async () => {
@@ -361,7 +370,7 @@ describe('when an alert ends', () => {
       expect(handled).toHaveBeenCalledExactlyOnceWith('alert-1', ['event-1']);
       expect(failures).toHaveBeenCalledExactlyOnceWith('alert-1', before + 1);
       expect(removed).not.toHaveBeenCalled();
-      expect(sent).toHaveBeenCalledExactlyOnceWith('failed');
+      expect(sent).toHaveBeenCalledExactlyOnceWith('failed', 'web');
       expect(logged).toHaveBeenCalledExactlyOnceWith('parcel_link_alerts_failed', { failed: 1 }, 'error');
       expect(report).not.toHaveBeenCalled();
       for (const [, details] of logged.mock.calls) expect(JSON.stringify(details)).not.toMatch(/synthetic|k7Qm2xHd9RtW/);
@@ -410,7 +419,7 @@ describe('alerts beside the account notifications', () => {
     await expect(composite.dispatch()).rejects.toMatchObject({ errors: [outage], summary: summary(2) });
   });
 
-  it('exists exactly when this server sends Web Push', async () => {
+  it('exists exactly when this server sends Web Push or APNs', async () => {
     const { default: webpush } = await import('web-push');
     const keys = webpush.generateVAPIDKeys();
     vi.stubEnv('VAPID_PUBLIC_KEY', keys.publicKey);
@@ -418,8 +427,87 @@ describe('alerts beside the account notifications', () => {
     const configured = pushServices(client);
     expect(configured.linkAlerts).toBeInstanceOf(ParcelLinkAlertService);
     expect(configured.linkAlerts!.web).toBe(configured.web);
+    expect(configured.linkAlerts!.native).toBeNull();
     vi.stubEnv('VAPID_PUBLIC_KEY', '');
     vi.stubEnv('VAPID_PRIVATE_KEY', '');
     expect(pushServices(client).linkAlerts).toBeNull();
+    vi.stubEnv('APNS_TEAM_ID', 'TEAM000000');
+    vi.stubEnv('APNS_KEY_ID', 'KEY0000000');
+    vi.stubEnv('APNS_PRIVATE_KEY', apnsKey());
+    vi.stubEnv('APNS_BUNDLE_ID', 'com.example.peek');
+    const app = pushServices(client);
+    expect(app.linkAlerts!.web).toBeNull();
+    expect(app.linkAlerts!.native).toBe(app.native);
+  });
+});
+
+describe('alerts in the iPhone app', () => {
+  // A synthetic device token: APNs never issued it.
+  const token = 'cd'.repeat(32);
+  const appRow = (changes: JsonObject = {}) => row({
+    endpoint: null, p256dh: null, auth: null, apns_token: token, apns_environment: 'development', ...changes,
+  });
+  let native: NativePushNotificationService;
+  let apns: MockInstance<NativePushNotificationService['send']>;
+
+  beforeEach(() => {
+    native = new NativePushNotificationService(client, 'TEAM000000', 'KEY0000000', apnsKey(), 'com.example.peek', () => now / 1_000);
+    apns = vi.spyOn(native, 'send').mockResolvedValue();
+    alerts = new ParcelLinkAlertService(web, native);
+  });
+
+  it('sends an iPhone\'s alert through APNs in the words a browser gets, for the app to open the link', async () => {
+    const queue = pending([row(), appRow({ alert_id: 'alert-2', locale: 'fr' })]);
+    const counted = vi.spyOn(metrics, 'recordParcelAlertSent');
+    expect(await alerts.dispatch()).toEqual({ attempted: 2, sent: 2, failed: 0, expired: 0 });
+    expect(queue).toHaveBeenCalledExactlyOnceWith({ web: true, app: true });
+    expect(send).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ alert_id: 'alert-1' }), expect.anything());
+    const words = alerts.payload(appRow({ locale: 'fr' }));
+    expect(apns).toHaveBeenCalledExactlyOnceWith({ token, environment: 'development' }, {
+      aps: { alert: { title: words.title, body: words.body }, sound: 'default', badge: 1, 'thread-id': `link-${linkId}` },
+      link_id: linkId,
+    }, `link-${linkId}`);
+    // Neither the parcel's own id nor its number: the app knows the link only.
+    expect(JSON.stringify(apns.mock.calls)).not.toContain('package-1');
+    expect(handled.mock.calls).toEqual([['alert-1', ['event-1']], ['alert-2', ['event-1']]]);
+    expect(counted.mock.calls).toEqual([['sent', 'web'], ['sent', 'ios']]);
+  });
+
+  it('passes over an alert on an iPhone the parcel\'s owner gets the app\'s account notifications on', async () => {
+    pending([appRow({ account_endpoint: true })]);
+    const counted = vi.spyOn(metrics, 'recordParcelAlertSent');
+    expect(await alerts.dispatch()).toEqual({ attempted: 0, sent: 0, failed: 0, expired: 0 });
+    expect(apns).not.toHaveBeenCalled();
+    expect(handled).toHaveBeenCalledExactlyOnceWith('alert-1', ['event-1']);
+    expect(counted).toHaveBeenCalledExactlyOnceWith('skipped', 'ios');
+  });
+
+  it.each([new APNsError(410, 'Unregistered'), new APNsError(400, 'BadDeviceToken')])(
+    'is removed when APNs says the token is gone (%s)', async (error) => {
+      pending([appRow()]);
+      apns.mockRejectedValue(error);
+      const counted = vi.spyOn(metrics, 'recordParcelAlertSent');
+      expect(await alerts.dispatch()).toEqual({ attempted: 1, sent: 0, failed: 0, expired: 1 });
+      expect(removed).toHaveBeenCalledExactlyOnceWith('alert-1');
+      expect(counted).toHaveBeenCalledExactlyOnceWith('expired', 'ios');
+    },
+  );
+
+  it('counts another refusal as a failed send, as for a browser', async () => {
+    pending([appRow()]);
+    apns.mockRejectedValue(new APNsError(500, 'InternalServerError'));
+    const counted = vi.spyOn(metrics, 'recordParcelAlertSent');
+    expect(await alerts.dispatch()).toEqual({ attempted: 1, sent: 0, failed: 0, expired: 0 });
+    expect(failures).toHaveBeenCalledExactlyOnceWith('alert-1', 1);
+    expect(removed).not.toHaveBeenCalled();
+    expect(counted).toHaveBeenCalledExactlyOnceWith('failed', 'ios');
+  });
+
+  it('reads only the alerts of the channels this server sends on', async () => {
+    const queue = pending([]);
+    await new ParcelLinkAlertService(null, native).dispatch();
+    await new ParcelLinkAlertService(web).dispatch();
+    expect(queue.mock.calls).toEqual([[{ web: false, app: true }], [{ web: true, app: false }]]);
+    expect(() => new ParcelLinkAlertService(null, null)).toThrow(TypeError);
   });
 });

@@ -1,10 +1,11 @@
-import { createECDH, createHash, randomBytes } from 'node:crypto';
+import { createECDH, createHash, generateKeyPairSync, randomBytes } from 'node:crypto';
 import { NextRequest } from 'next/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import webpush from 'web-push';
 import { POST as lookUp } from '../../app/api/public/parcels/route';
 import { DELETE as forget, GET as read, PATCH as change } from '../../app/api/public/parcels/[linkId]/route';
 import { DELETE as alertOff, PUT as alertOn } from '../../app/api/public/parcels/[linkId]/alerts/route';
+import { DELETE as appAlertOff, PUT as appAlertOn } from '../../app/api/public/parcels/[linkId]/app-alerts/route';
 import { AMAZON_ACCOUNT_MESSAGE } from '../lib/amazon';
 import * as amazon from './amazonShippingEligibility';
 import { HttpError } from './api';
@@ -851,7 +852,7 @@ describe('alerts for a parcel link', () => {
     expect(stored).toHaveBeenCalledExactlyOnceWith(linkId, null, {
       endpoint, p256dh: keys.p256dh, auth: keys.auth, locale: 'de', preset: 'important',
     });
-    expect(counted).toHaveBeenCalledExactlyOnceWith('added');
+    expect(counted).toHaveBeenCalledExactlyOnceWith('added', 'web');
     expect(authenticate).not.toHaveBeenCalled();
   });
 
@@ -869,7 +870,7 @@ describe('alerts for a parcel link', () => {
     store('finished');
     const counted = vi.spyOn(metrics, 'recordParcelAlertSet');
     expect((await turnOn()).status).toBe(204);
-    expect(counted).toHaveBeenCalledExactlyOnceWith('finished');
+    expect(counted).toHaveBeenCalledExactlyOnceWith('finished', 'web');
   });
 
   it('answers an unknown and a malformed link alike, a stopped one as not shared, a full one as full', async () => {
@@ -889,7 +890,7 @@ describe('alerts for a parcel link', () => {
     const full = await turnOn();
     expect(full.status).toBe(409);
     expect(await full.json()).toEqual({ error: expect.any(String) });
-    expect(counted.mock.calls).toEqual([['unavailable'], ['unavailable'], ['stopped'], ['full']]);
+    expect(counted.mock.calls).toEqual([['unavailable', 'web'], ['unavailable', 'web'], ['stopped', 'web'], ['full', 'web']]);
   });
 
   it.each([
@@ -975,5 +976,100 @@ describe('alerts for a parcel link', () => {
     expect(refused.headers.get('retry-after')).toBeTruthy();
     expect(stored).toHaveBeenCalledTimes(20);
     expect((await turnOn(body(), linkId, undefined, '198.51.100.41')).status).toBe(404);
+  });
+});
+
+describe('alerts for a parcel link in the iPhone app', () => {
+  // A synthetic device token: APNs never issued it.
+  const token = 'ab'.repeat(32);
+  const body = (changes: JsonObject = {}) => ({ token, environment: 'production', preset: 'important', locale: 'fr', ...changes });
+  const request = (handler: typeof appAlertOn, method: string, payload: unknown, id: string, key?: string, ip = nextIp()) =>
+    handler(new NextRequest(`https://delivery.example/api/public/parcels/${id}/app-alerts`, {
+      method,
+      headers: { 'content-type': 'application/json', 'x-real-ip': ip, ...(key === undefined ? {} : { 'x-parcel-key': key }) },
+      body: JSON.stringify(payload),
+    }), route(id));
+  const turnOn = (payload: unknown = body(), id = linkId, key?: string) => request(appAlertOn, 'PUT', payload, id, key);
+  const turnOff = (payload: unknown = { token }, id = linkId) => request(appAlertOff, 'DELETE', payload, id);
+  const store = (outcome: 'added' | 'updated' | 'full' | 'finished' | 'stopped' | null = 'added') => vi
+    .spyOn(SupabaseServiceClient.prototype, 'addParcelLinkAppAlert').mockResolvedValue(outcome);
+
+  beforeEach(() => {
+    vi.stubEnv('APNS_TEAM_ID', 'TEAM000000');
+    vi.stubEnv('APNS_KEY_ID', 'KEY0000000');
+    vi.stubEnv('APNS_PRIVATE_KEY', generateKeyPairSync('ec', { namedCurve: 'prime256v1' }).privateKey
+      .export({ type: 'pkcs8', format: 'pem' }).toString());
+    vi.stubEnv('APNS_BUNDLE_ID', 'com.example.peek');
+  });
+
+  it('turns an alert on for anyone holding the link, without sign-in, and marks the owner\'s by its key', async () => {
+    const authenticate = vi.spyOn(SupabaseAuthenticator.prototype, 'validate');
+    const stored = store();
+    const counted = vi.spyOn(metrics, 'recordParcelAlertSet');
+    const response = await turnOn(body({ token: token.toUpperCase() }));
+    expect(response.status).toBe(204);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    expect(stored).toHaveBeenCalledExactlyOnceWith(linkId, null, { token, environment: 'production', locale: 'fr', preset: 'important' });
+    expect(counted).toHaveBeenCalledExactlyOnceWith('added', 'ios');
+    expect(authenticate).not.toHaveBeenCalled();
+    stored.mockClear();
+    expect((await turnOn(body({ environment: 'development' }), linkId, ownerKey)).status).toBe(204);
+    expect(stored).toHaveBeenCalledExactlyOnceWith(linkId, keyHash, expect.objectContaining({ environment: 'development' }));
+  });
+
+  it('answers as a browser\'s alert does: unknown, stopped, full, and a journey that is over', async () => {
+    const stored = store(null);
+    const counted = vi.spyOn(metrics, 'recordParcelAlertSet');
+    expect((await turnOn(body(), 'unknownLink2')).status).toBe(404);
+    expect((await turnOn(body(), 'not-a-link-id!')).status).toBe(404);
+    expect(stored).toHaveBeenCalledOnce();
+    stored.mockResolvedValue('stopped');
+    expect((await turnOn()).status).toBe(410);
+    stored.mockResolvedValue('full');
+    expect((await turnOn()).status).toBe(409);
+    stored.mockResolvedValue('finished');
+    expect((await turnOn()).status).toBe(204);
+    expect(counted.mock.calls).toEqual([['unavailable', 'ios'], ['unavailable', 'ios'], ['stopped', 'ios'], ['full', 'ios'], ['finished', 'ios']]);
+  });
+
+  it.each([
+    ['no token', { token: undefined }],
+    ['a token that is not hexadecimal', { token: 'zz'.repeat(32) }],
+    ['a token too short', { token: 'ab'.repeat(8) }],
+    ['an unknown environment', { environment: 'staging' }],
+    ['an unknown preset', { preset: 'everything' }],
+    ['an unsupported language', { locale: 'nl' }],
+  ])('rejects %s without storing anything', async (_name, changes) => {
+    const stored = store();
+    expect((await turnOn(body(changes))).status).toBe(400);
+    expect(stored).not.toHaveBeenCalled();
+  });
+
+  it('says so when this server cannot send to iPhones', async () => {
+    vi.stubEnv('APNS_TEAM_ID', '');
+    vi.stubEnv('APNS_KEY_ID', '');
+    vi.stubEnv('APNS_PRIVATE_KEY', '');
+    vi.stubEnv('APNS_BUNDLE_ID', '');
+    const stored = store();
+    const response = await turnOn();
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({ error: 'APNs is not configured' });
+    expect(stored).not.toHaveBeenCalled();
+  });
+
+  it('turns an alert off for whoever knows its token, and never returns or logs the token or the key', async () => {
+    const removed = vi.spyOn(SupabaseServiceClient.prototype, 'removeParcelLinkAppAlert').mockResolvedValueOnce(true).mockResolvedValue(false);
+    const counted = vi.spyOn(metrics, 'recordParcelAlertRemoved');
+    store();
+    const answers = [await turnOff(), await turnOff(), await turnOff({ token }, 'not-a-link-id!'), await turnOn(body(), linkId, ownerKey)];
+    expect(answers.map((response) => response.status)).toEqual([204, 204, 204, 204]);
+    expect(removed.mock.calls).toEqual([[linkId, token], [linkId, token]]);
+    expect(counted).toHaveBeenCalledExactlyOnceWith('asked');
+    expect((await turnOff({ token: 'not-a-token' })).status).toBe(400);
+    const lines = [...vi.mocked(console.log).mock.calls, ...vi.mocked(console.error).mock.calls].map(([line]) => String(line));
+    expect(lines.filter((line) => line.includes('"route":"/api/public/parcels/:link/app-alerts"')).length).toBeGreaterThan(0);
+    for (const text of [...lines, ...await Promise.all(answers.map((response) => response.text()))]) {
+      for (const secret of [token, ownerKey, keyHash, linkId]) expect(text).not.toContain(secret);
+    }
   });
 });

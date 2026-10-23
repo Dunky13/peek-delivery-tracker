@@ -52,9 +52,9 @@ interface PrometheusRuntime {
   parcelClaimTotal: Counter<'outcome'>;
   parcelForgottenTotal: Counter<'kind' | 'reason'>;
   parcelShareTotal: Counter<'kind' | 'change'>;
-  parcelAlertSetTotal: Counter<'outcome'>;
+  parcelAlertSetTotal: Counter<'outcome' | 'app'>;
   parcelAlertRemovedTotal: Counter<'reason'>;
-  parcelAlertSentTotal: Counter<'outcome'>;
+  parcelAlertSentTotal: Counter<'outcome' | 'app'>;
   parcelFeedbackTotal: Counter<'answer' | 'via' | 'app' | 'outcome'>;
   deliveryEmailTotal: Counter<'outcome' | 'reason'>;
   providerInputTotal: Counter<'provider' | 'step'>;
@@ -171,8 +171,8 @@ function createRuntime(): PrometheusRuntime {
     }),
     parcelAlertSetTotal: new Counter({
       name: 'parcel_alert_set_total',
-      help: 'Requests to turn on an alert for a parcel link by outcome (added, updated, full, finished, stopped, unavailable).',
-      labelNames: ['outcome'] as const,
+      help: 'Requests to turn on an alert for a parcel link by outcome (added, updated, full, finished, stopped, unavailable) and app (web, ios).',
+      labelNames: ['outcome', 'app'] as const,
       registers: [registry],
     }),
     parcelAlertRemovedTotal: new Counter({
@@ -183,8 +183,8 @@ function createRuntime(): PrometheusRuntime {
     }),
     parcelAlertSentTotal: new Counter({
       name: 'parcel_alert_sent_total',
-      help: 'Batches of new scans handled for a parcel link alert by outcome (sent, skipped, failed, expired).',
-      labelNames: ['outcome'] as const,
+      help: 'Batches of new scans handled for a parcel link alert by outcome (sent, skipped, failed, expired) and app (web, ios).',
+      labelNames: ['outcome', 'app'] as const,
       registers: [registry],
     }),
     parcelFeedbackTotal: new Counter({
@@ -429,8 +429,11 @@ export function recordParcelShare(kind: 'lookup' | 'account', change: 'started' 
 
 export type ParcelAlertOutcome = 'added' | 'updated' | 'full' | 'finished' | 'stopped' | 'unavailable';
 
-export function recordParcelAlertSet(outcome: ParcelAlertOutcome): void {
-  count(runtime.parcelAlertSetTotal, 'parcel_alert_set_total', { outcome });
+/** Which app an alert for a parcel link notifies in: the browser's or the iPhone app. */
+export type ParcelAlertApp = 'web' | 'ios';
+
+export function recordParcelAlertSet(outcome: ParcelAlertOutcome, app: ParcelAlertApp): void {
+  count(runtime.parcelAlertSetTotal, 'parcel_alert_set_total', { outcome, app });
 }
 
 /** A reader's answer about a parcel: kept, kept in place of its first words, or refused. */
@@ -455,8 +458,8 @@ export function recordParcelAlertRemoved(reason: 'asked' | 'delivered' | 'expire
 }
 
 /** One batch of new scans for one alert: announced, passed over, failed, or sent to a subscription that is gone. */
-export function recordParcelAlertSent(outcome: 'sent' | 'skipped' | 'failed' | 'expired'): void {
-  count(runtime.parcelAlertSentTotal, 'parcel_alert_sent_total', { outcome });
+export function recordParcelAlertSent(outcome: 'sent' | 'skipped' | 'failed' | 'expired', app: ParcelAlertApp): void {
+  count(runtime.parcelAlertSentTotal, 'parcel_alert_sent_total', { outcome, app });
 }
 
 /**

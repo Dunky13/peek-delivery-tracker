@@ -75,7 +75,10 @@ optional:
 - Web Push: `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` (the canonical origin
   when unset).
 - APNs: `APNS_TEAM_ID`, `APNS_KEY_ID`, `APNS_PRIVATE_KEY` (the whole `.p8`) and
-  `APNS_BUNDLE_ID`. The same key sends alerts and Live Activity pushes.
+  `APNS_BUNDLE_ID`. The same key sends alerts, Live Activity pushes and the alerts of
+  parcel links followed in the app. With it, the server asks the App Store once an hour
+  which version is out, to offer the app on a link's "Notify me" once that version
+  follows links.
 - Sign in with Apple: `APPLE_SIGN_IN_*` revokes Apple's tokens when an iPhone account is
   deleted ([AUTHENTICATION.md](AUTHENTICATION.md)).
 
@@ -96,6 +99,8 @@ open parcel links and invitations (`/p/…`, `/i/…`, `/invite`) in the app. It
 that receives the APNs pushes, or the apps in `APPLE_APP_IDS` (`<team id>.<bundle id>`,
 comma-separated) when set. Without either it answers 404. Apple's servers fetch it without
 credentials and don't follow redirects, so keep it reachable through any edge protection.
+iPhone Safari opens the app only from a link to another site, so the web's way into the
+app goes through the first of `LEGACY_HOSTS`, or the app's own scheme without one.
 
 - Expose port `3000` behind HTTPS.
 - `GET /health` returns `{"ok": true}` when the database answers within 2.5 s and the

@@ -170,6 +170,15 @@ Key server modules:
     The browser is asked for the permission, and subscribes, only on "Turn on". It reuses
     the subscription an account or another parcel already made, so turning one alert off
     leaves the subscription in place. The calendar file is made in the browser.
+  - The iPhone app follows a link without an account and holds its alert with its APNs
+    device token in place of a browser's subscription (`/api/public/parcels/{id}/app-alerts`).
+    Browsers and iPhones share the same ten, and an iPhone the parcel's account already
+    notifies is passed over, as the owner's own browser is.
+  - On an iPhone outside the Home Screen, "Notify me" offers the app first once the App
+    Store's version follows links (`APP_FOLLOWS_LINKS_FROM` in `appStoreRelease.ts`, checked
+    hourly against the App Store). Its "Open" leads through a legacy host, since Safari opens
+    the app only from a link to another site, and carries the owner key after `#k=`; the
+    web never reads that key and takes it out of its own address.
 - **Reader feedback**: a parcel's page asks whether it is right, or who carries a parcel
   no carrier was found for. An answer comes from the parcel's account
   (`/api/packages/{id}/feedback`) or from anyone holding its link
@@ -406,8 +415,7 @@ shown as-is; known app-generated timeline messages are translated
 ([LOCALIZATION.md](LOCALIZATION.md)). Errors map to localized guidance and never show raw
 diagnostics. Status labels don't imply a carrier delay when only our check failed.
 
-Push registrations store the device language, and so does each of a browser's alerts for
-a parcel link. The apps send it again on every start and change of language: the iPhone
+Push registrations store the device language, and so does each alert for a parcel link. The apps send it again on every start and change of language: the iPhone
 with its device token, the web for the account's subscription and for the link alerts
 whenever the language differs from the one it last sent, which it notes on the device.
 The Share extension reads it from the app group. The delivery email is written in the

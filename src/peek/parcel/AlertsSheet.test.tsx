@@ -309,6 +309,62 @@ describe('the Notify me sheet', () => {
     expect(sheet).not.toHaveTextContent(/Safari/);
   });
 
+  describe('where the iPhone app notifies for a link', () => {
+    const APP: ParcelAlerts = { ...SERVER, email: true, app: true, appOrigin: 'https://old.example' };
+    // A link followed in a test would leave the page.
+    const stay = (event: Event) => event.preventDefault();
+    beforeEach(() => document.addEventListener('click', stay, true));
+    afterEach(() => {
+      document.removeEventListener('click', stay, true);
+      localStorage.clear();
+    });
+
+    it('offers the app first, then the email, and folds the Home Screen steps into a line', async () => {
+      stubAlertBrowser({ userAgent: IPHONE_SAFARI });
+      const user = userEvent.setup();
+      open({ alerts: APP });
+      const sheet = screen.getByRole('dialog', { name: 'Notifications on iPhone' });
+      const after = (first: Element, second: Element) => first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING;
+      const app = within(sheet).getByText('Notifications in the Peek app');
+      expect(within(sheet).getByText('No account needed. This parcel comes along.')).toBeVisible();
+      expect(after(app, within(sheet).getByText('An email when it arrives'))).toBeTruthy();
+      expect(within(sheet).queryByText('iPhone only sends notifications from sites on your Home Screen.')).toBeNull();
+      expect(within(sheet).getByText('Or, without the app, put Peek on your Home Screen.')).toBeVisible();
+      expect(within(sheet).queryByRole('list')).toBeNull();
+      await user.click(within(sheet).getByRole('button', { name: 'Show the steps' }));
+      expect(within(sheet).getAllByRole('listitem')).toHaveLength(3);
+      expect(within(sheet).queryByRole('button', { name: 'Show the steps' })).toBeNull();
+      expect(screen.getByRole('button', { name: 'Or add to calendar' })).toBeVisible();
+    });
+
+    it('goes to the App Store first, then opens the parcel in the app with its owner key and name', async () => {
+      stubAlertBrowser({ userAgent: IPHONE_SAFARI });
+      const user = userEvent.setup();
+      const { unmount } = open({ alerts: APP, ownerKey: OWNER_KEY, name: 'Boots' });
+      const get = screen.getByRole('link', { name: 'Get' });
+      expect(get).toHaveAttribute('href', expect.stringContaining('ct=web-notify'));
+      await user.click(get);
+      expect(mocks.track).toHaveBeenCalledWith('parcel-link-app-get');
+      const appLink = screen.getByRole('link', { name: 'Open' });
+      expect(appLink).toHaveAttribute('href', `https://old.example/p/${LINK_ID}#k=${OWNER_KEY}&n=Boots`);
+      await user.click(appLink);
+      expect(mocks.track).toHaveBeenCalledWith('parcel-link-app-open');
+      unmount();
+      // This browser remembers it went for the app; a viewer's link carries no key.
+      open({ alerts: { ...APP, appOrigin: null } });
+      expect(screen.getByRole('link', { name: 'Open' })).toHaveAttribute('href', `peekdeliverytracker://p/${LINK_ID}`);
+    });
+
+    it('keeps the way to Safari in an app’s own browser, after the app', () => {
+      stubAlertBrowser({ userAgent: IPHONE_LINKEDIN });
+      open({ alerts: { ...APP, email: false } });
+      const sheet = screen.getByRole('dialog', { name: 'Notifications on iPhone' });
+      expect(within(sheet).getByText('Notifications in the Peek app').compareDocumentPosition(within(sheet).getByText('Notifications need Safari.'))
+        & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(within(sheet).queryByText('Or, without the app, put Peek on your Home Screen.')).toBeNull();
+    });
+  });
+
   describe('in an app’s own browser, which has no way to the Home Screen', () => {
     // A link followed in a test would leave the page.
     const stay = (event: Event) => event.preventDefault();

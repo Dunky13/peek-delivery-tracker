@@ -32849,6 +32849,123 @@
         }
       }
     },
+    "/api/public/parcels/{linkId}/app-alerts": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ParcelLinkId"
+        }
+      ],
+      "put": {
+        "operationId": "setPublicParcelAppAlert",
+        "summary": "Turn on the iPhone app's notifications for this parcel, until it is delivered",
+        "security": [],
+        "parameters": [
+          {
+            "name": "X-Parcel-Key",
+            "in": "header",
+            "required": false,
+            "description": "The owner key of the lookup. Its alert outlasts a stop of the sharing.",
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{43}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParcelAppAlertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "The alert is on, or the parcel's journey is over and there is nothing left to announce"
+          },
+          "400": {
+            "$ref": "#/components/responses/ApiError"
+          },
+          "404": {
+            "description": "Parcel unavailable: an unknown, forgotten, expired or malformed link, never told apart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The link has ten alerts already",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "Parcel not shared: its sharing was stopped",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiError"
+          },
+          "502": {
+            "$ref": "#/components/responses/ApiError"
+          },
+          "503": {
+            "description": "APNs is not configured on this server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "removePublicParcelAppAlert",
+        "summary": "Turn off this iPhone's notifications for the parcel",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteParcelAppAlertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Off, also when the link or the iPhone had no such alert"
+          },
+          "400": {
+            "$ref": "#/components/responses/ApiError"
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiError"
+          },
+          "502": {
+            "$ref": "#/components/responses/ApiError"
+          }
+        }
+      }
+    },
     "/api/public/parcels/{linkId}/feedback": {
       "parameters": [
         {
@@ -34454,7 +34571,7 @@
           "site": {
             "type": "string",
             "minLength": 1,
-            "description": "The facility the point is on, when it has a name of its own (\"Z\u00fcrich-M\u00fclligen\"). Shown where there is room; name stays the town."
+            "description": "The facility the point is on, when it has a name of its own (\"Zürich-Mülligen\"). Shown where there is room; name stays the town."
           }
         }
       },
@@ -34943,7 +35060,7 @@
           "dpdPostcode": {
             "type": "string",
             "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ -][A-Za-z0-9]+)*$",
-            "description": "Recipient postcode, optional for DPD Switzerland (any country\u2019s postcode, 3 to 12 letters and digits in groups joined by a space or hyphen; it unlocks verified scans) and DPD Germany (five digits), and required by GLS Switzerland (four digits), GLS Germany and Heppner (four or five digits), Mondial Relay short shipment numbers (five digits; optional for validated 26-digit barcodes) and Paack (carrier-specific alphanumeric format). It is rejected for other carriers. This property keeps its historical name for API compatibility."
+            "description": "Recipient postcode, optional for DPD Switzerland (any country’s postcode, 3 to 12 letters and digits in groups joined by a space or hyphen; it unlocks verified scans) and DPD Germany (five digits), and required by GLS Switzerland (four digits), GLS Germany and Heppner (four or five digits), Mondial Relay short shipment numbers (five digits; optional for validated 26-digit barcodes) and Paack (carrier-specific alphanumeric format). It is rejected for other carriers. This property keeps its historical name for API compatibility."
           },
           "lookupCountryHint": {
             "type": "string",
@@ -36495,6 +36612,18 @@
           "email": {
             "type": "boolean",
             "description": "Whether this server emails accounts when a parcel is delivered."
+          },
+          "app": {
+            "type": "boolean",
+            "description": "Whether the iPhone app on the App Store gets this server's notifications for a link, without an account."
+          },
+          "appOrigin": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri",
+            "description": "Another site of this server whose links open the iPhone app: iPhone Safari opens a link in the app only when it leads to another site."
           }
         }
       },
@@ -36581,6 +36710,48 @@
             "format": "uri",
             "pattern": "^https://",
             "maxLength": 4096
+          }
+        }
+      },
+      "ParcelAppAlertRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "token",
+          "environment",
+          "preset",
+          "locale"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 512,
+            "pattern": "^[0-9A-Fa-f]+$"
+          },
+          "environment": {
+            "$ref": "#/components/schemas/NativePushEnvironment"
+          },
+          "preset": {
+            "$ref": "#/components/schemas/ParcelAlertPreset"
+          },
+          "locale": {
+            "$ref": "#/components/schemas/NativePushLocale"
+          }
+        }
+      },
+      "DeleteParcelAppAlertRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "token"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 512,
+            "pattern": "^[0-9A-Fa-f]+$"
           }
         }
       },

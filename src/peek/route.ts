@@ -45,14 +45,21 @@ export interface LinkWords {
 
 const NO_WORDS: LinkWords = { name: null, note: null, from: null };
 const WORD_KEYS = { n: 'name', g: 'note', f: 'from' } as const;
+/** The owner key a page hands the iPhone app in `#k=<key>`. The web has its own copy and never reads it. */
+const OWNER_KEY_WORD = 'k';
 
-/** Reads `#n=<name>&g=<note>&f=<from>`. A part that is not one of these three makes the whole `#` someone else's. */
+/**
+ * Reads `#n=<name>&g=<note>&f=<from>`, passing over the `k` of a link meant
+ * for the iPhone app. A part that is not one of these makes the whole `#`
+ * someone else's.
+ */
 export function linkWordsFromHash(hash: string): LinkWords {
   if (!hash.startsWith('#') || hash.length < 2) return NO_WORDS;
   const words: LinkWords = { ...NO_WORDS };
   for (const part of hash.slice(1).split('&')) {
     const at = part.indexOf('=');
     const key = at < 0 ? '' : part.slice(0, at);
+    if (key === OWNER_KEY_WORD) continue;
     if (!Object.hasOwn(WORD_KEYS, key)) return NO_WORDS;
     let value: string;
     try { value = decodeURIComponent(part.slice(at + 1)); } catch { continue; }
@@ -61,6 +68,19 @@ export function linkWordsFromHash(hash: string): LinkWords {
       : cleanLinkText(value, word === 'note' ? MAX_GIFT_NOTE_LENGTH : MAX_GIFT_FROM_LENGTH);
   }
   return words;
+}
+
+/**
+ * The fragment without the owner key a link meant for the iPhone app carried,
+ * so a copy or a share of the address never gives it away. Any other fragment
+ * comes back as it is.
+ */
+export function hashWithoutOwnerKey(hash: string): string {
+  if (!hash.startsWith('#')) return hash;
+  const parts = hash.slice(1).split('&');
+  const kept = parts.filter((part) => !part.startsWith(`${OWNER_KEY_WORD}=`));
+  if (kept.length === parts.length) return hash;
+  return kept.length ? `#${kept.join('&')}` : '';
 }
 
 /** The name a link carries in its `#n=<name>` part, which never reaches a server. */

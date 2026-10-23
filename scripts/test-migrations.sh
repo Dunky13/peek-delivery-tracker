@@ -197,6 +197,9 @@ psql "$database_url" -X -v ON_ERROR_STOP=1 \
   -f "$repo_root/supabase/tests/parcel_sharing.sql"
 
 psql "$database_url" -X -v ON_ERROR_STOP=1 \
+  -f "$repo_root/supabase/tests/app_link_alerts.sql"
+
+psql "$database_url" -X -v ON_ERROR_STOP=1 \
   -f "$repo_root/supabase/tests/gift_messages.sql"
 
 psql "$database_url" -X -v ON_ERROR_STOP=1 \

@@ -41,7 +41,7 @@ export const PUT = apiRoute<LinkParameters>(async (context) => {
   const outcome = isParcelLinkId(linkId)
     ? await service.addParcelLinkAlert(linkId, ownerKeyHash(context.request.headers.get('x-parcel-key')), alert)
     : null;
-  recordParcelAlertSet(outcome ?? 'unavailable');
+  recordParcelAlertSet(outcome ?? 'unavailable', 'web');
   if (outcome === null) return json({ error: PARCEL_UNAVAILABLE }, 404);
   if (outcome === 'stopped') return json({ error: PARCEL_NOT_SHARED }, 410);
   if (outcome === 'full') return json({ error: 'This parcel has all the alerts it can take' }, 409);

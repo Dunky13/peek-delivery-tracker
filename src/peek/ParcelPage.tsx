@@ -518,7 +518,7 @@ function Parcel({ linkId, entrance, state, view, onHome }: {
       email={keepSheet === 'email'} methods={session.signInWith} onClose={() => setKeepSheet(null)} />}
     {sharing && key && <LinkShareSheet linkId={linkId} ownerKey={key} view={view} name={name} onChanged={adopt}
       worksUntil={final ? forgetOn : null} onAccount={visitor ? signInToKeep : undefined} onClose={() => setSharing(false)} />}
-    {alerting && <AlertsSheet linkId={linkId} ownerKey={key} alerts={link.alerts} initialPreset={early ? 'all' : 'important'}
+    {alerting && <AlertsSheet linkId={linkId} ownerKey={key} name={name} alerts={link.alerts} initialPreset={early ? 'all' : 'important'}
       calendar={calendarWindow} onCalendar={calendarFile}
       onSignIn={session.account === 'visitor' && !sample ? signInFor : undefined} onClose={() => setAlerting(false)} />}
     {forgetting && <ForgetDialog arrived={forgetting === 'arrived' ? { forgetLine } : undefined} onForget={forget} onCancel={() => setForgetting(false)} />}

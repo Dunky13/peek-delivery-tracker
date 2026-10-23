@@ -77,6 +77,11 @@ export function canonicalOrigin(env: NodeJS.ProcessEnv = process.env): string | 
   return requestSiteHosts(env)?.canonicalOrigin ?? null;
 }
 
+/** The hosts the site answered on before, for links that must lead to another site than the canonical one. */
+export function legacyHosts(env: NodeJS.ProcessEnv = process.env): readonly string[] {
+  return requestSiteHosts(env)?.legacyHosts ?? [];
+}
+
 /** The canonical origin when the request reached a legacy host, or null. The request never chooses the origin. */
 export function movedOrigin(headers: HeaderReader, env: NodeJS.ProcessEnv = process.env): string | null {
   const hosts = requestSiteHosts(env);

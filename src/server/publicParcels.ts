@@ -14,10 +14,13 @@ import type {
 } from '../generated/apiContract';
 import { EVENT_STAGE_ORDER } from '../lib/stages';
 import { clientNetwork, clientSite } from './api';
+import { appleAppIds } from './appleAppLinks';
+import { appFollowsLinks } from './appStoreRelease';
 import { emailConfigured } from './email/config';
 import { withEventPlaces } from './eventPlaces';
 import { type AllowanceHolder, captureOverallAllowance, logOperationalEvent } from './observability';
 import { pushServices } from './push';
+import { legacyHosts } from './siteHosts';
 import type { PublicAllowance, StoredParcelLink, SupabaseServiceClient } from './supabase';
 import { isRecord } from './types';
 
@@ -317,13 +320,20 @@ export function giftEvents(
  * Whether this server sends browser notifications, and the key a browser
  * subscribes with. A push configuration that does not load reads as none: a
  * parcel is still shown. `email` says whether the server emails accounts when
- * a parcel is delivered, which a link's page offers with signing in.
+ * a parcel is delivered, which a link's page offers with signing in. `app`
+ * says whether the iPhone app on the App Store notifies for a link without an
+ * account, and `appOrigin` where a link opens it from this site's pages.
  */
 export function parcelAlerts(service: SupabaseServiceClient): ApiParcelAlerts {
   const email = emailConfigured();
   try {
-    const web = pushServices(service).web;
-    return { available: web !== null, vapidPublicKey: web?.publicKey ?? null, email };
+    const { web, native } = pushServices(service);
+    const app = native !== null && appFollowsLinks();
+    const legacy = app && appleAppIds().length > 0 ? legacyHosts()[0] : undefined;
+    return {
+      available: web !== null, vapidPublicKey: web?.publicKey ?? null, email,
+      ...(app ? { app, appOrigin: legacy ? `https://${legacy}` : null } : {}),
+    };
   } catch {
     return { available: false, vapidPublicKey: null, email };
   }

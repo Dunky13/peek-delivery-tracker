@@ -54,8 +54,8 @@ are virtual names, never real URLs.
   refused input, a lookup limit, offline, a server error or a failed verification. A paste
   that fails is a paste with outcome `error`. Never the text.
 - **Parcel links**: lookup without an account, share or copy the link, change what the
-  link shows, stop sharing, open "Notify me", turn a browser's alerts on or off, add the
-  delivery to a calendar, sign in (and apart from it, sign in for the email), keep in the
+  link shows, stop sharing, open "Notify me", turn a browser's alerts on or off, get the
+  iPhone app or open the parcel in it, add the delivery to a calendar, sign in (and apart from it, sign in for the email), keep in the
   account, open the parcel already followed, forget. Sharing a parcel from an account
   counts under the same names.
 - **Safari from an app's browser**: where notifications need the Home Screen but an app's

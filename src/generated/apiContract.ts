@@ -32344,6 +32344,8 @@ export interface ApiParcelAlerts {
   "available": boolean;
   "vapidPublicKey": string | null;
   "email"?: boolean;
+  "app"?: boolean;
+  "appOrigin"?: string | null;
 }
 
 export interface ApiUpdateParcelLinkRequest {
@@ -32368,6 +32370,17 @@ export interface ApiParcelAlertRequest {
 
 export interface ApiDeleteParcelAlertRequest {
   "endpoint": string;
+}
+
+export interface ApiParcelAppAlertRequest {
+  "token": string;
+  "environment": ApiNativePushEnvironment;
+  "preset": ApiParcelAlertPreset;
+  "locale": ApiNativePushLocale;
+}
+
+export interface ApiDeleteParcelAppAlertRequest {
+  "token": string;
 }
 
 export type ApiParcelFeedbackAnswer = "right" | "wrong" | "found_elsewhere";

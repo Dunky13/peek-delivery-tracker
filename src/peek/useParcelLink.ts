@@ -5,7 +5,7 @@ import { currentEvent, currentStage } from '../lib/stages';
 import type { TrackingEvent } from '../types';
 import { isWrappedGift, ParcelLinkError, readParcelLink, type ParcelLinkView } from './links';
 import { forgetRecent, recentFor, rememberParcel, useRecents } from './recents';
-import { linkWordsFromHash, type LinkWords } from './route';
+import { hashWithoutOwnerKey, linkWordsFromHash, type LinkWords } from './route';
 import { SAMPLE_LINK_ID } from './sample';
 
 /** Until the first check lands the page asks again after 2 s, then ever more slowly up to 10 s. */
@@ -97,6 +97,13 @@ export function useParcelLink(linkId: string, initial?: ParcelLinkView): ParcelL
   // The name in the address is read once, when the link is opened.
   const hash = useSyncExternalStore(never, () => window.location.hash, () => '');
   const carried = useMemo(() => linkWordsFromHash(hash), [hash]);
+  useEffect(() => {
+    // A link meant for the iPhone app that opened here instead leaves its owner key out of the address.
+    const kept = hashWithoutOwnerKey(window.location.hash);
+    if (kept !== window.location.hash) {
+      window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}${kept}`);
+    }
+  }, []);
   const [answer, setAnswer] = useState<{ view: ParcelLinkView | null; gone: false | 'unavailable' | 'stopped'; trouble: ParcelLinkError | null }>(
     { view: initial ?? null, gone: false, trouble: null },
   );

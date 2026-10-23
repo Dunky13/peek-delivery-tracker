@@ -2326,6 +2326,8 @@ struct ParcelAlerts: Codable, Equatable, Hashable, Sendable {
     var available: Bool
     var vapidPublicKey: String? = nil
     var email: Bool? = nil
+    var app: Bool? = nil
+    var appOrigin: String? = nil
 }
 
 struct UpdateParcelLinkRequest: Codable, Equatable, Hashable, Sendable {
@@ -2356,6 +2358,17 @@ struct ParcelAlertRequest: Codable, Equatable, Hashable, Sendable {
 
 struct DeleteParcelAlertRequest: Codable, Equatable, Hashable, Sendable {
     var endpoint: String
+}
+
+struct ParcelAppAlertRequest: Codable, Equatable, Hashable, Sendable {
+    var token: String
+    var environment: NativePushEnvironment
+    var preset: ParcelAlertPreset
+    var locale: NativePushLocale
+}
+
+struct DeleteParcelAppAlertRequest: Codable, Equatable, Hashable, Sendable {
+    var token: String
 }
 
 enum ParcelFeedbackAnswer: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {

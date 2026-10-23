@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   closeParcelLink,
   forgetParcelLinkOpener,
+  hashWithoutOwnerKey,
   leaveParcelLink,
   openLanding,
   parcelLinkOpener,
@@ -18,7 +19,7 @@ import {
   parcelShareURL,
   useParcelLinkRoute,
 } from './route';
-import { LINK_ID, OTHER_LINK_ID } from '../test/parcelLinks';
+import { LINK_ID, OTHER_LINK_ID, OWNER_KEY } from '../test/parcelLinks';
 import { SAMPLE_LINK_ID } from './sample';
 
 afterEach(() => { history.replaceState(null, '', '/'); });
@@ -73,6 +74,15 @@ describe('the parcel page’s address', () => {
     for (const foreign of ['#section', '#n=Ada&utm=1', '#n=Ada&', '#x', '']) {
       expect(linkWordsFromHash(foreign)).toEqual({ name: null, note: null, from: null });
     }
+  });
+
+  it('passes over the owner key of a link meant for the iPhone app, and takes it out of the address', () => {
+    expect(linkWordsFromHash(`#k=${OWNER_KEY}&n=Boots`)).toEqual({ name: 'Boots', note: null, from: null });
+    expect(linkWordsFromHash(`#k=${OWNER_KEY}`)).toEqual({ name: null, note: null, from: null });
+    expect(hashWithoutOwnerKey(`#k=${OWNER_KEY}&n=Boots`)).toBe('#n=Boots');
+    expect(hashWithoutOwnerKey(`#n=Boots&k=${OWNER_KEY}`)).toBe('#n=Boots');
+    expect(hashWithoutOwnerKey(`#k=${OWNER_KEY}`)).toBe('');
+    for (const kept of ['', '#', '#n=Boots', '#section', '#kitchen=1']) expect(hashWithoutOwnerKey(kept)).toBe(kept);
   });
 
   it('writes only a public name into the URL, never a gift message or signature', () => {
