@@ -1200,6 +1200,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Correios Brazil tracking: codes, statuses and customs",
       "name": "Correios Brazil",
       "color": "#ffd500"
+    },
+    {
+      "id": "yto",
+      "catalog": "yto",
+      "slug": "yto-express-tracking",
+      "title": "YTO Express tracking: YT numbers, statuses and contact",
+      "name": "YTO Express",
+      "color": "#4d148c"
     }
   ],
   "de": [
@@ -2248,6 +2256,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Seguimiento iMile: números, estados y quién reparte",
       "name": "iMile",
       "color": "#0032a0"
+    },
+    {
+      "id": "correios-br",
+      "catalog": "correios-br",
+      "slug": "correios-brasil-seguimiento",
+      "title": "Correios Brasil seguimiento: código, estados y aduanas",
+      "name": "Correios Brazil",
+      "color": "#ffd500"
     }
   ],
   "pt": [
