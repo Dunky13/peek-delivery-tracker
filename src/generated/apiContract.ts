@@ -509,6 +509,21 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "dhl",
+      "requirements": [
+        {
+          "field": "dpdPostcode",
+          "whenTrackingNumber": "^[0-9]{12}$",
+          "validator": "internationalPostcode",
+          "optional": true,
+          "label": "Delivery postcode",
+          "type": "text",
+          "help": "Optional. DHL asks for it when several shipments share the number.",
+          "pattern": "^(?=.{3,12}$)(?=.*[0-9])[A-Za-z0-9]+(?:[ \\-][A-Za-z0-9]+)*$",
+          "maxLength": 12,
+          "inputMode": "text",
+          "autoComplete": "postal-code"
+        }
+      ],
       "recognitionRank": 999,
       "recognitionPattern": "^\\d{12}$"
     },
@@ -1975,7 +1990,7 @@ export const CARRIER_CAPABILITIES = {
     "linkRules": [],
     "detectionRules": [
       {
-        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}RS$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
+        "pattern": "^(?![CLR][A-Z]\\d{9}DE$)(?!U[A-TV-Z]\\d{9}DE$)(?!(?:[CELR][A-Z]|UH)\\d{9}TW$)(?![CEL][A-Z]\\d{9}AU$)(?![CELR][A-Z]\\d{9}SK$)(?![CELR][A-Z]\\d{9}RS$)(?![CELR][A-Z]\\d{9}SI$)(?![CELR][A-Z]\\d{9}HR$)(?![CELR][A-Z]\\d{9}LV$)(?![CE][A-Z]\\d{9}LT$)(?![CELR][A-Z]\\d{9}AE$)(?!(?:C[A-UW-Z]|[ELR][A-Z])\\d{9}PL$)(?!(?:C[A-QS-UW-Z]|R[A-NP-Z]|[EL][A-Z])\\d{9}EE$)(?!AS\\d{9}US$)(?![CELR][A-Z]\\d{9}IT$)(?!ZC\\d{9}IT$)(?!(?:PZ|XR|XT|XU|XW|XY))[A-Z]{2}\\d{9}(?!WW$|CA$|CH$|FR$|IN$|NL$|GB$|IE$|BE$|PT$|NZ$|SG$|JP$|KR$|TH$|HK$|MY$|CN$|NO$|BR$|ES$|SE$|DK$|AT$|YP$|TS$|JF$|JB$|RV$|VF$|TY$|MI$|XX$|MH$|YW$|CS$|EN$|CL$)[A-Z]{2}$",
         "confidence": "high",
         "checksum": "s10"
       }
@@ -4462,7 +4477,7 @@ export const CARRIER_CAPABILITIES = {
     ],
     "detectionRules": [
       {
-        "pattern": "^[A-Z]{2}\\d{9}CN$",
+        "pattern": "^(?!YY\\d{9}CN$)[A-Z]{2}\\d{9}CN$",
         "confidence": "high",
         "checksum": "s10"
       },
@@ -6483,7 +6498,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Europe/Copenhagen",
     "tracking": {
       "mode": "automatic",
-      "adapter": "dsv"
+      "adapter": "dsv",
+      "recognitionRank": 436
     },
     "trackingUrlTemplate": "https://mydsv.com/track-shipment?query={trackingNumber}",
     "linkRules": [
@@ -8702,6 +8718,11 @@ export const CARRIER_CAPABILITIES = {
       }
     ],
     "detectionRules": [
+      {
+        "pattern": "^[CE][A-Z]\\d{9}LT$",
+        "confidence": "high",
+        "checksum": "s10"
+      },
       {
         "pattern": "^(?:CC|CH|HC)\\d{9}LT$",
         "confidence": "low"
@@ -30985,7 +31006,13 @@ export const CARRIER_CAPABILITIES = {
       "adapter": "yypost"
     },
     "linkRules": [],
-    "detectionRules": []
+    "detectionRules": [
+      {
+        "pattern": "^YY\\d{9}CN$",
+        "confidence": "high",
+        "checksum": "s10"
+      }
+    ]
   }
 } as const;
 

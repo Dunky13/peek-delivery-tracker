@@ -67277,25 +67277,17 @@
   },
   {
     "input": "CC928806445LT",
-    "carrier": "intl-post",
+    "carrier": "lietuvos-pastas",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost",
       "lietuvos-pastas"
     ]
   },
   {
     "input": "CC929125681LT",
-    "carrier": "intl-post",
+    "carrier": "lietuvos-pastas",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "chronopost",
       "lietuvos-pastas"
     ]
   },
@@ -70586,6 +70578,9 @@
     "confidence": "low",
     "candidates": [
       "dsv"
+    ],
+    "asked": [
+      "dsv"
     ]
   },
   {
@@ -71171,14 +71166,10 @@
   },
   {
     "input": "EB830326759LT",
-    "carrier": "intl-post",
+    "carrier": "lietuvos-pastas",
     "confidence": "high",
     "candidates": [
-      "intl-post"
-    ],
-    "asked": [
-      "lietuvos-pastas",
-      "chronopost"
+      "lietuvos-pastas"
     ]
   },
   {
@@ -73930,6 +73921,9 @@
     "carrier": "unknown",
     "confidence": "low",
     "candidates": [
+      "dsv"
+    ],
+    "asked": [
       "dsv"
     ]
   },
@@ -93275,6 +93269,14 @@
     "confidence": "high",
     "candidates": [
       "yanwen"
+    ]
+  },
+  {
+    "input": "YY900000019CN",
+    "carrier": "yypost",
+    "confidence": "high",
+    "candidates": [
+      "yypost"
     ]
   },
   {
