@@ -2709,7 +2709,16 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
     }
   ],
   "hu": [],
-  "ro": [],
+  "ro": [
+    {
+      "id": "fan-courier",
+      "catalog": "fan-courier",
+      "slug": "fan-courier-urmarire-awb",
+      "title": "Urmărire colet FAN Courier: AWB, statusuri și FANbox",
+      "name": "FAN Courier",
+      "color": "#0f2345"
+    }
+  ],
   "bg": [],
   "el": [
     {
@@ -2719,6 +2728,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Εντοπισμός δέματος ΕΛΤΑ: κωδικός, καταστάσεις, PostBox",
       "name": "ELTA Hellenic Post",
       "color": "#0063a9"
+    },
+    {
+      "id": "cyprus-post",
+      "catalog": "cyprus-post",
+      "slug": "kypriaka-tachydromeia-entopismos-dematos",
+      "title": "Κυπριακά Ταχυδρομεία: εντοπισμός δέματος, κωδικός, Parcel24",
+      "name": "Cyprus Post",
+      "color": "#e4a50e"
     }
   ],
   "hr": [
