@@ -937,8 +937,8 @@ function placesDiffer(left: readonly string[], right: readonly string[]): boolea
  * clock to the minute) counts at the scan's instant: one later in the scan's
  * minute (17TRACK adds seconds to USPS's minute), or a whole number of hours
  * up to 14 h later, the scan read in another zone (ParcelsApp reads a London
- * office's wall clock as UTC), with stages that agree and from no other place.
- * The latest such scan counts. A provider's scan dated more than a few minutes
+ * office's wall clock as UTC), with stages that agree and from no other place,
+ * unless such a scan falls in the copy's own minute. The latest such scan counts. A provider's scan dated more than a few minutes
  * past the check that first returned it counts at none (NaN): no clock but a
  * misread zone does that. `scans` are a check's scans, `stored` the parcel's
  * rows, each first seen at its `created_at` (else at `checkedAt`, the check's
@@ -958,8 +958,11 @@ export function misdatedCopies(scans: readonly JsonObject[], stored: readonly Js
       misdated.set(identity(row), Number.NaN);
       continue;
     }
-    const twins = carriers.filter((scan) => at > instantOf(scan) && (sameTruncated(at, instantOf(scan)) || hoursApart(at, instantOf(scan)))
-      && stagesAgree(stageOf(row), stageOf(scan)) && !placesDiffer(placeWords(row), placeWords(scan)));
+    const agrees = (scan: JsonObject) => stagesAgree(stageOf(row), stageOf(scan)) && !placesDiffer(placeWords(row), placeWords(scan));
+    // A carrier's scan in the copy's own minute dates it: a scan whole hours away only shares its minute of the hour.
+    const dated = carriers.some((scan) => Math.floor(instantOf(scan) / MINUTE_MS) === Math.floor(at / MINUTE_MS) && agrees(scan));
+    const twins = carriers.filter((scan) => at > instantOf(scan) && agrees(scan)
+      && (sameTruncated(at, instantOf(scan)) || (!dated && hoursApart(at, instantOf(scan)))));
     if (twins.length) misdated.set(identity(row), Math.max(...twins.map(instantOf)));
   }
   return misdated;

@@ -5647,6 +5647,34 @@ describe('scans a carrier and a universal provider both report', () => {
     expect([...store.rows.keys()]).toEqual([own]);
   });
 
+  it('records no offset for a provider\'s copy UPS holds in its own minute, 12 h after another scan of the place', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    // ParcelsApp copies UPS's scans to the minute and leaves the notice unclassified.
+    const arrived: Scan = { time: '2026-01-04T05:01:00Z', location: 'Hubtown, EX', description: 'Arrived at Facility', stage: 'in_transit' };
+    const notice: Scan = { time: '2026-01-04T17:01:45Z', location: 'Hubtown, EX', description: 'The receiver name is incorrect', stage: 'in_transit' };
+    const adapter = {
+      fetch: vi.fn().mockResolvedValueOnce(result([notice, arrived])).mockRejectedValueOnce(new Error('UPS tracking endpoint is unavailable')),
+      fetchUniversal: vi.fn().mockResolvedValue({ ...result([{ ...notice, time: '2026-01-04T17:01:00Z', stage: 'pending' }, arrived]),
+        tracking_provider: 'ParcelsApp' }),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    const sync = async () => {
+      await service.syncPackage({ id: 'ups-notice', user_id: 'owner', carrier: 'ups', tracking_number: '1Z0000000000000001',
+        current_stage: 'in_transit', [STORED_EVENT_IDENTITIES]: store.identities() });
+      return (client.completeSyncAttempt.mock.calls.at(-1)![1] as JsonObject).anomaly_codes;
+    };
+
+    await sync();
+    // UPS is down: both copies are its scans, and neither was read a zone away.
+    expect(await sync()).not.toContain('provider_clock_offset');
+    expect(store.rows.size).toBe(2);
+  });
+
   it('stores once a scan a provider words its own way on a clock two hours early, and records the offset', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const store = eventStore();

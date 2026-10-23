@@ -593,13 +593,15 @@ copy of a stored scan counts at the stored scan's instant, and a row a scan take
 moves at that scan's instant. So does a provider's copy the sync could not tell from a
 carrier's scan: one later in the scan's minute, or a whole number of hours up to 14 h later,
 in any wording, with stages that agree and from no other place (a word may shorten another,
-as Swiss Post's LON does ParcelsApp's LONDON). A provider's scan dated more than 5 minutes
-past the check that first returned it counts at no instant: only a misread zone dates a scan
-in the future. A provider that misread the zone therefore cannot set the
-watermark hours ahead and make the carrier's own reply look older, and the watermark comes
-back once the provider's corrected answer moves its rows. A watermark a provider's summary
-set is that provider's newest scan, which the sync stored, so one past every stored scan
-comes back to the newest, its copies having moved since. The router holds a carrier
+as Swiss Post's LON does ParcelsApp's LONDON). A copy with a carrier's scan in its own minute,
+in a stage that agrees and from no other place, is dated right, even when its clock is whole
+hours from another scan. A provider's scan dated more than 5 minutes past the check that
+first returned it counts at no instant: only a misread zone dates a scan in the future. A
+provider that misread the zone therefore cannot set the watermark hours ahead and make the
+carrier's own reply look older, and the watermark comes back once the provider's corrected
+answer moves its rows. A watermark a provider's summary set is that provider's newest scan,
+which the sync stored, so one past every stored scan comes back to the newest, its copies
+having moved since. The router holds a carrier
 detection or a provider names to the same rule before taking it: its newest scan counts
 against the watermark less the copies of its own scans, stored or in the answer of the
 provider that names it. A newest scan dated to the minute (Sameday's) is as new as a watermark

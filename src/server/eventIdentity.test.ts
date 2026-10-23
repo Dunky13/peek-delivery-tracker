@@ -1245,6 +1245,15 @@ describe('a provider\'s copies a carrier\'s answer cannot tell from its own scan
     expect(misdated([], [copy])).toEqual({});
   });
 
+  it('reads no zone into a copy a carrier\'s scan in its own minute dates', () => {
+    // UPS's notice and ParcelsApp's unclassified copy of it, to the minute, 12 h after UPS's arrival at the same place.
+    const arrived = { ...row('ups:arrived', '2026-01-04T05:01:00+00:00', 'Arrived at Facility', 'in_transit'), location: 'Hubtown' };
+    const notice = { ...row('ups:notice', '2026-01-04T17:01:45+00:00', 'The receiver name is incorrect', 'in_transit'), location: 'Hubtown' };
+    const relayed = { ...scan('unknown:notice', '2026-01-04T17:01:00Z', 'The receiver name is incorrect'), location: 'Hubtown' };
+    expect(misdated([relayed], [arrived, notice])).toEqual({});
+    expect(misdated([relayed], [arrived])).toEqual({ 'unknown:notice': at('2026-01-04T05:01:00Z') });
+  });
+
   it('counts a copy dated past the check that first returned it at no instant', () => {
     const ahead = { ...copy, occurred_at: '2026-01-04T12:30:00+00:00' };
     expect(misdated([], [ahead])).toEqual({ 'unknown:export': Number.NaN });
