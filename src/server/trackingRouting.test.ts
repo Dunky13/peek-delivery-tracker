@@ -511,18 +511,22 @@ describe('persistent tracking routing', () => {
 
     it('records the answer it sets aside, and the checks in a row that set the same one aside, until one is taken', async () => {
       const withoutCopies = vi.fn().mockReturnValue(Date.parse('2026-09-10T05:00:00Z'));
-      const { router, direct } = setup(time, { withoutCopies });
+      // The parcel already holds the answer's scans: it only knows an earlier leg.
+      const newScans = vi.fn().mockReturnValue(0);
+      const { router, direct } = setup(time, { withoutCopies, newScans });
       direct.mockResolvedValue(older());
-      const aside = { checked_at: time.toISOString(), newest: '2026-09-10T03:00:00.000Z', watermark: '2026-09-10T11:00:00.000Z' };
+      const aside = { checked_at: time.toISOString(), newest: '2026-09-10T03:00:00.000Z', watermark: '2026-09-10T11:00:00.000Z', new_scans: 0 };
       const first = await router.fetch(named(), false);
       expect(first.result.routing).toMatchObject({ set_aside: { ups: { ...aside, count: 1 } } });
       const setAside = (first.result.routing as JsonObject).set_aside as JsonObject;
       const again = await router.fetch(named({ set_aside: setAside }), false);
       expect(again.result.routing).toMatchObject({ set_aside: { ups: { ...aside, count: 2 } } });
-      // Another answer, still older, starts over.
+      // Another answer, still older, starts over; this one holds a scan the parcel lacks.
+      newScans.mockReturnValue(1);
       direct.mockResolvedValue({ ...directValue(), result: history('2026-09-10T04:00:00Z') });
       const other = await router.fetch(named({ set_aside: setAside }), false);
-      expect(other.result.routing).toMatchObject({ set_aside: { ups: { ...aside, newest: '2026-09-10T04:00:00.000Z', count: 1 } } });
+      expect(other.result.routing).toMatchObject({ set_aside: { ups: { ...aside, newest: '2026-09-10T04:00:00.000Z', count: 1, new_scans: 1 } } });
+      expect(newScans).toHaveBeenLastCalledWith(expect.objectContaining({ sourceCarrierId: 'ups' }));
       // A newer one is taken, and nothing is left set aside.
       direct.mockResolvedValue({ ...directValue(), result: history('2026-09-10T11:30:00Z') });
       const taken = await router.fetch(named({ set_aside: setAside }), false);

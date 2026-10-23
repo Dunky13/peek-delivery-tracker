@@ -1504,6 +1504,7 @@ export class TrackingSyncService {
             health: this.client, now: this.now,
             takePrefetchedUniversal: takePreflightHistory, preflightInputNeeded, refuses: refusesNumber,
             withoutCopies: (watermark: number, value: RoutedResult, provider?: CarrierResult) => watermarkWithoutCopies(parcel, watermark, value, provider, now.getTime()),
+            newScans: (value: RoutedResult) => scansMissing(parcel, value),
             ...(this.adapter.recognize ? { recognize: (carrier: string, number: string, context?: TrackingContext) =>
               once(recognitionKey('http', carrier, number), () => this.adapter.recognize!(carrier, number, context)) } : {}),
             ...(this.adapter.recognizeBrowser ? { recognizeBrowser: (carrier: string, number: string, context?: TrackingContext, previousError?: unknown) =>
@@ -2336,6 +2337,20 @@ function providerIdentification(
 function storedEventIdentities(parcel: JsonObject): JsonObject[] {
   const stored = parcel[STORED_EVENT_IDENTITIES];
   return Array.isArray(stored) ? stored.filter(isRecord) : [];
+}
+
+/**
+ * How many of an answer's scans the parcel's stored rows lack, matched as the sync matches
+ * them: a scan a row holds, or a copy of one, adds nothing. Undefined for a parcel loaded
+ * without its rows.
+ */
+export function scansMissing(parcel: JsonObject, value: RoutedResult): number | undefined {
+  if (!Array.isArray(parcel[STORED_EVENT_IDENTITIES])) return undefined;
+  const events = buildEvents(parcel, value.result, value.sourceCarrierId);
+  const stored = storedEventIdentities(parcel);
+  const known = new Set(stored.map((row) => row.provider_event_id));
+  const { reused, skipped } = sharedScans(events, stored, new Map(), earlierCarrier(parcel));
+  return events.filter(({ provider_event_id: id }) => typeof id === 'string' && !known.has(id) && !reused.has(id) && !skipped.has(id)).length;
 }
 
 /**

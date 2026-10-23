@@ -54,7 +54,7 @@ interface Failure { count: number; retry_at: string; kind: RoutingFailureKind; u
  * all; or behind a provider's delivered or returned stage. Absent: older.
  */
 export type SetAsideReason = 'older' | 'no_movement' | 'local_clock' | 'undated' | 'behind_final';
-export interface SetAside { reason?: SetAsideReason; checked_at: string; newest?: string; watermark?: string; count: number }
+export interface SetAside { reason?: SetAsideReason; checked_at: string; newest?: string; watermark?: string; count: number; new_scans?: number }
 export interface RoutingState extends JsonObject {
   version: 1;
   configured_carrier: string;
@@ -96,8 +96,9 @@ export interface RoutingState extends JsonObject {
   /**
    * Carriers whose answer a check set aside: why, when, how many checks in a row set that same
    * answer aside, and for one older than the parcel's newest scan, the answer's newest scan and
-   * the watermark it lost to. Asking the carrier again replaces it, and an answer on local
-   * clocks the check then takes leaves nothing.
+   * the watermark it lost to. `new_scans` counts the answer's scans the parcel's rows lack, so
+   * the review tells an answer that only knows an earlier leg from one that loses scans. Asking
+   * the carrier again replaces it, and an answer on local clocks the check then takes leaves nothing.
    */
   set_aside?: Record<string, SetAside>;
   probe_cursor: number;
@@ -511,6 +512,8 @@ export class TrackingRouter {
      * stored rows, and `provider`'s answer from this check.
      */
     withoutCopies?: (watermark: number, value: RoutedResult, provider?: CarrierResult) => number;
+    /** How many of an answer's scans the parcel's stored rows lack; undefined when they were not loaded. */
+    newScans?: (value: RoutedResult) => number | undefined;
     now?: () => Date;
     /** Waits out a provider's spacing; tests replace the timer. */
     wait?: (ms: number, signal?: AbortSignal) => Promise<unknown>;
@@ -776,11 +779,12 @@ export class TrackingRouter {
       clearSetAside(carrier);
       // Kept, so the review tells it from a carrier never asked, and a release's
       // check knows the same answer would be set aside again (redetection.ts).
-      const setAsideAs = (reason: SetAsideReason, newest?: string) => {
+      const setAsideAs = (reason: SetAsideReason, value: RoutedResult, newest?: string) => {
         const again = setAside && (setAside.reason ?? 'older') === reason && setAside.newest === newest;
+        const added = this.options.newScans?.(value);
         state.set_aside = { ...state.set_aside, [carrier]: { reason, checked_at: now().toISOString(),
           ...(newest ? { newest, watermark: iso(millis(state.last_event_at)) } : {}),
-          count: again ? Math.min(20, setAside.count + 1) : 1 } };
+          count: again ? Math.min(20, setAside.count + 1) : 1, ...(added !== undefined ? { new_scans: added } : {}) } };
       };
       try {
         const lookupParcel = candidate ? { ...parcel, carrier,
@@ -853,27 +857,27 @@ export class TrackingRouter {
             localAnswers.set(carrier, { value, history: capturedHistory, confirm });
           }
           // Set aside unless the check takes it in the end.
-          if (candidate) setAsideAs(moved ? 'local_clock' : 'no_movement');
+          if (candidate) setAsideAs(moved ? 'local_clock' : 'no_movement', value);
           return null;
         }
         if (candidate && !moved) {
-          setAsideAs('no_movement');
+          setAsideAs('no_movement', value);
           return null;
         }
         // An answer without a date is neither older nor newer than the parcel's dated progress,
         // so it cannot displace it either.
         if (candidate && !latest(value) && millis(state.last_event_at)) {
-          setAsideAs('undated');
+          setAsideAs('undated', value);
           return null;
         }
         if (candidate && olderThanParcel(value, provider)) {
-          setAsideAs('older', iso(latest(value)));
+          setAsideAs('older', value, iso(latest(value)));
           return null;
         }
         // The provider's delivered or returned answer stands.
         if (terminalStage && ['delivered', 'returned'].includes(terminalStage)
           && resultStage(value.result) !== terminalStage) {
-          setAsideAs('behind_final');
+          setAsideAs('behind_final', value);
           return null;
         }
         if (capturedHistory) localHistory = capturedHistory;

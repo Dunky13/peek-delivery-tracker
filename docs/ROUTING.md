@@ -615,7 +615,9 @@ not displace the parcel's dated progress either. An answer it sets aside stays i
 not asked: why (older, no movement, local clocks only unless the check then takes that
 answer, undated, or behind a provider's delivered or returned stage), when, how many checks
 in a row,
-and for an older one its newest scan and the watermark it lost to. The app's "Tracking added"
+for an older one its newest scan and the watermark it lost to, and how many of its scans the
+parcel's rows lack, matched as the sync matches copies (`new_scans`): none means the carrier
+only knows what the parcel shows. The app's "Tracking added"
 row is no scan, so a parcel added after its newest scan keeps that scan's time. Nor is a row stamped when it was
 observed, such as a UPU milestone: its observation time never holds the watermark ahead.
 Over a parcel still pending, an answer that moved is not older for rows its provider wrote

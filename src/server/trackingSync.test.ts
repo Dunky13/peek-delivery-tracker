@@ -28,6 +28,7 @@ import {
   providerEventId,
   restagedNews,
   resultHasUpdate,
+  scansMissing,
   resultStage,
   stageToSave,
   TrackingSyncService,
@@ -36,7 +37,7 @@ import {
 import type { JsonObject } from './types';
 import * as observability from './observability';
 import * as metrics from './metrics';
-import { catalogRules, recognizers, routingFailure, TrackingRouter } from './trackingRouting';
+import { catalogRules, recognizers, routingFailure, TrackingRouter, type RoutedResult } from './trackingRouting';
 import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
@@ -5535,6 +5536,23 @@ describe('scans a carrier and a universal provider both report', () => {
   const copied = (scan: Scan): Scan => ({ time: scan.time.replace('-05:00', '-08:00'), description: scan.description, stage: scan.stage });
   const own = (scan: Scan) => providerEventId('gofo', scan.time, scan.location ?? '', scan.description);
   const copy = (scan: Scan) => providerEventId('unknown', copied(scan).time, '', scan.description);
+
+  it('counts the scans of a carrier answer the stored rows lack, a copy of a row adding none', () => {
+    // What the sync loaders embed for rows built from an answer.
+    const stored = (rows: JsonObject[]) => rows.map((row) => {
+      const raw = (row.raw_data ?? {}) as JsonObject;
+      return { provider_event_id: row.provider_event_id, occurred_at: new Date(String(row.occurred_at)).toISOString().replace('.000Z', '+00:00'),
+        stage: row.stage, description: row.description, location: row.location, time: raw.time, provider_code: raw.provider_code,
+        universal_provider: raw.universal_provider, local_time: raw.local_time };
+    });
+    const withRows = { ...parcel, [STORED_EVENT_IDENTITIES]: stored(buildEvents(parcel, result([hub, label].map(copied)), 'unknown')) };
+    const answer = (scans: Scan[]) => ({ sourceCarrierId: 'gofo', result: result(scans) }) as RoutedResult;
+    expect(scansMissing(withRows, answer([hub, label]))).toBe(0);
+    expect(scansMissing(withRows, answer([out, hub, label]))).toBe(1);
+    expect(scansMissing({ ...parcel, [STORED_EVENT_IDENTITIES]: [] }, answer([hub, label]))).toBe(2);
+    // A parcel loaded without its rows tells nothing.
+    expect(scansMissing(parcel, answer([hub, label]))).toBeUndefined();
+  });
 
   it('stores each scan once and keeps the carrier clock across a fallback', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
