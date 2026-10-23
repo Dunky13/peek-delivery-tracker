@@ -174,8 +174,8 @@ struct FirstOpenView: View {
         GeometryReader { window in
             let top = window.safeAreaInsets.top
             let screen = window.size.height + top + window.safeAreaInsets.bottom
-            // The map takes what the question and its field leave, within reason.
-            let heroHeight = min(446, max(300, screen - 404))
+            // The map takes what the question and its field leave, within reason: a phone's worth, or half a taller window.
+            let heroHeight = min(screen >= 1000 ? screen / 2 : 446, max(300, screen - 404))
             // The picture opens on the parcel's own page, which goes back to it as any parcel's does.
             NavigationStack {
                 let page = VStack(spacing: 0) {
