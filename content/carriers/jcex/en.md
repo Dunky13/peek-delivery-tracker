@@ -3,7 +3,7 @@ title: JCEX tracking: JCZ numbers, statuses and who delivers
 description: Track a JCEX parcel from China: what a JCZ waybill number looks like, what each status means, who delivers it in your country and who to ask when it stalls.
 slug: jcex-tracking
 published: 2026-10-21
-updated: 2026-10-21
+updated: 2026-10-23
 ---
 
 JCEX (佳成国际, Jiacheng International Logistics) is a logistics company in Hangzhou, China, that ships parcels abroad for online sellers and hands them to a carrier in your country for the last stretch, such as [USPS](carrier:usps) in the United States or Colissimo in France. Track the number on JCEX's tracker, [track.jcex.com](https://track.jcex.com/), or in the box above. The shop gives it with your order's shipping details.
@@ -17,7 +17,7 @@ JCEX publishes no number format. Its waybill numbers start with JCZ and end with
 | `JCZ1234567890DH` | JCZ, 10 digits and DH: a JCEX waybill. |
 | `JCZ123456789DH` | Only 9 digits: a mistyped number, not a JCEX shape. |
 
-Lower case and spaces don't matter in Peek. JCEX's tracker takes up to 100 numbers at once, separated by commas, and also finds a parcel by JCEX's own order number.
+Lower case and spaces don't matter in Peek. JCEX's tracker takes up to 100 numbers at once, separated by commas.
 
 **Where to find it.** No JCEX page says how the number reaches you. The seller books the parcel and gives the number in the shipping email or on the order page. If you can't find it, see [how to find your tracking number](guide:find-tracking-number).
 
@@ -53,7 +53,7 @@ Two things confuse people. JCEX files the handover to the delivering carrier's d
 
 JCEX doesn't deliver in your country itself. Its pages say small parcels (up to 2 kg, by air) are delivered by the post, and heavier express parcels by the post or a commercial courier. In histories read on JCEX's tracker, USPS delivered in the United States and Colissimo, [La Poste](carrier:la-poste)'s parcel service, in France.
 
-JCEX publishes no rules for delivery attempts, notice cards, pickup points or how long a parcel is held: those are the delivering carrier's, and its lines in JCEX's history say what it did. In one French history, Colissimo wrote that it had called, couldn't deliver and was taking the parcel to a pickup point. JCEX doesn't show that carrier's own number, so ask the seller for it if you need to rearrange a delivery.
+JCEX publishes no rules for delivery attempts, notice cards, pickup points or how long a parcel is held: those are the delivering carrier's, and its lines in JCEX's history say what it did. In one French history, Colissimo wrote that it couldn't deliver the parcel and would take it out for delivery again the next day (except Sundays and public holidays). JCEX doesn't show that carrier's own number, so ask the seller for it if you need to rearrange a delivery.
 
 ## JCEX parcel not arriving or tracking stuck
 

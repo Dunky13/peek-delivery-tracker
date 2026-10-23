@@ -62,7 +62,7 @@
   { "id": "postnord", "catalog": "postnord", "name": "PostNord", "languages": ["en", "da", "sv", "nb", "fi"] },
   { "id": "bring", "catalog": "bring-posten", "name": "Bring", "languages": ["en", "nb"] },
   { "id": "posti", "catalog": "posti", "name": "Posti", "languages": ["en", "fi"] },
-  { "id": "omniva", "catalog": "omniva", "name": "Omniva", "languages": ["en"] },
+  { "id": "omniva", "catalog": "omniva", "name": "Omniva", "languages": ["en", "lt"] },
   { "id": "ppl", "catalog": "ppl", "name": "PPL", "languages": ["en"] },
   { "id": "box-now", "catalog": "box-now", "name": "BOX NOW", "languages": ["en"] },
   { "id": "dhl-ecommerce-nl", "catalog": "dhl-ecommerce-nl", "name": "DHL eCommerce Netherlands", "languages": ["en", "fr"] },
@@ -131,8 +131,8 @@
   { "id": "first-line", "catalog": "first-line", "name": "FIRST LINE", "languages": ["en"] },
   { "id": "j-and-t-de", "catalog": "j-and-t-de", "name": "J&T Express Germany", "languages": ["en", "de"] },
   { "id": "kun-express", "catalog": "kun-express", "name": "Kun Express", "languages": ["en"] },
-  { "id": "juxi-express", "catalog": "juxi-express", "name": "Juxi Express", "languages": ["en"] },
-  { "id": "jcex", "catalog": "jcex", "name": "JCEX", "languages": ["en"] },
+  { "id": "juxi-express", "catalog": "juxi-express", "name": "Juxi Express", "languages": ["en", "fr"] },
+  { "id": "jcex", "catalog": "jcex", "name": "JCEX", "languages": ["en", "pl"] },
   { "id": "lingdong", "catalog": "lingdong", "name": "Lingdong International", "languages": ["en"] },
   { "id": "j-and-t-au", "catalog": "j-and-t-au", "name": "J&T Express Australia", "languages": ["en"] },
   { "id": "china-post", "catalog": "china-post", "name": "China Post", "languages": ["en", "de", "fr", "it", "es", "pt", "pl"] },
@@ -144,5 +144,6 @@
   { "id": "dhlink", "catalog": "dhlink", "name": "DHLink", "languages": ["en"] },
   { "id": "dpd-pt", "catalog": "dpd-pt", "name": "DPD Portugal", "languages": ["en", "pt"] },
   { "id": "tnt-it", "catalog": "tnt-it", "name": "TNT Italy", "languages": ["en", "it"] },
-  { "id": "tnt", "catalog": "tnt", "name": "TNT", "languages": ["en", "pt"] }
+  { "id": "tnt", "catalog": "tnt", "name": "TNT", "languages": ["en", "pt"] },
+  { "id": "sf-express", "catalog": "sf-express", "name": "SF Express", "languages": ["en"] }
 ]

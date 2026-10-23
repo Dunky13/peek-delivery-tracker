@@ -1176,6 +1176,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "TNT tracking: consignment number, statuses and delivery",
       "name": "TNT",
       "color": "#ff6600"
+    },
+    {
+      "id": "sf-express",
+      "catalog": "sf-express",
+      "slug": "sf-express-tracking",
+      "title": "SF Express tracking: waybill numbers, statuses and delivery",
+      "name": "SF Express",
+      "color": "#dc1e32"
     }
   ],
   "de": [
@@ -1740,6 +1748,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "title": "Intelcom / Dragonfly suivi colis\u00a0: statuts et contact",
       "name": "Intelcom / Dragonfly",
       "color": "#13a58f"
+    },
+    {
+      "id": "juxi-express",
+      "catalog": "juxi-express",
+      "slug": "juxi-express-suivi",
+      "title": "Juxi Express suivi\u00a0: numéro JXC, livraison et contact",
+      "name": "Juxi Express",
+      "color": "#e2393c"
     },
     {
       "id": "china-post",
@@ -2630,6 +2646,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
       "color": "#ffcc00"
     },
     {
+      "id": "jcex",
+      "catalog": "jcex",
+      "slug": "jcex-sledzenie",
+      "title": "JCEX śledzenie przesyłki: numer JCZ, statusy, kto doręcza",
+      "name": "JCEX",
+      "color": "#0080cc"
+    },
+    {
       "id": "china-post",
       "catalog": "china-post",
       "slug": "china-post-sledzenie",
@@ -2790,6 +2814,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
   ],
   "sl": [],
   "lt": [
+    {
+      "id": "omniva",
+      "catalog": "omniva",
+      "slug": "omniva-siuntu-sekimas",
+      "title": "Omniva siuntų sekimas: statusai, paštomatai ir kontaktai",
+      "name": "Omniva",
+      "color": "#f86300"
+    },
     {
       "id": "lietuvos-pastas",
       "catalog": "lietuvos-pastas",
