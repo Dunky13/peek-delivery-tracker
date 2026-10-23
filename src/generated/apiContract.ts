@@ -30963,6 +30963,29 @@ export const CARRIER_CAPABILITIES = {
         "confidence": "high"
       }
     ]
+  },
+  "yypost": {
+    "displayName": "YYpost",
+    "aliases": [
+      "YY Post",
+      "Yuanyou",
+      "远邮",
+      "远邮国际",
+      "深圳市远邮国际物流有限公司",
+      "Shenzhen Yuanyou International Logistics"
+    ],
+    "countries": [
+      "CN"
+    ],
+    "color": "#0000cc",
+    "selectable": true,
+    "timezone": "Asia/Shanghai",
+    "tracking": {
+      "mode": "automatic",
+      "adapter": "yypost"
+    },
+    "linkRules": [],
+    "detectionRules": []
   }
 } as const;
 
@@ -31800,7 +31823,8 @@ export const CARRIER_IDS = [
   "zto-international",
   "dayone",
   "shouwu",
-  "meihoo-pegasus"
+  "meihoo-pegasus",
+  "yypost"
 ] as const;
 export type ApiCarrierId = (typeof CARRIER_IDS)[number];
 
