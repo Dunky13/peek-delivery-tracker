@@ -37,6 +37,12 @@ failures age out of the window; a new failure meanwhile reminds as usual.
   that does not know the item yet (Ukrposhta, myDSV, Ecoscooting), inconclusive with the
   reason `status_api_not_found` or `portal_not_found`: routing files it as `no_history`,
   and the hand-off probes of mail bound for Ukraine can't open an incident either.
+- A confirmation asks a carrier whether it holds a parcel that is not its own yet: a
+  delivery partner before the handover, or a carrier that detection or a provider names
+  and that has not confirmed the number. Its other inconclusive answers, such as an item
+  listed without scans, record no sample: the carrier may not hold the parcel yet. An HTTP
+  5xx or 429 behind them, or a browser capture that failed, still counts, as do transport,
+  schema and rate-limit errors.
 - A number the parcel's own carrier refuses as one it does not issue is the owner's to
   correct. The check stays an error or `waiting` for the parcel, and its refresh sample is
   healthy, filed as missing input, whether or not routing made the check. So is a number

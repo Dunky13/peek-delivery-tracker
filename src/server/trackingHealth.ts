@@ -14,6 +14,9 @@ export interface HealthSample extends JsonObject {
   recovered?: boolean;
 }
 const observations = new AsyncLocalStorage<Map<string, HealthSample>>();
+const confirmations = new AsyncLocalStorage<true>();
+/** A browser capture that failed: the lookup's own fault, not the carrier's answer. */
+const CAPTURE_FAILURES = new Set(['capture_missing', 'capture_unreadable']);
 /**
  * A clean not-found or a missing input is a working transport that answered,
  * so it is recorded healthy and lets an incident recover. Postgres leaves
@@ -57,12 +60,27 @@ function details(record: StepRecord | LookupRecord, outcome: string): JsonObject
   return { error_type: record.errorType, category: outcome, http_status: status,
     step: 'step' in record ? record.step : record.finalStep };
 }
+/**
+ * A confirmation's inconclusive answer, such as an item listed without scans: the carrier may
+ * simply not hold the parcel yet. An HTTP error or a failed browser capture is still a failure.
+ */
+function inconclusive(record: StepRecord | LookupRecord, outcome: string): boolean {
+  if (!confirmations.getStore() || outcome !== 'indeterminate') return false;
+  let current = record.error;
+  for (let depth = 0; current instanceof Error && depth < 8; depth++, current = current.cause) {
+    if (current instanceof UpstreamHttpError && (current.status >= 500 || current.status === 429)) return false;
+    if (current instanceof CarrierError && CAPTURE_FAILURES.has(current.reason ?? '')) return false;
+  }
+  return true;
+}
 function save(kind: 'provider' | 'direct', record: StepRecord | LookupRecord): void {
   const store = observations.getStore();
   if (!store) return;
   const key = `${kind}:${record.carrier}`;
   const previous = store.get(key);
   const outcome = category(record);
+  // Neither healthy nor failing: no sample.
+  if (inconclusive(record, outcome)) return;
   // A retry cannot count as another lookup or erase the original failed direct attempt: one
   // that answered only marks it recovered.
   if (previous && !previous.healthy) {
@@ -85,6 +103,15 @@ export const healthStepRecorder = {
 };
 export function observeTrackingHealth<T>(samples: Map<string, HealthSample>, operation: () => Promise<T>): Promise<T> {
   return observations.run(samples, operation);
+}
+/**
+ * A lookup asking a carrier whether it holds a parcel that is not its own yet: a delivery partner
+ * before the handover, or a carrier that detection or a provider names. Its inconclusive answer
+ * is no evidence of the carrier's health. Counted as failures, PostNL's empty answers for
+ * Australian and Polish items it did not hold yet made most of Spring GDS's provider incident.
+ */
+export function confirmationLookup<T>(operation: () => Promise<T>): Promise<T> {
+  return confirmations.run(true, operation);
 }
 
 /**

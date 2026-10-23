@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
-import { IndeterminateError, NoHistoryError, NotFoundError, SchemaError, UpstreamHttpError } from 'universal-parcel-scraper';
-import { TrackingCaptureError } from 'universal-parcel-scraper/node';
-import { healthMessage, healthStepRecorder, observeTrackingHealth, type HealthSample } from './trackingHealth';
+import { IndeterminateError, NoHistoryError, NotFoundError, RateLimitedError, SchemaError, UpstreamHttpError } from 'universal-parcel-scraper';
+import { TrackingCaptureError, type LookupRecord } from 'universal-parcel-scraper/node';
+import { confirmationLookup, healthMessage, healthStepRecorder, observeTrackingHealth, type HealthSample } from './trackingHealth';
 import { TrackingSyncAudit } from './trackingAudit';
 import type { SupabaseServiceClient } from './supabase';
 import type { JsonObject } from './types';
@@ -104,6 +104,39 @@ describe('tracking health evidence', () => {
       ['provider', 'slovenska-posta', true, 'not_found'],
       ['provider', 'dhl-ecommerce', false, 'indeterminate'],
       ['provider', 'seur', false, 'indeterminate'],
+    ]);
+  });
+
+  it("leaves a confirmation's inconclusive answer out of provider health, and counts its real failures", async () => {
+    const samples = new Map<string, HealthSample>();
+    const lookup = (carrier: string, outcome: LookupRecord['outcome'], error: Error) => healthStepRecorder.lookup({
+      carrier, finalStep: 'direct', outcome, errorType: error.name, durationMs: 1, attempts: 1, error });
+    const empty = (provider: string) => new IndeterminateError(provider);
+    await observeTrackingHealth(samples, async () => {
+      // The parcel's own carrier answering so still fails.
+      lookup('seur', 'indeterminate', empty('SEUR'));
+      await confirmationLookup(async () => {
+        // A partner listing an item it does not hold yet without scans, in its direct step and its lookup.
+        healthStepRecorder.step({ ...step, carrier: 'spring-gds', outcome: 'indeterminate', errorType: 'IndeterminateError', error: empty('PostNL') });
+        await Promise.resolve();
+        lookup('spring-gds', 'indeterminate', new Error('lookup failed', { cause: empty('PostNL') }));
+        lookup('posti', 'not_found', new NotFoundError('Posti'));
+        lookup('bpost', 'indeterminate', new IndeterminateError('bpost', 'bpost is unavailable', { cause: new UpstreamHttpError('bpost', 503) }));
+        lookup('evri', 'indeterminate', new TrackingCaptureError('capture_missing', 'Evri'));
+        lookup('dpd', 'rate_limited', new RateLimitedError('DPD', 60_000));
+        lookup('gls', 'schema', new SchemaError('GLS'));
+      });
+      // Outside the confirmation, an inconclusive answer counts again.
+      lookup('australia-post', 'indeterminate', empty('Australia Post'));
+    });
+    expect([...samples.values()].map(({ kind, subject, healthy, details }) => [kind, subject, healthy, details.category])).toEqual([
+      ['provider', 'seur', false, 'indeterminate'],
+      ['provider', 'posti', true, 'not_found'],
+      ['provider', 'bpost', false, 'indeterminate'],
+      ['provider', 'evri', false, 'indeterminate'],
+      ['provider', 'dpd', false, 'rate_limited'],
+      ['provider', 'gls', false, 'schema'],
+      ['provider', 'australia-post', false, 'indeterminate'],
     ]);
   });
 

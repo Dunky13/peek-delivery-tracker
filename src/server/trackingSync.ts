@@ -59,6 +59,7 @@ import { earlierCarrier } from './relayCopies';
 import { eventTimestamp, latestResultTime, resultTimezone, SWISS_POST_GLOBAL_STATUSES } from 'universal-parcel-scraper/app';
 import { trackingSupportEvidence } from './trackingSupport';
 import { noteTypoCandidate } from './typoCandidate';
+import { confirmationLookup } from './trackingHealth';
 import { deployedVersion, statusMapClosings, universalMapAgrees } from './reviewQueues';
 import { carrierLookupKey, recognitionKey, SharedLookups, universalLookupKey, type ParcelLookups } from './sharedLookups';
 
@@ -2163,7 +2164,7 @@ export class TrackingSyncService {
           misses: previousProbe && originUpdate === previousProbe.origin_update ? misses + 1 : 1 };
         origin.delivery_probe = probe;
         try {
-          const delivery = normalizeCarrierResult(await this.fetchCarrier(checks, candidate.carrier, candidate.number, null, null));
+          const delivery = normalizeCarrierResult(await confirmationLookup(() => this.fetchCarrier(checks, candidate.carrier, candidate.number, null, null)));
           const originTime = latestResultTime(origin, carrierId);
           const watermark = Math.max(originTime, latestResultTime(metadata, carrierId),
             Date.parse(routingState(parcel).last_event_at || '') || 0);
@@ -2254,7 +2255,7 @@ export class TrackingSyncService {
     let handoffFallbackErrorType: string | null = null;
     try {
       const swiss = normalizeCarrierResult(
-        await this.fetchCarrier(checks, 'swiss-post', trackingNumber, null, null),
+        await confirmationLookup(() => this.fetchCarrier(checks, 'swiss-post', trackingNumber, null, null)),
       );
       if (resultHasUpdate(swiss)) {
         return {

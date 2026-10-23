@@ -26,6 +26,7 @@ import { providerCarrier } from './providerCarrier';
 import { normalizedLookupCountry } from './lookupCountry';
 import manifest from '../../package.json';
 import { getRecognitionPriorities } from './recognitionRanking';
+import { confirmationLookup } from './trackingHealth';
 
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
@@ -814,7 +815,9 @@ export class TrackingRouter {
           tracking_url: ownInputs ? state.confirmed_tracking_url : null,
           dpd_postcode: ownInputs ? state.confirmed_postcode : null,
           carrier_data: {} } : parcel;
-        const value = await this.options.direct(lookupParcel, carrier);
+        // A carrier not confirmed for the number is asked whether it holds the parcel.
+        const lookup = () => this.options.direct(lookupParcel, carrier);
+        const value = await (candidate && !ownInputs ? confirmationLookup(lookup) : lookup());
         value.result = normalizeCarrierResult(value.result);
         if (!usable(value.result)) throw Object.assign(new Error('No confirmed shipment progress'), { status: 404 });
         // It answers for the number, on local clocks too: a refusal an older release recorded no longer holds.

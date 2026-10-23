@@ -11,6 +11,7 @@ import { universalCarrierHints } from 'universal-parcel-scraper/app';
 import { BudgetExceededError, ChallengeError, IndeterminateError, InputRequiredError, InvalidInputError, NoHistoryError, NotFoundError, RateLimitedError, TransportError } from 'universal-parcel-scraper';
 import * as scraper from 'universal-parcel-scraper';
 import { recognitionAskedCarriers } from '../lib/carriers';
+import { healthStepRecorder, observeTrackingHealth, type HealthSample } from './trackingHealth';
 
 // Keep the published plan configurable without changing the scraper's other exports.
 vi.mock(import('universal-parcel-scraper'), async importOriginal => ({ ...await importOriginal() }));
@@ -338,6 +339,19 @@ describe('persistent tracking routing', () => {
     expect(result.correction?.carrier).toBe('ups');
     expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('detected_carrier_confirmed', expect.objectContaining({ carrier, provider: 'ups' }));
     expect(monitoring.reportRoutingEvent).not.toHaveBeenCalledWith('carrier_mismatch_confirmed', expect.anything());
+  });
+  it("takes no health sample from a candidate's inconclusive answer, and keeps the filed carrier's", async () => {
+    const { router, direct } = setup();
+    direct.mockImplementation(async (_parcel, asked: string) => {
+      const error = new IndeterminateError(asked);
+      healthStepRecorder.lookup({ carrier: asked, finalStep: 'direct', outcome: 'indeterminate', errorType: error.name,
+        durationMs: 1, attempts: 1, error });
+      throw error;
+    });
+    const samples = new Map<string, HealthSample>();
+    await observeTrackingHealth(samples, () => router.fetch(parcel({ carrier: 'dhl', tracking_number: '1Z999AA10123456784' }), false));
+    expect(direct.mock.calls.map(([, carrier]) => carrier)).toEqual(['dhl', 'ups']);
+    expect([...samples.keys()]).toEqual(['provider:dhl']);
   });
   it('logs the carrier detection asks first for a parcel filed as unknown without a detection warning', async () => {
     const { router, universal } = setup();

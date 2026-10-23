@@ -42,6 +42,7 @@ import { WorkerShutdown } from './trackingAudit';
 import { UniversalTrackingError } from 'universal-parcel-scraper/node';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
 import { NOOP_RECORDER } from 'universal-parcel-scraper/node';
+import { healthStepRecorder } from './trackingHealth';
 import { BudgetExceededError, IndeterminateError, InputRequiredError, InvalidInputError, NoHistoryError, NotFoundError, SchemaError } from 'universal-parcel-scraper';
 import * as scraper from 'universal-parcel-scraper';
 import { doubled, s10 } from '../test/trackingNumbers';
@@ -3563,6 +3564,30 @@ describe('TrackingSyncService', () => {
       }));
       else expect(report).not.toHaveBeenCalledWith('provider_failed', expect.anything());
     } finally { report.mockRestore(); }
+  });
+
+  it.each([
+    ['answers without scans', new IndeterminateError('Swiss Post'), 'indeterminate', []],
+    ['gets a server error', new UpstreamHttpError('Swiss Post', 503), 'maintenance', [['swiss-post', false]]],
+  ] as const)('counts a partner that %s to a probe toward its health only for a real failure', async (_case, failure, outcome, partner) => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const client = fakeClient();
+    const adapter = { fetch: vi.fn(async (carrier: string): Promise<CarrierResult> => {
+      // What the tracker's recorder reports of each lookup.
+      const lookup = { carrier, finalStep: 'direct', durationMs: 1, attempts: 1 };
+      if (carrier === 'swiss-post') {
+        healthStepRecorder.lookup({ ...lookup, outcome, errorType: failure.name, error: failure });
+        throw failure;
+      }
+      healthStepRecorder.lookup({ ...lookup, outcome: 'ok', errorType: null });
+      return { status: 'in_transit', destination_country: 'CH', last_update: '2026-03-04T10:00:00Z' };
+    }) };
+    await new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null)
+      .syncPackage({ id: 'postal-probe', carrier: 'spring-gds', tracking_number: 'LX123456785NL' }, { trigger: 'scheduled' });
+    expect(adapter.fetch.mock.calls.map((call) => call[0])).toEqual(['spring-gds', 'swiss-post']);
+    const samples = client.recordTrackingHealth.mock.lastCall![2] as JsonObject[];
+    expect(samples.filter((sample) => sample.kind === 'provider').map((sample) => [sample.subject, sample.healthy]))
+      .toEqual([['spring-gds', true], ...partner]);
   });
 
   it('does not upgrade a saved destination guess into partner evidence during an origin outage', async () => {
