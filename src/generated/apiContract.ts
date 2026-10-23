@@ -1289,6 +1289,11 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^[A-Z]{2}\\d{9}[A-Z]{2}$",
+        "confidence": "low",
+        "checksum": "s10"
+      },
+      {
+        "pattern": "^(?:(?:PZ|XR|XT|XU|XW|XY)\\d{9}[A-Z]{2}|[A-Z]{2}\\d{9}(?:RV|VF))$",
         "confidence": "low"
       }
     ],
@@ -6597,6 +6602,11 @@ export const CARRIER_CAPABILITIES = {
       {
         "pattern": "^EPG\\d{10,15}$",
         "confidence": "high"
+      },
+      {
+        "pattern": "^LV\\d{9}US$",
+        "confidence": "low",
+        "checksum": "s10"
       }
     ],
     "trackingSearchUrl": "https://epgtrack.com/"
@@ -6656,7 +6666,7 @@ export const CARRIER_CAPABILITIES = {
         "domains": [
           "fancourier.ro"
         ],
-        "pathPattern": "^/awb-tracking/?$",
+        "pathPattern": "^/(?:awb-tracking|en/awb-track)/?$",
         "params": [
           "tracking",
           "awb"
@@ -6669,7 +6679,12 @@ export const CARRIER_CAPABILITIES = {
         "path": "^/awb-tracking/(\\d{13})/?$"
       }
     ],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^(?:[24]\\d{12}|7000\\d{9})$",
+        "confidence": "low"
+      }
+    ],
     "trackingSearchUrl": "https://www.fancourier.ro/awb-tracking/"
   },
   "gebrueder-weiss": {
