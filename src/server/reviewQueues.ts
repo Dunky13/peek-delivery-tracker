@@ -144,14 +144,17 @@ function observedAnswer(observation: JsonObject) {
 /**
  * Whether a universal provider's scan counts as mapped. No carrier map stands
  * behind those scans: the scraper's universal map, the reading the providers
- * give a scan, is theirs. A scan it gives the stage the sync chose is mapped;
- * wording it does not read, or reads as another stage, stays for review.
- * Other carriers' scans are mapped only by their own map.
+ * give a scan, is theirs. A scan it gives the stage the sync chose is mapped,
+ * and so is a hand-over it reads as accepted that the sync filed in transit,
+ * such as DPD's "parcel handed". Wording it does not read,
+ * or reads as another stage, stays for review. Other carriers' scans are
+ * mapped only by their own map.
  */
 export function universalMapAgrees(observation: JsonObject): boolean {
   if (observation.carrier !== UNIVERSAL_CARRIER) return false;
   const answer = observedAnswer(observation);
-  return answer.kind === 'mapped' && answer.stage === observation.chosen_stage;
+  return answer.kind === 'mapped' && (answer.stage === observation.chosen_stage
+    || (answer.stage === 'accepted' && observation.chosen_stage === 'in_transit'));
 }
 
 /**
@@ -167,7 +170,7 @@ export function statusMapClosing(observation: JsonObject): Omit<StatusObservatio
   const seen = typeof observation.chosen_stage === 'string' ? observation.chosen_stage : '';
   return {
     resolution: 'mapped',
-    note: seen && seen !== answer.stage
+    note: seen && seen !== answer.stage && !universalMapAgrees(observation)
       ? `The carrier status map gives it ${answer.stage}; it was last seen as ${seen}.`
       : `The carrier status map gives it ${answer.stage}.`,
   };

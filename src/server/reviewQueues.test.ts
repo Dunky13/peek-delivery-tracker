@@ -275,6 +275,14 @@ describe('review queue replay', () => {
     expect(statusMapClosings([{ ...OPEN_OBSERVATIONS[1]!, observation_key: '' }], { mapped: true })).toEqual([]);
   });
 
+  it('names no other stage when it closes a hand-over the universal map reads as accepted and the sync filed in transit', () => {
+    const handover = { observation_key: 'h'.repeat(64), carrier: 'unknown', provider_code: null,
+      description_normalized: 'parcel handed', chosen_stage: 'in_transit' };
+    expect(statusMapClosings([handover], { mapped: true })).toEqual([
+      { resolution: 'mapped', note: 'The carrier status map gives it accepted.', keys: ['h'.repeat(64)] },
+    ]);
+  });
+
   it('leaves the cases alone while another server replays them or once one did', async () => {
     for (const state of ['running', 'done'] as const) {
       const client = fakeClient([state]);

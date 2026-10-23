@@ -522,6 +522,18 @@ describe('status observation collection', () => {
     expect(collectMappedStatusKeys(rows, 'unknown')).toEqual(rows.slice(2).map(universalKey));
   });
 
+  it('maps a hand-over the universal map reads as accepted and the sync filed in transit, and no other step back', () => {
+    const scan = (description: string, stage: string) => ({
+      package_id: 'package-1', stage, description, provider_event_id: `unknown:${description}`, raw_data: { stage_source: 'wording:provider' },
+    });
+    // The universal map reads both hand-overs as accepted, and the hub scan as in transit.
+    const rows = [scan('Parcel handed', 'in_transit'), scan('Package picked up by the courier', 'in_transit'),
+      scan('Parcel handed', 'out_for_delivery'), scan('Sorted in regional hub', 'accepted')];
+    expect(collectStatusObservations(rows, 'unknown').map((observation) => [observation.description_normalized, observation.chosen_stage]))
+      .toEqual([['parcel handed', 'out_for_delivery'], ['sorted in regional hub', 'accepted']]);
+    expect(collectMappedStatusKeys(rows.slice(1, 2), 'unknown')).toEqual([universalKey(rows[1]!)]);
+  });
+
   it('keeps wording that names a shop and postcode as one template, without the place', () => {
     const scan = (description: string, id: string) => ({
       package_id: 'package-1', stage: 'pending', description, provider_event_id: `unknown:${id}`, raw_data: { stage_source: 'none' },
