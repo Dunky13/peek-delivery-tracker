@@ -76,7 +76,7 @@ Peek affiche ce que La Poste affiche : le statut, l'historique avec le pays de c
 
 Quand La Poste nomme un partenaire ou donne le pays de destination, et que la poste de ce pays est dans la liste de Peek (la Suisse et le Canada en font partie, comme l'Allemagne, l'Espagne, le Royaume-Uni ou les États-Unis), Peek interroge aussi cette poste et la suit dès qu'elle montre une étape plus récente. La Belgique, le Luxembourg, l'Italie et le Portugal ne sont pas dans cette liste, et l'historique de La Poste peut se taire après l'export : la dernière étape n'apparaît donc pas toujours.
 
-Peek vérifie toutes les 10 minutes, toutes les 2 minutes une fois le colis en livraison, et peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ».
+Peek vérifie toutes les 10 minutes en journée, toutes les 2 minutes une fois le colis en livraison, toutes les heures la nuit, et peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ».
 
 ## Questions sur le suivi Delivengo
 

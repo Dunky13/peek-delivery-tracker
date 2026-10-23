@@ -77,7 +77,7 @@ So stand es am 21. Oktober 2026 auf der [Kontaktseite von J&T](https://www.jtexp
 
 Peek liest die Sendungsverfolgung von J&T und zeigt den Status, jeden Scan mit genauer Uhrzeit und den Zeitpunkt der Zustellung. Die Scans stehen in den englischen Sätzen von J&T, auch wenn du sie auf jtexpress.de auf Deutsch liest: `Your package has been loaded and is on its way to you` steht etwa für `Die Sendung ist verladen und wird Ihnen in Kürze zugestellt`. Peek wertet diesen Satz als Zustellung und `Returns have begun` als Rücksendung, der Status heißt dann „In Zustellung“ oder „Zurück an Absender“. Beim Zustellsatz behält Peek die Zustellart, etwa `Left with neighbor`, ohne Klammern, und lässt die Hotline weg. Orte, einen erwarteten Zustelltag oder das Gewicht gibt J&T nicht heraus, auf der Karte erscheint also nichts. Die Nachbardetails hinter der Postleitzahl liest Peek nicht aus, und bei sehr langem Verlauf behält es die neuesten 100 Scans.
 
-Peek schaut alle 10 Minuten nach, alle 2 Minuten, sobald das Paket in Zustellung ist, und schickt dir auf Wunsch Mitteilungen für jeden Scan, nur für wichtige Schritte oder nur am Liefertag. J&T oder den Shop kann Peek nicht für dich kontaktieren.
+Peek schaut tagsüber alle 10 Minuten nach, alle 2 Minuten, sobald das Paket in Zustellung ist, nachts stündlich, und schickt dir auf Wunsch Mitteilungen für jeden Scan, nur für wichtige Schritte oder nur am Liefertag. J&T oder den Shop kann Peek nicht für dich kontaktieren.
 
 ## Fragen zur J&T Express Sendungsverfolgung
 

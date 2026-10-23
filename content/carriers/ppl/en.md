@@ -78,7 +78,7 @@ PPL publishes no phone line for recipients. The email info@ppl.cz and the number
 
 [Peek](/) can't tell a PPL number from its 11 digits, and can't ask PPL whether it knows one. It asks GLS Germany, [GLS Switzerland](carrier:gls-ch), GLS France, PostLogistics and DHL eCommerce Poland instead, so pick "PPL" with "Change", or paste a ppl.cz tracking link with `shipmentId=`, which Peek reads as PPL's. A dhl.com link with a PPL number won't work.
 
-Peek reads PPL's English statuses as written, with times in Prague time. It shows the expected delivery day while PPL gives one, the weight, the delivery time and the Parcelshop or Parcelbox name while the parcel waits there. PPL gives no places for its scans. Peek leaves out the delivery window, sender, customer reference, the pickup point's address, cash-on-delivery details and proof of delivery. It checks every 10 minutes (every 2 once out for delivery) and can notify you when the status changes. It doesn't follow parcels between PPL and DHL or a partner abroad, and doesn't take SmartPIN codes.
+Peek reads PPL's English statuses as written, with times in Prague time. It shows the expected delivery day while PPL gives one, the weight, the delivery time and the Parcelshop or Parcelbox name while the parcel waits there. PPL gives no places for its scans. Peek leaves out the delivery window, sender, customer reference, the pickup point's address, cash-on-delivery details and proof of delivery. It checks every 10 minutes by day (every 2 once out for delivery) and hourly overnight, and can notify you when the status changes. It doesn't follow parcels between PPL and DHL or a partner abroad, and doesn't take SmartPIN codes.
 
 ## Questions about PPL tracking
 

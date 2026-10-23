@@ -83,7 +83,7 @@ Ein 20-stelliger Barcode mit 00 am Anfang stammt vom Versender, nicht von einem 
 
 Du siehst den Status und den Verlauf mit dem Ort jedes Scans auf einer Karte, in Schweizer Zeit, und den Zeitpunkt der Zustellung. Die Scan-Texte bleiben Englisch, weil die Abfrage auf Englisch läuft; `Loaded for Delivery` gilt als in Zustellung. Unterschrift und Foto gehen im Zustellscan auf, ohne das Bild. Dein Name und deine Adresse fehlen, eine voraussichtliche Zustellung, ein Gewicht oder eine Abholstelle gibt es nicht.
 
-Eine Referenz, die mehrere Sendungen teilen, wird nur gelesen, solange eine davon Scans aus den letzten 60 Tagen hat. Sonst gilt sie als nicht gefunden, nimm dann den Barcode. Sendungs- und Betriebsnummern des deutschen Portals kann Peek nicht verfolgen. Es schaut alle 10 Minuten nach, alle 2 Minuten, sobald die Ware in Zustellung ist, und schickt dir auf Wunsch Mitteilungen für jeden Scan, nur für wichtige Schritte oder nur am Liefertag.
+Eine Referenz, die mehrere Sendungen teilen, wird nur gelesen, solange eine davon Scans aus den letzten 60 Tagen hat. Sonst gilt sie als nicht gefunden, nimm dann den Barcode. Sendungs- und Betriebsnummern des deutschen Portals kann Peek nicht verfolgen. Es schaut tagsüber alle 10 Minuten nach, alle 2 Minuten, sobald die Ware in Zustellung ist, nachts stündlich, und schickt dir auf Wunsch Mitteilungen für jeden Scan, nur für wichtige Schritte oder nur am Liefertag.
 
 ## Fragen zum Swiss Post Cargo Tracking
 

@@ -78,9 +78,9 @@ As listed on CouriersPlease's Help Centre on 15 October 2026:
 
 [Peek](/) names CouriersPlease straight away for a number of the `CP` shape above. A link from couriersplease.com.au/tools-track (with `no=` or `trackingCode=`) works too. No account, postcode or phone number needed. A CouriersPlease number that doesn't start with `CP` isn't recognised as CouriersPlease: paste the tracking link, or pick CouriersPlease with "Change carrier".
 
-Peek can't read CouriersPlease's own tracking. It follows the parcel through tracking services and shows the status and history they hold, in their wording; it shows `Delivered` and `Shipment information received` with its own labels. That history is often hours behind CouriersPlease's page, and some parcels show nothing yet. Peek shows no Delivery ETA, collection point or proof of delivery for CouriersPlease.
+Peek reads CouriersPlease's own tracking and shows its scans in CouriersPlease's wording, each with its state, and the Delivery ETA once CouriersPlease has scanned the parcel. It shows no collection point or proof of delivery for CouriersPlease.
 
-Peek checks every 10 minutes, including on delivery day, and can notify you when the status changes. For redelivery, a PIN or a claim, go to CouriersPlease or the shop.
+Peek checks every 10 minutes by day, every 2 once the parcel is out for delivery, and hourly overnight, and can notify you when the status changes. For redelivery, a PIN or a claim, go to CouriersPlease or the shop.
 
 ## Questions about Couriers Please tracking
 

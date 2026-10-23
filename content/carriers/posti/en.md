@@ -87,7 +87,7 @@ Posti lists no customer email address.
 
 For a postal number ending `FI`, Peek asks Posti first, with Chronopost, and names Posti once it knows it. If Posti doesn't know it yet, you see "Not found at … yet. Peek will keep checking after you add it." Peek then asks again after 1, 2 and 4 hours, then every 6 hours, then daily, for up to a month. With a wrong check digit, or for an SSCC that several carriers know, pick Posti with "Change". A foreign number tracks at Posti after "Change" or from a posti.fi link, and Peek can follow some international parcels to Posti.
 
-Peek reads Posti in English and shows each status with Posti's explanation line, the town of each scan, the weight, the dimensions and the pickup point's name and address. By day it checks every 10 minutes (every 2 once out for delivery), draws each scan on a map and can notify you of changes. It drops the pickup code and your address, and shows no expected delivery or sender. A number covering several parcels isn't tracked, and old parcels read as not found.
+Peek reads Posti in English and shows each status with Posti's explanation line, the town of each scan, the weight, the dimensions and the pickup point's name and address. It checks every 10 minutes by day (every 2 once out for delivery) and hourly overnight, draws each scan on a map and can notify you of changes. It drops the pickup code and your address, and shows no expected delivery or sender. A number covering several parcels isn't tracked, and old parcels read as not found.
 
 ## Questions about Posti tracking
 

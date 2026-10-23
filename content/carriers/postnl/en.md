@@ -91,7 +91,7 @@ For anything else, the shop or marketplace you bought from is the quickest route
 
 Peek reads postnl.post. It shows the status, the history with the country of each scan, the delivery time and the destination country. Scan times keep each country's local clock. PostNL gives no expected delivery date and no sender. For an NL number, once PostNL names the destination, Peek asks that country's national post, such as Royal Mail or USPS, under the same number, and switches to it once it shows newer progress. postnl.post calls 13-character 3S barcodes incorrect, so for those Peek looks for the parcel through [universal tracking services](guide:universal-tracker).
 
-Peek checks PostNL every 30 minutes, out for delivery too, and can notify you at every scan, at important steps or on delivery day only. It can't contact PostNL or the shop for you.
+Peek checks PostNL every 30 minutes, out for delivery too, and hourly overnight, and can notify you at every scan, at important steps or on delivery day only. It can't contact PostNL or the shop for you.
 
 ## Questions about PostNL tracking
 

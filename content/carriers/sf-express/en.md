@@ -96,7 +96,7 @@ Have the waybill number ready. For the order itself, ask the seller.
 
 Peek reads the English tracking of SF's Taiwan site: the status and the history in SF's words, with delivered lines as "Delivered" and SF's labels as "Cancelled", "Forwarded", "Returned to sender", "Held" or "Lost". It reads SF's times on China's clock and shows each scan in your device's time zone, not China's. There's no expected delivery date or proof of delivery, and Peek follows the SF number to the end, not a local partner's.
 
-It checks every 10 minutes, every 5 once the parcel is out for delivery, and can notify you with "All tracking updates", "Important only" or "Delivery day only". It can't contact SF or the seller for you.
+It checks every 10 minutes by day, every 5 once the parcel is out for delivery, and hourly overnight, and can notify you with "All tracking updates", "Important only" or "Delivery day only". It can't contact SF or the seller for you.
 
 ## Questions about SF Express tracking
 

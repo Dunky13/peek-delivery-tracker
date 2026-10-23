@@ -73,7 +73,7 @@ Peek shows what La Poste publishes: the status, the history with the country of 
 
 When La Poste gives the destination country and it is the UK, the US, Canada, Australia, Japan, Switzerland, Germany, Spain, the Netherlands, Poland, Sweden, Finland or Ukraine, Peek can also ask that country's postal service, and switches to it once it shows newer progress. Ireland, Belgium, Italy, Portugal and Luxembourg aren't in that list, and La Poste's history can go quiet after export, so the last leg doesn't always show.
 
-Peek checks every 10 minutes, every 2 minutes once the parcel is out for delivery, and its notifications can cover every scan, important steps only or delivery day only.
+Peek checks every 10 minutes by day, every 2 minutes once the parcel is out for delivery, and hourly overnight, and its notifications can cover every scan, important steps only or delivery day only.
 
 ## Questions about Delivengo tracking
 

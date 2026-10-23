@@ -87,7 +87,7 @@ Si la réponse du service client ne te convient pas, tu peux saisir le Médiateu
 
 Les statuts restent en français, tels que Chronopost les écrit ; `Livraison effectuée` prend le libellé de Peek (« Livré »). Peek place l'agence de chaque scan sur la carte et affiche le pays de destination, l'heure de livraison, le numéro du partenaire à l'étranger et, tant que le colis attend, le nom et l'adresse du relais ou de la consigne. Une date prévue n'apparaît qu'une fois un nouveau jour ou un créneau de livraison réservé. Il ne garde ni ton adresse ni les coordonnées du point. Un colis vers l'Allemagne avec un numéro partenaire peut être suivi jusqu'à DPD Allemagne. Dès qu'un retour commence, le colis passe en « Problème signalé », et la livraison qui suit compte comme un retour à l'expéditeur.
 
-Peek vérifie toutes les 10 minutes, toutes les 2 minutes une fois le colis en livraison, et peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ». Si le dernier statut de Chronopost n'a pas d'heure exacte, Peek redemande toutes les 6 heures et n'affiche que ce statut, daté du moment où il l'a vu.
+Peek vérifie toutes les 10 minutes en journée, toutes les 2 minutes une fois le colis en livraison, toutes les heures la nuit, et peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ». Si le dernier statut de Chronopost n'a pas d'heure exacte, Peek redemande toutes les 6 heures et n'affiche que ce statut, daté du moment où il l'a vu.
 
 ## Questions sur le suivi Chronopost
 

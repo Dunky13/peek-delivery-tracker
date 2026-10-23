@@ -83,7 +83,7 @@ For a postal number ending `LT` with a valid check digit, [Peek](/) asks Lietuvo
 
 An item from abroad with an international-format number is first followed at the sending country's post. When that post says the item is going to Lithuania, or names no country and you're in Lithuania, Peek can also ask Lietuvos paštas; once Lietuvos paštas shows new steps, Peek follows the parcel there and keeps the earlier ones. Otherwise pick "Lietuvos paštas" with "Change".
 
-Peek reads the service behind lpexpress.lt/track in English, checks every 10 minutes (every 2 once the parcel is out for delivery) and can notify you when the status changes. It shows each step on a map with its town, sorting centre or country, customs steps, the time it was delivered and the locker or post office where the parcel waits, with its town (not the street or postcode). Lithuanian steps are on Vilnius time. There's no expected arrival day and no weight. Statuses keep Lietuvos paštas's English wording; a return shows as a problem.
+Peek reads the service behind lpexpress.lt/track in English, checks every 10 minutes by day (every 2 once the parcel is out for delivery) and hourly overnight, and can notify you when the status changes. It shows each step on a map with its town, sorting centre or country, customs steps, the time it was delivered and the locker or post office where the parcel waits, with its town (not the street or postcode). Lithuanian steps are on Vilnius time. There's no expected arrival day and no weight. Statuses keep Lietuvos paštas's English wording; a return shows as a problem.
 
 ## Questions about Lithuania Post tracking
 

@@ -79,7 +79,7 @@ Adresu e-mail ani czatu polska strona nie podaje.
 
 Peek odczytuje śledzenie Packety po angielsku i pokazuje zdania tak, jak je pisze Packeta (tylko `Returned to sender` własnymi słowami: „Zwrócona nadawcy”). Widzisz status, 20 najnowszych skanów, sklep, który wysłał paczkę, godzinę doręczenia oraz adres punktu odbioru albo Z-BOX-a, gdy paczka tam jedzie (przy kurierze i zwrocie go nie ma). Twojego imienia, adresu, telefonu ani podpisu Peek nie pokazuje.
 
-Packeta nie podaje, gdzie paczkę zeskanowano, więc skany nie trafiają na mapę; nie podaje też przewidywanej dostawy. Godziny są czasem praskim (skany z rumuńskich magazynów mogą się różnić o godzinę). Nieznany i wygasły numer wyglądają tak samo. Peek nie śledzi paczki dalej u przewoźnika partnerskiego. Sprawdza śledzenie Packety co 10 minut, a co 2 minuty, gdy paczka jest w doręczeniu, i powiadomi Cię o każdym skanie, tylko o ważnych krokach albo tylko w dniu dostawy. Nie złoży za Ciebie reklamacji.
+Packeta nie podaje, gdzie paczkę zeskanowano, więc skany nie trafiają na mapę; nie podaje też przewidywanej dostawy. Godziny są czasem praskim (skany z rumuńskich magazynów mogą się różnić o godzinę). Nieznany i wygasły numer wyglądają tak samo. Peek nie śledzi paczki dalej u przewoźnika partnerskiego. Sprawdza śledzenie Packety w dzień co 10 minut, a co 2 minuty, gdy paczka jest w doręczeniu, w nocy zaś co godzinę, i powiadomi Cię o każdym skanie, tylko o ważnych krokach albo tylko w dniu dostawy. Nie złoży za Ciebie reklamacji.
 
 ## Pytania o paczki Packeta
 

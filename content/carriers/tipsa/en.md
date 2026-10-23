@@ -86,7 +86,7 @@ Portugal has no separate line: TIPSA's Portuguese contact page gives the same tw
 
 A 10-digit waybill can't be tracked through TIPSA, even after "Change" or from a link. Links from a shop's TIPSA email (tip-sa.com pages ending `datos_env.php` or `datos_prestashop.php` with `id=`) can be pasted; links to TIPSA's locator or its dinapaqweb shipment page are not read.
 
-Peek shows the status, the history with each scan's town on a map, the sender's name unless TIPSA masks it, and the weight. Statuses stay in TIPSA's Spanish, as written. Peek reads every scan time as Madrid time, Portuguese agencies included. It drops the recipient, address, postcodes, reference, parcel count, volume and proof of delivery. Peek shows no expected delivery date and doesn't follow the parcel to another carrier. It checks every 10 minutes, every 2 once the parcel is out for delivery, and can notify you when the status changes.
+Peek shows the status, the history with each scan's town on a map, the sender's name unless TIPSA masks it, and the weight. Statuses stay in TIPSA's Spanish, as written. Peek reads every scan time as Madrid time, Portuguese agencies included. It drops the recipient, address, postcodes, reference, parcel count, volume and proof of delivery. Peek shows no expected delivery date and doesn't follow the parcel to another carrier. It checks every 10 minutes by day, every 2 once the parcel is out for delivery, and hourly overnight, and can notify you when the status changes.
 
 ## Questions about TIPSA tracking
 

@@ -81,7 +81,7 @@ Un code à barres de 20 chiffres commençant par `00` appartient à l'expéditeu
 
 Peek affiche le statut et l'historique, avec la localité de chaque scan sur une carte, à l'heure de Zurich, et l'heure de livraison. Peek interroge le suivi en anglais : les étapes y gardent donc leurs libellés anglais, comme `Data entry POST` ou `DELIVERED SCANNED`, et `Loaded for Delivery` compte comme en cours de livraison. Les lignes signature et photo rejoignent le scan de livraison, sans l'image. Peek laisse de côté ton nom et ton adresse, et n'a ni date de livraison prévue, ni poids, ni point de retrait.
 
-Une référence partagée par plusieurs envois n'est lue que tant que l'un d'eux a des scans des 60 derniers jours ; sinon elle passe pour introuvable, alors utilise le code à barres. Peek ne suit pas les numéros d'envoi et d'entreprise du portail allemand. Il vérifie le suivi toutes les 10 minutes, toutes les 2 minutes une fois l'envoi en livraison, et peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ».
+Une référence partagée par plusieurs envois n'est lue que tant que l'un d'eux a des scans des 60 derniers jours ; sinon elle passe pour introuvable, alors utilise le code à barres. Peek ne suit pas les numéros d'envoi et d'entreprise du portail allemand. Il vérifie le suivi toutes les 10 minutes en journée, toutes les 2 minutes une fois l'envoi en livraison, toutes les heures la nuit, et peut t'envoyer des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ».
 
 ## Questions sur le suivi Swiss Post Cargo
 

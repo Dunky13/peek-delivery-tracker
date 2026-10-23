@@ -95,7 +95,7 @@ Allegro radzi nie otwierać linków ani załączników z wątpliwego e-maila lub
 
 Peek odczytuje śledzenie Allegro w wersji angielskiej, więc komunikaty widzisz po angielsku, tak jak pisze je Allegro: na przykład `Parcel is awaiting pick-up` to `Przesyłka oczekuje na odbiór`, a `Parcel has been delivered` to `Przesyłka została doręczona`. Pokazuje historię z dokładnymi godzinami i czas doręczenia. Allegro nie podaje miejsc, więc na mapie nie ma czego zaznaczyć; nie ma też nazwy One Boxa ani One Punktu, przewidywanej daty dostawy, wagi ani nadawcy. Przy numerach `AD` śledzenie Allegro nie pokazało dotąd żadnych skanów, więc Peek może pokazać tylko to, co dają uniwersalne serwisy śledzenia.
 
-Peek sprawdza śledzenie co 10 minut, a gdy paczka jest w doręczeniu, co 2 minuty. Może Cię powiadomić o każdym skanie, tylko o ważnych krokach albo tylko w dniu dostawy.
+Peek sprawdza śledzenie w dzień co 10 minut, a gdy paczka jest w doręczeniu, co 2 minuty; w nocy co godzinę. Może Cię powiadomić o każdym skanie, tylko o ważnych krokach albo tylko w dniu dostawy.
 
 ## Pytania o śledzenie Allegro One
 

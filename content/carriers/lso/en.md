@@ -79,7 +79,7 @@ Have the airbill number ready. LSO's holidays page gives another number, 866.215
 
 Peek can't read LSO's own tracking. It follows LSO parcels through tracking services instead and shows the status and history those services hold, in their wording. That history is often hours behind LSO's page, and for some parcels there's nothing yet. Peek shows no expected delivery, proof of delivery or pickup point for LSO.
 
-Peek checks every 10 minutes, including on delivery day, and can notify you when the status changes. For the signature, a claim or a delivery problem, go to LSO or the shop.
+Peek checks every 15 minutes by day, out for delivery too, and hourly overnight, and can notify you when the status changes. For the signature, a claim or a delivery problem, go to LSO or the shop.
 
 ## Questions about LSO tracking
 

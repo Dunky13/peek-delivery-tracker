@@ -89,7 +89,7 @@ It then asks for the delivery postcode and tracks nothing without it: 5 digits a
 
 It shows the status and history with exact times, every step in Peek's own words: Shipment collected, In transit, Shipment forwarded, Out for delivery, Delivered, Returned to sender, Awaiting delivery instructions, Shipment exception. Awaiting instructions and an inbound-scan issue count as problems. Heppner's message that your order will go to a new address under a new reference shows as Returned to sender. There are no scan places, expected date or pickup point, and it leaves out the sender, your name, address and delivery instructions.
 
-Peek checks every 10 minutes, every 2 once the order is out for delivery, and can notify you of every scan, important steps only or delivery day only. It can't book your slot: do that on Heppner's page.
+Peek checks every 10 minutes by day, every 2 once the order is out for delivery, and hourly overnight, and can notify you of every scan, important steps only or delivery day only. It can't book your slot: do that on Heppner's page.
 
 ## Questions about Heppner tracking
 

@@ -82,7 +82,7 @@ As listed on 10 October 2026:
 
 It reads InPost's service at inposteasy.com, not yet confirmed to answer for UK `JD`, `JJD` and `8YDR` numbers. You see the status, the newest 20 scans with each town or hub and country on a map, the delivery time and the destination country; InPost gives no expected date. For a 24-digit parcel waiting in a Paczkomat or pickup point, the point's name and address appear once InPost's Polish tracking confirms them, never your code. Statuses come as InPost's service sends them, Polish for Polish parcels, and a parcel waiting at an Italian point may not show "Ready for pickup". Scans without a time zone are left out, and your name, address and phone are never read.
 
-Peek doesn't follow the parcel to another carrier. It checks every 10 minutes, every 2 once out for delivery, and can notify you of each change.
+Peek doesn't follow the parcel to another carrier. It checks every 10 minutes by day, every 2 once out for delivery, and hourly overnight, and can notify you of each change.
 
 ## Questions about InPost tracking
 

@@ -76,7 +76,7 @@ Polskiego numeru, adresu ani biura dla odbiorców 4PX nie podaje. W sprawie zam�
 
 Peek czyta 4PX po angielsku i pokazuje status, historię z miejscem każdego skanu na mapie, godzinę doręczenia, kraj docelowy oraz lokalnego przewoźnika z jego numerem. Gdy ten przewoźnik jest na liście Peek (na przykład USPS), śledzenie przechodzi do niego, gdy tam pojawią się nowsze skany. `Out for delivery` i `Delivery attempt unsuccessful` widzisz w słowach Peek, pozostałe linie tak, jak pisze je 4PX. Przewidywanej daty dostawy, danych punktu odbioru ani wagi przy 4PX tu nie zobaczysz.
 
-Godziny skanów zachowują strefy czasowe 4PX. Gdy najnowszy status 4PX nie ma dokładnej godziny, historia z datami pochodzi z uniwersalnych serwisów śledzenia, a 4PX jest pytany ponownie co 6 godzin. Poza tym Peek sprawdza paczkę co 10 minut, a co 2 minuty, gdy paczka jest w doręczeniu, i powiadomi Cię o każdym skanie, tylko o ważnych etapach albo „Tylko w dniu dostawy”. Nie skontaktuje się za Ciebie z 4PX ani ze sklepem.
+Godziny skanów zachowują strefy czasowe 4PX. Gdy najnowszy status 4PX nie ma dokładnej godziny, historia z datami pochodzi z uniwersalnych serwisów śledzenia, a 4PX jest pytany ponownie co 6 godzin. Poza tym Peek sprawdza paczkę w dzień co 10 minut, a co 2 minuty, gdy paczka jest w doręczeniu, w nocy zaś co godzinę, i powiadomi Cię o każdym skanie, tylko o ważnych etapach albo „Tylko w dniu dostawy”. Nie skontaktuje się za Ciebie z 4PX ani ze sklepem.
 
 ## Pytania o śledzenie 4PX
 

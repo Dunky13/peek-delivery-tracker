@@ -101,7 +101,7 @@ Bei Fragen zur Bestellung ist der Shop meist schneller: Er hat iMile beauftragt 
 
 Peek fragt iMile auf Englisch ab. Es zeigt den Status, den Verlauf mit dem Zentrum oder Ort jedes Scans auf einer Karte und das Zielland, mit den Uhrzeiten dieses Landes. Bringt Cainiao das Paket für iMile aus China, setzt Peek Cainiaos frühere Scans davor: Abholung, Sortierung, Export, Flug und Import.
 
-Peek zeigt kein voraussichtliches Lieferdatum, keinen Zustellnachweis, keine Unterschrift, keine Kontakte und keine Zahlungsdaten von iMile und entfernt die Telefonnummer des Fahrers aus den Scans. Status wie „In Zustellung“ oder „Zustellversuch“ sind Peeks eigene; die Zeilen im Verlauf bleiben so, wie iMile sie schreibt. Peek prüft alle 10 Minuten, alle 2 Minuten, sobald das Paket in Zustellung ist, und benachrichtigt dich mit „Alle Updates“, „Nur wichtige“ oder „Nur am Liefertag“. iMile oder den Shop kann Peek nicht für dich kontaktieren.
+Peek zeigt kein voraussichtliches Lieferdatum, keinen Zustellnachweis, keine Unterschrift, keine Kontakte und keine Zahlungsdaten von iMile und entfernt die Telefonnummer des Fahrers aus den Scans. Status wie „In Zustellung“ oder „Zustellversuch“ sind Peeks eigene; die Zeilen im Verlauf bleiben so, wie iMile sie schreibt. Peek prüft tagsüber alle 10 Minuten, alle 2 Minuten, sobald das Paket in Zustellung ist, nachts stündlich, und benachrichtigt dich mit „Alle Updates“, „Nur wichtige“ oder „Nur am Liefertag“. iMile oder den Shop kann Peek nicht für dich kontaktieren.
 
 ## Fragen zur iMile Sendungsverfolgung
 

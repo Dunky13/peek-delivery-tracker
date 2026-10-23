@@ -88,7 +88,7 @@ Vinted avisa de que el phishing también llega por mensajes de texto a tu teléf
 
 Si escribes solo el número de 16 cifras, Peek pregunta a Vinted Go, a TNT y a DHL eCommerce si lo conocen, y se queda con Vinted Go cuando es este quien lo conoce. Si no, pulsa «Cambiar» y elige «Vinted Go», o pega el enlace de seguimiento de vintedgo.com, con o sin el idioma: Vinted Go queda reconocido al momento. Vinted Go deja de dar el seguimiento de un paquete seis meses después de crearse su etiqueta.
 
-Se consulta cada 10 minutos, también mientras el paquete espera en el punto, y puedes recibir notificaciones cuando cambia el estado. Si Vinted Go pasa el paquete a otra red con un número de seguimiento nuevo, Peek puede seguirlo con ese transportista cuando lo lee directamente. Peek no puede contactar con Vinted ni con Vinted Go, ni abrir una reclamación por ti.
+Se consulta cada 10 minutos de día (también mientras el paquete espera en el punto) y cada hora por la noche, y puedes recibir notificaciones cuando cambia el estado. Si Vinted Go pasa el paquete a otra red con un número de seguimiento nuevo, Peek puede seguirlo con ese transportista cuando lo lee directamente. Peek no puede contactar con Vinted ni con Vinted Go, ni abrir una reclamación por ti.
 
 ## Preguntas sobre el seguimiento de Vinted Go
 

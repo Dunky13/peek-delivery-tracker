@@ -83,7 +83,7 @@ Les canaux de Postes Canada, lus le 15 octobre 2026 :
 
 Peek affiche le statut, chaque scan avec sa ville et sa province sur une carte, le jour de livraison prévu, une plage horaire de livraison quand Postes Canada en donne une, l'heure de livraison, le nom de l'entreprise qui expédie et le service. Chaque scan garde l'heure de l'endroit où il a eu lieu. Peek lit le suivi de Postes Canada en anglais : les scans restent dans l'anglais de Postes Canada, même sur ta page en français, sauf quelques scans que Peek remplace par ses propres mots : « Livré » pour chaque livraison, « Retourné à l'expéditeur » pour une livraison au retour et « En livraison » pour le scan `Out for delivery`. Peek laisse de côté les options de livraison, les adresses, les signatures et les photos de livraison, et n'affiche ni le nom du bureau de poste ni la date limite de ramassage.
 
-Peek vérifie le suivi toutes les 10 minutes, toutes les 2 minutes une fois le colis en livraison, et peut t'envoyer des notifications à chaque scan, pour les étapes importantes ou avec l'option « Jour de livraison uniquement ». Quand un colis posté à l'étranger avec un numéro postal est destiné au Canada, Peek peut le suivre chez Postes Canada dès que celle-ci montre sa progression.
+Peek vérifie le suivi toutes les 10 minutes en journée, toutes les 2 minutes une fois le colis en livraison, toutes les heures la nuit, et peut t'envoyer des notifications à chaque scan, pour les étapes importantes ou avec l'option « Jour de livraison uniquement ». Quand un colis posté à l'étranger avec un numéro postal est destiné au Canada, Peek peut le suivre chez Postes Canada dès que celle-ci montre sa progression.
 
 ## Questions sur le suivi Postes Canada
 

@@ -82,7 +82,7 @@ For a postal number ending `SI` with a valid check digit, [Peek](/) asks Pošta 
 
 An item from abroad stays with its foreign post in Peek, but Pošta Slovenije's lookup takes any postal number: pick "Pošta Slovenije" with "Change", or paste a moja.posta.si tracking link for it.
 
-Peek reads the service behind the MojaPošta app, checks every 10 minutes (every 2 once the parcel is out for delivery) and can notify you when the status changes. Each step goes on a map with its post office. Peek also shows the delivery time and the post office where the parcel waits (never a locker). There's no expected delivery day or weight. A step abroad is read on that country's clock; one in a country with several time zones doesn't appear. Statuses keep Pošta Slovenije's English wording, detail line included.
+Peek reads the service behind the MojaPošta app, checks every 10 minutes by day (every 2 once the parcel is out for delivery) and hourly overnight, and can notify you when the status changes. Each step goes on a map with its post office. Peek also shows the delivery time and the post office where the parcel waits (never a locker). There's no expected delivery day or weight. A step abroad is read on that country's clock; one in a country with several time zones doesn't appear. Statuses keep Pošta Slovenije's English wording, detail line included.
 
 ## Questions about Pošta Slovenije tracking
 

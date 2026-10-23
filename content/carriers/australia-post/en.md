@@ -92,7 +92,7 @@ If Australia Post refuses Peek's plain request, a browser on Peek's server opens
 
 Peek shows the status, each scan with its place on a map, the service, the time of delivery, the destination country and the name of the Post Office or Parcel Locker holding the parcel. Statuses stay in Australia Post's English; delivered ones read "Delivered". Peek drops the recipient, the address and delivery photos, and shows no expected delivery date. It can't redirect a parcel or change a locker, and it doesn't track StarTrack.
 
-It checks every 10 minutes, every 2 minutes once out for delivery, and can notify you at every scan, at important steps or on delivery day only. A parcel posted abroad with a postal number bound for Australia can be followed on Australia Post once Australia Post shows progress.
+It checks every 10 minutes by day, every 2 minutes once out for delivery, and hourly overnight, and can notify you at every scan, at important steps or on delivery day only. A parcel posted abroad with a postal number bound for Australia can be followed on Australia Post once Australia Post shows progress.
 
 ## Questions about Australia Post tracking
 

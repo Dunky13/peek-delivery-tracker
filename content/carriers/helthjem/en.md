@@ -88,7 +88,7 @@ Have the tracking number or pickup code ready. Helthjem mentions no support in E
 
 Peek shows the status, each scan's place on a map (including sorter scans Helthjem's page hides), the time it was delivered, the shop that sent it and the pickup point's name while it waits or once collected. Statuses stay in Helthjem's Norwegian, and scan times match Helthjem's. Peek leaves out the expected day Helthjem's page shows, the point's address, the photo and postcodes.
 
-When Helthjem marks a parcel as one PostNord delivers, Peek can follow it to PostNord under its shipment number. Peek checks every 10 minutes, every 2 on the last mile, and can notify you when the status changes. It can't contact Helthjem for you.
+When Helthjem marks a parcel as one PostNord delivers, Peek can follow it to PostNord under its shipment number. Peek checks every 10 minutes by day, every 2 on the last mile, and hourly overnight, and can notify you when the status changes. It can't contact Helthjem for you.
 
 ## Questions about Helthjem tracking
 

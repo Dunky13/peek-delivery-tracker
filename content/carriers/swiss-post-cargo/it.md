@@ -86,7 +86,7 @@ Un codice a barre di 20 cifre che inizia con `00`, con una cifra di controllo va
 
 Peek mostra lo stato e la cronologia con il comune di ogni scansione su una mappa, all'ora di Zurigo, con l'ora di consegna. Le diciture restano in inglese; `Loaded for Delivery` vale come in consegna. Le righe della firma e della foto confluiscono nella scansione di consegna, senza l'immagine. Peek lascia fuori il tuo nome e indirizzo e non ha data di consegna prevista, peso o punto di ritiro.
 
-Un riferimento condiviso da più spedizioni viene letto solo se una di queste ha scansioni degli ultimi 60 giorni; altrimenti risulta non trovato, quindi usa il codice a barre. Peek non traccia i numeri di spedizione e d'azienda del portale tedesco. Controlla ogni 10 minuti, ogni 2 quando la merce è in consegna, e può mandarti notifiche per ogni scansione, solo per i passaggi importanti o solo il giorno di consegna.
+Un riferimento condiviso da più spedizioni viene letto solo se una di queste ha scansioni degli ultimi 60 giorni; altrimenti risulta non trovato, quindi usa il codice a barre. Peek non traccia i numeri di spedizione e d'azienda del portale tedesco. Controlla ogni 10 minuti di giorno, ogni 2 quando la merce è in consegna e ogni ora di notte, e può mandarti notifiche per ogni scansione, solo per i passaggi importanti o solo il giorno di consegna.
 
 ## Domande sul tracking Swiss Post Cargo
 

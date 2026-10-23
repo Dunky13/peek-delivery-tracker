@@ -78,7 +78,7 @@ J&T Express Australia publishes no scam warning. It does send a proof-of-deliver
 
 Peek reads J&T Express Australia's own tracker and shows the status, each scan at the exact time J&T recorded it, and the delivery time. J&T's scans name no place, so there's no map, and Peek shows no expected delivery date, weight or proof of delivery: open J&T's text for the photo. Scans show in J&T's English wording, without the customer service number or any name or phone number a scan holds. For a long history, Peek keeps the newest 100 scans.
 
-Peek checks every 10 minutes, every 2 minutes once the parcel is out for delivery, and can notify you of every scan, important steps only or delivery day only. It can't contact J&T or the shop for you.
+Peek checks every 10 minutes by day, every 2 minutes once the parcel is out for delivery, and hourly overnight, and can notify you of every scan, important steps only or delivery day only. It can't contact J&T or the shop for you.
 
 ## Questions about J&T Express Australia tracking
 

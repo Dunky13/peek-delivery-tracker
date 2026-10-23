@@ -87,7 +87,7 @@ If you dispute customer service's answer, turn to the Médiateur du Groupe La Po
 
 Wordings stay French, except `Livraison effectuée` ("Delivered"). Peek maps each scan's office and shows the destination country, delivery time, partner's number abroad and, while the parcel waits, the relay or locker's name and address. An expected day appears only once a redelivery is booked. It drops your address and the point's contacts. A parcel to Germany with a partner number can be followed to DPD Germany. After a return starts, delivery counts as returned to sender.
 
-Peek checks every 10 minutes (every 2 once out for delivery) and can notify you of changes. If Chronopost's latest status has no exact time, Peek asks every 6 hours instead and shows only that status, dated when Peek saw it.
+Peek checks every 10 minutes by day (every 2 once out for delivery) and hourly overnight, and can notify you of changes. If Chronopost's latest status has no exact time, Peek asks every 6 hours instead and shows only that status, dated when Peek saw it.
 
 ## Questions about Chronopost tracking
 

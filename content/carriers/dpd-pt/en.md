@@ -91,7 +91,7 @@ The contact page, in Portuguese or English, doesn't say which languages the line
 
 For 14 digits starting 0955 to 0988, with or without the check character, [Peek](/) asks the likely carriers, DPD Portugal first, and shows "DPD Portugal has this parcel." when DPD knows it. For another DPD number, paste it all the same: Peek follows more than 3,500 carriers. If DPD Portugal doesn't come up, pick it with "Change", or "Change carrier" on the parcel. tracking.dpd.pt links with `reference=` work too.
 
-Peek reads DPD's Portuguese tracking, so the wordings stay Portuguese. Once a Pickup point takes your parcel, Peek shows its name; DPD's map, delivery window and the name of whoever signed stay on DPD's page. Peek checks every 10 minutes, every 2 once the parcel is out for delivery, and can notify you with "All tracking updates", "Important only" or "Delivery day only".
+Peek reads DPD's Portuguese tracking, so the wordings stay Portuguese. Once a Pickup point takes your parcel, Peek shows its name; DPD's map, delivery window and the name of whoever signed stay on DPD's page. Peek checks every 10 minutes by day, every 2 once the parcel is out for delivery, and hourly overnight, and can notify you with "All tracking updates", "Important only" or "Delivery day only".
 
 When La Poste's tracking names DPD Portugal and gives its number, Peek can follow the parcel there once DPD shows progress. A Chronopost parcel stays on Chronopost: Peek doesn't move it to DPD Portugal, so if DPD emails you its own number, add that one to Peek too. Peek can't change a delivery or claim for you.
 

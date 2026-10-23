@@ -82,7 +82,7 @@ FAN's channels, as listed on its site on 12 October 2026:
 
 [Peek](/) doesn't recognise a FAN Courier AWB by itself: 13 digits fit several carriers' numbers, so it asks [La Poste](carrier:la-poste) and Delhivery, and when neither knows it you'll see "not found yet · Peek keeps checking". Paste it all the same (Peek follows more than 3,500 carriers), then press "Change" and pick "FAN Courier". Or paste a link from FAN's Romanian tracking page (`/awb-tracking/` with `tracking=` or `awb=`), which goes straight to FAN Courier; links to the English page aren't read.
 
-Peek then asks FAN Courier itself and shows each of FAN's scans with its town and time. FAN's times carry no time zone, so Peek reads them as Romanian time. Scans keep FAN's English wording, except `Shipment picked up`, which shows as "Shipment collected". By day Peek checks every 10 minutes, every 2 while the parcel is out for delivery, and can notify you when the status changes.
+Peek then asks FAN Courier itself and shows each of FAN's scans with its town and time. FAN's times carry no time zone, so Peek reads them as Romanian time. Scans keep FAN's English wording, except `Shipment picked up`, which shows as "Shipment collected". Peek checks every 10 minutes by day, every 2 while the parcel is out for delivery, and hourly overnight, and can notify you when the status changes.
 
 It shows no expected delivery day and no FANbox name, and leaves out the recipient's name, contents, weight and payment details. A return travels under its own AWB, so this one never shows as returned.
 

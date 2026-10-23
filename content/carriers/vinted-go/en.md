@@ -89,7 +89,7 @@ Vinted warns that phishing also arrives by SMS; its French help asks you to forw
 
 Type the 16-digit number alone and Peek asks Vinted Go, TNT and DHL eCommerce whether they know it, naming Vinted Go when it does. Otherwise press "Change" and pick "Vinted Go", or paste the vintedgo.com tracking link, which names Vinted Go at once.
 
-Peek checks every 10 minutes, also while the parcel waits, and can notify you of changes. If Vinted Go hands the parcel to another network under a new tracking code, Peek can follow it there if it reads that network directly. It can't contact Vinted or Vinted Go, or report a problem for you.
+Peek checks every 10 minutes by day, also while the parcel waits, and hourly overnight, and can notify you of changes. If Vinted Go hands the parcel to another network under a new tracking code, Peek can follow it there if it reads that network directly. It can't contact Vinted or Vinted Go, or report a problem for you.
 
 ## Questions about Vinted Go tracking
 

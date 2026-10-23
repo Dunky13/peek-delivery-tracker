@@ -93,7 +93,7 @@ Vinted prévient que l'hameçonnage passe aussi par SMS. Transfère les e-mails 
 
 Si tu saisis seulement le numéro à 16 chiffres, Peek demande à Vinted Go, à TNT et à DHL eCommerce s'ils le connaissent, et retient Vinted Go si c'est lui qui le connaît. Sinon, appuie sur « Changer » et choisis « Vinted Go », ou colle le lien de suivi vintedgo.com, avec ou sans la langue dedans : Vinted Go est reconnu tout de suite.
 
-Le suivi est vérifié toutes les 10 minutes, y compris quand le colis attend au point, et tu peux recevoir des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ». Si Vinted Go confie le colis à un autre réseau avec un nouveau numéro de suivi, Peek peut le suivre chez ce transporteur, s'il le lit directement. Peek ne peut pas contacter Vinted ou Vinted Go, ni signaler un problème à ta place.
+Le suivi est vérifié toutes les 10 minutes en journée (y compris quand le colis attend au point) et toutes les heures la nuit, et tu peux recevoir des notifications : « Toutes les mises à jour », « Importantes uniquement » ou « Jour de livraison uniquement ». Si Vinted Go confie le colis à un autre réseau avec un nouveau numéro de suivi, Peek peut le suivre chez ce transporteur, s'il le lit directement. Peek ne peut pas contacter Vinted ou Vinted Go, ni signaler un problème à ta place.
 
 ## Questions sur le suivi Vinted Go
 

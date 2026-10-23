@@ -81,7 +81,7 @@ A 20-digit barcode starting `00` belongs to whoever shipped it, not to one carri
 
 Peek shows the status and the history with the town of each scan on a map, in Zurich time, with the delivery time. Wordings stay in English; `Loaded for Delivery` counts as out for delivery. The signature and photo rows fold into the delivery scan, without the picture. Peek leaves out your name and address and has no expected delivery, weight or pickup point.
 
-A reference shared by several shipments is read only while one of them has scans from the last 60 days; otherwise it reads as not found, so use the barcode. Peek can't track the German portal's shipment and company numbers. It checks every 10 minutes, every 2 once out for delivery, and can notify you of every scan, important steps or delivery day only.
+A reference shared by several shipments is read only while one of them has scans from the last 60 days; otherwise it reads as not found, so use the barcode. Peek can't track the German portal's shipment and company numbers. It checks every 10 minutes by day, every 2 once out for delivery, and hourly overnight, and can notify you of every scan, important steps or delivery day only.
 
 ## Questions about Swiss Post Cargo tracking
 

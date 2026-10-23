@@ -89,7 +89,7 @@ ORLEN Paczka's channels, as read on 11 October 2026 on its Polish site. It publi
 
 It shows the Polish wordings as written, the sorting-centre town on a map where named, and the delivery time, in Warsaw time. When ORLEN Paczka marks its history incomplete, only the newest scan appears. There is no pickup point, expected delivery, weight or sender, and the return parcel's number is dropped. A Vinted parcel handed to another country's carrier isn't followed and stays in transit. Parcels already picked up drop out of ORLEN Paczka's tracking after some months.
 
-It checks every 10 minutes and can notify you when the status changes.
+It checks every 10 minutes by day and hourly overnight, and can notify you when the status changes.
 
 ## Questions about ORLEN Paczka tracking
 

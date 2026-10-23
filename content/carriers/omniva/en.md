@@ -88,7 +88,7 @@ Each site also has forms for a delivery status request, a damaged or lost parcel
 
 For a postal-format number ending `EE`, Peek asks Omniva first, with Chronopost, and names Omniva once it knows the code. If Omniva doesn't know it yet, you see "Not found at … yet. Peek will keep checking after you add it." It keeps asking, less often over time, for up to a month. A number with a wrong check digit names no carrier, and Omniva refuses it even when picked by hand: check it for a typo. A foreign postal number tracks at Omniva after "Change" or from an Omniva link; Peek does not pass parcels between Omniva and other carriers.
 
-It shows Omniva's English statuses, the Omniva site of each scan, the destination country, the delivery time and the parcel machine or post office it waits at. It drops addresses, postcodes and failure reasons, and shows no expected delivery or weight. Peek checks every 10 minutes (every 2 once out for delivery), puts each scan on a map and can notify you of changes. Old parcels may keep only the delivery.
+It shows Omniva's English statuses, the Omniva site of each scan, the destination country, the delivery time and the parcel machine or post office it waits at. It drops addresses, postcodes and failure reasons, and shows no expected delivery or weight. Peek checks every 10 minutes by day (every 2 once out for delivery) and hourly overnight, puts each scan on a map and can notify you of changes. Old parcels may keep only the delivery.
 
 ## Questions about Omniva tracking
 

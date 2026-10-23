@@ -78,7 +78,7 @@ DPD Ireland's contact pages give no customer-service phone number or email.
 
 ## Tracking DPD Ireland parcels with Peek
 
-[Peek](/) reads DPD Ireland's own tracker, with no account or postcode. It shows each scan in DPD's words with the depot that made it, under a headline in its own words ("Out for delivery", "Delivered"). Once the parcel is on the van, DPD's delivery window becomes the expected delivery and checks go from every 10 minutes to every 2. A delivered parcel shows the time of DPD's delivery scan.
+[Peek](/) reads DPD Ireland's own tracker, with no account or postcode. It shows each scan in DPD's words with the depot that made it, under a headline in its own words ("Out for delivery", "Delivered"). Once the parcel is on the van, DPD's delivery window becomes the expected delivery and checks go from every 10 minutes to every 2 by day; overnight they're hourly. A delivered parcel shows the time of DPD's delivery scan.
 
 Scans from DPD networks abroad have no time zone, so they stay out of the history. While the latest scan is one of those, Peek dates the history from universal tracking services and asks DPD Ireland again every 6 hours; if none answers, it shows DPD Ireland's current status, dated when Peek saw it.
 

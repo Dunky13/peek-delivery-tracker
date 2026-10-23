@@ -83,7 +83,7 @@ Según esa página, para hablar con atención al cliente basta el número de cue
 
 Para leer los datos, el servidor de Peek abre la página de seguimiento de fedex.com en un navegador. Cuando FedEx la rechaza, o pide verificar al destinatario, los servicios de seguimiento completan el historial.
 
-Ves el estado, cada escaneo en un mapa con su lugar y su hora exacta, el día de entrega previsto, la hora de entrega y, mientras el paquete espera, el nombre y la dirección del centro de FedEx. El paquete se consulta cada 10 minutos, y cada 2 minutos cuando está en reparto, y recibes notificaciones de cada escaneo, de los pasos importantes o solo el día de entrega. No muestra tu nombre ni tu dirección, el remitente, la firma, el peso ni las medidas. Los escaneos salen en el inglés de FedEx, salvo la entrega, que nombra a quien firmó: Peek la muestra como «Entregado».
+Ves el estado, cada escaneo en un mapa con su lugar y su hora exacta, el día de entrega previsto, la hora de entrega y, mientras el paquete espera, el nombre y la dirección del centro de FedEx. El paquete se consulta cada 10 minutos de día, cada 5 minutos cuando está en reparto y cada hora por la noche, y recibes notificaciones de cada escaneo, de los pasos importantes o solo el día de entrega. No muestra tu nombre ni tu dirección, el remitente, la firma, el peso ni las medidas. Los escaneos salen en el inglés de FedEx, salvo la entrega, que nombra a quien firmó: Peek la muestra como «Entregado».
 
 ## Preguntas sobre el seguimiento de FedEx
 

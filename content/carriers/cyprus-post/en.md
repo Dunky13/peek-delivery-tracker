@@ -91,7 +91,7 @@ For a postal number ending `CY` with a valid check digit, [Peek](/) asks Cyprus 
 
 Peek doesn't name Cyprus Post for an item posted abroad, but Cyprus Post's lookup takes it: pick "Cyprus Post" with "Change". Peek switches to Cyprus Post by itself only when the carrier abroad names it.
 
-Peek shows Cyprus Post's statuses as written, the office or facility and country of each scan on a map, the delivery time and the post office where an item waits or was collected. Cypriot scans keep their exact time, and a foreign post's are read on its country's clock; where a country has several time zones, Peek works the zone out from the place named, which can put the hour off. Peek checks every 10 minutes, every 2 once the item is with the postman, and can notify you when the status changes. It shows no expected delivery or weight, and drops the Extra Information, next office, postcodes and who signed.
+Peek shows Cyprus Post's statuses as written, the office or facility and country of each scan on a map, the delivery time and the post office where an item waits or was collected. Cypriot scans keep their exact time, and a foreign post's are read on its country's clock; where a country has several time zones, Peek works the zone out from the place named, which can put the hour off. Peek checks every 10 minutes by day, every 2 once the item is with the postman, and hourly overnight, and can notify you when the status changes. It shows no expected delivery or weight, and drops the Extra Information, next office, postcodes and who signed.
 
 ## Questions about Cyprus Post tracking
 

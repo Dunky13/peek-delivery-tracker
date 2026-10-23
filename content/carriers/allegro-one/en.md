@@ -90,7 +90,7 @@ Allegro advises not to open links or attachments in a doubtful email or SMS unti
 
 It reads Allegro's tracking in English and shows the wordings above as written, with the history and the delivery time. Allegro gives no places, so there's nothing to pin on the map, and no pickup point name, expected delivery, weight or sender. For `AD` numbers Allegro's tracking has listed no scans so far, so Peek may show only what universal tracking services give.
 
-It checks every 10 minutes, every 2 minutes once the parcel is out for delivery, and can notify you of every scan, important steps only, or on delivery day only.
+It checks every 10 minutes by day, every 2 minutes once the parcel is out for delivery, and hourly overnight, and can notify you of every scan, important steps only, or on delivery day only.
 
 ## Questions about Allegro One tracking
 
