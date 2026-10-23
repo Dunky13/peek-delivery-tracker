@@ -3,7 +3,7 @@ title: Cyprus Post tracking: numbers, statuses and collection
 description: Track a Cyprus Post item: what its barcode looks like, what the English UPU statuses mean, collecting from the post office or Parcel24 and who to call.
 slug: cyprus-post-tracking
 published: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-23
 ---
 
 Cyprus Post (Κυπριακά Ταχυδρομεία) is the Republic of Cyprus's national post, the Department of Postal Services. Track an item on its [Track & Trace page](https://www.cypruspost.post/en/track-n-trace-results), in its free app or by pasting the number in the box above. The number comes from the sender: the shop or person who posted the item.
@@ -40,14 +40,14 @@ Cyprus Post's statuses are the [international postal (UPU) event names](guide:tr
 | `Receive item from customer (Otb)` | The item was posted, in Cyprus or abroad. |
 | `Insert item into bag (Otb)` | Bagged at the office of exchange to go abroad. |
 | `Receive item at office of exchange (Inb)` | It has reached the destination country. |
-| `Send item to customs` | Handed to customs for checking. |
-| `Return item from customs` | Customs has released it. |
 | `Send items to delivery point/ collection point` | On its way to the office that will deliver it or hold it for you. |
 | `Hold item at point of delivery (Inb)` | At the delivery office, waiting for its round. |
 | `Handover item to delivery agent (Inb)` | With the postman. |
 | `Item not delivered/ Pending delivery` | Not delivered: the Extra Information column says why. |
 | `Receive item at collection point for pick-up (Inb)` | Ready for pickup at the post office. |
 | `Deliver item (Inb)` | Delivered, or collected at the post office. |
+
+An item with goods sent from outside the EU, even one bought from an EU shop, also goes through customs examination: where possible before it reaches Cyprus, and without you having to be there.
 
 After a missed delivery, read Extra Information: `No home delivery: registered/insured/COD taxes` means that kind of item isn't brought to the door, and `Addressee advised to pick up the item` means you've been told to pick it up.
 
@@ -91,7 +91,7 @@ For a postal number ending `CY` with a valid check digit, [Peek](/) asks Cyprus 
 
 Peek doesn't name Cyprus Post for an item posted abroad, but Cyprus Post's lookup takes it: pick "Cyprus Post" with "Change". Peek switches to Cyprus Post by itself only when the carrier abroad names it.
 
-Peek shows Cyprus Post's statuses as written, the office or facility and country of each scan on a map, the delivery time and the post office where an item waits or was collected. Cypriot scans keep their exact time. A foreign post's scan is missing when its country has several time zones or the hour repeats at a clock change. Peek checks every 10 minutes, every 2 once the item is with the postman, and can notify you when the status changes. It shows no expected delivery or weight, and drops the Extra Information, next office, postcodes and who signed.
+Peek shows Cyprus Post's statuses as written, the office or facility and country of each scan on a map, the delivery time and the post office where an item waits or was collected. Cypriot scans keep their exact time, and a foreign post's are read on its country's clock; where a country has several time zones, Peek works the zone out from the place named, which can put the hour off. Peek checks every 10 minutes, every 2 once the item is with the postman, and can notify you when the status changes. It shows no expected delivery or weight, and drops the Extra Information, next office, postcodes and who signed.
 
 ## Questions about Cyprus Post tracking
 
@@ -114,10 +114,10 @@ Its contact page lists no customer email. Use the contact form there, with your 
 :::sources
 - [Cyprus Post: FAQs, tracking and general postal questions](https://www.cypruspost.post/en/faq-track-trace) – barcode forms, columns, non-delivery, German numbers, delays, inquiry periods
 - [Cyprus Post: Track and Trace](https://www.cypruspost.post/en/track-n-trace-results) – tracking form, live wordings, foreign scans
-- [Cyprus Post: FAQs, receiving parcels and letters](https://www.cypruspost.post/en/faq-receive-items) – collection, 30 days, ID, authorisation, Delivery Choice, customs fee, damage report
+- [Cyprus Post: FAQs, receiving parcels and letters](https://www.cypruspost.post/en/faq-receive-items) – collection, 30 days, ID, authorisation, Delivery Choice, customs examination of items sent from outside the EU, customs fee, damage report
 - [Cyprus Post: Delivery Choice](https://www.cypruspost.post/en/news/delivery-choice) – choice link and options
 - [Cyprus Post: Parcel24](https://www.cypruspost.post/en/parcel24) – lockers, 72 hours
-- [Cyprus Post: Thalis](https://www.cypruspost.post/en/thalis) – small packets, customs items at post offices
+- [Cyprus Post: Thalis](https://www.cypruspost.post/en/thalis) – small packets, customs items at post offices, customs examination before arrival and without the addressee
 - [Cyprus Post: ThalisUpp](https://www.cypruspost.post/en/thalisupp) – customs documents and payment
 - [Cyprus Post: FAQs, compensations](https://www.cypruspost.post/en/faq-compensations) – compensation to the sender, exclusions
 - [Cyprus Post: Contact](https://www.cypruspost.post/en/contact) – call centre, form
