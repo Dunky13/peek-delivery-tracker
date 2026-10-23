@@ -378,6 +378,11 @@ function observedOnly(row: JsonObject): boolean {
     || (isRecord(row.raw_data) && row.raw_data.observed_without_provider_timestamp === true);
 }
 
+/** A scan dated by its day alone: it stands at the start of that day, with no clock that could be off. */
+function dayAlone(row: JsonObject): boolean {
+  return scanDay(isRecord(row.raw_data) ? row.raw_data : row) !== null;
+}
+
 /**
  * The same wording, or one with a further sentence after it (GOFO's support
  * line) or before it (ParcelsApp's heading for an Ecoscooting scan), or a
@@ -467,7 +472,10 @@ export interface SharedScans {
   reused: Map<string, string>;
   /** A universal scan left out of the batch → the stored identity it repeats. */
   skipped: Map<string, string>;
-  /** The scans of `reused` and `skipped` whose row stands at another instant, beyond the minute: one source's clock is off. */
+  /**
+   * The scans of `reused` and `skipped` whose row stands at another instant, beyond the minute: one source's clock is off.
+   * A scan or row dated by its day alone has no clock.
+   */
   shifted: Set<string>;
   /** Stored universal copies of the carrier's scans at their instant that no scan takes over: deleted with the sync. */
   absorbed: Set<string>;
@@ -587,7 +595,7 @@ export function sharedScans(
     else if (source === UNIVERSAL && instantOf(own) !== instantOf(event)) {
       if (followsClock(own, event)) moving.push(event);
       else shared.skipped.set(id, id);
-      if (!sameTruncated(instantOf(own), instantOf(event))) shared.shifted.add(id);
+      if (!sameTruncated(instantOf(own), instantOf(event)) && !dayAlone(own) && !dayAlone(event)) shared.shifted.add(id);
     }
   }
   const newAt = new Map<number, number>();
@@ -642,7 +650,7 @@ export function sharedScans(
     const offset = instantOf(scan) !== instantOf(row) && !sameTruncated(instantOf(scan), instantOf(row));
     if (sourceOf(id) !== UNIVERSAL || (offset && followsClock(row, scan))) shared.reused.set(id, rowId);
     else shared.skipped.set(id, rowId);
-    if (offset) shared.shifted.add(id);
+    if (offset && !dayAlone(row) && !dayAlone(scan)) shared.shifted.add(id);
   }
   // Each copy at a carrier's instant goes: a scan that matched no row takes one over, and the others are absorbed.
   const kept = new Set([...shared.reused.values(), ...shared.skipped.values()]);
@@ -938,20 +946,23 @@ function placesDiffer(left: readonly string[], right: readonly string[]): boolea
  * minute (17TRACK adds seconds to USPS's minute), or a whole number of hours
  * up to 14 h later, the scan read in another zone (ParcelsApp reads a London
  * office's wall clock as UTC), with stages that agree and from no other place,
- * unless such a scan falls in the copy's own minute. The latest such scan counts. A provider's scan dated more than a few minutes
- * past the check that first returned it counts at none (NaN): no clock but a
- * misread zone does that. `scans` are a check's scans, `stored` the parcel's
- * rows, each first seen at its `created_at` (else at `checkedAt`, the check's
- * time). A row written by a carrier, or one naming no provider, is no copy.
+ * unless such a scan falls in the copy's own minute. The latest such scan
+ * counts. A scan dated by its day alone has no clock: it neither dates a copy
+ * nor counts as a misdated one. A provider's scan dated more than a few
+ * minutes past the check that first returned it counts at none (NaN): no clock
+ * but a misread zone does that. `scans` are a check's scans, `stored` the
+ * parcel's rows, each first seen at its `created_at` (else at `checkedAt`, the
+ * check's time). A row written by a carrier, or one naming no provider, is no
+ * copy.
  */
 export function misdatedCopies(scans: readonly JsonObject[], stored: readonly JsonObject[], checkedAt: number): Map<string, number> {
   const storedById = new Map(stored.map((row) => [identity(row), row] as const));
   const rows = [...new Map([...stored, ...scans].map((row) => [identity(row), row] as const)).values()]
     .filter((row) => !observedOnly(row) && Number.isFinite(instantOf(row)));
-  const carriers = rows.filter(heldByCarrier);
+  const carriers = rows.filter((row) => heldByCarrier(row) && !dayAlone(row));
   const misdated = new Map<string, number>();
   for (const row of rows) {
-    if (sourceOf(identity(row)) !== UNIVERSAL || providerOf(row) === '') continue;
+    if (sourceOf(identity(row)) !== UNIVERSAL || providerOf(row) === '' || dayAlone(row)) continue;
     const at = instantOf(row);
     const sighted = Date.parse(String(storedById.get(identity(row))?.created_at ?? ''));
     if (at > (Number.isFinite(sighted) ? sighted : checkedAt) + SIGHTING_LEEWAY_MS) {

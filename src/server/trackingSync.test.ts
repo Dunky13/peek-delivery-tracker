@@ -5675,6 +5675,36 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(store.rows.size).toBe(2);
   });
 
+  it('records no offset for a provider\'s copy of a scan USPS dated by its day alone', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    // USPS gives the printing its day alone, midnight in New York; 17TRACK's copy is midnight under another offset.
+    const printed = { local_time: '2026-01-04', location: 'Example City, FL', description: 'Shipping Label Printed at Post Office', stage: 'registered' };
+    const accepted = { time: '2026-01-04T12:40:00-05:00', location: 'Example City, FL', description: 'USPS in possession of item', stage: 'accepted' };
+    const answer = (events: JsonObject[], extra: JsonObject = {}) => ({ status: 'in_transit', current_stage: 'accepted',
+      last_status_text: accepted.description, last_update: accepted.time, events, ...extra }) as CarrierResult;
+    const adapter = {
+      fetch: vi.fn().mockResolvedValueOnce(answer([accepted, printed])).mockRejectedValueOnce(new Error('USPS tracking endpoint is unavailable')),
+      fetchUniversal: vi.fn().mockResolvedValue(answer([accepted, { ...printed, local_time: undefined, time: '2026-01-04T00:00:00-06:00' }],
+        { tracking_provider: '17TRACK' })),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    const sync = async () => {
+      await service.syncPackage({ id: 'usps-printed', user_id: 'owner', carrier: 'usps', tracking_number: '9400100000000000000001',
+        current_stage: 'accepted', [STORED_EVENT_IDENTITIES]: store.identities() });
+      return (client.completeSyncAttempt.mock.calls.at(-1)![1] as JsonObject).anomaly_codes;
+    };
+
+    await sync();
+    // USPS is down: 17TRACK's copies are its scans, and the day has no clock to be off.
+    expect(await sync()).not.toContain('provider_clock_offset');
+    expect(store.rows.size).toBe(2);
+  });
+
   it('stores once a scan a provider words its own way on a clock two hours early, and records the offset', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const store = eventStore();

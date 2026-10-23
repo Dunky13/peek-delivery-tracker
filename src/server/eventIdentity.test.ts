@@ -503,6 +503,22 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(again.shifted.size).toBe(0);
   });
 
+  it('leaves out a copy of a scan the carrier dated by its day alone, without a clock offset', () => {
+    // USPS's day alone starts at midnight in New York; a provider copies the scan an hour into that day.
+    const printed = { ...row('usps:printed', '2026-01-04T05:00:00+00:00', 'Shipping Label Printed at Post Office', 'registered'),
+      raw_data: { local_time: '2026-01-04' } };
+    const late = sharedScans([scan('unknown:printed', '2026-01-04T06:00:00Z', printed.description, 'registered')], [printed]);
+    expect(pairs(late.skipped)).toEqual([['unknown:printed', 'usps:printed']]);
+    expect(late.shifted.size).toBe(0);
+    // Nor has such a copy a clock.
+    const day = { ...scan('unknown:printed', '2026-01-04T06:00:00Z', printed.description, 'registered'),
+      raw_data: { universal_provider: '17TRACK', local_time: '2026-01-04' } };
+    expect(sharedScans([day], [{ ...printed, raw_data: {} }]).shifted.size).toBe(0);
+    // A scan with a clock still shows one.
+    expect([...sharedScans([scan('unknown:printed', '2026-01-04T06:00:00Z', printed.description, 'registered')],
+      [{ ...printed, raw_data: {} }]).shifted]).toEqual(['unknown:printed']);
+  });
+
   it('matches the same wording dated to the second the other scan falls in', () => {
     // Nova Poshta keeps milliseconds; ParcelsApp's copy of its scan keeps whole seconds.
     const copy = row('unknown:customs', '2026-01-07T03:15:23+00:00', 'Placed at the customs terminal', 'customs');
@@ -1252,6 +1268,17 @@ describe('a provider\'s copies a carrier\'s answer cannot tell from its own scan
     const relayed = { ...scan('unknown:notice', '2026-01-04T17:01:00Z', 'The receiver name is incorrect'), location: 'Hubtown' };
     expect(misdated([relayed], [arrived, notice])).toEqual({});
     expect(misdated([relayed], [arrived])).toEqual({ 'unknown:notice': at('2026-01-04T05:01:00Z') });
+  });
+
+  it('reads no zone into a copy of a scan the carrier dated by its day alone, nor into such a copy', () => {
+    // USPS's day alone starts at midnight in New York; a provider copies the scan an hour into that day.
+    const printed = { ...row('usps:printed', '2026-01-04T05:00:00+00:00', 'Shipping Label Printed at Post Office', 'registered'),
+      raw_data: { local_time: '2026-01-04' } };
+    const copied = scan('unknown:printed', '2026-01-04T06:00:00Z', printed.description, 'registered');
+    expect(misdated([copied], [printed])).toEqual({});
+    const label = row('usps:label', '2026-01-04T02:00:00+00:00', 'Shipping Label Created', 'registered');
+    expect(misdated([{ ...copied, raw_data: { ...copied.raw_data, local_time: '2026-01-04' } }], [label])).toEqual({});
+    expect(misdated([copied], [label])).toEqual({ 'unknown:printed': at('2026-01-04T02:00:00Z') });
   });
 
   it('counts a copy dated past the check that first returned it at no instant', () => {
