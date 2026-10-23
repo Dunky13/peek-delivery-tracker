@@ -3055,6 +3055,39 @@ describe('TrackingSyncService', () => {
       .toEqual([['2026-01-12T11:00:00Z', undefined]]);
   });
 
+  it('records no step back when the delivery partner starts its leg at acceptance, only when it had moved the parcel itself', async () => {
+    const client = { ...fakeClient(), acquireTrackingProvider: vi.fn(), finishTrackingProvider: vi.fn() };
+    let now = new Date('2026-01-12T10:30:00Z');
+    const moved = { time: '2026-01-11T10:00:00Z', description: 'In transport', stage: 'in_transit' };
+    const origin: CarrierResult = { status: 'in_transit', destination_country: 'FI', delivery_carrier: 'posti',
+      last_update: moved.time, events: [moved] };
+    // The partner's posting scan, in the minute the origin hands the parcel over.
+    const posted = { time: '2026-01-12T10:00:00Z', description: 'Item posted', stage: 'accepted' };
+    const delivery: CarrierResult = { status: 'in_transit', current_stage: 'accepted', last_update: posted.time, events: [posted] };
+    const adapter = { fetch: vi.fn(async (carrier: string) => carrier === 'posti' ? delivery : origin), fetchUniversal: vi.fn() };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => now);
+    const row = (carrier: string, scan: { time: string; description: string; stage: string }) => ({ stage: scan.stage,
+      description: scan.description, occurred_at: scan.time, provider_event_id: providerEventId(carrier, scan.time, '', scan.description) });
+    let parcel: JsonObject = { id: 'partner-leg', carrier: 'la-poste', tracking_number: 'CW123456785FR', current_stage: 'in_transit',
+      [STORED_EVENT_IDENTITIES]: [row('la-poste', moved)] };
+    const sync = async () => {
+      await service.syncPackage(parcel);
+      parcel = { ...parcel, ...client.updatePackage.mock.calls.at(-1)![1] };
+      return { stage: parcel.current_stage, anomalies: (client.completeSyncAttempt.mock.calls.at(-1)![1] as JsonObject).anomaly_codes };
+    };
+
+    expect(await sync()).toEqual({ stage: 'in_transit', anomalies: [] });
+    expect(parcel.carrier_data).toMatchObject({ active_tracking_carrier: 'posti' });
+    now = new Date('2026-01-12T12:30:00Z');
+    parcel = { ...parcel, [STORED_EVENT_IDENTITIES]: [row('la-poste', moved), row('posti', posted)] };
+    expect(await sync()).toEqual({ stage: 'in_transit', anomalies: [] });
+    // A partner back at acceptance after a scan of its own in transit has stepped back.
+    const sorted = { time: '2026-01-12T11:00:00Z', description: 'Sorted', stage: 'in_transit' };
+    now = new Date('2026-01-12T13:30:00Z');
+    parcel = { ...parcel, [STORED_EVENT_IDENTITIES]: [row('la-poste', moved), row('posti', posted), row('posti', sorted)] };
+    expect(await sync()).toEqual({ stage: 'in_transit', anomalies: ['early_stage_regression'] });
+  });
+
   it('does not let a Swiss issuer suffix bypass an explicitly selected Posti adapter', async () => {
     const client = fakeClient();
     const adapter = { fetch: vi.fn().mockResolvedValue({ status: 'delivered' }) };

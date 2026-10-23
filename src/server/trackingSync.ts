@@ -797,6 +797,11 @@ const EARLY_STAGES = ['pending', 'registered', 'accepted'];
 /** Stages a carrier reports once it moves the parcel, short of a final one. */
 const MOVING_STAGES = new Set(['in_transit', 'customs', 'out_for_delivery', 'failed_attempt', 'ready_for_pickup']);
 
+/** How far a stage takes a parcel: the early stages in order, then any moving one; -1 for a final or unknown one. */
+function stageRank(stage: string): number {
+  return MOVING_STAGES.has(stage) ? EARLY_STAGES.length : EARLY_STAGES.indexOf(stage);
+}
+
 /**
  * The stage to save over the previous one. An earlier stage than the saved
  * one, up to accepted, is a notice or a reworded scan rather than a step back,
@@ -817,13 +822,12 @@ export function stageToSave(previousStage: string, selectedStage: string): strin
  * label starts over.
  */
 function noticesOnlyPast(answer: CarrierResult, rows: readonly JsonObject[]): boolean {
-  const rank = (stage: string) => MOVING_STAGES.has(stage) ? EARLY_STAGES.length : EARLY_STAGES.indexOf(stage);
   const stages = [answer.current_stage, ...(answer.events ?? []).filter(isRecord).map(eventStage)]
     .filter((stage): stage is string => typeof stage === 'string');
-  if (!rows.length || !stages.length || stages.some((stage) => rank(stage) < 0)) return false;
-  const reached = Math.max(...stages.map(rank));
+  if (!rows.length || !stages.length || stages.some((stage) => stageRank(stage) < 0)) return false;
+  const reached = Math.max(...stages.map(stageRank));
   return rows.every((row) => typeof row.universal_provider === 'string' && EARLY_STAGES.includes(String(row.stage))
-    && rank(String(row.stage)) <= reached);
+    && stageRank(String(row.stage)) <= reached);
 }
 
 /**
@@ -834,16 +838,30 @@ function noticesOnlyPast(answer: CarrierResult, rows: readonly JsonObject[]): bo
  * its rows proves nothing.
  */
 export function heldStage(parcel: JsonObject, previousStage: string, rows: readonly JsonObject[]): string {
-  const rank = (stage: string) => MOVING_STAGES.has(stage) ? EARLY_STAGES.length : EARLY_STAGES.indexOf(stage);
-  const target = rank(previousStage);
+  const target = stageRank(previousStage);
   if (target < 0 || !Array.isArray(parcel[STORED_EVENT_IDENTITIES])) return previousStage;
   let furthest = 'pending';
   for (const row of rows) {
     const stage = String(row.stage ?? '');
-    if (rank(stage) >= target) return previousStage;
-    if (rank(stage) > rank(furthest)) furthest = stage;
+    if (stageRank(stage) >= target) return previousStage;
+    if (stageRank(stage) > stageRank(furthest)) furthest = stage;
   }
   return furthest;
+}
+
+/**
+ * Whether a held stage is the earlier leg's while the delivery partner, now answering for a
+ * handed-over parcel, starts its own: it announces or accepts the parcel the earlier carrier
+ * already moved (Poczta Polska's posting scan in the minute 4PX hands the parcel over). That is
+ * no step back. One the partner's own rows had passed is, as is one on a parcel loaded
+ * without its rows.
+ */
+function partnerStartsLeg(parcel: JsonObject, carrierData: JsonObject, sourceCarrierId: string,
+  selectedStage: string, keptStage: string, rows: readonly JsonObject[]): boolean {
+  return typeof carrierData.handed_over_at === 'string' && carrierData.active_tracking_carrier === sourceCarrierId
+    && ['registered', 'accepted'].includes(selectedStage) && Array.isArray(parcel[STORED_EVENT_IDENTITIES])
+    && !rows.some((row) => String(row.provider_event_id).startsWith(`${sourceCarrierId}:`)
+      && stageRank(String(row.stage ?? '')) >= stageRank(keptStage));
 }
 
 export function detectSyncAnomalies(
@@ -1835,7 +1853,10 @@ export class TrackingSyncService {
             && !deleteDescriptions.includes(String(row.description))), ...persistedEvents];
           // A carrier the router swapped to may rightly know less than a mistaken one did.
           values.current_stage = fetched.correction ? selectedStage : stageToSave(heldStage(parcel, previousStage, rows), selectedStage);
-          if (values.current_stage !== selectedStage) anomalies = [...anomalies, 'early_stage_regression'];
+          if (values.current_stage !== selectedStage
+            && !partnerStartsLeg(parcel, carrierData, sourceCarrierId, selectedStage, String(values.current_stage), rows)) {
+            anomalies = [...anomalies, 'early_stage_regression'];
+          }
         }
         // A delivery only a provider reported, which the parcel's own carrier did not show, is
         // checked again daily for a while: the carrier may yet dispute it (activePackages). The
