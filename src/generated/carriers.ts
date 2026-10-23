@@ -2654,6 +2654,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
   ],
   "nb": [
     {
+      "id": "postnord",
+      "catalog": "postnord",
+      "slug": "postnord-sporing",
+      "title": "PostNord-sporing: sendingsnummer, statuser og toll",
+      "name": "PostNord",
+      "color": "#00a0d6"
+    },
+    {
       "id": "bring",
       "catalog": "bring-posten",
       "slug": "bring-sporing",
@@ -2663,6 +2671,14 @@ export const CARRIER_LINKS: Record<PageLanguage, readonly CarrierLink[]> = {
     }
   ],
   "fi": [
+    {
+      "id": "postnord",
+      "catalog": "postnord",
+      "slug": "postnord-seuranta",
+      "title": "PostNord-seuranta: lähetystunnus, tilat ja tulli",
+      "name": "PostNord",
+      "color": "#00a0d6"
+    },
     {
       "id": "posti",
       "catalog": "posti",

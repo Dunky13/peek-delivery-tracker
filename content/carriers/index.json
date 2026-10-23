@@ -59,7 +59,7 @@
   { "id": "cacesa", "catalog": "cacesa", "name": "CACESA", "languages": ["en", "es", "pt"] },
   { "id": "sunyou", "catalog": "sunyou", "name": "SunYou", "languages": ["en", "de", "fr", "it", "es", "pt", "pl"] },
   { "id": "amazon-shipping", "catalog": "amazon-shipping", "name": "Amazon Shipping", "languages": ["en", "de", "fr", "it", "es"] },
-  { "id": "postnord", "catalog": "postnord", "name": "PostNord", "languages": ["en", "da", "sv"] },
+  { "id": "postnord", "catalog": "postnord", "name": "PostNord", "languages": ["en", "da", "sv", "nb", "fi"] },
   { "id": "bring", "catalog": "bring-posten", "name": "Bring", "languages": ["en", "nb"] },
   { "id": "posti", "catalog": "posti", "name": "Posti", "languages": ["en", "fi"] },
   { "id": "omniva", "catalog": "omniva", "name": "Omniva", "languages": ["en"] },
