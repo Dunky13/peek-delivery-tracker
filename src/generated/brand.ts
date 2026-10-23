@@ -1141,6 +1141,7 @@ export const CARRIER_DECALS: Record<string, CarrierDecal> = {
   "shipentegra": "shipentegra",
   "shiprocket": "shiprocket",
   "shipup": "shipup",
+  "shouwu": "shouwu",
   "shree-anjani": "shree-anjani",
   "shree-mahabali-express": "shree-mahabali-express",
   "shree-mahavir": "shree-mahavir",
@@ -14634,6 +14635,18 @@ export const CARRIER_TRUCK: TruckGeometry = {
       {
         "type": "polygon",
         "d": "M7.1 4.8L9.8 4.8L9.8 11.29L12.9 11.29L13.92 11.14L14.55 10.69L14.91 10.1L15.03 9.43L14.98 8.64L14.71 7.96L14.14 7.49L13.24 7.2L10.34 7.2L10.34 4.8L14.26 4.8L15.75 5.25L16.87 5.93L17.55 6.72L17.96 7.73L18.1 8.97L18.1 9.65L17.93 10.67L17.55 11.57L16.87 12.47L15.84 13.15L14.48 13.6L6.68 13.6L6.68 8.16L6.13 8.48L5.34 8.73L3.9 8.86L3.9 6.49L4.89 6.15L5.79 5.82L6.45 5.36Z",
+        "fill": "accent"
+      }
+    ],
+    "shouwu": [
+      {
+        "type": "polygon",
+        "d": "M6.2 6.19L6.76 6.01L7.43 5.86L8.15 5.7L9.02 5.55L10.61 5.34L11.82 5.24L12.8 5.21L14.29 5.29L14.85 5.34L15.63 5.45L16.45 5.6L16.78 5.7L15.78 5.81L14.24 6.06L13.03 6.37L12.08 6.68L10.9 7.14L9.95 7.6L8.84 8.22L7.89 8.84L7.02 9.45L6.4 9.99L8.38 7.3Z",
+        "fill": "#0f74bc"
+      },
+      {
+        "type": "polygon",
+        "d": "M18.4 5.91L12.67 13.39L12.36 9.79L11.31 9.87L10.28 10.07L9.2 10.38L8.02 10.84L6.71 11.46L5.58 12.08L4.58 12.69L3.6 13.36L4.19 12.69L5.12 11.77L6.17 10.84L7.4 9.92L8.84 8.99L10.59 8.07L12.41 7.3L14.29 6.68L16.27 6.22L17.58 6.01Z",
         "fill": "accent"
       }
     ]
