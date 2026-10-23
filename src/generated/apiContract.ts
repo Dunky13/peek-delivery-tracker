@@ -4559,6 +4559,12 @@ export const CARRIER_CAPABILITIES = {
         "preferred": true
       },
       {
+        "pattern": "^\\d5900773\\d{10}$",
+        "confidence": "low",
+        "checksum": "gs1",
+        "preferred": true
+      },
+      {
         "pattern": "^PX\\d{10}$",
         "confidence": "high"
       },
@@ -30884,7 +30890,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Shanghai",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "meihoo-pegasus"
     },
     "linkRules": [],
     "detectionRules": [
