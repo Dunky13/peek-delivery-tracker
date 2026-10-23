@@ -549,12 +549,16 @@ export function buildEvents(
   // dated in the carrier's order, newest first: a second after the scan listed after it when
   // that one is of the same day, else at the start of its day on the carrier's home clock, the
   // one the scraper dates its wall clocks on. A catalog zone of UTC would start a USPS day on
-  // the evening before for a reader in the United States. Scans that join the day later leave
+  // the evening before for a reader in the United States. A universal provider's copy of such a
+  // scan starts the day on the clock of the carrier it names, not on the zone its answer reads
+  // clocks in (17TRACK's UTC). Scans that join the day later leave
   // those dates as they are. So is a carrier's scan on a wall clock in no zone listed after a
   // dated one (YunExpress's), in an answer of its own lookup that is no fallback; its identity
   // keeps the clock, so two scans of a day stay two.
   const scans = result.events ?? [];
-  const dayZone = carrierHomeZone(carrierId, result) ?? timezone;
+  const named = carrierId === 'unknown' && typeof result.discovered_carrier === 'string'
+    ? carrierHomeZone(result.discovered_carrier) : null;
+  const dayZone = named ?? carrierHomeZone(carrierId, result) ?? timezone;
   const stamped = scans.map((raw) => eventTimestamp(raw.time, timezone) !== null);
   const newestStamped = stamped.indexOf(true);
   const ownClocks = localClockCarrier(carrierId) && typeof result.tracking_provider !== 'string' && result.direct_local_fallback !== true;

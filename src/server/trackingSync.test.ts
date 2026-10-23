@@ -5756,6 +5756,30 @@ describe('scans a carrier and a universal provider both report', () => {
     expect(store.rows.size).toBe(2);
   });
 
+  it('starts the day of a scan a provider gives by its day alone on the clock of the carrier it names', async () => {
+    vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
+    const store = eventStore();
+    const client = { ...store.client,
+      acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-01-05T12:01:30Z' }),
+      finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+    };
+    // 17TRACK reads clocks in UTC and lists USPS's printing, dated by its day alone, under a label made the evening before.
+    const printed = { local_time: '2026-01-04', location: 'Example City, FL', description: 'Shipping Label Printed at Post Office', stage: 'registered' };
+    const created = { time: '2026-01-04T02:35:00.000Z', location: 'Example City, FL', description: 'Shipping Label Created', stage: 'registered' };
+    const adapter = {
+      fetch: vi.fn().mockRejectedValue(new Error('USPS tracking endpoint is unavailable')),
+      fetchUniversal: vi.fn().mockResolvedValue({ status: 'in_transit', current_stage: 'registered', last_status_text: created.description,
+        last_update: created.time, timezone: 'UTC', tracking_provider: '17TRACK', discovered_carrier: 'usps', events: [created, printed] }),
+    };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, now);
+    await service.syncPackage({ id: 'usps-day', user_id: 'owner', carrier: 'usps', tracking_number: '9400100000000000000001',
+      current_stage: 'pending', [STORED_EVENT_IDENTITIES]: store.identities() });
+
+    // Midnight in New York, as USPS dates it; UTC's midnight is the evening before there.
+    const day = [...store.rows.values()].find((row) => row.description === printed.description)!;
+    expect(day.occurred_at).toBe('2026-01-04T05:00:00Z');
+  });
+
   it('stores once a scan a provider words its own way on a clock two hours early, and records the offset', async () => {
     vi.spyOn(observability, 'reportRoutingEvent').mockImplementation(() => undefined);
     const offsets = anomalyLogs(vi.spyOn(observability, 'logOperationalEvent').mockImplementation(() => undefined), 'provider_clock_offset');

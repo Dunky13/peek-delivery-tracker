@@ -155,7 +155,9 @@ A scan an adapter dates by its day alone, with no clock (NACEX's history), is st
 row of that day anyway, in the carrier's order: a second after the scan before it when that
 one is of the same day, else at the start of the day on the carrier's home clock, the one
 the scraper's `carrierHomeZone` gives. A catalog zone of UTC would put a USPS day on the
-evening before in the United States. It replaces the stage change an earlier check stored
+evening before in the United States. A universal provider's copy of such a scan starts the
+day on the clock of the carrier the provider names, not in the zone its answer declares
+(17TRACK's UTC). It replaces the stage change an earlier check stored
 without a time. So is a scan on a wall clock in no zone (YunExpress's) listed after a dated
 scan, in an answer of the carrier's own lookup that is no fallback. Its identity keeps the clock, so two scans of a day stay two, and once a release
 dates the scan, the scan takes the row over: the same stage, wording, provider code and place,
