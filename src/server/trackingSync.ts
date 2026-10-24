@@ -1699,10 +1699,6 @@ export class TrackingSyncService {
       );
       const handoff = supportsSwissPostHandoff(String(parcel.tracking_number ?? ''));
       const knownUpdate = hasUpdate || Boolean(handoff && swissPostReady);
-      const progressDisappeared = anomalies.includes('progress_disappeared');
-      // A fallback that knows less is no error: what is saved stays, as with an older snapshot.
-      const fallbackWithoutProgress = anomalies.includes('fallback_without_progress');
-      const keepSaved = progressDisappeared || fallbackWithoutProgress || fetched.preserveHistory === true;
       // A reworded scan (DPD with and without the postcode) updates its stored row in place,
       // and a scan both a carrier and a universal provider reported is stored once.
       // A handoff's batch also carries the earlier carrier's scans, under that carrier's policy.
@@ -1722,6 +1718,23 @@ export class TrackingSyncService {
       const relaying = fetched.earlierCarrierId ?? earlierCarrier(parcel);
       const shared = sharedScans(events.filter((event) => !normalized.relays.has(String(event.provider_event_id))), stored, reworded, relaying);
       const matches = { reused: new Map([...reworded, ...shared.reused]), skipped: shared.skipped };
+      // The parcel's own carrier listing fewer of the scans already stored, each as stored and none
+      // new (JRT dropping a parcel's later scans and keeping the label's), takes nothing back: the
+      // stored progress stays and the check answered. A scan the rows lack, such as a newer one in
+      // an earlier stage, or a stored scan read in an earlier stage, still makes progress disappear.
+      const storedIds = new Set(stored.map((event) => String(event.provider_event_id)));
+      const storedStages = new Map(stored.map((row) => [String(row.provider_event_id), row.stage]));
+      const fewerStoredScans = anomalies.includes('progress_disappeared') && sourceCarrierId === carrierId
+        && typeof result.tracking_provider !== 'string' && events.length > 0 && events.every((event) => {
+          const id = String(event.provider_event_id);
+          const row = matches.reused.get(id) ?? matches.skipped.get(id) ?? (storedIds.has(id) ? id : undefined);
+          return row !== undefined && storedStages.get(row) === event.stage;
+        });
+      if (fewerStoredScans) anomalies = anomalies.filter((code) => code !== 'progress_disappeared');
+      const progressDisappeared = anomalies.includes('progress_disappeared');
+      // A fallback that knows less is no error: what is saved stays, as with an older snapshot.
+      const fallbackWithoutProgress = anomalies.includes('fallback_without_progress');
+      const keepSaved = progressDisappeared || fallbackWithoutProgress || fewerStoredScans || fetched.preserveHistory === true;
       // Copies a universal provider read in the wrong zone must not make a result
       // look fresher, or the carrier's own reply older, than it is: neither those
       // the sync matched nor those it could not tell from the carrier's scans.
@@ -1966,7 +1979,6 @@ export class TrackingSyncService {
       // What was confirmed stays apart (`cleared_confirmation`): confirming it again is no news.
       if (!values.carrier && carrierId === 'unknown' && routing) clearConfirmation(routing);
       // A scan already stored is rewritten in place, which is no news.
-      const storedIds = new Set(stored.map((event) => String(event.provider_event_id)));
       const eventsNew = persistedEvents.filter((event) => !storedIds.has(String(event.provider_event_id))).length;
       // Unless it turns into the delivery or pickup readiness the parcel had not shown yet.
       const restaged = restagedNews(stored, persistedEvents, previousStage, this.now());

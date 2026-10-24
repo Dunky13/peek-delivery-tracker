@@ -4066,6 +4066,58 @@ describe('TrackingSyncService', () => {
     await expect(thinAnswer({ status: 'pending', current_stage: 'registered', tracking_provider: 'ParcelsApp', events: [label] })).resolves.toBeUndefined();
   });
 
+  describe('its own carrier listing fewer of the stored scans', () => {
+    // A carrier that keeps a parcel's label scans and drops its later ones. Its wording ("arrived at the
+    // pickup point", "left the operations center") gives no stage of its own: the adapter's does.
+    const label = { stage: 'registered', description: 'Electronic data received', time: '2026-10-04T09:16:20Z' };
+    const relabel = { stage: 'registered', description: 'Electronic data received', time: '2026-10-20T03:23:29Z' };
+    const accepted = { stage: 'accepted', description: '到达收货点', time: '2026-10-20T03:28:11Z' };
+    const departed = { stage: 'in_transit', description: '货物离开操作中心', time: '2026-10-20T03:30:36Z' };
+    const answer = (...events: CarrierResult['events'] & object): CarrierResult => ({
+      status: events[0]!.stage as CarrierResult['status'], current_stage: events[0]!.stage, last_status_text: events[0]!.description,
+      last_update: events[0]!.time, events });
+    const tracked = async () => {
+      const store = eventStore();
+      const adapter = { fetch: vi.fn() };
+      let now = new Date('2026-10-21T12:00:00Z');
+      const service = new TrackingSyncService(store.client as unknown as SupabaseServiceClient, adapter, null, () => now);
+      let parcel: JsonObject = { id: 'fewer-scans', carrier: 'dhl', tracking_number: 'TEST1234', current_stage: 'pending' };
+      const check = async (result: CarrierResult) => {
+        now = new Date(now.getTime() + 60 * 60 * 1_000);
+        adapter.fetch.mockResolvedValue(structuredClone(result));
+        const counts = await service.syncPackage({ ...parcel, [STORED_EVENT_IDENTITIES]: store.identities() }, { trigger: 'scheduled' });
+        parcel = { ...parcel, ...store.client.updatePackage.mock.calls.at(-1)![1] };
+        const refresh = (store.client.recordTrackingHealth.mock.lastCall![2] as JsonObject[]).find((sample) => sample.kind === 'refresh');
+        return { counts, parcel, refresh, attempt: store.client.completeSyncAttempt.mock.lastCall![1] as JsonObject };
+      };
+      await check(answer(departed, accepted, relabel, label));
+      return { store, check };
+    };
+
+    it('keeps the stored progress, and the check answered', async () => {
+      const { store, check } = await tracked();
+      const rows = structuredClone([...store.rows.values()]);
+      const checked = await check(answer(relabel, label));
+      expect(checked.counts).toMatchObject({ unchanged: 1, errors: 0 });
+      expect(checked.attempt).toMatchObject({ outcome: 'unchanged', anomaly_codes: [], error_type: null });
+      expect(checked.parcel).toMatchObject({ current_stage: 'in_transit', last_status_text: departed.description,
+        sync_status: 'ok', sync_error: null });
+      expect(checked.refresh).toMatchObject({ healthy: true });
+      expect([...store.rows.values()]).toEqual(rows);
+    });
+
+    it.each([
+      ['a newer scan in an earlier stage', [{ stage: 'registered', description: 'Label printed again', time: '2026-10-21T08:00:00Z' }, relabel, label]],
+      ['a stored scan read in an earlier stage', [{ ...accepted, stage: 'registered' }, relabel, label]],
+    ])('still finds the progress gone after %s', async (_case, events) => {
+      const { check } = await tracked();
+      const checked = await check(answer(...events));
+      expect(checked.counts).toMatchObject({ errors: 1 });
+      expect(checked.attempt).toMatchObject({ outcome: 'error', anomaly_codes: ['progress_disappeared'], error_type: 'ProgressDisappeared' });
+      expect(checked.parcel).toMatchObject({ current_stage: 'in_transit', sync_status: 'error' });
+    });
+  });
+
   it.each(['unknown', 'pending'] as const)(
     'preserves DHL progress and delivery details when the provider returns empty %s data', async (status) => {
       const parcel: JsonObject = {

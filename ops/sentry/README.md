@@ -48,6 +48,8 @@ failures age out of the window; a new failure meanwhile reminds as usual.
   healthy, filed as missing input, whether or not routing made the check. So is a number
   that names several parcels (inconclusive with the reason `several_parcels`, such as an
   Australia Post consignment of several articles): the owner has to give one parcel's number.
+- A carrier whose own lookup answers with fewer of the parcel's stored scans, none new and
+  each in its stored stage, has answered: the check keeps the stored progress, with no anomaly.
 - A carrier whose own lookup answers normally but repeats the answer without the parcel's
   progress that the parcel's previous scheduled check got, with the same stage and rows (a
   carrier that withdrew scans it had shown), has answered. From the second such check in a
