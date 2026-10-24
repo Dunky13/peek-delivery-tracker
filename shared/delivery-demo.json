@@ -389,15 +389,67 @@
       },
       {
         "stage": "in_transit",
-        "hoursAgo": 110,
-        "description": "Sorted for the journey to Zürich",
-        "location": "Härkingen, Switzerland",
+        "hoursAgo": 160,
+        "description": "Flew out of Kansai airport",
+        "location": "Osaka, Japan",
         "place": {
-          "latitude": 47.305,
-          "longitude": 7.821,
+          "latitude": 34.694,
+          "longitude": 135.501,
+          "precision": "city",
+          "country": "JP",
+          "name": "Osaka"
+        }
+      },
+      {
+        "stage": "in_transit",
+        "hoursAgo": 140,
+        "description": "Changed planes at the Asia hub",
+        "location": "Guangzhou, China",
+        "place": {
+          "latitude": 23.117,
+          "longitude": 113.25,
+          "precision": "city",
+          "country": "CN",
+          "name": "Guangzhou"
+        }
+      },
+      {
+        "stage": "in_transit",
+        "hoursAgo": 126,
+        "description": "A short stopover in Dubai. No duty-free.",
+        "location": "Dubai, United Arab Emirates",
+        "place": {
+          "latitude": 25.077,
+          "longitude": 55.309,
+          "precision": "city",
+          "country": "AE",
+          "name": "Dubai"
+        }
+      },
+      {
+        "stage": "in_transit",
+        "hoursAgo": 112,
+        "description": "Landed at the European hub",
+        "location": "Paris, France",
+        "place": {
+          "latitude": 48.853,
+          "longitude": 2.349,
+          "precision": "city",
+          "country": "FR",
+          "name": "Paris"
+        }
+      },
+      {
+        "stage": "in_transit",
+        "hoursAgo": 80,
+        "description": "Cleared Swiss customs",
+        "location": "Basel, Switzerland",
+        "place": {
+          "latitude": 47.558,
+          "longitude": 7.573,
           "precision": "city",
           "country": "CH",
-          "name": "Härkingen"
+          "name": "Basel"
         }
       },
       {

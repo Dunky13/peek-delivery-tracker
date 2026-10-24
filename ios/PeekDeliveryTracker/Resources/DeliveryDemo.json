@@ -390,15 +390,67 @@
         },
         {
           "stage": "in_transit",
-          "hoursAgo": 110,
-          "description": "Sorted for the journey to Zürich",
-          "location": "Härkingen, Switzerland",
+          "hoursAgo": 160,
+          "description": "Flew out of Kansai airport",
+          "location": "Osaka, Japan",
           "place": {
-            "latitude": 47.305,
-            "longitude": 7.821,
+            "latitude": 34.694,
+            "longitude": 135.501,
+            "precision": "city",
+            "country": "JP",
+            "name": "Osaka"
+          }
+        },
+        {
+          "stage": "in_transit",
+          "hoursAgo": 140,
+          "description": "Changed planes at the Asia hub",
+          "location": "Guangzhou, China",
+          "place": {
+            "latitude": 23.117,
+            "longitude": 113.25,
+            "precision": "city",
+            "country": "CN",
+            "name": "Guangzhou"
+          }
+        },
+        {
+          "stage": "in_transit",
+          "hoursAgo": 126,
+          "description": "A short stopover in Dubai. No duty-free.",
+          "location": "Dubai, United Arab Emirates",
+          "place": {
+            "latitude": 25.077,
+            "longitude": 55.309,
+            "precision": "city",
+            "country": "AE",
+            "name": "Dubai"
+          }
+        },
+        {
+          "stage": "in_transit",
+          "hoursAgo": 112,
+          "description": "Landed at the European hub",
+          "location": "Paris, France",
+          "place": {
+            "latitude": 48.853,
+            "longitude": 2.349,
+            "precision": "city",
+            "country": "FR",
+            "name": "Paris"
+          }
+        },
+        {
+          "stage": "in_transit",
+          "hoursAgo": 80,
+          "description": "Cleared Swiss customs",
+          "location": "Basel, Switzerland",
+          "place": {
+            "latitude": 47.558,
+            "longitude": 7.573,
             "precision": "city",
             "country": "CH",
-            "name": "Härkingen"
+            "name": "Basel"
           }
         },
         {
@@ -1012,6 +1064,11 @@
       "The photo lab has created a shipping label for your parcel": "Das Fotolabor hat dein Paket angekündigt",
       "Tea tins wrapped in Kyoto": "Teedosen in Kyoto eingepackt",
       "Collected from the tea house": "Im Teehaus übernommen",
+      "Flew out of Kansai airport": "Vom Flughafen Kansai abgeflogen",
+      "Changed planes at the Asia hub": "Am Drehkreuz in Asien umgeladen",
+      "A short stopover in Dubai. No duty-free.": "Kurzer Zwischenstopp in Dubai. Kein Duty-free.",
+      "Landed at the European hub": "Am europäischen Drehkreuz gelandet",
+      "Cleared Swiss customs": "Durch den Schweizer Zoll",
       "Sorted for the journey to Zürich": "Für die Reise nach Zürich sortiert",
       "On the final stretch to your door": "Auf den letzten Metern bis zu deiner Tür",
       "Delivered. Time to put the kettle on.": "Zugestellt. Zeit, Wasser aufzusetzen.",
@@ -1100,6 +1157,11 @@
       "The photo lab has created a shipping label for your parcel": "El laboratorio fotográfico ha creado la etiqueta de tu paquete",
       "Tea tins wrapped in Kyoto": "Latas de té envueltas en Kioto",
       "Collected from the tea house": "Ha salido de la casa de té",
+      "Flew out of Kansai airport": "Ha despegado del aeropuerto de Kansai",
+      "Changed planes at the Asia hub": "Cambio de avión en el hub asiático",
+      "A short stopover in Dubai. No duty-free.": "Breve escala en Dubái. Nada de duty free.",
+      "Landed at the European hub": "Ha aterrizado en el hub europeo",
+      "Cleared Swiss customs": "Ha pasado la aduana suiza",
       "Sorted for the journey to Zürich": "Clasificado para el viaje a Zúrich",
       "On the final stretch to your door": "En el último tramo hasta tu puerta",
       "Delivered. Time to put the kettle on.": "Entregado. Hora de poner el agua a calentar.",
@@ -1188,6 +1250,11 @@
       "The photo lab has created a shipping label for your parcel": "Le labo photo a créé l’étiquette de ton colis",
       "Tea tins wrapped in Kyoto": "Boîtes de thé emballées à Kyoto",
       "Collected from the tea house": "Pris en charge à la maison de thé",
+      "Flew out of Kansai airport": "Parti de l’aéroport du Kansai",
+      "Changed planes at the Asia hub": "Changement d’avion au hub asiatique",
+      "A short stopover in Dubai. No duty-free.": "Courte escale à Dubaï. Pas de duty free.",
+      "Landed at the European hub": "Atterri au hub européen",
+      "Cleared Swiss customs": "Dédouané en Suisse",
       "Sorted for the journey to Zürich": "Trié pour le voyage vers Zurich",
       "On the final stretch to your door": "Dans la dernière ligne droite jusqu’à ta porte",
       "Delivered. Time to put the kettle on.": "Livré. Il est temps de mettre la bouilloire en route.",
@@ -1276,6 +1343,11 @@
       "The photo lab has created a shipping label for your parcel": "Il laboratorio fotografico ha registrato la spedizione",
       "Tea tins wrapped in Kyoto": "Barattoli di tè confezionati a Kyoto",
       "Collected from the tea house": "Preso in carico presso la casa del tè",
+      "Flew out of Kansai airport": "Partito dall’aeroporto del Kansai",
+      "Changed planes at the Asia hub": "Cambio d’aereo all’hub asiatico",
+      "A short stopover in Dubai. No duty-free.": "Breve scalo a Dubai. Niente duty free.",
+      "Landed at the European hub": "Atterrato all’hub europeo",
+      "Cleared Swiss customs": "Sdoganato in Svizzera",
       "Sorted for the journey to Zürich": "Smistato per il viaggio verso Zurigo",
       "On the final stretch to your door": "Nell’ultimo tratto fino alla tua porta",
       "Delivered. Time to put the kettle on.": "Consegnato. È ora di mettere su il bollitore.",
@@ -1364,6 +1436,11 @@
       "The photo lab has created a shipping label for your parcel": "Laboratorium fotograficzne zarejestrowało Twoją paczkę",
       "Tea tins wrapped in Kyoto": "Puszki herbaty zapakowane w Kioto",
       "Collected from the tea house": "Przyjęto od herbaciarni",
+      "Flew out of Kansai airport": "Wyleciała z lotniska Kansai",
+      "Changed planes at the Asia hub": "Przesiadka w azjatyckim hubie",
+      "A short stopover in Dubai. No duty-free.": "Krótki postój w Dubaju. Bez duty free.",
+      "Landed at the European hub": "Wylądowała w europejskim hubie",
+      "Cleared Swiss customs": "Przeszła szwajcarską odprawę celną",
       "Sorted for the journey to Zürich": "Posortowano na drogę do Zurychu",
       "On the final stretch to your door": "Na ostatniej prostej do Twoich drzwi",
       "Delivered. Time to put the kettle on.": "Doręczono. Czas nastawić czajnik.",
@@ -1452,6 +1529,11 @@
       "The photo lab has created a shipping label for your parcel": "O laboratório fotográfico criou a etiqueta de envio da tua encomenda",
       "Tea tins wrapped in Kyoto": "Latas de chá embrulhadas em Quioto",
       "Collected from the tea house": "Recolhida na casa de chá",
+      "Flew out of Kansai airport": "Partiu do aeroporto de Kansai",
+      "Changed planes at the Asia hub": "Mudou de avião no hub asiático",
+      "A short stopover in Dubai. No duty-free.": "Breve escala no Dubai. Nada de duty free.",
+      "Landed at the European hub": "Aterrou no hub europeu",
+      "Cleared Swiss customs": "Passou a alfândega suíça",
       "Sorted for the journey to Zürich": "Triada para a viagem até Zurique",
       "On the final stretch to your door": "Na reta final até à tua porta",
       "Delivered. Time to put the kettle on.": "Entregue. Hora de pôr a chaleira ao lume.",
