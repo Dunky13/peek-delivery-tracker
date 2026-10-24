@@ -6,6 +6,7 @@ import path from 'node:path';
 import { describe, it } from 'node:test';
 import { runInNewContext } from 'node:vm';
 import { planChanges, selectSuites, successfulBaseline } from './ci-changes.mjs';
+import { RELEASE_STEPS } from './adopt-scraper.mjs';
 
 const none = { web: false, migrations: false, ios: false };
 const web = { ...none, web: true };
@@ -273,13 +274,17 @@ describe('scraper adoption validation', () => {
     const due = workflow.match(/\n  due:\n([\s\S]*?)\n  adopt:\n/)?.[1];
     assert.ok(due, 'The due job must come before the adopt job.');
     assert.match(due, /if: github\.event_name == 'schedule' \|\| \(github\.event_name == 'workflow_run' && github\.event\.workflow_run\.conclusion == 'success'\)/);
-    // It reads the workflow's runs and jobs, and nothing of a release runs there.
+    // It reads the workflow's runs, jobs and artifacts, the app's pin and npm's tags, and nothing of a release runs there.
     assert.match(due, /permissions:\n\s+actions: read\n\s+contents: read\n/);
-    assert.match(due, /sparse-checkout: scripts\/adopt-scraper\.mjs\n/);
+    assert.match(due, /sparse-checkout: \|\n\s+\/scripts\/adopt-scraper\.mjs\n\s+\/package\.json\n/);
     assert.match(due, /run: node scripts\/adopt-scraper\.mjs due\n/);
     assert.doesNotMatch(due, /\bnpm\b|secrets\./);
-    // The check knows a run's adoption by this job's name.
+    // The check knows a run's adoption by the push job's name, and a release that failed by the
+    // adopt job's name, the step that failed and the artifact naming the release.
     assert.match(workflow, /\n  adopt:\n    name: Adopt\n/);
+    assert.match(workflow, /\n  push:\n    name: Push\n/);
+    for (const step of RELEASE_STEPS) assert.ok(workflow.includes(`- name: ${step}\n`), `No step named ${step}`);
+    assert.match(workflow, /- name: Record the release this run tries\n\s+if: steps\.target\.outputs\.adopt == 'true'\n[\s\S]*?name: release-\$\{\{ steps\.target\.outputs\.version \}\}\n/);
     // Only a run by hand skips that check.
     assert.match(workflow, /\n    needs: due\n    if: >-\n      !cancelled\(\) && github\.repository == 'plhery\/peek-delivery-tracker'\n      && \(github\.event_name == 'workflow_dispatch' \|\| needs\.due\.outputs\.due == 'true'\)\n/);
     // Due is skipped then, and a skipped ancestor skips the push unless it says !cancelled().

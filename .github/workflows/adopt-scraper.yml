@@ -10,7 +10,8 @@ on:
   # GitHub starts scheduled runs hours late or drops them, so the schedule,
   # every half hour, and a CI run that ends on main are only a backup. The
   # first run in a slot that pushes a release adopts; the others end at once
-  # (the Due job).
+  # (the Due job), and so do those that would take a release that already
+  # failed in the slot.
   schedule:
     - cron: '7,37 6-23 * * *'
   workflow_run:
@@ -60,7 +61,8 @@ env:
 
 jobs:
   # A scheduled run, or one a CI run on main started, adopts when no run has
-  # pushed a release since its slot began. A run by hand always adopts.
+  # pushed a release since its slot began and the release it would take has
+  # not failed in the slot. A run by hand always adopts.
   due:
     name: Due
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
@@ -76,7 +78,9 @@ jobs:
         with:
           ref: main
           persist-credentials: false
-          sparse-checkout: scripts/adopt-scraper.mjs
+          sparse-checkout: |
+            /scripts/adopt-scraper.mjs
+            /package.json
           sparse-checkout-cone-mode: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
@@ -139,6 +143,19 @@ jobs:
           git checkout --quiet --detach FETCH_HEAD
           node scripts/adopt-scraper.mjs resolve "--version=$VERSION"
           echo "base=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          mkdir "$RUNNER_TEMP/release"
+          echo "$VERSION" > "$RUNNER_TEMP/release/version"
+
+      # Names the release this run tries, so a later run of the slot leaves one
+      # that failed here to the next slot (the Due job).
+      - name: Record the release this run tries
+        if: steps.target.outputs.adopt == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-${{ steps.target.outputs.version }}
+          path: ${{ runner.temp }}/release/version
+          if-no-files-found: error
+          retention-days: 1
 
       - if: steps.target.outputs.adopt == 'true'
         run: npm ci

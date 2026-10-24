@@ -3,7 +3,7 @@
 // database holds its own copy of. Every command also runs locally; the gate asks
 // production's ledger of migrations through SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.
 //
-//   node scripts/adopt-scraper.mjs due                    whether this run is its slot's adoption
+//   node scripts/adopt-scraper.mjs due                    whether this run is its slot's adoption (reads package.json and npm)
 //   node scripts/adopt-scraper.mjs resolve [--version=1.2.3] [--database-ready]
 //   node scripts/adopt-scraper.mjs snapshot <file>        before installing the release
 //   node scripts/adopt-scraper.mjs gate <file> [--database-ready]   exits 3 when the release waits for a migration
@@ -120,6 +120,33 @@ export function slotAdoption(slot, runs) {
   return runs.find((run) => run.jobs.some((job) => job.name === 'Push'
     && (job.status === 'in_progress' || (job.status === 'completed' && job.conclusion === 'success'))
     && Date.parse(job.started_at) >= slot.getTime()));
+}
+
+/** The artifact by which a run's Adopt job names the release it tries. */
+export function releaseArtifact(version) {
+  return `release-${version}`;
+}
+
+/** The Adopt job's steps that run the release: one failing is the release's fault, not the runner's. */
+export const RELEASE_STEPS = new Set(['Install the release', "Check the scraper's optional peers",
+  'Regenerate the contract and the iPhone resources', 'Write the adoption as a patch', 'Test the app with the release']);
+
+/** Whether a run's Adopt job, started in the slot, failed at a step that runs its release. */
+export function releaseFailed(slot, run) {
+  return run.jobs.some((job) => job.name === 'Adopt' && job.status === 'completed' && job.conclusion === 'failure'
+    && Date.parse(job.started_at) >= slot.getTime()
+    && (job.steps ?? []).some((step) => step.conclusion === 'failure' && RELEASE_STEPS.has(step.name)));
+}
+
+/**
+ * The run of this slot whose release `version` failed, such as the app's tests
+ * with it: that release waits for the next slot instead of failing every later
+ * run of this one, while a newer release still adopts at once. `runs` carry
+ * their `jobs` and `artifacts`.
+ */
+export function slotFailure(slot, version, runs) {
+  return runs.find((run) => releaseFailed(slot, run)
+    && (run.artifacts ?? []).some((artifact) => artifact.name === releaseArtifact(version)));
 }
 
 // ---------------------------------------------------------------------------
@@ -458,9 +485,10 @@ async function github(pathname) {
 
 /**
  * Whether this run is its slot's adoption: no other run has adopted since the
- * slot began. A run queued behind another one starts its adoption after it
- * was created, so the runs of the slot before are looked at too, unless they
- * ended before this slot began.
+ * slot began, and the release it would take has not failed in this slot. A run
+ * queued behind another one starts its adoption after it was created, so the
+ * runs of the slot before are looked at too, unless they ended before this
+ * slot began.
  */
 async function due() {
   const repository = process.env.GITHUB_REPOSITORY;
@@ -470,16 +498,31 @@ async function due() {
   const ask = (pathname) => retry(() => github(pathname), { attempts: 3, pauseMs: 5_000 });
   const query = new URLSearchParams({ created: `>=${new Date(slot.getTime() - SLOT_LENGTH * MINUTE).toISOString()}`, per_page: '100' });
   const { workflow_runs: listed } = await ask(`/repos/${repository}/actions/workflows/adopt-scraper.yml/runs?${query}`);
-  let adoption;
+  const runs = [];
   for (const run of listed) {
     if (run.id === ownRun || Date.parse(run.updated_at) < slot.getTime()) continue;
     const { jobs } = await ask(`/repos/${repository}/actions/runs/${run.id}/jobs?per_page=100`);
-    adoption = slotAdoption(slot, [{ ...run, jobs }]);
-    if (adoption) break;
+    runs.push({ ...run, jobs });
+  }
+  const adoption = slotAdoption(slot, runs);
+  // The release this run would take, asked only when one of the slot's runs failed with its release.
+  let failure;
+  let target;
+  if (!adoption && runs.some((run) => releaseFailed(slot, run))) {
+    const current = pinnedVersion(await readJson(path.join(root, 'package.json')));
+    target = chooseTarget({ current, distTags: (await retry(registryDocument, { attempts: 3, pauseMs: 5_000 })).distTags });
+    if (target.adopt) {
+      for (const run of runs.filter((candidate) => releaseFailed(slot, candidate))) {
+        run.artifacts = (await ask(`/repos/${repository}/actions/runs/${run.id}/artifacts?per_page=100`)).artifacts;
+      }
+      failure = slotFailure(slot, target.version, runs);
+    }
   }
   const name = `${slot.toISOString().slice(11, 16)} UTC slot`;
-  console.log(adoption ? `The ${name} already had its adoption: ${adoption.html_url}` : `Nothing adopted in the ${name} yet: this run adopts.`);
-  const outputs = `due=${!adoption}\n`;
+  console.log(adoption ? `The ${name} already had its adoption: ${adoption.html_url}`
+    : failure ? `${PACKAGE_NAME} ${target.version} already failed in the ${name}: ${failure.html_url}. A newer release adopts at once.`
+      : `Nothing adopted in the ${name} yet: this run adopts.`);
+  const outputs = `due=${!adoption && !failure}\n`;
   process.stdout.write(outputs);
   if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, outputs);
 }

@@ -22,6 +22,7 @@ import {
   readMigrations,
   retry,
   slotAdoption,
+  slotFailure,
 } from './adopt-scraper.mjs';
 
 const postcode = {
@@ -140,6 +141,36 @@ describe('adoption slots', () => {
       run(1, adopt('2026-10-21T13:10:00Z'), push(null, null, 'queued')),
       run(2, adopt('2026-10-21T11:50:00Z'), push('2026-10-21T12:06:59Z')),
       run(3),
+    ]), undefined);
+  });
+
+  // A run whose Adopt job failed at `step`, having recorded the release it tried.
+  const failed = (id, version, step, started_at = '2026-10-21T12:07:00Z') => ({
+    ...run(id, { ...adopt(started_at, 'failure'), steps: [
+      { name: 'Take main as it is now', conclusion: 'success' },
+      { name: step, conclusion: 'failure' },
+    ] }),
+    artifacts: [{ name: `release-${version}` }],
+  });
+
+  it('finds the run of the slot whose release failed, for that release only', () => {
+    const runs = [failed(1, '0.689.0', 'Test the app with the release')];
+    assert.equal(slotFailure(slot, '0.689.0', runs)?.id, 1);
+    // A newer release adopts at once.
+    assert.equal(slotFailure(slot, '0.689.1-main.3270', runs), undefined);
+    for (const step of ['Install the release', "Check the scraper's optional peers",
+      'Regenerate the contract and the iPhone resources', 'Write the adoption as a patch']) {
+      assert.equal(slotFailure(slot, '0.689.0', [failed(1, '0.689.0', step)])?.id, 1);
+    }
+  });
+
+  it('tries a release again after a failure of the runner, or one in the slot before', () => {
+    assert.equal(slotFailure(slot, '0.689.0', [
+      failed(1, '0.689.0', 'Run npm ci'),
+      failed(2, '0.689.0', 'Test the app with the release', '2026-10-21T11:40:00Z'),
+      // Cancelled, or still running: no failure yet.
+      { ...failed(3, '0.689.0', 'Test the app with the release'), jobs: [adopt('2026-10-21T12:30:00Z', 'cancelled')] },
+      { ...failed(4, '0.689.0', 'Test the app with the release'), jobs: [adopt('2026-10-21T12:30:00Z', null, 'in_progress')] },
     ]), undefined);
   });
 });

@@ -83,9 +83,11 @@ starts the workflow at each of the 9 slots (`workflow_dispatch`). GitHub starts 
 runs hours late or drops them, so its schedule, every half hour, and a CI run that ends on
 main only back the timer up. The first run in a slot that pushes a release is its slot's
 adoption; later runs look at the workflow's runs, find that one and stop at once. A run that
-finds nothing newer, or whose release fails, leaves the slot to the next run, so a release
-published in the meantime does not wait for the next slot. An urgent release is adopted by
-hand, which counts as its slot's adoption once it is pushed:
+finds nothing newer leaves the slot to the next run, so a release published in the meantime
+does not wait for the next slot. Each run records the release it tries as an artifact
+(`release-<version>`): when that release fails, such as the app's tests with it, the slot's
+later runs that would take it stop at once too, and a newer release still adopts. An urgent
+release is adopted by hand, which counts as its slot's adoption once it is pushed:
 
 ```bash
 gh workflow run adopt-scraper.yml                    # the newer of npm's latest and next
