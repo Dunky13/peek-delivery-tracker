@@ -14,9 +14,12 @@ describe('the App Store', () => {
     });
   });
 
-  it('draws the code a computer shows for the QR campaign’s link', () => {
+  it.each([
+    ['public/landing/app-store-qr.svg', 'web-qr'],
+    ['public/settings/app-store-qr.svg', 'web-settings-qr'],
+  ] as const)('draws the code a computer shows in %s for its campaign’s link', (file, campaign) => {
     // The code itself is drawn once, by a QR encoder; its description names what it was drawn for.
-    const svg = readFileSync('public/landing/app-store-qr.svg', 'utf8');
-    expect(svg).toContain(`<desc>${appStoreLink('web-qr').replaceAll('&', '&amp;')}</desc>`);
+    const svg = readFileSync(file, 'utf8');
+    expect(svg).toContain(`<desc>${appStoreLink(campaign).replaceAll('&', '&amp;')}</desc>`);
   });
 });

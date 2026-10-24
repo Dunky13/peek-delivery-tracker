@@ -5,9 +5,12 @@ const PROVIDER_TOKEN = '129628155';
 
 /**
  * Where a link to the App Store sits, as App Store Connect's campaign report names it (30
- * characters at most). `web-banner` is Safari's banner, `web-qr` the code a computer shows.
+ * characters at most). `web-banner` is Safari's banner, `web-qr` the code a computer shows on
+ * the landing, `web-notify` the app row of a parcel page's "Notify me". In Settings ›
+ * Notifications, `web-settings` is the app row an iPhone or iPad shows outside the Home
+ * Screen, and `web-settings-qr` the code a computer shows under its switch.
  */
-export type AppStoreCampaign = 'web-banner' | 'web-more' | 'web-moves' | 'web-footer' | 'web-qr' | 'web-notify';
+export type AppStoreCampaign = 'web-banner' | 'web-more' | 'web-moves' | 'web-footer' | 'web-qr' | 'web-notify' | 'web-settings' | 'web-settings-qr';
 
 /** The app's page on the App Store, counted under a campaign. */
 export function appStoreLink(campaign: AppStoreCampaign): string {

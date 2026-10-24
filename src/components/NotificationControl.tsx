@@ -1,4 +1,5 @@
 import { trackAction, trackOverlay } from '../lib/analytics';
+import { appStoreLink } from '../lib/appStore';
 import { userErrorMessage } from '../lib/userMessages';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -23,6 +24,7 @@ import {
   useNotificationPreferences,
 } from '../store/notificationPreferences';
 import { type MessageKey, type Translate, useI18n } from '../i18n';
+import { AppOffer, HomeScreenInstead } from './AppOffer';
 import { Icon } from './Icon';
 import './Settings.css';
 
@@ -56,6 +58,8 @@ export function NotificationControl({ apiAuth, email, variant = 'icon' }: {
   const [emailBusy, setEmailBusy] = useState(false);
   const [emailFailed, setEmailFailed] = useState(false);
   const enabled = state?.kind === 'enabled';
+  // Safari on an iPhone or iPad notifies only from the Home Screen; the app, signed in to the same account, needs none.
+  const install = state?.kind === 'install';
   const closeButton = useRef<HTMLButtonElement>(null);
   const [dialog, close] = useSheetDialog<HTMLElement>(open, () => setOpen(false), closeButton);
 
@@ -177,17 +181,32 @@ export function NotificationControl({ apiAuth, email, variant = 'icon' }: {
               <span className="notification-status__mark" aria-hidden="true" />
               <div>
                 <strong>{enabled ? t('notifications.enabledTitle') : t('notifications.disabledTitle')}</strong>
-                <p>{copyFor(state, Boolean(error), t)}</p>
+                {!install && <p>{copyFor(state, Boolean(error), t)}</p>}
               </div>
             </div>
 
-            {(state?.kind === 'prompt' || enabled) && <div className="settings-box settings-device-control"><button className="settings-row" type="button" role="switch" aria-checked={enabled} aria-label={t('settings.deliveryUpdates')} disabled={busy} onClick={() => void (enabled ? disable() : enable())}><span>{t('settings.deliveryUpdates')}</span><span className="settings-switch" aria-hidden="true" /></button></div>}
+            {install && <>
+              <AppOffer body={t('notifications.app.body')}>
+                <a href={appStoreLink('web-settings')} onClick={() => trackAction('notifications-app-get')}>{t('alerts.app.get')}</a>
+              </AppOffer>
+              <HomeScreenInstead then="notifications" text={t('notifications.app.homeScreen')} />
+            </>}
+
+            {(state?.kind === 'prompt' || enabled) && <>
+              <div className="settings-box settings-device-control"><button className="settings-row" type="button" role="switch" aria-checked={enabled} aria-label={t('settings.deliveryUpdates')} disabled={busy} onClick={() => void (enabled ? disable() : enable())}><span>{t('settings.deliveryUpdates')}</span><span className="settings-switch" aria-hidden="true" /></button></div>
+              {/* On a computer the iPhone app is a scan away; a phone or a tablet hides the row, as the landing's code. */}
+              <div className="notification-app-qr">
+                {/* eslint-disable-next-line @next/next/no-img-element -- a small drawing, fetched only where it shows */}
+                <img src="/settings/app-store-qr.svg" alt="" width={60} height={60} loading="lazy" />
+                <span><strong>{t('notifications.qr.title')}</strong><span>{t('notifications.qr.body')}</span></span>
+              </div>
+            </>}
             {error && <p className="sheet__error" role="alert">{error}</p>}
 
             {apiAuth && preferences && (
               <div className="notification-preferences">
                 <fieldset disabled={preferencesBusy || emailBusy}>
-                  <legend>{t('notifications.preferencesTitle')}</legend>
+                  <legend>{t('notifications.preferencesTitle')}{' '}<span className="notification-preferences__scope">{t('notifications.scope')}</span></legend>
                   <PreferenceOption
                     value="all"
                     selected={preset}
@@ -310,7 +329,6 @@ function copyFor(state: PushState | null, hasError: boolean, t: Translate): stri
   if (hasError) return t('notifications.state.retry');
   switch (state?.kind) {
     case 'enabled': return t('notifications.state.enabled');
-    case 'install':
     case 'unsupported': return t('notifications.state.unsupported');
     case 'unavailable': return t('notifications.state.unavailable');
     case 'blocked': return t('notifications.state.blockedBrowser');

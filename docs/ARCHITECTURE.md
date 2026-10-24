@@ -390,6 +390,10 @@ and nothing typed is sent.
   problem, pickup, return, archive, sign-out or opt-out. At most two run at once. Live
   Activity pushes go first, so a successful one replaces the matching banner; if it fails,
   the banner is sent.
+- The choice of updates is the account's, for every device it notifies. In Safari on an
+  iPhone or iPad outside the Home Screen, Settings offers the Peek app first, signed in to
+  the same account, and the Home Screen's steps after it; a computer shows the App Store's
+  code under its own switch.
 - The delivery email is apart from notifications: off until the account switches it on,
   and switched off per parcel. A visitor who signs in from the email row of a parcel
   link's notifications gets it switched on once that parcel is in the account. A parcel

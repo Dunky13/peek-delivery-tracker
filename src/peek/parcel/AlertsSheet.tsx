@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { AppOffer, HomeScreenInstead } from '../../components/AppOffer';
 import { HomeScreenSteps } from '../../components/HomeScreenSteps';
 import { Icon } from '../../components/Icon';
-import { PeekMark } from '../../components/PeekMark';
 import { useI18n, type MessageKey } from '../../i18n';
 import { trackAction } from '../../lib/analytics';
 import { appStoreLink } from '../../lib/appStore';
@@ -86,7 +86,6 @@ export function AlertsSheet({ linkId, ownerKey, name = null, alerts, initialPres
   const [error, setError] = useState<MessageKey | null>(null);
   const [said, setSaid] = useState<MessageKey | null>(null);
   const [visited, setVisited] = useState(appStoreVisited);
-  const [steps, setSteps] = useState(false);
   const on = noted ?? null;
   const demo = !!alerts?.available && !alerts.vapidPublicKey;
 
@@ -158,22 +157,15 @@ export function AlertsSheet({ linkId, ownerKey, name = null, alerts, initialPres
     const safari = homeScreenPath() === 'safari';
     const intro = safari ? undefined : t('alerts.iphone.body');
     const app = alerts?.app === true;
-    const appRow = app && <div className="peeks-account peeks-app">
-      <span aria-hidden="true"><PeekMark size={30} /></span>
-      <span><strong>{t('alerts.app.title')}</strong><small>{t('alerts.app.body')}</small></span>
+    const appRow = app && <AppOffer body={t('alerts.app.body')}>
       {visited
         ? <a href={appParcelURL(linkId, { key: ownerKey, name, origin: alerts.appOrigin })}
           onClick={() => trackAction('parcel-link-app-open')}>{t('alerts.app.open')}</a>
         : <a href={appStoreLink('web-notify')}
           onClick={() => { trackAction('parcel-link-app-get'); noteAppStoreVisit(); setVisited(true); }}>{t('alerts.app.get')}</a>}
-    </div>;
-    // Beside the app, the Home Screen is the other way: one line, with its steps a tap away.
-    const homeScreen = app && !safari
-      ? <>
-        <p className="peeks__intro">{t('alerts.app.homeScreen')}{!steps && <> <button type="button" className="peeks__more"
-          onClick={() => setSteps(true)}>{t('alerts.app.steps')}</button></>}</p>
-        {steps && <HomeScreenSteps then="ping" cards />}
-      </>
+    </AppOffer>;
+    const homeScreen = app
+      ? <HomeScreenInstead then="ping" text={t('alerts.app.homeScreen')} />
       : <HomeScreenSteps then="ping" cards />;
     return <Sheet title={t('alerts.iphone.title')} intro={emailFirst || app ? undefined : intro} className="peeks-alerts" onClose={onClose}>{(dismiss) => <>
       {appRow}

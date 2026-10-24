@@ -40,6 +40,8 @@
 .refined-settings .notification-status__mark { width: 6px; height: 6px; flex-basis: 6px; }
 .refined-settings .notification-preferences fieldset { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--paper); }
 .refined-settings .notification-preferences fieldset > legend { float: left; width: 100%; padding: 14px; font-size: 10px; font-weight: 550; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-soft); }
+/* The choices are the account's: every device it notifies follows them. */
+.notification-preferences__scope { display: block; margin-top: 4px; color: var(--ink-soft); font-size: 12px; font-weight: 400; letter-spacing: 0; text-transform: none; }
 .refined-settings .notification-preferences__option { clear: both; border-radius: 0; margin: 0; background: transparent; padding: 15px 14px; align-items: start; }
 .refined-settings .notification-preferences__option + .notification-preferences__option { border-top: 1px solid var(--line); }
 .refined-settings .notification-preferences__option:has(input:checked) { box-shadow: none; background: transparent; }
@@ -66,6 +68,18 @@
 .notification-email__links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-soft); font-size: 12px; }
 
 .settings-device-control { margin-bottom: 24px; }
+/* The Home Screen's steps, once shown, stand apart from the choices under them. */
+.notification-sheet .home-steps--cards, .notification-sheet .home-steps__safari { margin-bottom: 24px; }
+/* The App Store's address as a code to scan under this device's switch, on a computer only, as on the landing. */
+.notification-app-qr { display: none; }
+@media (hover: hover) and (pointer: fine) and (min-width: 820px) {
+  .notification-app-qr { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding: 12px 16px 12px 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+  .settings-device-control:has(+ .notification-app-qr) { margin-bottom: 10px; }
+}
+.notification-app-qr img { display: block; flex: 0 0 auto; width: 60px; height: 60px; border-radius: 6px; }
+.notification-app-qr > span { display: grid; gap: 3px; font-size: 13px; line-height: 1.4; }
+.notification-app-qr strong { font-weight: 600; }
+.notification-app-qr > span > span { color: var(--ink-soft); }
 .settings-switch { display: block; flex: 0 0 33px; width: 33px; height: 20px; margin-left: auto; border-radius: 20px; background: var(--line); position: relative; }
 .settings-switch::after { content: ''; position: absolute; width: 16px; height: 16px; top: 2px; left: 2px; border-radius: 50%; background: white; box-shadow: 0 1px 2px #0001; }
 [aria-checked=true] > .settings-switch { background: var(--green); }
