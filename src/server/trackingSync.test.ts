@@ -2103,6 +2103,44 @@ describe('TrackingSyncService', () => {
     await expect(check('2026-09-09T12:00:00Z', [lookup('seen'), followed], [followed])).resolves.toEqual(['followed', 'seen']);
   });
 
+  it('checks a lookup filed under no carrier daily by day once its newest scan is over 14 days old', async () => {
+    const routing = (lastEvent: string) => ({ version: 1, configured_carrier: 'unknown', failures: {},
+      preferred_provider: 'Postal Ninja', last_success_at: '2026-09-08T10:00:00Z', last_event_at: lastEvent });
+    const lookup = (id: string, extra: JsonObject = {}): JsonObject => ({ id, user_id: null, one_off: true, carrier: 'unknown',
+      current_stage: 'in_transit', tracking_number: ON_THE_HOUR, created_at: '2026-09-05T10:00:00Z', archived_at: null,
+      last_synced_at: '2026-09-09T06:00:15Z', sync_status: 'ok', carrier_data: { routing: routing('2026-08-20T09:00:00Z') }, ...extra });
+    const check = async (at: string, unfiled: JsonObject[], followed: JsonObject[] = [], watched: string[] = []) => {
+      const client = fakeClient();
+      client.listFollowedOneOffPackages.mockResolvedValue(followed);
+      client.listUnfiledOneOffPackages.mockResolvedValue(unfiled);
+      client.listUnwatchedPackageIds.mockResolvedValue([...unfiled, ...followed].map((parcel) => String(parcel.id))
+        .filter((id) => !watched.includes(id)));
+      const now = new Date(at);
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+        { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }), fetchUniversal: vi.fn().mockResolvedValue({ status: 'in_transit' }) },
+        null, () => now);
+      await service.sync();
+      return client.startSyncAttempt.mock.calls.map(([, values]) => values.package_id);
+    };
+    // Its newest scan is 20 days old: not six hours after its last check, but a day after it, by day.
+    await expect(check('2026-09-09T12:00:00Z', [lookup('quiet')])).resolves.toEqual([]);
+    await expect(check('2026-09-09T12:00:00Z', [lookup('quiet', { last_synced_at: '2026-09-08T13:00:15Z' })])).resolves.toEqual([]);
+    await expect(check('2026-09-09T12:00:00Z', [lookup('quiet', { last_synced_at: '2026-09-08T12:00:15Z' })])).resolves.toEqual(['quiet']);
+    await expect(check('2026-09-09T21:00:00Z', [lookup('quiet', { last_synced_at: '2026-09-08T12:00:15Z' })])).resolves.toEqual([]);
+    // A summary time counts as a scan too; one 13 days old keeps the 6-hour cadence.
+    await expect(check('2026-09-09T12:00:00Z', [lookup('recent', { carrier_data: { routing: routing('2026-08-20T09:00:00Z'),
+      last_update: '2026-08-27T09:00:00Z' } })])).resolves.toEqual(['recent']);
+    // Followed, while nobody has opened its link for an hour: daily too, where it was every 3 hours.
+    const followed = lookup('followed', { last_synced_at: '2026-09-09T09:00:15Z' });
+    await expect(check('2026-09-09T12:00:00Z', [], [followed])).resolves.toEqual([]);
+    // A lookup filed under a carrier keeps its cadence, as does one someone is watching.
+    const filed = lookup('filed', { carrier: 'swiss-post', last_synced_at: '2026-09-09T09:00:15Z' });
+    await expect(check('2026-09-09T12:00:00Z', [], [filed])).resolves.toEqual(['filed']);
+    await expect(check('2026-09-09T12:00:00Z', [], [followed], ['followed'])).resolves.toEqual(['followed']);
+    // Opening its link still queues a check as before.
+    expect(isOpenedParcelSyncDue(lookup('quiet', { last_synced_at: '2026-09-09T10:00:15Z' }), new Date('2026-09-09T12:00:00Z'))).toBe(true);
+  });
+
   it('still checks the followed lookups when the unfiled ones cannot be listed', async () => {
     const report = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
     const client = fakeClient();

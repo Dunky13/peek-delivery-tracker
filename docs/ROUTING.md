@@ -255,6 +255,7 @@ parcels followed without an account that nobody watches (below).
 | Nobody waiting for it | hourly around the clock; manual refresh still allowed |
 | Followed without an account, no link opened for an hour and no alert on | every 3 h, not overnight; opening a link queues a check at once |
 | Without an account, filed under no carrier, added in the last 30 days, no link opened for a day and no alert on, once a carrier or provider answered for its number | every 6 h, not overnight |
+| Without an account, filed under no carrier, newest scan over 14 days old, no link opened for an hour and no alert on | daily, not overnight; opening a link queues a check at once |
 | Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, weekly after 7 days, around the clock; manual refresh still allowed. An account's parcel, with its rechecks on: 1, 3 and 7 days after it was added, then no more after 14 days (below) |
 | Archived, with a new event in the last 30 days (from when it was added), and no alert on a link shared with someone | daily around the clock; manual refresh still allowed |
 | Delivered on a provider's word alone, which the parcel's carrier did not show (below) | daily around the clock for 3 days |
@@ -329,7 +330,9 @@ opened again; that read queues a check at once when the schedule would run one, 
 more often than the schedule, however often the link is polled. A scheduled check made while
 that one waits stands in for it. One filed under no carrier stays on the schedule for 30
 days after it was added, every 6 hours by day, after the followed ones, once a carrier or
-provider has answered for its number: a check can find its carrier. One whose number nobody
+provider has answered for its number: a check can find its carrier. Once its newest scan is
+more than 14 days old, followed or not, it is checked daily by day instead while no link was
+opened in the last hour and it has no alert on. One whose number nobody
 has seen 6 h after it was added leaves the schedule, followed or not; opening a link still queues a
 check at its cadence, daily rather than weekly after 7 days, since someone is looking. With
 `TRACKING_ENABLE_SPARSE_LOOKUP_RECHECKS=true` (off by default), a release's re-check of one

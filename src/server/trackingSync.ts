@@ -117,6 +117,11 @@ const UNWATCHED_ONE_OFF_HOURS = 3;
  */
 const UNFILED_ONE_OFF_HOURS = 6;
 /**
+ * A lookup without an account filed under no carrier whose newest scan is older than this is
+ * checked daily by day instead, followed or not, while nobody watches it: its scans have stopped.
+ */
+const QUIET_UNFILED_AFTER_MS = 14 * 24 * 60 * 60 * 1_000;
+/**
  * An archived parcel is checked daily until this long after its newest carrier
  * event, or after it was added: one put away at a pickup point still shows its
  * collection.
@@ -209,12 +214,18 @@ export function trackingSyncDueAt(parcel: JsonObject): number {
   return Math.max(after, lastChecked + interval);
 }
 
-/** The newest carrier event or the parcel's creation, whichever is later; null when neither is known. */
-function lastActivity(parcel: JsonObject): number | null {
+/** The newest carrier event; null when none is known. */
+function newestEvent(parcel: JsonObject): number | null {
   // Routing keeps the event watermark; parcels outside routing (Amazon Shipping) keep only the summary time.
   const summaryTime = isRecord(parcel.carrier_data) ? parcel.carrier_data.last_update : undefined;
-  const times = [routingState(parcel).last_event_at, summaryTime, parcel.created_at]
+  const times = [routingState(parcel).last_event_at, summaryTime]
     .map((value) => Date.parse(String(value ?? ''))).filter(Number.isFinite);
+  return times.length ? Math.max(...times) : null;
+}
+
+/** The newest carrier event or the parcel's creation, whichever is later; null when neither is known. */
+function lastActivity(parcel: JsonObject): number | null {
+  const times = [newestEvent(parcel) ?? Number.NaN, Date.parse(String(parcel.created_at ?? ''))].filter(Number.isFinite);
   return times.length ? Math.max(...times) : null;
 }
 
@@ -329,6 +340,14 @@ function isScheduledTrackingSyncDue(
   if (sinceNamed >= 0 && sinceNamed < NAMED_CARRIER_DUE_MS) return true;
   // Archived, daily around the clock, as is a delivery its carrier may yet dispute.
   if (archived || unconfirmedDelivery(parcel, now)) return lastChecked < hourStart.minus({ hours: 23 }).toMillis();
+  // A lookup without an account filed under no carrier whose newest scan is over 14 days old, followed
+  // or not, while nobody watches it: daily by day, and not overnight. It stays on the schedule as
+  // long as before, and opening its link queues a check as before.
+  const newest = newestEvent(parcel);
+  if (oneOff && (unfollowed || unwatched) && ['unknown', 'intl-post'].includes(String(parcel.carrier))
+    && newest !== null && now.getTime() - newest > QUIET_UNFILED_AFTER_MS) {
+    return local.hour >= 8 && local.hour < 22 && lastChecked < hourStart.minus({ hours: 23 }).toMillis();
+  }
   // A lookup without an account filed under no carrier that nobody follows any more: every 6 hours
   // by day, and not overnight. A provider's next answer, or a carrier recognition asks, can name its carrier.
   if (oneOff && unfollowed) {
