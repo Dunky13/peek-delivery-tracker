@@ -37,24 +37,28 @@ const exited = once(child, 'exit');
 
 try {
   const deadline = Date.now() + 60_000;
-  let response;
+  let served = false;
   while (Date.now() < deadline) {
     assert.equal(child.exitCode, null, `Development server exited early:\n${output}`);
+    let response, html;
     try {
       response = await fetch(`http://127.0.0.1:${port}/`, {
-        signal: AbortSignal.timeout(10_000),
+        signal: AbortSignal.timeout(Math.min(10_000, deadline - Date.now())),
       });
+      // Next streams its first page while compiling it. Its headers can arrive
+      // before the body, so a timed-out body belongs to the startup retry too.
+      if (response.status === 200) html = await response.text();
     } catch {
       await delay(250);
       continue;
     }
     assert.equal(response.status, 200, `Development page returned ${response.status}:\n${output}`);
-    const html = await response.text();
     assert.match(html, /<html/i);
+    served = true;
     console.log('Development server compiled and served the app successfully.');
     break;
   }
-  assert.ok(response, `Development server did not respond:\n${output}`);
+  assert.ok(served, `Development server did not respond:\n${output}`);
 } finally {
   child.kill('SIGTERM');
   const forceStop = setTimeout(() => child.kill('SIGKILL'), 5_000);
