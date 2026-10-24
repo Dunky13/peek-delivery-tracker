@@ -9,7 +9,8 @@ on:
   # netcup production server dispatches the workflow at each of the 9 slots.
   # GitHub starts scheduled runs hours late or drops them, so the schedule,
   # every half hour, and a CI run that ends on main are only a backup. The
-  # first run in a slot adopts; the others end at once (the Due job).
+  # first run in a slot that pushes a release adopts; the others end at once
+  # (the Due job).
   schedule:
     - cron: '7,37 6-23 * * *'
   workflow_run:
@@ -59,7 +60,7 @@ env:
 
 jobs:
   # A scheduled run, or one a CI run on main started, adopts when no run has
-  # since its slot began. A run by hand always adopts.
+  # pushed a release since its slot began. A run by hand always adopts.
   due:
     name: Due
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')

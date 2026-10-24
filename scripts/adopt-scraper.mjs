@@ -109,13 +109,16 @@ export function adoptionSlot(now) {
 }
 
 /**
- * The run that adopted in this slot, if any: its Adopt job started once the
- * slot had begun, whether it found a newer release or not. `runs` are the
- * workflow's runs, each with its `jobs`.
+ * The run that adopted in this slot, if any: its Push job, which runs only for a
+ * newer release that passed the app's tests and the database gate, started once
+ * the slot had begun and pushed or is pushing. A run that found nothing newer,
+ * or whose release failed, leaves the slot to a later run, so a release
+ * published since does not wait for the next slot. `runs` are the workflow's
+ * runs, each with its `jobs`.
  */
 export function slotAdoption(slot, runs) {
-  return runs.find((run) => run.jobs.some((job) => job.name === 'Adopt'
-    && ['in_progress', 'completed'].includes(job.status) && job.conclusion !== 'skipped'
+  return runs.find((run) => run.jobs.some((job) => job.name === 'Push'
+    && (job.status === 'in_progress' || (job.status === 'completed' && job.conclusion === 'success'))
     && Date.parse(job.started_at) >= slot.getTime()));
 }
 

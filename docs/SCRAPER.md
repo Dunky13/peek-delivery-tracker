@@ -81,9 +81,11 @@ npm's `latest` and `next`, so one deploy carries every release published since t
 before. The last slot lasts until 06:07. A systemd timer on the netcup production server
 starts the workflow at each of the 9 slots (`workflow_dispatch`). GitHub starts scheduled
 runs hours late or drops them, so its schedule, every half hour, and a CI run that ends on
-main only back the timer up. The first run in a slot adopts, whether it finds a newer release
-or not; the others look at the workflow's runs, find that one and stop at once. An urgent
-release is adopted by hand, which counts as its slot's adoption:
+main only back the timer up. The first run in a slot that pushes a release is its slot's
+adoption; later runs look at the workflow's runs, find that one and stop at once. A run that
+finds nothing newer, or whose release fails, leaves the slot to the next run, so a release
+published in the meantime does not wait for the next slot. An urgent release is adopted by
+hand, which counts as its slot's adoption once it is pushed:
 
 ```bash
 gh workflow run adopt-scraper.yml                    # the newer of npm's latest and next

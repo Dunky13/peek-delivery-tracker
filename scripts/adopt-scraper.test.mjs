@@ -114,20 +114,32 @@ describe('adoption slots', () => {
 
   const slot = new Date('2026-10-21T12:07:00Z');
   const run = (id, ...jobs) => ({ id, jobs: [{ name: 'Due', status: 'completed', conclusion: 'success', started_at: '2026-10-21T13:00:00Z' }, ...jobs] });
-  const adopt = (started_at, conclusion = 'success', status = 'completed') => ({ name: 'Adopt', status, conclusion, started_at });
+  const job = (name) => (started_at, conclusion = 'success', status = 'completed') => ({ name, status, conclusion, started_at });
+  const adopt = job('Adopt');
+  const push = job('Push');
 
-  it('finds the run whose adoption started in the slot, whatever it found', () => {
-    assert.equal(slotAdoption(slot, [run(1, adopt('2026-10-21T12:09:00Z'))])?.id, 1);
-    assert.equal(slotAdoption(slot, [run(1, adopt('2026-10-21T12:07:00Z', 'failure'))])?.id, 1);
-    assert.equal(slotAdoption(slot, [run(1, adopt('2026-10-21T12:30:00Z', 'cancelled'))])?.id, 1);
+  it('finds the run that pushed a release, or is pushing one, in the slot', () => {
+    assert.equal(slotAdoption(slot, [run(1, adopt('2026-10-21T12:07:00Z'), push('2026-10-21T12:20:00Z'))])?.id, 1);
+    assert.equal(slotAdoption(slot, [run(1, adopt('2026-10-21T12:07:00Z'), push('2026-10-21T12:20:00Z', null, 'in_progress'))])?.id, 1);
   });
 
-  it('ignores adoptions skipped, still queued or started before the slot', () => {
+  it('leaves the slot to a later run after one that found nothing newer or whose release failed', () => {
     assert.equal(slotAdoption(slot, [
-      run(1, adopt('2026-10-21T13:10:00Z', 'skipped')),
-      run(2, adopt('2026-10-21T13:20:00Z', null, 'queued')),
-      run(3, adopt('2026-10-21T12:06:59Z')),
-      run(4),
+      // Nothing newer than the app's release: the push is skipped.
+      run(1, adopt('2026-10-21T12:07:00Z'), push('2026-10-21T12:09:00Z', 'skipped')),
+      // The release failed the app's tests, or the database gate stopped it.
+      run(2, adopt('2026-10-21T12:37:00Z', 'failure'), push('2026-10-21T12:50:00Z', 'skipped')),
+      // The push failed or was cancelled.
+      run(3, adopt('2026-10-21T13:07:00Z'), push('2026-10-21T13:20:00Z', 'failure')),
+      run(4, adopt('2026-10-21T13:37:00Z'), push('2026-10-21T13:50:00Z', 'cancelled')),
+    ]), undefined);
+  });
+
+  it('ignores pushes still queued or started before the slot', () => {
+    assert.equal(slotAdoption(slot, [
+      run(1, adopt('2026-10-21T13:10:00Z'), push(null, null, 'queued')),
+      run(2, adopt('2026-10-21T11:50:00Z'), push('2026-10-21T12:06:59Z')),
+      run(3),
     ]), undefined);
   });
 });
