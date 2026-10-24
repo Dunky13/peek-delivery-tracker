@@ -71,8 +71,9 @@ paket,pakete,paketverfolgung,tracker,tracking,verfolgen,sendung,lieferung,post,v
 ## What's new
 
 ```text
-• Peek kennt 228 weitere Paketdienste und zeichnet jeden in seinen eigenen Farben.
-• Amazon-Bestellungen öffnen sich im richtigen Amazon-Shop, auch aus Ländern ohne eigenen Shop.
-• Gehören zu einer Nummer mehrere Pakete, sagt Peek es dir: Füge jedes mit seiner eigenen Nummer hinzu.
-• Nennt ein Paketdienst nur den Tag eines Scans, zeigt Peek diesen Tag ohne Uhrzeit.
+• Peek läuft jetzt auf dem iPad: Das geöffnete Paket steht neben der Liste, dazu gibt es Tastaturkurzbefehle und eine Menüleiste.
+• Ein geteilter Paketlink öffnet sich in Peek. Verfolge das Paket ohne Konto, und Peek schickt dir Mitteilungen, bis es zugestellt ist.
+• Halte ein Paket in der Liste gedrückt, um seine Aktionen zu sehen, oder zieh eine Sendungsnummer aus einer anderen App auf die Liste, um sie hinzuzufügen.
+• Peek passt sich auch der maximalen Textgröße an und öffnet das zuletzt angesehene Paket wieder, nachdem das System die App geschlossen hat.
+• Sechs Ziffern allein sind meist ein Abholcode, deshalb fragt Peek jetzt nach der Sendungsnummer. Auch Shein-Bestellnummern erkennt Peek.
 ```

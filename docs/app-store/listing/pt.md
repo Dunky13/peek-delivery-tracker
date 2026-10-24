@@ -71,8 +71,9 @@ seguir,rastrear,rastreio,tracking,localizar,entrega,entregas,envio,envios,correi
 ## What's new
 
 ```text
-• O Peek conhece mais 228 transportadoras e desenha cada uma com as suas cores.
-• Os pedidos da Amazon abrem na loja Amazon certa, também em países sem loja própria.
-• Se um número abranger várias encomendas, o Peek avisa-te: adiciona cada uma com o seu próprio número.
-• Quando uma transportadora só indica o dia de uma leitura, o Peek mostra esse dia sem hora.
+• O Peek já funciona no iPad: a encomenda que abres aparece ao lado da lista, com atalhos de teclado e barra de menus.
+• Uma ligação de encomenda partilhada abre-se no Peek. Segue-a sem conta e o Peek envia-te notificações até ser entregue.
+• Mantém premida uma encomenda na lista para ver as suas ações, ou arrasta para a lista um número de seguimento de outra app para o adicionar.
+• O Peek adapta-se aos maiores tamanhos de texto e volta a abrir a encomenda que estavas a ver depois de o sistema fechar a app.
+• Um número de apenas seis dígitos costuma ser um código de levantamento, por isso o Peek pede agora o número de seguimento. Também reconhece os números de encomenda da Shein.
 ```

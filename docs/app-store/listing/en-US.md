@@ -73,8 +73,9 @@ delivery,tracking,shipment,order,courier,post,mail,shipping,track,deliveries,map
 ## What's new
 
 ```text
-• Peek knows 228 more carriers and draws each one in its own colors.
-• Amazon orders open in the right Amazon store, also from countries without one of their own.
-• When one number covers several packages, Peek says so: add each with its own number.
-• When a carrier gives only the day of a scan, Peek shows that day without a clock time.
+• Peek now runs on iPad: the package you open shows beside the list, with keyboard shortcuts and a menu bar.
+• A shared package link opens in Peek. Follow it without an account, and Peek notifies you until it’s delivered.
+• Touch and hold a package in the list for its actions, or drop a tracking number from another app onto the list to add it.
+• Peek fits the largest text sizes, and reopens the package you were looking at after the system closes it.
+• Six digits alone are usually a pickup code, so Peek now asks for the tracking number. It also spots Shein order numbers.
 ```

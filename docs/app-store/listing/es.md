@@ -71,8 +71,9 @@ rastrear,rastreo,rastreador,localizar,seguir,paquete,envíos,pedido,pedidos,entr
 ## What's new
 
 ```text
-• Peek conoce 228 transportistas más y dibuja cada uno con sus colores.
-• Los pedidos de Amazon se abren en la tienda de Amazon correcta, también desde países sin tienda propia.
-• Si un número cubre varios paquetes, Peek te lo dice: añade cada uno con su propio número.
-• Si un transportista solo da el día de un escaneo, Peek muestra ese día sin hora.
+• Peek ya funciona en iPad: el paquete que abres aparece junto a la lista, con funciones rápidas de teclado y barra de menús.
+• Un enlace de paquete compartido se abre en Peek. Síguelo sin cuenta y Peek te avisará hasta que se entregue.
+• Mantén pulsado un paquete de la lista para ver sus acciones, o arrastra a la lista un número de seguimiento desde otra app para añadirlo.
+• Peek se adapta a los tamaños de texto más grandes y, si el sistema cierra la app, vuelve a abrir el paquete que estabas viendo.
+• Un número de solo seis cifras suele ser un código de recogida, así que Peek ahora pide el número de seguimiento. También reconoce los números de pedido de Shein.
 ```

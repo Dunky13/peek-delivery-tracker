@@ -73,8 +73,9 @@ livraison,suivre,paquet,commande,poste,courrier,envoi,tracking,tracker,relais,le
 ## What's new
 
 ```text
-• Peek connaît 228 transporteurs de plus et dessine chacun dans ses couleurs.
-• Les commandes Amazon s’ouvrent dans la bonne boutique Amazon, même depuis un pays qui n’a pas la sienne.
-• Quand un numéro couvre plusieurs colis, Peek te le dit : ajoute chacun avec son propre numéro.
-• Quand un transporteur ne donne que le jour d’un scan, Peek affiche ce jour, sans heure.
+• Peek fonctionne désormais sur iPad : le colis ouvert s’affiche à côté de la liste, avec des raccourcis clavier et une barre des menus.
+• Un lien de colis partagé s’ouvre dans Peek. Suis le colis sans compte : Peek t’envoie des notifications jusqu’à sa livraison.
+• Maintiens le doigt sur un colis de la liste pour voir ses actions, ou fais glisser un numéro de suivi d’une autre app vers la liste pour l’ajouter.
+• Peek s’adapte aux plus grandes tailles de texte et, si le système a fermé l’app, rouvre le colis que tu regardais.
+• Un numéro à six chiffres est généralement un code de retrait : Peek demande désormais le numéro de suivi. Il reconnaît aussi les numéros de commande Shein.
 ```
