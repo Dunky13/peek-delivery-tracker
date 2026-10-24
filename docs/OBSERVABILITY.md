@@ -956,10 +956,12 @@ monitors). The rules cover what none of those show:
 - **Peek unreachable**: Prometheus has not scraped `/api/metrics` for 5 minutes. A deploy
   takes less.
 - **Peek checks failing across carriers**: in the last 3 hours, 10 checks or more failed,
-  5% of them or more, across 3 carriers or more; or 5 health incidents or more are open and
-  failed in the last 3 hours. One carrier failing is its own Sentry incident. Several at
-  once usually mean Peek's side: the network, Chromium, the database or a provider many
-  carriers share.
+  5% of them or more, across 3 carriers or more; or 5 carriers or more have an open health
+  incident that failed in the last 3 hours. A carrier counts once, however many of its
+  incidents (direct, provider, refresh) fail, and an incident whose failed checks were all
+  still answered another way (rescued) does not count. One carrier failing is its own Sentry
+  incident. Several at once usually mean Peek's side: the network, Chromium, the database or
+  a provider many carriers share.
 - **Peek scheduled sync slow**: a scheduled sync that finished in the last 2 hours took
   over 5 minutes, half its limit.
 - **Peek stopped checking parcels**: no check has finished for 30 minutes between 09:00 and
@@ -977,9 +979,10 @@ monitors). The rules cover what none of those show:
 Each threshold sits above what ordinary days reach. The database rules read
 `metrics.health` through the usage dashboard's data source: the last 3 hours' checks,
 failures and the carriers they failed for, the time since a check last finished, the
-longest scheduled sync of the last 2 hours, and the open health incidents and those of them
-that failed in the last 3 hours, counted when read. A query that fails, as while
-Prometheus restarts, leaves each rule in its last state instead of putting it in Error.
+longest scheduled sync of the last 2 hours, the open health incidents, those of them that
+failed in the last 3 hours, and the carriers of those whose failures left a check without an
+answer, counted when read. A query that fails, as while Prometheus restarts, leaves each
+rule in its last state instead of putting it in Error.
 
 Grafana does not take rules from CI. After changing the file, run
 `npm run grafana:alerts` to see what would change, then `npm run grafana:alerts -- --apply`.
