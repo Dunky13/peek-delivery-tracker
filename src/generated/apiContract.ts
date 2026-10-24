@@ -1110,7 +1110,9 @@ export const CARRIER_CAPABILITIES = {
           "inputMode": "text",
           "autoComplete": "postal-code"
         }
-      ]
+      ],
+      "recognitionRank": 894,
+      "recognitionPattern": "^FV\\d{8}$"
     },
     "trackingUrlTemplate": "https://www.mondialrelay.fr/suivi-de-colis/?numeroExpedition={trackingNumber}",
     "linkRules": [
@@ -1134,6 +1136,10 @@ export const CARRIER_CAPABILITIES = {
       },
       {
         "pattern": "^(?:\\d{8}|\\d{10}|\\d{12})$",
+        "confidence": "low"
+      },
+      {
+        "pattern": "^FV\\d{8}$",
         "confidence": "low"
       }
     ],
@@ -2623,7 +2629,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "nacex",
-      "recognitionRank": 850
+      "recognitionRank": 850,
+      "dateOnlyScans": true
     },
     "linkRules": [
       {
@@ -2839,7 +2846,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "brt",
-      "recognitionRank": 860
+      "recognitionRank": 860,
+      "dateOnlyScans": true
     },
     "linkRules": [
       {
@@ -7278,7 +7286,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "mng-kargo",
-      "recognitionRank": 360
+      "recognitionRank": 360,
+      "dateOnlyScans": true
     },
     "trackingUrlTemplate": "https://www.dhlecommerce.com.tr/gonderitakip",
     "linkRules": [],
@@ -7326,7 +7335,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "post-luxembourg",
-      "recognitionRank": 80
+      "recognitionRank": 80,
+      "dateOnlyScans": true
     },
     "linkRules": [
       {
@@ -11723,7 +11733,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "israel-post",
-      "recognitionRank": 81
+      "recognitionRank": 81,
+      "dateOnlyScans": true
     },
     "trackingUrlTemplate": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D?OpenForm&itemcode={trackingNumber}",
     "linkRules": [
@@ -16692,7 +16703,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "madhur-courier"
+      "adapter": "madhur-courier",
+      "dateOnlyScans": true
     },
     "linkRules": [
       {
@@ -17312,7 +17324,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sat-ukraine",
-      "recognitionRank": 564
+      "recognitionRank": 564,
+      "dateOnlyScans": true
     },
     "trackingUrlTemplate": "https://www.sat.ua/tracking/?number={trackingNumber}",
     "linkRules": [
@@ -17655,7 +17668,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "sundarban-courier"
+      "adapter": "sundarban-courier",
+      "dateOnlyScans": true
     },
     "trackingUrlTemplate": "https://operation.sundarbancourierltd.com/?cnnumber={trackingNumber}",
     "linkRules": [
@@ -17816,7 +17830,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tirupati-courier",
-      "recognitionRank": 711
+      "recognitionRank": 711,
+      "dateOnlyScans": true
     },
     "linkRules": [
       {
@@ -18274,7 +18289,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "aymakan",
-      "recognitionRank": 942
+      "recognitionRank": 942,
+      "dateOnlyScans": true
     },
     "trackingUrlTemplate": "https://aymakan.com/tracking/{trackingNumber}",
     "linkRules": [
@@ -22449,10 +22465,18 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "America/Havana",
     "tracking": {
       "mode": "automatic",
-      "adapter": "universal"
+      "adapter": "correos-cuba",
+      "recognitionRank": 859
     },
     "linkRules": [],
-    "detectionRules": [],
+    "detectionRules": [
+      {
+        "pattern": "^[A-Z]{2}\\d{9}CU$",
+        "confidence": "low",
+        "checksum": "s10",
+        "preferred": true
+      }
+    ],
     "trackingSearchUrl": "https://www.correos.cu/rastreador-de-envios/"
   },
   "correos-el-salvador": {
@@ -27638,7 +27662,8 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "4sides",
-      "recognitionRank": 783
+      "recognitionRank": 783,
+      "dateOnlyScans": true
     },
     "trackingUrlTemplate": "https://4sides.ru/tracking?number={trackingNumber}",
     "linkRules": [
@@ -28094,7 +28119,8 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "jetline-couriers"
+      "adapter": "jetline-couriers",
+      "dateOnlyScans": true
     },
     "linkRules": [],
     "detectionRules": [],

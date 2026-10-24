@@ -68922,6 +68922,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-cuba",
       "chronopost"
     ]
   },
@@ -68955,6 +68956,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-cuba",
       "chronopost"
     ]
   },
@@ -73981,6 +73983,19 @@
     "confidence": "high",
     "candidates": [
       "fleetoptics"
+    ]
+  },
+  {
+    "input": "FV00000001",
+    "carrier": "unknown",
+    "confidence": "low",
+    "candidates": [
+      "mondial-relay",
+      "tnt-it"
+    ],
+    "asked": [
+      "mondial-relay",
+      "tnt-it"
     ]
   },
   {
@@ -86515,6 +86530,7 @@
       "intl-post"
     ],
     "asked": [
+      "correos-cuba",
       "chronopost"
     ]
   },
