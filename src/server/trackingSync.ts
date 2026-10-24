@@ -1718,17 +1718,21 @@ export class TrackingSyncService {
       const relaying = fetched.earlierCarrierId ?? earlierCarrier(parcel);
       const shared = sharedScans(events.filter((event) => !normalized.relays.has(String(event.provider_event_id))), stored, reworded, relaying);
       const matches = { reused: new Map([...reworded, ...shared.reused]), skipped: shared.skipped };
-      // The parcel's own carrier listing fewer of the scans already stored, each as stored and none
-      // new (JRT dropping a parcel's later scans and keeping the label's), takes nothing back: the
-      // stored progress stays and the check answered. A scan the rows lack, such as a newer one in
-      // an earlier stage, or a stored scan read in an earlier stage, still makes progress disappear.
+      // The parcel's own carrier listing fewer of the scans already stored (JRT dropping a parcel's
+      // later scans and keeping the label's, sometimes with a label scan the rows lack) takes nothing
+      // back while each stored scan keeps its stage and no scan is newer than the stored progress: the
+      // stored progress stays and the check answered. A newer scan in an earlier stage, or a stored
+      // scan read in an earlier stage, still makes progress disappear.
       const storedIds = new Set(stored.map((event) => String(event.provider_event_id)));
       const storedStages = new Map(stored.map((row) => [String(row.provider_event_id), row.stage]));
+      const progressAt = Math.max(...stored
+        .filter((row) => stageRank(String(row.stage ?? '')) > stageRank(selectedStage ?? 'pending'))
+        .map((row) => Date.parse(String(row.occurred_at ?? ''))).filter(Number.isFinite));
       const fewerStoredScans = anomalies.includes('progress_disappeared') && sourceCarrierId === carrierId
         && typeof result.tracking_provider !== 'string' && events.length > 0 && events.every((event) => {
           const id = String(event.provider_event_id);
           const row = matches.reused.get(id) ?? matches.skipped.get(id) ?? (storedIds.has(id) ? id : undefined);
-          return row !== undefined && storedStages.get(row) === event.stage;
+          return row === undefined ? Date.parse(String(event.occurred_at ?? '')) < progressAt : storedStages.get(row) === event.stage;
         });
       if (fewerStoredScans) anomalies = anomalies.filter((code) => code !== 'progress_disappeared');
       const progressDisappeared = anomalies.includes('progress_disappeared');

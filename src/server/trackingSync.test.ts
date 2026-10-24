@@ -4094,10 +4094,13 @@ describe('TrackingSyncService', () => {
       return { store, check };
     };
 
-    it('keeps the stored progress, and the check answered', async () => {
+    it.each([
+      ['its label scans', [relabel, label]],
+      ['a label scan the rows lack, older than the progress', [{ ...relabel, time: '2026-10-20T03:23:30Z' }, relabel]],
+    ])('keeps the stored progress after %s, and the check answered', async (_case, events) => {
       const { store, check } = await tracked();
       const rows = structuredClone([...store.rows.values()]);
-      const checked = await check(answer(relabel, label));
+      const checked = await check(answer(...events));
       expect(checked.counts).toMatchObject({ unchanged: 1, errors: 0 });
       expect(checked.attempt).toMatchObject({ outcome: 'unchanged', anomaly_codes: [], error_type: null });
       expect(checked.parcel).toMatchObject({ current_stage: 'in_transit', last_status_text: departed.description,
