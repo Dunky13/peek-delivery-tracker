@@ -1241,9 +1241,9 @@ describe('TrackingSyncService', () => {
     expect(report).toHaveBeenCalledWith('carrier_auto_swapped',
       { carrier: 'unknown', provider: 'ups', trackingNumber: '1Z999AA10123456784', category: 'detected', attemptId: expect.any(String) });
     // A 12-digit number whose FedEx check digit holds: detection asks FedEx first.
-    await sync('123456789012', 'fedex');
+    await sync('314159265355', 'fedex');
     expect(report).toHaveBeenCalledWith('carrier_auto_swapped',
-      expect.objectContaining({ carrier: 'unknown', provider: 'fedex', trackingNumber: '123456789012', category: 'detected' }));
+      expect.objectContaining({ carrier: 'unknown', provider: 'fedex', trackingNumber: '314159265355', category: 'detected' }));
     expect(report).not.toHaveBeenCalledWith('carrier_mismatch_confirmed', expect.anything());
     // A provider had to name the carrier: detection has a rule to gain.
     expect((await sync('TEST1234')).fetchUniversal).toHaveBeenCalledOnce();
@@ -3299,12 +3299,14 @@ describe('TrackingSyncService', () => {
   });
 
   it('hands a Cainiao result to its reported local number through normalization', async () => {
-    const origin = carrierResult('cainiao-delivered');
+    const swissNumber = 'RA314159268CH';
+    const origin = { ...carrierResult('cainiao-delivered'), delivery_tracking_number: swissNumber };
+    const cainiao = vi.fn().mockResolvedValue(origin);
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => Response.json({}));
     const swiss = vi.fn().mockResolvedValue({ status: 'delivered', current_stage: 'delivered',
       last_update: '2026-03-04T12:00:00Z', events: [{ time: '2026-03-04T12:00:00Z', description: 'Delivered', stage: 'delivered' }] });
     const registry = new AdapterRegistry({ factories: {
-      aliexpress: () => ({ id: 'aliexpress', steps: ['direct'], track: vi.fn().mockResolvedValue(origin) }),
+      aliexpress: () => ({ id: 'aliexpress', steps: ['direct'], track: cainiao }),
       'swiss-post': () => ({ id: 'swiss-post', steps: ['direct'], track: swiss }),
     }, carriers: { aliexpress: 'aliexpress', 'swiss-post': 'swiss-post' } }, {
       fetcher, trawl: null, browserExecutablePath: null, recorder: NOOP_RECORDER, env: {},
@@ -3316,18 +3318,18 @@ describe('TrackingSyncService', () => {
     const parcel = { id: 'cainiao-reference', carrier: 'aliexpress', tracking_number: 'LP00000000000001' };
     await service.syncPackage(parcel);
     expect(adapter.fetch.mock.calls.map((call) => call.slice(0, 2))).toEqual([
-      ['aliexpress', 'LP00000000000001'], ['swiss-post', 'RA123456785CH'],
+      ['aliexpress', 'LP00000000000001'], ['swiss-post', swissNumber],
     ]);
-    expect(swiss).toHaveBeenCalledWith({ number: 'RA123456785CH', trackingUrl: null, postcode: null });
+    expect(swiss).toHaveBeenCalledWith({ number: swissNumber, trackingUrl: null, postcode: null });
     const values = client.updatePackage.mock.calls.at(-1)![1];
     expect(values.carrier_data).toMatchObject({ original_carrier: 'aliexpress',
-      original_tracking_number: 'LP00000000000001', active_tracking_carrier: 'swiss-post', active_tracking_number: 'RA123456785CH' });
+      original_tracking_number: 'LP00000000000001', active_tracking_carrier: 'swiss-post', active_tracking_number: swissNumber });
     const eventCarriers = new Set(client.insertEvents.mock.calls[0][0].map((event: JsonObject) => String(event.provider_event_id).split(':')[0]));
     expect(eventCarriers).toEqual(new Set(['aliexpress', 'swiss-post']));
     adapter.fetch.mockClear();
     await service.syncPackage({ ...parcel, ...values });
-    expect(adapter.fetch).toHaveBeenCalledExactlyOnceWith('swiss-post', 'RA123456785CH', null, null);
-    expect(registry.for('aliexpress')!.track).toHaveBeenCalledOnce();
+    expect(adapter.fetch).toHaveBeenCalledExactlyOnceWith('swiss-post', swissNumber, null, null);
+    expect(cainiao).toHaveBeenCalledOnce();
     expect(adapter.fetchUniversal).not.toHaveBeenCalled();
   });
 
@@ -3530,7 +3532,7 @@ describe('TrackingSyncService', () => {
   });
 
   it('confirms a PostNL destination lookup through the real adapter, normalization and router', async () => {
-    const number = 'LX123456785NL';
+    const number = 'LX314159268NL';
     const fetcher = vi.fn<typeof fetch>().mockImplementation(async (url) => Response.json(
       String(url).endsWith('/token') ? { access_token: 'visitor-token' } : { data: { items: [{
         item: number, destination_code: 'CH', events: [{ category: 'Departed',
