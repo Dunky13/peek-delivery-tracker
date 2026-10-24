@@ -841,6 +841,7 @@ function fakeClient(packages: JsonObject[] = []) {
     completeSyncAttempt: vi.fn().mockResolvedValue(true),
     recordTrackingHealth: vi.fn().mockResolvedValue([]),
     ackTrackingHealth: vi.fn().mockResolvedValue(undefined),
+    previousThinAnswer: vi.fn().mockResolvedValue(null),
     recordTrackingStatusObservations: vi.fn().mockResolvedValue(undefined),
     closeTrackingStatusObservations: vi.fn().mockResolvedValue(1),
   };
@@ -4005,6 +4006,31 @@ describe('TrackingSyncService', () => {
     now = new Date('2026-09-09T15:00:00Z');
     await expect(service().syncPackage(parcel)).resolves.toMatchObject({ checked: 1, unchanged: 1 });
     expect(adapter.fetch).toHaveBeenCalledTimes(3);
+  });
+
+  it("keeps the id of its own carrier's thin answer in a scheduled check's health, the same for the same answer", async () => {
+    const parcel: JsonObject = { id: 'thin-own', carrier: 'dhl', tracking_number: 'TEST1234', current_stage: 'in_transit',
+      last_status_text: 'In transit', carrier_data: { status: 'in_transit', current_stage: 'in_transit' } };
+    const client = fakeClient();
+    const label = { stage: 'registered', description: 'Label created', time: '2026-09-08T10:00:00Z' };
+    const adapter = { fetch: vi.fn() };
+    const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter);
+    const thinAnswer = async (answer: CarrierResult) => {
+      adapter.fetch.mockResolvedValue(answer);
+      await expect(service.syncPackage(parcel, { trigger: 'scheduled' })).resolves.toMatchObject({ errors: 1 });
+      const refresh = (client.recordTrackingHealth.mock.lastCall![2] as JsonObject[]).find((sample) => sample.kind === 'refresh')!;
+      expect(refresh).toMatchObject({ healthy: false, details: { error_type: 'ProgressDisappeared' } });
+      return (refresh.details as JsonObject).thin_answer;
+    };
+    const first = await thinAnswer({ status: 'pending', current_stage: 'registered', events: [label] });
+    expect(first).toMatch(/^[0-9a-f]{16}$/);
+    await expect(thinAnswer({ status: 'pending', current_stage: 'registered', events: [label] })).resolves.toBe(first);
+    await expect(thinAnswer({ status: 'pending', current_stage: 'registered', events: [label,
+      { stage: 'registered', description: 'Data received', time: '2026-09-08T11:00:00Z' }] })).resolves.not.toBe(first);
+    expect(JSON.stringify(client.recordTrackingHealth.mock.calls)).not.toContain('TEST1234');
+    // The provider the saved summary came from answering without the progress: not the carrier's own answer.
+    parcel.carrier_data = { status: 'in_transit', current_stage: 'in_transit', tracking_provider: 'ParcelsApp' };
+    await expect(thinAnswer({ status: 'pending', current_stage: 'registered', tracking_provider: 'ParcelsApp', events: [label] })).resolves.toBeUndefined();
   });
 
   it.each(['unknown', 'pending'] as const)(

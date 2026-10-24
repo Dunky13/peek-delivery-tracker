@@ -140,7 +140,8 @@ no new scan. Thin answers keep the previous provider preference and event waterm
 Anomalies are review signals: each is kept on its attempt, logged as
 `tracking_sync_anomaly` and counted in `tracking_sync_anomaly_total`, and none opens a
 Sentry issue. A check that ends as an error still counts towards its carrier's refresh
-incident.
+incident, except a carrier's own answer repeating the thin answer of the parcel's previous
+check ([ops/sentry](../ops/sentry/README.md)).
 
 ## Tracking support backlog
 

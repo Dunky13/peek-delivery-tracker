@@ -48,10 +48,18 @@ failures age out of the window; a new failure meanwhile reminds as usual.
   healthy, filed as missing input, whether or not routing made the check. So is a number
   that names several parcels (inconclusive with the reason `several_parcels`, such as an
   Australia Post consignment of several articles): the owner has to give one parcel's number.
+- A carrier whose own lookup answers normally but repeats the answer without the parcel's
+  progress that the parcel's previous scheduled check got, with the same stage and rows (a
+  carrier that withdrew scans it had shown), has answered. From the second such check in a
+  row, the refresh sample is healthy, filed as `repeated_answer`: it counts toward recovery,
+  never toward an outage. The first still fails, so a scraper that drops scans across many
+  parcels still opens an incident, and every check keeps its `progress_disappeared` anomaly.
+  A thin answer's sample keeps an opaque id of it (`thin_answer`) for the next check to compare.
 - One parcel's failed streak while the carrier answers its other parcels is that parcel's
   own, such as a number that trips the carrier's bot defences: it neither opens a refresh
-  incident nor holds one open. Missing input and not-found don't count as answering. A
-  carrier whose other parcels fail too, or that has no other parcel, opens at the first streak.
+  incident nor holds one open. Missing input, not-found and repeated answers don't count as
+  answering. A carrier whose other parcels fail too, or that has no other parcel, opens at the
+  first streak.
 - A step skipped during a cooldown is not a success. A check that contacted nobody because
   everything was cooling down records nothing.
 - A parcel whose own carrier says not-found stays `waiting` even if every fallback fails.

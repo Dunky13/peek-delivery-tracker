@@ -23,6 +23,12 @@ returns jsonb language sql as $$
   select public.record_tracking_health(gen_random_uuid(),package_id,jsonb_build_array(jsonb_build_object(
     'kind','refresh','subject',subject,'healthy',true,'details',jsonb_build_object('category','input_required'))));
 $$;
+-- A parcel's refresh whose carrier repeated the answer without progress its previous check got.
+create function pg_temp.repeated_refresh(subject text, package_id uuid)
+returns jsonb language sql as $$
+  select public.record_tracking_health(gen_random_uuid(),package_id,jsonb_build_array(jsonb_build_object(
+    'kind','refresh','subject',subject,'healthy',true,'details',jsonb_build_object('category','repeated_answer'))));
+$$;
 create function pg_temp.answered_sample(subject text)
 returns jsonb language sql as $$
   select public.record_tracking_health(gen_random_uuid(),null,jsonb_build_array(jsonb_build_object(
@@ -93,6 +99,25 @@ begin
   perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
   for i in 1..3 loop result := pg_temp.health_sample('streak-carrier',true,'refresh','20000000-0000-4000-8000-000000000001'); end loop;
   assert result='[]', 'Another parcel answering must not clear two still-failing parcels';
+
+  -- A carrier repeating a thin answer for its only parcel recovers once three checks repeated it.
+  for i in 1..3 loop result := pg_temp.health_sample('thin-carrier',false,'refresh'); end loop;
+  assert result->0->>'state'='open', 'One parcel failing three times while no other answers must alert';
+  perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
+  for i in 1..2 loop
+    assert pg_temp.repeated_refresh('thin-carrier','10000000-0000-4000-8000-000000000001')='[]', 'Two repeated answers must not recover';
+  end loop;
+  result := pg_temp.repeated_refresh('thin-carrier','10000000-0000-4000-8000-000000000001');
+  assert result->0->>'state'='recovered', 'Three repeated answers must recover the incident';
+  -- Like missing input, another parcel's repeated answer does not answer for a failing parcel's streak.
+  for i in 1..3 loop result := pg_temp.health_sample('thin-streak',false,'refresh'); end loop;
+  perform public.ack_tracking_health(array[(result->0->>'id')::uuid]);
+  for i in 1..3 loop result := pg_temp.repeated_refresh('thin-streak','20000000-0000-4000-8000-000000000001'); end loop;
+  assert result='[]', 'Another parcel repeating a thin answer must not clear a still-failing parcel';
+  -- Nor does it dilute the outage rate.
+  for i in 1..30 loop perform pg_temp.repeated_refresh('thin-rate',gen_random_uuid()); end loop;
+  for i in 1..5 loop result := pg_temp.health_sample('thin-rate',false,'refresh',gen_random_uuid()); end loop;
+  assert result->0->>'state'='open' and (result->0->>'attempts')::int=5, 'Repeated thin answers must not dilute the outage rate';
 
   for i in 1..10 loop result := pg_temp.health_sample('half-failing',i%2=0); end loop;
   assert result='[]', 'Exactly 50 percent must not alert';

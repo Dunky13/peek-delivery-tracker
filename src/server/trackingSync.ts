@@ -949,6 +949,15 @@ export function detectSyncAnomalies(
   return [...anomalies];
 }
 
+/**
+ * An answer without the saved progress as an opaque id of its stage and rows: the next check
+ * tells the same answer repeated from it (trackingAudit.ts).
+ */
+function thinAnswerId(result: CarrierResult, selectedStage: string | null, events: readonly JsonObject[]): string {
+  const rows = events.map((event) => JSON.stringify([event.provider_event_id, event.stage])).sort();
+  return createHash('sha256').update(JSON.stringify([result.status ?? null, selectedStage, rows])).digest('hex').slice(0, 16);
+}
+
 type SyncOutcome = 'updated' | 'unchanged' | 'waiting' | 'errors' | 'unsupported' | 'superseded';
 
 /**
@@ -2002,6 +2011,9 @@ export class TrackingSyncService {
         eventsNew,
         anomalyCodes: anomalies,
         ...(progressDisappeared ? { errorType: 'ProgressDisappeared' } : {}),
+        // The parcel's own carrier, not a provider, answered without the progress.
+        ...(progressDisappeared && sourceCarrierId === carrierId && typeof result.tracking_provider !== 'string'
+          ? { thinAnswer: thinAnswerId(result, selectedStage, events) } : {}),
         providerFailures: routing?.failures,
         supportEvidence: trackingSupportEvidence(parcel, result, sourceCarrierId, outcome, preserveSummary),
       } as const;

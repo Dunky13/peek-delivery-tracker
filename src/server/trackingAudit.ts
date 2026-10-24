@@ -94,6 +94,11 @@ export interface SyncAuditCompletion {
   providerFailures?: unknown;
   /** False when no provider was contacted, so the check is not evidence of provider health. */
   evaluateHealth?: boolean;
+  /**
+   * The answer without the saved progress that the parcel's own carrier gave, as an opaque id of
+   * its stage and rows: the refresh sample keeps it for the next check to compare.
+   */
+  thinAnswer?: string;
   supportEvidence?: JsonObject;
 }
 
@@ -381,15 +386,23 @@ export class TrackingSyncAudit {
       const ownAnswer = this.#healthSamples.get(`provider:${this.configuredCarrier}`);
       const refused = (completion.outcome === 'error' || failedFetch) && (refusedNumber(completion, this.configuredCarrier)
         || (ownAnswer?.healthy === true && ownAnswer.details.category === 'input_required'));
-      const healthy = refused || (completion.outcome !== 'error' && !failedFetch);
+      // A carrier whose own lookup answered normally, repeating the thin answer of the parcel's previous
+      // scheduled check, works: it withdrew scans it had shown, and only it can add them back. Like a
+      // missing input, the refresh answered. The first such answer still fails, so a scraper that drops
+      // scans across many parcels still opens an incident, and every check keeps the anomaly.
+      const repeated = !refused && completion.thinAnswer !== undefined && ownAnswer?.healthy === true
+        && ownAnswer.details.category === 'ok' && await this.previousThinAnswer() === completion.thinAnswer;
+      const healthy = refused || repeated || (completion.outcome !== 'error' && !failedFetch);
+      const thin = completion.thinAnswer === undefined ? {} : { thin_answer: completion.thinAnswer };
       const samples: JsonObject[] = [...this.#healthSamples.values(), {
         kind: 'refresh', subject: this.configuredCarrier, healthy,
         // The failing tier's own error class is better evidence than the attempt's summary, unless
         // its lookup recovered from it.
         details: refused ? { category: 'input_required', ...refreshEvidence(completion) }
+          : repeated ? { category: 'repeated_answer', ...refreshEvidence(completion), ...thin }
           : { ...(values.error_type ? { error_type: values.error_type } : {}),
             ...[...this.#healthSamples.values()].reverse().find(sample => !sample.healthy && !sample.recovered)?.details,
-            ...(healthy ? {} : refreshEvidence(completion)) },
+            ...(healthy ? {} : refreshEvidence(completion)), ...thin },
       }];
       await this.writeAudit('evaluate_health', async () => {
         const incidents = await this.client.recordTrackingHealth(this.attemptId, this.packageId, samples);
@@ -442,6 +455,15 @@ export class TrackingSyncAudit {
         duration_ms: durationMs,
       }, this.#steps, { timeoutMs: 3_000 });
     });
+  }
+
+  /** The thin answer the parcel's previous scheduled check recorded; null when it recorded none or cannot be read. */
+  private async previousThinAnswer(): Promise<string | null> {
+    let previous: string | null = null;
+    await this.writeAudit('read_thin_answer', async () => {
+      previous = await this.client.previousThinAnswer(this.packageId, this.configuredCarrier);
+    });
+    return previous;
   }
 
   private logContext(): JsonObject {

@@ -269,6 +269,41 @@ it('gives a failed refresh the anomaly and each provider\'s failure kind as evid
   expect(refreshSample()).toEqual(expect.objectContaining({ healthy: true, details: {} }));
 });
 
+it("files a carrier's own lookup repeating its thin answer as answered from the second check in a row", async () => {
+  const report = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
+  const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true), recordTrackingHealth: vi.fn().mockResolvedValue([]),
+    ackTrackingHealth: vi.fn(), previousThinAnswer: vi.fn().mockResolvedValue(null) };
+  const check = async (thinAnswer: string | undefined, lookup: Partial<LookupRecord> = {}) => {
+    const audit = new TrackingSyncAudit(client as unknown as SupabaseServiceClient,
+      'synthetic-package', 'TEST1234', 'jrt', 'in_transit', { trigger: 'scheduled' });
+    await audit.observeFetch(async () => {
+      healthStepRecorder.lookup({ carrier: 'jrt', finalStep: 'direct', outcome: 'ok', errorType: null, durationMs: 400, attempts: 1, ...lookup });
+    });
+    await audit.finish({ outcome: 'error', anomalyCodes: ['progress_disappeared'], errorType: 'ProgressDisappeared', thinAnswer });
+    return (client.recordTrackingHealth.mock.lastCall![2] as JsonObject[]).find((sample) => sample.kind === 'refresh');
+  };
+  // The first is a failure, which keeps the answer for the next check.
+  await expect(check('a1')).resolves.toMatchObject({ healthy: false,
+    details: { error_type: 'ProgressDisappeared', anomaly_codes: 'progress_disappeared', thin_answer: 'a1' } });
+  expect(client.previousThinAnswer).toHaveBeenCalledExactlyOnceWith('synthetic-package', 'jrt');
+  client.previousThinAnswer.mockResolvedValue('a1');
+  await expect(check('a1')).resolves.toEqual({ kind: 'refresh', subject: 'jrt', healthy: true,
+    details: { category: 'repeated_answer', anomaly_codes: 'progress_disappeared', thin_answer: 'a1' } });
+  // Another thin answer fails, as does the same one when the carrier's lookup did not answer normally.
+  await expect(check('b2')).resolves.toMatchObject({ healthy: false, details: { thin_answer: 'b2' } });
+  await expect(check('a1', { outcome: 'transport', errorType: 'UpstreamNetworkError' })).resolves.toMatchObject({ healthy: false });
+  await expect(check('a1', { outcome: 'not_found', errorType: 'NotFoundError' })).resolves.toMatchObject({ healthy: false });
+  // A check without a thin answer of the carrier's own has nothing to compare.
+  client.previousThinAnswer.mockClear();
+  await expect(check(undefined)).resolves.toMatchObject({ healthy: false });
+  expect(client.previousThinAnswer).not.toHaveBeenCalled();
+  // A previous answer that cannot be read leaves the check a failure.
+  const failure = new Error('unreachable');
+  client.previousThinAnswer.mockRejectedValue(failure);
+  await expect(check('a1')).resolves.toMatchObject({ healthy: false, details: { thin_answer: 'a1' } });
+  expect(report).toHaveBeenCalledExactlyOnceWith(failure, expect.objectContaining({ component: 'tracking-sync-audit', operation: 'read_thin_answer' }));
+});
+
 it('counts every finished attempt by who served it', async () => {
   const { metricsText } = await import('./metrics');
   const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true), recordTrackingHealth: vi.fn().mockResolvedValue([]), ackTrackingHealth: vi.fn() };

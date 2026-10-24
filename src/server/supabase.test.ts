@@ -189,6 +189,20 @@ describe('one-off parcels and their links', () => {
     expect(params(path).get('order')).toBe('last_synced_at.asc.nullsfirst,created_at.asc');
   });
 
+  it("reads the thin answer of a parcel's latest scheduled refresh under its carrier", async () => {
+    const client = service();
+    const request = vi.spyOn(client, 'request').mockResolvedValueOnce([{ details: { category: 'repeated_answer', thin_answer: 'a1' } }]);
+    await expect(client.previousThinAnswer('package-1', 'jrt')).resolves.toBe('a1');
+    const [path, options] = request.mock.calls[0];
+    expect(path).toMatch(/^\/rest\/v1\/tracking_health_samples\?/);
+    expect(Object.fromEntries(params(path))).toEqual({ select: 'details', kind: 'eq.refresh', subject: 'eq.jrt',
+      package_id: 'eq.package-1', order: 'observed_at.desc,attempt_id.asc', limit: '1' });
+    expect(options).toEqual({ timeoutMs: 3_000 });
+    request.mockResolvedValueOnce([{ details: { error_type: 'TransportError' } }]).mockResolvedValueOnce([]);
+    await expect(client.previousThinAnswer('package-1', 'jrt')).resolves.toBeNull();
+    await expect(client.previousThinAnswer('package-1', 'jrt')).resolves.toBeNull();
+  });
+
   it('lists the new one-off parcels filed under no carrier in the shape of the other candidates', async () => {
     const client = service();
     const request = vi.spyOn(client, 'request').mockResolvedValue([{ id: 'unfiled', one_off: true }]);

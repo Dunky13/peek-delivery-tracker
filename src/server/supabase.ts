@@ -1212,6 +1212,16 @@ export class SupabaseServiceClient extends SupabaseClient {
     }));
   }
 
+  /** The thin answer the parcel's latest scheduled refresh under `carrier` kept in its health sample (trackingAudit.ts), if any. */
+  async previousThinAnswer(packageId: string, carrier: string): Promise<string | null> {
+    const params = query({
+      select: 'details', kind: 'eq.refresh', subject: `eq.${carrier}`, package_id: `eq.${packageId}`,
+      order: 'observed_at.desc,attempt_id.asc', limit: '1',
+    });
+    const details = rows(await this.request(`/rest/v1/tracking_health_samples?${params}`, { timeoutMs: 3_000 }))[0]?.details;
+    return isRecord(details) && typeof details.thin_answer === 'string' ? details.thin_answer : null;
+  }
+
   async recordTrackingSupportObservation(
     trackingNumber: string,
     context: JsonObject,
