@@ -2917,3 +2917,95 @@ extension ParcelLogicTests {
         XCTAssertEqual(text.count, FirstParcelRequest.pasteLimit)
     }
 }
+
+extension ParcelLogicTests {
+    /// The deliveries' screens drawn in a window at the widths a phone, an iPad's columns and its narrow windows
+    /// give them, at regular type in light and at large type in dark, each picture kept with the test's results.
+    @MainActor func testTheDeliveriesScreensDrawInEveryWidthTheyAreGiven() async throws {
+        try await draw(.en, named: "list", in: [CGSize(width: 320, height: 700), CGSize(width: 380, height: 800)]) { _ in
+            ParcelListView(selection: .constant(0))
+        }
+        try await draw(.de, named: "list", in: [CGSize(width: 330, height: 700)]) { _ in
+            ParcelListView(selection: .constant(0))
+        }
+        try await draw(.en, named: "detail", in: [CGSize(width: 390, height: 844), CGSize(width: 640, height: 900)]) { store in
+            DetailPage(parcelID: try XCTUnwrap(store.parcels.first(where: \.isActive)).id)
+        }
+        try await draw(.en, named: "first-open", in: [CGSize(width: 466, height: 678), CGSize(width: 678, height: 466)]) { _ in
+            FirstOpenView(covered: false) { _ in }
+        }
+    }
+
+    /// Draws a screen over the demo's parcels in a window of each size, and checks it asks for no more width than it has.
+    @MainActor private func draw<Content: View>(
+        _ language: AppLanguage,
+        named name: String,
+        in sizes: [CGSize],
+        @ViewBuilder content: (ParcelStore) throws -> Content
+    ) async throws {
+        let localizer = Localizer()
+        let previousLanguage = localizer.language
+        defer { localizer.language = previousLanguage }
+        localizer.language = language
+        let suite = "render-tests-\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let demo = AppConfiguration(mode: .demo, apiBaseURL: URL(string: "https://render.test")!, supabaseURL: nil, supabasePublishableKey: "",
+                                    googleAuthEnabled: false, appleAuthEnabled: false, emailOTPEnabled: false, appGroupIdentifier: "render.test")
+        let session = SessionStore(configuration: demo, defaults: defaults, persistence: MemorySessionPersistence())
+        let store = ParcelStore(configuration: demo, session: session, localizer: localizer,
+                                device: DeviceParcels(client: nil, storage: RenderTestStorage()))
+        session.enterDemo()
+        let links = ParcelLinkStore(defaults: defaults, configuration: demo)
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        for size in sizes {
+            for largeType in [false, true] {
+                let host = UIHostingController(rootView: try content(store)
+                    .environmentObject(session)
+                    .environmentObject(store)
+                    .environmentObject(localizer)
+                    .environmentObject(FriendInvitationStore(defaults: defaults))
+                    .environmentObject(FriendsActivityStore())
+                    .environmentObject(links)
+                    .environment(\.locale, language.locale)
+                    .environment(\.dynamicTypeSize, largeType ? .accessibility3 : .large))
+                host.overrideUserInterfaceStyle = largeType ? .dark : .light
+                // The window takes the simulator's shape: the screen is a view of the size asked for inside it.
+                let window = UIWindow(windowScene: scene)
+                let container = UIViewController()
+                window.rootViewController = container
+                container.addChild(host)
+                host.view.frame = CGRect(origin: .zero, size: size)
+                container.view.addSubview(host.view)
+                host.didMove(toParent: container)
+                window.isHidden = false
+                defer { window.isHidden = true }
+                try await Task.sleep(for: .milliseconds(400))
+                let label = "\(name)-\(Int(size.width))x\(Int(size.height))-\(language.rawValue)-\(largeType ? "large-dark" : "regular-light")"
+                XCTAssertLessThanOrEqual(host.sizeThatFits(in: size).width, size.width + 0.5, label)
+                let image = UIGraphicsImageRenderer(size: size).image { _ in
+                    host.view.drawHierarchy(in: host.view.bounds, afterScreenUpdates: true)
+                }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = label
+                attachment.lifetime = .keepAlways
+                add(attachment)
+            }
+        }
+    }
+}
+
+/// A parcel's page as the list opens it, with the transition it comes in by.
+private struct DetailPage: View {
+    let parcelID: UUID
+    @Namespace private var transition
+
+    var body: some View {
+        NavigationStack { ParcelDetailView(parcelID: parcelID, transition: transition) }
+    }
+}
+
+private final class RenderTestStorage: DeviceParcelStorage {
+    func load() -> (parcels: [DeviceParcel], keys: [String: String]) { ([], [:]) }
+    func save(_ parcels: [DeviceParcel], keys: [String: String]) {}
+}
