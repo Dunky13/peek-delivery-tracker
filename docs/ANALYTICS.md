@@ -93,7 +93,9 @@ path, such as `/front-door`, or an action:
 4. **Account**: `parcel-link-sign-in` (and `parcel-link-email`), the sign-in actions and
    `sign-in-complete`, then `parcel-link-keep` as the parcel joins the account.
 5. **Alerts**: `notifications-enable` and `email-offer-accept`; on the web also a parcel
-   page's `parcel-link-alerts-open` and `parcel-link-alerts`.
+   page's `parcel-link-alerts-open` and `parcel-link-alerts`. Where the alerts offer the Peek
+   app on an iPhone, `parcel-link-app-get` follows its App Store link (campaign `web-notify`)
+   and `parcel-link-app-open`, offered once that link was followed, opens the parcel in the app.
 
 Umami's funnel report chains these steps within one property, by its own estimate of a
 visitor: neither client sends an identifier, so steps join per visit, never per person.
