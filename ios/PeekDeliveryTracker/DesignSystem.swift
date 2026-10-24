@@ -215,6 +215,17 @@ extension View {
         }
     }
 
+    /// A sheet of choices or settings as a form centred over an iPad's window, rather than a page nearly as large as
+    /// it; on a phone, as it always was.
+    @ViewBuilder
+    func formOnPad() -> some View {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            presentationSizing(.form)
+        } else {
+            self
+        }
+    }
+
     @ViewBuilder
     func glassSurface<S: Shape>(in shape: S) -> some View {
         if #available(iOS 26.0, *) {

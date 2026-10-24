@@ -123,6 +123,7 @@ struct AddParcelView: View {
                     }
                 }
                 .environmentObject(localizer)
+                .formOnPad()
             }
             .fullScreenCover(isPresented: $showingScanner) {
                 TrackingScannerView { value in

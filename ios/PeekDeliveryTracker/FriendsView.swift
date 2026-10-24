@@ -100,7 +100,7 @@ struct FriendsView: View {
             if let openFriend, data?.friends.contains(where: { $0.id == openFriend }) != true { self.openFriend = nil }
         }
         .onChange(of: model.working) { _, working in if working { noticeKey = nil } }
-        .sheet(isPresented: $showingAccount) { AccountView() }
+        .sheet(isPresented: $showingAccount) { AccountView().formOnPad() }
         .sheet(item: $panel) { value in
             NavigationStack {
                 ScrollView {

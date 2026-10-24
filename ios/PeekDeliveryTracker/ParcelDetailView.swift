@@ -150,6 +150,7 @@ struct ParcelDetailView: View {
                 ChangeCarrierView(parcel: parcel, initialCarrier: request.initialCarrier)
                     .environmentObject(store)
                     .environmentObject(localizer)
+                    .formOnPad()
             }
         }
         .sheet(isPresented: $showingShare) {

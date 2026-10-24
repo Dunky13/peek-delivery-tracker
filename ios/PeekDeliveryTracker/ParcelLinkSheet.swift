@@ -1027,6 +1027,8 @@ struct FrontmostSheet<Content: View>: UIViewControllerRepresentable {
                 return
             }
             let host = Host(rootView: content())
+            // A form over an iPad's window, as the page is capped at 560; a phone's sheet as it was.
+            if UIDevice.current.userInterfaceIdiom == .pad { host.modalPresentationStyle = .formSheet }
             host.onGone = { [weak self] in self?.gone() }
             sheet = host
             dismissing = false
