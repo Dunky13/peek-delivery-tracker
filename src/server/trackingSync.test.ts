@@ -2142,6 +2142,37 @@ describe('TrackingSyncService', () => {
     expect(isOpenedParcelSyncDue(lookup('quiet', { last_synced_at: '2026-09-09T10:00:15Z' }), new Date('2026-09-09T12:00:00Z'))).toBe(true);
   });
 
+  it('asks the providers daily by day while a carrier holding the parcel waits for its postcode', async () => {
+    const waiting = { carrier: 'dhl', field: 'dpdPostcode' };
+    const owned = (id: string, extra: JsonObject = {}, needed: JsonObject | null = waiting): JsonObject => ({ id, user_id: 'user-1',
+      one_off: false, carrier: 'unknown', current_stage: 'in_transit', tracking_number: ON_THE_HOUR, created_at: '2026-09-05T10:00:00Z',
+      archived_at: null, last_synced_at: '2026-09-09T09:00:15Z', sync_status: 'ok', ...extra,
+      carrier_data: { routing: { version: 1, configured_carrier: String(extra.carrier ?? 'unknown'), failures: {},
+        preferred_provider: 'ParcelsApp', last_success_at: '2026-09-09T09:00:15Z', last_event_at: '2026-09-09T08:00:00Z',
+        ...(needed ? { input_needed: needed } : {}) } } });
+    const check = async (at: string, parcels: JsonObject[]) => {
+      const client = fakeClient(parcels);
+      const now = new Date(at);
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient,
+        { fetch: vi.fn().mockResolvedValue({ status: 'in_transit' }), fetchUniversal: vi.fn().mockResolvedValue({ status: 'in_transit' }) },
+        null, () => now);
+      await service.sync();
+      return client.startSyncAttempt.mock.calls.map(([, values]) => values.package_id);
+    };
+    // Checked three hours ago: a parcel still moving would be due, but this one waits for a day, by day.
+    await expect(check('2026-09-09T12:00:00Z', [owned('moving', {}, null)])).resolves.toEqual(['moving']);
+    await expect(check('2026-09-09T12:00:00Z', [owned('waiting')])).resolves.toEqual([]);
+    await expect(check('2026-09-09T12:00:00Z', [owned('waiting', { last_synced_at: '2026-09-08T12:00:15Z' })])).resolves.toEqual(['waiting']);
+    await expect(check('2026-09-09T21:00:00Z', [owned('waiting', { last_synced_at: '2026-09-08T12:00:15Z' })])).resolves.toEqual([]);
+    // Filed under that carrier, or asked for a link the parcel does not ask the owner for, it keeps its cadence.
+    await expect(check('2026-09-09T12:00:00Z', [owned('filed', { carrier: 'dhl' })])).resolves.toEqual(['filed']);
+    await expect(check('2026-09-09T12:00:00Z', [owned('link', {}, { carrier: 'dhl', field: 'trackingUrl' })])).resolves.toEqual(['link']);
+    // A lookup without an account waits the same; opening its link checks it at that cadence.
+    const lookup = { ...owned('lookup'), user_id: null, one_off: true };
+    expect(isOpenedParcelSyncDue(lookup, new Date('2026-09-09T12:00:00Z'))).toBe(false);
+    expect(isOpenedParcelSyncDue({ ...lookup, last_synced_at: '2026-09-08T12:00:15Z' }, new Date('2026-09-09T12:00:00Z'))).toBe(true);
+  });
+
   it('still checks the followed lookups when the unfiled ones cannot be listed', async () => {
     const report = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
     const client = fakeClient();

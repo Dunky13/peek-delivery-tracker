@@ -340,6 +340,12 @@ function isScheduledTrackingSyncDue(
   if (sinceNamed >= 0 && sinceNamed < NAMED_CARRIER_DUE_MS) return true;
   // Archived, daily around the clock, as is a delivery its carrier may yet dispute.
   if (archived || unconfirmedDelivery(parcel, now)) return lastChecked < hourStart.minus({ hours: 23 }).toMillis();
+  // A carrier holds the parcel and waits for its delivery postcode, which the parcel asks the
+  // owner for: until the owner adds it, which files the parcel there and checks it at once, the
+  // providers are asked daily by day, and not overnight.
+  if (waitsForPostcode(parcel)) {
+    return local.hour >= 8 && local.hour < 22 && lastChecked < hourStart.minus({ hours: 23 }).toMillis();
+  }
   // A lookup without an account filed under no carrier whose newest scan is over 14 days old, followed
   // or not, while nobody watches it: daily by day, and not overnight. It stays on the schedule as
   // long as before, and opening its link queues a check as before.
@@ -391,6 +397,13 @@ function isScheduledTrackingSyncDue(
     ? local.startOf('minute').minus({ minutes: local.minute % intervalMinutes })
     : hourStart;
   return lastChecked < windowStart.toMillis();
+}
+
+/** Another carrier than the parcel's holds it and asks for the delivery postcode (`routing.input_needed`). */
+function waitsForPostcode(parcel: JsonObject): boolean {
+  const needed = routingState(parcel).input_needed;
+  return isRecord(needed) && needed.field === 'dpdPostcode' && typeof needed.carrier === 'string'
+    && needed.carrier !== parcel.carrier;
 }
 
 /**

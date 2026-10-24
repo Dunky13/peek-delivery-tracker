@@ -256,6 +256,7 @@ parcels followed without an account that nobody watches (below).
 | Followed without an account, no link opened for an hour and no alert on | every 3 h, not overnight; opening a link queues a check at once |
 | Without an account, filed under no carrier, added in the last 30 days, no link opened for a day and no alert on, once a carrier or provider answered for its number | every 6 h, not overnight |
 | Without an account, filed under no carrier, newest scan over 14 days old, no link opened for an hour and no alert on | daily, not overnight; opening a link queues a check at once |
+| Another carrier holds it and waits for the delivery postcode (`routing.input_needed`) | daily, not overnight; adding the postcode checks it at once |
 | Number no carrier or provider has seen (no carrier identified, no history, no input asked) | hourly for 6 h after it was added, then every 6 h, daily after 48 h, weekly after 7 days, around the clock; manual refresh still allowed. An account's parcel, with its rechecks on: 1, 3 and 7 days after it was added, then no more after 14 days (below) |
 | Archived, with a new event in the last 30 days (from when it was added), and no alert on a link shared with someone | daily around the clock; manual refresh still allowed |
 | Delivered on a provider's word alone, which the parcel's carrier did not show (below) | daily around the clock for 3 days |
@@ -460,6 +461,9 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   `routing.input_needed`, and the parcel asks the user for it. So is one whose lookup finds
   the parcel behind an input it lists as optional (DHL's postcode, when several shipments
   share a twelve-digit number); a lookup that fails on the way leaves the request.
+  The owner adding the postcode files the parcel under that carrier. Until then the providers
+  serve the parcel and are asked daily by day. A link shares no routing state, so a lookup
+  without an account does not show the request.
   A parcel filed under no carrier that no carrier or provider has answered for yet is offered
   the first carrier detection lists for its number that serves the country it was looked up
   from and takes only the delivery postcode for numbers of its shape, which recognition

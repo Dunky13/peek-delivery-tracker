@@ -955,12 +955,16 @@ describe('persistent tracking routing', () => {
       // DHL asks for a twelve-digit number's postcode only when several shipments share the number.
       const number = '123456789016';
       const held = () => new InputRequiredError('DHL', 'a postcode or shipping date', 'DHL requires additional verification', { reason: 'parcel_found' });
-      const { router, direct, recognize } = setup();
+      const { router, direct, recognize, universal } = setup();
       recognize.mockImplementation(knows('dhl'));
       direct.mockRejectedValue(held());
       const result = await router.fetch(parcel({ tracking_number: number }), false);
       expect(direct).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ tracking_number: number, dpd_postcode: null }), 'dhl');
       expect(result.result.routing).toMatchObject({ input_needed: { carrier: 'dhl', field: 'dpdPostcode' }, failures: {} });
+      // A provider's history still serves the parcel, which stays filed where it was until the owner adds the postcode.
+      expect(universal).toHaveBeenCalled();
+      expect(result.result).toMatchObject({ current_stage: 'in_transit' });
+      expect(result.correction).toBeUndefined();
       expect(monitoring.reportRoutingEvent).toHaveBeenCalledWith('carrier_input_needed', expect.objectContaining({ provider: 'dhl' }));
       // A lookup that fails on the way leaves the request.
       const next = setup(new Date('2026-09-10T13:05:00Z'));
