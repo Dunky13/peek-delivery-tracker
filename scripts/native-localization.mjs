@@ -34,6 +34,15 @@ export function nativeLocalizationReferences(swiftSource, localizationKeys) {
   );
 }
 
+/** The keys the app shows that name the iPhone in some language but have no `.ipad` variant for an iPad. */
+export function keysNamingOnlyTheIPhone(referencedKeys, catalogs) {
+  return [...referencedKeys]
+    .filter((key) => !key.endsWith('.ipad'))
+    .filter((key) => Object.values(catalogs).some((catalog) => catalog[key]?.includes('iPhone')))
+    .filter((key) => !Object.values(catalogs).every((catalog) => typeof catalog[`${key}.ipad`] === 'string'))
+    .sort();
+}
+
 const stringsEscapes = { '\\': '\\\\', '"': '\\"', '\n': '\\n', '\r': '\\r', '\t': '\\t' };
 const stringsLiteral = (text) => `"${text.replace(/[\\"\n\r\t]/g, (character) => stringsEscapes[character])}"`;
 

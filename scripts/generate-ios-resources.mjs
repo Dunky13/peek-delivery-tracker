@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readBrandData, renderBrandJson } from './generate-brand.mjs';
-import { infoPlistStrings, nativeLocalizationReferences, nativeSwiftSources } from './native-localization.mjs';
+import { infoPlistStrings, keysNamingOnlyTheIPhone, nativeLocalizationReferences, nativeSwiftSources } from './native-localization.mjs';
 import { readLocalizationCatalogs } from './localization-catalog.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -27,6 +27,11 @@ if (missingNativeReferences.length) {
   throw new Error(
     `Native localization references are missing from the generated catalog: ${missingNativeReferences.sort().join(', ')}`,
   );
+}
+
+const iPhoneOnly = keysNamingOnlyTheIPhone(referencedKeys, languages);
+if (iPhoneOnly.length) {
+  throw new Error(`The app also runs on iPad: give these keys an .ipad variant: ${iPhoneOnly.join(', ')}`);
 }
 
 const resources = path.join(root, 'ios', 'PeekDeliveryTracker', 'Resources');

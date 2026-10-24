@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { infoPlistStrings, nativeLocalizationReferences, nativeSwiftSources } from './native-localization.mjs';
+import { infoPlistStrings, keysNamingOnlyTheIPhone, nativeLocalizationReferences, nativeSwiftSources } from './native-localization.mjs';
 import { locales, validateLocalizationCatalogs } from './localization-catalog.mjs';
 
 describe('Shared localization catalogs', () => {
@@ -93,6 +93,25 @@ describe('Native localization references', () => {
     for (const key of ['shareExtension.title', 'shareExtension.notFound', 'common.cancel', 'native.done', 'widget.galleryName']) {
       assert.ok(references.has(key), key);
     }
+  });
+});
+
+describe('Copy that names the iPhone', () => {
+  const catalogs = {
+    en: { 'native.openSettings': 'Open iPhone Settings', 'native.openSettings.ipad': 'Open iPad Settings', 'app.demo': 'Demo' },
+    it: { 'native.openSettings': 'Apri Impostazioni', 'native.openSettings.ipad': 'Apri Impostazioni', 'app.demo': 'Demo' },
+  };
+
+  it('passes a key with an iPad variant in every language, and one that names no device', () => {
+    assert.deepEqual(keysNamingOnlyTheIPhone(new Set(['native.openSettings', 'app.demo']), catalogs), []);
+  });
+
+  it('names a key the app shows that says iPhone without an iPad variant', () => {
+    const value = structuredClone(catalogs);
+    delete value.it['native.openSettings.ipad'];
+    value.it['app.demo'] = 'Demo su iPhone';
+    assert.deepEqual(keysNamingOnlyTheIPhone(new Set(['native.openSettings', 'app.demo']), value),
+      ['app.demo', 'native.openSettings']);
   });
 });
 

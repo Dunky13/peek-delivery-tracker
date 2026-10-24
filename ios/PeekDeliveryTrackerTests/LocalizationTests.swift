@@ -41,6 +41,30 @@ final class LocalizationTests: XCTestCase {
         }
     }
 
+    func testAnIPadReadsItsOwnNameWhereTheCopyNamesTheIPhone() throws {
+        let dictionaries = try localizationDictionaries()
+        let variants = try XCTUnwrap(dictionaries["en"]).keys.filter { $0.hasSuffix(".ipad") }
+        XCTAssertTrue(variants.contains("native.follow.action.ipad"))
+        let pad = Localizer(onPad: true)
+        let phone = Localizer(onPad: false)
+        let originalLanguage = pad.language
+        defer { pad.language = originalLanguage }
+        for language in AppLanguage.allCases {
+            pad.language = language
+            phone.language = language
+            let messages = try XCTUnwrap(dictionaries[language.rawValue])
+            for variant in variants {
+                let key = String(variant.dropLast(".ipad".count))
+                XCTAssertEqual(pad.text(key), messages[variant], "\(language).\(key)")
+                XCTAssertFalse(pad.text(key).contains("iPhone"), "\(language).\(key)")
+                XCTAssertEqual(phone.text(key), messages[key], "\(language).\(key)")
+            }
+        }
+        pad.language = .en
+        XCTAssertEqual(pad.text("native.follow.action"), "Follow on this iPad")
+        XCTAssertEqual(pad.text("native.account"), "Account")
+    }
+
     func testEveryLanguageHasTheSameKeysAsEnglish() throws {
         let dictionaries = try localizationDictionaries()
         let englishKeys = Set(try XCTUnwrap(dictionaries["en"]).keys)
