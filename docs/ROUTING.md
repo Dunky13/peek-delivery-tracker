@@ -462,8 +462,16 @@ the carriers checked. A failed request does not manufacture a queried-carrier li
   the parcel behind an input it lists as optional (DHL's postcode, when several shipments
   share a twelve-digit number); a lookup that fails on the way leaves the request.
   The owner adding the postcode files the parcel under that carrier. Until then the providers
-  serve the parcel and are asked daily by day. A link shares no routing state, so a lookup
-  without an account does not show the request.
+  serve the parcel and are asked daily by day. A lookup without an account shows the request
+  to whoever holds the link's owner key, and to no viewer
+  ([`postcode/route.ts`](../app/api/public/parcels/[linkId]/postcode/route.ts)). The server
+  asks that carrier's own tracking with the postcode before anything is saved or shown. A
+  postcode it accepts moves the link to the one-off parcel with that number, carrier and
+  postcode (a new one, or one another link already follows), queues its check at once and
+  forgets the previous parcel once no link points to it. One it refuses shows nothing of
+  the parcel and counts against the link: five a day, in `parcel_link_postcode_attempts`.
+  A check that could not ask the carrier is not counted, and a carrier that blocks after
+  wrong postcodes answers with its wait. The iPhone app does not show the request yet.
   A parcel filed under no carrier that no carrier or provider has answered for yet is offered
   the first carrier detection lists for its number that serves the country it was looked up
   from and takes only the delivery postcode for numbers of its shape, which recognition

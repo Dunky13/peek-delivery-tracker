@@ -22,7 +22,7 @@ import { type AllowanceHolder, captureOverallAllowance, logOperationalEvent } fr
 import { pushServices } from './push';
 import { legacyHosts } from './siteHosts';
 import type { PublicAllowance, StoredParcelLink, SupabaseServiceClient } from './supabase';
-import { isRecord } from './types';
+import { isRecord, type JsonObject } from './types';
 
 /**
  * One parcel through a link: what the link's caller may see, a gift's viewer
@@ -351,6 +351,19 @@ function isoTime(value: unknown): string | null {
   return Number.isFinite(time) ? new Date(time).toISOString() : null;
 }
 
+/**
+ * The delivery postcode another carrier holding a lookup's parcel asks for,
+ * which its owner may add (`routing.input_needed`). The carrier's name and the
+ * input it needs, nothing it told about the parcel.
+ */
+function postcodeAsked(row: JsonObject): Pick<ApiParcelLink, 'inputNeeded'> {
+  const routing = isRecord(row.carrier_data) && isRecord(row.carrier_data.routing) ? row.carrier_data.routing : {};
+  const needed = routing.input_needed;
+  return row.one_off === true && isRecord(needed) && needed.field === 'dpdPostcode' && typeof needed.carrier === 'string'
+    && needed.carrier !== row.carrier && row.current_stage !== 'delivered' && row.current_stage !== 'returned'
+    ? { inputNeeded: { carrier: needed.carrier as ApiCarrierId, field: 'dpdPostcode' } } : {};
+}
+
 /** Whether the link is a gift still on its way for this caller: everyone but the owner, until the parcel is delivered. */
 export function isWrappedGift({ link, package: row }: StoredParcelLink): boolean {
   return link.gift === true && link.owner !== true && row.current_stage !== 'delivered';
@@ -405,6 +418,7 @@ export function publicParcelResponse(found: StoredParcelLink, alerts: ApiParcelA
     // The stored link's own `shared` says that it belongs to an account: the kind above.
     shared: link.stopped !== true,
     alerts,
+    ...(owner ? postcodeAsked(row) : {}),
   };
   return {
     link: shownLink,

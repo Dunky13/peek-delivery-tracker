@@ -133,6 +133,7 @@ describe('parcel link model', () => {
       unavailable: 'link.gone.title', burst: 'error.rateLimited', daily: 'peek.dailyLimit',
       validation: 'error.trackingNumber', offline: 'error.connection', server: 'error.generic',
       stopped: 'share.stopped.title', full: 'alerts.error.full', unconfigured: 'notifications.state.unavailable',
+      refused: 'error.postcode',
     };
     for (const [kind, key] of Object.entries(expected)) {
       expect(parcelLinkErrorKey(new ParcelLinkError(kind as ParcelLinkErrorKind))).toBe(key);
@@ -217,6 +218,40 @@ describe('the API backend', () => {
     expect((await failure(links.updateParcelLink(ID, 'no key', { gift: true }))).kind).toBe('unavailable');
     expect((await failure(links.updateParcelLink('nope', KEY, { gift: true }))).kind).toBe('unavailable');
     expect(request).toHaveBeenCalledTimes(3);
+  });
+
+  it('adds the postcode another carrier asks for with the owner key, and types its refusals', async () => {
+    const asked = { ...owner, link: { ...owner.link, inputNeeded: { carrier: 'dhl', field: 'dpdPostcode' } } } as ApiPublicParcelResponse;
+    expect(parcelLinkView(asked).link.inputNeeded).toEqual({ carrier: 'dhl', field: 'dpdPostcode' });
+    // Only the owner is asked.
+    expect(parcelLinkView({ ...asked, link: { ...asked.link, role: 'viewer' } }).link.inputNeeded).toBeUndefined();
+    const { links, request } = api(
+      json(owner),
+      json({ error: 'The carrier does not have the parcel for this postcode' }, 422),
+      json({ error: 'Too many postcodes' }, 429, { 'Retry-After': '3600' }),
+      json({ error: 'Nothing is asked for this parcel' }, 409), json(owner),
+      json({ error: 'Parcel unavailable' }, 404),
+      json({ error: 'The carrier could not be asked' }, 503),
+    );
+    const view = await links.addParcelPostcode(ID, KEY, 'dhl', '99999');
+    expect(view.link.role).toBe('owner');
+    const [path, init] = request.mock.calls[0];
+    expect(path).toBe(`/api/public/parcels/${ID}/postcode`);
+    expect(init).toMatchObject({ method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer', cache: 'no-store' });
+    expect(new Headers(init!.headers).get('X-Parcel-Key')).toBe(KEY);
+    expect(JSON.parse(String(init!.body))).toEqual({ carrier: 'dhl', postcode: '99999' });
+    expect((await failure(links.addParcelPostcode(ID, KEY, 'dhl', '99998'))).kind).toBe('refused');
+    expect(await failure(links.addParcelPostcode(ID, KEY, 'dhl', '99997'))).toMatchObject({ kind: 'burst', retryAfterSeconds: 3600 });
+    // Once nothing is asked, the parcel as it now stands.
+    expect((await links.addParcelPostcode(ID, KEY, 'dhl', '99996')).link.role).toBe('owner');
+    expect(request.mock.calls[4][0]).toBe(`/api/public/parcels/${ID}`);
+    expect(new Headers(request.mock.calls[4][1]!.headers).get('X-Parcel-Key')).toBe(KEY);
+    expect((await failure(links.addParcelPostcode(ID, KEY, 'dhl', '99995'))).kind).toBe('unavailable');
+    expect((await failure(links.addParcelPostcode(ID, KEY, 'dhl', '99994'))).kind).toBe('server');
+    // Without a usable key or id nothing is asked.
+    expect((await failure(links.addParcelPostcode(ID, 'no key', 'dhl', '99999'))).kind).toBe('unavailable');
+    expect((await failure(links.addParcelPostcode('nope', KEY, 'dhl', '99999'))).kind).toBe('unavailable');
+    expect(request).toHaveBeenCalledTimes(7);
   });
 
   it('turns a browser’s alerts on and off for a link, and types every refusal', async () => {
@@ -497,6 +532,8 @@ describe('choosing the backend', () => {
     expect(await demo.readParcelLink(id, { key })).toMatchObject({ link: { id, role: 'owner' } });
     expect((await demo.detectCarrierPublic('1234567899')).trackingNumber).toBe('1234567899');
     expect((await demo.updateParcelLink(id, key, { gift: true })).link.gift).toBe(true);
+    expect((await demo.addParcelPostcode(id, key, 'dhl', '99999')).link.role).toBe('owner');
+    await expect(demo.addParcelPostcode(id, 'B'.repeat(43), 'dhl', '99999')).rejects.toMatchObject({ kind: 'unavailable' });
     await demo.setParcelAlert(id, { subscription: { endpoint: 'demo:1', keys: { p256dh: 'demo', auth: 'demo' } }, preset: 'all', locale: 'en' }, key);
     await demo.removeParcelAlert(id, 'demo:1');
     await demo.sendLinkFeedback(id, { id: crypto.randomUUID(), answer: 'right', asked: 'page', app: 'web', locale: 'en' }, key);

@@ -1759,6 +1759,60 @@ export class SupabaseServiceClient extends SupabaseClient {
   }
 
   /**
+   * Counts a delivery postcode about to be sent to the carrier a lookup waits
+   * for, for the holder of its owner key. A link has `limit` tries a day.
+   * Answers the try and the number to send it with, when the next try is
+   * allowed, `not_asked` when the lookup waits for no postcode from that
+   * carrier, or null for an unknown link and a wrong key alike.
+   */
+  async claimParcelLinkPostcode(
+    linkId: string,
+    ownerKeyHash: string,
+    carrier: string,
+    limit: number,
+  ): Promise<{ attempt: string; trackingNumber: string } | { retryAt: string } | 'not_asked' | null> {
+    const result = await this.request('/rest/v1/rpc/claim_parcel_link_postcode', {
+      method: 'POST', body: { p_link_id: linkId, p_owner_key_hash: ownerKeyHash, p_carrier: carrier, p_limit: limit },
+    });
+    if (result === null) return null;
+    if (isRecord(result) && result.asked === false) return 'not_asked';
+    if (isRecord(result) && typeof result.attempt === 'string' && typeof result.tracking_number === 'string') {
+      return { attempt: result.attempt, trackingNumber: result.tracking_number };
+    }
+    if (isRecord(result) && typeof result.retry_at === 'string') return { retryAt: result.retry_at };
+    throw new SupabaseError('Supabase did not return the postcode try');
+  }
+
+  /** Gives back a postcode try the carrier did not refuse. */
+  async releaseParcelLinkPostcode(attempt: string): Promise<void> {
+    await this.request('/rest/v1/rpc/release_parcel_link_postcode', { method: 'POST', body: { p_attempt_id: attempt } });
+  }
+
+  /**
+   * Files a lookup under the carrier that accepted its delivery postcode: the
+   * link moves to the one-off parcel with that carrier and postcode, found or
+   * new. Answers like publicParcel, plus whether that parcel is new; null for
+   * an unknown link and a wrong key, `not_asked` as claimParcelLinkPostcode.
+   */
+  async fileParcelLinkPostcode(
+    linkId: string,
+    ownerKeyHash: string,
+    carrier: string,
+    dpdPostcode: string,
+  ): Promise<StoredParcelLink & { created: boolean } | 'not_asked' | null> {
+    const result = await this.request('/rest/v1/rpc/file_parcel_link_postcode', {
+      method: 'POST',
+      body: { p_link_id: linkId, p_owner_key_hash: ownerKeyHash, p_carrier: carrier, p_dpd_postcode: dpdPostcode },
+    });
+    if (result === null) return null;
+    if (isRecord(result) && result.asked === false) return 'not_asked';
+    if (!isRecord(result) || !isRecord(result.link) || !isRecord(result.package)) {
+      throw new SupabaseError('Supabase did not return the filed parcel link');
+    }
+    return { link: result.link, package: result.package, created: result.created === true };
+  }
+
+  /**
    * Turns on an alert for a link, or updates the one its browser has. `full`
    * when the link has ten already, `finished` when the journey is over and
    * nothing was stored, `stopped` like publicParcel, null for an unknown link.

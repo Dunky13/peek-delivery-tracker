@@ -14,6 +14,7 @@ import {
   withTrackingAttempt,
 } from './observability';
 import { UpstreamHttpError } from 'universal-parcel-scraper/node';
+import { InputRequiredError } from 'universal-parcel-scraper';
 import { SupabaseError } from './supabase';
 import { TrackingCaptureError, SeventeenTrackLookupError, SeventeenTrackNoHistoryError } from 'universal-parcel-scraper/node';
 
@@ -82,6 +83,18 @@ describe('routing log levels', () => {
     reportRoutingEvent('transport_fallback', { carrier: 'ups', provider: 'ups', category: 'trawl' });
     expect(info.mock.calls.map(([line]) => JSON.parse(String(line)).provider)).toEqual(['ParcelsApp']);
     expect(warn.mock.calls.map(([line]) => JSON.parse(String(line)).provider)).toEqual(['Ship24', 'ups']);
+  });
+
+  it('names the reason a carrier gave, found through the causes, and only a reason that reads as a code', () => {
+    const info = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const held = new InputRequiredError('DHL', 'the delivery postcode', 'DHL has the parcel', { reason: 'parcel_found' });
+    reportRoutingEvent('carrier_input_needed', { carrier: 'dhl', provider: 'dhl', error: new Error('probe failed', { cause: held }) });
+    reportRoutingEvent('carrier_input_needed', { carrier: 'dhl', provider: 'dhl', error: new InputRequiredError('DHL', 'x', 'y') });
+    reportRoutingEvent('carrier_input_needed', {
+      carrier: 'dhl', provider: 'dhl', error: new InputRequiredError('DHL', 'x', 'y', { reason: 'Free text with 1234' }),
+    });
+    expect(info.mock.calls.map(([line]) => JSON.parse(String(line)).error_reason)).toEqual(['parcel_found', undefined, undefined]);
   });
 });
 

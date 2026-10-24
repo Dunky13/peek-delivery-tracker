@@ -2222,6 +2222,7 @@ struct ParcelLink: Codable, Equatable, Hashable, Sendable, Identifiable {
     var shared: Bool? = nil
     var alerts: ParcelAlerts? = nil
     var giftWords: GiftWords? = nil
+    var inputNeeded: ParcelLinkInputNeeded? = nil
 }
 
 struct ParcelNumberHint: Codable, Equatable, Hashable, Sendable {
@@ -2335,6 +2336,11 @@ struct UpdateParcelLinkRequest: Codable, Equatable, Hashable, Sendable {
     var gift: Bool? = nil
     var shared: Bool? = nil
     var giftWords: GiftWords? = nil
+}
+
+struct ParcelLinkPostcodeRequest: Codable, Equatable, Hashable, Sendable {
+    var carrier: CarrierID
+    var postcode: String
 }
 
 enum ParcelAlertPreset: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
@@ -2556,6 +2562,11 @@ enum ParcelLinkKind: String, Codable, CaseIterable, Hashable, Sendable, Identifi
     var id: String { rawValue }
 }
 
+struct ParcelLinkInputNeeded: Codable, Equatable, Hashable, Sendable {
+    var carrier: CarrierID
+    var field: ParcelLinkInputNeededField
+}
+
 struct PublicPackageCarrierData: Codable, Equatable, Hashable, Sendable {
     var activeTrackingCarrier: CarrierID? = nil
     var activeTrackingNumber: String? = nil
@@ -2612,6 +2623,12 @@ struct CarrierDataRouting: Codable, Equatable, Hashable, Sendable {
     var inputSuggested: CarrierInputSuggested? = nil
     var providerInputNeeded: ProviderInputNeeded? = nil
     var nextCheckAt: String? = nil
+}
+
+enum ParcelLinkInputNeededField: String, Codable, CaseIterable, Hashable, Sendable, Identifiable {
+    case dpdPostcode
+
+    var id: String { rawValue }
 }
 
 struct CarrierInputNeeded: Codable, Equatable, Hashable, Sendable {

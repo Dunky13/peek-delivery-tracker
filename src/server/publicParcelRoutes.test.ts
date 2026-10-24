@@ -6,11 +6,13 @@ import { POST as lookUp } from '../../app/api/public/parcels/route';
 import { DELETE as forget, GET as read, PATCH as change } from '../../app/api/public/parcels/[linkId]/route';
 import { DELETE as alertOff, PUT as alertOn } from '../../app/api/public/parcels/[linkId]/alerts/route';
 import { DELETE as appAlertOff, PUT as appAlertOn } from '../../app/api/public/parcels/[linkId]/app-alerts/route';
+import { POST as postcodeAdded } from '../../app/api/public/parcels/[linkId]/postcode/route';
 import { AMAZON_ACCOUNT_MESSAGE } from '../lib/amazon';
 import * as amazon from './amazonShippingEligibility';
 import { HttpError } from './api';
 import { SupabaseAuthenticator } from './auth';
 import * as background from './background';
+import * as linkPostcodes from './linkPostcodes';
 import * as metrics from './metrics';
 import * as observability from './observability';
 import { SupabaseError, SupabaseServiceClient } from './supabase';
@@ -187,6 +189,8 @@ describe('looking up a parcel without an account', () => {
       id: linkId, role: 'owner', kind: 'lookup', createdAt: '2026-09-28T08:00:00.000Z',
       forgetAt: '2026-12-30T10:00:00.000Z', numberShown: true, showNumber: false, canKeep: true,
       gift: false, shared: true, alerts: { available: false, vapidPublicKey: null, email: false },
+      // The stored parcel's routing asks for GLS Switzerland's postcode: only its owner is told.
+      inputNeeded: { carrier: 'gls-ch', field: 'dpdPostcode' },
     });
     expect(answer.package).toMatchObject({ id: packageId, tracking_number: trackingNumber, number_hint: null, label: '' });
 
@@ -690,6 +694,167 @@ describe('reading a parcel link', () => {
     expect(refused.headers.get('retry-after')).toBeTruthy();
     expect(found).toHaveBeenCalledTimes(120);
     expect((await open(linkId, undefined, '198.51.100.21')).status).toBe(404);
+  });
+});
+
+describe('the postcode another carrier asks for', () => {
+  // Synthetic: a twelve-digit number of the shape DHL asks a postcode for.
+  const heldNumber = '990000000001';
+  const heldPostcode = '99999';
+  const filedId = '51000000-0000-4000-a000-000000000011';
+  const asking = { input_needed: { carrier: 'dhl', field: 'dpdPostcode' } };
+  const find = (link: JsonObject, parcel: JsonObject = {}) => vi.spyOn(SupabaseServiceClient.prototype, 'publicParcel')
+    .mockResolvedValue({ link: storedLink(link), package: storedPackage({ carrier: 'unknown', carrier_data: { routing: asking }, ...parcel }) });
+  const claim = (answer: Awaited<ReturnType<SupabaseServiceClient['claimParcelLinkPostcode']>> = { attempt: 'try-1', trackingNumber: heldNumber }) =>
+    vi.spyOn(SupabaseServiceClient.prototype, 'claimParcelLinkPostcode').mockResolvedValue(answer);
+  const check = (answer: linkPostcodes.PostcodeCheck) => vi.spyOn(linkPostcodes, 'checkLinkPostcode').mockResolvedValue(answer);
+  const file = () => vi.spyOn(SupabaseServiceClient.prototype, 'fileParcelLinkPostcode').mockResolvedValue({
+    link: storedLink({ owner: true }),
+    package: storedPackage({
+      id: filedId, tracking_number: heldNumber, carrier: 'dhl', dpd_postcode: heldPostcode, sync_status: 'pending',
+      last_synced_at: null, carrier_data: {}, tracking_events: [],
+    }),
+    created: true,
+  });
+  let release: ReturnType<typeof vi.spyOn>;
+  beforeEach(() => {
+    release = vi.spyOn(SupabaseServiceClient.prototype, 'releaseParcelLinkPostcode').mockResolvedValue(undefined);
+  });
+  /** `key` null sends no owner key. */
+  const add = (body: unknown, id = linkId, key: string | null = ownerKey, ip = nextIp()) => postcodeAdded(
+    new NextRequest(`https://delivery.example/api/public/parcels/${id}/postcode`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-real-ip': ip, ...(key === null ? {} : { 'x-parcel-key': key }) },
+      body: JSON.stringify(body),
+    }), route(id));
+  const outcomes = () => vi.mocked(console.log).mock.calls.map(([line]) => JSON.parse(String(line)))
+    .filter((line) => line.event === 'parcel_link_postcode').map((line) => line.outcome);
+
+  it('tells the owner of a lookup, and no one else, which carrier asks for the postcode', async () => {
+    find({ owner: true });
+    expect((await (await open(linkId, ownerKey)).json()).link.inputNeeded).toEqual({ carrier: 'dhl', field: 'dpdPostcode' });
+    find({});
+    const viewer = await (await open()).text();
+    expect(viewer).not.toContain('inputNeeded');
+    expect(viewer).not.toContain('dhl');
+    // Not once the parcel is filed under that carrier, nor once it is over, nor for another input.
+    for (const parcel of [{ carrier: 'dhl' }, { current_stage: 'delivered' }, { current_stage: 'returned' },
+      { carrier_data: { routing: { input_needed: { carrier: 'dhl', field: 'trackingUrl' } } } }]) {
+      find({ owner: true }, parcel);
+      expect((await (await open(linkId, ownerKey)).json()).link).not.toHaveProperty('inputNeeded');
+    }
+  });
+
+  it('asks the carrier first, then files the lookup under it and checks it at once', async () => {
+    const claimed = claim();
+    const checked = check({ outcome: 'accepted' });
+    const filed = file();
+    const response = await add({ carrier: 'dhl', postcode: ' 99999 ' });
+    expect(response.status).toBe(200);
+    expect(claimed).toHaveBeenCalledExactlyOnceWith(linkId, keyHash, 'dhl', linkPostcodes.LINK_POSTCODE_TRIES);
+    expect(checked).toHaveBeenCalledExactlyOnceWith('dhl', heldNumber, heldPostcode, expect.any(AbortSignal));
+    expect(filed).toHaveBeenCalledExactlyOnceWith(linkId, keyHash, 'dhl', heldPostcode);
+    expect(checked.mock.invocationCallOrder[0]).toBeLessThan(filed.mock.invocationCallOrder[0]!);
+    const answer = await response.json();
+    expect(answer.link).toMatchObject({ id: linkId, role: 'owner' });
+    expect(answer.link).not.toHaveProperty('inputNeeded');
+    expect(answer.package).toMatchObject({ id: filedId, carrier: 'dhl', dpd_postcode: null, tracking_events: [] });
+    expect(enqueue).toHaveBeenCalledExactlyOnceWith({ packageId: filedId, reason: 'added' });
+    expect(wake).toHaveBeenCalledOnce();
+    // Filing clears the link's tries: none is given back on top.
+    expect(release).not.toHaveBeenCalled();
+    expect(outcomes()).toEqual(['accepted']);
+  });
+
+  it('shows nothing for a postcode the carrier refuses, and keeps the try counted', async () => {
+    claim();
+    check({ outcome: 'refused' });
+    const filed = file();
+    const refused = await add({ carrier: 'dhl', postcode: heldPostcode });
+    expect(refused.status).toBe(422);
+    expect(Object.keys(await refused.json())).toEqual(['error']);
+    expect(filed).not.toHaveBeenCalled();
+    expect(enqueue).not.toHaveBeenCalled();
+    expect(release).not.toHaveBeenCalled();
+
+    // After several wrong ones the carrier takes none for a while: the owner is told when to try again.
+    check({ outcome: 'refused', retryAfterMs: 90_000 });
+    const blocked = await add({ carrier: 'dhl', postcode: heldPostcode });
+    expect(blocked.status).toBe(429);
+    expect(blocked.headers.get('retry-after')).toBe('90');
+    expect(release).not.toHaveBeenCalled();
+    expect(outcomes()).toEqual(['refused', 'refused']);
+  });
+
+  it('refuses a link out of tries without asking the carrier', async () => {
+    vi.useFakeTimers({ now: Date.parse('2026-10-24T08:00:00Z'), toFake: ['Date'] });
+    claim({ retryAt: '2026-10-24T09:30:00.000Z' });
+    const checked = check({ outcome: 'accepted' });
+    const response = await add({ carrier: 'dhl', postcode: heldPostcode });
+    expect(response.status).toBe(429);
+    expect(response.headers.get('retry-after')).toBe('5400');
+    expect(checked).not.toHaveBeenCalled();
+    expect(release).not.toHaveBeenCalled();
+    expect(outcomes()).toEqual(['limited']);
+  });
+
+  it('gives the try back when the carrier cannot be asked or the postcode cannot be one', async () => {
+    claim();
+    const checked = check({ outcome: 'unavailable' });
+    const filed = file();
+    expect((await add({ carrier: 'dhl', postcode: heldPostcode })).status).toBe(503);
+    expect(release).toHaveBeenCalledExactlyOnceWith('try-1');
+    expect(filed).not.toHaveBeenCalled();
+
+    expect((await add({ carrier: 'dhl', postcode: '12' })).status).toBe(400);
+    expect(release).toHaveBeenCalledTimes(2);
+    expect(checked).toHaveBeenCalledOnce();
+
+    checked.mockRejectedValue(new Error('carrier crashed'));
+    vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
+    expect((await add({ carrier: 'dhl', postcode: heldPostcode })).status).toBe(500);
+    expect(release).toHaveBeenCalledTimes(3);
+  });
+
+  it('answers an unknown link, a wrong key and a missing key alike, and a lookup that asks for nothing apart', async () => {
+    const claimed = claim(null);
+    const checked = check({ outcome: 'accepted' });
+    for (const [id, key] of [[linkId, ownerKey], ['unknownLink2', ownerKey], [linkId, 'not-a-key'], [linkId, null], ['bad', ownerKey]] as const) {
+      const response = await add({ carrier: 'dhl', postcode: heldPostcode }, id, key);
+      expect(response.status).toBe(404);
+      expect(await response.json()).toEqual({ error: 'Parcel unavailable' });
+    }
+    expect(claimed).toHaveBeenCalledTimes(2);
+    claim('not_asked');
+    expect((await add({ carrier: 'not a carrier we asked', postcode: heldPostcode })).status).toBe(409);
+    expect(checked).not.toHaveBeenCalled();
+    expect((await add({ carrier: 'dhl' })).status).toBe(400);
+    // A carrier the link did not ask for is the sender's own text: it stays out of the log.
+    const lines = vi.mocked(console.log).mock.calls.map(([line]) => JSON.parse(String(line)))
+      .filter((line) => line.event === 'parcel_link_postcode');
+    expect(lines.map((line) => [line.outcome, line.carrier])).toEqual([...Array(5).fill(['unknown', undefined]), ['not_asked', undefined]]);
+  });
+
+  it('never logs the link, the key, the number or the postcode', async () => {
+    claim();
+    check({ outcome: 'refused' });
+    await add({ carrier: 'dhl', postcode: heldPostcode });
+    const lines = [...vi.mocked(console.log).mock.calls, ...vi.mocked(console.error).mock.calls].map(([line]) => String(line));
+    expect(lines.some((line) => line.includes('parcel_link_postcode'))).toBe(true);
+    for (const line of lines) {
+      for (const secret of [linkId, ownerKey, keyHash, heldNumber, heldPostcode]) expect(line).not.toContain(secret);
+    }
+  });
+
+  it('limits postcodes per client across every link', async () => {
+    const claimed = claim(null);
+    for (let index = 0; index < 10; index += 1) {
+      expect((await add({ carrier: 'dhl', postcode: heldPostcode }, index % 2 ? linkId : 'unknownLink2', ownerKey, '198.51.100.40')).status).toBe(404);
+    }
+    const refused = await add({ carrier: 'dhl', postcode: heldPostcode }, 'anotherLink3', ownerKey, '198.51.100.40');
+    expect(refused.status).toBe(429);
+    expect(refused.headers.get('retry-after')).toBeTruthy();
+    expect(claimed).toHaveBeenCalledTimes(10);
   });
 });
 

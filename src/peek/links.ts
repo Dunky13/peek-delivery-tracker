@@ -6,6 +6,7 @@ import type {
   ApiDeleteParcelAlertRequest,
   ApiParcelAlertRequest,
   ApiParcelFeedbackRequest,
+  ApiParcelLinkPostcodeRequest,
   ApiParcelShareResponse,
   ApiPublicLookupRequest,
   ApiPublicLookupResponse,
@@ -18,6 +19,7 @@ import { authenticatedFetch, type ApiAuth } from '../lib/apiClient';
 import { isDemoBuild } from '../lib/buildMode';
 import { CARRIERS, detectCarrier, normalizeTrackingNumber } from '../lib/carriers';
 import { userErrorKey } from '../lib/userMessages';
+import type { CarrierId } from '../types';
 import { createDemoLinks } from './demoLinks';
 import {
   isParcelLinkId,
@@ -193,6 +195,21 @@ export function createApiLinks(request: typeof fetch = (input, init) => fetch(in
       return parcelLinkView(await answer<ApiPublicParcelResponse>(response));
     },
 
+    async addParcelPostcode(id, key, carrier, postcode, signal) {
+      if (!isParcelLinkId(id) || !OWNER_KEY.test(key)) throw new ParcelLinkError('unavailable');
+      const body: ApiParcelLinkPostcodeRequest = { carrier, postcode };
+      const response = await write('POST', `/api/public/parcels/${id}/postcode`, body, signal, key);
+      if (response.status === 422) throw new ParcelLinkError('refused');
+      if (response.status === 409) {
+        // Nothing is asked any more: the parcel as it now stands.
+        const current = await send(`/api/public/parcels/${id}`, { headers: keyHeader(key) }, signal);
+        if (!current.ok) throw await failure(current);
+        return parcelLinkView(await answer<ApiPublicParcelResponse>(current));
+      }
+      if (!response.ok) throw await failure(response);
+      return parcelLinkView(await answer<ApiPublicParcelResponse>(response));
+    },
+
     async setParcelAlert(id, alert, key) {
       if (!isParcelLinkId(id)) throw new ParcelLinkError('unavailable');
       const { endpoint, keys } = alert.subscription;
@@ -309,6 +326,11 @@ export function forgetParcelLink(id: string, key: string): Promise<void> {
 /** Changes what a looked-up parcel's link shows. Only the owner key can; the answer is the owner's view. */
 export function updateParcelLink(id: string, key: string, changes: ParcelLinkChanges, signal?: AbortSignal): Promise<ParcelLinkView> {
   return client.updateParcelLink(id, key, changes, signal);
+}
+
+/** Adds the delivery postcode another carrier asks for. Only the owner key can; the sample asks for none. */
+export function addParcelPostcode(id: string, key: string, carrier: CarrierId, postcode: string, signal?: AbortSignal): Promise<ParcelLinkView> {
+  return client.addParcelPostcode(id, key, carrier, postcode, signal);
 }
 
 /** Turns a browser's alerts on for a link, or changes what they announce. */

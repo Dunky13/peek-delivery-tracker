@@ -102,6 +102,11 @@ export interface ParcelLinksClient {
   forgetParcelLink(id: string, key: string): Promise<void>;
   /** Changes what the link shows, with its owner key. Answers the parcel as the owner now sees it. */
   updateParcelLink(id: string, key: string, changes: ParcelLinkChanges, signal?: AbortSignal): Promise<ParcelLinkView>;
+  /**
+   * Adds the delivery postcode the link's `inputNeeded` asks for, with its owner key. Answers the parcel filed under
+   * that carrier, or as it now stands when nothing is asked any more; fails as `refused` when the carrier refuses it.
+   */
+  addParcelPostcode(id: string, key: string, carrier: CarrierId, postcode: string, signal?: AbortSignal): Promise<ParcelLinkView>;
   /** Turns a browser's alerts on for this link, or changes what they announce. Anyone with the link can. */
   setParcelAlert(id: string, alert: ParcelAlertInput, key?: string | null): Promise<void>;
   /** Turns a browser's alerts off. Nothing is said about whether there were any. */
@@ -126,11 +131,12 @@ export interface ParcelLinkReadOptions {
  * - `unconfigured`: this server sends no browser notifications.
  * - `burst`: too many requests; `retryAfterSeconds` says when to try again.
  * - `daily`: no lookups are left today; signing in is the way on.
+ * - `refused`: the carrier does not have the parcel for the postcode the owner added.
  * - `validation`: the server refused the input; `guidance` names the advice when the app has some.
  * - `offline`: the request never got an answer.
  * - `server`: the service is in trouble, or answered something unreadable.
  */
-export type ParcelLinkErrorKind = 'unavailable' | 'stopped' | 'full' | 'unconfigured' | 'burst' | 'daily' | 'validation' | 'offline' | 'server';
+export type ParcelLinkErrorKind = 'unavailable' | 'stopped' | 'full' | 'unconfigured' | 'burst' | 'daily' | 'refused' | 'validation' | 'offline' | 'server';
 
 export class ParcelLinkError extends Error {
   readonly retryAfterSeconds: number | null;
@@ -154,6 +160,7 @@ const FALLBACK_MESSAGES: Record<ParcelLinkErrorKind, MessageKey> = {
   unconfigured: 'notifications.state.unavailable',
   burst: 'error.rateLimited',
   daily: 'peek.dailyLimit',
+  refused: 'error.postcode',
   validation: 'error.trackingNumber',
   offline: 'error.connection',
   server: 'error.generic',
@@ -212,6 +219,9 @@ export function parcelLinkView(response: ApiPublicParcelResponse): ParcelLinkVie
       canKeep: link.canKeep === true,
       gift: link.gift === true,
       ...(link.giftWords ? { giftWords: link.giftWords } : {}),
+      // The postcode another carrier asks for, which only the owner can add.
+      ...(link.role === 'owner' && link.inputNeeded?.field === 'dpdPostcode' && typeof link.inputNeeded.carrier === 'string'
+        ? { inputNeeded: { carrier: link.inputNeeded.carrier, field: 'dpdPostcode' as const } } : {}),
       // Only a link that says it was stopped is: an answer from before sharing could be stopped is a shared one.
       shared: link.shared !== false,
       // A browser can only subscribe with the server's key. Whether the server emails accounts is said only when it does.

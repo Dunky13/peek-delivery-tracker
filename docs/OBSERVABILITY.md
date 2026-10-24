@@ -551,7 +551,10 @@ Key JSON events:
   inconclusive answer with a reason in `UNKNOWN_ITEM_REASONS`, `src/server/trackingFailure.ts`),
   `input_required` or `invalid_input`.
   A `tracking_routing` line is a warning for `transport_fallback` and `provider_failed`,
-  except a provider's `no_history` answer, which is info;
+  except a provider's `no_history` answer, which is info. One with an error has its
+  `error_type` and, when the carrier gave one, its `error_reason` (such as `parcel_found`
+  or `postcode_mismatch`), read through the error's causes and kept only when it reads as
+  a code;
 - `tracking_sync_audit_write_failed`, `tracking_sync_audit_read_failed`, `tracking_sync_audit_maintenance_failed`,
   `tracking_status_observation_write_failed`;
 - `tracking_sync_anomaly` (warning, by `attempt_id`): one per anomaly code of a check,
@@ -600,6 +603,12 @@ Key JSON events:
   `public_lookup_total` counts it, or `failed` with the `reason`, the stage it stopped at:
   `input`, `verification` (the browser proof), `allowance`, `amazon` or `saving`. A
   refusal adds its `status`; `error_class` names any failure. It never has the number;
+- `parcel_link_postcode` (by `request_id`): how a postcode the owner of a lookup added
+  ended: `accepted`, `refused` (the carrier does not have the parcel for it, or takes none
+  for a while), `limited` (the link's tries for the day are spent), `unavailable` (the
+  carrier could not be asked), `not_asked` or `unknown` (no such link, or a wrong key). It
+  has the `carrier` once the link asked for that one, never the link, the number or the
+  postcode;
 - `carrier_recognition`: how many carriers the Add sheet's recognition asked, whether it
   asked a `second_batch` because none of the first five knew the number, how many knew the
   number or failed, and what it settled on (a carrier, `choice` or `none`).

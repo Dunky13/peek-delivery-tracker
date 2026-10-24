@@ -11,11 +11,12 @@ import { forgetAllRecents, recentFor, rememberParcel } from './recents';
 import { SAMPLE_LINK_ID } from './sample';
 import { PeekSessionProvider, type PeekSession } from './session';
 
-const mocks = vi.hoisted(() => ({ read: vi.fn(), forget: vi.fn() }));
+const mocks = vi.hoisted(() => ({ read: vi.fn(), forget: vi.fn(), addPostcode: vi.fn() }));
 vi.mock('./links', async (original) => ({
   ...await original<typeof import('./links')>(),
   readParcelLink: mocks.read,
   forgetParcelLink: mocks.forget,
+  addParcelPostcode: mocks.addPostcode,
 }));
 
 const HOUR = 3_600_000;
@@ -41,6 +42,7 @@ const clipboard = (writeText: (text: string) => Promise<void>) => Object.defineP
 beforeEach(() => {
   mocks.read.mockReset();
   mocks.forget.mockReset().mockResolvedValue(undefined);
+  mocks.addPostcode.mockReset();
   history.replaceState(null, '', `/p/${LINK_ID}`);
   document.title = 'Peek — Universal Parcel Tracker';
 });
@@ -626,6 +628,38 @@ describe('ParcelPage actions', () => {
     await act(async () => { await user.click(confirm()); });
     expect(recentFor(LINK_ID)).toBeNull();
     expect(location.pathname).toBe('/');
+  });
+
+  it('asks the owner for the postcode another carrier wants, and shows the parcel once the carrier accepts it', async () => {
+    const asked = testView({ parcel: { carrier: 'dpd' } });
+    asked.link = { ...asked.link, inputNeeded: { carrier: 'dhl', field: 'dpdPostcode' } };
+    rememberParcel({ id: LINK_ID, key: OWNER_KEY, view: asked });
+    mocks.read.mockResolvedValue(asked);
+    mocks.addPostcode.mockRejectedValueOnce(new ParcelLinkError('refused')).mockResolvedValueOnce(view(journey));
+    const user = userEvent.setup();
+    open();
+    const prompt = await screen.findByText('DHL has this parcel. Add the delivery postcode to track it.');
+    await user.click(within(prompt.parentElement!).getByRole('button', { name: 'Add postcode' }));
+    const sheet = screen.getByRole('dialog', { name: 'Add postcode' });
+    await user.type(within(sheet).getByRole('textbox'), ' 99999 ');
+    await user.click(within(sheet).getByRole('button', { name: 'Add postcode' }));
+    expect(await within(sheet).findByRole('alert')).toHaveTextContent('DHL doesn’t have this parcel for that postcode. Check it and try again.');
+    expect(mocks.addPostcode).toHaveBeenLastCalledWith(LINK_ID, OWNER_KEY, 'dhl', '99999');
+    await user.click(within(sheet).getByRole('button', { name: 'Add postcode' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+    expect(mocks.addPostcode).toHaveBeenCalledTimes(2);
+    expect(screen.queryByText('DHL has this parcel. Add the delivery postcode to track it.')).toBeNull();
+    expect(screen.getByRole('heading', { level: 1, name: 'In transit' })).toBeVisible();
+  });
+
+  it('asks nobody but the holder of the owner key for a postcode', async () => {
+    const asked = testView();
+    asked.link = { ...asked.link, inputNeeded: { carrier: 'dhl', field: 'dpdPostcode' } };
+    mocks.read.mockResolvedValue(asked);
+    open();
+    expect(await screen.findByRole('heading', { level: 1 })).toBeVisible();
+    expect(screen.queryByText('DHL has this parcel. Add the delivery postcode to track it.')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Add postcode' })).toBeNull();
   });
 });
 

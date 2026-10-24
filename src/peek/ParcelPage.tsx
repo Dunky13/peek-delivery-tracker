@@ -38,6 +38,7 @@ import { Glyph } from './parcel/glyphs';
 import { useNow, useOffline, useWideLayout } from './parcel/hooks';
 import { AccountRow, AddToDeliveries, AlreadyFollowed, KeepSheet, PassportTeaser, SharedWithYou } from './parcel/Keep';
 import { OtherParcels } from './parcel/OtherParcels';
+import { PostcodeAsked, PostcodeSheet } from './parcel/Postcode';
 import { RouteMap } from './parcel/RouteMap';
 import { SampleInvitation, SampleNote } from './parcel/Sample';
 import { copyText, shareParcelLink } from './parcel/share';
@@ -370,6 +371,10 @@ function Parcel({ linkId, entrance, state, view, onHome }: {
   }
   const askToForget = key ? () => setForgetting('asked') : undefined;
 
+  // The postcode another carrier holding the parcel asks for: the owner's to add, with the key.
+  const asked = key ? link.inputNeeded ?? null : null;
+  const [addingPostcode, setAddingPostcode] = useState(false);
+
   const final = !!stage && isFinal(stage);
 
   // Alerts and the calendar: for anyone with the link, until the journey is over.
@@ -432,7 +437,7 @@ function Parcel({ linkId, entrance, state, view, onHome }: {
       : !carrierKnown ? 'unknown' : automatic || moving ? 'found' : null,
     scan: scanIdentity(parcel),
     carrier: displayed.name,
-    busy: !!word || sharing || alerting || !!keepSheet || !!forgetting || mapOpen,
+    busy: !!word || sharing || alerting || !!keepSheet || !!forgetting || mapOpen || addingPostcode,
     notes: feedbackNotes,
     send: (answer) => sendLinkFeedback(linkId, answer, key),
   });
@@ -472,6 +477,7 @@ function Parcel({ linkId, entrance, state, view, onHome }: {
         <p className="sr-only" role="status">{checked}</p>
         {wrapped && <GiftSurprise />}
         {opened && <GiftNote note={state.words.note} from={state.words.from} inside={state.words.name ?? state.name} />}
+        {asked && <PostcodeAsked carrier={asked.carrier} onAdd={() => setAddingPostcode(true)} />}
         {owner && link.shared === false && <p className="peekp-shared"><Glyph name="info" />{t('share.stopped.owner')}</p>}
         {!carrierKnown && <p className="peekp-keeppage">{t('link.unknown.keep')}</p>}
         {signedIn && !followed && link.canKeep && <AddToDeliveries busy={adding || pendingId === linkId} error={addError && t(addError)} onAdd={() => void add()} />}
@@ -521,6 +527,8 @@ function Parcel({ linkId, entrance, state, view, onHome }: {
     {alerting && <AlertsSheet linkId={linkId} ownerKey={key} name={name} alerts={link.alerts} initialPreset={early ? 'all' : 'important'}
       calendar={calendarWindow} onCalendar={calendarFile}
       onSignIn={session.account === 'visitor' && !sample ? signInFor : undefined} onClose={() => setAlerting(false)} />}
+    {addingPostcode && asked && key && <PostcodeSheet linkId={linkId} ownerKey={key} carrier={asked.carrier} onAdded={adopt}
+      onClose={() => setAddingPostcode(false)} />}
     {forgetting && <ForgetDialog arrived={forgetting === 'arrived' ? { forgetLine } : undefined} onForget={forget} onCancel={() => setForgetting(false)} />}
     {mapOpen && route && <ParcelMapSheet route={route} stage={stage ?? undefined} brand={brand} onClose={() => setMapOpen(false)} />}
     <FeedbackOverlays feedback={feedback} />

@@ -33057,6 +33057,101 @@
         }
       }
     },
+    "/api/public/parcels/{linkId}/postcode": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ParcelLinkId"
+        }
+      ],
+      "post": {
+        "operationId": "addPublicParcelPostcode",
+        "summary": "Add the delivery postcode another carrier holding a lookup's parcel asks for",
+        "description": "The carrier is asked first. A postcode it accepts files the lookup under it and queues its check at once; one it refuses shows nothing and counts against the link, five a day.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "X-Parcel-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{43}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParcelLinkPostcodeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The lookup filed under the carrier, as the owner sees it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicParcelResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ApiError"
+          },
+          "404": {
+            "description": "Parcel unavailable: an unknown link and a wrong or missing key are never told apart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "No postcode is asked for this parcel from that carrier",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The carrier does not have the parcel for this postcode",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/ApiError"
+          },
+          "502": {
+            "$ref": "#/components/responses/ApiError"
+          },
+          "503": {
+            "description": "The carrier could not be asked; the try does not count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/packages/{packageId}/share": {
       "parameters": [
         {
@@ -36250,6 +36345,26 @@
           },
           "giftWords": {
             "$ref": "#/components/schemas/GiftWords"
+          },
+          "inputNeeded": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Another carrier holds the parcel and asks for its delivery postcode, which the owner adds with addPublicParcelPostcode. Sent to the owner of a lookup only.",
+            "required": [
+              "carrier",
+              "field"
+            ],
+            "properties": {
+              "carrier": {
+                "$ref": "#/components/schemas/CarrierId"
+              },
+              "field": {
+                "type": "string",
+                "enum": [
+                  "dpdPostcode"
+                ]
+              }
+            }
           }
         }
       },
@@ -36669,6 +36784,26 @@
           },
           "giftWords": {
             "$ref": "#/components/schemas/GiftWords"
+          }
+        }
+      },
+      "ParcelLinkPostcodeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "carrier",
+          "postcode"
+        ],
+        "properties": {
+          "carrier": {
+            "$ref": "#/components/schemas/CarrierId",
+            "description": "The carrier of the link's inputNeeded."
+          },
+          "postcode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32,
+            "description": "The parcel's delivery postcode, as the recipient writes it."
           }
         }
       },

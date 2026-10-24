@@ -314,6 +314,14 @@ export function createDemoLinks(
       return view(id, next, true);
     },
 
+    async addParcelPostcode(id, key, _carrier, _postcode, signal) {
+      signal?.throwIfAborted();
+      const link = found(load(), id);
+      if (!link || link.key === null || link.key !== key) throw new ParcelLinkError('unavailable');
+      // No carrier asks the demo's parcels for a postcode: like the server once nothing is asked, the parcel as it stands.
+      return view(id, link, true);
+    },
+
     async setParcelAlert(id, alert, key) {
       const links = load();
       const link = found(links, id);

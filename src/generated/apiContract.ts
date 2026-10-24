@@ -32277,6 +32277,10 @@ export interface ApiParcelLink {
   "shared"?: boolean;
   "alerts"?: ApiParcelAlerts;
   "giftWords"?: ApiGiftWords;
+  "inputNeeded"?: {
+  "carrier": ApiCarrierId;
+  "field": "dpdPostcode";
+};
 }
 
 export interface ApiParcelNumberHint {
@@ -32376,6 +32380,11 @@ export interface ApiUpdateParcelLinkRequest {
   "gift"?: boolean;
   "shared"?: boolean;
   "giftWords"?: ApiGiftWords;
+}
+
+export interface ApiParcelLinkPostcodeRequest {
+  "carrier": ApiCarrierId;
+  "postcode": string;
 }
 
 export type ApiParcelAlertPreset = "all" | "important" | "delivery";
