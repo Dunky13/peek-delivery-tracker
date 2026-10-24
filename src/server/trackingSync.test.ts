@@ -1118,10 +1118,10 @@ describe('TrackingSyncService', () => {
         events: [{ time: '2026-09-10T11:00:00Z', description: 'Delivered', stage: 'delivered' }] }) };
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null,
       () => new Date('2026-09-10T12:00:00Z'));
-    await service.syncPackage({ id: 'provider-identity', carrier: 'unknown', tracking_number: '1234567891', current_stage: 'pending' });
+    await service.syncPackage({ id: 'provider-identity', carrier: 'unknown', tracking_number: '1234067892', current_stage: 'pending' });
     const saved = client.updatePackage.mock.calls.at(-1)![1];
     expect(saved).toMatchObject({ carrier: 'dhl-express', current_stage: 'delivered', carrier_data: {
-      tracking_provider: 'Ship24', routing: { configured_carrier: 'dhl-express', preferred_number: '1234567891' } } });
+      tracking_provider: 'Ship24', routing: { configured_carrier: 'dhl-express', preferred_number: '1234067892' } } });
     expect(saved.carrier_data).not.toHaveProperty('carrier_answered');
     expect(saved.carrier_data.routing).not.toHaveProperty('confirmed_carrier');
     expect(saved.carrier_data).not.toHaveProperty('auto_changed_from');
@@ -1138,7 +1138,7 @@ describe('TrackingSyncService', () => {
         events: [{ time: '2026-09-10T11:00:00Z', description: 'Delivered', stage: 'delivered' }] }) };
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null,
       () => new Date('2026-09-10T12:00:00Z'));
-    await service.syncPackage({ id: 'delivered-at-add', carrier: 'unknown', tracking_number: '1234567891', current_stage: 'pending' });
+    await service.syncPackage({ id: 'delivered-at-add', carrier: 'unknown', tracking_number: '1234067892', current_stage: 'pending' });
     expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ carrier: 'dhl-express', current_stage: 'delivered',
       carrier_data: { tracking_provider: 'Ship24', unconfirmed_delivery_until: '2026-09-13T12:00:00.000Z' } });
   });
@@ -1154,7 +1154,7 @@ describe('TrackingSyncService', () => {
       fetchUniversal: vi.fn().mockResolvedValue({ ...delivered, discovered_carrier: 'dhl-express', reported_carriers: ['DHL Express'] }) };
     const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null,
       () => new Date('2026-09-10T12:00:00Z'));
-    await service.syncPackage({ id: 'delivered', carrier: 'unknown', tracking_number: '1234567891', current_stage: 'delivered',
+    await service.syncPackage({ id: 'delivered', carrier: 'unknown', tracking_number: '1234067892', current_stage: 'delivered',
       created_at: '2026-09-06T08:00:00Z', last_synced_at: '2026-09-08T11:00:00Z',
       carrier_data: { tracking_provider: 'ParcelsApp', reported_carriers: ['DHL Express'],
         routing: { version: 1, configured_carrier: 'unknown', failures: {}, probe_cursor: 0, discovery_cursor: 0, rules: 'older',
@@ -1175,7 +1175,7 @@ describe('TrackingSyncService', () => {
           events: [{ time: '2026-09-10T11:00:00Z', description: 'In transit', stage: 'in_transit' }] }) };
       const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null,
         () => new Date('2026-09-10T12:00:00Z'));
-      await service.syncPackage({ id: 'older-copy', carrier: 'unknown', tracking_number: '1234567891', current_stage: 'in_transit',
+      await service.syncPackage({ id: 'older-copy', carrier: 'unknown', tracking_number: '1234067892', current_stage: 'in_transit',
         last_status_text: 'Arrived at the hub',
         carrier_data: { tracking_provider: savedProvider, reported_carriers: ['DHL'],
           routing: { version: 1, configured_carrier: 'unknown', last_event_at: '2026-09-10T11:30:00.000Z' } },
@@ -2350,7 +2350,7 @@ describe('TrackingSyncService', () => {
         discovery_cursor: 0, rules: 'older', ...routing } } });
     const asked = (carrier: string) => ({ candidate_probes: { [carrier]: { count: 6, retry_at: '2026-09-09T09:00:00Z' } } });
     // A ten-digit DHL Express waybill, whose recognition asks DHL Express first, then other carriers.
-    const waybill = '1234567891';
+    const waybill = '1234067892';
     const client = { ...fakeClient(), packageSyncJobsPending: vi.fn().mockResolvedValue(false),
       listRedetectionCandidates: vi.fn().mockResolvedValue([
         // UPS asked already, a day or a week ago: their own cadence asks it again.
@@ -5601,7 +5601,7 @@ describe('DHL Express records from either feed', () => {
   const mobile = () => answer('2026-10-05T11:00:00+02:00');
   const portal = () => answer('2026-10-05T11:00:00+01:00', 'RR');
   const load = (store: ReturnType<typeof eventStore>) => ({ id: 'dhl-express-parcel', user_id: 'owner', carrier: 'dhl-express',
-    tracking_number: '1234567891', current_stage: 'in_transit', [STORED_EVENT_IDENTITIES]: store.identities() });
+    tracking_number: '1234067892', current_stage: 'in_transit', [STORED_EVENT_IDENTITIES]: store.identities() });
   const rows = (store: ReturnType<typeof eventStore>) => [...store.rows.values()]
     .map(({ id, provider_event_id, occurred_at }) => ({ id, provider_event_id, occurred_at }));
 
