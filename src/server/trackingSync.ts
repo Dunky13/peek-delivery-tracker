@@ -1570,7 +1570,10 @@ export class TrackingSyncService {
           await audit.finish({ outcome: 'unsupported' });
           return 'unsupported';
         }
-        const hasProgress = previousStage !== 'pending';
+        // A label created is no progress either (routing's PROGRESS_STAGES): a parcel that only
+        // ever showed one, such as a reused number's earlier label that has since dropped out,
+        // waits like a pending one while every source answers without data.
+        const hasProgress = !['pending', 'registered'].includes(previousStage);
         // The parcel's own carrier does not know it yet: fallback providers failing on the
         // same unannounced number is not an outage, and the routing state keeps their cooldowns.
         // Without a carrier to ask, every provider answering without history means the same.

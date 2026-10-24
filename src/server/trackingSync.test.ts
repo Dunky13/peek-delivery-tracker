@@ -4534,6 +4534,27 @@ describe('TrackingSyncService', () => {
       .resolves.toMatchObject({ waiting: 1, errors: 0 });
   });
 
+  it.each([['registered', 'waiting'], ['in_transit', 'error']] as const)(
+    'files a %s parcel’s check as %s while every source answers without history', async (stage, outcome) => {
+      const client = { ...fakeClient(),
+        acquireTrackingProvider: vi.fn().mockResolvedValue({ token: 'lease', retry_at: '2026-09-10T12:01:30Z' }),
+        finishTrackingProvider: vi.fn().mockResolvedValue(undefined),
+      };
+      const adapter = { fetch: vi.fn(), fetchUniversal: vi.fn(async (source: string) => {
+        throw source === 'Ship24' ? new NotFoundError(source) : new IndeterminateError(source, `${source} has no usable shipment history`);
+      }) };
+      // A label created is no progress: only a parcel that moved has lost its answer. The previous
+      // check already missed, so another missed check would show an error.
+      const parcel = { id: 'label-only', carrier: 'unknown', tracking_number: 'TEST1234', current_stage: stage,
+        carrier_data: { routing: { version: 1, configured_carrier: 'unknown', consecutive_failures: 1, probe_cursor: 0, discovery_cursor: 0 } } };
+      const service = new TrackingSyncService(client as unknown as SupabaseServiceClient, adapter, null, () => new Date('2026-09-10T12:00:00Z'));
+      const waiting = outcome === 'waiting';
+      await expect(service.syncPackage(parcel, { trigger: 'scheduled' })).resolves.toMatchObject({ waiting: waiting ? 1 : 0, errors: waiting ? 0 : 1 });
+      expect(client.updatePackage.mock.calls.at(-1)![1]).toMatchObject({ sync_status: outcome });
+      expect(client.recordTrackingHealth).toHaveBeenLastCalledWith(expect.any(String), 'label-only',
+        expect.arrayContaining([expect.objectContaining({ kind: 'refresh', healthy: waiting })]));
+    });
+
   it('keeps a number nobody has seen waiting while one provider rests on a rate limit', async () => {
     const client = { ...fakeClient(),
       acquireTrackingProvider: vi.fn(async (source: string) => ({ token: source === 'ParcelsApp' ? null : 'lease',
