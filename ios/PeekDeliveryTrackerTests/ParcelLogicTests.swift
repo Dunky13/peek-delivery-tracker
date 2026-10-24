@@ -2919,8 +2919,9 @@ extension ParcelLogicTests {
 }
 
 extension ParcelLogicTests {
-    /// The deliveries' screens drawn in a window at the widths a phone, an iPad's columns and its narrow windows
-    /// give them, at regular type in light and at large type in dark, each picture kept with the test's results.
+    /// The deliveries' screens drawn in a window at the widths a phone, an iPad's columns, its narrow windows and its
+    /// whole screen give them, at regular type in light and at large type in dark, each picture kept with the test's
+    /// results.
     @MainActor func testTheDeliveriesScreensDrawInEveryWidthTheyAreGiven() async throws {
         try await draw(.en, named: "list", in: [CGSize(width: 320, height: 700), CGSize(width: 380, height: 800)]) { _ in
             ParcelListView(selection: .constant(0))
@@ -2931,7 +2932,8 @@ extension ParcelLogicTests {
         try await draw(.en, named: "detail", in: [CGSize(width: 390, height: 844), CGSize(width: 640, height: 900)]) { store in
             DetailPage(parcelID: try XCTUnwrap(store.parcels.first(where: \.isActive)).id)
         }
-        try await draw(.en, named: "first-open", in: [CGSize(width: 466, height: 678), CGSize(width: 678, height: 466)]) { _ in
+        try await draw(.en, named: "first-open", in: [CGSize(width: 466, height: 678), CGSize(width: 678, height: 466),
+                                                      CGSize(width: 1032, height: 1376), CGSize(width: 1376, height: 1032)]) { _ in
             FirstOpenView(covered: false) { _ in }
         }
     }

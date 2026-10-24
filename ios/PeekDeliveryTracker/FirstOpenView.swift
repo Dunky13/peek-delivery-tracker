@@ -137,8 +137,9 @@ enum FirstOpenJourney {
 }
 
 /// The first screen of an iPhone nobody has followed a parcel on: a sample parcel crossing the
-/// world on its map, scan by scan, over the question and the field that answers it. It stands
-/// over the deliveries and leaves once the first parcel is in.
+/// world on its map, scan by scan, over the question and the field that answers it. On an iPad the
+/// journey fills the screen and the question stands over it, as on the landing. It stands over the
+/// deliveries and leaves once the first parcel is in.
 struct FirstOpenView: View {
     /// A sheet covers the screen: the journey waits.
     let covered: Bool
@@ -156,6 +157,9 @@ struct FirstOpenView: View {
     /// The parcel the picture opens on, picked up, as its page shows it.
     @State private var sample: Parcel?
     @State private var showingSample = false
+    /// Where an iPad's question ends and its parcel's name starts: the route keeps between the two.
+    @State private var posterTop: CGFloat = 0
+    @State private var posterFloor: CGFloat = 0
     @Namespace private var transition
     @ObservedObject private var catalog = CarrierCatalog.shared
 
@@ -188,6 +192,10 @@ struct FirstOpenView: View {
                 }
                 // A screen too short for the map and the question, a phone on its side, scrolls; any other holds still.
                 ViewThatFits(in: .vertical) {
+                    // An iPad, or a large window on one, has room for the question over the whole journey.
+                    if window.size.width >= 700 && screen >= 700 {
+                        poster(size: CGSize(width: window.size.width, height: screen), top: top)
+                    }
                     page.frame(maxHeight: .infinity, alignment: .top)
                     ScrollView { page }.scrollIndicators(.hidden)
                 }
@@ -223,10 +231,7 @@ struct FirstOpenView: View {
 
     private func hero(height: CGFloat, top: CGFloat) -> some View {
         let parcel = FirstOpenJourney.parcel(step: step, name: FirstOpenJourney.name(localizer))
-        return Button {
-            sample = FirstOpenJourney.delivered(localizer: localizer)
-            showingSample = true
-        } label: {
+        return Button(action: openSample) {
             ZStack(alignment: .bottom) {
                 identity.surface
                 if let atlas {
@@ -241,7 +246,7 @@ struct FirstOpenView: View {
                     VStack(alignment: .leading, spacing: 9) {
                         CarrierFleetMark(identity: identity)
                         Text(parcel.label).font(.title2.weight(.semibold)).foregroundStyle(Color.primary)
-                        Text([localizer.parcelStatus(parcel), localizer.parcelDeliveryEstimate(parcel)].compactMap { $0 }.joined(separator: " · "))
+                        Text(status(parcel))
                             .font(.caption)
                             .foregroundStyle(identity.ink)
                             .id(step)
@@ -263,17 +268,7 @@ struct FirstOpenView: View {
         .accessibilityLabel(localizer.text("landing.pip.open"))
         .overlay(alignment: .top) {
             VStack(spacing: 12) {
-                HStack {
-                    PeekLockup().clearOfWindowControls()
-                    Spacer()
-                    Button(localizer.text("arrival.signInTitle")) { session.showSignIn() }
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(Brand.ink)
-                        .padding(.horizontal, 14)
-                        .frame(minHeight: 44)
-                        .background(Brand.paper.opacity(0.55), in: RoundedRectangle(cornerRadius: 12))
-                        .accessibilityIdentifier("welcome.signIn")
-                }
+                masthead
                 if let ping = FirstOpenJourney.ping(step: step, localizer: localizer) {
                     FirstOpenPing(detail: ping, identity: identity)
                         .id(step)
@@ -285,6 +280,129 @@ struct FirstOpenView: View {
             .padding(.horizontal, 24)
             .padding(.top, top + 10)
         }
+    }
+
+    // MARK: - An iPad's whole screen
+
+    /// The landing's own picture: the journey fills the screen and the question stands over it, its field and button
+    /// on one line. The parcel is named at the foot of its map, over the carriers rolling by.
+    private func poster(size: CGSize, top: CGFloat) -> some View {
+        let parcel = FirstOpenJourney.parcel(step: step, name: FirstOpenJourney.name(localizer))
+        let portrait = size.height > size.width
+        let title = min(76, size.width * 0.072, size.height * 0.085)
+        // Until they are measured, the question and the parcel's name take about what they will.
+        let routeTop = posterTop > 0 ? posterTop + 40 : top + 400
+        let routeFloor = posterFloor > 0 ? posterFloor : size.height - 280
+        return ZStack {
+            Button(action: openSample) {
+                ZStack {
+                    identity.surface
+                    if let atlas {
+                        RouteEngraving(
+                            atlas: atlas, route: ParcelRoute(parcel: parcel, atlas: atlas, language: localizer.language),
+                            stage: parcel.currentStage, identity: identity, peek: false,
+                            insets: EdgeInsets(top: routeTop, leading: 110, bottom: size.height - routeFloor + 40, trailing: 100),
+                            floor: routeFloor - 12
+                        )
+                        .transition(.opacity)
+                    }
+                    // The question reads over a quiet sky: a route that leaves the screen fades out under it.
+                    LinearGradient(colors: [identity.surface.opacity(0.9), identity.surface.opacity(0.6), identity.surface.opacity(0)],
+                                   startPoint: .top, endPoint: .bottom)
+                        .frame(height: routeTop)
+                        .frame(maxHeight: .infinity, alignment: .top)
+                }
+                .contentShape(Rectangle())
+                .matchedTransitionSource(id: FirstOpenJourney.parcelID, in: transition)
+            }
+            .buttonStyle(FirstOpenHeroStyle())
+            .accessibilityLabel(localizer.text("landing.pip.open"))
+            .ignoresSafeArea(edges: .bottom)
+
+            VStack(spacing: 0) {
+                masthead
+                    .padding(.horizontal, 28)
+                    .padding(.top, top + 10)
+                VStack(spacing: 0) {
+                    Text(localizer.text("peek.title"))
+                        .font(.system(size: title, weight: .bold, design: .rounded))
+                        .tracking(-title * 0.035)
+                        .foregroundStyle(Brand.ink)
+                        .multilineTextAlignment(.center)
+                        .minimumScaleFactor(0.6)
+                        .lineLimit(2)
+                        .accessibilityAddTraits(.isHeader)
+                    Text(localizer.text(store.tracksWithoutAccount ? "native.pasteLead" : "arrival.welcomeSubtitle"))
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 10)
+                    Group {
+                        if store.tracksWithoutAccount {
+                            // On one line while the field keeps room for a number; one under the other at large type.
+                            ViewThatFits(in: .horizontal) {
+                                HStack(spacing: 12) {
+                                    field(large: true).frame(minWidth: 320)
+                                    pasteButton(large: true).fixedSize()
+                                }
+                                VStack(spacing: 12) {
+                                    field(large: true)
+                                    pasteButton(large: true)
+                                }
+                            }
+                        } else {
+                            demoButton(large: true).frame(maxWidth: 420)
+                        }
+                    }
+                    .padding(.top, 30)
+                }
+                .frame(maxWidth: 780)
+                .padding(.horizontal, 40)
+                .padding(.top, portrait ? 72 : 28)
+                .onGeometryChange(for: CGFloat.self) { $0.frame(in: .named(Self.posterSpace)).maxY } action: { posterTop = $0 }
+                .offset(y: appeared ? 0 : 14)
+                Spacer(minLength: 24)
+                posterCaption(parcel)
+                    .padding(.horizontal, 44)
+                    .padding(.bottom, 26)
+                    .onGeometryChange(for: CGFloat.self) { $0.frame(in: .named(Self.posterSpace)).minY } action: { posterFloor = $0 }
+                    // It belongs to the picture: a tap on it opens the parcel as one on the map does.
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+                CarrierFleet(rolling: running)
+                    .padding(.horizontal, 44)
+                    .padding(.bottom, 20)
+            }
+        }
+        .coordinateSpace(.named(Self.posterSpace))
+        .opacity(appeared ? 1 : 0)
+    }
+
+    private static let posterSpace = "FirstOpenView.poster"
+
+    /// The sample parcel, named in the corner of its map, with the alert that lands with a scan worth one.
+    private func posterCaption(_ parcel: Parcel) -> some View {
+        HStack(alignment: .bottom, spacing: 18) {
+            VStack(alignment: .leading, spacing: 10) {
+                if let ping = FirstOpenJourney.ping(step: step, localizer: localizer) {
+                    FirstOpenPing(detail: ping, identity: identity)
+                        .id(step)
+                        .transition(.offset(y: 6).combined(with: .opacity))
+                        .padding(.bottom, 8)
+                }
+                CarrierFleetMark(identity: identity)
+                Text(parcel.label).font(.largeTitle.weight(.semibold)).foregroundStyle(Color.primary)
+                Text(status(parcel))
+                    .font(.subheadline)
+                    .foregroundStyle(identity.ink)
+                    .id(step)
+                    .transition(.opacity)
+            }
+            Spacer(minLength: 0)
+            DeliveryPostageStamp(parcel: parcel, identity: identity, width: 64, appeared: appeared)
+        }
+        .multilineTextAlignment(.leading)
     }
 
     // MARK: - The question
@@ -308,22 +426,12 @@ struct FirstOpenView: View {
                 .padding(.top, 8)
             if store.tracksWithoutAccount {
                 VStack(spacing: 10) {
-                    field
-                    Button { paste() } label: {
-                        FirstParcelPrimaryLabel(title: localizer.text("landing.pasteAndTrack"), symbol: "doc.on.clipboard")
-                    }
-                    .buttonStyle(TactileButtonStyle())
-                    .accessibilityIdentifier("welcome.paste")
+                    field(large: false)
+                    pasteButton(large: false)
                 }
                 .padding(.top, roomy ? 20 : 14)
             } else {
-                // A build without a server has only its demo to show.
-                Button { session.enterDemo() } label: {
-                    FirstParcelPrimaryLabel(title: localizer.text("welcome.demo"), symbol: nil)
-                }
-                .buttonStyle(TactileButtonStyle())
-                .accessibilityIdentifier("welcome.demo")
-                .padding(.top, 20)
+                demoButton(large: false).padding(.top, 20)
             }
             Spacer(minLength: 0)
             if roomy { CarrierFleet(rolling: running).padding(.bottom, 14) }
@@ -333,16 +441,16 @@ struct FirstOpenView: View {
     }
 
     /// It reads as the field it leads to: the sheet that takes a number, a link or a whole message.
-    private var field: some View {
+    private func field(large: Bool) -> some View {
         HStack(spacing: 6) {
             Button { onAdd(.type) } label: {
                 // A long placeholder takes a second line rather than being cut off.
                 Text(localizer.text("add.trackingPlaceholder"))
-                    .font(.body)
+                    .font(large ? .title3 : .body)
                     .foregroundStyle(.tertiary)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: .infinity, minHeight: 58, alignment: .leading)
+                    .frame(maxWidth: .infinity, minHeight: large ? 64 : 58, alignment: .leading)
                     .contentShape(Rectangle())
             }
             .accessibilityLabel(localizer.text("add.tracking"))
@@ -350,18 +458,60 @@ struct FirstOpenView: View {
             if DataScannerViewController.isSupported && DataScannerViewController.isAvailable {
                 Button { onAdd(.scan) } label: {
                     Image(systemName: "barcode.viewfinder")
-                        .font(.title3)
+                        .font(large ? .title2 : .title3)
                         .foregroundStyle(Brand.ink)
-                        .frame(width: 44, height: 44)
+                        .frame(width: large ? 48 : 44, height: large ? 48 : 44)
                 }
                 .accessibilityLabel(localizer.text("add.scan"))
             }
         }
         .buttonStyle(.plain)
-        .padding(.leading, 18)
-        .padding(.trailing, 7)
-        .background(Brand.paper, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay { RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Brand.separator.opacity(0.3), lineWidth: 1) }
+        .padding(.leading, large ? 22 : 18)
+        .padding(.trailing, large ? 8 : 7)
+        .background(Brand.paper, in: RoundedRectangle(cornerRadius: large ? 20 : 18, style: .continuous))
+        .overlay { RoundedRectangle(cornerRadius: large ? 20 : 18, style: .continuous).strokeBorder(Brand.separator.opacity(0.3), lineWidth: 1) }
+    }
+
+    private func pasteButton(large: Bool) -> some View {
+        Button { paste() } label: {
+            FirstParcelPrimaryLabel(title: localizer.text("landing.pasteAndTrack"), symbol: "doc.on.clipboard", large: large)
+        }
+        .buttonStyle(TactileButtonStyle())
+        .accessibilityIdentifier("welcome.paste")
+    }
+
+    /// A build without a server has only its demo to show.
+    private func demoButton(large: Bool) -> some View {
+        Button { session.enterDemo() } label: {
+            FirstParcelPrimaryLabel(title: localizer.text("welcome.demo"), symbol: nil, large: large)
+        }
+        .buttonStyle(TactileButtonStyle())
+        .accessibilityIdentifier("welcome.demo")
+    }
+
+    /// The app's name, and the way back into an account.
+    private var masthead: some View {
+        HStack {
+            PeekLockup().clearOfWindowControls()
+            Spacer()
+            Button(localizer.text("arrival.signInTitle")) { session.showSignIn() }
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(Brand.ink)
+                .padding(.horizontal, 14)
+                .frame(minHeight: 44)
+                .background(Brand.paper.opacity(0.55), in: RoundedRectangle(cornerRadius: 12))
+                .accessibilityIdentifier("welcome.signIn")
+        }
+    }
+
+    private func status(_ parcel: Parcel) -> String {
+        [localizer.parcelStatus(parcel), localizer.parcelDeliveryEstimate(parcel)].compactMap { $0 }.joined(separator: " · ")
+    }
+
+    /// The picture opens on the parcel's own page, picked up.
+    private func openSample() {
+        sample = FirstOpenJourney.delivered(localizer: localizer)
+        showingSample = true
     }
 
     private func paste() {
@@ -385,16 +535,19 @@ private struct FirstOpenHeroStyle: ButtonStyle {
 struct FirstParcelPrimaryLabel: View {
     let title: String
     let symbol: String?
+    /// An iPad's, beside its field: larger, with room either side of its words.
+    var large = false
 
     var body: some View {
-        HStack(spacing: 9) {
-            if let symbol { Image(systemName: symbol).font(.body.weight(.medium)) }
-            Text(title).font(.body.weight(.semibold))
+        HStack(spacing: large ? 10 : 9) {
+            if let symbol { Image(systemName: symbol).font((large ? Font.title3 : .body).weight(.medium)) }
+            Text(title).font((large ? Font.title3 : .body).weight(.semibold))
         }
         .foregroundStyle(Brand.onAccent)
+        .padding(.horizontal, large ? 30 : 0)
         .frame(maxWidth: .infinity)
-        .frame(minHeight: 54)
-        .background(Brand.accent, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .frame(minHeight: large ? 64 : 54)
+        .background(Brand.accent, in: RoundedRectangle(cornerRadius: large ? 20 : 16, style: .continuous))
     }
 }
 
