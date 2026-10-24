@@ -126,7 +126,7 @@ Saisis-le sans espace, en majuscules et sans « SD ». Pour un envoi parti de Fr
 - [La Poste : Pendant combien de temps mon suivi est-il accessible ?](https://aide.laposte.fr/contenu/pendant-combien-de-temps-mon-suivi-est-il-accessible) – 12 mois
 - [La Poste : Garanties et indemnisations Colissimo](https://aide.laposte.fr/contenu/quelles-sont-les-garanties-et-indemnisations-pour-un-envoi-avec-colissimo) – seul l'expéditeur est indemnisé
 - [La Poste : Colis perdu Colissimo](https://www.laposte.fr/envoyer/colis-perdu-colissimo) – le destinataire passe par l'expéditeur
-- [La Poste : Comment formaliser un recours auprès du Service Client Courrier et Colis ?](https://aide.laposte.fr/contenu/comment-formaliser-un-recours-aupres-du-service-client-courrier-et-colis) – délais de réclamation
+- [La Poste : Conditions générales de vente Courrier-Colis du 7 juillet 2026](https://www.laposte.fr/ecom/occ/smartedit/medias/sys_master/pdf/hfb/ha1/31823066595358/CGV_COURRIER_COLIS_07-07-2026/CGV-COURRIER-COLIS-07-07-2026.pdf) – délais de réclamation
 - [La Poste : Mon envoi a été livré abîmé, son contenu détérioré, que faire ?](https://aide.laposte.fr/contenu/mon-envoi-a-ete-livre-abime-son-contenu-deteriore-que-faire) – colis abîmé
 - [La Poste : Comment payer les frais de douane pour des colis internationaux ?](https://www.laposte.fr/conseils-pratiques/comment-payer-frais-de-douane-colis-international) – frais de douane, droits forfaitaires de l'UE
 - [La Poste : Comment reconnaître une tentative de fraude ?](https://aide.laposte.fr/contenu/comment-reconnaitre-une-tentative-de-fraude) – faux SMS et e-mails

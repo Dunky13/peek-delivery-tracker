@@ -120,7 +120,7 @@ Type the number without spaces, in capitals, without "SD". For items sent from F
 - [La Poste: Pendant combien de temps mon suivi est-il accessible ?](https://aide.laposte.fr/contenu/pendant-combien-de-temps-mon-suivi-est-il-accessible) – 12 months
 - [La Poste: Garanties et indemnisations Colissimo](https://aide.laposte.fr/contenu/quelles-sont-les-garanties-et-indemnisations-pour-un-envoi-avec-colissimo) – only the sender is compensated
 - [La Poste: Colis perdu Colissimo](https://www.laposte.fr/envoyer/colis-perdu-colissimo) – recipient asks the sender
-- [La Poste: Comment formaliser un recours](https://aide.laposte.fr/contenu/comment-formaliser-un-recours-aupres-du-service-client-courrier-et-colis) – claim deadlines
+- [La Poste: Conditions générales de vente Courrier-Colis, 7 July 2026](https://www.laposte.fr/ecom/occ/smartedit/medias/sys_master/pdf/hfb/ha1/31823066595358/CGV_COURRIER_COLIS_07-07-2026/CGV-COURRIER-COLIS-07-07-2026.pdf) – claim deadlines
 - [La Poste: Mon envoi a été livré abîmé](https://aide.laposte.fr/contenu/mon-envoi-a-ete-livre-abime-son-contenu-deteriore-que-faire) – damaged parcels
 - [La Poste: Comment payer les frais de douane](https://www.laposte.fr/conseils-pratiques/comment-payer-frais-de-douane-colis-international) – customs fees, EU duty
 - [La Poste: Comment reconnaître une tentative de fraude ?](https://aide.laposte.fr/contenu/comment-reconnaitre-une-tentative-de-fraude) – fake SMS and emails

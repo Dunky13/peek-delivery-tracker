@@ -1,12 +1,12 @@
 ---
 title: Straightship tracking: STRTD numbers, statuses and delivery
-description: Track a Straightship parcel in Canada: what STRTD and STRCA numbers look like, what each status means, missed deliveries, customs and who to contact.
+description: Track a Straightship parcel in Canada: what STRTD, STRCA and STSH numbers look like, what each status means, missed deliveries, customs and who to contact.
 slug: straightship-tracking
 published: 2026-10-23
-updated: 2026-10-23
+updated: 2026-10-24
 ---
 
-Straightship (Straightship Solutions Limited) is a logistics company based in Burnaby, British Columbia, that ships goods from Asia to North America and delivers parcels across Canada with its own drivers. Its site lists SHEIN among its partners. If an online order came with a number starting `STRTD` or `STRCA`, Straightship has it. Track it on [straightship.com](https://www.straightship.com/new/), in the "Track Your Shipment" box, or in the box above. The shop gives the number in its shipping email or on the order page.
+Straightship (Straightship Solutions Limited) is a logistics company based in Burnaby, British Columbia, that ships goods from Asia to North America and delivers parcels across Canada with its own drivers. Its site lists SHEIN among its partners. If an online order came with a number starting `STRTD` or `STRCA`, Straightship has it; one starting `STSH` can be Straightship's too. Track it on [straightship.com](https://www.straightship.com/new/), in the "Track Your Shipment" box, or in the box above. The shop gives the number in its shipping email or on the order page.
 
 ## Straightship tracking number: what it looks like
 
@@ -17,6 +17,7 @@ Straightship publishes no number format. The numbers Peek knows look like this, 
 | `STRTD000000000` | STRTD and 9 digits. |
 | `STRTD0000000000000000` | STRTD and 16 digits (17 also occur). |
 | `STRCA0000000000000` | STRCA and 13 digits. |
+| `STSHYW00000000000` | STSH, two letters and 11 digits. |
 
 Lower case and spaces don't matter in Peek. Straightship's tracker answers a number it doesn't hold with `No results found!`: check the number against the shop's email. Can't find the number at all? See [how to find your tracking number](guide:find-tracking-number) and, for a SHEIN order, [tracking SHEIN orders](guide:shein-orders).
 
@@ -89,7 +90,7 @@ For the order itself, a refund or a return, contact the seller.
 
 ## Track a Straightship parcel with Peek
 
-[Peek](/) names Straightship at once from a `STRTD` or `STRCA` number of the shapes above, which no other carrier in its catalog shares. A straightship.com tracking link (`/track-your-shipment/tracking-id/` and the number) can be pasted too. Peek tracks only these shapes with Straightship: if you pick Straightship with "Change" for another number, Peek says it "doesn’t issue numbers like this one". For a Straightship number of another shape, use Straightship's own tracker.
+[Peek](/) names Straightship at once from a `STRTD` or `STRCA` number of the shapes above, which no other carrier in its catalog shares. From an `STSH` number it can't, as some also fit Colis Privé's numbers: Peek asks Straightship whether it has the parcel and picks it when it does. If Straightship doesn't come up, tap "Change" and pick it under "Fits this number". A straightship.com tracking link (`/track-your-shipment/tracking-id/` and the number) can be pasted too. Peek tracks only these shapes with Straightship: if you pick Straightship with "Change" for another number, Peek says it "doesn’t issue numbers like this one". For a Straightship number of another shape, use Straightship's own tracker.
 
 Peek reads Straightship's own tracker and shows the status, the history with the town and province of each scan, and the delivery time. It reads the tracker's times as UTC, as the tracker states. `Package will be delivered before 9:00pm` counts as out for delivery, the attempt lines as failed attempts, and `Delivery is in progress` as in transit. Peek shows no expected delivery date, and it leaves out the customer reference and the delivery photo: see those on Straightship's tracker. As Straightship names no other carrier, Peek follows the Straightship number to the end.
 
