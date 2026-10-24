@@ -271,6 +271,7 @@ it('gives a failed refresh the anomaly and each provider\'s failure kind as evid
 
 it("files a carrier's own lookup repeating its thin answer as answered from the second check in a row", async () => {
   const report = vi.spyOn(observability, 'captureOperationalError').mockReturnValue(null);
+  const logged = vi.spyOn(observability, 'logOperationalEvent');
   const client = { completeSyncAttempt: vi.fn().mockResolvedValue(true), recordTrackingHealth: vi.fn().mockResolvedValue([]),
     ackTrackingHealth: vi.fn(), previousThinAnswer: vi.fn().mockResolvedValue(null) };
   const check = async (thinAnswer: string | undefined, lookup: Partial<LookupRecord> = {}) => {
@@ -302,6 +303,8 @@ it("files a carrier's own lookup repeating its thin answer as answered from the 
   client.previousThinAnswer.mockRejectedValue(failure);
   await expect(check('a1')).resolves.toMatchObject({ healthy: false, details: { thin_answer: 'a1' } });
   expect(report).toHaveBeenCalledExactlyOnceWith(failure, expect.objectContaining({ component: 'tracking-sync-audit', operation: 'read_thin_answer' }));
+  expect(logged).toHaveBeenCalledWith('tracking_sync_audit_read_failed', expect.objectContaining({ operation: 'read_thin_answer' }), 'error');
+  expect(logged).not.toHaveBeenCalledWith('tracking_sync_audit_write_failed', expect.anything(), expect.anything());
 });
 
 it('counts every finished attempt by who served it', async () => {

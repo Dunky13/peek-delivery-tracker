@@ -552,7 +552,7 @@ Key JSON events:
   `input_required` or `invalid_input`.
   A `tracking_routing` line is a warning for `transport_fallback` and `provider_failed`,
   except a provider's `no_history` answer, which is info;
-- `tracking_sync_audit_write_failed`, `tracking_sync_audit_maintenance_failed`,
+- `tracking_sync_audit_write_failed`, `tracking_sync_audit_read_failed`, `tracking_sync_audit_maintenance_failed`,
   `tracking_status_observation_write_failed`;
 - `tracking_sync_anomaly` (warning, by `attempt_id`): one per anomaly code of a check,
   with the previous, reported and selected stage, the provider status and the event counts.

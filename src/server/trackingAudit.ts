@@ -462,7 +462,7 @@ export class TrackingSyncAudit {
     let previous: string | null = null;
     await this.writeAudit('read_thin_answer', async () => {
       previous = await this.client.previousThinAnswer(this.packageId, this.configuredCarrier);
-    });
+    }, 'tracking_sync_audit_read_failed');
     return previous;
   }
 
@@ -476,7 +476,7 @@ export class TrackingSyncAudit {
     };
   }
 
-  private async writeAudit(operation: string, write: () => Promise<void>): Promise<void> {
+  private async writeAudit(operation: string, write: () => Promise<void>, failure = 'tracking_sync_audit_write_failed'): Promise<void> {
     try {
       await write();
     } catch (error) {
@@ -487,7 +487,7 @@ export class TrackingSyncAudit {
         logOperationalEvent('tracking_sync_audit_skipped', { ...this.logContext(), operation });
         return;
       }
-      logOperationalEvent('tracking_sync_audit_write_failed', {
+      logOperationalEvent(failure, {
         ...this.logContext(),
         operation,
         error_type: errorType(error),
