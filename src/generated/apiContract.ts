@@ -14489,7 +14489,7 @@ export const CARRIER_CAPABILITIES = {
     "detectionRules": [
       {
         "pattern": "^KTDWE\\d{10}$",
-        "confidence": "low"
+        "confidence": "high"
       }
     ]
   },
