@@ -1,7 +1,8 @@
 import { expect, it } from 'vitest';
 
-import { captureDirectLocalHistory, directLocalHistory } from './directLocalHistory';
+import { captureDirectLocalHistory, directLocalHistory, hasUnresolvedDirectCurrent } from './directLocalHistory';
 import type { JsonObject } from './types';
+import type { CarrierResult } from 'universal-parcel-scraper';
 
 const NUMBER = 'GL000000001';
 const parcel = (events: JsonObject[]): JsonObject => ({
@@ -50,4 +51,19 @@ it('keeps the carrier\'s group beside its code, and takes it from the next answe
   const kept = { tracking_number: 'SEUR0000000001', carrier: 'seur',
     carrier_data: { direct_local_history: { carrier: 'seur', number: 'SEUR0000000001', events: [collected] } } };
   expect(directLocalHistory(kept, { direct_local_history: captured })?.events).toEqual([{ ...collected, provider_group: 'RECOGIDA' }]);
+});
+
+it('leaves no current scan to date when the carrier gives its day alone no clock by design', () => {
+  // BRT dates its delivery round by the day alone, after a depot scan on Rome's clock; the wording is invented.
+  const round: CarrierResult = { status: 'out_for_delivery', current_stage: 'out_for_delivery', last_update: null, last_update_local: '2026-10-14', events: [
+    { local_time: '2026-10-14', description: 'Out for delivery', stage: 'out_for_delivery' },
+    { time: '2026-10-14T07:40:00+02:00', local_time: '2026-10-14T07:40:00', description: 'Arrived at the depot', stage: 'in_transit' },
+  ] };
+  expect(hasUnresolvedDirectCurrent('brt', round)).toBe(false);
+  // GLS Italy's scans normally carry a clock: a provider may still date the day it gives alone.
+  expect(hasUnresolvedDirectCurrent('gls-it', round)).toBe(true);
+  // A wall clock no zone settles, or provider text, is still for a provider to date.
+  for (const event of [{ local_time: '2026-10-13T18:00:00' }, { provider_time_text: '13/10 18:00' }]) {
+    expect(hasUnresolvedDirectCurrent('brt', { ...round, events: [...round.events!, { ...event, description: 'Departed', stage: 'in_transit' }] })).toBe(true);
+  }
 });

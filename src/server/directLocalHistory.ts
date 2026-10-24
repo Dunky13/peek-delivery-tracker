@@ -1,10 +1,12 @@
 import { CARRIER_DEFINITIONS } from 'universal-parcel-scraper';
 import { DateTime } from 'luxon';
-import type { CarrierResult } from 'universal-parcel-scraper';
+import type { CarrierEvent, CarrierResult } from 'universal-parcel-scraper';
 import { showsClock } from './eventIdentity';
 import { isRecord, type JsonObject } from './types';
 
 const CARRIERS = new Set(Object.entries(CARRIER_DEFINITIONS).filter(([, carrier]) => carrier.tracking.localClocks).map(([id]) => id));
+/** Carriers that give the scans their adapter dates by the day alone no clock, by design (BRT's delivery round). */
+const DAY_ONLY = new Set(Object.entries(CARRIER_DEFINITIONS).filter(([, carrier]) => carrier.tracking.dateOnlyScans).map(([id]) => id));
 const eventKey = (event: JsonObject): string => JSON.stringify([
   event.local_time, event.provider_time_text, event.time, event.description, event.location, event.provider_code, event.provider_leg, event.summary_snapshot,
 ]);
@@ -49,9 +51,15 @@ export function hasUnresolvedDirectHistory(carrier: string, result: CarrierResul
   return CARRIERS.has(carrier) && Boolean(result.events?.some((event) => !instant(event.time)));
 }
 
+/**
+ * Whether a provider could date the answer's current scans. A day alone from a carrier
+ * that gives such scans no clock by design has none for any copy to add.
+ */
 export function hasUnresolvedDirectCurrent(carrier: string, result: CarrierResult): boolean {
-  return CARRIERS.has(carrier) && (result.summary_only === true || hasUnresolvedDirectHistory(carrier, result))
-    && !instant(result.last_update);
+  const dayByDesign = (event: CarrierEvent) => DAY_ONLY.has(carrier) && event.time == null
+    && typeof event.local_time === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(event.local_time);
+  return CARRIERS.has(carrier) && !instant(result.last_update) && (result.summary_only === true
+    || Boolean(result.events?.some((event) => !instant(event.time) && !dayByDesign(event))));
 }
 
 /**

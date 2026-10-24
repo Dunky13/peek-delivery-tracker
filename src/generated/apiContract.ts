@@ -2629,8 +2629,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "nacex",
-      "recognitionRank": 850,
-      "dateOnlyScans": true
+      "recognitionRank": 850
     },
     "linkRules": [
       {
@@ -2846,8 +2845,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "brt",
-      "recognitionRank": 860,
-      "dateOnlyScans": true
+      "recognitionRank": 860
     },
     "linkRules": [
       {
@@ -7286,8 +7284,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "mng-kargo",
-      "recognitionRank": 360,
-      "dateOnlyScans": true
+      "recognitionRank": 360
     },
     "trackingUrlTemplate": "https://www.dhlecommerce.com.tr/gonderitakip",
     "linkRules": [],
@@ -7335,8 +7332,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "post-luxembourg",
-      "recognitionRank": 80,
-      "dateOnlyScans": true
+      "recognitionRank": 80
     },
     "linkRules": [
       {
@@ -11733,8 +11729,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "israel-post",
-      "recognitionRank": 81,
-      "dateOnlyScans": true
+      "recognitionRank": 81
     },
     "trackingUrlTemplate": "https://israelpost.co.il/%D7%9E%D7%A2%D7%A7%D7%91-%D7%9E%D7%A9%D7%9C%D7%95%D7%97%D7%99%D7%9D?OpenForm&itemcode={trackingNumber}",
     "linkRules": [
@@ -16703,8 +16698,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "madhur-courier",
-      "dateOnlyScans": true
+      "adapter": "madhur-courier"
     },
     "linkRules": [
       {
@@ -17324,8 +17318,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "sat-ukraine",
-      "recognitionRank": 564,
-      "dateOnlyScans": true
+      "recognitionRank": 564
     },
     "trackingUrlTemplate": "https://www.sat.ua/tracking/?number={trackingNumber}",
     "linkRules": [
@@ -17668,8 +17661,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Dhaka",
     "tracking": {
       "mode": "automatic",
-      "adapter": "sundarban-courier",
-      "dateOnlyScans": true
+      "adapter": "sundarban-courier"
     },
     "trackingUrlTemplate": "https://operation.sundarbancourierltd.com/?cnnumber={trackingNumber}",
     "linkRules": [
@@ -17830,8 +17822,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "tirupati-courier",
-      "recognitionRank": 711,
-      "dateOnlyScans": true
+      "recognitionRank": 711
     },
     "linkRules": [
       {
@@ -18289,8 +18280,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "aymakan",
-      "recognitionRank": 942,
-      "dateOnlyScans": true
+      "recognitionRank": 942
     },
     "trackingUrlTemplate": "https://aymakan.com/tracking/{trackingNumber}",
     "linkRules": [
@@ -27662,8 +27652,7 @@ export const CARRIER_CAPABILITIES = {
     "tracking": {
       "mode": "automatic",
       "adapter": "4sides",
-      "recognitionRank": 783,
-      "dateOnlyScans": true
+      "recognitionRank": 783
     },
     "trackingUrlTemplate": "https://4sides.ru/tracking?number={trackingNumber}",
     "linkRules": [
@@ -28119,8 +28108,7 @@ export const CARRIER_CAPABILITIES = {
     "timezone": "Asia/Kolkata",
     "tracking": {
       "mode": "automatic",
-      "adapter": "jetline-couriers",
-      "dateOnlyScans": true
+      "adapter": "jetline-couriers"
     },
     "linkRules": [],
     "detectionRules": [],

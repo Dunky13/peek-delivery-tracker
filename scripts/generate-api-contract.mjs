@@ -35,7 +35,7 @@ const contractField = (field) => (field === 'postcode' ? 'dpdPostcode' : field);
 /** Leaves out what only the scraper uses: the page its canary probes, refresh pacing, clocks and browsers. */
 function contractEntry(carrier) {
   const tracking = Object.fromEntries(Object.entries(carrier.tracking)
-    .filter(([key]) => !['refresh', 'localClocks', 'browser'].includes(key))
+    .filter(([key]) => !['refresh', 'localClocks', 'dateOnlyScans', 'browser'].includes(key))
     .map(([key, value]) => (key === 'requirements'
       ? [key, value.map((requirement) => ({ ...requirement, field: contractField(requirement.field) }))]
       : [key, value])));

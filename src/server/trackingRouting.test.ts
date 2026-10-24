@@ -4,7 +4,7 @@ import { freshnessWindow, recheckSources, recognizers, RoutingDeferred, routingS
 import { refusesNumber } from './numberRefusal';
 import { STORED_EVENT_IDENTITIES } from './supabase';
 import type { JsonObject } from './types';
-import type { CarrierResult, UniversalSource } from 'universal-parcel-scraper';
+import type { CarrierEvent, CarrierResult, UniversalSource } from 'universal-parcel-scraper';
 import * as monitoring from './observability';
 import * as metrics from './metrics';
 import { universalCarrierHints } from 'universal-parcel-scraper/app';
@@ -1934,6 +1934,53 @@ describe('persistent tracking routing', () => {
       const result = await router.fetch(filed(state({ configured_carrier: 'yamato' })), true);
       expect(result.result.tracking_provider).toBe('Ship24');
       expect(result.result.routing).not.toHaveProperty('provider_copy');
+    });
+  });
+
+  describe('a filed carrier that gives a day alone no clock by design', () => {
+    // BRT dates its delivery round by the day alone, after a depot scan on Rome's clock; the numbers and wording are invented.
+    const round = (carrier: string, depot: CarrierEvent = { time: '2026-09-10T07:40:00+02:00', local_time: '2026-09-10T07:40:00' }): RoutedResult => ({
+      sourceCarrierId: carrier, swissPostReady: null, handoffFallbackErrorType: null,
+      result: { status: 'out_for_delivery', current_stage: 'out_for_delivery', last_update: null, last_update_local: '2026-09-10', events: [
+        { local_time: '2026-09-10', description: 'Out for delivery', stage: 'out_for_delivery' },
+        { ...depot, description: 'Arrived at the depot', stage: 'in_transit' },
+      ] } });
+    async function check(carrier: string, number: string, answer = round(carrier)) {
+      fixedPlan('Ship24', '17TRACK');
+      const checked = setup();
+      checked.direct.mockResolvedValue(answer);
+      checked.universal.mockResolvedValue({ status: 'out_for_delivery', current_stage: 'out_for_delivery', last_update: '2026-09-09T22:00:00Z',
+        events: [{ time: '2026-09-09T22:00:00Z', description: 'Out for delivery', stage: 'out_for_delivery' },
+          { time: '2026-09-10T05:40:00Z', description: 'Arrived at the depot', stage: 'in_transit' }] });
+      const result = await checked.router.fetch(parcel({ carrier, tracking_number: number, current_stage: 'in_transit',
+        carrier_data: { routing: state({ configured_carrier: carrier }) } }), true);
+      return { ...checked, result };
+    }
+
+    it('serves the carrier\'s answer, the day as it gave it, and asks no provider for its clock', async () => {
+      const { result, direct, universal } = await check('brt', '12345678901234');
+      expect(direct).toHaveBeenCalledOnce();
+      expect(universal).not.toHaveBeenCalled();
+      expect(result.sourceCarrierId).toBe('brt');
+      expect(result.result).not.toHaveProperty('tracking_provider');
+      expect(result.result).not.toHaveProperty('direct_local_fallback');
+      expect(result.result.events?.[0]).toEqual({ local_time: '2026-09-10', description: 'Out for delivery', stage: 'out_for_delivery' });
+      expect(result.result.routing).toMatchObject({ confirmed_carrier: 'brt' });
+      expect((result.result.routing as JsonObject).direct_retry_at).toBeUndefined();
+    });
+
+    it('still asks a provider to date a wall clock no zone settles', async () => {
+      const { result, universal } = await check('brt', '12345678901234', round('brt', { local_time: '2026-09-10T07:40:00' }));
+      expect(universal).toHaveBeenCalled();
+      expect(result.result.tracking_provider).toBe('Ship24');
+    });
+
+    it.each([
+      ['Yamato', 'yamato', '123456789012'],
+      ['GLS Italy', 'gls-it', 'GL000000001'],
+    ])('still asks a provider for the day %s, whose scans normally carry a clock, gives alone', async (_name, carrier, number) => {
+      const { universal } = await check(carrier, number);
+      expect(universal).toHaveBeenCalled();
     });
   });
 

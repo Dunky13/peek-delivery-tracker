@@ -166,8 +166,11 @@ at an instant showing that wall clock. The day dates no answer for routing.
 The scraper dates a scan on a wall clock in no zone on a zone it deduces: the scan's place,
 a neighbouring scan's, the destination the carrier delivers in, or the carrier's home
 (`time_zone_basis`), keeping the wall clock in `local_time`. Such an answer counts as dated.
-What follows serves the scans it cannot date: a day alone, an impossible clock, a date
-without its year.
+So does a day alone from a carrier the catalog says gives such scans no clock by design
+(`tracking.dateOnlyScans`, as BRT does a delivery round and NACEX its history): no copy has
+that clock, so the carrier's answer serves the parcel and no provider is asked for it. What
+follows serves the scans it cannot date: a day alone from any other carrier, even one whose
+scans only sometimes lack a clock, an impossible clock, a date without its year.
 
 An adapter whose answer has only local clocks or an undated status summary keeps its
 evidence while a universal provider dates the timeline (`direct_local_history`, up to 100
